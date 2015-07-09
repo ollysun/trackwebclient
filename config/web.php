@@ -38,6 +38,15 @@ $config = [
             ],
         ],
         'db' => require(__DIR__ . '/db.php'),
+        'urlManager' => [
+            'enablePrettyUrl' => true,
+            'enableStrictParsing' => false,
+            'showScriptName' => false,
+            'rules' => [
+                'logout' => 'site/logout',
+                'merchant/<id:\d+>' => 'merchant/detail'
+            ]
+        ],
     ],
     'params' => $params,
 ];

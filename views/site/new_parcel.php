@@ -8,7 +8,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <?= Html::cssFile('@web/css/libs/bootstrap-select.min.css') ?>
 
-<form action="#">
+<form action="#" method="post" enctype="multipart/form-data">
+
 	<div id="newParcelForm" class="l-new-parcel-form carousel slide">
 		<ol class="carousel-indicators hidden">
 			<li data-target="#newParcelForm" data-slide-to="0" class="active"></li>
@@ -65,7 +66,7 @@ $this->params['breadcrumbs'][] = $this->title;
 								<div class="col-xs-12 col-sm-4 form-group">
 									<label>Parcel weight</label>
 									<div class="input-group">
-										<input class="form-control">
+										<input name="parcel_weight" class="form-control">
 										<span class="input-group-addon">Kg</span>
 									</div>
 								</div>
@@ -73,14 +74,14 @@ $this->params['breadcrumbs'][] = $this->title;
 									<label>Parcel value</label>
 									<div class="input-group">
 										<div class="input-group-btn">
-											<select id="currencySelect" class="selectpicker" data-width="70px" data-style="btn-default" title="Please choose a currency">
+											<select name="currency" id="currencySelect" class="selectpicker" data-width="70px" data-style="btn-default" title="Please choose a currency">
 												<option title="NGN" value="NGN" selected="selected">Naira</option>
 												<option title="USD" value="USD">United States Dollars</option>
 												<option title="EUR" value="EUR">Euro</option>
 												<option title="GBP" value="GBP">British Pounds</option>
 											</select>
 										</div>
-										<input type="text" class="form-control">
+										<input name="parcel_value" type="text" class="form-control">
 									</div>
 								</div>
 							</div>
@@ -98,11 +99,11 @@ $this->params['breadcrumbs'][] = $this->title;
 							</div>
 							<div id="pickUpWrap" class="form-group hidden">
 								<label for="">Pickup Centre</label>
-								<select name="" id="" class="form-control"></select>
+								<select name="pickup_centres" id="" class="form-control"></select>
 							</div>
 							<div class="form-group">
 								<label for="">Shipping Type</label>
-								<select name="" id="" class="form-control"></select>
+								<select name="shipping_type" id="" class="form-control"></select>
 							</div>
 						</div>
 					</div>
@@ -127,16 +128,16 @@ $this->params['breadcrumbs'][] = $this->title;
 							<div id="bank-account-details" class="hidden">
 								<div class="form-group">
 									<label for="">Account Name</label>
-									<input class="form-control">
+									<input name="account_name" class="form-control">
 								</div>
 								<div class="row">
 									<div class="col-xs-12 col-sm-6 col-lg-5 form-group">
 										<label>Account No</label>
-										<input class="form-control">
+										<input name="account_no" class="form-control">
 									</div>
 									<div class="col-xs-12 col-sm-6 col-lg-7 form-group">
 										<label>Bank</label>
-										<select class="form-control"></select>
+										<select name="bank" class="form-control"></select>
 									</div>
 								</div>
 
@@ -155,7 +156,7 @@ $this->params['breadcrumbs'][] = $this->title;
 										<label>Amount to be collected</label>
 										<div class="input-group">
 											<span class="input-group-addon currency naira"></span>
-											<input id="CODAmount" class="form-control">
+											<input name="CODAmount" id="CODAmount" class="form-control">
 										</div>
 									</div>
 								</div>
@@ -172,7 +173,7 @@ $this->params['breadcrumbs'][] = $this->title;
 							</div>
 							<div class="form-group">
 								<label>Other Information</label>
-								<textarea class="form-control"></textarea>
+								<textarea name="other_info" class="form-control"></textarea>
 							</div>
 						</div>
 					</div>
@@ -214,13 +215,13 @@ $this->params['breadcrumbs'][] = $this->title;
 									<div class="col-xs-12 col-sm-6">
 										<div class="form-group">
 											<label for="">Amount paid in Cash</label>
-											<input class="form-control">
+											<input name="amount_in_cash" class="form-control">
 										</div>
 									</div>
 									<div class="col-xs-12 col-sm-6">
 										<div class="form-group">
 											<label for="">Amount via POS</label>
-											<input class="form-control">
+											<input name="amount_in_pos" class="form-control">
 										</div>
 									</div>
 								</div>
