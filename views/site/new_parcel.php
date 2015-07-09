@@ -21,12 +21,7 @@ $this->params['breadcrumbs'][] = $this->title;
 							<h2>Shipper Information</h2>
 						</div>
 						<div class="main-box-body">
-							<?php
-								$prefix = 'shipper';
-								include(dirname(__DIR__).'../elements/new_parcel_user_information.php');
-								unset($prefix);
-							?>
-
+							<?= $this->render('../elements/new_parcel_user_information',['prefix'=>'shipper']) ?>
 						</div>
 					</div>
 					<div class="col-xs-12 col-lg-6">
@@ -34,11 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
 							<h2>Receiver Information</h2>
 						</div>
 						<div class="main-box-body">
-							<?php
-								$prefix = 'receiver';
-								include(dirname(__DIR__).'../elements/new_parcel_user_information.php');
-								unset($prefix);
-							?>
+							<?= $this->render('../elements/new_parcel_user_information',['prefix'=>'receiver']) ?>
 						</div>
 					</div>
 				</div>
