@@ -1,51 +1,40 @@
 <?php
+use yii\helpers\Html;
 /* @var $this yii\web\View */
-$this->title = 'My Yii Application';
+$this->title = 'Dashboard';
+$this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="site-index">
-
-    <div class="jumbotron">
-        <h1>Congratulations!</h1>
-
-        <p class="lead">You have successfully created your Yii-powered application.</p>
-
-        <p><a class="btn btn-lg btn-success" href="http://www.yiiframework.com">Get started with Yii</a></p>
+<strong class="text-muted text-uppercase">TODAY'S STATISTICS</strong>
+<div class="row">
+    <div class="col-lg-3 col-sm-6 col-xs-12">
+        <div class="main-box infographic-box colored purple-bg">
+            <i class="fa fa-gift"></i>
+            <span class="headline">NEW PARCELS IN</span>
+            <span class="value">15</span>
+        </div>
     </div>
 
-    <div class="body-content">
-
-        <div class="row">
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/doc/">Yii Documentation &raquo;</a></p>
-            </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/forum/">Yii Forum &raquo;</a></p>
-            </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/extensions/">Yii Extensions &raquo;</a></p>
-            </div>
+    <div class="col-lg-3 col-sm-6 col-xs-12">
+        <div class="main-box infographic-box colored yellow-bg">
+            <i class="fa fa-truck"></i>
+            <span class="headline">DELIVERED PARCELS</span>
+            <span class="value">37</span>
         </div>
+    </div>
 
+    <div class="col-lg-3 col-sm-6 col-xs-12">
+        <div class="main-box infographic-box colored red-bg"> <!-- .emerald-bg -->
+            <i class="fa fa-gift"></i>
+            <span class="headline">CENTRE PICKUPS</span>
+            <span class="value">14</span>
+        </div>
+    </div>
+
+    <div class="col-lg-3 col-sm-6 col-xs-12">
+        <div class="main-box infographic-box colored green-bg">
+            <i class="fa fa-money"></i>
+            <span class="headline">MONIES COLLECTED</span>
+            <span class="value currency naira">139,295</span>
+        </div>
     </div>
 </div>
