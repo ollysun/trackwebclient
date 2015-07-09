@@ -6216,6 +6216,13 @@ svg {
 #email-new .select2-container.select2-container-multi .select2-choices .select2-search-field input {
   height: 32px;
 }
+.bootstrap-select.btn-group .dropdown-menu li.selected a span.check-mark {
+  display: inline-block;
+  position: absolute;
+  left: 15px;
+  top: 6px;
+  color: #008000;
+}
 .naira:before {
   content: "₦";
 }
