@@ -6,6 +6,8 @@ $this->title = 'New Parcel';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
+<?= Html::cssFile('@web/css/libs/bootstrap-select.min.css') ?>
+
 <form action="#">
 	<div id="newParcelForm" class="l-new-parcel-form carousel slide">
 		<ol class="carousel-indicators hidden">
