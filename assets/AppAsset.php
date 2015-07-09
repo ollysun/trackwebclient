@@ -18,9 +18,22 @@ class AppAsset extends AssetBundle
     public $basePath = '@webroot';
     public $baseUrl = '@web';
     public $css = [
-        'css/site.css',
+        //bootstrap
+        //'css/bootstrap/bootstrap.min.css',
+        //libraries
+        'css/libs/font-awesome.min.css',
+        'css/libs/nanoscroller.css',
+        //theme
+        'css/compiled/courier-plus.css',
     ];
     public $js = [
+        //globals
+        //'js/libs/jquery.js',
+        'js/libs/bootstrap.min.js',
+        'js/libs/jquery.nanoscroller.min.js',
+        //theme scripts
+        'js/libs/scripts.js',
+        'js/libs/pace.min.js',
     ];
     public $depends = [
         'yii\web\YiiAsset',

@@ -57,6 +57,7 @@ class SiteController extends Controller
         if (!\Yii::$app->user->isGuest) {
             return $this->goHome();
         }
+        $this->layout = 'login';
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
@@ -92,5 +93,20 @@ class SiteController extends Controller
     public function actionAbout()
     {
         return $this->render('about');
+    }
+
+    public function actionNewparcel()
+    {
+        return $this->render('new_parcel');
+    }
+
+    public function actionParcels()
+    {
+        return $this->render('parcels');
+    }
+
+    public function actionProcessedparcels()
+    {
+        return $this->render('processed_parcels');
     }
 }

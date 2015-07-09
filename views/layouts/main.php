@@ -1,5 +1,6 @@
 <?php
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
@@ -18,50 +19,35 @@ AppAsset::register($this);
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
+
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:400,600,700,300|Titillium+Web:200,300,400' rel='stylesheet' type='text/css'>
+
     <?php $this->head() ?>
+
+    <!--[if lt IE 9]>
+        <?= Html::jsFile('@web/js/libs/html5shiv.js') ?>
+        <?= Html::jsFile('@web/js/libs/respond.min.js') ?>
+    <![endif]-->
+
 </head>
-<body>
+<body class="theme-amethyst fixed-header fixed-leftmenu fixed-footer">
 
 <?php $this->beginBody() ?>
-    <div class="wrap">
-        <?php
-            NavBar::begin([
-                'brandLabel' => 'My Company',
-                'brandUrl' => Yii::$app->homeUrl,
-                'options' => [
-                    'class' => 'navbar-inverse navbar-fixed-top',
-                ],
-            ]);
-            echo Nav::widget([
-                'options' => ['class' => 'navbar-nav navbar-right'],
-                'items' => [
-                    ['label' => 'Home', 'url' => ['/site/index']],
-                    ['label' => 'About', 'url' => ['/site/about']],
-                    ['label' => 'Contact', 'url' => ['/site/contact']],
-                    Yii::$app->user->isGuest ?
-                        ['label' => 'Login', 'url' => ['/site/login']] :
-                        ['label' => 'Logout (' . Yii::$app->user->identity->username . ')',
-                            'url' => ['/site/logout'],
-                            'linkOptions' => ['data-method' => 'post']],
-                ],
-            ]);
-            NavBar::end();
-        ?>
+    <div id="theme-wrapper">
+        <?= $this->render('../elements/header') ?>
 
-        <div class="container">
-            <?= Breadcrumbs::widget([
-                'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-            ]) ?>
-            <?= $content ?>
-        </div>
-    </div>
+        <div id="page-wrapper" class="container">
+            <div class="row">
+                <?= $this->render('../elements/sidebar_ec') ?>
+                <div id="content-wrapper">
+                    <?= $this->render('../elements/content_header') ?>
 
-    <footer class="footer">
-        <div class="container">
-            <p class="pull-left">&copy; My Company <?= date('Y') ?></p>
-            <p class="pull-right"><?= Yii::powered() ?></p>
-        </div>
-    </footer>
+                    <?= $content ?>
+                    <?= $this->render('../elements/footer') ?>
+                </div>
+            </div> <!-- /.row -->
+        </div> <!-- /#page-wrapper -->
+    </div> <!-- /#theme-wrapper -->
 
 <?php $this->endBody() ?>
 </body>
