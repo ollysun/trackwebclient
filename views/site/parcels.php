@@ -1,5 +1,6 @@
 <?php
 use yii\helpers\Html;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 $this->title = 'Parcels';
@@ -81,7 +82,7 @@ $this->params['breadcrumbs'][] = $this->title;
 						<td>Aderopo Olusegun</td>
 						<td>Aderopo Olusegun</td>
 						<td>Ready</td>
-						<td><a href="#" class="btn btn-sm btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
+						<td><a href="<?= Url::to(['site/viewwaybill']) ?>" class="btn btn-sm btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
 					</tr>
 					<tr>
 						<td><div class="checkbox-nice"><input id="chbx_w_0002" type="checkbox"><label for="chbx_w_0002"> </label></div></td>
@@ -89,7 +90,7 @@ $this->params['breadcrumbs'][] = $this->title;
 						<td>Aderopo Olusegun</td>
 						<td>Aderopo Olusegun</td>
 						<td>Ready</td>
-						<td><a href="#" class="btn btn-sm btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
+						<td><a href="<?= Url::to(['site/viewwaybill']) ?>" class="btn btn-sm btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
 					</tr>
 					<tr>
 						<td><div class="checkbox-nice"><input id="chbx_w_0003" type="checkbox"><label for="chbx_w_0003"> </label></div></td>
@@ -97,7 +98,7 @@ $this->params['breadcrumbs'][] = $this->title;
 						<td>Aderopo Olusegun</td>
 						<td>Aderopo Olusegun</td>
 						<td>Ready</td>
-						<td><a href="#" class="btn btn-sm btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
+						<td><a href="<?= Url::to(['site/viewwaybill']) ?>" class="btn btn-sm btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
 					</tr>
 					<tr>
 						<td><div class="checkbox-nice"><input id="chbx_w_0004" type="checkbox"><label for="chbx_w_0004"> </label></div></td>
@@ -105,7 +106,7 @@ $this->params['breadcrumbs'][] = $this->title;
 						<td>Aderopo Olusegun</td>
 						<td>Aderopo Olusegun</td>
 						<td>Ready</td>
-						<td><a href="#" class="btn btn-sm btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
+						<td><a href="<?= Url::to(['site/viewwaybill']) ?>" class="btn btn-sm btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
 					</tr>
 					<tr>
 						<td><div class="checkbox-nice"><input id="chbx_w_0005" type="checkbox"><label for="chbx_w_0005"> </label></div></td>
@@ -113,7 +114,7 @@ $this->params['breadcrumbs'][] = $this->title;
 						<td>Aderopo Olusegun</td>
 						<td>Aderopo Olusegun</td>
 						<td>Ready</td>
-						<td><a href="#" class="btn btn-sm btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
+						<td><a href="<?= Url::to(['site/viewwaybill']) ?>" class="btn btn-sm btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
 					</tr>
 				</tbody>
 			</table>
