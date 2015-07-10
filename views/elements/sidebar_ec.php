@@ -36,10 +36,20 @@ use yii\helpers\Url;
 								</a>
 							</li>
 							<li>
+								<a href="<?= Url::to(['site/parcelsfordelivery']) ?>">
+									For Delivery
+								</a>
+							</li>
+							<li>
+								<a href="<?= Url::to(['site/parcelsforsweep']) ?>">
+									For Sweep
+								</a>
+							</li>
+							<!-- <li>
 								<a href="<?= Url::to(['site/newparcel']) ?>">
 									New
 								</a>
-							</li>
+							</li> -->
 						</ul>
 					</li>
 					<li>
