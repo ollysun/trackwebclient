@@ -2,8 +2,14 @@
 use yii\helpers\Html;
 
 
-$this->title = 'Parcels Processed In';
-$this->params['breadcrumbs'][] = $this->title;
+$this->title = 'Parcels: Processed In';
+$this->params['breadcrumbs'] = array(
+	array(
+		'url' => ['site/parcels'],
+		'label' => 'Parcels'
+	),
+	array('label'=> 'Processed In')
+);
 
 ?>
 <!-- this page specific styles -->
@@ -19,11 +25,7 @@ $this->params['breadcrumbs'][] = $this->title;
 	<div class="main-box-header clearfix">
 		<div class="pull-left">
 			<label>&nbsp;</label><br>
-			<button type="button" class="btn btn-default">
-				<div class="checkbox-nice"><input id="chbx_w_all" type="checkbox"><label for="chbx_w_all"> </label></div>
-			</button>
 			<button type="button" class="btn btn-default"><i class="fa fa-download"></i> Download</button>
-
 		</div>
 		<form class="table-search-form form-inline pull-right clearfix">
 			<div class="pull-left">
@@ -38,7 +40,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 			<div class="pull-left">
 				<label for="searchInput">Search</label><br>
-				<div class="input-group">
+				<div class="input-group input-group-search">
 					<input id="searchInput" type="text" name="search" placeholder="" class="search-box form-control">
 					<div class="input-group-btn">
 						<button class="btn btn-default" type="submit">
@@ -55,7 +57,7 @@ $this->params['breadcrumbs'][] = $this->title;
 			<table id="table" class="table table-hover">
 				<thead>
 					<tr>
-						<th>[--]</th>
+						<th><div class="checkbox-nice"><input id="chbx_w_all" type="checkbox"><label for="chbx_w_all"> </label></div></th>
 						<th>Waybill No.</th>
 						<th>Shipper</th>
 						<th>Receiver</th>
