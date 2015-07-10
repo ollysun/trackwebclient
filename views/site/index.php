@@ -1,8 +1,10 @@
 <?php
 use yii\helpers\Html;
+
 /* @var $this yii\web\View */
 $this->title = 'Dashboard';
 $this->params['breadcrumbs'][] = $this->title;
+
 ?>
 <strong class="text-muted text-uppercase">TODAY'S STATISTICS</strong>
 <div class="row">
