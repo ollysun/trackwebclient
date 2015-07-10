@@ -73,6 +73,10 @@ $this->params['breadcrumbs'] = array(
 								</div>
 							</div>
 							<div class="row">
+								<div class="col-xs-12 col-sm-3 form-group">
+									<label>No. of Packages</label>
+									<input name="no_of_packages" class="form-control">
+								</div>
 								<div class="col-xs-12 col-sm-4 form-group">
 									<label>Parcel weight</label>
 									<div class="input-group">
@@ -80,7 +84,7 @@ $this->params['breadcrumbs'] = array(
 										<span class="input-group-addon">Kg</span>
 									</div>
 								</div>
-								<div class="col-xs-12 col-sm-8 form-group">
+								<div class="col-xs-12 col-sm-5 form-group">
 									<label>Parcel value</label>
 									<div class="input-group">
 										<div class="input-group-btn">
