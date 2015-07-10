@@ -43,7 +43,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 			<div class="main-box item">
 				<div class="main-box-header">
-					<h2>Other Information</h2>
+					<h2>Parcel/Shipment Information</h2>
 				</div>
 				<div class="row">
 					<div class="col-xs-12 col-sm-6">
@@ -122,6 +122,17 @@ $this->params['breadcrumbs'][] = $this->title;
                                         }}
                                     ?>
 								</select>
+							</div>
+							<div class="form-group">
+								<label>Send parcel to Hub?</label>
+								<div>
+									<div class="radio-inline">
+										<input id="sendToHubYes" type="radio" name="send_to_hub" value="true" checked="checked"> <label for="sendToHubYes" class="">Yes</label>
+									</div>
+									<div class="radio-inline">
+										<input id="sendToHubNo" type="radio" name="send_to_hub" value="false"> <label for="sendToHubNo" class="">No</label>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
