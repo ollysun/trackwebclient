@@ -18,9 +18,6 @@ $this->params['breadcrumbs'][] = $this->title;
 	<div class="main-box-header clearfix">
 		<div class="pull-left">
 			<label>&nbsp;</label><br>
-			<button type="button" class="btn btn-default">
-				<div class="checkbox-nice"><input id="chbx_w_all" type="checkbox"><label for="chbx_w_all"> </label></div>
-			</button>
 			<div class="btn-group">
 				<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 				Select an action <span class="caret"></span>
@@ -69,7 +66,7 @@ $this->params['breadcrumbs'][] = $this->title;
 			<table id="table" class="table table-hover">
 				<thead>
 					<tr>
-						<th></th>
+						<th><div class="checkbox-nice"><input id="chbx_w_all" type="checkbox"><label for="chbx_w_all"> </label></div></th>
 						<th>Waybill No.</th>
 						<th>Shipper</th>
 						<th>Receiver</th>

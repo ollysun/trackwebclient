@@ -3,7 +3,13 @@ use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 $this->title = 'New Parcel';
-$this->params['breadcrumbs'][] = $this->title;
+$this->params['breadcrumbs'] = array(
+	array(
+	'url' => ['site/parcels'],
+	'label' => 'Parcels'
+	),
+	array('label'=> 'New parcel')
+);
 ?>
 
 <?= Html::cssFile('@web/css/libs/bootstrap-select.min.css') ?>
