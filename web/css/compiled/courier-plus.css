@@ -321,8 +321,14 @@ a:focus {
 .main-box .main-box-header.with-border {
   border-bottom: 1px solid #ecf0f1;
 }
+.main-box .main-box-header.with-border + .main-box-body {
+  padding-top: 20px;
+}
 .main-box .main-box-body {
   padding: 0 20px 20px 20px;
+}
+.main-box .main-box-body:first-child {
+  padding-top: 20px;
 }
 h1 small,
 h2 small,
