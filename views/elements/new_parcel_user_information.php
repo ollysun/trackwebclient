@@ -1,3 +1,22 @@
+<div class="form-group">
+	<div class="input-group">
+		<input id="<?= $prefix ?>SearchBox"  data-target="#<?php echo $prefix; ?>SearchFlyOutPanel" type="text" class="form-control" placeholder="Search phone no or email address">
+		<div class="input-group-btn">
+			<button class="btn btn-default" type="button"><i class="fa fa-search"></i></button>
+		</div>
+	</div>
+</div>
+<div id="<?php echo $prefix; ?>SearchFlyOutPanelWrap" class="flyout-panel-wrap">
+	<div id="<?php echo $prefix; ?>SearchFlyOutPanel" class="flyout-panel">
+		<div class="flyout-panel-header">
+			<a class="close">&times;</a>
+			<h4 class="flyout-panel-title">Search results</h4>
+		</div>
+		<div class="flyout-panel-body">
+
+		</div>
+	</div>
+</div>
 <div class="row">
 	<div class="col-xs-12 col-sm-6">
 		<div class="form-group">
@@ -16,24 +35,13 @@
 	<div class="col-xs-12 col-sm-6">
 		<div class="form-group">
 			<label for="">Email address</label>
-			<input type="text" class="form-control <?php echo $prefix; ?>SearchFlyOutPanelTrigger" data-target="#<?php echo $prefix; ?>SearchFlyOutPanel">
+			<input type="text" class="form-control">
 		</div>
 	</div>
 	<div class="col-xs-12 col-sm-6">
 		<div class="form-group">
 			<label for="">Phone number</label>
-			<input type="text" class="form-control <?php echo $prefix; ?>SearchFlyOutPanelTrigger" data-target="#<?php echo $prefix; ?>SearchFlyOutPanel">
-		</div>
-	</div>
-</div>
-<div id="<?php echo $prefix; ?>SearchFlyOutPanelWrap" class="flyout-panel-wrap">
-	<div id="<?php echo $prefix; ?>SearchFlyOutPanel" class="flyout-panel">
-		<div class="flyout-panel-header">
-			<a class="close">&times;</a>
-			<h4 class="flyout-panel-title">Search results</h4>
-		</div>
-		<div class="flyout-panel-body">
-
+			<input type="text" class="form-control">
 		</div>
 	</div>
 </div>
