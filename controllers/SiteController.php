@@ -11,6 +11,8 @@ use app\models\LoginForm;
 use app\models\ContactForm;
 use Adapter\AdminAdapter;
 use Adapter\Util\Calypso;
+use Adapter\Globals\ServiceConstant;
+use Adapter\Util\Response;
 
 class SiteController extends Controller
 {
@@ -65,20 +67,6 @@ class SiteController extends Controller
 
     public function actionLogin()
     {
-        /*$this->enableCsrfValidation = false;
-        if (!\Yii::$app->user->isGuest) {
-            return $this->goHome();
-        }
-        $this->layout = 'login';
-
-        $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
-        } else {
-            return $this->render('login', [
-                'model' => $model,
-            ]);
-        }*/
         $this->enableCsrfValidation = false;
         $this->layout = 'login';
         $data = (Yii::$app->request->post());
@@ -127,7 +115,7 @@ class SiteController extends Controller
     public function actionNewparcel()
     {
         $data = (Yii::$app->request->post());
-        if($data){
+        if(!$data){
             $senderData = array();
             $receiverData = array();
             $addressData = array();
@@ -143,24 +131,16 @@ class SiteController extends Controller
             $receiverData['phone'] = $data['phone']['receiver'];
             $receiverData['email'] = $data['email']['receiver'];
 
-            $addressData['id'] = null;
-            $addressData['street1'] = $data['address']['shipper'][0];
-            $addressData['street2'] = $data['address']['shipper'][1];
-            $addressData['city'] = $data['city']['shipper'];
-            //$addressData['state_id'] = $data['state']['shipper'];
-            //$addressData['country_id'] = $data['country']['shipper'];
-
             $receiverAddressData['id'] = null;
             $receiverAddressData['street1'] = $data['address']['shipper'][0];
             $receiverAddressData['street2'] = $data['address']['shipper'][1];
             $receiverAddressData['city'] = $data['city']['shipper'];
-           // $receiverAddressData['state_id'] = $data['state']['shipper'];
-            //$receiverAddressData['country_id'] = $data['country']['shipper'];
-
+            $receiverAddressData['state_id'] = $data['state']['shipper'];
+            $receiverAddressData['country_id'] = $data['country']['shipper'];
             $bankData['account_name'] = $data['account_name'];
             $bankData['bank_id'] = $data['account_name'];
             $bankData['account_no'] = $data['account_name'];
-           // $bankData['sort_code'] = $data['sort_code'];
+            $bankData['sort_code'] = $data['sort_code'];
             $bankData['id'] = null;
 
 
@@ -169,9 +149,6 @@ class SiteController extends Controller
             $payload['receiver'] = $receiverData;
             $payload['sender_address'] = $addressData;
             $payload['receiver_address'] = $receiverAddressData;
-
-            //$receiverData[''] = $data['$receiverData'];
-            //print_r($data);
         }
         $refData = new RefAdapter();
 
