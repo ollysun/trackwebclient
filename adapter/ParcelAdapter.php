@@ -1,8 +1,9 @@
 <?php
 namespace Adapter;
-
 use Adapter\BaseAdapter;
 use Adapter\Globals;
+use Adapter\Globals\ServiceConstant;
+
 class ParcelAdapter extends BaseAdapter{
 
 

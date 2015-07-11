@@ -2,13 +2,13 @@
 	<div class="col-xs-12 col-sm-6">
 		<div class="form-group">
 			<label for="">First Name</label>
-			<input type="text" class="form-control">
+			<input name="firstname[<?= $prefix ?>]" type="text" class="form-control">
 		</div>
 	</div>
 	<div class="col-xs-12 col-sm-6">
 		<div class="form-group">
 			<label for="">Last Name</label>
-			<input type="text" class="form-control">
+			<input name="lastname[<?= $prefix ?>]" type="text" class="form-control">
 		</div>
 	</div>
 </div>
@@ -16,13 +16,13 @@
 	<div class="col-xs-12 col-sm-6">
 		<div class="form-group">
 			<label for="">Email address</label>
-			<input type="text" class="form-control <?php echo $prefix; ?>SearchFlyOutPanelTrigger" data-target="#<?php echo $prefix; ?>SearchFlyOutPanel">
+			<input name="email[<?= $prefix ?>]" type="text" class="form-control <?php echo $prefix; ?>SearchFlyOutPanelTrigger" data-target="#<?php echo $prefix; ?>SearchFlyOutPanel">
 		</div>
 	</div>
 	<div class="col-xs-12 col-sm-6">
 		<div class="form-group">
 			<label for="">Phone number</label>
-			<input type="text" class="form-control <?php echo $prefix; ?>SearchFlyOutPanelTrigger" data-target="#<?php echo $prefix; ?>SearchFlyOutPanel">
+			<input name="phone[<?= $prefix ?>]" type="text" class="form-control <?php echo $prefix; ?>SearchFlyOutPanelTrigger" data-target="#<?php echo $prefix; ?>SearchFlyOutPanel">
 		</div>
 	</div>
 </div>
@@ -85,22 +85,22 @@
 		<label for="">Address</label>
 		<a id="<?php echo $prefix; ?>AddressFlyOutPanelTrigger" href="#" data-target="#<?php echo $prefix; ?>AddressFlyOutPanel" class="pull-right"><small>Manage addresses</small></a>
 	</div>
-	<input class="form-control">
-	<input class="form-control address-line-1">
+	<input name="address[<?= $prefix ?>][]" class="form-control">
+	<input name="address[<?= $prefix ?>][]"  class="form-control address-line-1">
 </div>
 <div class="form-group">
 	<label for="">City</label>
-	<input class="form-control">
+	<input name="city[<?= $prefix ?>]" class="form-control">
 </div>
 <div class="form-group">
 	<label for="">Country</label>
-	<select class="form-control"></select>
+	<select name="country[<?= $prefix ?>]" class="form-control"></select>
 </div>
 <div class="form-group">
 	<label for="">State</label>
-	<select class="form-control" disabled="disabled"></select>
+	<select name="state[<?= $prefix ?>]" class="form-control" disabled="disabled"></select>
 </div>
 <div class="form-group">
 	<label for="">LGA</label>
-	<select class="form-control" disabled="disabled"></select>
+	<select name="lga[<?= $prefix ?>]" class="form-control" disabled="disabled"></select>
 </div>
