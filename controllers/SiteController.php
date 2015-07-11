@@ -169,4 +169,18 @@ class SiteController extends Controller
     {
         return $this->render('processed_parcels');
     }
+
+     public function actionParcelsfordelivery()
+    {
+        return $this->render('parcels_for_delivery');
+    }
+
+    public function actionParcelsforsweep()
+    {
+        return $this->render('parcels_for_sweep');
+    }
+    public function actionViewwaybill()
+    {
+        return $this->render('view_waybill');
+    }
 }

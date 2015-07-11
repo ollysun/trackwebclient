@@ -321,8 +321,14 @@ a:focus {
 .main-box .main-box-header.with-border {
   border-bottom: 1px solid #ecf0f1;
 }
+.main-box .main-box-header.with-border + .main-box-body {
+  padding-top: 20px;
+}
 .main-box .main-box-body {
   padding: 0 20px 20px 20px;
+}
+.main-box .main-box-body:first-child {
+  padding-top: 20px;
 }
 h1 small,
 h2 small,
@@ -3009,13 +3015,16 @@ input[type="radio"] {
   line-height: 1.1;
   color: orange;
 }
-.table-search-form .date-range {
-  width: 100px;
+.table-search-form .input-group-search,
+.table-search-form .date-range,
+.table-search-form .filter-status {
   margin-right: 10px;
 }
-.table-search-form .filter-status {
+.table-search-form .date-range {
   width: 120px;
-  margin-right: 10px;
+}
+.table-search-form .filter-status {
+  width: 140px;
 }
 .table-search-form .input-group > .search-box {
   width: 300px;

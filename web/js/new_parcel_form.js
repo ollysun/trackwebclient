@@ -119,8 +119,8 @@ function showHide(who, options, callback, evt) {
 var hello = new FlyOutPanel('#shipperAddressFlyOutPanelTrigger');
 var hello2 = new FlyOutPanel('#receiverAddressFlyOutPanelTrigger');
 
-var hello3 = new FlyOutPanel('.shipperSearchFlyOutPanelTrigger', 'keypress');
-var hello4 = new FlyOutPanel('.receiverSearchFlyOutPanelTrigger', 'keypress');
+var hello3 = new FlyOutPanel('#shipperSearchBox', 'keypress');
+var hello4 = new FlyOutPanel('#receiverSearchBox', 'keypress');
 
 function FlyOutPanel (triggerSelector, evt) {
 	var toggleClass = 'open';
