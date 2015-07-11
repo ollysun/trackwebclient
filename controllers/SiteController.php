@@ -115,7 +115,7 @@ class SiteController extends Controller
     public function actionNewparcel()
     {
         $data = (Yii::$app->request->post());
-        if(!$data){
+        if($data){
             $senderData = array();
             $receiverData = array();
             $addressData = array();
