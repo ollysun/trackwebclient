@@ -26,13 +26,4 @@ class ServiceConstant {
     const URL_REF_deliveryType = 'ref/deliveryType/';
     const URL_REF_parcelType = 'ref/parcelType/';
 
-    const URL_ASSIGN_DEVICE = 'device/assigntomerchant/';
-    const URL_GET_MERCHANT_DEVICES = 'merchant/getdevices/';
-    const URL_GET_PAGE_SUMMARY = 'report/total/';
-    const URL_CREATE_AGENT = 'admin/registerUser/';
-    const URL_CREATE_CUSTOMER = 'customer/register/';
-    const URL_GET_USER = 'user/get/';
-    const URL_GET_AGENT_DEVICES = 'agent/getdevice/';
-    const URL_CREDIT_AGENT = 'topuptransaction/add/';
-    const URL_GET_AGENT = 'agent/getAll/';
 }
