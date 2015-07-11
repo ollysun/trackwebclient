@@ -6,7 +6,7 @@
  * Time: 7:32 AM
  */
 
-namespace app\libs;
+namespace Adapter;
 
 
 class ResponseHandler
@@ -52,14 +52,15 @@ class ResponseHandler
                 ResponseHandler::$lastStatus = $response[self::P_STATUS];
                 if ($this->status == self::STATUS_OK) {
                     RequestHelper::setAccessToken(isset($response[self::P_ACCESS_TOKEN]) ? $response[self::P_ACCESS_TOKEN] : null);
+
                     $this->data = isset($response[self::P_DATA]) ? $response[self::P_DATA] : null;
+
                 } else {
                     $this->error = isset($response[self::P_MESSAGE]) ? $response[self::P_MESSAGE] : self::NO_MESSAGE;
                 }
             }
         }
     }
-
     public static function isLoginRequired()
     {
         return ResponseHandler::$lastStatus == self::STATUS_LOGIN_REQUIRED || ResponseHandler::$lastStatus == self::STATUS_ACCESS_DENIED;
