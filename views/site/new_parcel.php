@@ -3,7 +3,13 @@ use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 $this->title = 'New Parcel';
-$this->params['breadcrumbs'][] = $this->title;
+$this->params['breadcrumbs'] = array(
+	array(
+	'url' => ['site/parcels'],
+	'label' => 'Parcels'
+	),
+	array('label'=> 'New parcel')
+);
 ?>
 
 <?= Html::cssFile('@web/css/libs/bootstrap-select.min.css') ?>
@@ -43,7 +49,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 			<div class="main-box item">
 				<div class="main-box-header">
-					<h2>Other Information</h2>
+					<h2>Parcel/Shipment Information</h2>
 				</div>
 				<div class="row">
 					<div class="col-xs-12 col-sm-6">
@@ -67,6 +73,10 @@ $this->params['breadcrumbs'][] = $this->title;
 								</div>
 							</div>
 							<div class="row">
+								<div class="col-xs-12 col-sm-3 form-group">
+									<label>No. of Packages</label>
+									<input name="no_of_packages" class="form-control">
+								</div>
 								<div class="col-xs-12 col-sm-4 form-group">
 									<label>Parcel weight</label>
 									<div class="input-group">
@@ -74,7 +84,7 @@ $this->params['breadcrumbs'][] = $this->title;
 										<span class="input-group-addon">Kg</span>
 									</div>
 								</div>
-								<div class="col-xs-12 col-sm-8 form-group">
+								<div class="col-xs-12 col-sm-5 form-group">
 									<label>Parcel value</label>
 									<div class="input-group">
 										<div class="input-group-btn">
@@ -122,6 +132,17 @@ $this->params['breadcrumbs'][] = $this->title;
                                         }}
                                     ?>
 								</select>
+							</div>
+							<div class="form-group">
+								<label>Send parcel to Hub?</label>
+								<div>
+									<div class="radio-inline">
+										<input id="sendToHubYes" type="radio" name="send_to_hub" value="true" checked="checked"> <label for="sendToHubYes" class="">Yes</label>
+									</div>
+									<div class="radio-inline">
+										<input id="sendToHubNo" type="radio" name="send_to_hub" value="false"> <label for="sendToHubNo" class="">No</label>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
