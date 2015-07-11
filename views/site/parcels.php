@@ -64,58 +64,41 @@ $this->params['breadcrumbs'][] = $this->title;
 	</div>
 	<div class="main-box-body">
 		<div class="table-responsive">
-			<table id="table" class="table table-hover">
+			<table id="table" class="table table-hover table-bordered">
 				<thead>
 					<tr>
-						<th><div class="checkbox-nice"><input id="chbx_w_all" type="checkbox"><label for="chbx_w_all"> </label></div></th>
+<!--						<th style="width: 20px"><div class="checkbox-nice"><input id="chbx_w_all" type="checkbox"><label for="chbx_w_all"> </label></div></th>-->
+						<th style="width: 20px">No.</th>
 						<th>Waybill No.</th>
 						<th>Shipper</th>
+						<th>Shipper Phone</th>
 						<th>Receiver</th>
+						<th>Receiver Phone</th>
 						<th>Status</th>
 						<th>Action</th>
 					</tr>
 				</thead>
 				<tbody>
+                <?php
+                if(isset($parcels) && is_array($parcels)){
+                    $i = 1;
+                    foreach($parcels as $parcel){
+                ?>
 					<tr>
-						<td><div class="checkbox-nice"><input id="chbx_w_0001" type="checkbox"><label for="chbx_w_0001"> </label></div></td>
-						<td>4F95310912352</td>
-						<td>Aderopo Olusegun</td>
-						<td>Aderopo Olusegun</td>
-						<td>Ready</td>
-						<td><a href="<?= Url::to(['site/viewwaybill']) ?>" class="btn btn-sm btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
+<!--						<td><div class="checkbox-nice"><input id="chbx_w_000--><?//= $i ?><!--" type="checkbox"><label for="chbx_w_0001"> </label></div></td>-->
+						<td><?= $i++ ?></td>
+						<td><?= strtoupper($parcel['waybill_number']); ?></td>
+						<td><?= strtoupper($parcel['sender']['firstname'].' '. $parcel['sender']['lastname']) ?></td>
+						<td><?= $parcel['sender']['phone'] ?></td>
+                        <td><?= strtoupper($parcel['receiver']['firstname'].' '. $parcel['receiver']['lastname']) ?></td>
+                        <td><?= $parcel['receiver']['phone'] ?></td>
+						<td><?= $parcel['status'] ?></td>
+						<td><a href="<?= Url::to(['site/viewwaybill/'.$parcel['id']]) ?>" class="btn btn-sm btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
 					</tr>
-					<tr>
-						<td><div class="checkbox-nice"><input id="chbx_w_0002" type="checkbox"><label for="chbx_w_0002"> </label></div></td>
-						<td>4F95310912352</td>
-						<td>Aderopo Olusegun</td>
-						<td>Aderopo Olusegun</td>
-						<td>Ready</td>
-						<td><a href="<?= Url::to(['site/viewwaybill']) ?>" class="btn btn-sm btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
-					</tr>
-					<tr>
-						<td><div class="checkbox-nice"><input id="chbx_w_0003" type="checkbox"><label for="chbx_w_0003"> </label></div></td>
-						<td>4F95310912352</td>
-						<td>Aderopo Olusegun</td>
-						<td>Aderopo Olusegun</td>
-						<td>Ready</td>
-						<td><a href="<?= Url::to(['site/viewwaybill']) ?>" class="btn btn-sm btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
-					</tr>
-					<tr>
-						<td><div class="checkbox-nice"><input id="chbx_w_0004" type="checkbox"><label for="chbx_w_0004"> </label></div></td>
-						<td>4F95310912352</td>
-						<td>Aderopo Olusegun</td>
-						<td>Aderopo Olusegun</td>
-						<td>Ready</td>
-						<td><a href="<?= Url::to(['site/viewwaybill']) ?>" class="btn btn-sm btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
-					</tr>
-					<tr>
-						<td><div class="checkbox-nice"><input id="chbx_w_0005" type="checkbox"><label for="chbx_w_0005"> </label></div></td>
-						<td>4F95310912352</td>
-						<td>Aderopo Olusegun</td>
-						<td>Aderopo Olusegun</td>
-						<td>Ready</td>
-						<td><a href="<?= Url::to(['site/viewwaybill']) ?>" class="btn btn-sm btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
-					</tr>
+                <?php
+                }}
+                ?>
+
 				</tbody>
 			</table>
 		</div>

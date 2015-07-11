@@ -2,8 +2,11 @@
 
 namespace app\controllers;
 
+use Adapter\ParcelAdapter;
 use Adapter\RefAdapter;
 use Yii;
+use Adapter\RequestHelper;
+use Adapter\ResponseHandler;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
@@ -73,9 +76,13 @@ class SiteController extends Controller
         if($data){
             $admin = new AdminAdapter();
             $response = $admin->login($data['email'],$data['password']);
-            if($response['status'] == 1){
-                Calypso::getInstance()->session("user_session",$response['data']);
-               // Calypso::getInstance()->AppRedirect('site','');
+            $response = new ResponseHandler($response);
+            if($response->getStatus() == ResponseHandler::STATUS_OK){
+                $data = $response->getData();
+                if($data != null && isset($data['id'])){
+                    RequestHelper::setClientID($data['id']);
+                }
+                Calypso::getInstance()->session("user_session",$response->getData());
                 return $this->redirect('/');
             }else{
                 Calypso::getInstance()->setPageData("Invalid Login. Check username and password and try again");
@@ -162,25 +169,54 @@ class SiteController extends Controller
 
     public function actionParcels()
     {
-        return $this->render('parcels');
+        $parcel = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+        $response = $parcel->getParcels(null);
+        $response = new ResponseHandler($response);
+        $data = [];
+        if($response->getStatus() ==  ResponseHandler::STATUS_OK){
+            $data = $response->getData();
+        }
+        return $this->render('parcels',array('parcels'=>$data));
     }
 
     public function actionProcessedparcels()
     {
-        return $this->render('processed_parcels');
+        $parcel = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+        $response = $parcel->getParcels(null);
+        $response = new ResponseHandler($response);
+        $data = [];
+        if($response->getStatus() ==  ResponseHandler::STATUS_OK){
+            $data = $response->getData();
+        }
+        return $this->render('processed_parcels',array('parcels'=>$data));
     }
 
      public function actionParcelsfordelivery()
     {
-        return $this->render('parcels_for_delivery');
+        $parcel = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+        $response = $parcel->getParcels(null);
+        $response = new ResponseHandler($response);
+        $data = [];
+        if($response->getStatus() ==  ResponseHandler::STATUS_OK){
+            $data = $response->getData();
+        }
+        return $this->render('parcels_for_delivery',array('parcels'=>$data));
     }
 
     public function actionParcelsforsweep()
     {
-        return $this->render('parcels_for_sweep');
+        $parcel = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+        $response = $parcel->getParcels(null);
+        $response = new ResponseHandler($response);
+        $data = [];
+        if($response->getStatus() ==  ResponseHandler::STATUS_OK){
+            $data = $response->getData();
+        }
+        return $this->render('parcels_for_sweep',array('parcels'=>$data));
     }
     public function actionViewwaybill()
     {
-        return $this->render('view_waybill');
+        $data = [];
+        return $this->render('view_waybill',array('parcelData'=>$data));
     }
 }
