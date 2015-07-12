@@ -30,7 +30,7 @@ $this->params['breadcrumbs'] = array(
 							<h2>Shipper Information</h2>
 						</div>
 						<div class="main-box-body">
-							<?= $this->render('../elements/new_parcel_user_information',['prefix'=>'shipper']) ?>
+							<?= $this->render('../elements/new_parcel_user_information',['prefix'=>'shipper', 'countries' => $countries]) ?>
 						</div>
 					</div>
 					<div class="col-xs-12 col-lg-6">
@@ -38,7 +38,7 @@ $this->params['breadcrumbs'] = array(
 							<h2>Receiver Information</h2>
 						</div>
 						<div class="main-box-body">
-							<?= $this->render('../elements/new_parcel_user_information',['prefix'=>'receiver']) ?>
+							<?= $this->render('../elements/new_parcel_user_information',['prefix'=>'receiver', 'countries' => $countries]) ?>
 						</div>
 					</div>
 				</div>
@@ -55,6 +55,18 @@ $this->params['breadcrumbs'] = array(
 					<div class="col-xs-12 col-sm-6">
 						<div class="main-box-body">
 							<div class="form-group">
+								<label>Send parcel to Hub?</label>
+								<div>
+									<div class="radio-inline">
+										<input id="sendToHubYes" type="radio" name="send_to_hub" value="true" checked="checked"> <label for="sendToHubYes" class="">Yes</label>
+									</div>
+									<div class="radio-inline">
+										<input id="sendToHubNo" type="radio" name="send_to_hub" value="false"> <label for="sendToHubNo" class="">No</label>
+									</div>
+								</div>
+							</div>
+
+							<div class="form-group">
 								<label for="">Parcel Type</label>
 								<div>
                                     <?php
@@ -63,7 +75,7 @@ $this->params['breadcrumbs'] = array(
                                         foreach($parcelType['data'] as $item){
                                             ?>
                                             <div class="radio-inline">
-                                                <input id="parcelTypeDoc" type="radio" name="parcel_type" value="<?= $item['id'] ?>" <?php $t==0?"checked='checked'":""  ?> > <label for="parcelTypeDoc" class=""><?= strtoupper($item['name']); ?></label>
+                                                <input id="parcelTypeDoc" type="radio" name="parcel_type" value="<?= $item['id'] ?>" <?php $t==0?"value='true'":""  ?> > <label for="parcelTypeDoc" class=""><?= strtoupper($item['name']); ?></label>
                                             </div>
 
                                         <?php
@@ -132,17 +144,6 @@ $this->params['breadcrumbs'] = array(
                                         }}
                                     ?>
 								</select>
-							</div>
-							<div class="form-group">
-								<label>Send parcel to Hub?</label>
-								<div>
-									<div class="radio-inline">
-										<input id="sendToHubYes" type="radio" name="send_to_hub" value="true" checked="checked"> <label for="sendToHubYes" class="">Yes</label>
-									</div>
-									<div class="radio-inline">
-										<input id="sendToHubNo" type="radio" name="send_to_hub" value="false"> <label for="sendToHubNo" class="">No</label>
-									</div>
-								</div>
 							</div>
 						</div>
 					</div>

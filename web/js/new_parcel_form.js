@@ -13,7 +13,7 @@ var deliveryShowHide = {
 		mapping: {
 			'centre': true,
 			'address': false
-		},
+		}
 	},
 	callback: function(ele, val, who) {
 		console.log('ele', ele);
@@ -158,3 +158,32 @@ function FlyOutPanel (triggerSelector, evt) {
 		panel.toggleClass(toggleClass);
 	}
 }
+
+var Parcel = {
+	Url: {
+		'states' : '/site/getstates'
+	},
+
+	getStates: function(country_id, selectSelector) {
+		$.get( Parcel.Url.states, { id: country_id }, function(response){
+			if(response.status === 'success') {
+				var html = '';
+				$.each(response.data, function(i, item){
+					html += "<option name='" + item.id + "'>" + item.name.toUpperCase() + "</option>";
+				});
+				$(selectSelector).attr('disabled', false);
+				$(selectSelector).html(html);
+			}
+		});
+	}
+};
+$(document).ready(function(){
+
+	$('#country_shipper, #country_receiver').on('change', function(evt) {
+
+		var country_id = $(this).val();
+		var elementName = $(this).attr('name');
+		var selector = elementName.indexOf('shipper') !== -1 ? '#state_shipper' : '#state_receiver';
+		Parcel.getStates(country_id, $(selector));
+	});
+});
