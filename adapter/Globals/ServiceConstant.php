@@ -14,6 +14,17 @@ class ServiceConstant {
     const USER_TYPE_ACCOUNTANT = 7;
     const USER_TYPE_SUPER_ADMIN = 8;
 
+    const ACTIVE = 1;
+    const INACTIVE = 2;
+    const REMOVED = 3;
+    const COLLECTED = 4;
+    const IN_TRANSIT = 5;
+    const DELIVERED = 6;
+    const CANCELLED = 7;
+    const FOR_SWEEPER = 8;
+    const FOR_ARRIVAL = 9;
+    const FOR_DELIVERY = 10;
+
 
     const URL_ADD_PARCEL = 'parcel/add/';
     const URL_GET_ONE_PARCEL = 'parcel/getone/';
@@ -25,5 +36,45 @@ class ServiceConstant {
     const URL_REF_SHIPMENT = 'ref/shipmentType/';
     const URL_REF_deliveryType = 'ref/deliveryType/';
     const URL_REF_parcelType = 'ref/parcelType/';
+
+    public static function getStatus($status){
+        switch($status){
+            case ServiceConstant::ACTIVE:
+                return 'Active';
+                break;
+            case ServiceConstant::INACTIVE:
+                return 'Inactive';
+                break;
+            case ServiceConstant::IN_TRANSIT:
+                return 'In Transit';
+                break;
+            case ServiceConstant::REMOVED:
+                return 'Removed';
+                break;
+            case ServiceConstant::COLLECTED:
+                return 'Collected';
+                break;
+            case ServiceConstant::DELIVERED:
+                return 'Delivered';
+                break;
+            case ServiceConstant::CANCELLED:
+                return 'Cancelled';
+                break;
+            case ServiceConstant::FOR_SWEEPER:
+                return 'For Sweeper';
+                break;
+            case ServiceConstant::FOR_ARRIVAL:
+                return 'For Arrival';
+                break;
+            case ServiceConstant::FOR_DELIVERY:
+                return 'For Delivery';
+                break;
+
+        }
+    }
+    public static function getStatusRef(){
+        return [ServiceConstant::IN_TRANSIT,ServiceConstant::DELIVERED,ServiceConstant::CANCELLED,ServiceConstant::FOR_ARRIVAL
+        ,ServiceConstant::FOR_DELIVERY,ServiceConstant::FOR_SWEEPER,ServiceConstant::COLLECTED];
+    }
 
 }

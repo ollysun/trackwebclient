@@ -1,6 +1,7 @@
 <?php
 use yii\helpers\Html;
 use yii\helpers\Url;
+use Adapter\Globals\ServiceConstant;
 
 /* @var $this yii\web\View */
 $this->title = 'Parcels';
@@ -17,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <div class="main-box">
 	<div class="main-box-header clearfix">
-		<div class="pull-left">
+		<div class="pull-left hidden">
 			<label>&nbsp;</label><br>
 			<div class="btn-group">
 				<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -32,21 +33,46 @@ $this->params['breadcrumbs'][] = $this->title;
 				</ul>
 			</div>
 		</div>
-		<form class="table-search-form form-inline pull-right clearfix">
-			<div class="pull-left">
+		<form method="get" class="table-search-form form-inline pull-right clearfix">
+			<div class="pull-left hidden">
 				<label for="">From:</label><br>
 				<input name="" id="" class="form-control date-range">
 			</div>
 
-			<div class="pull-left">
+			<div class="pull-left hidden">
 				<label for="">To:</label><br>
 				<input name="" id="" class="form-control date-range">
 			</div>
 
 			<div class="pull-left">
-				<label for="">Filter status</label><br>
-				<select name="" id="" class="form-control  filter-status"></select>
+				<label for="">Filter Status</label><br>
+				<select name="filter" id="" class="form-control  filter-status">
+                    <option value="-1">NOT APPLICABLE</option>
+                    <?php
+                    $statuses = ServiceConstant::getStatusRef();
+                    for($i=0;$i < count($statuses);$i++){
+                    ?>
+                    <option value="<?= $statuses[$i] ?>"><?= strtoupper(ServiceConstant::getStatus($statuses[$i])); ?></option>
+                    <?php
+                    }
+                    ?>
+				</select>
 			</div>
+            <div class="pull-left hidden">
+                <label>&nbsp;</label><br>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Filter Status <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Action</a></li>
+                        <li><a href="#">Another action</a></li>
+                        <li><a href="#">Something else here</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#">Separated link</a></li>
+                    </ul>
+                </div>
+            </div>
 
 			<div class="pull-left">
 				<label for="searchInput">Search</label><br>
@@ -92,8 +118,8 @@ $this->params['breadcrumbs'][] = $this->title;
 						<td><?= $parcel['sender']['phone'] ?></td>
                         <td><?= strtoupper($parcel['receiver']['firstname'].' '. $parcel['receiver']['lastname']) ?></td>
                         <td><?= $parcel['receiver']['phone'] ?></td>
-						<td><?= $parcel['status'] ?></td>
-						<td><a href="<?= Url::to(['site/viewwaybill/'.$parcel['id']]) ?>" class="btn btn-sm btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
+						<td><?= ServiceConstant::getStatus($parcel['status']); ?></td>
+						<td><a href="<?= Url::to(['site/viewwaybill?id='.$parcel['id']]) ?>" class="btn btn-sm btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
 					</tr>
                 <?php
                 }}
