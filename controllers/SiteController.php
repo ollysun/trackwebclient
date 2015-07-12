@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use Adapter\ParcelAdapter;
 use Adapter\RefAdapter;
+use app\services\ParcelService;
 use Yii;
 use Adapter\RequestHelper;
 use Adapter\ResponseHandler;
@@ -16,7 +17,6 @@ use Adapter\AdminAdapter;
 use Adapter\Util\Calypso;
 use Adapter\Globals\ServiceConstant;
 use Adapter\Util\Response;
-use Service\ParcelService;
 
 class SiteController extends BaseController
 {
@@ -125,9 +125,13 @@ class SiteController extends BaseController
 
         if(Yii::$app->request->isPost){
             $data = Yii::$app->request->post();
+
             $parcelService = new ParcelService();
             $payload = $parcelService->buildPostData($data);
 
+            $parcel = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+            $response = $parcel->createNewParcel(json_encode($payload));
+            var_dump($response);
         }
         $refData = new RefAdapter();
 
@@ -135,6 +139,7 @@ class SiteController extends BaseController
         $shipmentType = $refData->getShipmentType();
         $deliveryType = $refData->getdeliveryType();
         $parcelType = $refData->getparcelType();
+        $paymentMethod = $refData->getPaymentMethods();
         $countries = $refData->getCountries();
 
         return $this->render('new_parcel',array(
@@ -142,7 +147,8 @@ class SiteController extends BaseController
             'ShipmentType' => $shipmentType,
             'deliveryType'=>$deliveryType,
             'parcelType'=>$parcelType,
-            'countries'=>$countries
+            'countries'=>$countries,
+            'paymentMethod'=>$paymentMethod
         ));
     }
 

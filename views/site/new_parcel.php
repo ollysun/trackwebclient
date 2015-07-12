@@ -69,19 +69,15 @@ $this->params['breadcrumbs'] = array(
 							<div class="form-group">
 								<label for="">Parcel Type</label>
 								<div>
-                                    <?php
-                                    if(isset($parcelType) && is_array($parcelType['data'])){
-                                        $t = 0;
-                                        foreach($parcelType['data'] as $item){
-                                            ?>
-                                            <div class="radio-inline">
-                                                <input id="parcelTypeDoc" type="radio" name="parcel_type" value="<?= $item['id'] ?>" <?php $t==0?"value='true'":""  ?> > <label for="parcelTypeDoc" class=""><?= strtoupper($item['name']); ?></label>
-                                            </div>
-
-                                        <?php
-                                        }}
-                                    ?>
-
+									<div class="radio-inline">
+										<input id="parcelTypeDoc" type="radio" name="parcel_type" value="1" checked="checked"> <label for="parcelTypeDoc" class="">NORMAL</label>
+									</div>
+									<div class="radio-inline">
+										<input id="parcelTypeNonDoc" type="radio" name="parcel_type" value="2"> <label for="parcelTypeNonDoc" class="">RETURNS</label>
+									</div>
+									<div class="radio-inline">
+										<input id="parcelTypeHighValue" type="radio" name="parcel_type" value="3"> <label for="parcelTypeHighValue" class="">EXPRESS</label>
+									</div>
 								</div>
 							</div>
 							<div class="row">
@@ -115,17 +111,12 @@ $this->params['breadcrumbs'] = array(
 							<div class="form-group">
 								<label for="">Delivery Type</label>
 								<div>
-                                    <?php
-                                    if(isset($deliveryType) && is_array($deliveryType['data'])){
-                                        foreach($deliveryType['data'] as $item){
-                                    ?>
 									<div class="radio-inline">
-										<input id="deliveryAtCentre" type="radio" name="delivery_type" value="<?= $item['id'] ?>"> <label for="deliveryAtCentre" class=""><?= strtoupper($item['name']); ?></label>
+										<input id="deliveryAtAddress" type="radio" name="delivery_type" value="2" checked="checked"> <label for="deliveryAtAddress" class="">Dispatch</label>
 									</div>
-
-                                    <?php
-                                    }}
-                                    ?>
+									<div class="radio-inline">
+										<input id="deliveryAtCentre" type="radio" name="delivery_type" value="1"> <label for="deliveryAtCentre" class="">Pickup</label>
+									</div>
 								</div>
 							</div>
 							<div id="pickUpWrap" class="form-group hidden">
@@ -250,13 +241,13 @@ $this->params['breadcrumbs'] = array(
 									<label for="">Payment Method</label>
 									<div>
 										<div class="radio-inline">
-											<input id="paymentMethodCash" type="radio" name="payment_method" value="cash" checked="checked"> <label for="paymentMethodCash" class="">Cash</label>
+											<input id="paymentMethodCash" type="radio" name="payment_method" value="1" checked="checked"> <label for="paymentMethodCash" class="">Cash</label>
 										</div>
 										<div class="radio-inline">
-											<input id="paymentMethodPOS" type="radio" name="payment_method" value="pos"> <label for="paymentMethodPOS" class="">POS</label>
+											<input id="paymentMethodPOS" type="radio" name="payment_method" value="2"> <label for="paymentMethodPOS" class="">POS</label>
 										</div>
 										<div class="radio-inline">
-											<input id="paymentMethodCashPOS" type="radio" name="payment_method" value="cash_pos"> <label for="paymentMethodCashPOS" class="">Cash &amp; POS</label>
+											<input id="paymentMethodCashPOS" type="radio" name="payment_method" value="3"> <label for="paymentMethodCashPOS" class="">Cash &amp; POS</label>
 										</div>
 									</div>
 								</div>

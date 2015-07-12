@@ -35,4 +35,8 @@ class RefAdapter extends BaseAdapter {
         return $this->request(ServiceConstant::URL_REF_COUNTRIES, [], self::HTTP_GET);
     }
 
+    public function getPaymentMethods() {
+        return $this->request(ServiceConstant::URL_REF_PAYMENT_METHODS, [], self::HTTP_GET);
+    }
+
 }

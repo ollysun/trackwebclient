@@ -28,5 +28,6 @@ class ServiceConstant {
     const URL_REF_COUNTRIES = 'ref/countries';
     //'ref/states?country_id=1'
     const URL_REF_STATES = 'ref/states';
+    const URL_REF_PAYMENT_METHODS = '/ref/paymentType';
 
 }
