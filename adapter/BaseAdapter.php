@@ -94,6 +94,7 @@ abstract class BaseAdapter {
     }
 
     protected function request($url, $params, $http_method){
+        //echo $url;
         if ($this->_access_token != null){
             $this->_curlagent->setHeader('i', $this->_client_id);
             $this->_curlagent->setHeader('a', $this->_access_token);

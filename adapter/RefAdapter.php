@@ -21,4 +21,5 @@ class RefAdapter extends BaseAdapter{
         return $this->request(ServiceConstant::URL_REF_parcelType,array(),self::HTTP_GET);
     }
 
+
 }
