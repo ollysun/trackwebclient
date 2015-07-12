@@ -21,6 +21,7 @@ class ParcelService {
         $bankData = [];
         $parcel = [];
         $payload = [];
+
         $senderInfo['firstname'] = Calypso::getValue($data, 'firstname.shipper');
         $senderInfo['lastname'] = Calypso::getValue($data, 'lastname.shipper');
         $senderInfo['phone'] = Calypso::getValue($data, 'phone.shipper');
@@ -51,7 +52,6 @@ class ParcelService {
         $bankData['account_no'] = Calypso::getValue($data, 'account_name');
         $bankData['sort_code'] = Calypso::getValue($data, 'sort_code');
 
-        $parcel['to_hub'] = ($data['send_to_hub'] === 'true') ? 1 : 0;
         $parcel['parcel_type'] = Calypso::getValue($data, 'parcel_type');
         $parcel['no_of_package'] = Calypso::getValue($data, 'no_of_packages');
         $parcel['weight'] = Calypso::getValue($data, 'parcel_weight');
@@ -74,7 +74,8 @@ class ParcelService {
         $payload['receiver_address'] = $senderAddress;
         $payload['parcel'] = $parcel;
 
-        $payload['is_corporate_lead'] = Calypso::getValue($data, 'corporate_lead');
+        $payload['is_corporate_lead'] = (Calypso::getValue($data, 'corporate_lead') === true) ? 1 : 0;
+        $payload['to_hub'] = (Calypso::getValue($data, 'send_to_hub') === 'true') ? 1 : 0;
 
         return $payload;
     }

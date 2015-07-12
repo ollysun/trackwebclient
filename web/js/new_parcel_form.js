@@ -169,7 +169,7 @@ var Parcel = {
 			if(response.status === 'success') {
 				var html = '';
 				$.each(response.data, function(i, item){
-					html += "<option name='" + item.id + "'>" + item.name.toUpperCase() + "</option>";
+					html += "<option value='" + item.id + "'>" + item.name.toUpperCase() + "</option>";
 				});
 				$(selectSelector).attr('disabled', false);
 				$(selectSelector).html(html);
