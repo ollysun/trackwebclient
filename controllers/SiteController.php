@@ -131,7 +131,13 @@ class SiteController extends BaseController
 
             $parcel = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
             $response = $parcel->createNewParcel(json_encode($payload));
-            var_dump($response);
+            if($response['status'] === Response::STATUS_OK) {
+                Yii::$app->session->setFlash('Parcel has been created successfully.');
+                Yii::$app->response->redirect('site/parcels');
+            } else {
+                Yii::$app->session->setFlash('Parcel has been created successfully.');
+                Yii::$app->response->redirect('site/parcels');
+            }
         }
         $refData = new RefAdapter();
 
