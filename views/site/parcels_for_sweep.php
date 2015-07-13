@@ -19,7 +19,7 @@ $this->params['breadcrumbs'] = array(
 
 
 <?php
-	$this->params['content_header_button'] = $this->render('../elements/content_header_new_parcel_button');
+	//$this->params['content_header_button'] = $this->render('../elements/content_header_new_parcel_button');
 ?>
 
 <div class="main-box">
