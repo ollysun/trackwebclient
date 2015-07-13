@@ -4,8 +4,8 @@ use yii\helpers\Url;
 use Adapter\Globals\ServiceConstant;
 
 /* @var $this yii\web\View */
-$this->title = 'Parcels';
-$this->params['breadcrumbs'][] = $this->title;
+$this->title = 'All Parcels';
+$this->params['breadcrumbs'][] = 'Parcels';
 ?>
 
 <!-- this page specific styles -->
@@ -85,7 +85,6 @@ $this->params['breadcrumbs'][] = $this->title;
 					</div>
 				</div>
 			</div>
-
 		</form>
 	</div>
 	<div class="main-box-body">

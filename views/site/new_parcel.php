@@ -2,13 +2,13 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-$this->title = 'New Parcel';
+$this->title = 'Create a New Parcel';
 $this->params['breadcrumbs'] = array(
 	array(
 	'url' => ['site/parcels'],
 	'label' => 'Parcels'
 	),
-	array('label'=> 'New parcel')
+	array('label'=> $this->title)
 );
 ?>
 
