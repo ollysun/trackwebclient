@@ -52,12 +52,12 @@ use yii\helpers\Url;
 							</li> -->
 						</ul>
 					</li>
-					<li>
+					<!--<li>
 						<a href="<?php //echo ROOT_PATH ?>/customer_history_search.php">
 							<i class="fa fa-user"></i>
 							<span>Customer History</span>
 						</a>
-					</li>
+					</li> -->
 				</ul>
 			</div>
 		</div>
