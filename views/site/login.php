@@ -33,9 +33,9 @@ $data = Calypso::getInstance()->getPageData();
             </div>
             <button type="submit" class="btn btn-primary btn-block">Sign In</button>
         </form>
-        <div class="card-footer text-muted text-center">
+        <!--<div class="card-footer text-muted text-center">
             Not yet registered? <a href="#">Sign Up</a>
-        </div>
+        </div>-->
     </div>
     <p class="text-center"><a class="forgot-link" href="#">Forgot password?</a></p>
 
