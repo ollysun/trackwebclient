@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use Adapter\ParcelAdapter;
 use Adapter\RefAdapter;
+use app\services\ParcelService;
 use Yii;
 use Adapter\RequestHelper;
 use Adapter\ResponseHandler;
@@ -17,7 +18,7 @@ use Adapter\Util\Calypso;
 use Adapter\Globals\ServiceConstant;
 use Adapter\Util\Response;
 
-class SiteController extends Controller
+class SiteController extends BaseController
 {
     public function behaviors()
     {
@@ -121,41 +122,22 @@ class SiteController extends Controller
 
     public function actionNewparcel()
     {
-        $data = (Yii::$app->request->post());
-        if($data){
-            $senderData = array();
-            $receiverData = array();
-            $addressData = array();
 
-            $payload = [];
-            $senderData['firstname'] = $data['firstname']['shipper'];
-            $senderData['lastname'] = $data['lastname']['shipper'];
-            $senderData['phone'] = $data['phone']['shipper'];
-            $senderData['email'] = $data['email']['shipper'];
+        if(Yii::$app->request->isPost){
+            $data = Yii::$app->request->post();
 
-            $receiverData['firstname'] = $data['firstname']['receiver'];
-            $receiverData['lastname'] = $data['lastname']['receiver'];
-            $receiverData['phone'] = $data['phone']['receiver'];
-            $receiverData['email'] = $data['email']['receiver'];
+            $parcelService = new ParcelService();
+            $payload = $parcelService->buildPostData($data);
 
-            $receiverAddressData['id'] = null;
-            $receiverAddressData['street1'] = $data['address']['shipper'][0];
-            $receiverAddressData['street2'] = $data['address']['shipper'][1];
-            $receiverAddressData['city'] = $data['city']['shipper'];
-            $receiverAddressData['state_id'] = $data['state']['shipper'];
-            $receiverAddressData['country_id'] = $data['country']['shipper'];
-            $bankData['account_name'] = $data['account_name'];
-            $bankData['bank_id'] = $data['account_name'];
-            $bankData['account_no'] = $data['account_name'];
-            $bankData['sort_code'] = $data['sort_code'];
-            $bankData['id'] = null;
-
-
-
-            $payload['sender'] = $senderData;
-            $payload['receiver'] = $receiverData;
-            $payload['sender_address'] = $addressData;
-            $payload['receiver_address'] = $receiverAddressData;
+            $parcel = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+            $response = $parcel->createNewParcel(json_encode($payload));
+            if($response['status'] === Response::STATUS_OK) {
+                Yii::$app->session->setFlash('Parcel has been created successfully.');
+                Yii::$app->response->redirect('parcels');
+            } else {
+                Yii::$app->session->setFlash('Parcel has been created successfully.');
+                Yii::$app->response->redirect('parcels');
+            }
         }
         $refData = new RefAdapter();
 
@@ -163,8 +145,17 @@ class SiteController extends Controller
         $shipmentType = $refData->getShipmentType();
         $deliveryType = $refData->getdeliveryType();
         $parcelType = $refData->getparcelType();
+        $paymentMethod = $refData->getPaymentMethods();
+        $countries = $refData->getCountries();
 
-        return $this->render('new_parcel',array('Banks'=>$banks,'ShipmentType' => $shipmentType,'deliveryType'=>$deliveryType,'parcelType'=>$parcelType));
+        return $this->render('new_parcel',array(
+            'Banks'=>$banks,
+            'ShipmentType' => $shipmentType,
+            'deliveryType'=>$deliveryType,
+            'parcelType'=>$parcelType,
+            'countries'=>$countries,
+            'paymentMethod'=>$paymentMethod
+        ));
     }
 
     public function actionParcels()
@@ -281,5 +272,24 @@ class SiteController extends Controller
 
 
         return $this->render('view_waybill',array('parcelData'=>$data));
+    }
+
+    /**
+     * Ajax calls to get states when a country is selected
+     */
+    public function actionGetstates() {
+
+        $country_id = \Yii::$app->request->get('id');
+        if(!isset($country_id)) {
+            return $this->sendErrorResponse("Invalid parameter(s) sent!", null);
+        }
+
+        $refData = new RefAdapter();
+        $states = $refData->getStates($country_id);
+        if ($states['status'] === ResponseHandler::STATUS_OK) {
+            return $this->sendSuccessResponse($states['data']);
+        } else {
+            return $this->sendErrorResponse($states['message'], null);
+        }
     }
 }

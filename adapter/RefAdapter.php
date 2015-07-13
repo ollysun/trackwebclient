@@ -4,7 +4,7 @@ namespace Adapter;
 use Adapter\BaseAdapter;
 use Adapter\Globals\ServiceConstant;
 
-class RefAdapter extends BaseAdapter{
+class RefAdapter extends BaseAdapter {
 
 
     public function getBanks(){
@@ -21,5 +21,22 @@ class RefAdapter extends BaseAdapter{
         return $this->request(ServiceConstant::URL_REF_parcelType,array(),self::HTTP_GET);
     }
 
+    /**
+     * This fetches all states from the middleware
+     */
+    public function getStates($id) {
+        return $this->request(ServiceConstant::URL_REF_STATES, [ 'country_id' => $id ], self::HTTP_GET);
+    }
+
+    /**
+     * This function fetches all countries from the middleware
+     */
+    public function getCountries() {
+        return $this->request(ServiceConstant::URL_REF_COUNTRIES, [], self::HTTP_GET);
+    }
+
+    public function getPaymentMethods() {
+        return $this->request(ServiceConstant::URL_REF_PAYMENT_METHODS, [], self::HTTP_GET);
+    }
 
 }

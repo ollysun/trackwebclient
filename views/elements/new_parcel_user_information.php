@@ -113,13 +113,22 @@
 </div>
 <div class="form-group">
 	<label for="">Country</label>
-	<select name="country[<?= $prefix ?>]" class="form-control"></select>
+	<select name="country[<?= $prefix ?>]" class="form-control" id="country_<?= $prefix ?>">
+		<?php
+		if(isset($countries) && is_array($countries['data'])){
+			foreach($countries['data'] as $item){
+				?>
+				<option value="<?= $item['id'] ?>"><?= strtoupper($item['name']); ?></option>
+			<?php
+			}}
+		?>
+	</select>
 </div>
 <div class="form-group">
-	<label for="">State</label>
-	<select name="state[<?= $prefix ?>]" class="form-control" disabled="disabled"></select>
+	<label for="state[<?= $prefix ?>]">State</label>
+	<select name="state[<?= $prefix ?>]" class="form-control" disabled="disabled" id="state_<?= $prefix ?>"></select>
 </div>
-<div class="form-group">
-	<label for="">LGA</label>
-	<select name="lga[<?= $prefix ?>]" class="form-control" disabled="disabled"></select>
-</div>
+<!--<div class="form-group">
+	<label for="lga[<?/*= $prefix */?>]">LGA</label>
+	<select name="lga[<?/*= $prefix */?>]" class="form-control" disabled="disabled" id="lga_<?/*= $prefix */?>"></select>
+</div>-->
