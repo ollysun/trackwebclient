@@ -1,6 +1,7 @@
 <?php
 use yii\helpers\Html;
 use yii\helpers\Url;
+use Adapter\Globals\ServiceConstant;
 
 
 $this->title = 'New Parcels';
@@ -82,8 +83,8 @@ $this->params['breadcrumbs'] = array(
                             <td><?= $parcel['sender']['phone'] ?></td>
                             <td><?= strtoupper($parcel['receiver']['firstname'].' '. $parcel['receiver']['lastname']) ?></td>
                             <td><?= $parcel['receiver']['phone'] ?></td>
-                            <td><?= $parcel['status'] ?></td>
-                            <td><a href="<?= Url::to(['site/viewwaybill/'.$parcel['id']]) ?>" class="btn btn-sm btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
+                            <td><?= ServiceConstant::getStatus($parcel['status']); ?></td>
+                            <td><a href="<?= Url::to(['site/viewwaybill?id='.$parcel['id']]) ?>" class="btn btn-sm btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
                         </tr>
                     <?php
                     }}
