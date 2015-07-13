@@ -3,8 +3,8 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 
 /* @var $this yii\web\View */
-$this->title = 'Parcels';
-$this->params['breadcrumbs'][] = $this->title;
+$this->title = 'All Parcels';
+$this->params['breadcrumbs'][] = 'Parcels';
 ?>
 
 <!-- this page specific styles -->

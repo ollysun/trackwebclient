@@ -27,12 +27,12 @@ use yii\helpers\Url;
 						<ul class="submenu">
 							<li>
 								<a href="<?= Url::to(['site/parcels']) ?>">
-									All
+									All Parcels
 								</a>
 							</li>
 							<li>
 								<a href="<?= Url::to(['site/processedparcels']) ?>">
-									Processed In
+									New Parcels
 								</a>
 							</li>
 							<li>
