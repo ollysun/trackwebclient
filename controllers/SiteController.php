@@ -166,7 +166,7 @@ class SiteController extends BaseController
             $filter = Calypso::getInstance()->get()->filter;
             $response = $parcel->getSearchParcels($filter,$search);
         }else{
-            $response = $parcel->getParcels(null);
+            $response = $parcel->getParcels();
         }
         $response = new ResponseHandler($response);
         $data = [];
