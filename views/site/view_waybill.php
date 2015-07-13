@@ -20,12 +20,12 @@ $this->params['breadcrumbs'][] = 'Waybill';
 			<div class="col-xs-12 col-sm-6">
 				<div class="form-group">
 					<label>Shipment date</label>
-					<div class="form-control-static"><?= $parcelData['created_date']; ?></div>
+					<div class="form-control-static"><?= date('d M Y',strtotime($parcelData['created_date'])); ?></div>
 				</div>
 				<div class="form-group">
 					<label>Shipper Information</label>
 					<div class="form-control-static">
-                        <?= strtoupper($parcelData['sender']['firstname'].' '.$parcelData['sender']['firstname']); ?><br/>
+                        <?= strtoupper($parcelData['sender']['firstname'].' '.$parcelData['sender']['firstname']); ?>
 						<span style="padding-left: 80px"><?= $parcelData['sender']['phone']; ?></span>
 					</div>
 					<address>
@@ -43,7 +43,7 @@ $this->params['breadcrumbs'][] = 'Waybill';
 					</div>
 					<div class="form-group col-xs-6">
 						<label>Total actual weight</label>
-						<div class="form-control-static">0.45Kg</div>
+						<div class="form-control-static"><?= $parcelData['weight']; ?>Kg</div>
 					</div>
 				</div>
 			</div>
@@ -55,13 +55,11 @@ $this->params['breadcrumbs'][] = 'Waybill';
 				<div class="form-group">
 					<label>Receiver Information</label>
 					<div class="form-control-static">
-						Olajide Oye
-						<span style="padding-left: 80px">08050001234</span>
+                        <?= strtoupper($parcelData['receiver']['firstname'].' '.$parcelData['receiver']['firstname']); ?>
+						<span style="padding-left: 80px"><?= $parcelData['receiver']['phone']; ?></span>
 					</div>
 					<address>
-						5B, Universal Close,
-						Anthony Jones,
-						Ikeja, Lagos, Nigeria.
+                        <?= $parcelData['receiver_address']['street_address1'].'</br>'.$parcelData['receiver_address']['street_address2']; ?>
 					</address>
 				</div>
 				<div class="form-group">
