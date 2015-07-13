@@ -24,25 +24,22 @@ $this->params['breadcrumbs'] = array(
 
 <div class="main-box">
 	<div class="main-box-header clearfix">
-		<div class="pull-left">
-			<label>&nbsp;</label><br>
-			<button type="button" class="btn btn-default">Generate Sweep Run</button>
-
-		</div>
-		<form class="table-search-form form-inline pull-right">
-
-			<div class="">
-				<label for="searchInput">Search</label><br>
-				<div class="input-group">
-					<input id="searchInput" type="text" name="search" placeholder="" class="search-box form-control">
-					<div class="input-group-btn">
-						<button class="btn btn-default" type="submit">
-							<i class="fa fa-search"></i>
-						</button>
-					</div>
-				</div>
-			</div>
-
+        <form class="table-search-form form-inline pull-right clearfix">
+            <div class="pull-left">
+                <label for="searchInput">Search</label><br>
+                <div class="input-group input-group-search">
+                    <input id="searchInput" type="text" name="search" placeholder="" class="search-box form-control">
+                    <div class="input-group-btn">
+                        <button class="btn btn-default" type="submit">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+    		<div class="pull-left">
+    			<label>&nbsp;</label><br>
+    			<button type="button" class="btn btn-default">Generate Sweep Run</button>
+    		</div>
 		</form>
 	</div>
 	<div class="main-box-body">
