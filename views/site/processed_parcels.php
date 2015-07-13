@@ -3,13 +3,13 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 
 
-$this->title = 'Parcels: Processed In';
+$this->title = 'New Parcels';
 $this->params['breadcrumbs'] = array(
 	array(
 		'url' => ['site/parcels'],
 		'label' => 'Parcels'
 	),
-	array('label'=> 'Processed In')
+	array('label'=> $this->title)
 );
 
 ?>
