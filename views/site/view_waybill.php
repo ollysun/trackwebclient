@@ -2,12 +2,13 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-$this->title = 'Waybill No: 2019 1407 4536 29';
+$this->title = 'Waybill No: '.strtoupper($parcelData['waybill_number']);
 $this->params['breadcrumbs'][] = 'Waybill';
 ?>
 
 <?php
 	$this->params['content_header_button'] = '<span class="label label-success">CONFIRMED DELIVERY</span>';
+//var_dump($parcelData);
 ?>
 
 <div class="main-box">
@@ -19,18 +20,16 @@ $this->params['breadcrumbs'][] = 'Waybill';
 			<div class="col-xs-12 col-sm-6">
 				<div class="form-group">
 					<label>Shipment date</label>
-					<div class="form-control-static">21 June 2015</div>
+					<div class="form-control-static"><?= date('d M Y',strtotime($parcelData['created_date'])); ?></div>
 				</div>
 				<div class="form-group">
 					<label>Shipper Information</label>
 					<div class="form-control-static">
-						Olajide Oye
-						<span style="padding-left: 80px">08050001234</span>
+                        <?= strtoupper($parcelData['sender']['firstname'].' '.$parcelData['sender']['firstname']); ?>
+						<span style="padding-left: 80px"><?= $parcelData['sender']['phone']; ?></span>
 					</div>
 					<address>
-						5B, Universal Close,
-						Anthony Jones,
-						Ikeja, Lagos, Nigeria.
+                        <?= $parcelData['sender_address']['street_address1'].'</br>'.$parcelData['sender_address']['street_address2']; ?>
 					</address>
 				</div>
 				<div class="form-group">
@@ -40,11 +39,11 @@ $this->params['breadcrumbs'][] = 'Waybill';
 				<div class="row">
 					<div class="form-group col-xs-6">
 						<label>No of packages</label>
-						<div class="form-control-static">4</div>
+						<div class="form-control-static"><?= $parcelData['no_of_package']; ?></div>
 					</div>
 					<div class="form-group col-xs-6">
 						<label>Total actual weight</label>
-						<div class="form-control-static">0.45Kg</div>
+						<div class="form-control-static"><?= $parcelData['weight']; ?>Kg</div>
 					</div>
 				</div>
 			</div>
@@ -56,13 +55,11 @@ $this->params['breadcrumbs'][] = 'Waybill';
 				<div class="form-group">
 					<label>Receiver Information</label>
 					<div class="form-control-static">
-						Olajide Oye
-						<span style="padding-left: 80px">08050001234</span>
+                        <?= strtoupper($parcelData['receiver']['firstname'].' '.$parcelData['receiver']['firstname']); ?>
+						<span style="padding-left: 80px"><?= $parcelData['receiver']['phone']; ?></span>
 					</div>
 					<address>
-						5B, Universal Close,
-						Anthony Jones,
-						Ikeja, Lagos, Nigeria.
+                        <?= $parcelData['receiver_address']['street_address1'].'</br>'.$parcelData['receiver_address']['street_address2']; ?>
 					</address>
 				</div>
 				<div class="form-group">

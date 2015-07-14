@@ -27,12 +27,12 @@ use yii\helpers\Url;
 						<ul class="submenu">
 							<li>
 								<a href="<?= Url::to(['site/parcels']) ?>">
-									All
+									All Parcels
 								</a>
 							</li>
 							<li>
 								<a href="<?= Url::to(['site/processedparcels']) ?>">
-									Processed In
+									New Parcels
 								</a>
 							</li>
 							<li>
@@ -45,6 +45,27 @@ use yii\helpers\Url;
 									For Sweep
 								</a>
 							</li>
+                            <!--
+                            <li>
+                                <a href="<?/*= Url::to(['site/parcelscollected']) */?>">
+                                    Collected Parcels
+                                </a>
+                            </li>
+                            <li>
+                                <a href="<?/*= Url::to(['site/parcelsintransit']) */?>">
+                                    In Transit
+                                </a>
+                            </li>
+                            <li>
+                                <a href="<?/*= Url::to(['site/parcelscancelled']) */?>">
+                                    Cancelled
+                                </a>
+                            </li>
+                            <li>
+                                <a href="<?/*= Url::to(['site/parcelsdelivered']) */?>">
+                                    Delivered
+                                </a>
+                            </li> -->
 							<!-- <li>
 								<a href="<?= Url::to(['site/newparcel']) ?>">
 									New
@@ -52,12 +73,12 @@ use yii\helpers\Url;
 							</li> -->
 						</ul>
 					</li>
-					<li>
+					<!--<li>
 						<a href="<?php //echo ROOT_PATH ?>/customer_history_search.php">
 							<i class="fa fa-user"></i>
 							<span>Customer History</span>
 						</a>
-					</li>
+					</li> -->
 				</ul>
 			</div>
 		</div>
