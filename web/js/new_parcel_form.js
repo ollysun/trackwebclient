@@ -11,8 +11,8 @@ var deliveryShowHide = {
 	options: {
 		identifier: 'input[name="delivery_type"]',
 		mapping: {
-			'centre': true,
-			'address': false
+			'1': true,
+			'2': false
 		}
 	},
 	callback: function(ele, val, who) {
@@ -58,9 +58,9 @@ var paymentMethodShowHide = {
 	options: {
 		identifier: 'input[name="payment_method"]',
 		mapping: {
-			'cash_pos': true,
-			'cash': false,
-			'pos': false
+			'3': true,
+			'1': false,
+			'2': false
 		},
 	},
 	callback: function(ele, val, who) {
