@@ -36,4 +36,9 @@ class ParcelAdapter extends BaseAdapter{
         return $this->request(ServiceConstant::URL_GET_ALL_PARCEL.'?with_sender=1&with_receiver=1&with_receiver_address=1'.$filter,array(),self::HTTP_GET);
 
     }
+    public function getNewParcelsByDate($start_created_date){
+        $filter = '&start_created_date='.$start_created_date;
+        return $this->request(ServiceConstant::URL_GET_ALL_PARCEL.'?with_sender=1&with_receiver=1&with_receiver_address=1'.$filter,array(),self::HTTP_GET);
+
+    }
 }
