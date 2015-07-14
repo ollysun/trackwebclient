@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use Adapter\ParcelAdapter;
 use Adapter\RefAdapter;
+use Adapter\UserAdapter;
 use app\services\ParcelService;
 use Yii;
 use Adapter\RequestHelper;
@@ -136,11 +137,11 @@ class SiteController extends BaseController
             $parcel = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
             $response = $parcel->createNewParcel(json_encode($payload));
             if($response['status'] === Response::STATUS_OK) {
-                Yii::$app->session->setFlash('Parcel has been created successfully.');
+                Yii::$app->session->setFlash('success', 'Parcel has been created successfully. <a href="#" class="btn btn-mini">Print Waybill</a>');
                 Yii::$app->response->redirect('parcels');
             } else {
-                Yii::$app->session->setFlash('Parcel has been created successfully.');
-                Yii::$app->response->redirect('parcels');
+                Yii::$app->session->setFlash('danger', 'There was a problem creating the value. Please try again.');
+                Yii::$app->response->redirect('newparcel');
             }
         }
         $refData = new RefAdapter();
@@ -332,6 +333,25 @@ class SiteController extends BaseController
             return $this->sendSuccessResponse($states['data']);
         } else {
             return $this->sendErrorResponse($states['message'], null);
+        }
+    }
+
+    /**
+     * Ajax calls to get states when a country is selected
+     */
+    public function actionUserdetails() {
+
+        $term = \Yii::$app->request->get('term');
+        if(!isset($term)) {
+            return $this->sendErrorResponse("Invalid parameter(s) sent!", null);
+        }
+
+        $userData = new UserAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+        $userInfo = $userData->getUserDetails($term);
+        if ($userInfo['status'] === ResponseHandler::STATUS_OK) {
+            return $this->sendSuccessResponse($userInfo['data']);
+        } else {
+            return $this->sendErrorResponse($userInfo['message'], null);
         }
     }
 }

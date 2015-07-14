@@ -16,6 +16,8 @@ $this->params['breadcrumbs'][] = 'Parcels';
 	//$this->params['content_header_button'] = $this->render('../elements/content_header_new_parcel_button');
 ?>
 
+<?php echo \Adapter\Util\Calypso::showFlashMessages(); ?>
+
 <div class="main-box">
 	<div class="main-box-header">
 		<div class="clearfix">
