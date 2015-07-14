@@ -175,6 +175,19 @@ var Parcel = {
 				$(selectSelector).html(html);
 			}
 		});
+	},
+
+	getUserInformation: function(term) {
+		$.get( Parcel.Url.states, { id: country_id }, function(response) {
+			if(response.status === 'success') {
+				var html = '';
+				$.each(response.data, function(i, item){
+					html += "<option value='" + item.id + "'>" + item.name.toUpperCase() + "</option>";
+				});
+				$(selectSelector).attr('disabled', false);
+				$(selectSelector).html(html);
+			}
+		});
 	}
 };
 $(document).ready(function(){
