@@ -55,7 +55,7 @@ class ParcelService {
         $parcel['parcel_type'] = Calypso::getValue($data, 'parcel_type');
         $parcel['no_of_package'] = Calypso::getValue($data, 'no_of_packages');
         $parcel['weight'] = Calypso::getValue($data, 'parcel_weight');
-        $parcel['parcel_value'] = Calypso::getValue($data, 'parcel_value');
+        $parcel['package_value'] = Calypso::getValue($data, 'parcel_value');
         //@Todo To be calculated by the settings in the backend
         $parcel['amount_due'] = Calypso::getValue($data, 'parcel_value');
 
