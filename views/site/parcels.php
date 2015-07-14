@@ -20,6 +20,9 @@ $this->params['breadcrumbs'][] = 'Parcels';
 	<div class="main-box-header">
 		<form class="table-search-form form-inline clearfix">
 			<div class="pull-left">
+				<?= $this->render('../elements/parcels_filter',[]) ?>
+			</div>
+			<!-- <div class="pull-left">
 				<label for="">From:</label><br>
 				<input name="" id="" class="form-control date-range">
 			</div>
@@ -31,7 +34,7 @@ $this->params['breadcrumbs'][] = 'Parcels';
 			<div class="pull-left">
 				<label for="">Filter status</label><br>
 				<select name="" id="" class="form-control  filter-status"></select>
-			</div>
+			</div> -->
 			<div class="pull-right clearfix">
 				<div class="pull-left">
 					<label for="searchInput">Search</label><br>
@@ -44,7 +47,7 @@ $this->params['breadcrumbs'][] = 'Parcels';
 						</div>
 					</div>
 				</div>
-				<div class="pull-left">
+				<div class="pull-left hidden">
 					<label>&nbsp;</label><br>
 					<div class="btn-group">
 						<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
