@@ -28,5 +28,17 @@ class ParcelAdapter extends BaseAdapter{
         $filter = $parcel_status.'&waybill_number='.$waybill_number;
         return $this->request(ServiceConstant::URL_GET_ALL_PARCEL.'?with_sender=1&with_receiver=1&with_receiver_address=1'.$filter,array(),self::HTTP_GET);
 
-    } 
+    }
+    public function getFilterParcelsByDateAndStatus($start_created_date,$end_created_date,$status){
+        $parcel_status = $status == '-1'?'': '&status='.$status;
+        $filter = $parcel_status.'&start_created_date='.$start_created_date;
+        $filter .= $parcel_status.'&end_created_date='.$end_created_date;
+        return $this->request(ServiceConstant::URL_GET_ALL_PARCEL.'?with_sender=1&with_receiver=1&with_receiver_address=1'.$filter,array(),self::HTTP_GET);
+
+    }
+    public function getNewParcelsByDate($start_created_date){
+        $filter = '&start_created_date='.$start_created_date;
+        return $this->request(ServiceConstant::URL_GET_ALL_PARCEL.'?with_sender=1&with_receiver=1&with_receiver_address=1'.$filter,array(),self::HTTP_GET);
+
+    }
 }
