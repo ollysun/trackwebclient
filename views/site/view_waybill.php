@@ -70,8 +70,21 @@ $this->params['breadcrumbs'][] = 'Waybill';
 					<label>Delivery type</label>
 					<div class="form-control-static">Pickup at Allen Office</div>
 				</div>
+                <div class="form-group">
+					<label>Waybill Bar Code</label>
+					<div id="barcode" class="form-control-static">Pickup at Allen Office</div>
+				</div>
 			</div>
 		</div>
 	</div>
 </div>
+<script type="text/javascript">
+    var waybill = "<?= strtoupper($parcelData['waybill_number']); ?>";
+</script>
+<?php
+
+?>
+<?php $this->registerJsFile('@web/js/libs/jquery-barcode.min.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/barcode.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
+
 
