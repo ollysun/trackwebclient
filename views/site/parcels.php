@@ -31,6 +31,7 @@ $this->params['breadcrumbs'][] = 'Parcels';
 				<label for="">To:</label><br>
 				<input name="" id="" class="form-control date-range">
 			</div>
+
 			<div class="pull-left">
 				<label for="">Filter status</label><br>
 				<select name="" id="" class="form-control  filter-status"></select>
@@ -39,7 +40,7 @@ $this->params['breadcrumbs'][] = 'Parcels';
 				<div class="pull-left">
 					<label for="searchInput">Search</label><br>
 					<div class="input-group input-group-search">
-						<input id="searchInput" type="text" name="search" placeholder="" class="search-box form-control">
+						<input id="searchInput" type="text" name="search" placeholder="Waybill Number" class="search-box form-control">
 						<div class="input-group-btn">
 							<button class="btn btn-default" type="submit">
 								<i class="fa fa-search"></i>

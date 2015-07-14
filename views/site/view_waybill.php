@@ -74,6 +74,9 @@ $this->params['breadcrumbs'][] = 'Waybill';
 					<label>Waybill Bar Code</label>
 					<div id="barcode" class="form-control-static">Pickup at Allen Office</div>
 				</div>
+                <div class="form-group">
+                   <button class="btn btn-primary">Print Waybill</button>
+                </div>
 			</div>
 		</div>
 	</div>
