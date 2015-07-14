@@ -13,75 +13,50 @@ $this->params['breadcrumbs'][] = 'Parcels';
 <?= Html::cssFile('@web/css/libs/dataTables.tableTools.css') ?>
 
 <?php
-	$this->params['content_header_button'] = $this->render('../elements/content_header_new_parcel_button');
+	//$this->params['content_header_button'] = $this->render('../elements/content_header_new_parcel_button');
 ?>
 
 <div class="main-box">
-	<div class="main-box-header clearfix">
-		<div class="pull-left hidden">
-			<label>&nbsp;</label><br>
-			<div class="btn-group">
-				<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-				Select an action <span class="caret"></span>
-				</button>
-				<ul class="dropdown-menu">
-					<li><a href="#">Action</a></li>
-					<li><a href="#">Another action</a></li>
-					<li><a href="#">Something else here</a></li>
-					<li role="separator" class="divider"></li>
-					<li><a href="#">Separated link</a></li>
-				</ul>
-			</div>
-		</div>
-		<form method="get" class="table-search-form form-inline pull-right clearfix">
-			<div class="pull-left hidden">
+	<div class="main-box-header">
+		<form class="table-search-form form-inline clearfix">
+			<div class="pull-left">
 				<label for="">From:</label><br>
 				<input name="" id="" class="form-control date-range">
 			</div>
 
-			<div class="pull-left hidden">
+			<div class="pull-left">
 				<label for="">To:</label><br>
 				<input name="" id="" class="form-control date-range">
 			</div>
-
 			<div class="pull-left">
-				<label for="">Filter Status</label><br>
-				<select name="filter" id="" class="form-control  filter-status">
-                    <option value="-1">NOT APPLICABLE</option>
-                    <?php
-                    $statuses = ServiceConstant::getStatusRef();
-                    for($i=0;$i < count($statuses);$i++){
-                    ?>
-                    <option value="<?= $statuses[$i] ?>"><?= strtoupper(ServiceConstant::getStatus($statuses[$i])); ?></option>
-                    <?php
-                    }
-                    ?>
-				</select>
+				<label for="">Filter status</label><br>
+				<select name="" id="" class="form-control  filter-status"></select>
 			</div>
-            <div class="pull-left hidden">
-                <label>&nbsp;</label><br>
-                <div class="btn-group">
-                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Filter Status <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">Action</a></li>
-                        <li><a href="#">Another action</a></li>
-                        <li><a href="#">Something else here</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="#">Separated link</a></li>
-                    </ul>
-                </div>
-            </div>
-
-			<div class="pull-left">
-				<label for="searchInput">Search</label><br>
-				<div class="input-group">
-					<input id="searchInput" type="text" name="search" placeholder="" class="search-box form-control">
-					<div class="input-group-btn">
-						<button class="btn btn-default" type="submit">
-							<i class="fa fa-search"></i>
+			<div class="pull-right clearfix">
+				<div class="pull-left">
+					<label for="searchInput">Search</label><br>
+					<div class="input-group input-group-search">
+						<input id="searchInput" type="text" name="search" placeholder="" class="search-box form-control">
+						<div class="input-group-btn">
+							<button class="btn btn-default" type="submit">
+								<i class="fa fa-search"></i>
+							</button>
+						</div>
+					</div>
+				</div>
+				<div class="pull-left">
+					<label>&nbsp;</label><br>
+					<div class="btn-group">
+						<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						Select an action <span class="caret"></span>
 						</button>
+						<ul class="dropdown-menu">
+							<li><a href="#">Action</a></li>
+							<li><a href="#">Another action</a></li>
+							<li><a href="#">Something else here</a></li>
+							<li role="separator" class="divider"></li>
+							<li><a href="#">Separated link</a></li>
+						</ul>
 					</div>
 				</div>
 			</div>
