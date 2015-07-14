@@ -47,7 +47,7 @@ $this->params['breadcrumbs'][] = 'Parcels';
 						</div>
 					</div>
 				</div>
-				<div class="pull-left">
+				<div class="pull-left hidden">
 					<label>&nbsp;</label><br>
 					<div class="btn-group">
 						<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
