@@ -49,7 +49,7 @@ $this->params['breadcrumbs'] = array(
 						</div>
 					</div>
 				</div>
-				<div class="pull-left">
+				<div class="pull-left hidden">
 					<label>&nbsp;</label><br>
 					<button type="button" class="btn btn-default"><i class="fa fa-download"></i> Download</button>
 				</div>
