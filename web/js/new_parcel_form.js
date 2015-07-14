@@ -120,6 +120,9 @@ function showHide(who, options, callback, evt) {
 var hello = new FlyOutPanel('#shipperAddressFlyOutPanelTrigger');
 var hello2 = new FlyOutPanel('#receiverAddressFlyOutPanelTrigger');
 
+// Hide trigger link
+$('#shipperAddressFlyOutPanelTrigger, #receiverAddressFlyOutPanelTrigger').addClass('hidden');
+
 //var hello3 = new FlyOutPanel('#shipperSearchBox', 'keypress');
 //var hello4 = new FlyOutPanel('#receiverSearchBox', 'keypress');
 
