@@ -56,14 +56,17 @@ class SiteController extends BaseController
         ];
     }
     public function beforeAction($action){
+        if($action->id != 'login'){
+            if( Yii::$app->user->getIsGuest()){
+                Calypso::getInstance()->AppRedirect('site','login');
+            }
+        }
         $this->enableCsrfValidation = false;
         return parent::beforeAction($action);
     }
     public function actionIndex()
     {
-        if(!Calypso::getInstance()->isLoggedIn()){
-            Calypso::getInstance()->AppRedirect('site','login');
-        }
+
         $session_data = Calypso::getInstance()->session('user_session');
 
         return $this->render('index',array('session_data'=>$session_data));
@@ -98,6 +101,7 @@ class SiteController extends BaseController
         Yii::$app->user->logout();
         Calypso::getInstance()->unsetSession();
         Calypso::getInstance()->AppRedirect('site','login');
+        session_destroy();
         return $this->goHome();
     }
 
@@ -161,10 +165,14 @@ class SiteController extends BaseController
     public function actionParcels()
     {
         $parcel = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
-        if(isset(Calypso::getInstance()->get()->search,Calypso::getInstance()->get()->filter) ){
+        if(isset(Calypso::getInstance()->get()->search) ){
             $search = Calypso::getInstance()->get()->search;
-            $filter = Calypso::getInstance()->get()->filter;
-            $response = $parcel->getSearchParcels($filter,$search);
+            $response = $parcel->getSearchParcels('-1',$search);
+        }elseif(isset(Calypso::getInstance()->get()->from,Calypso::getInstance()->get()->to)){
+            $from_date = Calypso::getInstance()->get()->from;
+            $to_date = Calypso::getInstance()->get()->to;
+            $filter = isset(Calypso::getInstance()->get()->filter) ? Calypso::getInstance()->get()->filter : '-1';
+            $response = $parcel->getFilterParcelsByDateAndStatus($from_date,$to_date,$filter);
         }else{
             $response = $parcel->getParcels();
         }
