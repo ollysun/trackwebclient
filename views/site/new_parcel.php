@@ -14,6 +14,8 @@ $this->params['breadcrumbs'] = array(
 
 <?= Html::cssFile('@web/css/libs/bootstrap-select.min.css') ?>
 
+<?php echo \Adapter\Util\Calypso::showFlashMessages(); ?>
+
 <form action="#" method="post" enctype="multipart/form-data">
 
 	<div id="newParcelForm" class="l-new-parcel-form carousel slide">
@@ -58,10 +60,10 @@ $this->params['breadcrumbs'] = array(
 								<label>Send parcel to Hub?</label>
 								<div>
 									<div class="radio-inline">
-										<input id="sendToHubYes" type="radio" name="send_to_hub" value="true" checked="checked"> <label for="sendToHubYes" class="">Yes</label>
+										<input id="sendToHubYes" type="radio" name="send_to_hub" value="1" checked="checked"> <label for="sendToHubYes" class="">Yes</label>
 									</div>
 									<div class="radio-inline">
-										<input id="sendToHubNo" type="radio" name="send_to_hub" value="false"> <label for="sendToHubNo" class="">No</label>
+										<input id="sendToHubNo" type="radio" name="send_to_hub" value="0"> <label for="sendToHubNo" class="">No</label>
 									</div>
 								</div>
 							</div>
