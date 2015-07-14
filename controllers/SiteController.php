@@ -161,7 +161,13 @@ class SiteController extends BaseController
     public function actionParcels()
     {
         $parcel = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
-        $response = $parcel->getParcels(null);
+        if(isset(Calypso::getInstance()->get()->search,Calypso::getInstance()->get()->filter) ){
+            $search = Calypso::getInstance()->get()->search;
+            $filter = Calypso::getInstance()->get()->filter;
+            $response = $parcel->getSearchParcels($filter,$search);
+        }else{
+            $response = $parcel->getParcels(null);
+        }
         $response = new ResponseHandler($response);
         $data = [];
         if($response->getStatus() ==  ResponseHandler::STATUS_OK){
@@ -173,7 +179,7 @@ class SiteController extends BaseController
     public function actionProcessedparcels()
     {
         $parcel = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
-        $response = $parcel->getParcels(null);
+        $response = $parcel->getParcels(ServiceConstant::FOR_ARRIVAL);
         $response = new ResponseHandler($response);
         $data = [];
         if($response->getStatus() ==  ResponseHandler::STATUS_OK){
@@ -185,7 +191,7 @@ class SiteController extends BaseController
      public function actionParcelsfordelivery()
     {
         $parcel = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
-        $response = $parcel->getParcels(null);
+        $response = $parcel->getParcels(ServiceConstant::FOR_DELIVERY);
         $response = new ResponseHandler($response);
         $data = [];
         if($response->getStatus() ==  ResponseHandler::STATUS_OK){
@@ -197,7 +203,7 @@ class SiteController extends BaseController
     public function actionParcelsforsweep()
     {
         $parcel = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
-        $response = $parcel->getParcels(null);
+        $response = $parcel->getParcels(ServiceConstant::FOR_SWEEPER);
         $response = new ResponseHandler($response);
         $data = [];
         if($response->getStatus() ==  ResponseHandler::STATUS_OK){
@@ -205,9 +211,66 @@ class SiteController extends BaseController
         }
         return $this->render('parcels_for_sweep',array('parcels'=>$data));
     }
+    /*
+    public function actionParcelscollected()
+    {
+        $parcel = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+        $response = $parcel->getParcels(ServiceConstant::COLLECTED);
+        $response = new ResponseHandler($response);
+        $data = [];
+        if($response->getStatus() ==  ResponseHandler::STATUS_OK){
+            $data = $response->getData();
+        }
+        return $this->render('parcels_for_sweep',array('parcels'=>$data));
+    }
+    public function actionParcelsintransit()
+    {
+        $parcel = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+        $response = $parcel->getParcels(ServiceConstant::IN_TRANSIT);
+        $response = new ResponseHandler($response);
+        $data = [];
+        if($response->getStatus() ==  ResponseHandler::STATUS_OK){
+            $data = $response->getData();
+        }
+        return $this->render('parcels_for_sweep',array('parcels'=>$data));
+    }
+    public function actionParcelscancelled()
+    {
+        $parcel = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+        $response = $parcel->getParcels(ServiceConstant::CANCELLED);
+        $response = new ResponseHandler($response);
+        $data = [];
+        if($response->getStatus() ==  ResponseHandler::STATUS_OK){
+            $data = $response->getData();
+        }
+        return $this->render('parcels_for_sweep',array('parcels'=>$data));
+    }
+    public function actionParcelsdelivered()
+    {
+        $parcel = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+        $response = $parcel->getParcels(ServiceConstant::DELIVERED);
+        $response = new ResponseHandler($response);
+        $data = [];
+        if($response->getStatus() ==  ResponseHandler::STATUS_OK){
+            $data = $response->getData();
+        }
+        return $this->render('parcels_for_sweep',array('parcels'=>$data));
+    }
+    */
     public function actionViewwaybill()
     {
         $data = [];
+        if(isset(Calypso::getInstance()->get()->id)){
+            $id = Calypso::getInstance()->get()->id;
+            $parcel = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+            $response = $parcel->getOneParcel($id);
+            $response = new ResponseHandler($response);
+            if($response->getStatus() == ResponseHandler::STATUS_OK){
+                $data = $response->getData();
+            }
+        }
+
+
         return $this->render('view_waybill',array('parcelData'=>$data));
     }
 
