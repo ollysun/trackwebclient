@@ -161,8 +161,24 @@ function FlyOutPanel (triggerSelector, evt) {
 }
 
 var Parcel = {
+
+	newUserObject: function() {
+		return {
+			firstname: '',
+			lastname: '',
+			email: '',
+			phonenumber: '',
+			street1: '',
+			street2: '',
+			city: '',
+			country: '',
+			state: ''
+		}
+	},
+
 	Url: {
-		'states' : '/site/getstates'
+		'states' : '/site/getstates',
+		'userdetails' : '/site/userdetails'
 	},
 
 	getStates: function(country_id, selectSelector) {
@@ -176,23 +192,38 @@ var Parcel = {
 				$(selectSelector).html(html);
 			}
 		});
-	}
+	},
 
-	/*
-	,
-
-	getUserInformation: function(term) {
-		$.get( Parcel.Url.states, { id: country_id }, function(response) {
+	getUserInformation: function(term, suffix) {
+		var self = this;
+		$.get( Parcel.Url.userdetails, { term: term }, function(response) {
 			if(response.status === 'success') {
-				var html = '';
-				$.each(response.data, function(i, item){
-					html += "<option value='" + item.id + "'>" + item.name.toUpperCase() + "</option>";
-				});
-				$(selectSelector).attr('disabled', false);
-				$(selectSelector).html(html);
+
+				var userObj = self.newUserObject();
+				userObj.id = response.data.id;
+				userObj.firstname = response.data.firstname;
+				userObj.lastname = response.data.lastname;
+				userObj.email = response.data.email;
+				userObj.phone = response.data.phone;
+				userObj.address = response.data.address;
+
+				self.setUserDetails(userObj, suffix);
 			}
 		});
-	}*/
+	},
+
+	setUserDetails: function(userObj, suffix) {
+
+		$('#firstname_' + suffix).val(userObj.firstname);
+		$('#lastname_' + suffix).val(userObj.lastname);
+		$('#email_' + suffix).val(userObj.email);
+		$('#phone_' + suffix).val(userObj.phone);
+		/*$('#address_' + suffix + '_1').val();
+		$('#address_' + suffix + '_2').val();
+		$('#city_' + suffix).val();
+		$('#country_' + suffix).val();
+		$('#state_' + suffix).val();*/
+	}
 };
 $(document).ready(function(){
 
@@ -202,5 +233,17 @@ $(document).ready(function(){
 		var elementName = $(this).attr('name');
 		var selector = elementName.indexOf('shipper') !== -1 ? '#state_shipper' : '#state_receiver';
 		Parcel.getStates(country_id, $(selector));
+	});
+
+	$('#btn_Search_shipper, #btn_Search_receiver').on('click', function(event){
+
+		var suffix = '';
+		if($(this).hasClass('shipper')) {
+			suffix = 'shipper';
+		} else {
+			suffix = 'receiver';
+		}
+		var term = $("#" + suffix + "SearchBox").val();
+		Parcel.getUserInformation(term, suffix);
 	});
 });
