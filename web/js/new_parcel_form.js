@@ -175,7 +175,10 @@ var Parcel = {
 				$(selectSelector).html(html);
 			}
 		});
-	},
+	}
+
+	/*
+	,
 
 	getUserInformation: function(term) {
 		$.get( Parcel.Url.states, { id: country_id }, function(response) {
@@ -188,7 +191,7 @@ var Parcel = {
 				$(selectSelector).html(html);
 			}
 		});
-	}
+	}*/
 };
 $(document).ready(function(){
 
