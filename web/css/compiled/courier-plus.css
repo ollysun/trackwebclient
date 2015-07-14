@@ -3017,7 +3017,8 @@ input[type="radio"] {
   color: orange;
 }
 .table-search-form .input-group-search,
-.table-search-form .date-range {
+.table-search-form .date-range,
+.table-search-form .filter-status {
   margin-right: 6px;
 }
 .table-search-form .date-range {
