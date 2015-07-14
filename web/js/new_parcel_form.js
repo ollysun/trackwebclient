@@ -1,10 +1,11 @@
 (function($){
 //Initialize the carousel
-$('#newParcelForm').carousel('pause');
-$('#newParcelForm').on('slide.bs.carousel', function () {
-	$("html, body").animate({scrollTop:0},'fast');
-	return true;
-});
+$('#newParcelForm').carousel('pause')
+	.off('keydown.bs.carousel')
+	.on('slide.bs.carousel', function () {
+		$("html, body").animate({scrollTop:0},10);
+		return true;
+	});
 
 var deliveryShowHide = {
 	who: '#pickUpWrap',
@@ -119,8 +120,8 @@ function showHide(who, options, callback, evt) {
 var hello = new FlyOutPanel('#shipperAddressFlyOutPanelTrigger');
 var hello2 = new FlyOutPanel('#receiverAddressFlyOutPanelTrigger');
 
-var hello3 = new FlyOutPanel('#shipperSearchBox', 'keypress');
-var hello4 = new FlyOutPanel('#receiverSearchBox', 'keypress');
+//var hello3 = new FlyOutPanel('#shipperSearchBox', 'keypress');
+//var hello4 = new FlyOutPanel('#receiverSearchBox', 'keypress');
 
 function FlyOutPanel (triggerSelector, evt) {
 	var toggleClass = 'open';

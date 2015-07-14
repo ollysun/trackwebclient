@@ -27,13 +27,16 @@ $this->params['breadcrumbs'] = array(
 	<div class="main-box-header clearfix">
 		<form class="table-search-form form-inline clearfix">
 			<div class="pull-left">
+				<?= $this->render('../elements/parcels_filter',[]) ?>
+			</div>
+			<!-- <div class="pull-left">
 				<label for="">From:</label><br>
 				<input name="" id="" class="form-control date-range">
 			</div>
 			<div class="pull-left">
 				<label for="">To:</label><br>
 				<input name="" id="" class="form-control date-range">
-			</div>
+			</div> -->
 			<div class="pull-right clearfix">
 				<div class="pull-left">
 					<label for="searchInput">Search</label><br>
@@ -46,7 +49,7 @@ $this->params['breadcrumbs'] = array(
 						</div>
 					</div>
 				</div>
-				<div class="pull-left">
+				<div class="pull-left hidden">
 					<label>&nbsp;</label><br>
 					<button type="button" class="btn btn-default"><i class="fa fa-download"></i> Download</button>
 				</div>
