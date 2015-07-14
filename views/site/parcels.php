@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = 'Parcels';
 
 <div class="main-box">
 	<div class="main-box-header">
-		<form class="table-search-form form-inline clearfix">
+		<div class="clearfix">
 			<div class="pull-left">
 				<?= $this->render('../elements/parcels_filter',[]) ?>
 			</div>
@@ -31,15 +31,17 @@ $this->params['breadcrumbs'][] = 'Parcels';
 				<label for="">To:</label><br>
 				<input name="" id="" class="form-control date-range">
 			</div>
+
 			<div class="pull-left">
 				<label for="">Filter status</label><br>
 				<select name="" id="" class="form-control  filter-status"></select>
 			</div> -->
 			<div class="pull-right clearfix">
+                <form class="table-search-form form-inline clearfix">
 				<div class="pull-left">
 					<label for="searchInput">Search</label><br>
 					<div class="input-group input-group-search">
-						<input id="searchInput" type="text" name="search" placeholder="" class="search-box form-control">
+						<input id="searchInput" type="text" name="search" placeholder="Waybill Number" class="search-box form-control">
 						<div class="input-group-btn">
 							<button class="btn btn-default" type="submit">
 								<i class="fa fa-search"></i>
@@ -47,6 +49,7 @@ $this->params['breadcrumbs'][] = 'Parcels';
 						</div>
 					</div>
 				</div>
+                </form>
 				<div class="pull-left hidden">
 					<label>&nbsp;</label><br>
 					<div class="btn-group">
@@ -63,7 +66,7 @@ $this->params['breadcrumbs'][] = 'Parcels';
 					</div>
 				</div>
 			</div>
-		</form>
+		</div>
 	</div>
 	<div class="main-box-body">
 		<div class="table-responsive">
