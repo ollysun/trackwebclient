@@ -1,11 +1,95 @@
 (function($){
 //Initialize the carousel
-$('#newParcelForm').carousel('pause')
-	.off('keydown.bs.carousel')
-	.on('slide.bs.carousel', function () {
-		$("html, body").animate({scrollTop:0},10);
-		return true;
+$('#newParcelForm').carousel('pause');
+$('#newParcelForm').on('slide.bs.carousel', function (event) {
+	$("html, body").animate({scrollTop:0},'fast');
+
+	var direction = event.direction;
+	if(direction=='left'){
+		return validate('.carousel-inner > .item.active');
+	}
+	return true;
+});
+
+function validate($parent)
+{
+	$($parent+' .has-error .help-block').remove();
+	$($parent+' .has-error').removeClass('has-error');
+	$($parent+' .has-success').removeClass('has-success');
+	var hasError = false;
+
+	$($parent+' .required').each(function()
+	{
+		var labelText = $(this).prev('label').text().replace("*","");
+		var msg = '';
+
+		if(jQuery.trim($(this).val()) == '')
+		{
+			msg = 'Required field';
+			hasError = true;
+		}
+		else if($(this).attr('type')=='checkbox' & $(this).attr('checked'))
+		{
+			hasError = true;
+		}
+		else if($(this).hasClass('email'))
+		{
+			var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+			if(!emailReg.test(jQuery.trim($(this).val())))
+			{
+				msg = 'Invalid entry';
+				hasError = true;
+			}
+		}
+		else if($(this).hasClass('number'))
+		{
+			var ph = /^[0-9]+(\.[0-9][0-9]?)?$/;
+			if(!ph.test(jQuery.trim($(this).val())))
+			{
+				msg = 'Invalid entry';
+				hasError = true;
+			}
+		}
+		else if($(this).hasClass('phone'))
+		{
+			var ph = /^(234|0)[0-9]{10}$/;
+			if(!ph.test(jQuery.trim($(this).val())))
+			{
+				msg = 'Invalid entry';
+				hasError = true;
+			}
+		}
+		else if($(this).hasClass('match'))
+		{
+			var $match = ($parent+' '+$(this).attr('match'));
+			if($($match).val()!=jQuery.trim($(this).val()))
+			{
+				msg = 'Entries mismatch';
+				hasError = true;
+			}
+		}
+		if(msg != ''){
+			$(this).parent().append('<div class="help-block no-margin small">'+msg+'</div>');
+			$(this).parent().addClass('has-error');
+		}
+		else{
+			$(this).parent().removeClass('has-error').addClass('has-success');
+		}
 	});
+	if(!hasError)
+	{
+		return true;
+	}
+	return false;
+}
+
+$("form.validate").submit(function(event) {
+	if(validate($(this)) === true ) {
+		return;
+	}
+	event.preventDefault();
+});
+
 
 var deliveryShowHide = {
 	who: '#pickUpWrap',
@@ -120,11 +204,8 @@ function showHide(who, options, callback, evt) {
 var hello = new FlyOutPanel('#shipperAddressFlyOutPanelTrigger');
 var hello2 = new FlyOutPanel('#receiverAddressFlyOutPanelTrigger');
 
-// Hide trigger link
-$('#shipperAddressFlyOutPanelTrigger, #receiverAddressFlyOutPanelTrigger').addClass('hidden');
-
-//var hello3 = new FlyOutPanel('#shipperSearchBox', 'keypress');
-//var hello4 = new FlyOutPanel('#receiverSearchBox', 'keypress');
+var hello3 = new FlyOutPanel('#shipperSearchBox', 'keypress');
+var hello4 = new FlyOutPanel('#receiverSearchBox', 'keypress');
 
 function FlyOutPanel (triggerSelector, evt) {
 	var toggleClass = 'open';
@@ -180,22 +261,6 @@ var Parcel = {
 			}
 		});
 	}
-
-	/*
-	,
-
-	getUserInformation: function(term) {
-		$.get( Parcel.Url.states, { id: country_id }, function(response) {
-			if(response.status === 'success') {
-				var html = '';
-				$.each(response.data, function(i, item){
-					html += "<option value='" + item.id + "'>" + item.name.toUpperCase() + "</option>";
-				});
-				$(selectSelector).attr('disabled', false);
-				$(selectSelector).html(html);
-			}
-		});
-	}*/
 };
 $(document).ready(function(){
 
