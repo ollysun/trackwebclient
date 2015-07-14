@@ -165,14 +165,15 @@ class SiteController extends BaseController
     public function actionParcels()
     {
         $parcel = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
-        if(isset(Calypso::getInstance()->get()->search) ){
-            $search = Calypso::getInstance()->get()->search;
-            $response = $parcel->getSearchParcels('-1',$search);
-        }elseif(isset(Calypso::getInstance()->get()->from,Calypso::getInstance()->get()->to)){
+        if(isset(Calypso::getInstance()->get()->from,Calypso::getInstance()->get()->to)){
             $from_date = Calypso::getInstance()->get()->from;
             $to_date = Calypso::getInstance()->get()->to;
-            $filter = isset(Calypso::getInstance()->get()->filter) ? Calypso::getInstance()->get()->filter : '-1';
+            $filter = isset(Calypso::getInstance()->get()->date_filter) ? Calypso::getInstance()->get()->date_filter : '-1';
             $response = $parcel->getFilterParcelsByDateAndStatus($from_date,$to_date,$filter);
+        }
+        elseif(isset(Calypso::getInstance()->get()->search) ){
+            $search = Calypso::getInstance()->get()->search;
+            $response = $parcel->getSearchParcels('-1',$search);
         }else{
             $response = $parcel->getParcels();
         }
@@ -187,7 +188,18 @@ class SiteController extends BaseController
     public function actionProcessedparcels()
     {
         $parcel = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
-        $response = $parcel->getParcels(ServiceConstant::FOR_ARRIVAL);
+        if(isset(Calypso::getInstance()->get()->from,Calypso::getInstance()->get()->to)){
+            $from_date = Calypso::getInstance()->get()->from;
+            $to_date = Calypso::getInstance()->get()->to;
+            $filter = isset(Calypso::getInstance()->get()->date_filter) ? Calypso::getInstance()->get()->date_filter : '-1';
+            $response = $parcel->getFilterParcelsByDateAndStatus($from_date,$to_date,$filter);
+        }
+        elseif(isset(Calypso::getInstance()->get()->search) ){
+            $search = Calypso::getInstance()->get()->search;
+            $response = $parcel->getSearchParcels('-1',$search);
+        }else{
+            $response = $parcel->getNewParcelsByDate(date('Y-m-d'));
+        }
         $response = new ResponseHandler($response);
         $data = [];
         if($response->getStatus() ==  ResponseHandler::STATUS_OK){
@@ -199,7 +211,18 @@ class SiteController extends BaseController
      public function actionParcelsfordelivery()
     {
         $parcel = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
-        $response = $parcel->getParcels(ServiceConstant::FOR_DELIVERY);
+        if(isset(Calypso::getInstance()->get()->from,Calypso::getInstance()->get()->to)){
+            $from_date = Calypso::getInstance()->get()->from;
+            $to_date = Calypso::getInstance()->get()->to;
+            $filter = isset(Calypso::getInstance()->get()->date_filter) ? Calypso::getInstance()->get()->date_filter : '-1';
+            $response = $parcel->getFilterParcelsByDateAndStatus($from_date,$to_date,$filter);
+        }
+        elseif(isset(Calypso::getInstance()->get()->search) ){
+            $search = Calypso::getInstance()->get()->search;
+            $response = $parcel->getSearchParcels('-1',$search);
+        }else{
+            $response = $parcel->getParcels(ServiceConstant::FOR_DELIVERY);
+        }
         $response = new ResponseHandler($response);
         $data = [];
         if($response->getStatus() ==  ResponseHandler::STATUS_OK){
@@ -211,7 +234,18 @@ class SiteController extends BaseController
     public function actionParcelsforsweep()
     {
         $parcel = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
-        $response = $parcel->getParcels(ServiceConstant::FOR_SWEEPER);
+        if(isset(Calypso::getInstance()->get()->from,Calypso::getInstance()->get()->to)){
+            $from_date = Calypso::getInstance()->get()->from;
+            $to_date = Calypso::getInstance()->get()->to;
+            $filter = isset(Calypso::getInstance()->get()->date_filter) ? Calypso::getInstance()->get()->date_filter : '-1';
+            $response = $parcel->getFilterParcelsByDateAndStatus($from_date,$to_date,$filter);
+        }
+        elseif(isset(Calypso::getInstance()->get()->search) ){
+            $search = Calypso::getInstance()->get()->search;
+            $response = $parcel->getSearchParcels('-1',$search);
+        }else{
+            $response = $parcel->getParcels(ServiceConstant::FOR_SWEEPER);
+        }
         $response = new ResponseHandler($response);
         $data = [];
         if($response->getStatus() ==  ResponseHandler::STATUS_OK){
