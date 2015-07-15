@@ -1,13 +1,13 @@
 <div class="form-group">
 	<div class="input-group">
-		<input id="<?= $prefix ?>SearchBox"  data-target="#<?php echo $prefix; ?>SearchFlyOutPanel" type="text" class="form-control" placeholder="Search phone no or email address">
+		<input id="<?=$prefix?>SearchBox"  data-target="#<?php echo $prefix;?>SearchFlyOutPanel" type="text" class="form-control" placeholder="Search phone no or email address">
 		<div class="input-group-btn">
 			<button class="btn btn-default" type="button"><i class="fa fa-search"></i></button>
 		</div>
 	</div>
 </div>
-<div id="<?php echo $prefix; ?>SearchFlyOutPanelWrap" class="flyout-panel-wrap">
-	<div id="<?php echo $prefix; ?>SearchFlyOutPanel" class="flyout-panel">
+<div id="<?php echo $prefix;?>SearchFlyOutPanelWrap" class="flyout-panel-wrap">
+	<div id="<?php echo $prefix;?>SearchFlyOutPanel" class="flyout-panel">
 		<div class="flyout-panel-header">
 			<a class="close">&times;</a>
 			<h4 class="flyout-panel-title">Search results</h4>
@@ -21,13 +21,13 @@
 	<div class="col-xs-12 col-sm-6">
 		<div class="form-group">
 			<label for="">First Name</label>
-			<input name="firstname[<?= $prefix ?>]" type="text" class="form-control">
+			<input name="firstname[<?=$prefix?>]" type="text" class="form-control required">
 		</div>
 	</div>
 	<div class="col-xs-12 col-sm-6">
 		<div class="form-group">
 			<label for="">Last Name</label>
-			<input name="lastname[<?= $prefix ?>]" type="text" class="form-control">
+			<input name="lastname[<?=$prefix?>]" type="text" class="form-control required">
 		</div>
 	</div>
 </div>
@@ -35,18 +35,18 @@
 	<div class="col-xs-12 col-sm-6">
 		<div class="form-group">
 			<label for="">Email address</label>
-			<input name="email[<?= $prefix ?>]" type="text" class="form-control <?php echo $prefix; ?>SearchFlyOutPanelTrigger" data-target="#<?php echo $prefix; ?>SearchFlyOutPanel">
+			<input name="email[<?=$prefix?>]" type="text" class="form-control <?php echo $prefix;?>SearchFlyOutPanelTrigger required email" data-target="#<?php echo $prefix;?>SearchFlyOutPanel">
 		</div>
 	</div>
 	<div class="col-xs-12 col-sm-6">
 		<div class="form-group">
 			<label for="">Phone number</label>
-			<input name="phone[<?= $prefix ?>]" type="text" class="form-control <?php echo $prefix; ?>SearchFlyOutPanelTrigger" data-target="#<?php echo $prefix; ?>SearchFlyOutPanel">
+			<input name="phone[<?=$prefix?>]" type="text" class="form-control <?php echo $prefix;?>SearchFlyOutPanelTrigger required phone" data-target="#<?php echo $prefix;?>SearchFlyOutPanel">
 		</div>
 	</div>
 </div>
-<div id="<?php echo $prefix; ?>SearchFlyOutPanelWrap" class="flyout-panel-wrap">
-	<div id="<?php echo $prefix; ?>SearchFlyOutPanel" class="flyout-panel">
+<div id="<?php echo $prefix;?>SearchFlyOutPanelWrap" class="flyout-panel-wrap">
+	<div id="<?php echo $prefix;?>SearchFlyOutPanel" class="flyout-panel">
 		<div class="flyout-panel-header">
 			<a class="close">&times;</a>
 			<h4 class="flyout-panel-title">Search results</h4>
@@ -57,8 +57,8 @@
 	</div>
 </div>
 
-<div id="<?php echo $prefix; ?>AddressFlyOutPanelWrap" class="flyout-panel-wrap">
-	<div id="<?php echo $prefix; ?>AddressFlyOutPanel" class="flyout-panel transparent">
+<div id="<?php echo $prefix;?>AddressFlyOutPanelWrap" class="flyout-panel-wrap">
+	<div id="<?php echo $prefix;?>AddressFlyOutPanel" class="flyout-panel transparent">
 		<div class="flyout-panel-header">
 			<a class="close">&times;</a>
 			<h4 class="flyout-panel-title">Select an address</h4>
@@ -102,31 +102,31 @@
 <div class="form-group">
 	<div class="clearfix">
 		<label for="">Address</label>
-		<a id="<?php echo $prefix; ?>AddressFlyOutPanelTrigger" href="#" data-target="#<?php echo $prefix; ?>AddressFlyOutPanel" class="pull-right"><small>Manage addresses</small></a>
+		<a id="<?php echo $prefix;?>AddressFlyOutPanelTrigger" href="#" data-target="#<?php echo $prefix;?>AddressFlyOutPanel" class="pull-right"><small>Manage addresses</small></a>
 	</div>
-	<input name="address[<?= $prefix ?>][]" class="form-control">
-	<input name="address[<?= $prefix ?>][]"  class="form-control address-line-1">
+	<input name="address[<?=$prefix?>][]" class="form-control required">
+	<input name="address[<?=$prefix?>][]"  class="form-control address-line-1">
 </div>
 <div class="form-group">
 	<label for="">City</label>
-	<input name="city[<?= $prefix ?>]" class="form-control">
+	<input name="city[<?=$prefix?>]" class="form-control required">
 </div>
 <div class="form-group">
 	<label for="">Country</label>
-	<select name="country[<?= $prefix ?>]" class="form-control" id="country_<?= $prefix ?>">
-		<?php
-		if(isset($countries) && is_array($countries['data'])){
-			foreach($countries['data'] as $item){
-				?>
-				<option value="<?= $item['id'] ?>"><?= strtoupper($item['name']); ?></option>
-			<?php
-			}}
+	<select name="country[<?=$prefix?>]" class="form-control required" id="country_<?=$prefix?>">
+<?php
+if (isset($countries) && is_array($countries['data'])) {
+	foreach ($countries['data'] as $item) {
 		?>
+				<option value="<?=$item['id']?>"><?=strtoupper($item['name']);?></option>
+<?php
+}}
+?>
 	</select>
 </div>
 <div class="form-group">
-	<label for="state[<?= $prefix ?>]">State</label>
-	<select name="state[<?= $prefix ?>]" class="form-control" disabled="disabled" id="state_<?= $prefix ?>"></select>
+	<label for="state[<?=$prefix?>]">State</label>
+	<select name="state[<?=$prefix?>]" class="form-control required" disabled="disabled" id="state_<?=$prefix?>"></select>
 </div>
 <!--<div class="form-group">
 	<label for="lga[<?/*= $prefix */?>]">LGA</label>
