@@ -38,7 +38,7 @@ class SiteController extends BaseController
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'logout' => ['post'],
+                    'logout' => ['get'],
                 ],
             ],
         ];
@@ -58,8 +58,11 @@ class SiteController extends BaseController
     }
     public function beforeAction($action){
         if($action->id != 'login'){
-            if( Yii::$app->user->getIsGuest()){
-                Calypso::getInstance()->AppRedirect('site','login');
+            $s = Calypso::getInstance()->session('user_session');
+
+            if(!$s){
+               // Calypso::getInstance()->AppRedirect('site','login');
+                return $this->redirect('site/logout');
             }
         }
         $this->enableCsrfValidation = false;
@@ -72,7 +75,13 @@ class SiteController extends BaseController
 
         return $this->render('index',array('session_data'=>$session_data));
     }
+    public function actionGerraout(){
+        Calypso::getInstance()->session('user_session',null);
 
+        Yii::$app->user->logout();
+        session_destroy();
+        return $this->redirect('logout');
+    }
     public function actionLogin()
     {
         $this->enableCsrfValidation = false;
@@ -88,7 +97,7 @@ class SiteController extends BaseController
                     RequestHelper::setClientID($data['id']);
                 }
                 Calypso::getInstance()->session("user_session",$response->getData());
-                return $this->redirect('/');
+                return $this->redirect('processedparcels');
             }else{
                 Calypso::getInstance()->setPageData("Invalid Login. Check username and password and try again");
             }
@@ -100,10 +109,7 @@ class SiteController extends BaseController
     public function actionLogout()
     {
         Yii::$app->user->logout();
-        Calypso::getInstance()->unsetSession();
-        Calypso::getInstance()->AppRedirect('site','login');
-        session_destroy();
-        return $this->goHome();
+        return $this->redirect('login');
     }
 
     public function actionContact()
@@ -167,8 +173,8 @@ class SiteController extends BaseController
     {
         $parcel = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
         if(isset(Calypso::getInstance()->get()->from,Calypso::getInstance()->get()->to)){
-            $from_date = Calypso::getInstance()->get()->from;
-            $to_date = Calypso::getInstance()->get()->to;
+            $from_date = Calypso::getInstance()->get()->from.' 00:00:00';
+            $to_date = Calypso::getInstance()->get()->to.' 23:59:59';
             $filter = isset(Calypso::getInstance()->get()->date_filter) ? Calypso::getInstance()->get()->date_filter : '-1';
             $response = $parcel->getFilterParcelsByDateAndStatus($from_date,$to_date,$filter);
         }
@@ -190,8 +196,8 @@ class SiteController extends BaseController
     {
         $parcel = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
         if(isset(Calypso::getInstance()->get()->from,Calypso::getInstance()->get()->to)){
-            $from_date = Calypso::getInstance()->get()->from;
-            $to_date = Calypso::getInstance()->get()->to;
+            $from_date = Calypso::getInstance()->get()->from.' 00:00:00';
+            $to_date = Calypso::getInstance()->get()->to.' 23:59:59';
             $filter = isset(Calypso::getInstance()->get()->date_filter) ? Calypso::getInstance()->get()->date_filter : '-1';
             $response = $parcel->getFilterParcelsByDateAndStatus($from_date,$to_date,$filter);
         }
@@ -213,8 +219,8 @@ class SiteController extends BaseController
     {
         $parcel = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
         if(isset(Calypso::getInstance()->get()->from,Calypso::getInstance()->get()->to)){
-            $from_date = Calypso::getInstance()->get()->from;
-            $to_date = Calypso::getInstance()->get()->to;
+            $from_date = Calypso::getInstance()->get()->from.' 00:00:00';
+            $to_date = Calypso::getInstance()->get()->to.' 23:59:59';
             $filter = isset(Calypso::getInstance()->get()->date_filter) ? Calypso::getInstance()->get()->date_filter : '-1';
             $response = $parcel->getFilterParcelsByDateAndStatus($from_date,$to_date,$filter);
         }
@@ -236,8 +242,8 @@ class SiteController extends BaseController
     {
         $parcel = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
         if(isset(Calypso::getInstance()->get()->from,Calypso::getInstance()->get()->to)){
-            $from_date = Calypso::getInstance()->get()->from;
-            $to_date = Calypso::getInstance()->get()->to;
+            $from_date = Calypso::getInstance()->get()->from.' 00:00:00';
+            $to_date = Calypso::getInstance()->get()->to.' 23:59:59';
             $filter = isset(Calypso::getInstance()->get()->date_filter) ? Calypso::getInstance()->get()->date_filter : '-1';
             $response = $parcel->getFilterParcelsByDateAndStatus($from_date,$to_date,$filter);
         }
@@ -254,52 +260,6 @@ class SiteController extends BaseController
         }
         return $this->render('parcels_for_sweep',array('parcels'=>$data));
     }
-    /*
-    public function actionParcelscollected()
-    {
-        $parcel = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
-        $response = $parcel->getParcels(ServiceConstant::COLLECTED);
-        $response = new ResponseHandler($response);
-        $data = [];
-        if($response->getStatus() ==  ResponseHandler::STATUS_OK){
-            $data = $response->getData();
-        }
-        return $this->render('parcels_for_sweep',array('parcels'=>$data));
-    }
-    public function actionParcelsintransit()
-    {
-        $parcel = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
-        $response = $parcel->getParcels(ServiceConstant::IN_TRANSIT);
-        $response = new ResponseHandler($response);
-        $data = [];
-        if($response->getStatus() ==  ResponseHandler::STATUS_OK){
-            $data = $response->getData();
-        }
-        return $this->render('parcels_for_sweep',array('parcels'=>$data));
-    }
-    public function actionParcelscancelled()
-    {
-        $parcel = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
-        $response = $parcel->getParcels(ServiceConstant::CANCELLED);
-        $response = new ResponseHandler($response);
-        $data = [];
-        if($response->getStatus() ==  ResponseHandler::STATUS_OK){
-            $data = $response->getData();
-        }
-        return $this->render('parcels_for_sweep',array('parcels'=>$data));
-    }
-    public function actionParcelsdelivered()
-    {
-        $parcel = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
-        $response = $parcel->getParcels(ServiceConstant::DELIVERED);
-        $response = new ResponseHandler($response);
-        $data = [];
-        if($response->getStatus() ==  ResponseHandler::STATUS_OK){
-            $data = $response->getData();
-        }
-        return $this->render('parcels_for_sweep',array('parcels'=>$data));
-    }
-    */
     public function actionViewwaybill()
     {
         $data = [];
