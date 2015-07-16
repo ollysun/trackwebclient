@@ -81,7 +81,7 @@ use yii\helpers\Url;
 					</li> -->
 					<li>
 						<a href="<?= Url::to(['site/managebranches']) ?>">
-							<i class="fa fa-dashboard"></i>
+							<i class="fa fa-code-fork"></i>
 							<span>Manage branches</span>
 						</a>
 					</li>
