@@ -1,23 +1,44 @@
 <?php
+namespace Adapter;
 use Adapter\BaseAdapter;
 use Adapter\Globals;
+use Adapter\Globals\ServiceConstant;
+
 class ParcelAdapter extends BaseAdapter{
 
 
-    public function createNewParcel($sender,$receiver,$sender_address,$receiver_address,$bank_account,$parcel){
-        return $this->request(URL_ADD_PARCEL,array(
-            'sender' => $sender,
-            'receiver' => $receiver,
-            'sender_address' => $sender_address,
-            'receiver_address' => $receiver_address,
-            'bank_account' => $bank_account,
-            'parcel' => $parcel
-        ),self::HTTP_POST);
+    public function createNewParcel($postData){
+        return $this->request(ServiceConstant::URL_ADD_PARCEL, $postData, self::HTTP_POST);
     }
     public function getOneParcel($id){
-        return $this->request(URL_GET_ONE_PARCEL,array('id'=>$id),self::HTTP_GET);
+        return $this->request(ServiceConstant::URL_GET_ONE_PARCEL,array('id'=>$id),self::HTTP_GET);
     }
     public function getOneParcelBySender($id){
-        return $this->request(URL_GET_ONE_PARCEL,array('id'=>$id),self::HTTP_GET);
+        return $this->request(ServiceConstant::URL_GET_ONE_PARCEL,array('id'=>$id),self::HTTP_GET);
+    }
+    public function getParcels($type=null,$branch_id=null){
+        $filter = ($type != null ? '&status='.$type:'');
+        $filter .= ($branch_id == null ? '':'&branch_id='.$branch_id);
+        //$filter = '';
+        return $this->request(ServiceConstant::URL_GET_ALL_PARCEL.'?with_sender=1&with_receiver=1&with_receiver_address=1'.$filter,array(),self::HTTP_GET);
+
+    }
+    public function getSearchParcels($status,$waybill_number){
+        $parcel_status = $status == '-1'?'': '&status='.$status;
+        $filter = $parcel_status.'&waybill_number='.$waybill_number;
+        return $this->request(ServiceConstant::URL_GET_ALL_PARCEL.'?with_sender=1&with_receiver=1&with_receiver_address=1'.$filter,array(),self::HTTP_GET);
+
+    }
+    public function getFilterParcelsByDateAndStatus($start_created_date,$end_created_date,$status){
+        $parcel_status = $status == '-1'?'': '&status='.$status;
+        $filter = $parcel_status.'&start_created_date='.$start_created_date;
+        $filter .= $parcel_status.'&end_created_date='.$end_created_date;
+        return $this->request(ServiceConstant::URL_GET_ALL_PARCEL.'?with_sender=1&with_receiver=1&with_receiver_address=1'.$filter,array(),self::HTTP_GET);
+
+    }
+    public function getNewParcelsByDate($start_created_date){
+        $filter = '&start_created_date='.$start_created_date;
+        return $this->request(ServiceConstant::URL_GET_ALL_PARCEL.'?with_sender=1&with_receiver=1&with_receiver_address=1'.$filter,array(),self::HTTP_GET);
+
     }
 }

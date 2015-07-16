@@ -321,8 +321,14 @@ a:focus {
 .main-box .main-box-header.with-border {
   border-bottom: 1px solid #ecf0f1;
 }
+.main-box .main-box-header.with-border + .main-box-body {
+  padding-top: 20px;
+}
 .main-box .main-box-body {
   padding: 0 20px 20px 20px;
+}
+.main-box .main-box-body:first-child {
+  padding-top: 20px;
 }
 h1 small,
 h2 small,
@@ -2086,6 +2092,7 @@ blockquote.pull-right:before {
   border-bottom: 2px solid #e7ebee;
   text-transform: uppercase;
   font-size: 0.875em;
+  text-align: center;
 }
 .table thead > tr > th > a span {
   color: #333333;
@@ -3009,16 +3016,19 @@ input[type="radio"] {
   line-height: 1.1;
   color: orange;
 }
+.table-search-form .input-group-search,
+.table-search-form .date-range,
+.table-search-form .filter-status {
+  margin-right: 6px;
+}
 .table-search-form .date-range {
-  width: 100px;
-  margin-right: 10px;
+  width: 120px;
 }
 .table-search-form .filter-status {
-  width: 120px;
-  margin-right: 10px;
+  width: 140px;
 }
 .table-search-form .input-group > .search-box {
-  width: 300px;
+  width: 220px;
 }
 /* GALLERY */
 #gallery-photos-wrapper {

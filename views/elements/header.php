@@ -1,6 +1,9 @@
 <?php
 use yii\helpers\Url;
 use yii\helpers\Html;
+use Adapter\Util\Calypso;
+
+$session_data = Calypso::getInstance()->session('user_session');
 ?>
 <header class="navbar" id="header-navbar">
 	<div class="container">
@@ -17,13 +20,13 @@ use yii\helpers\Html;
 					<li class="dropdown profile-dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 							<?= Html::img('@web/img/avatar.png', ['alt' => '']) ?>
-							<span class="hidden-xs">Gbadebo Ishola</span> <b class="caret"></b>
+							<span class="hidden-xs"><?= strtoupper($session_data['fullname']); ?> (<?= strtoupper("logged in as ".$session_data['role']['name']) ?>)</span> <b class="caret"></b>
 						</a>
 						<ul class="dropdown-menu dropdown-menu-right">
 							<li><a href="#"><i class="fa fa-user"></i>Profile</a></li>
 							<li><a href="#"><i class="fa fa-cog"></i>Settings</a></li>
 							<li><a href="#"><i class="fa fa-envelope-o"></i>Messages</a></li>
-							<li><a href="#"><i class="fa fa-power-off"></i>Logout</a></li>
+							<li><a href="<?= Url::to(['site/gerraout']) ?>" data-method="post"><i class="fa fa-power-off"></i>Logout</a></li>
 						</ul>
 					</li>
 				</ul>
