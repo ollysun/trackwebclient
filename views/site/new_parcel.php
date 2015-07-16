@@ -5,18 +5,18 @@ use yii\helpers\Html;
 $this->title = 'Create a New Parcel';
 $this->params['breadcrumbs'] = array(
 	array(
-	'url' => ['site/parcels'],
-	'label' => 'Parcels'
+		'url' => ['site/parcels'],
+		'label' => 'Parcels',
 	),
-	array('label'=> $this->title)
+	array('label' => $this->title),
 );
 ?>
 
-<?= Html::cssFile('@web/css/libs/bootstrap-select.min.css') ?>
 
-<?php echo \Adapter\Util\Calypso::showFlashMessages(); ?>
+<?=Html::cssFile('@web/css/libs/bootstrap-select.min.css')?>
 
-<form action="#" method="post" enctype="multipart/form-data">
+<?php echo \Adapter\Util\Calypso::showFlashMessages();?>
+<form action="#" method="post" enctype="multipart/form-data" class="validate">
 
 	<div id="newParcelForm" class="l-new-parcel-form carousel slide">
 		<ol class="carousel-indicators hidden">
@@ -32,16 +32,16 @@ $this->params['breadcrumbs'] = array(
 							<h2>Shipper Information</h2>
 						</div>
 						<div class="main-box-body">
-							<?= $this->render('../elements/new_parcel_user_information',['prefix'=>'shipper', 'countries' => $countries]) ?>
-						</div>
+<?=$this->render('../elements/new_parcel_user_information', ['prefix' => 'shipper', 'countries' => $countries])?>
+</div>
 					</div>
 					<div class="col-xs-12 col-lg-6">
 						<div class="main-box-header">
 							<h2>Receiver Information</h2>
 						</div>
 						<div class="main-box-body">
-							<?= $this->render('../elements/new_parcel_user_information',['prefix'=>'receiver', 'countries' => $countries]) ?>
-						</div>
+<?=$this->render('../elements/new_parcel_user_information', ['prefix' => 'receiver', 'countries' => $countries])?>
+</div>
 					</div>
 				</div>
 				<div class="clearfix main-box-body main-box-button-wrap">
@@ -70,9 +70,9 @@ $this->params['breadcrumbs'] = array(
 
 							<div class="form-group">
 								<label for="">Parcel Type</label>
-								<div>
+								<div class='validate'>
 									<div class="radio-inline">
-										<input id="parcelTypeDoc" type="radio" name="parcel_type" value="1" checked="checked"> <label for="parcelTypeDoc" class="">NORMAL</label>
+										<input id="parcelTypeDoc" type="radio" name="parcel_type" value="1"> <label for="parcelTypeDoc" class="">NORMAL</label>
 									</div>
 									<div class="radio-inline">
 										<input id="parcelTypeNonDoc" type="radio" name="parcel_type" value="2"> <label for="parcelTypeNonDoc" class="">RETURNS</label>
@@ -85,12 +85,12 @@ $this->params['breadcrumbs'] = array(
 							<div class="row">
 								<div class="col-xs-12 col-sm-3 form-group">
 									<label>No. of Packages</label>
-									<input name="no_of_packages" class="form-control">
+									<input name="no_of_packages" class="form-control validate required number">
 								</div>
 								<div class="col-xs-12 col-sm-4 form-group">
 									<label>Parcel weight</label>
 									<div class="input-group">
-										<input name="parcel_weight" class="form-control">
+										<input name="parcel_weight" class="form-control validate required number">
 										<span class="input-group-addon">Kg</span>
 									</div>
 								</div>
@@ -105,7 +105,7 @@ $this->params['breadcrumbs'] = array(
 												<option title="GBP" value="GBP">British Pounds</option>
 											</select>
 										</div>
-										<input name="parcel_value" type="text" class="form-control">
+										<input name="parcel_value" type="text" class="form-control required number">
 									</div>
 								</div>
 							</div>
@@ -127,16 +127,12 @@ $this->params['breadcrumbs'] = array(
 							</div>
 							<div class="form-group">
 								<label for="">Shipping Type</label>
-								<select name="shipping_type" id="" class="form-control">
-                                    <?php
-                                    if(isset($ShipmentType) && is_array($ShipmentType['data'])){
-                                        foreach($ShipmentType['data'] as $item){
-                                            ?>
-                                            <option value="<?= $item['id'] ?>"><?= strtoupper($item['name']); ?></option>
-                                        <?php
-                                        }}
-                                    ?>
-								</select>
+								<select name="shipping_type" id="" class="form-control validate required">
+<?php if (isset($ShipmentType) && is_array($ShipmentType['data'])) {
+	foreach ($ShipmentType['data'] as $item) {?>
+										<option value="<?=$item['id']?>"><?=strtoupper($item['name']);?></option>
+<?php }}?>
+</select>
 							</div>
 						</div>
 					</div>
@@ -171,15 +167,15 @@ $this->params['breadcrumbs'] = array(
 									<div class="col-xs-12 col-sm-6 col-lg-7 form-group">
 										<label>Bank</label>
 										<select name="bank" class="form-control">
-                                            <?php
-                                            if(isset($Banks) && is_array($Banks['data'])){
-                                                foreach($Banks['data'] as $item){
-                                            ?>
-                                                <option value="<?= $item['id'] ?>"><?= strtoupper($item['name']); ?></option>
-                                            <?php
-                                            }}
-                                            ?>
-										</select>
+<?php
+if (isset($Banks) && is_array($Banks['data'])) {
+	foreach ($Banks['data'] as $item) {
+		?>
+                                                <option value="<?=$item['id']?>"><?=strtoupper($item['name']);?></option>
+<?php
+}}
+?>
+</select>
 									</div>
 								</div>
 
@@ -281,5 +277,5 @@ $this->params['breadcrumbs'] = array(
 	</div>
 </form>
 
-<?php $this->registerJsFile('@web/js/libs/bootstrap-select.min.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
-<?php $this->registerJsFile('@web/js/new_parcel_form.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/libs/bootstrap-select.min.js', ['depends' => [\app\assets\AppAsset::className()]])?>
+<?php $this->registerJsFile('@web/js/new_parcel_form.js', ['depends' => [\app\assets\AppAsset::className()]])?>
