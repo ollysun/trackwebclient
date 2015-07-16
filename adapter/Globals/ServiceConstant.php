@@ -3,6 +3,7 @@ namespace Adapter\Globals;
 
 class ServiceConstant {
 
+    const BASE_PATH = "http://local.courierplus.com";
 
     const USER_TYPE_ADMIN = 1;
     const USER_TYPE_MANAGER = 2;
@@ -13,18 +14,73 @@ class ServiceConstant {
     const USER_TYPE_ACCOUNTANT = 7;
     const USER_TYPE_SUPER_ADMIN = 8;
 
+    const ACTIVE = 1;
+    const INACTIVE = 2;
+    const REMOVED = 3;
+    const COLLECTED = 4;
+    const IN_TRANSIT = 5;
+    const DELIVERED = 6;
+    const CANCELLED = 7;
+    const FOR_SWEEPER = 8;
+    const FOR_ARRIVAL = 9;
+    const FOR_DELIVERY = 10;
+
 
     const URL_ADD_PARCEL = 'parcel/add/';
     const URL_GET_ONE_PARCEL = 'parcel/getone/';
     const URL_GET_ALL_PARCEL = 'parcel/getAll/';
 
-    const URL_ASSIGN_DEVICE = 'device/assigntomerchant/';
-    const URL_GET_MERCHANT_DEVICES = 'merchant/getdevices/';
-    const URL_GET_PAGE_SUMMARY = 'report/total/';
-    const URL_CREATE_AGENT = 'admin/registerUser/';
-    const URL_CREATE_CUSTOMER = 'customer/register/';
-    const URL_GET_USER = 'user/get/';
-    const URL_GET_AGENT_DEVICES = 'agent/getdevice/';
-    const URL_CREDIT_AGENT = 'topuptransaction/add/';
-    const URL_GET_AGENT = 'agent/getAll/';
+    const URL_GET_ALL_BANKS = 'bank/getAll/';
+    const URL_ADMIN_LOGIN = 'admin/login/';
+    const URL_REF_BANK = 'ref/banks/';
+    const URL_REF_SHIPMENT = 'ref/shipmentType/';
+    const URL_REF_deliveryType = 'ref/deliveryType/';
+    const URL_REF_parcelType = 'ref/parcelType/';
+    const URL_REF_COUNTRIES = 'ref/countries';
+    //'ref/states?country_id=1'
+    const URL_REF_STATES = 'ref/states';
+    const URL_REF_PAYMENT_METHODS = '/ref/paymentType';
+
+    const URL_USER_BY_PHONE = '/user/getByPhone';
+
+    public static function getStatus($status){
+        switch($status){
+            case ServiceConstant::ACTIVE:
+                return 'Active';
+                break;
+            case ServiceConstant::INACTIVE:
+                return 'Inactive';
+                break;
+            case ServiceConstant::IN_TRANSIT:
+                return 'In Transit';
+                break;
+            case ServiceConstant::REMOVED:
+                return 'Removed';
+                break;
+            case ServiceConstant::COLLECTED:
+                return 'Collected';
+                break;
+            case ServiceConstant::DELIVERED:
+                return 'Delivered';
+                break;
+            case ServiceConstant::CANCELLED:
+                return 'Cancelled';
+                break;
+            case ServiceConstant::FOR_SWEEPER:
+                return 'For Sweeper';
+                break;
+            case ServiceConstant::FOR_ARRIVAL:
+                return 'For Arrival';
+                break;
+            case ServiceConstant::FOR_DELIVERY:
+                return 'For Delivery';
+                break;
+
+        }
+    }
+    public static function getStatusRef(){
+        return [ServiceConstant::IN_TRANSIT,ServiceConstant::DELIVERED,ServiceConstant::CANCELLED,ServiceConstant::FOR_ARRIVAL
+        ,ServiceConstant::FOR_DELIVERY,ServiceConstant::FOR_SWEEPER,ServiceConstant::COLLECTED];
+    }
+
 }

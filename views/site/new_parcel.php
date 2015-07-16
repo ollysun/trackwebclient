@@ -2,13 +2,21 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-$this->title = 'New Parcel';
-$this->params['breadcrumbs'][] = $this->title;
+$this->title = 'Create a New Parcel';
+$this->params['breadcrumbs'] = array(
+	array(
+		'url' => ['site/parcels'],
+		'label' => 'Parcels',
+	),
+	array('label' => $this->title),
+);
 ?>
 
-<?= Html::cssFile('@web/css/libs/bootstrap-select.min.css') ?>
 
-<form action="#" method="post" enctype="multipart/form-data">
+<?=Html::cssFile('@web/css/libs/bootstrap-select.min.css')?>
+
+<?php echo \Adapter\Util\Calypso::showFlashMessages();?>
+<form action="#" method="post" enctype="multipart/form-data" class="validate">
 
 	<div id="newParcelForm" class="l-new-parcel-form carousel slide">
 		<ol class="carousel-indicators hidden">
@@ -24,16 +32,16 @@ $this->params['breadcrumbs'][] = $this->title;
 							<h2>Shipper Information</h2>
 						</div>
 						<div class="main-box-body">
-							<?= $this->render('../elements/new_parcel_user_information',['prefix'=>'shipper']) ?>
-						</div>
+<?=$this->render('../elements/new_parcel_user_information', ['prefix' => 'shipper', 'countries' => $countries])?>
+</div>
 					</div>
 					<div class="col-xs-12 col-lg-6">
 						<div class="main-box-header">
 							<h2>Receiver Information</h2>
 						</div>
 						<div class="main-box-body">
-							<?= $this->render('../elements/new_parcel_user_information',['prefix'=>'receiver']) ?>
-						</div>
+<?=$this->render('../elements/new_parcel_user_information', ['prefix' => 'receiver', 'countries' => $countries])?>
+</div>
 					</div>
 				</div>
 				<div class="clearfix main-box-body main-box-button-wrap">
@@ -43,34 +51,50 @@ $this->params['breadcrumbs'][] = $this->title;
 
 			<div class="main-box item">
 				<div class="main-box-header">
-					<h2>Other Information</h2>
+					<h2>Parcel/Shipment Information</h2>
 				</div>
 				<div class="row">
 					<div class="col-xs-12 col-sm-6">
 						<div class="main-box-body">
 							<div class="form-group">
-								<label for="">Parcel Type</label>
+								<label>Send parcel to Hub?</label>
 								<div>
 									<div class="radio-inline">
-										<input id="parcelTypeDoc" type="radio" name="parcel_type" value="doc" checked="checked"> <label for="parcelTypeDoc" class="">Document</label>
+										<input id="sendToHubYes" type="radio" name="send_to_hub" value="1" checked="checked"> <label for="sendToHubYes" class="">Yes</label>
 									</div>
 									<div class="radio-inline">
-										<input id="parcelTypeNonDoc" type="radio" name="parcel_type" value="non-doc"> <label for="parcelTypeNonDoc" class="">Non-Document</label>
+										<input id="sendToHubNo" type="radio" name="send_to_hub" value="0"> <label for="sendToHubNo" class="">No</label>
+									</div>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label for="">Parcel Type</label>
+								<div class='validate'>
+									<div class="radio-inline">
+										<input id="parcelTypeDoc" type="radio" name="parcel_type" value="1"> <label for="parcelTypeDoc" class="">NORMAL</label>
 									</div>
 									<div class="radio-inline">
-										<input id="parcelTypeHighValue" type="radio" name="parcel_type" value="high-value"> <label for="parcelTypeHighValue" class="">High Value</label>
+										<input id="parcelTypeNonDoc" type="radio" name="parcel_type" value="2"> <label for="parcelTypeNonDoc" class="">RETURNS</label>
+									</div>
+									<div class="radio-inline">
+										<input id="parcelTypeHighValue" type="radio" name="parcel_type" value="3"> <label for="parcelTypeHighValue" class="">EXPRESS</label>
 									</div>
 								</div>
 							</div>
 							<div class="row">
+								<div class="col-xs-12 col-sm-3 form-group">
+									<label>No. of Packages</label>
+									<input name="no_of_packages" class="form-control validate required number">
+								</div>
 								<div class="col-xs-12 col-sm-4 form-group">
 									<label>Parcel weight</label>
 									<div class="input-group">
-										<input name="parcel_weight" class="form-control">
+										<input name="parcel_weight" class="form-control validate required number">
 										<span class="input-group-addon">Kg</span>
 									</div>
 								</div>
-								<div class="col-xs-12 col-sm-8 form-group">
+								<div class="col-xs-12 col-sm-5 form-group">
 									<label>Parcel value</label>
 									<div class="input-group">
 										<div class="input-group-btn">
@@ -81,7 +105,7 @@ $this->params['breadcrumbs'][] = $this->title;
 												<option title="GBP" value="GBP">British Pounds</option>
 											</select>
 										</div>
-										<input name="parcel_value" type="text" class="form-control">
+										<input name="parcel_value" type="text" class="form-control required number">
 									</div>
 								</div>
 							</div>
@@ -90,10 +114,10 @@ $this->params['breadcrumbs'][] = $this->title;
 								<label for="">Delivery Type</label>
 								<div>
 									<div class="radio-inline">
-										<input id="deliveryAtCentre" type="radio" name="delivery_type" value="centre"> <label for="deliveryAtCentre" class="">Centre Pickup</label>
+										<input id="deliveryAtAddress" type="radio" name="delivery_type" value="2" checked="checked"> <label for="deliveryAtAddress" class="">Dispatch</label>
 									</div>
 									<div class="radio-inline">
-										<input id="deliveryAtAddress" type="radio" name="delivery_type" value="address" checked="checked"> <label for="deliveryAtAddress" class="">Address delivery</label>
+										<input id="deliveryAtCentre" type="radio" name="delivery_type" value="1"> <label for="deliveryAtCentre" class="">Pickup</label>
 									</div>
 								</div>
 							</div>
@@ -103,7 +127,12 @@ $this->params['breadcrumbs'][] = $this->title;
 							</div>
 							<div class="form-group">
 								<label for="">Shipping Type</label>
-								<select name="shipping_type" id="" class="form-control"></select>
+								<select name="shipping_type" id="" class="form-control validate required">
+<?php if (isset($ShipmentType) && is_array($ShipmentType['data'])) {
+	foreach ($ShipmentType['data'] as $item) {?>
+										<option value="<?=$item['id']?>"><?=strtoupper($item['name']);?></option>
+<?php }}?>
+</select>
 							</div>
 						</div>
 					</div>
@@ -137,7 +166,16 @@ $this->params['breadcrumbs'][] = $this->title;
 									</div>
 									<div class="col-xs-12 col-sm-6 col-lg-7 form-group">
 										<label>Bank</label>
-										<select name="bank" class="form-control"></select>
+										<select name="bank" class="form-control">
+<?php
+if (isset($Banks) && is_array($Banks['data'])) {
+	foreach ($Banks['data'] as $item) {
+		?>
+                                                <option value="<?=$item['id']?>"><?=strtoupper($item['name']);?></option>
+<?php
+}}
+?>
+</select>
 									</div>
 								</div>
 
@@ -201,13 +239,13 @@ $this->params['breadcrumbs'][] = $this->title;
 									<label for="">Payment Method</label>
 									<div>
 										<div class="radio-inline">
-											<input id="paymentMethodCash" type="radio" name="payment_method" value="cash" checked="checked"> <label for="paymentMethodCash" class="">Cash</label>
+											<input id="paymentMethodCash" type="radio" name="payment_method" value="1" checked="checked"> <label for="paymentMethodCash" class="">Cash</label>
 										</div>
 										<div class="radio-inline">
-											<input id="paymentMethodPOS" type="radio" name="payment_method" value="pos"> <label for="paymentMethodPOS" class="">POS</label>
+											<input id="paymentMethodPOS" type="radio" name="payment_method" value="2"> <label for="paymentMethodPOS" class="">POS</label>
 										</div>
 										<div class="radio-inline">
-											<input id="paymentMethodCashPOS" type="radio" name="payment_method" value="cash_pos"> <label for="paymentMethodCashPOS" class="">Cash &amp; POS</label>
+											<input id="paymentMethodCashPOS" type="radio" name="payment_method" value="3"> <label for="paymentMethodCashPOS" class="">Cash &amp; POS</label>
 										</div>
 									</div>
 								</div>
@@ -239,5 +277,5 @@ $this->params['breadcrumbs'][] = $this->title;
 	</div>
 </form>
 
-<?= $this->registerJsFile('@web/js/libs/bootstrap-select.min.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
-<?= $this->registerJsFile('@web/js/new_parcel_form.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/libs/bootstrap-select.min.js', ['depends' => [\app\assets\AppAsset::className()]])?>
+<?php $this->registerJsFile('@web/js/new_parcel_form.js', ['depends' => [\app\assets\AppAsset::className()]])?>

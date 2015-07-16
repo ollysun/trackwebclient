@@ -4,13 +4,13 @@ use yii\helpers\Url;
 use Adapter\Globals\ServiceConstant;
 
 
-$this->title = 'New Parcels';
+$this->title = 'Parcels: Due for Delivery';
 $this->params['breadcrumbs'] = array(
 	array(
-		'url' => ['site/parcels'],
-		'label' => 'Parcels'
+	'url' => ['site/parcels'],
+	'label' => 'Parcels'
 	),
-	array('label'=> $this->title)
+	array('label'=> 'Due for delivery')
 );
 
 ?>
@@ -20,47 +20,34 @@ $this->params['breadcrumbs'] = array(
 
 
 <?php
-	$this->params['content_header_button'] = $this->render('../elements/content_header_new_parcel_button');
+	//$this->params['content_header_button'] = $this->render('../elements/content_header_new_parcel_button');
 ?>
 
 <div class="main-box">
 	<div class="main-box-header clearfix">
-		<div class=" clearfix">
-			<div class="pull-left">
-				<?= $this->render('../elements/parcels_filter',[]) ?>
-			</div>
-			<!-- <div class="pull-left">
-				<label for="">From:</label><br>
-				<input name="" id="" class="form-control date-range">
-			</div>
-			<div class="pull-left">
-				<label for="">To:</label><br>
-				<input name="" id="" class="form-control date-range">
-			</div> -->
-			<div class="pull-right clearfix">
-                <form class="table-search-form form-inline clearfix">
-				<div class="pull-left">
-					<label for="searchInput">Search</label><br>
-					<div class="input-group input-group-search">
-						<input id="searchInput" type="text" name="search" placeholder="" class="search-box form-control">
-						<div class="input-group-btn">
-							<button class="btn btn-default" type="submit">
-								<i class="fa fa-search"></i>
-							</button>
-						</div>
-					</div>
-				</div>
-                 </form>
-				<div class="pull-left hidden">
-					<label>&nbsp;</label><br>
-					<button type="button" class="btn btn-default"><i class="fa fa-download"></i> Download</button>
-				</div>
-			</div>
+        <div class="clearfix">
+            <form class="table-search-form form-inline pull-right clearfix">
+            <div class="pull-left">
+                <label for="searchInput">Search</label><br>
+                <div class="input-group input-group-search">
+                    <input id="searchInput" type="text" name="search" placeholder="" class="search-box form-control">
+                    <div class="input-group-btn">
+                        <button class="btn btn-default" type="submit">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            </form>
+    		<div class="pull-left">
+    			<label>&nbsp;</label><br>
+    			<button type="button" class="btn btn-default">Generate Delivery Run</button>
+    		</div>
 		</div>
 	</div>
 	<div class="main-box-body">
 		<div class="table-responsive">
-			<table id="table" class="table table-hover  table-bordered">
+            <table id="table" class="table table-hover table-bordered">
                 <thead>
                 <tr>
                     <!--						<th style="width: 20px"><div class="checkbox-nice"><input id="chbx_w_all" type="checkbox"><label for="chbx_w_all"> </label></div></th>-->
@@ -74,7 +61,7 @@ $this->params['breadcrumbs'] = array(
                     <th>Action</th>
                 </tr>
                 </thead>
-				<tbody>
+                <tbody>
                 <?php
                 if(isset($parcels) && is_array($parcels)){
                     $i = 1;
@@ -96,7 +83,7 @@ $this->params['breadcrumbs'] = array(
                 ?>
 
                 </tbody>
-			</table>
+            </table>
 		</div>
 	</div>
 </div>
