@@ -354,4 +354,10 @@ class SiteController extends BaseController
             return $this->sendErrorResponse($userInfo['message'], null);
         }
     }
+
+    public function actionPrintwaybill()
+    {
+        $this->layout = 'waybill';
+        return $this->render('print_waybill');
+    }
 }
