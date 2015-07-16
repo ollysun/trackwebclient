@@ -1,40 +1,40 @@
 <?php
 use yii\helpers\Html;
-use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 $this->title = 'Manage Hubs';
 $this->params['breadcrumbs'] = array(
 	array(
-	'url' => ['site/managebranches'],
-	'label' => 'Manage Branches'
+		'url' => ['site/managebranches'],
+		'label' => 'Manage Branches',
 	),
-	array('label'=> 'Hubs')
+	array('label' => 'Hubs'),
 );
 ?>
-
 <!-- this page specific styles -->
-<?= Html::cssFile('@web/css/libs/dataTables.fixedHeader.css') ?>
-<?= Html::cssFile('@web/css/libs/dataTables.tableTools.css') ?>
+<?=Html::cssFile('@web/css/libs/dataTables.fixedHeader.css')?>
+<?=Html::cssFile('@web/css/libs/dataTables.tableTools.css')?>
 
 <?php
-	//$this->params['content_header_button'] = $this->render('../elements/content_header_new_parcel_button');
-?>
+//$this->params['content_header_button'] = $this->render('../elements/content_header_new_parcel_button');
 
+?>
 <div class="main-box">
 	<div class="main-box-header table-search-form">
 		<form class="form-inline clearfix">
 			<div class="pull-left">
-				<?= $this->render('../elements/branch_type_filter', ['branch_type'=>'hub']) ?>
-			</div>
+<?=$this->render('../elements/branch_type_filter', ['branch_type' => 'hub'])?>
+</div>
 
 			<div class="pull-right clearfix">
 				<div class="form-group pull-left">
 					<label for="">Filter State</label><br>
 					<select class="form-control input-sm">
-						<option>Abia</option>
-						<option>Adamawa</option>
-					</select>
+<?php if (isset($states) && is_array($states['data'])) {
+	foreach ($states['data'] as $item) {?>
+						<option value="<?=$item['id']?>"><?=strtoupper($item['name']);?></option>
+<?php }}?>
+</select>
 				</div>
 				<div class="pull-left">
 					<label for="">&nbsp;</label><br>
@@ -88,10 +88,10 @@ $this->params['breadcrumbs'] = array(
 
 
 <!-- this page specific scripts -->
-<?php $this->registerJsFile('@web/js/libs/jquery.dataTables.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
-<?php $this->registerJsFile('@web/js/libs/dataTables.fixedHeader.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
-<?php $this->registerJsFile('@web/js/libs/dataTables.tableTools.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
-<?php $this->registerJsFile('@web/js/libs/jquery.dataTables.bootstrap.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
+<?php $this->registerJsFile('@web/js/libs/jquery.dataTables.js', ['depends' => [\yii\web\JqueryAsset::className()]]);?>
+<?php $this->registerJsFile('@web/js/libs/dataTables.fixedHeader.js', ['depends' => [\yii\web\JqueryAsset::className()]]);?>
+<?php $this->registerJsFile('@web/js/libs/dataTables.tableTools.js', ['depends' => [\yii\web\JqueryAsset::className()]]);?>
+<?php $this->registerJsFile('@web/js/libs/jquery.dataTables.bootstrap.js', ['depends' => [\yii\web\JqueryAsset::className()]]);?>
 
 
 <script type="text/javascript">
