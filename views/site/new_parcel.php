@@ -12,8 +12,11 @@ $this->params['breadcrumbs'] = array(
 );
 ?>
 
+
 <?=Html::cssFile('@web/css/libs/bootstrap-select.min.css')?>
-<form action="#" method="post" enctype="multipart/form-data">
+
+<?php echo \Adapter\Util\Calypso::showFlashMessages();?>
+<form action="#" method="post" enctype="multipart/form-data" class="validate">
 
 	<div id="newParcelForm" class="l-new-parcel-form carousel slide">
 		<ol class="carousel-indicators hidden">
@@ -57,19 +60,19 @@ $this->params['breadcrumbs'] = array(
 								<label>Send parcel to Hub?</label>
 								<div>
 									<div class="radio-inline">
-										<input id="sendToHubYes" type="radio" name="send_to_hub" value="true" checked="checked"> <label for="sendToHubYes" class="">Yes</label>
+										<input id="sendToHubYes" type="radio" name="send_to_hub" value="1" checked="checked"> <label for="sendToHubYes" class="">Yes</label>
 									</div>
 									<div class="radio-inline">
-										<input id="sendToHubNo" type="radio" name="send_to_hub" value="false"> <label for="sendToHubNo" class="">No</label>
+										<input id="sendToHubNo" type="radio" name="send_to_hub" value="0"> <label for="sendToHubNo" class="">No</label>
 									</div>
 								</div>
 							</div>
 
 							<div class="form-group">
 								<label for="">Parcel Type</label>
-								<div>
+								<div class='validate'>
 									<div class="radio-inline">
-										<input id="parcelTypeDoc" type="radio" name="parcel_type" value="1" checked="checked"> <label for="parcelTypeDoc" class="">NORMAL</label>
+										<input id="parcelTypeDoc" type="radio" name="parcel_type" value="1"> <label for="parcelTypeDoc" class="">NORMAL</label>
 									</div>
 									<div class="radio-inline">
 										<input id="parcelTypeNonDoc" type="radio" name="parcel_type" value="2"> <label for="parcelTypeNonDoc" class="">RETURNS</label>
@@ -82,12 +85,12 @@ $this->params['breadcrumbs'] = array(
 							<div class="row">
 								<div class="col-xs-12 col-sm-3 form-group">
 									<label>No. of Packages</label>
-									<input name="no_of_packages" class="form-control required number">
+									<input name="no_of_packages" class="form-control validate required number">
 								</div>
 								<div class="col-xs-12 col-sm-4 form-group">
 									<label>Parcel weight</label>
 									<div class="input-group">
-										<input name="parcel_weight" class="form-control required number">
+										<input name="parcel_weight" class="form-control validate required number">
 										<span class="input-group-addon">Kg</span>
 									</div>
 								</div>
@@ -124,15 +127,11 @@ $this->params['breadcrumbs'] = array(
 							</div>
 							<div class="form-group">
 								<label for="">Shipping Type</label>
-								<select name="shipping_type" id="" class="form-control required">
-<?php
-if (isset($ShipmentType) && is_array($ShipmentType['data'])) {
-	foreach ($ShipmentType['data'] as $item) {
-		?>
-                                            <option value="<?=$item['id']?>"><?=strtoupper($item['name']);?></option>
-<?php
-}}
-?>
+								<select name="shipping_type" id="" class="form-control validate required">
+<?php if (isset($ShipmentType) && is_array($ShipmentType['data'])) {
+	foreach ($ShipmentType['data'] as $item) {?>
+										<option value="<?=$item['id']?>"><?=strtoupper($item['name']);?></option>
+<?php }}?>
 </select>
 							</div>
 						</div>
