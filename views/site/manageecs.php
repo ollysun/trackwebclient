@@ -30,15 +30,15 @@ $this->params['breadcrumbs'] = array(
 
 			<div class="pull-right clearfix">
 				<div class="form-group pull-left">
-					<label for="">Filter State</label><br>
-					<select class="form-control">
-						<option>Abia</option>
-						<option>Adamawa</option>
+					<label for="">Filter by Hub</label><br>
+					<select class="form-control input-sm">
+						<option>Lagos</option>
+						<option>Ibadan</option>
 					</select>
 				</div>
 				<div class="pull-left">
 					<label for="">&nbsp;</label><br>
-					<button class="btn btn-primary btn-sm"><i class="fa fa-plus"></i> Add Hub</button>
+					<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i> Add Express Centre</button>
 				</div>
 			</div>
 		</form>
@@ -49,10 +49,10 @@ $this->params['breadcrumbs'] = array(
 				<thead>
 					<tr>
 						<th style="width: 20px">S/N</th>
+						<th>EC Code</th>
+						<th>EC Name</th>
+						<th>Parent Hub</th>
 						<th>Hub Code</th>
-						<th>Hub Name</th>
-						<th>State</th>
-						<th>State Code</th>
 						<th>Address</th>
 						<th>Status</th>
 						<th>Action</th>
@@ -86,6 +86,25 @@ $this->params['breadcrumbs'] = array(
 	</div>
 </div>
 
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 <!-- this page specific scripts -->
 <?php $this->registerJsFile('@web/js/libs/jquery.dataTables.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
@@ -93,7 +112,3 @@ $this->params['breadcrumbs'] = array(
 <?php $this->registerJsFile('@web/js/libs/dataTables.tableTools.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/libs/jquery.dataTables.bootstrap.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 
-
-<script type="text/javascript">
-
-</script>
