@@ -83,7 +83,7 @@ $this->params['breadcrumbs'][] = 'Parcels';
                         <td><?= strtoupper($parcel['receiver']['firstname'].' '. $parcel['receiver']['lastname']) ?></td>
                         <td><?= $parcel['receiver']['phone'] ?></td>
 						<td><?= ServiceConstant::getStatus($parcel['status']); ?></td>
-						<td><a href="<?= Url::to(['site/viewwaybill?id='.$parcel['id']]) ?>" class="btn btn-sm btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
+						<td><a href="<?= Url::to(['site/viewwaybill?id='.$parcel['id']]) ?>" class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
 					</tr>
                 <?php
                 }}

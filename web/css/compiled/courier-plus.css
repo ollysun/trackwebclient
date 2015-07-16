@@ -1477,7 +1477,6 @@ h3 .small {
 /* BUTTONS */
 .btn {
   border: none;
-  padding: 6px 12px;
   border-bottom: 2px solid;
   -webkit-transition: border-color 0.1s ease-in-out 0s background-color 0.1s ease-in-out 0s;
   -moz-transition: border-color 0.1s ease-in-out 0s background-color 0.1s ease-in-out 0s;
@@ -1490,6 +1489,10 @@ h3 .small {
   -moz-background-clip: padding;
   -webkit-background-clip: padding-box;
   background-clip: padding-box;
+}
+.btn-xs,
+.btn-group-xs > .btn {
+  padding: 3px 5px;
 }
 .btn-default,
 .wizard-cancel,
