@@ -17,31 +17,18 @@ $this->params['breadcrumbs'][] = 'Parcels';
 ?>
 
 <div class="main-box">
-	<div class="main-box-header">
-		<form class="table-search-form form-inline clearfix">
+	<div class="main-box-header table-search-form ">
+		<form class="form-inline clearfix">
 			<div class="pull-left">
 				<?= $this->render('../elements/parcels_filter',[]) ?>
 			</div>
-			<!-- <div class="pull-left">
-				<label for="">From:</label><br>
-				<input name="" id="" class="form-control date-range">
-			</div>
-
-			<div class="pull-left">
-				<label for="">To:</label><br>
-				<input name="" id="" class="form-control date-range">
-			</div>
-			<div class="pull-left">
-				<label for="">Filter status</label><br>
-				<select name="" id="" class="form-control  filter-status"></select>
-			</div> -->
 			<div class="pull-right clearfix">
-				<div class="pull-left">
+				<div class="pull-left form-group">
 					<label for="searchInput">Search</label><br>
-					<div class="input-group input-group-search">
+					<div class="input-group input-group-sm input-group-search">
 						<input id="searchInput" type="text" name="search" placeholder="" class="search-box form-control">
 						<div class="input-group-btn">
-							<button class="btn btn-default" type="submit">
+							<button class="btn btn-sm btn-default" type="submit">
 								<i class="fa fa-search"></i>
 							</button>
 						</div>
@@ -49,7 +36,7 @@ $this->params['breadcrumbs'][] = 'Parcels';
 				</div>
 				<div class="pull-left hidden">
 					<label>&nbsp;</label><br>
-					<div class="btn-group">
+					<div class="btn-group btn-group-sm">
 						<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 						Select an action <span class="caret"></span>
 						</button>
