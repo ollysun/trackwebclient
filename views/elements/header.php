@@ -26,7 +26,7 @@ $session_data = Calypso::getInstance()->session('user_session');
 							<li><a href="#"><i class="fa fa-user"></i>Profile</a></li>
 							<li><a href="#"><i class="fa fa-cog"></i>Settings</a></li>
 							<li><a href="#"><i class="fa fa-envelope-o"></i>Messages</a></li>
-							<li><a href="<?= Url::to(['site/logout']) ?>"><i class="fa fa-power-off"></i>Logout</a></li>
+							<li><a href="<?= Url::to(['site/gerraout']) ?>" data-method="post"><i class="fa fa-power-off"></i>Logout</a></li>
 						</ul>
 					</li>
 				</ul>
