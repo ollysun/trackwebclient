@@ -24,24 +24,16 @@ $this->params['breadcrumbs'] = array(
 ?>
 
 <div class="main-box">
-	<div class="main-box-header clearfix">
+	<div class="main-box-header table-search-form clearfix">
 		<div class=" clearfix">
 			<div class="pull-left">
 				<?= $this->render('../elements/parcels_filter',[]) ?>
 			</div>
-			<!-- <div class="pull-left">
-				<label for="">From:</label><br>
-				<input name="" id="" class="form-control date-range">
-			</div>
-			<div class="pull-left">
-				<label for="">To:</label><br>
-				<input name="" id="" class="form-control date-range">
-			</div> -->
 			<div class="pull-right clearfix">
-                <form class="table-search-form form-inline clearfix">
-				<div class="pull-left">
+                <form class="form-inline clearfix">
+				<div class="pull-left form-group">
 					<label for="searchInput">Search</label><br>
-					<div class="input-group input-group-search">
+					<div class="input-group input-group-sm input-group-search">
 						<input id="searchInput" type="text" name="search" placeholder="" class="search-box form-control">
 						<div class="input-group-btn">
 							<button class="btn btn-default" type="submit">
@@ -53,7 +45,7 @@ $this->params['breadcrumbs'] = array(
                  </form>
 				<div class="pull-left hidden">
 					<label>&nbsp;</label><br>
-					<button type="button" class="btn btn-default"><i class="fa fa-download"></i> Download</button>
+					<button type="button" class="btn btn-sm btn-default"><i class="fa fa-download"></i> Download</button>
 				</div>
 			</div>
 		</div>
