@@ -79,6 +79,12 @@ use yii\helpers\Url;
 							<span>Customer History</span>
 						</a>
 					</li> -->
+					<li>
+						<a href="<?= Url::to(['site/managebranches']) ?>">
+							<i class="fa fa-dashboard"></i>
+							<span>Manage branches</span>
+						</a>
+					</li>
 				</ul>
 			</div>
 		</div>
