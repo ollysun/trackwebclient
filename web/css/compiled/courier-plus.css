@@ -1477,7 +1477,6 @@ h3 .small {
 /* BUTTONS */
 .btn {
   border: none;
-  padding: 6px 12px;
   border-bottom: 2px solid;
   -webkit-transition: border-color 0.1s ease-in-out 0s background-color 0.1s ease-in-out 0s;
   -moz-transition: border-color 0.1s ease-in-out 0s background-color 0.1s ease-in-out 0s;
@@ -1490,6 +1489,10 @@ h3 .small {
   -moz-background-clip: padding;
   -webkit-background-clip: padding-box;
   background-clip: padding-box;
+}
+.btn-xs,
+.btn-group-xs > .btn {
+  padding: 3px 5px;
 }
 .btn-default,
 .wizard-cancel,
@@ -2515,7 +2518,6 @@ input[type="radio"] {
 }
 .input-group > .input-group-btn > .btn {
   border: 0;
-  height: 34px;
 }
 .input-group-addon {
   background: transparent;
@@ -3016,10 +3018,11 @@ input[type="radio"] {
   line-height: 1.1;
   color: orange;
 }
-.table-search-form .input-group-search,
-.table-search-form .date-range,
-.table-search-form .filter-status {
+.table-search-form .form-group {
   margin-right: 6px;
+}
+.table-search-form .form-group:last-child {
+  margin-right: 0;
 }
 .table-search-form .date-range {
   width: 120px;

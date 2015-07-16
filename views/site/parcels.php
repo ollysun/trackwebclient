@@ -16,45 +16,27 @@ $this->params['breadcrumbs'][] = 'Parcels';
 	//$this->params['content_header_button'] = $this->render('../elements/content_header_new_parcel_button');
 ?>
 
-<?php echo \Adapter\Util\Calypso::showFlashMessages(); ?>
-
 <div class="main-box">
-	<div class="main-box-header">
-		<div class="clearfix">
+	<div class="main-box-header table-search-form ">
+		<form class="form-inline clearfix">
 			<div class="pull-left">
 				<?= $this->render('../elements/parcels_filter',[]) ?>
 			</div>
-			<!-- <div class="pull-left">
-				<label for="">From:</label><br>
-				<input name="" id="" class="form-control date-range">
-			</div>
-
-			<div class="pull-left">
-				<label for="">To:</label><br>
-				<input name="" id="" class="form-control date-range">
-			</div>
-
-			<div class="pull-left">
-				<label for="">Filter status</label><br>
-				<select name="" id="" class="form-control  filter-status"></select>
-			</div> -->
 			<div class="pull-right clearfix">
-                <form class="table-search-form form-inline clearfix">
-				<div class="pull-left">
+				<div class="pull-left form-group">
 					<label for="searchInput">Search</label><br>
-					<div class="input-group input-group-search">
-						<input id="searchInput" type="text" name="search" placeholder="Waybill Number" class="search-box form-control">
+					<div class="input-group input-group-sm input-group-search">
+						<input id="searchInput" type="text" name="search" placeholder="" class="search-box form-control">
 						<div class="input-group-btn">
-							<button class="btn btn-default" type="submit">
+							<button class="btn btn-sm btn-default" type="submit">
 								<i class="fa fa-search"></i>
 							</button>
 						</div>
 					</div>
 				</div>
-                </form>
 				<div class="pull-left hidden">
 					<label>&nbsp;</label><br>
-					<div class="btn-group">
+					<div class="btn-group btn-group-sm">
 						<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 						Select an action <span class="caret"></span>
 						</button>
@@ -68,7 +50,7 @@ $this->params['breadcrumbs'][] = 'Parcels';
 					</div>
 				</div>
 			</div>
-		</div>
+		</form>
 	</div>
 	<div class="main-box-body">
 		<div class="table-responsive">
@@ -101,7 +83,7 @@ $this->params['breadcrumbs'][] = 'Parcels';
                         <td><?= strtoupper($parcel['receiver']['firstname'].' '. $parcel['receiver']['lastname']) ?></td>
                         <td><?= $parcel['receiver']['phone'] ?></td>
 						<td><?= ServiceConstant::getStatus($parcel['status']); ?></td>
-						<td><a href="<?= Url::to(['site/viewwaybill?id='.$parcel['id']]) ?>" class="btn btn-sm btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
+						<td><a href="<?= Url::to(['site/viewwaybill?id='.$parcel['id']]) ?>" class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
 					</tr>
                 <?php
                 }}

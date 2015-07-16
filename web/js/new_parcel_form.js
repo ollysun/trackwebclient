@@ -1,11 +1,112 @@
 (function($){
 //Initialize the carousel
-$('#newParcelForm').carousel('pause')
-	.off('keydown.bs.carousel')
-	.on('slide.bs.carousel', function () {
-		$("html, body").animate({scrollTop:0},10);
-		return true;
+$('#newParcelForm').carousel('pause');
+$('#newParcelForm').on('slide.bs.carousel', function (event) {
+	$("html, body").animate({scrollTop:0},'fast');
+
+	var direction = event.direction;
+	if(direction=='left'){
+		return validate('.carousel-inner > .item.active');
+	}
+	return true;
+});
+
+function validate($parent)
+{
+	$($parent+' .has-error .help-block').remove();
+	$($parent+' .has-error').removeClass('has-error');
+	$($parent+' .has-success').removeClass('has-success');
+	var hasError = false;
+
+	$($parent+' .validate').each(function()
+	{
+		var msg = '';
+		var val = jQuery.trim($(this).val());
+
+		if($(this).hasClass('required') && val == '')
+		{
+			msg = 'Required field';
+			hasError = true;
+		}
+		else if($(this).hasClass('email'))
+		{
+			var em = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+			if(!em.test(val))
+			{
+				msg = 'Invalid entry';
+				hasError = true;
+			}
+		}
+		else if($(this).hasClass('integer'))
+		{
+			var test = /^[-+]?\d+$/;
+			if(!test.test(val))
+			{
+				msg = 'Invalid entry';
+				hasError = true;
+			}
+		}
+		else if($(this).hasClass('number'))
+		{
+			var ph = /^[0-9]+(\.[0-9][0-9]?)?$/;
+			if(!ph.test(val))
+			{
+				msg = 'Invalid entry';
+				hasError = true;
+			}
+		}
+		else if($(this).hasClass('phone'))
+		{
+			var ph = /^(234|0)[0-9]{10}$/;
+			if(!ph.test(val))
+			{
+				msg = 'Invalid entry';
+				hasError = true;
+			}
+		}
+		else if($(this).hasClass('match'))
+		{
+			var $match = ($parent+' '+$(this).attr('match'));
+			if($($match).val()!=val)
+			{
+				msg = 'Entries mismatch';
+				hasError = true;
+			}
+		}
+		else if($(this).find("input[type=radio]").length>0 && $(this).find("input[type=radio]:checked").length==0)
+		{
+			msg = 'Required field';
+			hasError = true;
+		}
+		if(msg != ''){
+			if($(this).parent().hasClass('input-group')){
+				$(this).parent().parent().append('<div class="help-block no-margin clearfix">'+msg+'</div>');
+				$(this).parent().parent().addClass('has-error');
+			}
+			else{
+				$(this).parent().append('<div class="help-block no-margin clearfix">'+msg+'</div>');
+				$(this).parent().addClass('has-error');
+			}
+		}
+		else{
+			$(this).parent().removeClass('has-error').addClass('has-success');
+		}
 	});
+	if(!hasError)
+	{
+		return true;
+	}
+	return false;
+}
+
+$("form.validate").submit(function(event) {
+	alert($(this).hasClass('validate'));
+	event.preventDefault();
+/*	if(validate($(this)) === true ) {
+		return;
+	}*/
+});
+
 
 var deliveryShowHide = {
 	who: '#pickUpWrap',
@@ -35,6 +136,10 @@ var CODShowHide = {
 		console.log('val '+val);
 		if (val === 'false') {
 			$('#CODAmount').val('');
+			$('input[name="CODAmount"]').removeClass('required number').parent().removeClass('has-error');;
+		}
+		else {
+			$('input[name="CODAmount"]').addClass('required number');
 		}
 	}
 };
@@ -51,6 +156,12 @@ var merchantShowHide = {
 	callback: function(ele, val, who) {
 		if (val === 'none') {
 			$('#cODNo').trigger('click');
+			$('input[name="account_name"], input[name="account_no"], select[name="bank"]').removeClass('required').parent().removeClass('has-error');
+			$('input[name="account_no"]').removeClass('number');
+		}
+		else {
+			$('input[name="account_name"], input[name="account_no"], select[name="bank"]').addClass('required');
+			$('input[name="account_no"]').addClass('number');
 		}
 	}
 };
@@ -67,7 +178,12 @@ var paymentMethodShowHide = {
 	callback: function(ele, val, who) {
 		console.log('ele', ele);
 		console.log('val '+val);
-
+		if (val === '3') {
+			$('input[name="amount_in_cash"], input[name="amount_in_pos"]').removeClass('required number').parent().removeClass('has-error');;
+		}
+		else {
+			$('input[name="amount_in_cash"], input[name="amount_in_pos"]').addClass('required number');
+		}
 	}
 };
 showHideWrap(deliveryShowHide);
@@ -121,10 +237,10 @@ var hello = new FlyOutPanel('#shipperAddressFlyOutPanelTrigger');
 var hello2 = new FlyOutPanel('#receiverAddressFlyOutPanelTrigger');
 
 // Hide trigger link
-$('#shipperAddressFlyOutPanelTrigger, #receiverAddressFlyOutPanelTrigger').addClass('hidden');
+$('#shipperAddressFlyOutPanelTrigger,#receiverAddressFlyOutPanelTrigger').addClass('hidden');
 
-//var hello3 = new FlyOutPanel('#shipperSearchBox', 'keypress');
-//var hello4 = new FlyOutPanel('#receiverSearchBox', 'keypress');
+// var hello3 = new FlyOutPanel('#shipperSearchBox', 'keypress');
+// var hello4 = new FlyOutPanel('#receiverSearchBox', 'keypress');
 
 function FlyOutPanel (triggerSelector, evt) {
 	var toggleClass = 'open';

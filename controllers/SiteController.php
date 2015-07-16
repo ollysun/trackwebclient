@@ -320,4 +320,13 @@ class SiteController extends BaseController
         $this->layout = 'waybill';
         return $this->render('print_waybill');
     }
+
+    public function actionManagebranches()
+    {
+        return $this->render('managehubs');
+    }
+    public function actionManageecs()
+    {
+        return $this->render('manageecs');
+    }
 }
