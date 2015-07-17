@@ -21,18 +21,18 @@ use yii\helpers\Url;
 					<li>
 						<a href="<?php //echo ROOT_PATH ?>/parcels.php" class="dropdown-toggle">
 							<i class="fa fa-gift"></i>
-							<span>Parcels</span>
+							<span>Shipments</span>
 							<i class="fa fa-angle-right drop-icon"></i>
 						</a>
 						<ul class="submenu">
 							<li>
 								<a href="<?= Url::to(['site/parcels']) ?>">
-									All Parcels
+									All Shipments
 								</a>
 							</li>
 							<li>
 								<a href="<?= Url::to(['site/processedparcels']) ?>">
-									New Parcels
+									New Shipments
 								</a>
 							</li>
 							<li>
