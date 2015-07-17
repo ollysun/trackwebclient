@@ -12,6 +12,21 @@ $this->params['breadcrumbs'] = array(
 	),
 	array('label'=> 'Due to sweep')
 );
+$show_next = false;
+$show_prev = false;
+
+if($offset == 0 || count($parcels) >= 5 ){
+    $show_next = true;
+}else{
+    $show_next = false;
+}
+
+
+if($offset <= 0){
+    $show_prev = false;
+}elseif (($offset - 5) >= 0){
+    $show_prev = true;
+}
 
 ?>
 <!-- this page specific styles -->
@@ -84,6 +99,14 @@ $this->params['breadcrumbs'] = array(
 
                 </tbody>
             </table>
+            <div class="pull-right form-group">
+                <?php if($show_prev): ?>
+                    <a href="<?= Url::to(['site/parcelsforsweep?offset='.($offset - 5)]) ?>" class="btn btn-primary btn-sm">Prev</a>
+                <?php endif;  ?>
+                <?php if($show_next): ?>
+                    <a href="<?= Url::to(['site/parcelsforsweep?offset='.($offset + 5)]) ?>" class="btn btn-primary btn-sm">Next</a>
+                <?php endif;  ?>
+            </div>
 		</div>
 	</div>
 </div>

@@ -6,6 +6,22 @@ use Adapter\Globals\ServiceConstant;
 /* @var $this yii\web\View */
 $this->title = 'All Shipments';
 $this->params['breadcrumbs'][] = 'Shipments';
+$show_next = false;
+$show_prev = false;
+
+if($offset == 0 || count($parcels) >= 5 ){
+    $show_next = true;
+}else{
+    $show_next = false;
+}
+
+
+if($offset <= 0){
+    $show_prev = false;
+}elseif (($offset - 5) >= 0){
+    $show_prev = true;
+}
+
 ?>
 
 <!-- this page specific styles -->
@@ -20,9 +36,10 @@ $this->params['breadcrumbs'][] = 'Shipments';
 	<div class="main-box-header table-search-form ">
 		<div class="clearfix">
 			<div class="pull-left">
-				<?= $this->render('../elements/parcels_filter',[]) ?>
+				<?= $this->render('../elements/parcels_filter',['from_date'=>$from_date,'to_date'=>$to_date]) ?>
 			</div>
 			<div class="pull-right clearfix">
+
                 <form class="table-search-form form-inline clearfix">
                     <div class="pull-left">
                         <label for="searchInput">Search</label><br>
@@ -74,11 +91,12 @@ $this->params['breadcrumbs'][] = 'Shipments';
                 <?php
                 if(isset($parcels) && is_array($parcels)){
                     $i = 1;
+                    $count = $offset + 1;
                     foreach($parcels as $parcel){
                 ?>
 					<tr>
 <!--						<td><div class="checkbox-nice"><input id="chbx_w_000--><?//= $i ?><!--" type="checkbox"><label for="chbx_w_0001"> </label></div></td>-->
-						<td><?= $i++ ?></td>
+						<td><?= $count++ ?></td>
 						<td><?= strtoupper($parcel['waybill_number']); ?></td>
 						<td><?= strtoupper($parcel['sender']['firstname'].' '. $parcel['sender']['lastname']) ?></td>
 						<td><?= $parcel['sender']['phone'] ?></td>
@@ -93,6 +111,14 @@ $this->params['breadcrumbs'][] = 'Shipments';
 
 				</tbody>
 			</table>
+            <div class="pull-right form-group">
+                <?php if($show_prev): ?>
+                <a href="<?= Url::to(['site/parcels?offset='.($offset - 5)]) ?>" class="btn btn-primary btn-sm">Prev</a>
+                <?php endif;  ?>
+                <?php if($show_next): ?>
+                    <a href="<?= Url::to(['site/parcels?offset='.($offset + 5)]) ?>" class="btn btn-primary btn-sm">Next</a>
+                <?php endif;  ?>
+            </div>
 		</div>
 	</div>
 </div>
