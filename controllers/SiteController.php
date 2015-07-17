@@ -337,4 +337,8 @@ class SiteController extends BaseController
         $state_list = $states->getStatus()==ResponseHandler::STATUS_OK?$states->getData(): [];
         return $this->render('manageecs',array('States'=>$state_list));
     }
+    public function actionManagestaff()
+    {
+        return $this->render('managestaff');
+    }
 }
