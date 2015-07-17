@@ -1,5 +1,6 @@
 <?php
 use yii\helpers\Html;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 $this->title = 'Waybill No: '.strtoupper($parcelData['waybill_number']);
@@ -75,7 +76,7 @@ $this->params['breadcrumbs'][] = 'Waybill';
 					<div id="barcode" class="form-control-static">Pickup at Allen Office</div>
 				</div>
                 <div class="form-group">
-                   <button onclick="javascript:window.print();" class="btn btn-primary">Print Waybill</button>
+                   <button onclick="javascript:window.open('<?= Url::to(['site/printwaybill?id='.$id]) ?>', '_blank', 'toolbar=yes, scrollbars=yes, resizable=yes, top=10, left=50%, width=1100, height=800');" class="btn btn-primary">Print Waybill</button>
                 </div>
 			</div>
 		</div>

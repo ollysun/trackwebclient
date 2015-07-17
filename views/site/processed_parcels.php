@@ -12,6 +12,21 @@ $this->params['breadcrumbs'] = array(
 	),
 	array('label'=> $this->title)
 );
+$show_next = false;
+$show_prev = false;
+
+if($offset == 0 || count($parcels) >= 5 ){
+    $show_next = true;
+}else{
+    $show_next = false;
+}
+
+
+if($offset <= 0){
+    $show_prev = false;
+}elseif (($offset - 5) >= 0){
+    $show_prev = true;
+}
 
 ?>
 <!-- this page specific styles -->
@@ -27,7 +42,7 @@ $this->params['breadcrumbs'] = array(
 	<div class="main-box-header table-search-form clearfix">
 		<div class=" clearfix">
 			<div class="pull-left">
-				<?= $this->render('../elements/parcels_filter',[]) ?>
+				<?= $this->render('../elements/parcels_filter',['from_date'=>$from_date,'to_date'=>$to_date]) ?>
 			</div>
 			<div class="pull-right clearfix">
                 <form class="form-inline clearfix">
@@ -89,6 +104,14 @@ $this->params['breadcrumbs'] = array(
 
                 </tbody>
 			</table>
+            <div class="pull-right form-group">
+                <?php if($show_prev): ?>
+                    <a href="<?= Url::to(['site/processedparcels?offset='.($offset - 5)]) ?>" class="btn btn-primary btn-sm">Prev</a>
+                <?php endif;  ?>
+                <?php if($show_next): ?>
+                    <a href="<?= Url::to(['site/processedparcels?offset='.($offset + 5)]) ?>" class="btn btn-primary btn-sm">Next</a>
+                <?php endif;  ?>
+            </div>
 		</div>
 	</div>
 </div>
