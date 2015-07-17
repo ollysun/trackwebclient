@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = 'Parcels';
 
 <div class="main-box">
 	<div class="main-box-header table-search-form ">
-		<form class="form-inline clearfix">
+		<div class="clearfix">
 			<div class="pull-left">
 				<?= $this->render('../elements/parcels_filter',[]) ?>
 			</div>
@@ -52,7 +52,7 @@ $this->params['breadcrumbs'][] = 'Parcels';
 					</div>
 				</div>
 			</div>
-		</form>
+		</div>
 	</div>
 	<div class="main-box-body">
 		<div class="table-responsive">
