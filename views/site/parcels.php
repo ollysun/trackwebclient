@@ -26,7 +26,7 @@ $this->params['breadcrumbs'][] = 'Parcels';
                 <form class="table-search-form form-inline clearfix">
                     <div class="pull-left">
                         <label for="searchInput">Search</label><br>
-                        <div class="input-group input-group-search">
+                        <div class="input-group input-group-sm input-group-search">
                             <input id="searchInput" type="text" name="search" placeholder="Waybill Number" class="search-box form-control">
                             <div class="input-group-btn">
                                 <button class="btn btn-default" type="submit">
