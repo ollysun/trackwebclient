@@ -323,10 +323,18 @@ class SiteController extends BaseController
 
     public function actionManagebranches()
     {
-        return $this->render('managehubs');
+        $refAdp = new RefAdapter();
+        $states = $refAdp->getStates(1); // Hardcoded Nigeria for now
+        $states = new ResponseHandler($states);
+        $state_list = $states->getStatus()==ResponseHandler::STATUS_OK?$states->getData(): [];
+        return $this->render('managehubs',array('States'=>$state_list));
     }
     public function actionManageecs()
     {
-        return $this->render('manageecs');
+        $refAdp = new RefAdapter();
+        $states = $refAdp->getStates(1); // Hardcoded Nigeria for now
+        $states = new ResponseHandler($states);
+        $state_list = $states->getStatus()==ResponseHandler::STATUS_OK?$states->getData(): [];
+        return $this->render('manageecs',array('States'=>$state_list));
     }
 }
