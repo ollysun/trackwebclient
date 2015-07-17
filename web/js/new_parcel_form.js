@@ -100,7 +100,7 @@ function validate($parent)
 }
 
 $("form.validate").submit(function(event) {
-	alert($(this).hasClass('validate'));
+	//alert($(this).hasClass('validate'));
 	event.preventDefault();
 /*	if(validate($(this)) === true ) {
 		return;
