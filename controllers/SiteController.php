@@ -21,6 +21,7 @@ use Adapter\Util\Response;
 
 class SiteController extends BaseController
 {
+    private $page_width = 5;
     public function behaviors()
     {
         return [
@@ -150,7 +151,7 @@ class SiteController extends BaseController
                 Yii::$app->response->redirect('newparcel');
             }
         }
-        $refData = new RefAdapter();
+        $refData = new RefAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
 
         $banks = $refData->getBanks();
         $shipmentType = $refData->getShipmentType();
@@ -169,100 +170,111 @@ class SiteController extends BaseController
         ));
     }
 
-    public function actionParcels()
+    public function actionParcels($offset=0)
     {
+
+        $from_date = date('Y/m/d');
+        $to_date = date('Y/m/d');
         $parcel = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
         if(isset(Calypso::getInstance()->get()->from,Calypso::getInstance()->get()->to)){
             $from_date = Calypso::getInstance()->get()->from.' 00:00:00';
             $to_date = Calypso::getInstance()->get()->to.' 23:59:59';
             $filter = isset(Calypso::getInstance()->get()->date_filter) ? Calypso::getInstance()->get()->date_filter : '-1';
-            $response = $parcel->getFilterParcelsByDateAndStatus($from_date,$to_date,$filter);
+            $response = $parcel->getFilterParcelsByDateAndStatus($from_date,$to_date,$filter,$offset,$this->page_width);
         }
         elseif(isset(Calypso::getInstance()->get()->search) ){
             $search = Calypso::getInstance()->get()->search;
-            $response = $parcel->getSearchParcels('-1',$search);
+            $response = $parcel->getSearchParcels('-1',$search,$offset,$this->page_width);
         }else{
-            $response = $parcel->getParcels();
+            //$response = $parcel->getParcels(null,null,$offset,$this->page_width);
+            $response = $parcel->getNewParcelsByDate(date('Y-m-d'),$offset,$this->page_width);
         }
         $response = new ResponseHandler($response);
         $data = [];
         if($response->getStatus() ==  ResponseHandler::STATUS_OK){
             $data = $response->getData();
         }
-        return $this->render('parcels',array('parcels'=>$data));
+        return $this->render('parcels',array('parcels'=>$data,'from_date'=>$from_date,'to_date'=>$to_date,'offset'=>$offset));
     }
 
-    public function actionProcessedparcels()
+    public function actionProcessedparcels($offset=0)
     {
+        $from_date = date('Y/m/d');
+        $to_date = date('Y/m/d');
         $parcel = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
         if(isset(Calypso::getInstance()->get()->from,Calypso::getInstance()->get()->to)){
             $from_date = Calypso::getInstance()->get()->from.' 00:00:00';
             $to_date = Calypso::getInstance()->get()->to.' 23:59:59';
             $filter = isset(Calypso::getInstance()->get()->date_filter) ? Calypso::getInstance()->get()->date_filter : '-1';
-            $response = $parcel->getFilterParcelsByDateAndStatus($from_date,$to_date,$filter);
+            $response = $parcel->getFilterParcelsByDateAndStatus($from_date,$to_date,$filter,$offset,$this->page_width);
         }
         elseif(isset(Calypso::getInstance()->get()->search) ){
             $search = Calypso::getInstance()->get()->search;
-            $response = $parcel->getSearchParcels('-1',$search);
+            $response = $parcel->getSearchParcels('-1',$search,$offset,$this->page_width);
         }else{
-            $response = $parcel->getNewParcelsByDate(date('Y-m-d'));
+            $response = $parcel->getNewParcelsByDate(date('Y-m-d'),$offset,$this->page_width);
         }
         $response = new ResponseHandler($response);
         $data = [];
         if($response->getStatus() ==  ResponseHandler::STATUS_OK){
             $data = $response->getData();
         }
-        return $this->render('processed_parcels',array('parcels'=>$data));
+        return $this->render('processed_parcels',array('parcels'=>$data,'from_date'=>$from_date,'to_date'=>$to_date,'offset'=>$offset));
     }
 
-     public function actionParcelsfordelivery()
+     public function actionParcelsfordelivery($offset=0)
     {
+        $from_date =  date('Y/m/d');
+        $to_date = date('Y/m/d');
         $parcel = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
         if(isset(Calypso::getInstance()->get()->from,Calypso::getInstance()->get()->to)){
             $from_date = Calypso::getInstance()->get()->from.' 00:00:00';
             $to_date = Calypso::getInstance()->get()->to.' 23:59:59';
             $filter = isset(Calypso::getInstance()->get()->date_filter) ? Calypso::getInstance()->get()->date_filter : '-1';
-            $response = $parcel->getFilterParcelsByDateAndStatus($from_date,$to_date,$filter);
+            $response = $parcel->getFilterParcelsByDateAndStatus($from_date,$to_date,$filter,$offset,$this->page_width);
         }
         elseif(isset(Calypso::getInstance()->get()->search) ){
             $search = Calypso::getInstance()->get()->search;
-            $response = $parcel->getSearchParcels('-1',$search);
+            $response = $parcel->getSearchParcels('-1',$search,$offset,$this->page_width);
         }else{
-            $response = $parcel->getParcels(ServiceConstant::FOR_DELIVERY);
+            $response = $parcel->getParcels(ServiceConstant::FOR_DELIVERY,null,$offset,$this->page_width);
         }
         $response = new ResponseHandler($response);
         $data = [];
         if($response->getStatus() ==  ResponseHandler::STATUS_OK){
             $data = $response->getData();
         }
-        return $this->render('parcels_for_delivery',array('parcels'=>$data));
+        return $this->render('parcels_for_delivery',array('parcels'=>$data,'from_date'=>$from_date,'to_date'=>$to_date,'offset'=>$offset));
     }
 
-    public function actionParcelsforsweep()
+    public function actionParcelsforsweep($offset=0)
     {
+        $from_date = date('Y/m/d');
+        $to_date = date('Y/m/d');
         $parcel = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
         if(isset(Calypso::getInstance()->get()->from,Calypso::getInstance()->get()->to)){
             $from_date = Calypso::getInstance()->get()->from.' 00:00:00';
             $to_date = Calypso::getInstance()->get()->to.' 23:59:59';
             $filter = isset(Calypso::getInstance()->get()->date_filter) ? Calypso::getInstance()->get()->date_filter : '-1';
-            $response = $parcel->getFilterParcelsByDateAndStatus($from_date,$to_date,$filter);
+            $response = $parcel->getFilterParcelsByDateAndStatus($from_date,$to_date,$filter,$offset,$this->page_width);
         }
         elseif(isset(Calypso::getInstance()->get()->search) ){
             $search = Calypso::getInstance()->get()->search;
-            $response = $parcel->getSearchParcels('-1',$search);
+            $response = $parcel->getSearchParcels('-1',$search,$offset,$this->page_width);
         }else{
-            $response = $parcel->getParcels(ServiceConstant::FOR_SWEEPER);
+            $response = $parcel->getParcels(ServiceConstant::FOR_SWEEPER,null,$offset,$this->page_width);
         }
         $response = new ResponseHandler($response);
         $data = [];
         if($response->getStatus() ==  ResponseHandler::STATUS_OK){
             $data = $response->getData();
         }
-        return $this->render('parcels_for_sweep',array('parcels'=>$data));
+        return $this->render('parcels_for_sweep',array('parcels'=>$data,'from_date'=>$from_date,'to_date'=>$to_date,'offset'=>$offset));
     }
     public function actionViewwaybill()
     {
         $data = [];
+        $id = "-1";
         if(isset(Calypso::getInstance()->get()->id)){
             $id = Calypso::getInstance()->get()->id;
             $parcel = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
@@ -274,7 +286,7 @@ class SiteController extends BaseController
         }
 
 
-        return $this->render('view_waybill',array('parcelData'=>$data));
+        return $this->render('view_waybill',array('parcelData'=>$data,'id'=> $id));
     }
 
     /**
@@ -287,7 +299,7 @@ class SiteController extends BaseController
             return $this->sendErrorResponse("Invalid parameter(s) sent!", null);
         }
 
-        $refData = new RefAdapter();
+        $refData = new RefAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
         $states = $refData->getStates($country_id);
         if ($states['status'] === ResponseHandler::STATUS_OK) {
             return $this->sendSuccessResponse($states['data']);
@@ -317,13 +329,23 @@ class SiteController extends BaseController
 
     public function actionPrintwaybill()
     {
+        $data = [];
+        if(isset(Calypso::getInstance()->get()->id)){
+            $id = Calypso::getInstance()->get()->id;
+            $parcel = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+            $response = $parcel->getOneParcel($id);
+            $response = new ResponseHandler($response);
+            if($response->getStatus() == ResponseHandler::STATUS_OK){
+                $data = $response->getData();
+            }
+        }
         $this->layout = 'waybill';
-        return $this->render('print_waybill');
+        return $this->render('print_waybill',array('parcelData'=>$data));
     }
 
     public function actionManagebranches()
     {
-        $refAdp = new RefAdapter();
+        $refAdp = new RefAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
         $states = $refAdp->getStates(1); // Hardcoded Nigeria for now
         $states = new ResponseHandler($states);
         $state_list = $states->getStatus()==ResponseHandler::STATUS_OK?$states->getData(): [];
@@ -331,11 +353,7 @@ class SiteController extends BaseController
     }
     public function actionManageecs()
     {
-        $refAdp = new RefAdapter();
-        $states = $refAdp->getStates(1); // Hardcoded Nigeria for now
-        $states = new ResponseHandler($states);
-        $state_list = $states->getStatus()==ResponseHandler::STATUS_OK?$states->getData(): [];
-        return $this->render('manageecs',array('States'=>$state_list));
+        return $this->render('manageecs',array('States'=>[]));
     }
     public function actionManagestaff()
     {

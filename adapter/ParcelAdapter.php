@@ -16,29 +16,29 @@ class ParcelAdapter extends BaseAdapter{
     public function getOneParcelBySender($id){
         return $this->request(ServiceConstant::URL_GET_ONE_PARCEL,array('id'=>$id),self::HTTP_GET);
     }
-    public function getParcels($type=null,$branch_id=null){
+    public function getParcels($type=null,$branch_id=null,$offset=0, $count=50){
         $filter = ($type != null ? '&status='.$type:'');
         $filter .= ($branch_id == null ? '':'&branch_id='.$branch_id);
         //$filter = '';
-        return $this->request(ServiceConstant::URL_GET_ALL_PARCEL.'?with_sender=1&with_receiver=1&with_receiver_address=1'.$filter,array(),self::HTTP_GET);
+        return $this->request(ServiceConstant::URL_GET_ALL_PARCEL.'?with_sender=1&with_receiver=1&with_receiver_address=1&offset='.$offset.'&count='.$count.$filter,array(),self::HTTP_GET);
 
     }
-    public function getSearchParcels($status,$waybill_number){
+    public function getSearchParcels($status,$waybill_number,$offset=0, $count=50){
         $parcel_status = $status == '-1'?'': '&status='.$status;
         $filter = $parcel_status.'&waybill_number='.$waybill_number;
-        return $this->request(ServiceConstant::URL_GET_ALL_PARCEL.'?with_sender=1&with_receiver=1&with_receiver_address=1'.$filter,array(),self::HTTP_GET);
+        return $this->request(ServiceConstant::URL_GET_ALL_PARCEL.'?with_sender=1&with_receiver=1&with_receiver_address=1&offset='.$offset.'&count='.$count.$filter,array(),self::HTTP_GET);
 
     }
-    public function getFilterParcelsByDateAndStatus($start_created_date,$end_created_date,$status){
+    public function getFilterParcelsByDateAndStatus($start_created_date,$end_created_date,$status,$offset=0, $count=50){
         $parcel_status = $status == '-1'?'': '&status='.$status;
         $filter = $parcel_status.'&start_created_date='.$start_created_date;
         $filter .= $parcel_status.'&end_created_date='.$end_created_date;
-        return $this->request(ServiceConstant::URL_GET_ALL_PARCEL.'?with_sender=1&with_receiver=1&with_receiver_address=1'.$filter,array(),self::HTTP_GET);
+        return $this->request(ServiceConstant::URL_GET_ALL_PARCEL.'?with_sender=1&with_receiver=1&with_receiver_address=1&offset='.$offset.'&count='.$count.$filter,array(),self::HTTP_GET);
 
     }
-    public function getNewParcelsByDate($start_created_date){
+    public function getNewParcelsByDate($start_created_date,$offset=0, $count=50){
         $filter = '&start_created_date='.$start_created_date;
-        return $this->request(ServiceConstant::URL_GET_ALL_PARCEL.'?with_sender=1&with_receiver=1&with_receiver_address=1'.$filter,array(),self::HTTP_GET);
+        return $this->request(ServiceConstant::URL_GET_ALL_PARCEL.'?with_sender=1&with_receiver=1&with_receiver_address=1&offset='.$offset.'&count='.$count.$filter,array(),self::HTTP_GET);
 
     }
 }

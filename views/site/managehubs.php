@@ -32,8 +32,15 @@ $this->params['breadcrumbs'] = array(
 				<div class="form-group pull-left">
 					<label for="">Filter by State</label><br>
 					<select class="form-control input-sm">
-						<option>Abia</option>
-						<option>Adamawa</option>
+                        <?php
+                        if(isset($States) && is_array(($States))):
+                            foreach($States as $state){
+                        ?>
+                            <option value="<?= $state['id'] ?>"><?= strtoupper($state['name']); ?></option>
+                        <?php
+                            }
+                        endif;
+                        ?>
 					</select>
 				</div>
 				<div class="pull-left">
