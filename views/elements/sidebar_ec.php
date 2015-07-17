@@ -94,6 +94,25 @@ use yii\helpers\Url;
 							</li>
 						</ul>
 					</li>
+
+					<li>
+						<a href="<?= Url::to(['site/managebranches']) ?>" class="dropdown-toggle">
+							<i class="fa fa-building-o"></i>
+							<span>Hub</span>
+							<i class="fa fa-angle-right drop-icon"></i>
+						</a>
+						<ul class="submenu">
+							<li>
+								<a href="<?= Url::to(['site/hubarrival']) ?>">Shipment Arrivals</a>
+							</li>
+							<li>
+								<a href="<?= Url::to(['site/hubnextdestination']) ?>">Set next destination</a>
+							</li>
+							<li>
+								<a href="<?= Url::to(['site/hubdispatch']) ?>">Dispatched Shipments</a>
+							</li>
+						</ul>
+					</li>
 				</ul>
 			</div>
 		</div>
