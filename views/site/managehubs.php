@@ -90,19 +90,40 @@ $this->params['breadcrumbs'] = array(
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
-      </div>
-      <div class="modal-body">
-        ...
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
-    </div>
+	  	<form class="">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="myModalLabel">Add a New Hub</h4>
+	      </div>
+	      <div class="modal-body">
+				<div class="form-group">
+					<label>Hub name</label>
+					<input class="form-control">
+				</div>
+				<div class="form-group">
+					<label>State</label>
+					<select class="form-control"></select>
+				</div>
+				<div class="form-group">
+					<label>Address</label>
+					<input class="form-control">
+					<input class="form-control address-line-1">
+				</div>
+				<div class="form-group">
+					<label>Activate Hub?</label>
+					<select class="form-control">
+						<option>Yes</option>
+						<option>No</option>
+					</select>
+				</div>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	        <button type="button" class="btn btn-primary">Save changes</button>
+	      </div>
+	    </div>
+	  	</form>
   </div>
 </div>
 
