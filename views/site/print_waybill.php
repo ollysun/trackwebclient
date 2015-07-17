@@ -1,3 +1,15 @@
+<div class="copy">
+	Customer's copy
+</div>
+<div class="waybill-image">
+	<!-- drop waybill image here, remove div below -->
+	<div style="width: 100%; height: 100%; border: 1px solid black"> remove this div and include waybill image</div>
+</div>
+
+<div class="waybill-no">
+	5000 1234 1234 ED
+</div>
+
 
 <div class="user user--sender">
 	<div class="user__inner">
@@ -55,7 +67,5 @@
 	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
 	tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
 	quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-	consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-	cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-	proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+	consequat. Duis aute irure dolor in reprehenderit in voluptate
 </div>
