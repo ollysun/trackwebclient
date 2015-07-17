@@ -359,4 +359,16 @@ class SiteController extends BaseController
     {
         return $this->render('managestaff');
     }
+    public function actionHubarrival()
+    {
+        return $this->render('hub_arrival');
+    }
+    public function actionHubnextdestination()
+    {
+        return $this->render('hub_next_destination');
+    }
+    public function actionHubdispatch()
+    {
+        return $this->render('hub_dispatch');
+    }
 }
