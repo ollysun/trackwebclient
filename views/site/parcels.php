@@ -23,17 +23,19 @@ $this->params['breadcrumbs'][] = 'Parcels';
 				<?= $this->render('../elements/parcels_filter',[]) ?>
 			</div>
 			<div class="pull-right clearfix">
-				<div class="pull-left form-group">
-					<label for="searchInput">Search</label><br>
-					<div class="input-group input-group-sm input-group-search">
-						<input id="searchInput" type="text" name="search" placeholder="" class="search-box form-control">
-						<div class="input-group-btn">
-							<button class="btn btn-sm btn-default" type="submit">
-								<i class="fa fa-search"></i>
-							</button>
-						</div>
-					</div>
-				</div>
+                <form class="table-search-form form-inline clearfix">
+                    <div class="pull-left">
+                        <label for="searchInput">Search</label><br>
+                        <div class="input-group input-group-search">
+                            <input id="searchInput" type="text" name="search" placeholder="Waybill Number" class="search-box form-control">
+                            <div class="input-group-btn">
+                                <button class="btn btn-default" type="submit">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
 				<div class="pull-left hidden">
 					<label>&nbsp;</label><br>
 					<div class="btn-group btn-group-sm">
