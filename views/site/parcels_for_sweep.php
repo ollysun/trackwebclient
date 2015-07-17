@@ -4,11 +4,11 @@ use yii\helpers\Url;
 use Adapter\Globals\ServiceConstant;
 
 
-$this->title = 'Parcels: Due to Sweep';
+$this->title = 'Shipments: Due to Sweep';
 $this->params['breadcrumbs'] = array(
 	array(
 	'url' => ['site/parcels'],
-	'label' => 'Parcels'
+	'label' => 'Shipments'
 	),
 	array('label'=> 'Due to sweep')
 );

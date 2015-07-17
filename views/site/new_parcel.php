@@ -29,7 +29,7 @@ $this->params['breadcrumbs'] = array(
 				<div class="row">
 					<div class="col-xs-12 col-lg-6">
 						<div class="main-box-header">
-							<h2>Shipper Information</h2>
+							<h2>Consignor Information</h2>
 						</div>
 						<div class="main-box-body">
 <?=$this->render('../elements/new_parcel_user_information', ['prefix' => 'shipper', 'countries' => $countries])?>
@@ -37,7 +37,7 @@ $this->params['breadcrumbs'] = array(
 					</div>
 					<div class="col-xs-12 col-lg-6">
 						<div class="main-box-header">
-							<h2>Receiver Information</h2>
+							<h2>Consignee Information</h2>
 						</div>
 						<div class="main-box-body">
 <?=$this->render('../elements/new_parcel_user_information', ['prefix' => 'receiver', 'countries' => $countries])?>
@@ -126,7 +126,7 @@ $this->params['breadcrumbs'] = array(
 								<select name="pickup_centres" id="" class="form-control"></select>
 							</div>
 							<div class="form-group">
-								<label for="">Shipping Type</label>
+								<label for="">Service Type</label>
 								<select name="shipping_type" id="" class="form-control validate required">
 <?php if (isset($ShipmentType) && is_array($ShipmentType['data'])) {
 	foreach ($ShipmentType['data'] as $item) {?>
