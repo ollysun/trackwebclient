@@ -89,6 +89,9 @@ use yii\helpers\Url;
 							<li>
 								<a href="<?= Url::to(['site/managebranches']) ?>">Manage branches</a>
 							</li>
+							<li>
+								<a href="<?= Url::to(['site/managestaff']) ?>">Manage staff accounts</a>
+							</li>
 						</ul>
 					</li>
 				</ul>
