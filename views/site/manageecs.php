@@ -67,7 +67,7 @@ $this->params['breadcrumbs'] = array(
 						<td></td>
 						<td></td>
 						<td></td>
-						<td></td>
+						<td><button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#editModal"><i class="fa fa-edit"></i> Edit</button></td>
 					</tr>
 					<tr>
 						<td>2</td>
@@ -119,13 +119,51 @@ $this->params['breadcrumbs'] = array(
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary">Save changes</button>
+					<button type="button" class="btn btn-primary">Create EC</button>
 				</div>
 			</div>
 		</form>
   </div>
 </div>
 
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+		<form class="">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="myModalLabel">Edit an Express Centre</h4>
+				</div>
+				<div class="modal-body">
+					<div class="form-group">
+						<label>EC name</label>
+						<input class="form-control">
+					</div>
+					<div class="form-group">
+						<label>Parent Hub</label>
+						<select class="form-control"></select>
+					</div>
+					<div class="form-group">
+						<label>Address</label>
+						<input class="form-control">
+						<input class="form-control address-line-1">
+					</div>
+					<div class="form-group">
+						<label>Status</label>
+						<select class="form-control">
+							<option>Active</option>
+							<option>Inactive</option>
+						</select>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary">Save changes</button>
+				</div>
+			</div>
+		</form>
+  </div>
+</div>
 
 <!-- this page specific scripts -->
 <?php $this->registerJsFile('@web/js/libs/jquery.dataTables.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
