@@ -80,10 +80,19 @@ use yii\helpers\Url;
 						</a>
 					</li> -->
 					<li>
-						<a href="<?= Url::to(['site/managebranches']) ?>">
-							<i class="fa fa-code-fork"></i>
-							<span>Manage branches</span>
+						<a href="<?= Url::to(['site/managebranches']) ?>" class="dropdown-toggle">
+							<i class="fa fa-user"></i>
+							<span>Administrator</span>
+							<i class="fa fa-angle-right drop-icon"></i>
 						</a>
+						<ul class="submenu">
+							<li>
+								<a href="<?= Url::to(['site/managebranches']) ?>">Manage branches</a>
+							</li>
+							<li>
+								<a href="<?= Url::to(['site/managestaff']) ?>">Manage staff accounts</a>
+							</li>
+						</ul>
 					</li>
 				</ul>
 			</div>

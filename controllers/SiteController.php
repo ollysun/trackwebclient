@@ -355,4 +355,8 @@ class SiteController extends BaseController
     {
         return $this->render('manageecs',array('States'=>[]));
     }
+    public function actionManagestaff()
+    {
+        return $this->render('managestaff');
+    }
 }
