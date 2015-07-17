@@ -14,6 +14,7 @@ class ParcelService {
 
     public function buildPostData($data) {
 
+        $error = [];
         $senderInfo = [];
         $senderAddress = [];
         $receiverInfo = [];
@@ -54,8 +55,17 @@ class ParcelService {
 
         $parcel['parcel_type'] = Calypso::getValue($data, 'parcel_type');
         $parcel['no_of_package'] = Calypso::getValue($data, 'no_of_packages');
+        if((int) $parcel['no_of_package'] !== $parcel['no_of_package'] ) {
+            $error[] = "Number of packages must be an integer";
+        }
         $parcel['weight'] = Calypso::getValue($data, 'parcel_weight');
+        if(!isset($parcel['weight']) || !is_numeric($parcel['weight'])) {
+            $error[] = "Weight cannot be empty and must be numeric";
+        }
         $parcel['package_value'] = Calypso::getValue($data, 'parcel_value');
+        if(!isset($parcel['package_value']) || !is_numeric($parcel['package_value'])) {
+            $error[] = "Package Value cannot be empty and must be numeric";
+        }
         //@Todo To be calculated by the settings in the backend
         $parcel['amount_due'] = Calypso::getValue($data, 'parcel_value');
 
@@ -76,6 +86,10 @@ class ParcelService {
 
         $payload['is_corporate_lead'] = (Calypso::getValue($data, 'corporate_lead') === true) ? 1 : 0;
         $payload['to_hub'] = (Calypso::getValue($data, 'send_to_hub') === 'true') ? 1 : 0;
+
+        if(!empty($error)) {
+            return [ 'status' => false, 'messages' => $error ];
+        }
 
         return $payload;
     }
