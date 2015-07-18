@@ -135,9 +135,14 @@ class Calypso{
      * @return null
      * @author Qiang Xue <qiang.xue@gmail.com>
      * @author Adegoke Obasa <adegoke.obasa@konga.com>
+     * @author Rotimi Akintewe <rotimi.akintewe@konga.com>
      */
     public static function getValue($array, $key, $default = null)
     {
+        if(!isset($array)) {
+            return $default;
+        }
+
         if ($key instanceof \Closure) {
             return $key($array, $default);
         }
@@ -166,7 +171,8 @@ class Calypso{
 
     public static function showFlashMessages() {
         $flashMessages = '';
-        foreach (\Yii::$app->session->getAllFlashes() as $key => $message) {
+        $allMessages = \Yii::$app->session->getAllFlashes();
+        foreach ($allMessages as $key => $message) {
             $flashMessages .= '<div class="alert alert-' . $key . '">' . $message . '</div>';
         }
         return $flashMessages;
