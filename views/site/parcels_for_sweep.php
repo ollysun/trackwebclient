@@ -79,12 +79,12 @@ if($offset <= 0){
                 <tbody>
                 <?php
                 if(isset($parcels) && is_array($parcels)){
-                    $i = 1;
+                    $i = 1;$count = $offset + 1;
                     foreach($parcels as $parcel){
                         ?>
                         <tr>
                             <!--						<td><div class="checkbox-nice"><input id="chbx_w_000--><?//= $i ?><!--" type="checkbox"><label for="chbx_w_0001"> </label></div></td>-->
-                            <td><?= $i++ ?></td>
+                            <td><?= $count++ ?></td>
                             <td><?= strtoupper($parcel['waybill_number']); ?></td>
                             <td><?= strtoupper($parcel['sender']['firstname'].' '. $parcel['sender']['lastname']) ?></td>
                             <td><?= $parcel['sender']['phone'] ?></td>

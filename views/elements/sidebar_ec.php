@@ -19,7 +19,7 @@ use yii\helpers\Url;
 						</a>
 					</li>
 					<li>
-						<a href="<?php //echo ROOT_PATH ?>/parcels.php" class="dropdown-toggle">
+						<a href="#" class="dropdown-toggle">
 							<i class="fa fa-gift"></i>
 							<span>Shipments</span>
 							<i class="fa fa-angle-right drop-icon"></i>
