@@ -1,5 +1,14 @@
 (function($){
 //Initialize the carousel
+
+/*$("input[type=text]").('keypress', function(event){
+
+ 	if (event.keyCode == 10 || event.keyCode == 13) {
+		event.preventDefault();
+	}
+});*/
+
+
 $('#newParcelForm').carousel('pause');
 $('#newParcelForm').on('slide.bs.carousel', function (event) {
 	$("html, body").animate({scrollTop:0},'fast');
@@ -98,14 +107,6 @@ function validate($parent)
 	}
 	return false;
 }
-
-$("form.validate").submit(function(event) {
-	//alert($(this).hasClass('validate'));
-	event.preventDefault();
-/*	if(validate($(this)) === true ) {
-		return;
-	}*/
-});
 
 
 var deliveryShowHide = {

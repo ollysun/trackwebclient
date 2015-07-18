@@ -171,7 +171,8 @@ class Calypso{
 
     public static function showFlashMessages() {
         $flashMessages = '';
-        foreach (\Yii::$app->session->getAllFlashes() as $key => $message) {
+        $allMessages = \Yii::$app->session->getAllFlashes();
+        foreach ($allMessages as $key => $message) {
             $flashMessages .= '<div class="alert alert-' . $key . '">' . $message . '</div>';
         }
         return $flashMessages;
