@@ -99,12 +99,13 @@ function validate($parent)
 	return false;
 }
 
+$
+
 $("form.validate").submit(function(event) {
-	alert($(this).hasClass('validate'));
-	event.preventDefault();
-/*	if(validate($(this)) === true ) {
+	if(validate('.active') === true ) {
 		return;
-	}*/
+	}
+	event.preventDefault();
 });
 
 
@@ -136,10 +137,10 @@ var CODShowHide = {
 		console.log('val '+val);
 		if (val === 'false') {
 			$('#CODAmount').val('');
-			$('input[name="CODAmount"]').removeClass('required number').parent().removeClass('has-error');;
+			$('input[name="CODAmount"]').removeClass('validate required number').parent().removeClass('has-error');;
 		}
 		else {
-			$('input[name="CODAmount"]').addClass('required number');
+			$('input[name="CODAmount"]').addClass('validate required number');
 		}
 	}
 };
@@ -156,12 +157,12 @@ var merchantShowHide = {
 	callback: function(ele, val, who) {
 		if (val === 'none') {
 			$('#cODNo').trigger('click');
-			$('input[name="account_name"], input[name="account_no"], select[name="bank"]').removeClass('required').parent().removeClass('has-error');
-			$('input[name="account_no"]').removeClass('number');
+			$('input[name="account_name"], input[name="account_no"], select[name="bank"]').removeClass('validate required').parent().removeClass('has-error');
+			$('input[name="account_no"]').removeClass('validate number');
 		}
 		else {
-			$('input[name="account_name"], input[name="account_no"], select[name="bank"]').addClass('required');
-			$('input[name="account_no"]').addClass('number');
+			$('input[name="account_name"], input[name="account_no"], select[name="bank"]').addClass('validate required');
+			$('input[name="account_no"]').addClass('validate number');
 		}
 	}
 };
@@ -179,10 +180,10 @@ var paymentMethodShowHide = {
 		console.log('ele', ele);
 		console.log('val '+val);
 		if (val === '3') {
-			$('input[name="amount_in_cash"], input[name="amount_in_pos"]').removeClass('required number').parent().removeClass('has-error');;
+			$('input[name="amount_in_cash"], input[name="amount_in_pos"]').addClass('validate required number');
 		}
 		else {
-			$('input[name="amount_in_cash"], input[name="amount_in_pos"]').addClass('required number');
+			$('input[name="amount_in_cash"], input[name="amount_in_pos"]').removeClass('validate required number').parent().removeClass('has-error');;
 		}
 	}
 };
