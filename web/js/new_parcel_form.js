@@ -348,11 +348,6 @@ var Parcel = {
 		$('#lastname_' + suffix).val(userObj.lastname);
 		$('#email_' + suffix).val(userObj.email);
 		$('#phone_' + suffix).val(userObj.phone);
-		/*$('#address_' + suffix + '_1').val();
-		$('#address_' + suffix + '_2').val();
-		$('#city_' + suffix).val();
-		$('#country_' + suffix).val();
-		$('#state_' + suffix).val();*/
 	},
 
 	getAccountDetails: function(owner_id) {
@@ -371,6 +366,7 @@ var Parcel = {
 	},
 
 	setAccountDetails: function(accountObj) {
+		$('#account_id').val(accountObj.id);
 		$('#account_name').val(accountObj.name);
 		$('#account_no').val(accountObj.number);
 		$('#bank').val(accountObj.bank.id);
