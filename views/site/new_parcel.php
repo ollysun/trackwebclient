@@ -155,6 +155,9 @@ $this->params['breadcrumbs'] = array(
 								</div>
 							</div>
 							<div id="bank-account-details" class="hidden">
+
+								<input type="hidden" name="account_id" class="form-control" id="account_id">
+
 								<div class="form-group">
 									<label for="">Account Name</label>
 									<input name="account_name" class="form-control" id="account_name">
