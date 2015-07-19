@@ -31,13 +31,15 @@ class ServiceConstant {
     const URL_GET_ALL_PARCEL = 'parcel/getAll/';
 
     const URL_GET_ALL_BANKS = 'bank/getAll/';
+    const URL_GET_BANK_ACCOUNT = 'bankaccount/getAll/';
+
     const URL_ADMIN_LOGIN = 'admin/login/';
+
     const URL_REF_BANK = 'ref/banks/';
     const URL_REF_SHIPMENT = 'ref/shipmentType/';
     const URL_REF_deliveryType = 'ref/deliveryType/';
     const URL_REF_parcelType = 'ref/parcelType/';
     const URL_REF_COUNTRIES = 'ref/countries';
-    //'ref/states?country_id=1'
     const URL_REF_STATES = 'ref/states';
     const URL_REF_PAYMENT_METHODS = '/ref/paymentType';
 

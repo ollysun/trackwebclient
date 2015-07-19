@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use Adapter\BankAdapter;
 use Adapter\ParcelAdapter;
 use Adapter\RefAdapter;
 use Adapter\UserAdapter;
@@ -316,7 +317,7 @@ class SiteController extends BaseController
     }
 
     /**
-     * Ajax calls to get states when a country is selected
+     * Ajax calls to get User Details
      */
     public function actionUserdetails() {
 
@@ -331,6 +332,30 @@ class SiteController extends BaseController
             return $this->sendSuccessResponse($userInfo['data']);
         } else {
             return $this->sendErrorResponse($userInfo['message'], null);
+        }
+    }
+
+    /**
+     * Ajax calls to get Account details of sender
+     */
+    public function actionAccountdetails() {
+
+        $owner_id = \Yii::$app->request->get('owner_id');
+        if(!isset($owner_id)) {
+            return $this->sendErrorResponse("Invalid parameter(s) sent!", null);
+        }
+
+        $bankAdapter = new BankAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+        $bankInfo = $bankAdapter->getSenderBankAccout($owner_id);
+        if ($bankInfo['status'] === ResponseHandler::STATUS_OK) {
+            $resp = [];
+            if(!empty($bankInfo['data'])) {
+                $resp = $bankInfo['data'][0];
+            }
+
+            return $this->sendSuccessResponse($resp);
+        } else {
+            return $this->sendErrorResponse($bankInfo['message'], null);
         }
     }
 

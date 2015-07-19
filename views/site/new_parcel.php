@@ -127,12 +127,12 @@ $this->params['breadcrumbs'] = array(
 							</div>
 							<div class="form-group">
 								<label for="">Service Type</label>
-								<select name="shipping_type" id="" class="form-control validate required">
-<?php if (isset($ShipmentType) && is_array($ShipmentType['data'])) {
-	foreach ($ShipmentType['data'] as $item) {?>
-										<option value="<?=$item['id']?>"><?=strtoupper($item['name']);?></option>
-<?php }}?>
-</select>
+									<select name="shipping_type" id="" class="form-control validate required">
+									<?php if (isset($ShipmentType) && is_array($ShipmentType['data'])) {
+										foreach ($ShipmentType['data'] as $item) {?>
+																			<option value="<?=$item['id']?>"><?=strtoupper($item['name']);?></option>
+									<?php }}?>
+									</select>
 							</div>
 						</div>
 					</div>
@@ -157,16 +157,16 @@ $this->params['breadcrumbs'] = array(
 							<div id="bank-account-details" class="hidden">
 								<div class="form-group">
 									<label for="">Account Name</label>
-									<input name="account_name" class="form-control">
+									<input name="account_name" class="form-control" id="account_name">
 								</div>
 								<div class="row">
 									<div class="col-xs-12 col-sm-6 col-lg-5 form-group">
 										<label>Account No</label>
-										<input name="account_no" class="form-control">
+										<input name="account_no" class="form-control" id="account_no">
 									</div>
 									<div class="col-xs-12 col-sm-6 col-lg-7 form-group">
 										<label>Bank</label>
-										<select name="bank" class="form-control">
+										<select name="bank" class="form-control" id="bank">
 <?php
 if (isset($Banks) && is_array($Banks['data'])) {
 	foreach ($Banks['data'] as $item) {
