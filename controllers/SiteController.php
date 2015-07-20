@@ -317,7 +317,26 @@ class SiteController extends BaseController
     }
 
     /**
-     * Ajax calls to get User Details
+     * It requires atleast a state_id or branch_id, or both
+     * @return array
+     */
+    public function actionGetbranches(){
+        $state_id = \Yii::$app->request->get('id');
+        $branch_id = \Yii::$app->request->get('branch_id');
+        if(!isset($state_id)) {
+            return $this->sendErrorResponse("Invalid parameter(s) sent!", null);
+        }
+        $refData = new RefAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+        $branches = $refData->getBranch($state_id,$branch_id);
+        if ($branches['status'] === ResponseHandler::STATUS_OK) {
+            return $this->sendSuccessResponse($branches['data']);
+        } else {
+            return $this->sendErrorResponse($branches['message'], null);
+        }
+    }
+
+    /**
+     * Ajax calls to get states when a country is selected
      */
     public function actionUserdetails() {
 
@@ -389,7 +408,17 @@ class SiteController extends BaseController
     }
     public function actionManagestaff()
     {
-        return $this->render('managestaff');
+
+
+        $refAdp = new RefAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+        $states = $refAdp->getStates(1);//Nigeria hardcoded for now ... No offense please.
+        $states = new ResponseHandler($states);
+        $rolesAdp = new RefAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+        $roles = $rolesAdp->getRoles();
+        $roles = new ResponseHandler($roles);
+        $state_list = $states->getStatus()==ResponseHandler::STATUS_OK?$states->getData(): [];
+        $role_list =  $roles->getStatus()==ResponseHandler::STATUS_OK?$roles->getData(): [];
+        return $this->render('managestaff',['states' => $state_list,'roles'=> $role_list]);
     }
     public function actionHubarrival()
     {
