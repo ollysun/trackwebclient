@@ -23,6 +23,13 @@ class ParcelAdapter extends BaseAdapter{
         return $this->request(ServiceConstant::URL_GET_ALL_PARCEL.'?with_sender=1&with_receiver=1&with_receiver_address=1&offset='.$offset.'&count='.$count.$filter,array(),self::HTTP_GET);
 
     }
+
+    public function getParcelsForNextDestination($type=null,$branch_id=null,$offset=0, $count=50){
+        $filter = ($type != null ? '&status='.$type:'');
+        $filter .= ($branch_id == null ? '':'&branch_id='.$branch_id);
+        return $this->request(ServiceConstant::URL_GET_ALL_PARCEL.'?with_to_branch=1&with_sender_address=1&with_receiver_address=1&offset='.$offset.'&count='.$count.$filter,array(),self::HTTP_GET);
+
+    }
     public function getSearchParcels($status,$waybill_number,$offset=0, $count=50){
         $parcel_status = $status == '-1'?'': '&status='.$status;
         $filter = $parcel_status.'&waybill_number='.$waybill_number;
