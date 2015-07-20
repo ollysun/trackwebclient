@@ -93,7 +93,7 @@ $this->params['breadcrumbs'] = array(
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
-	  	<form class="">
+	  	<form class="" method="post">
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -104,13 +104,13 @@ $this->params['breadcrumbs'] = array(
 					<div class="col-xs-6">
 						<div class="form-group">
 							<label>First name</label>
-							<input class="form-control">
+							<input name="firstname" class="form-control">
 						</div>
 					</div>
 					<div class="col-xs-6">
 						<div class="form-group">
 							<label>Last name</label>
-							<input class="form-control">
+							<input name="lastname" class="form-control">
 						</div>
 					</div>
 				</div>
@@ -118,51 +118,74 @@ $this->params['breadcrumbs'] = array(
 					<div class="col-xs-6">
 						<div class="form-group">
 							<label>Email address</label>
-							<input class="form-control">
+							<input name="email" class="form-control">
 						</div>
 					</div>
 					<div class="col-xs-6">
 						<div class="form-group">
 							<label>Phone no</label>
-							<input class="form-control">
+							<input name="phone" class="form-control">
 						</div>
 					</div>
 				</div>
 				<div class="form-group">
 					<label>Staff ID</label>
-					<input class="form-control">
+					<input name="staff_id" class="form-control">
 				</div>
 				<div class="form-group">
 					<label>State</label>
-					<select class="form-control">
+					<select id="state" name="state" class="form-control">
+                        <?php
+                        if(isset($states) && is_array($states) && !empty($states)):
+                            foreach($states as $state):
+                        ?>
+                            <option value="<?= $state['id'] ?>"><?= strtoupper($state['name']); ?></option>
+                        <?php
+                        endforeach;
+                        endif;
+                        ?>
 					</select>
 				</div>
 				<div class="form-group">
 					<label>Branch type</label>
-					<select class="form-control">
+					<select id="branch_type" name="branch_type" class="form-control">
+                        <option value="">Select ... </option>
+                        <option value="1">HQ</option>
+                        <option value="2">Hub</option>
+                        <option value="4">EC</option>
 					</select>
 				</div>
 				<div class="form-group">
 					<label>Branch</label>
-					<select class="form-control">
+					<select id="branch" name="branch" class="form-control">
 					</select>
 				</div>
 				<div class="form-group">
 					<label>User role</label>
-					<select class="form-control">
+					<select name="role" class="form-control">
+                        <?php
+
+                        if(isset($roles) && is_array($roles) && !empty($roles)):
+                            foreach($roles as $role):
+                                ?>
+                                <option value="<?= $role['id'] ?>"><?= strtoupper($role['name']); ?></option>
+                            <?php
+                            endforeach;
+                        endif;
+                        ?>
 					</select>
 				</div>
 				<div class="form-group">
-					<label>Activate user?</label>
-					<select class="form-control">
-						<option>yes</option>
-						<option>no</option>
+					<label>Activate user? <small>(Users can be activated later)</small></label>
+					<select name="status" class="form-control">
+						<option>YES</option>
+						<option>NO</option>
 					</select>
 				</div>
 	      </div>
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-	        <button type="button" class="btn btn-primary">Create Staff Account</button>
+	        <button type="submit" class="btn btn-primary">Create Staff Account</button>
 	      </div>
 	    </div>
 	  	</form>
@@ -253,3 +276,4 @@ $this->params['breadcrumbs'] = array(
 <?php $this->registerJsFile('@web/js/libs/dataTables.fixedHeader.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/libs/dataTables.tableTools.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/libs/jquery.dataTables.bootstrap.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
+<?php $this->registerJsFile('@web/js/hub_util.js', ['depends' => [\app\assets\AppAsset::className()]])?>
