@@ -11,6 +11,14 @@ class RefAdapter extends BaseAdapter {
         return $this->request(ServiceConstant::URL_REF_BANK,array(),self::HTTP_GET);
 
     }
+    public function getRoles(){
+        return $this->request(ServiceConstant::URL_REF_ROLE,array(),self::HTTP_GET);
+
+    }
+    public function getBranch($state_id,$branch_type=null){
+        return $this->request(ServiceConstant::URL_GET_ALL_BRANCH,['state_id'=>$state_id,'branch_type'=>$branch_type],self::HTTP_GET);
+
+    }
     public function getShipmentType(){
         return $this->request(ServiceConstant::URL_REF_SHIPMENT,array(),self::HTTP_GET);
     }
