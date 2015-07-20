@@ -14,7 +14,7 @@ Hub.sendToServer = function(url,data,callback){
 }
 Hub.Resources = {
     getBranches:'getbranches',
-    BASE_PATH:'http://local.courierplus.com/site/'
+    BASE_PATH:'/site/'
 }
 
 Hub.getBranches = function(state_id,branch_id,callback){
