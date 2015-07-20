@@ -32,6 +32,8 @@ class ServiceConstant {
 
     const URL_GET_ALL_BANKS = 'bank/getAll/';
     const URL_GET_ALL_BRANCH = 'branch/getAll/';
+    const URL_GET_BANK_ACCOUNT = 'bankaccount/getAll/';
+
     const URL_ADMIN_LOGIN = 'admin/login/';
     const URL_REF_BANK = 'ref/banks/';
     const URL_REF_ROLE = 'ref/roles';

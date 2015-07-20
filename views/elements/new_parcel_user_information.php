@@ -18,6 +18,9 @@
 	</div>
 </div>
 <div class="row">
+
+	<input name="id[<?=$prefix?>]" id="id_<?=$prefix?>" type="hidden" class="form-control">
+
 	<div class="col-xs-12 col-sm-6">
 		<div class="form-group">
 			<label for="">First Name</label>
