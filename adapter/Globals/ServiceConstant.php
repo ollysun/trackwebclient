@@ -31,8 +31,10 @@ class ServiceConstant {
     const URL_GET_ALL_PARCEL = 'parcel/getAll/';
 
     const URL_GET_ALL_BANKS = 'bank/getAll/';
+    const URL_GET_ALL_BRANCH = 'branch/getAll/';
     const URL_ADMIN_LOGIN = 'admin/login/';
     const URL_REF_BANK = 'ref/banks/';
+    const URL_REF_ROLE = 'ref/roles';
     const URL_REF_SHIPMENT = 'ref/shipmentType/';
     const URL_REF_deliveryType = 'ref/deliveryType/';
     const URL_REF_parcelType = 'ref/parcelType/';
@@ -42,6 +44,7 @@ class ServiceConstant {
     const URL_REF_PAYMENT_METHODS = '/ref/paymentType';
 
     const URL_USER_BY_PHONE = '/user/getByPhone';
+    const URL_CREATE_USER = '/user/getByPhone';
 
     public static function getStatus($status){
         switch($status){
