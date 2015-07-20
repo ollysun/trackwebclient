@@ -372,7 +372,16 @@ class SiteController extends BaseController
     }
     public function actionHubnextdestination()
     {
-        return $this->render('hub_next_destination');
+        $user_sesion = Calypso::getInstance()->session("user_session");
+        $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+        $arrival_parcels = $parcelsAdapter->getParcelsForNextDestination(ServiceConstant::FOR_ARRIVAL, $user_sesion['branch_id']);
+        if($arrival_parcels['status'] === ResponseHandler::STATUS_OK) {
+            $viewData['parcel_next'] = $arrival_parcels['data'];
+        } else {
+            $this->flashError('An error occured while trying to fetch parcels. Please try again.');
+            $viewData['parcel_next'] = [];
+        }
+        return $this->render('hub_next_destination', $viewData);
     }
     public function actionHubdispatch()
     {
