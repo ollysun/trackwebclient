@@ -73,7 +73,7 @@ if($offset <= 0){
 	</div>
 	<div class="main-box-body">
 		<div class="table-responsive">
-			<table id="table" class="table table-hover table-bordered">
+			<table id="table" class="table table-hover ">
 				<thead>
 					<tr>
 <!--						<th style="width: 20px"><div class="checkbox-nice"><input id="chbx_w_all" type="checkbox"><label for="chbx_w_all"> </label></div></th>-->
