@@ -1,4 +1,5 @@
 <?php
+use Adapter\Util\Calypso;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use Adapter\Globals\ServiceConstant;
@@ -31,6 +32,8 @@ if($offset <= 0){
 <?php
 	//$this->params['content_header_button'] = $this->render('../elements/content_header_new_parcel_button');
 ?>
+
+<?php echo Calypso::showFlashMessages(); ?>
 
 <div class="main-box">
 	<div class="main-box-header table-search-form ">
