@@ -152,11 +152,9 @@ class SiteController extends BaseController
                 $parcel = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
                 $response = $parcel->createNewParcel(json_encode($payload));
                 if ($response['status'] === Response::STATUS_OK) {
-                    Yii::$app->session->setFlash('success', 'Parcel has been created successfully. <a href="#" class="btn btn-mini">Print Waybill</a>');
-                    Yii::$app->response->redirect('parcels');
+                    Yii::$app->response->redirect("viewwaybill?id={$response['data']['id']}");
                 } else {
-                    Yii::$app->session->setFlash('danger', 'There was a problem creating the value. Please try again.');
-                    Yii::$app->response->redirect('newparcel');
+                    $this->flashError('There was a problem creating the value. Please try again.');
                 }
             }
         }
@@ -181,7 +179,6 @@ class SiteController extends BaseController
 
     public function actionParcels($offset=0)
     {
-
         $from_date = date('Y/m/d');
         $to_date = date('Y/m/d');
         $parcel = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
