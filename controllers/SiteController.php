@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use Adapter\BankAdapter;
+use Adapter\BranchAdapter;
 use Adapter\ParcelAdapter;
 use Adapter\RefAdapter;
 use Adapter\UserAdapter;
@@ -426,9 +427,14 @@ class SiteController extends BaseController
     }
     public function actionHubnextdestination()
     {
-        $user_sesion = Calypso::getInstance()->session("user_session");
+
+        if(\Yii::$app->request->isPost) {
+
+            $postData = $_POST;
+        }
+        $user_session = Calypso::getInstance()->session("user_session");
         $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
-        $arrival_parcels = $parcelsAdapter->getParcelsForNextDestination(ServiceConstant::FOR_ARRIVAL, $user_sesion['branch_id']);
+        $arrival_parcels = $parcelsAdapter->getParcelsForNextDestination(ServiceConstant::FOR_ARRIVAL, $user_session['branch_id']);
         if($arrival_parcels['status'] === ResponseHandler::STATUS_OK) {
             $viewData['parcel_next'] = $arrival_parcels['data'];
         } else {
@@ -437,6 +443,36 @@ class SiteController extends BaseController
         }
         return $this->render('hub_next_destination', $viewData);
     }
+
+    /**
+     * Ajax calls to get all hubs
+     */
+    public function actionAllhubs() {
+
+        $branchAdapter = new BranchAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+        $allHubs = $branchAdapter->getAllHubs();
+        if ($allHubs['status'] === ResponseHandler::STATUS_OK) {
+            return $this->sendSuccessResponse($allHubs['data']);
+        } else {
+            return $this->sendErrorResponse($allHubs['message'], null);
+        }
+    }
+
+    /**
+     * Ajax calls to get all ec in the present hub
+     */
+    public function actionAllecforhubs() {
+
+        $branchAdapter = new BranchAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+        $user_session = Calypso::getInstance()->session("user_session");
+        $allEcsInHubs = $branchAdapter->listECForHub($user_session['branch_id']);
+        if ($allEcsInHubs['status'] === ResponseHandler::STATUS_OK) {
+            return $this->sendSuccessResponse($allEcsInHubs['data']);
+        } else {
+            return $this->sendErrorResponse($allEcsInHubs['message'], null);
+        }
+    }
+
     public function actionHubdispatch()
     {
         return $this->render('hub_dispatch');

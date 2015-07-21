@@ -28,86 +28,85 @@ $this->params['breadcrumbs'] = array(
 
 <?php echo \Adapter\Util\Calypso::showFlashMessages(); ?>
 
-<div class="main-box">
+<form class="clearfix" method="post">
+	<div class="main-box">
+		<div class="main-box-header table-search-form">
+			<div class="clearfix">
+				<div class="pull-left">
+						<div class="pull-left form-group">
+							<label for="branch_type">Branch type</label><br>
+							<select id="branch_type" class="form-control input-sm" name="branch_type">
+								<option value="exp" selected>Express Centres</option>
+								<option value="hub">Hub</option>
+							</select>
+						</div>
+						<div class="pull-left form-group">
+							<label for="branch_name" id="hub_branch_label">Branch Name</label><br>
+							<select id="branch_name" class="form-control input-sm" name="branch_name">
+								<option>Select Name...</option>
+							</select>
+						</div>
+						<div class="pull-left">
+							<label for="">&nbsp;</label><br>
+							<button type="submit" class="btn btn-sm btn-default" id="btn_apply_dest">Apply</button>
+						</div>
 
-	<div class="main-box-header table-search-form">
-		<div class="clearfix">
-			<div class="pull-left">
-				<form class="clearfix">
-					<div class="pull-left form-group">
-						<label for="branch_type">Branch type</label><br>
-						<select id="branch_type" class="form-control input-sm">
-							<option value="exp" selected>Express Centres</option>
-							<option value="hub">Hub</option>
-						</select>
-					</div>
-					<div class="pull-left form-group">
-						<label for="branch_name">Branch Name</label><br>
-						<select id="branch_name" class="form-control input-sm">
-							<option>Select Name...</option>
-						</select>
-					</div>
-					<div class="pull-left">
-						<label for="">&nbsp;</label><br>
-						<button type="submit" class="btn btn-sm btn-default">Apply</button>
-					</div>
-				</form>
-			</div>
+				</div>
 
-			<div class="pull-right clearfix">
-				<form class="table-search-form form-inline clearfix">
-					<div class="pull-left form-group">
-						<label for="searchInput">&nbsp;</label><br>
-						<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">Manifest</button>
-					</div>
-            </form>
+				<div class="pull-right clearfix">
+					<form class="table-search-form form-inline clearfix">
+						<div class="pull-left form-group">
+							<label for="searchInput">&nbsp;</label><br>
+							<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">Manifest</button>
+						</div>
+					</form>
+				</div>
 			</div>
 		</div>
-	</div>
-	<div class="main-box-body">
-		<div class="table-responsive">
-			<table id="table" class="table table-hover next_dest">
-				<thead>
-					<tr>
-						<th style="width: 20px;"></th>
-						<th style="width: 20px">S/N</th>
-						<th>Waybill No</th>
-						<th>Origin</th>
-						<th>Next Destination</th>
-						<th>Final Destination</th>
-						<th>Weight (Kg)</th>
-					</tr>
-				</thead>
-				<tbody>
-					<?php
+		<div class="main-box-body">
+			<div class="table-responsive">
+				<table id="table" class="table table-hover next_dest">
+					<thead>
+						<tr>
+							<th style="width: 20px;"></th>
+							<th style="width: 20px">S/N</th>
+							<th>Waybill No</th>
+							<th>Origin</th>
+							<th>Next Destination</th>
+							<th>Final Destination</th>
+							<th>Weight (Kg)</th>
+						</tr>
+					</thead>
+					<tbody>
+						<?php
 
-						if(isset($parcel_next)) {
-							$row = 1;
-							foreach ($parcel_next as $parcels) {
+							if(isset($parcel_next)) {
+								$row = 1;
+								foreach ($parcel_next as $parcels) {
 
-								echo "<tr data-waybill='{$parcels['waybill_number']}'>";
-								echo "<td>
-										<div class='checkbox-nice'>
-											<input id='chk_{$row}' type='checkbox' class='next'><label for='chk_{$row}'></label>
-										</div>
-									  </td>";
-								echo "<td>{$row}</td>";
-								echo "<td><a href='/site/viewwaybill?id=" . Calypso::getValue($parcels, 'id') . "'>" . Calypso::getValue($parcels, 'waybill_number') . "</a></td>";
-								echo "<td>" . ucwords(Calypso::getValue($parcels, 'sender_address.city') . ', ' . Calypso::getValue($parcels, 'sender_address.state.name')) . "</td>";
-								echo "<td></td>";
-								echo "<td>" . ucwords(Calypso::getValue($parcels, 'receiver_address.city') . ', ' . Calypso::getValue($parcels, 'receiver_address.state.name')) . "</td>";
-								echo "<td>" . Calypso::getValue($parcels, 'weight') . "</td>";
-								echo "</tr>";
-								$row++;
+									echo "<tr data-waybill='{$parcels['waybill_number']}'>";
+									echo "<td>
+											<div class='checkbox-nice'>
+												<input name='waybills[]' id='chk_{$row}' type='checkbox' class='chk_next'><label for='chk_{$row}'></label>
+											</div>
+										  </td>";
+									echo "<td>{$row}</td>";
+									echo "<td><a href='/site/viewwaybill?id=" . Calypso::getValue($parcels, 'id') . "'>" . Calypso::getValue($parcels, 'waybill_number') . "</a></td>";
+									echo "<td>" . ucwords(Calypso::getValue($parcels, 'sender_address.city') . ', ' . Calypso::getValue($parcels, 'sender_address.state.name')) . "</td>";
+									echo "<td></td>";
+									echo "<td>" . ucwords(Calypso::getValue($parcels, 'receiver_address.city') . ', ' . Calypso::getValue($parcels, 'receiver_address.state.name')) . "</td>";
+									echo "<td>" . Calypso::getValue($parcels, 'weight') . "</td>";
+									echo "</tr>";
+									$row++;
+								}
 							}
-						}
-					?>
-				</tbody>
-			</table>
+						?>
+					</tbody>
+				</table>
+			</div>
 		</div>
 	</div>
-</div>
-
+</form>
 
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
