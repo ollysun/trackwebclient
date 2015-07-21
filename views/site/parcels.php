@@ -4,8 +4,24 @@ use yii\helpers\Url;
 use Adapter\Globals\ServiceConstant;
 
 /* @var $this yii\web\View */
-$this->title = 'All Parcels';
-$this->params['breadcrumbs'][] = 'Parcels';
+$this->title = 'All Shipments';
+$this->params['breadcrumbs'][] = 'Shipments';
+$show_next = false;
+$show_prev = false;
+
+if($offset == 0 || count($parcels) >= 5 ){
+    $show_next = true;
+}else{
+    $show_next = false;
+}
+
+
+if($offset <= 0){
+    $show_prev = false;
+}elseif (($offset - 5) >= 0){
+    $show_prev = true;
+}
+
 ?>
 
 <!-- this page specific styles -->
@@ -18,22 +34,25 @@ $this->params['breadcrumbs'][] = 'Parcels';
 
 <div class="main-box">
 	<div class="main-box-header table-search-form ">
-		<form class="form-inline clearfix">
+		<div class="clearfix">
 			<div class="pull-left">
-				<?= $this->render('../elements/parcels_filter',[]) ?>
+				<?= $this->render('../elements/parcels_filter',['from_date'=>$from_date,'to_date'=>$to_date]) ?>
 			</div>
 			<div class="pull-right clearfix">
-				<div class="pull-left form-group">
-					<label for="searchInput">Search</label><br>
-					<div class="input-group input-group-sm input-group-search">
-						<input id="searchInput" type="text" name="search" placeholder="" class="search-box form-control">
-						<div class="input-group-btn">
-							<button class="btn btn-sm btn-default" type="submit">
-								<i class="fa fa-search"></i>
-							</button>
-						</div>
-					</div>
-				</div>
+
+                <form class="table-search-form form-inline clearfix">
+                    <div class="pull-left">
+                        <label for="searchInput">Search</label><br>
+                        <div class="input-group input-group-sm input-group-search">
+                            <input id="searchInput" type="text" name="search" placeholder="Waybill Number" class="search-box form-control">
+                            <div class="input-group-btn">
+                                <button class="btn btn-default" type="submit">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
 				<div class="pull-left hidden">
 					<label>&nbsp;</label><br>
 					<div class="btn-group btn-group-sm">
@@ -50,11 +69,11 @@ $this->params['breadcrumbs'][] = 'Parcels';
 					</div>
 				</div>
 			</div>
-		</form>
+		</div>
 	</div>
 	<div class="main-box-body">
 		<div class="table-responsive">
-			<table id="table" class="table table-hover table-bordered">
+			<table id="table" class="table table-hover ">
 				<thead>
 					<tr>
 <!--						<th style="width: 20px"><div class="checkbox-nice"><input id="chbx_w_all" type="checkbox"><label for="chbx_w_all"> </label></div></th>-->
@@ -72,11 +91,12 @@ $this->params['breadcrumbs'][] = 'Parcels';
                 <?php
                 if(isset($parcels) && is_array($parcels)){
                     $i = 1;
+                    $count = $offset + 1;
                     foreach($parcels as $parcel){
                 ?>
 					<tr>
 <!--						<td><div class="checkbox-nice"><input id="chbx_w_000--><?//= $i ?><!--" type="checkbox"><label for="chbx_w_0001"> </label></div></td>-->
-						<td><?= $i++ ?></td>
+						<td><?= $count++ ?></td>
 						<td><?= strtoupper($parcel['waybill_number']); ?></td>
 						<td><?= strtoupper($parcel['sender']['firstname'].' '. $parcel['sender']['lastname']) ?></td>
 						<td><?= $parcel['sender']['phone'] ?></td>
@@ -91,6 +111,14 @@ $this->params['breadcrumbs'][] = 'Parcels';
 
 				</tbody>
 			</table>
+            <div class="pull-right form-group">
+                <?php if($show_prev): ?>
+                <a href="<?= Url::to(['site/parcels?offset='.($offset - 5)]) ?>" class="btn btn-primary btn-sm">Prev</a>
+                <?php endif;  ?>
+                <?php if($show_next): ?>
+                    <a href="<?= Url::to(['site/parcels?offset='.($offset + 5)]) ?>" class="btn btn-primary btn-sm">Next</a>
+                <?php endif;  ?>
+            </div>
 		</div>
 	</div>
 </div>

@@ -1,5 +1,14 @@
 (function($){
 //Initialize the carousel
+
+/*$("input[type=text]").('keypress', function(event){
+
+ 	if (event.keyCode == 10 || event.keyCode == 13) {
+		event.preventDefault();
+	}
+});*/
+
+
 $('#newParcelForm').carousel('pause');
 $('#newParcelForm').on('slide.bs.carousel', function (event) {
 	$("html, body").animate({scrollTop:0},'fast');
@@ -98,14 +107,6 @@ function validate($parent)
 	}
 	return false;
 }
-
-$("form.validate").submit(function(event) {
-	alert($(this).hasClass('validate'));
-	event.preventDefault();
-/*	if(validate($(this)) === true ) {
-		return;
-	}*/
-});
 
 
 var deliveryShowHide = {
@@ -295,9 +296,18 @@ var Parcel = {
 		}
 	},
 
+	newAccountObject: function() {
+		return {
+			name: '',
+			number: '',
+			bank: ''
+		}
+	},
+
 	Url: {
 		'states' : '/site/getstates',
-		'userdetails' : '/site/userdetails'
+		'userdetails' : '/site/userdetails',
+		'accountdetails' : '/site/accountdetails'
 	},
 
 	getStates: function(country_id, selectSelector) {
@@ -333,15 +343,33 @@ var Parcel = {
 
 	setUserDetails: function(userObj, suffix) {
 
+		$('#id_' + suffix).val(userObj.id);
 		$('#firstname_' + suffix).val(userObj.firstname);
 		$('#lastname_' + suffix).val(userObj.lastname);
 		$('#email_' + suffix).val(userObj.email);
 		$('#phone_' + suffix).val(userObj.phone);
-		/*$('#address_' + suffix + '_1').val();
-		$('#address_' + suffix + '_2').val();
-		$('#city_' + suffix).val();
-		$('#country_' + suffix).val();
-		$('#state_' + suffix).val();*/
+	},
+
+	getAccountDetails: function(owner_id) {
+		var self = this;
+		$.get( Parcel.Url.accountdetails, { owner_id: owner_id }, function(response) {
+			if(response.status === 'success') {
+
+				var accountObj = self.newAccountObject();
+				accountObj.id = response.data.id;
+				accountObj.name = response.data.account_name;
+				accountObj.number = response.data.account_no;
+				accountObj.bank = response.data.bank;
+				self.setAccountDetails(accountObj);
+			}
+		});
+	},
+
+	setAccountDetails: function(accountObj) {
+		$('#account_id').val(accountObj.id);
+		$('#account_name').val(accountObj.name);
+		$('#account_no').val(accountObj.number);
+		$('#bank').val(accountObj.bank.id);
 	}
 };
 $(document).ready(function(){
@@ -364,5 +392,18 @@ $(document).ready(function(){
 		}
 		var term = $("#" + suffix + "SearchBox").val();
 		Parcel.getUserInformation(term, suffix);
+	});
+
+	$('#merchantNew').on('click', function(event){
+		Parcel.setAccountDetails(Parcel.newAccountObject());
+	});
+
+	$('#merchantOld').on('click', function(event){
+		var owner_id = $('#id_shipper').val();
+		if(owner_id) {
+			Parcel.getAccountDetails(owner_id);
+		} else {
+			alert('No Bank Account record found');
+		}
 	});
 });

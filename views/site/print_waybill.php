@@ -1,25 +1,43 @@
+<?php
+//var_dump($parcelData);
+?>
+<div class="copy">
+	Customer's copy
+</div>
+<div class="waybill-image">
+	<!-- drop waybill image here, remove div below -->
+    <label>Waybill Bar Code</label><br/>
+	<div style="width: 100%; height: 70%; border: 1px solid black;padding: 10px;">
+        <div id="barcode" class="form-control-static"></div>
+    </div>
+</div>
+<br/>
+<div class="waybill-no">
+    <?= $parcelData['waybill_number']; ?>
+</div>
+
 
 <div class="user user--sender">
 	<div class="user__inner">
-		<div class="user__name">Olajide Oye Oluwadamilola</div>
-		<div class="user__tel">2348050001234</div>
-		<div class="user__address">350, Borno Way, Surulere, Lagos</div>
+		<div class="user__name"><?= strtoupper($parcelData['sender']['lastname'].' '.$parcelData['sender']['firstname']) ?></div>
+		<div class="user__tel"><?= $parcelData['sender']['phone'] ?></div>
+		<div class="user__address"><?= $parcelData['sender_address']['street_address1'].'<br/>'.$parcelData['sender_address']['street_address2'] ?></div>
 		<div class="user__country">Nigeria</div>
 	</div>
 </div>
 <div class="user user--receiver">
 	<div class="user__inner">
-		<div class="user__name">Arowosafe Onoopemipo</div>
-		<div class="user__tel">2348050001234</div>
-		<div class="user__address">34B, Shehu Shagari Rd, Maitama, Abuja</div>
+		<div class="user__name"><?= strtoupper($parcelData['receiver']['lastname'].' '.$parcelData['receiver']['firstname']) ?></div>
+		<div class="user__tel"><?= $parcelData['receiver']['phone'] ?></div>
+		<div class="user__address"><?= $parcelData['receiver_address']['street_address1'].'<br/>'.$parcelData['receiver_address']['street_address2'] ?></div>
 		<div class="user__country">Nigeria</div>
 	</div>
 </div>
 
 <div class="shipped-date">
-	<div class="shipped-date__dd">15</div>
-	<div class="shipped-date__mm">07</div>
-	<div class="shipped-date__yy">15</div>
+	<div class="shipped-date__dd"><?= date('d',strtotime($parcelData['created_date'])); ?></div>
+	<div class="shipped-date__mm"><?= date('m',strtotime($parcelData['created_date'])); ?></div>
+	<div class="shipped-date__yy"><?= date('y',strtotime($parcelData['created_date'])); ?></div>
 </div>
 
 <div class="code">
@@ -28,8 +46,8 @@
 </div>
 
 <div class="shipment">
-	<div class="shipment__packages">2</div>
-	<div class="shipment__actual-weight">1.15Kg</div>
+	<div class="shipment__packages"><?= $parcelData['no_of_package']; ?></div>
+	<div class="shipment__actual-weight"><?= $parcelData['weight']; ?>Kg</div>
 	<div class="shipment__dimensional-weight"></div>
 </div>
 
@@ -40,14 +58,14 @@
 </div>
 
 <div class="parcel-type">
-	Non-Document (ND)
+    <?= $parcelData['other_info']; ?>
 </div>
 
 <div class="cod">
 	<div class="cod__inner">
-		<div class="cod__yes is-active"></div>
-		<div class="cod__no"></div>
-		<div class="cod__amt">14, 234, 567</div>
+		<div class="cod__yes <?= $parcelData['cash_on_delivery']=='1'?'is-active':'' ?> "></div>
+		<div class="cod__no <?= $parcelData['cash_on_delivery']=='1'?'':'is-active' ?>"></div>
+		<div class="cod__amt"><?= $parcelData['delivery_amount']; ?></div>
 	</div>
 </div>
 
@@ -55,7 +73,16 @@
 	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
 	tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
 	quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-	consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-	cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-	proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+	consequat. Duis aute irure dolor in reprehenderit in voluptate
 </div>
+
+<script type="text/javascript">
+    var waybill = "<?= strtoupper($parcelData['waybill_number']); ?>";
+</script>
+<?php
+
+?>
+<?php $this->registerJsFile('@web/js/libs/jquery-barcode.min.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/html2canvas.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/print.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
+

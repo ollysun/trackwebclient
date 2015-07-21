@@ -126,7 +126,21 @@ body {
 		background: url('../../img/waybill-bg.png');
 	}
 }
-
+.copy {
+	.absolute-wrap(@waybill-padding-vertical; auto; 335px);
+	right: 25px;
+	font-size: 22px;
+	font-weight: bold;
+	text-align: center;
+	&:extend(.text-uppercase);
+}
+.waybill-image {
+	.absolute-wrap(@waybill-padding-vertical; @code-left; 220px; 120px);
+}
+.waybill-no {
+	.absolute-wrap(159px; 575px);
+	font-size: 18px;
+}
 .user {
 	.absolute-wrap(auto; @user-left; @user-width; @user-height);
 
@@ -264,6 +278,9 @@ body {
 	.show-borders { //on waybill-wrap
 		//box-shadow: 0 0 1px 0px #ccc;
 		border: 1px solid #ccc;
+		.waybill-image,
+		.waybill-no,
+		.copy,
 		.user, .user__inner *,
 		.shipped-date, .shipped-date *,
 		.code, .code *,

@@ -4,14 +4,29 @@ use yii\helpers\Url;
 use Adapter\Globals\ServiceConstant;
 
 
-$this->title = 'Parcels: Due for Delivery';
+$this->title = 'Shipments: Due for Delivery';
 $this->params['breadcrumbs'] = array(
 	array(
 	'url' => ['site/parcels'],
-	'label' => 'Parcels'
+	'label' => 'Shipments'
 	),
 	array('label'=> 'Due for delivery')
 );
+$show_next = false;
+$show_prev = false;
+
+if($offset == 0 || count($parcels) >= 5 ){
+    $show_next = true;
+}else{
+    $show_next = false;
+}
+
+
+if($offset <= 0){
+    $show_prev = false;
+}elseif (($offset - 5) >= 0){
+    $show_prev = true;
+}
 
 ?>
 <!-- this page specific styles -->
@@ -47,7 +62,7 @@ $this->params['breadcrumbs'] = array(
 	</div>
 	<div class="main-box-body">
 		<div class="table-responsive">
-            <table id="table" class="table table-hover table-bordered">
+            <table id="table" class="table table-hover">
                 <thead>
                 <tr>
                     <!--						<th style="width: 20px"><div class="checkbox-nice"><input id="chbx_w_all" type="checkbox"><label for="chbx_w_all"> </label></div></th>-->
@@ -84,6 +99,14 @@ $this->params['breadcrumbs'] = array(
 
                 </tbody>
             </table>
+            <div class="pull-right form-group">
+                <?php if($show_prev): ?>
+                    <a href="<?= Url::to(['site/parcelsfordelivery?offset='.($offset - 5)]) ?>" class="btn btn-primary btn-sm">Prev</a>
+                <?php endif;  ?>
+                <?php if($show_next): ?>
+                    <a href="<?= Url::to(['site/parcelsfordelivery?offset='.($offset + 5)]) ?>" class="btn btn-primary btn-sm">Next</a>
+                <?php endif;  ?>
+            </div>
 		</div>
 	</div>
 </div>
