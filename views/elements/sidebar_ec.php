@@ -19,20 +19,20 @@ use yii\helpers\Url;
 						</a>
 					</li>
 					<li>
-						<a href="<?php //echo ROOT_PATH ?>/parcels.php" class="dropdown-toggle">
+						<a href="#" class="dropdown-toggle">
 							<i class="fa fa-gift"></i>
-							<span>Parcels</span>
+							<span>Shipments</span>
 							<i class="fa fa-angle-right drop-icon"></i>
 						</a>
 						<ul class="submenu">
 							<li>
 								<a href="<?= Url::to(['site/parcels']) ?>">
-									All Parcels
+									All Shipments
 								</a>
 							</li>
 							<li>
 								<a href="<?= Url::to(['site/processedparcels']) ?>">
-									New Parcels
+									New Shipments
 								</a>
 							</li>
 							<li>
@@ -80,10 +80,38 @@ use yii\helpers\Url;
 						</a>
 					</li> -->
 					<li>
-						<a href="<?= Url::to(['site/managebranches']) ?>">
-							<i class="fa fa-code-fork"></i>
-							<span>Manage branches</span>
+						<a href="<?= Url::to(['site/managebranches']) ?>" class="dropdown-toggle">
+							<i class="fa fa-user"></i>
+							<span>Administrator</span>
+							<i class="fa fa-angle-right drop-icon"></i>
 						</a>
+						<ul class="submenu">
+							<li>
+								<a href="<?= Url::to(['site/managebranches']) ?>">Manage branches</a>
+							</li>
+							<li>
+								<a href="<?= Url::to(['site/managestaff']) ?>">Manage staff accounts</a>
+							</li>
+						</ul>
+					</li>
+
+					<li>
+						<a href="<?= Url::to(['site/managebranches']) ?>" class="dropdown-toggle">
+							<i class="fa fa-building-o"></i>
+							<span>Hub</span>
+							<i class="fa fa-angle-right drop-icon"></i>
+						</a>
+						<ul class="submenu">
+							<li>
+								<a href="<?= Url::to(['site/hubarrival']) ?>">Shipment Arrivals</a>
+							</li>
+							<li>
+								<a href="<?= Url::to(['site/hubnextdestination']) ?>">Set next destination</a>
+							</li>
+							<li>
+								<a href="<?= Url::to(['site/hubdispatch']) ?>">Dispatched Shipments</a>
+							</li>
+						</ul>
 					</li>
 				</ul>
 			</div>

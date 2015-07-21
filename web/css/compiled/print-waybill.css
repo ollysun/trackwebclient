@@ -13,6 +13,7 @@
   clear: both;
 }
 .text-uppercase,
+.copy,
 .user__name,
 .user__country {
   text-transform: uppercase;
@@ -45,6 +46,32 @@ body {
   .waybill-wrap {
     background: url('../../img/waybill-bg.png');
   }
+}
+.copy {
+  position: absolute;
+  top: 27px;
+  left: auto;
+  width: 335px;
+  height: auto;
+  right: 25px;
+  font-size: 22px;
+  font-weight: bold;
+  text-align: center;
+}
+.waybill-image {
+  position: absolute;
+  top: 27px;
+  left: 441px;
+  width: 220px;
+  height: 120px;
+}
+.waybill-no {
+  position: absolute;
+  top: 159px;
+  left: 575px;
+  width: auto;
+  height: auto;
+  font-size: 18px;
 }
 .user {
   position: absolute;
@@ -214,6 +241,9 @@ body {
   .show-borders {
     border: 1px solid #ccc;
   }
+  .show-borders .waybill-image,
+  .show-borders .waybill-no,
+  .show-borders .copy,
   .show-borders .user,
   .show-borders .user__inner *,
   .show-borders .shipped-date,
