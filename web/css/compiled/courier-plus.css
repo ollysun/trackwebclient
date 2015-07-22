@@ -1261,8 +1261,20 @@ h3 .small {
     -o-transition: border-color 0.1s ease-in-out 0s background-color 0.1s ease-in-out 0s box-shadow 0.1s ease-in-out 0s;
     padding-left: 28px;
   }
+  .nav-small #nav-col-submenu .submenu > li > a.dropdown-toggle {
+    position: relative;
+  }
   .nav-small #nav-col-submenu .submenu > li > a.dropdown-toggle > .drop-icon {
-    display: block;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    margin-top: -6px;
+  }
+  .nav-small #nav-col-submenu .submenu > li.open > a.dropdown-toggle > .drop-icon {
+    transform: rotate(90deg);
+  }
+  .nav-small #nav-col-submenu .submenu > li .submenu {
+    display: none;
   }
   .nav-small #nav-col-submenu > .submenu {
     display: block !important;
@@ -1277,6 +1289,13 @@ h3 .small {
   .nav-small #nav-col-submenu .submenu > li > .submenu a,
   .nav-small #nav-col-submenu .submenu > li > .submenu a {
     padding-left: 48px;
+  }
+  .nav-small #nav-col-submenu .submenu > li > .submenu a:hover,
+  .nav-small #nav-col-submenu .submenu > li > .submenu a:hover,
+  .nav-small #nav-col-submenu .submenu > li > .submenu a.active,
+  .nav-small #nav-col-submenu .submenu > li > .submenu a.active {
+    background-color: #232323 !important;
+    color: #fff !important;
   }
 }
 @media (max-width: 991px) {

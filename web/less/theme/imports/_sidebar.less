@@ -253,9 +253,23 @@
 					   .transition(border-color 0.1s ease-in-out 0s, background-color 0.1s ease-in-out 0s, box-shadow 0.1s ease-in-out 0s);
 						padding-left: 28px;
 
-						&.dropdown-toggle > .drop-icon {
-							display: block;
+						&.dropdown-toggle {
+							position: relative;
+							> .drop-icon {
+								//display: block;
+								position: absolute;
+								right: 10px;
+								top: 50%;
+								margin-top: -6px;
+							}
 						}
+					 }
+					&.open > a.dropdown-toggle > .drop-icon {
+						transform: rotate(90deg);
+					}
+					 .submenu {
+					 	//display: block !important;
+					 	display: none;
 					 }
 				 }
 			}
@@ -270,7 +284,12 @@
 			    width: 100%;
 
 			    a {
-			    	padding-left: 48px
+			    	padding-left: 48px;
+			    	&:hover, &.active {
+						background-color: #232323 !important;
+						//color: @primary-color;
+						color: #fff !important;
+			    	}
 			    }
 			}
 		}
