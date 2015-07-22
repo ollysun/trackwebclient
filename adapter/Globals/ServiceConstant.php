@@ -29,6 +29,7 @@ class ServiceConstant {
     const URL_ADD_PARCEL = 'parcel/add/';
     const URL_GET_ONE_PARCEL = 'parcel/getone/';
     const URL_GET_ALL_PARCEL = 'parcel/getAll/';
+    const URL_MOVE_TO_FOR_SWEEPER = '/parcel/moveToForSweeper/';
 
     const URL_GET_ALL_BANKS = 'bank/getAll/';
 

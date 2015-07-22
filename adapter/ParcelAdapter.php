@@ -46,6 +46,9 @@ class ParcelAdapter extends BaseAdapter{
     public function getNewParcelsByDate($start_created_date,$offset=0, $count=50){
         $filter = '&start_created_date='.$start_created_date;
         return $this->request(ServiceConstant::URL_GET_ALL_PARCEL.'?with_sender=1&with_receiver=1&with_receiver_address=1&offset='.$offset.'&count='.$count.$filter,array(),self::HTTP_GET);
+    }
 
+    public function moveToForSweeper($postData) {
+        return $this->request(ServiceConstant::URL_MOVE_TO_FOR_SWEEPER, $postData, self::HTTP_POST);
     }
 }

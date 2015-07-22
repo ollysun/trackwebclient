@@ -109,6 +109,9 @@ use yii\helpers\Url;
 								<a href="<?= Url::to(['site/hubnextdestination']) ?>">Set next destination</a>
 							</li>
 							<li>
+								<a href="<?= Url::to(['site/hubmovetodelivery']) ?>">For Delivery</a>
+							</li>
+							<li>
 								<a href="<?= Url::to(['site/hubdispatch']) ?>">Dispatched Shipments</a>
 							</li>
 						</ul>
