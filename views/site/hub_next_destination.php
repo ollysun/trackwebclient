@@ -42,7 +42,7 @@ $this->params['breadcrumbs'] = array(
 						</div>
 						<div class="pull-left form-group">
 							<label for="branch_name" id="hub_branch_label">Branch Name</label><br>
-							<select id="branch_name" class="form-control input-sm" name="branch_name">
+							<select id="branch_name" class="form-control input-sm" name="branch">
 								<option>Select Name...</option>
 							</select>
 						</div>
@@ -53,14 +53,14 @@ $this->params['breadcrumbs'] = array(
 
 				</div>
 
-				<div class="pull-right clearfix">
+				<!--<div class="pull-right clearfix">
 					<form class="table-search-form form-inline clearfix">
 						<div class="pull-left form-group">
 							<label for="searchInput">&nbsp;</label><br>
 							<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">Manifest</button>
 						</div>
 					</form>
-				</div>
+				</div>-->
 			</div>
 		</div>
 		<div class="main-box-body">
