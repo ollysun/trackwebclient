@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use Adapter\BankAdapter;
+use Adapter\BranchAdapter;
 use Adapter\ParcelAdapter;
 use Adapter\RefAdapter;
 use Adapter\UserAdapter;
@@ -151,11 +152,9 @@ class SiteController extends BaseController
                 $parcel = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
                 $response = $parcel->createNewParcel(json_encode($payload));
                 if ($response['status'] === Response::STATUS_OK) {
-                    Yii::$app->session->setFlash('success', 'Parcel has been created successfully. <a href="#" class="btn btn-mini">Print Waybill</a>');
-                    Yii::$app->response->redirect('parcels');
+                    Yii::$app->response->redirect("viewwaybill?id={$response['data']['id']}");
                 } else {
-                    Yii::$app->session->setFlash('danger', 'There was a problem creating the value. Please try again.');
-                    Yii::$app->response->redirect('newparcel');
+                    $this->flashError('There was a problem creating the value. Please try again.');
                 }
             }
         }
@@ -180,7 +179,6 @@ class SiteController extends BaseController
 
     public function actionParcels($offset=0)
     {
-
         $from_date = date('Y/m/d');
         $to_date = date('Y/m/d');
         $parcel = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
@@ -424,10 +422,90 @@ class SiteController extends BaseController
     {
         return $this->render('hub_arrival');
     }
+
     public function actionHubnextdestination()
     {
-        return $this->render('hub_next_destination');
+
+        $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+
+        if(\Yii::$app->request->isPost) {
+            $branch = \Yii::$app->request->post('branch');
+            $waybill_numbers = \Yii::$app->request->post('waybills');
+            if(!isset($branch) || empty($waybill_numbers)) {
+                $this->flashError('Please ensure you set destinations at least a (one) for the parcels');
+            }
+
+            $postParams['waybill_numbers'] = implode(',', $waybill_numbers);
+            $postParams['to_branch_id'] = $branch;
+            $response = $parcelsAdapter->moveToForSweeper($postParams);
+            if($response['status'] === ResponseHandler::STATUS_OK) {
+                $this->flashSuccess('Parcels have been successfully moved to the next destination. <a href="hubmovetodelivery">Generate Manifest</a>');
+            } else {
+                $this->flashError('An error occured while trying to move parcels to next destination. Please try again.');
+            }
+        }
+        $user_session = Calypso::getInstance()->session("user_session");
+        $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+        $arrival_parcels = $parcelsAdapter->getParcelsForNextDestination(ServiceConstant::FOR_ARRIVAL, $user_session['branch_id']);
+        if($arrival_parcels['status'] === ResponseHandler::STATUS_OK) {
+            $viewData['parcel_next'] = $arrival_parcels['data'];
+        } else {
+            $this->flashError('An error occured while trying to fetch parcels. Please try again.');
+            $viewData['parcel_next'] = [];
+        }
+        return $this->render('hub_next_destination', $viewData);
     }
+
+    public function actionHubmovetodelivery()
+    {
+
+        $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+
+        if(\Yii::$app->request->isPost) {
+
+        }
+
+        $user_session = Calypso::getInstance()->session("user_session");
+        $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+        $for_delivery_parcels = $parcelsAdapter->getParcelsForNextDestination(ServiceConstant::FOR_DELIVERY, $user_session['branch_id']);
+        if($for_delivery_parcels['status'] === ResponseHandler::STATUS_OK) {
+            $viewData['parcel_delivery'] = $for_delivery_parcels['data'];
+        } else {
+            $this->flashError('An error occured while trying to fetch parcels. Please try again.');
+            $viewData['parcel_delivery'] = [];
+        }
+        return $this->render('hubmovetodelivery', $viewData);
+    }
+
+    /**
+     * Ajax calls to get all hubs
+     */
+    public function actionAllhubs() {
+
+        $branchAdapter = new BranchAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+        $allHubs = $branchAdapter->getAllHubs();
+        if ($allHubs['status'] === ResponseHandler::STATUS_OK) {
+            return $this->sendSuccessResponse($allHubs['data']);
+        } else {
+            return $this->sendErrorResponse($allHubs['message'], null);
+        }
+    }
+
+    /**
+     * Ajax calls to get all ec in the present hub
+     */
+    public function actionAllecforhubs() {
+
+        $branchAdapter = new BranchAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+        $user_session = Calypso::getInstance()->session("user_session");
+        $allEcsInHubs = $branchAdapter->listECForHub($user_session['branch_id']);
+        if ($allEcsInHubs['status'] === ResponseHandler::STATUS_OK) {
+            return $this->sendSuccessResponse($allEcsInHubs['data']);
+        } else {
+            return $this->sendErrorResponse($allEcsInHubs['message'], null);
+        }
+    }
+
     public function actionHubdispatch()
     {
         return $this->render('hub_dispatch');

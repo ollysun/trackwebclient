@@ -1,4 +1,5 @@
 <?php
+use Adapter\Util\Calypso;
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
@@ -15,7 +16,8 @@ $this->params['breadcrumbs'] = array(
 
 <?=Html::cssFile('@web/css/libs/bootstrap-select.min.css')?>
 
-<?php echo \Adapter\Util\Calypso::showFlashMessages();?>
+<?php echo Calypso::showFlashMessages(); ?>
+
 <form action="#" method="post" enctype="multipart/form-data" class="validate">
 
 	<div id="newParcelForm" class="l-new-parcel-form carousel slide">
