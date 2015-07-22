@@ -14,7 +14,19 @@ $session_data = Calypso::getInstance()->session('user_session');
 		</a>
 
 		<div class="clearfix">
-
+			<button class="navbar-toggle" data-target=".navbar-ex1-collapse" data-toggle="collapse" type="button">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="fa fa-bars"></span>
+			</button>
+			<div class="nav-no-collapse navbar-left hidden-sm hidden-xs pull-left" id="header-nav-left">
+				<ul class="nav navbar-nav pull-left">
+					<li>
+						<a class="btn" id="make-small-nav">
+								<i class="fa fa-bars"></i>
+							</a>
+					</li>
+				</ul>
+			</div>
 			<div class="nav-no-collapse pull-right" id="header-nav">
 				<ul class="nav navbar-nav pull-right">
 					<li class="dropdown profile-dropdown">

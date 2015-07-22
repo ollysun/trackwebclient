@@ -6,8 +6,8 @@ use yii\helpers\Url;
 <div id="nav-col">
 	<section id="col-left" class="col-left-nano">
 		<div id="col-left-inner" class="col-left-nano-content">
-			<div>&nbsp;</div>
 			<div class="collapse navbar-collapse navbar-ex1-collapse" id="sidebar-nav">
+				<div>&nbsp;</div>
 				<ul class="nav nav-pills nav-stacked">
 					<li class="nav-header nav-header-first hidden-sm hidden-xs">
 						Navigation
