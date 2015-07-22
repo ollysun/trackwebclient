@@ -1266,7 +1266,7 @@ h3 .small {
   }
   .nav-small #nav-col-submenu .submenu > li > a.dropdown-toggle > .drop-icon {
     position: absolute;
-    right: 10px;
+    right: 20px;
     top: 50%;
     margin-top: -6px;
   }
