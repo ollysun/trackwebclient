@@ -334,6 +334,20 @@ class SiteController extends BaseController
             return $this->sendErrorResponse($branches['message'], null);
         }
     }
+    public function actionGetarrivedparcel(){
+        $staff_no = \Yii::$app->request->get('staff_no');
+        if(!isset($staff_no)) {
+            return $this->sendErrorResponse("Invalid parameter(s) sent!", null);
+        }
+        $parcel = new  ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+        $response = $parcel->getParcel($staff_no,ServiceConstant::IN_TRANSIT);
+
+        if ($response['status'] === ResponseHandler::STATUS_OK) {
+            return $this->sendSuccessResponse($response['data']);
+        } else {
+            return $this->sendErrorResponse($response['message'], null);
+        }
+    }
 
     /**
      * Ajax calls to get states when a country is selected
@@ -408,7 +422,24 @@ class SiteController extends BaseController
     }
     public function actionManagestaff()
     {
+        if(Yii::$app->request->isPost){
+            $data = Yii::$app->request->post();
+            $user = new UserAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+            $resp = $user->createNewUser(Calypso::getInstance()->getValue($data,'role'),
+                Calypso::getInstance()->getValue($data,'branch'),Calypso::getInstance()->getValue($data,'staff_id'),
+                Calypso::getInstance()->getValue($data,'email'),Calypso::getInstance()->getValue($data,'firstname').' '.Calypso::getInstance()->getValue($data,'lastname'),
+                Calypso::getInstance()->getValue($data,'phone'));
 
+            $creationResponse = new ResponseHandler($resp);
+            if ($creationResponse->getStatus() == ResponseHandler::STATUS_OK) {
+                Yii::$app->session->setFlash('success', 'User has been created successfully.');
+                //Yii::$app->response->redirect('managestaff');
+            } else {
+                Yii::$app->session->setFlash('danger', 'There was a problem creating this User. Please try again.');
+                //Yii::$app->response->redirect('managestaff');
+            }
+
+        }
 
         $refAdp = new RefAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
         $states = $refAdp->getStates(1);//Nigeria hardcoded for now ... No offense please.
