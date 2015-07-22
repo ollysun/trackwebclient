@@ -21,7 +21,7 @@ $session_data = Calypso::getInstance()->session('user_session');
 			<div class="nav-no-collapse navbar-left hidden-sm hidden-xs pull-left" id="header-nav-left">
 				<ul class="nav navbar-nav pull-left">
 					<li>
-						<a class="btn" id="make-small-nav">
+						<a class="btn" id="make-small-nav" data-toggle="tooltip" data-placement="bottom" title="Toggle Sidebar">
 								<i class="fa fa-bars"></i>
 							</a>
 					</li>
