@@ -510,4 +510,24 @@ class SiteController extends BaseController
     {
         return $this->render('hub_dispatch');
     }
+    public function actionZones()
+    {
+        return $this->render('zones');
+    }
+    public function actionBillings()
+    {
+        return $this->render('billings');
+    }
+    public function actionRegions()
+    {
+        return $this->render('regions');
+    }
+    public function actionStatemapping()
+    {
+        return $this->render('state_mapping');
+    }
+    public function actionCitymapping()
+    {
+        return $this->render('city_mapping');
+    }
 }
