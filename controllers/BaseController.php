@@ -70,4 +70,22 @@ class BaseController extends Controller {
             'data' => $data
         ];
     }
+
+    /**
+     * This flashes error message and sends to the view
+     * @param $message
+     */
+    public function flashError($message) {
+
+        \Yii::$app->session->setFlash('danger', $message);
+    }
+
+    /**
+     * This flashes success message and sends to the view
+     * @param $message
+     */
+    public function flashSuccess($message) {
+
+        \Yii::$app->session->setFlash('success', $message);
+    }
 }
