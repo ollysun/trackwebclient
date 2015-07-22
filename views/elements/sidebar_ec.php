@@ -93,19 +93,24 @@ use yii\helpers\Url;
 								<a href="<?= Url::to(['site/managestaff']) ?>">Manage staff accounts</a>
 							</li>
 							<li>
-								<a href="<?= Url::to(['site/zones']) ?>">Zones</a>
-							</li>
-							<li>
-								<a href="<?= Url::to(['site/billings']) ?>">Billing</a>
-							</li>
-							<li>
-								<a href="<?= Url::to(['site/regions']) ?>">Regions</a>
-							</li>
-							<li>
-								<a href="<?= Url::to(['site/statemapping']) ?>">State - Region Mapping</a>
-							</li>
-							<li>
-								<a href="<?= Url::to(['site/citymapping']) ?>">City - State Mapping</a>
+								<a href="<?= Url::to(['site/billings']) ?>" class="dropdown-toggle">Billing <i class="fa fa-angle-right drop-icon"></i></a>
+								<ul class="submenu">
+									<li>
+										<a href="<?= Url::to(['site/zones']) ?>">Zones</a>
+									</li>
+									<li>
+										<a href="<?= Url::to(['site/billings']) ?>">Billing Definition</a>
+									</li>
+									<li>
+										<a href="<?= Url::to(['site/regions']) ?>">Regions</a>
+									</li>
+									<li>
+										<a href="<?= Url::to(['site/statemapping']) ?>">State - Region Mapping</a>
+									</li>
+									<li>
+										<a href="<?= Url::to(['site/citymapping']) ?>">City - State Mapping</a>
+									</li>
+								</ul>
 							</li>
 						</ul>
 					</li>

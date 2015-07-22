@@ -436,7 +436,7 @@ h3 .small {
   color: #fff;
   font-family: 'Titillium Web', Geneva, sans-serif;
   font-weight: 700;
-  width: 220px;
+  width: 240px;
   margin-left: -8px;
   padding: 10px 15px;
 }
@@ -947,7 +947,7 @@ h3 .small {
   z-index: 100;
   position: absolute;
   background: #2c3e50;
-  width: 220px;
+  width: 240px;
 }
 @media (max-width: 991px) {
   #nav-col {
@@ -1100,8 +1100,8 @@ h3 .small {
 #sidebar-nav .nav > .active .submenu > li > .submenu > li a:hover,
 #sidebar-nav .nav > .open .submenu > li > .submenu > li a.active,
 #sidebar-nav .nav > .active .submenu > li > .submenu > li a.active {
-  /* background-color: #232323; */
-  color: #03a9f4;
+  background-color: #232323;
+  color: #fff !important;
 }
 #sidebar-nav .nav > .open .submenu > li > .submenu a,
 #sidebar-nav .nav > .active .submenu > li > .submenu a {
