@@ -50,6 +50,7 @@ $this->params['breadcrumbs'] = array(
 		</div>
 	</div>
 	<div class="main-box-body">
+        <?php echo \Adapter\Util\Calypso::showFlashMessages();?>
 		<div class="table-responsive">
 			<table id="table" class="table table-hover ">
 				<thead>
