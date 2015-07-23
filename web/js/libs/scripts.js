@@ -115,6 +115,10 @@ $(function($) {
 			e.preventDefault();
 		}
 	});
+
+  // activate tooltip // collapse/expand
+  $('[data-toggle="tooltip"]').tooltip()
+
 });
 
 $.fn.removeClassPrefix = function(prefix) {

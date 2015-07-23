@@ -242,7 +242,7 @@ a:focus {
   position: relative;
   min-height: 1200px;
   padding: 15px 15px 35px 15px;
-  margin-left: 220px;
+  margin-left: 240px;
 }
 @media (max-width: 991px) {
   #content-wrapper {
@@ -436,7 +436,7 @@ h3 .small {
   color: #fff;
   font-family: 'Titillium Web', Geneva, sans-serif;
   font-weight: 700;
-  width: 220px;
+  width: 240px;
   margin-left: -8px;
   padding: 10px 15px;
 }
@@ -947,7 +947,7 @@ h3 .small {
   z-index: 100;
   position: absolute;
   background: #2c3e50;
-  width: 220px;
+  width: 240px;
 }
 @media (max-width: 991px) {
   #nav-col {
@@ -1100,8 +1100,8 @@ h3 .small {
 #sidebar-nav .nav > .active .submenu > li > .submenu > li a:hover,
 #sidebar-nav .nav > .open .submenu > li > .submenu > li a.active,
 #sidebar-nav .nav > .active .submenu > li > .submenu > li a.active {
-  /* background-color: #232323; */
-  color: #03a9f4;
+  background-color: #232323;
+  color: #fff !important;
 }
 #sidebar-nav .nav > .open .submenu > li > .submenu a,
 #sidebar-nav .nav > .active .submenu > li > .submenu a {
@@ -1241,12 +1241,40 @@ h3 .small {
     top: 60px;
     left: 64px;
     width: 210px;
+    list-style-type: none !important;
+    padding-left: 0 !important;
+    margin-left: 0 !important;
+  }
+  .nav-small #nav-col-submenu .submenu > li {
+    position: relative;
   }
   .nav-small #nav-col-submenu .submenu > li > a {
+    display: block;
+    font-size: 0.875em;
+    line-height: 38px;
+    color: #fff;
+    outline: none;
+    text-decoration: none;
+    -webkit-transition: border-color 0.1s ease-in-out 0s background-color 0.1s ease-in-out 0s box-shadow 0.1s ease-in-out 0s;
+    -moz-transition: border-color 0.1s ease-in-out 0s background-color 0.1s ease-in-out 0s box-shadow 0.1s ease-in-out 0s;
+    -ms-transition: border-color 0.1s ease-in-out 0s background-color 0.1s ease-in-out 0s box-shadow 0.1s ease-in-out 0s;
+    -o-transition: border-color 0.1s ease-in-out 0s background-color 0.1s ease-in-out 0s box-shadow 0.1s ease-in-out 0s;
     padding-left: 28px;
   }
+  .nav-small #nav-col-submenu .submenu > li > a.dropdown-toggle {
+    position: relative;
+  }
   .nav-small #nav-col-submenu .submenu > li > a.dropdown-toggle > .drop-icon {
-    display: block;
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    margin-top: -6px;
+  }
+  .nav-small #nav-col-submenu .submenu > li.open > a.dropdown-toggle > .drop-icon {
+    transform: rotate(90deg);
+  }
+  .nav-small #nav-col-submenu .submenu > li .submenu {
+    display: none;
   }
   .nav-small #nav-col-submenu > .submenu {
     display: block !important;
@@ -1261,6 +1289,13 @@ h3 .small {
   .nav-small #nav-col-submenu .submenu > li > .submenu a,
   .nav-small #nav-col-submenu .submenu > li > .submenu a {
     padding-left: 48px;
+  }
+  .nav-small #nav-col-submenu .submenu > li > .submenu a:hover,
+  .nav-small #nav-col-submenu .submenu > li > .submenu a:hover,
+  .nav-small #nav-col-submenu .submenu > li > .submenu a.active,
+  .nav-small #nav-col-submenu .submenu > li > .submenu a.active {
+    background-color: #232323 !important;
+    color: #fff !important;
   }
 }
 @media (max-width: 991px) {
