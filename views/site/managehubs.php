@@ -1,6 +1,7 @@
 <?php
 use yii\helpers\Html;
 use yii\helpers\Url;
+use Adapter\Globals\ServiceConstant;
 
 /* @var $this yii\web\View */
 $this->title = 'Manage Hubs';
@@ -21,9 +22,10 @@ $this->params['breadcrumbs'] = array(
 	//$this->params['content_header_button'] = $this->render('../elements/content_header_new_parcel_button');
 ?>
 
+<?php echo \Adapter\Util\Calypso::showFlashMessages();?>
 <div class="main-box">
 	<div class="main-box-header table-search-form">
-		<form class="form-inline clearfix">
+		<form class="form-inline clearfix" id="state_filter" method="post">
 			<div class="pull-left">
 				<?= $this->render('../elements/branch_type_filter', ['branch_type'=>'hub']) ?>
 			</div>
@@ -31,17 +33,18 @@ $this->params['breadcrumbs'] = array(
 			<div class="pull-right clearfix">
 				<div class="form-group pull-left">
 					<label for="">Filter by State</label><br>
-					<select class="form-control input-sm">
+					<select class="form-control input-sm" name="state_id" id="state_id">
                         <?php
                         if(isset($States) && is_array(($States))):
                             foreach($States as $state){
                         ?>
-                            <option value="<?= $state['id'] ?>"><?= strtoupper($state['name']); ?></option>
+                            <option value="<?= $state['id'] ?>"<?= ($state['id']==$state_id) ? 'selected':''; ?>><?= strtoupper($state['name']); ?></option>
                         <?php
                             }
                         endif;
                         ?>
 					</select>
+					<input type="hidden" name="task" value="filter">
 				</div>
 				<div class="pull-left">
 					<label for="">&nbsp;</label><br>
@@ -66,27 +69,24 @@ $this->params['breadcrumbs'] = array(
 					</tr>
 				</thead>
 				<tbody>
-					<tr>
-						<td>1</td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td><button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#editModal"><i class="fa fa-edit"></i> Edit</button></td>
+                    <?php
+                    if(isset($hubs) && is_array(($hubs))):
+                        $count=1; foreach($hubs as $hub){
+                    ?>
+					<tr class="text-center">
+						<td><?= $count++; ?></td>
+						<td><?= strtoupper($hub['code']); ?></td>
+						<td><?= $hub['name']; ?></td>
+						<td><?= $hub['state_id']; ?></td>
+						<td><?= $hub['state_id']; ?></td>
+						<td><?= $hub['address']; ?></td>
+						<td><?= ($hub['status']==ServiceConstant::ACTIVE?'Active':'Inactive'); ?></td>
+						<td><button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#editModal" data-id="<?= $hub['id']; ?>"><i class="fa fa-edit"></i> Edit</button></td>
 					</tr>
-					<tr>
-						<td>2</td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-
+                    <?php
+                        }
+                    endif;
+                    ?>
 				</tbody>
 			</table>
 		</div>
@@ -97,7 +97,7 @@ $this->params['breadcrumbs'] = array(
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
-	  	<form class="">
+	  	<form class="validate" method="post" action="#">
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -106,28 +106,38 @@ $this->params['breadcrumbs'] = array(
 	      <div class="modal-body">
 				<div class="form-group">
 					<label>Hub name</label>
-					<input class="form-control">
+					<input class="form-control" name="name">
 				</div>
 				<div class="form-group">
 					<label>State</label>
-					<select class="form-control"></select>
+					<select class="form-control" name="state_id">
+                        <?php
+                        if(isset($States) && is_array(($States))):
+                            foreach($States as $state){
+                        ?>
+                            <option value="<?= $state['id'] ?>"><?= strtoupper($state['name']); ?></option>
+                        <?php
+                            }
+                        endif;
+                        ?>
+					</select>
 				</div>
 				<div class="form-group">
 					<label>Address</label>
-					<input class="form-control">
+					<input class="form-control" name="address">
 					<input class="form-control address-line-1">
 				</div>
 				<div class="form-group">
-					<label>Activate Hub?</label>
-					<select class="form-control">
-						<option>Yes</option>
-						<option>No</option>
+					<label>Status</label>
+					<select class="form-control" name="status">
+						<option value="<?= ServiceConstant::ACTIVE?>">Active</option>
+						<option value="<?= ServiceConstant::INACTIVE?>">Inactive</option>
 					</select>
 				</div>
 	      </div>
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-	        <button type="button" class="btn btn-primary">Create Hub</button>
+	        <button type="submit" class="btn btn-primary">Create Hub</button>
 	      </div>
 	    </div>
 	  	</form>
@@ -137,7 +147,7 @@ $this->params['breadcrumbs'] = array(
 
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
-	  	<form class="">
+	  	<form class="" method="post" action="">
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -146,28 +156,39 @@ $this->params['breadcrumbs'] = array(
 	      <div class="modal-body">
 				<div class="form-group">
 					<label>Hub name</label>
-					<input class="form-control">
+					<input class="form-control" name="name">
 				</div>
 				<div class="form-group">
 					<label>State</label>
-					<select class="form-control"></select>
+					<select class="form-control" name="state_id">
+						<?php
+						if(isset($States) && is_array(($States))):
+							foreach($States as $state){
+								?>
+								<option value="<?= $state['id'] ?>"><?= strtoupper($state['name']); ?></option>
+								<?php
+							}
+						endif;
+						?>
+					</select>
 				</div>
 				<div class="form-group">
 					<label>Address</label>
-					<input class="form-control">
+					<input class="form-control" name="address">
 					<input class="form-control address-line-1">
 				</div>
 				<div class="form-group">
 					<label>Status</label>
-					<select class="form-control">
-						<option>Active</option>
-						<option>Inactive</option>
+					<select class="form-control" name="status">
+						<option value="<?= ServiceConstant::ACTIVE?>">Active</option>
+						<option value="<?= ServiceConstant::INACTIVE?>">Inactive</option>
 					</select>
 				</div>
 	      </div>
 	      <div class="modal-footer">
+			  <input type="hidden" name="id">
 	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-	        <button type="button" class="btn btn-primary">Save changes</button>
+	        <button type="submit" class="btn btn-primary">Save changes</button>
 	      </div>
 	    </div>
 	  	</form>
@@ -179,3 +200,4 @@ $this->params['breadcrumbs'] = array(
 <?php $this->registerJsFile('@web/js/libs/dataTables.fixedHeader.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/libs/dataTables.tableTools.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/libs/jquery.dataTables.bootstrap.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
+<?php $this->registerJsFile('@web/js/manage_branches.js', ['depends' => [\app\assets\AppAsset::className()]])?>
