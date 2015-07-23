@@ -45,13 +45,11 @@ class ServiceConstant {
     const URL_REF_deliveryType = 'ref/deliveryType/';
     const URL_REF_parcelType = 'ref/parcelType/';
     const URL_REF_COUNTRIES = 'ref/countries';
-
     const URL_REF_STATES = 'ref/states';
     const URL_REF_PAYMENT_METHODS = '/ref/paymentType';
 
     const URL_USER_BY_PHONE = '/user/getByPhone';
-    const URL_CREATE_USER = '/user/getByPhone';
-
+    const URL_CREATE_USER = 'admin/register';
     public static function getStatus($status){
         switch($status){
             case ServiceConstant::ACTIVE:

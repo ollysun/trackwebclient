@@ -116,11 +116,14 @@ $this->params['breadcrumbs'] = array(
 					<div class="form-group" style="width: 300px;">
 						<label>Staff ID</label>
 						<div class="input-group">
-							<input class="form-control">
+							<input id="staff_no" class="form-control">
 							<div class="input-group-btn">
-								<button class="btn btn-default">Load</button>
+								<button type="button" id="get_arrival" class="btn btn-default">Load</button>
 							</div>
 						</div>
+                        <div class="input-group">
+                            <label id="loading_label"></label>
+                        </div>
 					</div>
 				</form>
 
@@ -133,7 +136,7 @@ $this->params['breadcrumbs'] = array(
 							<th>Status</th>
 						</tr>
 					</thead>
-					<tbody>
+					<tbody id="parcel_arrival">
 						<tr>
 							<td>1</td>
 							<td></td>
@@ -167,3 +170,4 @@ $this->params['breadcrumbs'] = array(
 <?php $this->registerJsFile('@web/js/libs/dataTables.fixedHeader.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/libs/dataTables.tableTools.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/libs/jquery.dataTables.bootstrap.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
+<?php $this->registerJsFile('@web/js/hub_util.js', ['depends' => [\app\assets\AppAsset::className()]])?>
