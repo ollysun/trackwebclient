@@ -25,7 +25,6 @@ class ServiceConstant {
     const FOR_ARRIVAL = 9;
     const FOR_DELIVERY = 10;
 
-
     const URL_ADD_PARCEL = 'parcel/add/';
     const URL_GET_ONE_PARCEL = 'parcel/getone/';
     const URL_GET_ALL_PARCEL = 'parcel/getAll/';
@@ -51,6 +50,19 @@ class ServiceConstant {
 
     const URL_USER_BY_PHONE = '/user/getByPhone';
     const URL_CREATE_USER = '/user/getByPhone';
+
+    const BRANCH_TYPE_EC = 4;
+    const BRANCH_TYPE_HUB = 2;
+    const BRANCH_TYPE_HQ = 1;
+
+    const URL_BRANCH_ADD = '/branch/add';
+    const URL_BRANCH_EDIT = '/branch/editDetails';
+    const URL_BRANCH_CHANGE_STATUS = '/branch/changeStatus';
+    const URL_BRANCH_RELINK = '/branch/changeStatus';
+    const URL_BRANCH_GET_ONE = '/branch/get';
+    const URL_BRANCH_GET_ALL = '/branch/getAll';
+    const URL_BRANCH_GET_ALL_EC = 'branch/getAllEC';
+    const URL_BRANCH_GET_ALL_HUB = '/branch/getAllHub';
 
     public static function getStatus($status){
         switch($status){
