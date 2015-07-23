@@ -7,7 +7,6 @@ use Adapter\BranchAdapter;
 use Adapter\ParcelAdapter;
 use Adapter\RefAdapter;
 use Adapter\UserAdapter;
-use Adapter\BranchAdapter;
 use app\services\ParcelService;
 use Yii;
 use Adapter\RequestHelper;
@@ -440,7 +439,6 @@ class SiteController extends BaseController
         $states = new ResponseHandler($states);
 
         $state_id = Calypso::getValue(Yii::$app->request->post(), 'state_id',null);
-    var_dump($state_id);
         $hubAdp = new BranchAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
         $hubs = $hubAdp->getHubs($state_id);
         $hubs = new ResponseHandler($hubs);
@@ -472,7 +470,6 @@ class SiteController extends BaseController
             }
             else {
                 $center = new BranchAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-                var_dump($data);
                 if(empty($data['branch_id'])){
                     $response = $center->createNewCentre($data);
                     if ($response['status'] === Response::STATUS_OK) {
