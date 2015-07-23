@@ -1,3 +1,4 @@
+@charset "UTF-8";
 html,
 body {
   font-family: 'Open Sans', sans-serif;
@@ -2122,6 +2123,9 @@ blockquote.pull-right:before {
   display: block;
 }
 /* TABLES */
+.table {
+  background: #fff;
+}
 .table-hover > tbody > tr:hover > td,
 .table-hover > tbody > tr:hover > th {
   background-color: #f8f8f8;
@@ -2140,10 +2144,6 @@ blockquote.pull-right:before {
   vertical-align: middle;
   border-top: 1px solid #e7ebee;
   padding: 12px 8px;
-}
-.table tbody > tr > td:first-child {
-  font-size: 1.125em;
-  font-weight: 300;
 }
 .table tbody > tr td .call-type {
   display: block;
@@ -2382,6 +2382,29 @@ blockquote.pull-right:before {
 .DTTT_selectable tr.active td:hover {
   background-color: #FFFECF !important;
   border-color: #D2D076 !important;
+}
+.table-matrix {
+  width: auto;
+  margin: 0;
+}
+.table-matrix th,
+.table-matrix td {
+  text-align: center;
+  font-size: 1em !important;
+}
+.table-matrix th,
+.table-matrix tr > td:first-child {
+  font-weight: bold;
+  color: #fff !important;
+  background-color: #9c27b0;
+  border-color: #771e86 !important;
+}
+.table-matrix thead > tr > th {
+  border-bottom-width: 1px;
+}
+.table-matrix thead > tr > th:first-child {
+  background-color: #fff;
+  border-color: #ddd !important;
 }
 /* FORMS */
 .form-group {
