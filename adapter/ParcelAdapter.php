@@ -13,6 +13,9 @@ class ParcelAdapter extends BaseAdapter{
     public function getOneParcel($id){
         return $this->request(ServiceConstant::URL_GET_ONE_PARCEL,array('id'=>$id),self::HTTP_GET);
     }
+    public function getParcel($staff_id,$status){
+        return $this->request(ServiceConstant::URL_GET_ALL_PARCEL,array('held_by_staff_id'=>$staff_id,'status'=>$status),self::HTTP_GET);
+    }
     public function getOneParcelBySender($id){
         return $this->request(ServiceConstant::URL_GET_ONE_PARCEL,array('id'=>$id),self::HTTP_GET);
     }
@@ -21,6 +24,13 @@ class ParcelAdapter extends BaseAdapter{
         $filter .= ($branch_id == null ? '':'&branch_id='.$branch_id);
         //$filter = '';
         return $this->request(ServiceConstant::URL_GET_ALL_PARCEL.'?with_sender=1&with_receiver=1&with_receiver_address=1&offset='.$offset.'&count='.$count.$filter,array(),self::HTTP_GET);
+
+    }
+
+    public function getParcelsForNextDestination($type=null,$branch_id=null,$offset=0, $count=50){
+        $filter = ($type != null ? '&status='.$type:'');
+        $filter .= ($branch_id == null ? '':'&branch_id='.$branch_id);
+        return $this->request(ServiceConstant::URL_GET_ALL_PARCEL.'?with_to_branch=1&with_sender_address=1&with_receiver_address=1&offset='.$offset.'&count='.$count.$filter,array(),self::HTTP_GET);
 
     }
     public function getSearchParcels($status,$waybill_number,$offset=0, $count=50){
@@ -39,6 +49,9 @@ class ParcelAdapter extends BaseAdapter{
     public function getNewParcelsByDate($start_created_date,$offset=0, $count=50){
         $filter = '&start_created_date='.$start_created_date;
         return $this->request(ServiceConstant::URL_GET_ALL_PARCEL.'?with_sender=1&with_receiver=1&with_receiver_address=1&offset='.$offset.'&count='.$count.$filter,array(),self::HTTP_GET);
+    }
 
+    public function moveToForSweeper($postData) {
+        return $this->request(ServiceConstant::URL_MOVE_TO_FOR_SWEEPER, $postData, self::HTTP_POST);
     }
 }
