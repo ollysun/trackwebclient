@@ -12,8 +12,7 @@ body {
 }
 body {
   color: #333333;
-  background: url("../../img/whitey.jpg") repeat scroll 0 0 #ffffff;
-  background-size: 220px 220px;
+  background: #e7ebee;
 }
 h1,
 h2,
@@ -224,7 +223,6 @@ a:focus {
   }
 }
 #theme-wrapper {
-  box-shadow: 0 0 53px 0 rgba(0, 0, 0, 0.55);
   max-width: 1920px;
 }
 #page-wrapper {
@@ -241,7 +239,6 @@ a:focus {
   margin-top: 0;
   margin-bottom: 0;
   position: relative;
-  min-height: 1200px;
   padding: 15px 15px 35px 15px;
   margin-left: 240px;
 }
