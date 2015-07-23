@@ -62,7 +62,7 @@ class ParcelService {
 
         $parcel['parcel_type'] = Calypso::getValue($data, 'parcel_type');
         $parcel['no_of_package'] = Calypso::getValue($data, 'no_of_packages');
-        if((int) $parcel['no_of_package'] !== $parcel['no_of_package'] ) {
+        if(!is_numeric($parcel['no_of_package'])) {
             $error[] = "Number of packages must be an integer";
         }
         $parcel['weight'] = Calypso::getValue($data, 'parcel_weight');
