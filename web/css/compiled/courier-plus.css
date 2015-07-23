@@ -2395,7 +2395,7 @@ blockquote.pull-right:before {
 .table-matrix th,
 .table-matrix tr > td:first-child {
   font-weight: bold;
-  color: #fff;
+  color: #fff !important;
   background-color: #9c27b0;
   border-color: #771e86 !important;
 }
