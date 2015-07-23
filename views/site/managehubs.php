@@ -73,7 +73,7 @@ $this->params['breadcrumbs'] = array(
                     if(isset($hubs) && is_array(($hubs))):
                         $count=1; foreach($hubs as $hub){
                     ?>
-					<tr>
+					<tr class="text-center">
 						<td><?= $count++; ?></td>
 						<td><?= strtoupper($hub['code']); ?></td>
 						<td><?= $hub['name']; ?></td>
