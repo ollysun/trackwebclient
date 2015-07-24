@@ -14,5 +14,12 @@ class AdminAdapter extends BaseAdapter{
         ),self::HTTP_POST);
 
     }
-
+    public function getStaffMembers($offset,$count,$role='-1'){
+        $role_filter = $role == '-1'?'':'&role_id='.$role;
+        return  $this->request(ServiceConstant::URL_GET_USERS.'&offset='.$offset.'&count='.$count.$role_filter, [], self::HTTP_GET);
+    }
+    public function searchStaffMembers($key,$is_email,$offset,$count){
+        $role_filter = $is_email?'&email='.$key:'&staff_id='.$key;
+        return  $this->request(ServiceConstant::URL_GET_USERS.'&offset='.$offset.'&count='.$count.$role_filter, [], self::HTTP_GET);
+    }
 }

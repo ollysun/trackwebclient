@@ -49,7 +49,6 @@ class ServiceConstant {
     const URL_REF_PAYMENT_METHODS = '/ref/paymentType';
 
     const URL_USER_BY_PHONE = '/user/getByPhone';
-    const URL_CREATE_USER = '/user/getByPhone';
 
     const BRANCH_TYPE_EC = 4;
     const BRANCH_TYPE_HUB = 2;
@@ -64,6 +63,8 @@ class ServiceConstant {
     const URL_BRANCH_GET_ALL_EC = 'branch/getAllEC';
     const URL_BRANCH_GET_ALL_HUB = '/branch/getAllHub';
 
+    const URL_CREATE_USER = 'admin/register';
+    const URL_GET_USERS = '/admin/getAll';
     public static function getStatus($status){
         switch($status){
             case ServiceConstant::ACTIVE:

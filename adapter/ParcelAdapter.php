@@ -13,6 +13,9 @@ class ParcelAdapter extends BaseAdapter{
     public function getOneParcel($id){
         return $this->request(ServiceConstant::URL_GET_ONE_PARCEL,array('id'=>$id),self::HTTP_GET);
     }
+    public function getParcel($staff_id,$status){
+        return $this->request(ServiceConstant::URL_GET_ALL_PARCEL,array('held_by_staff_id'=>$staff_id,'status'=>$status),self::HTTP_GET);
+    }
     public function getOneParcelBySender($id){
         return $this->request(ServiceConstant::URL_GET_ONE_PARCEL,array('id'=>$id),self::HTTP_GET);
     }
