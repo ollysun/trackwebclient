@@ -23,8 +23,22 @@ $this->params['breadcrumbs'] = array(
 
 
 <div class="main-box">
-	<div class="main-box-header">
-
+	<div class="main-box-header table-search-form clearfix">
+		<div class="pull-right">
+			<form class="table-search-form form-inline clearfix">
+              <div class="pull-left">
+                  <label for="searchInput">Search customer:</label><br>
+                  <div class="input-group input-group-sm input-group-search">
+                      <input id="searchInput" type="text" name="search" placeholder="Email or phone number" class="search-box form-control">
+                      <div class="input-group-btn">
+                          <button class="btn btn-default" type="submit">
+                              <i class="fa fa-search"></i>
+                          </button>
+                      </div>
+                  </div>
+              </div>
+          </form>
+		</div>
 	</div>
 	<div class="main-box-body">
 		<div class="table-responsive">
