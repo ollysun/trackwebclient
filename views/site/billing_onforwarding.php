@@ -3,7 +3,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 
 /* @var $this yii\web\View */
-$this->title = 'Billing Onforwarding';
+$this->title = 'Billing: Onforwarding Charges';
 $this->params['breadcrumbs'] = array(
 	array('label'=> 'Onforwarding Charges')
 );
@@ -27,8 +27,8 @@ $this->params['breadcrumbs'] = array(
 					<tr>
 						<th style="width: 20px">S/N</th>
 						<th>Name</th>
-						<th>Code</th>
-						<th>Amount (<span class="currency naira"></span>)</th>
+						<th>Base Price (<span class="currency naira"></span>)</th>
+						<th>Base Percentage (%)</th>
 						<th>Action</th>
 					</tr>
 				</thead>
@@ -68,13 +68,15 @@ $this->params['breadcrumbs'] = array(
 					<label for="">Name</label>
 					<input type="text" class="form-control">
 				</div>
-				<div class="form-group">
-					<label for="">Code</label>
-					<input type="text" class="form-control">
-				</div>
-				<div class="form-group">
-					<label for="">Amount (<span class="currency naira"></span>)</label>
-					<input type="text" class="form-control">
+				<div class="row">
+					<div class="form-group col-xs-6">
+						<label for="">Base Price (<span class="currency naira"></span>)</label>
+						<input type="text" class="form-control">
+					</div>
+					<div class="form-group col-xs-6">
+						<label for="">Base Percentage  (%)</label>
+						<input type="text" class="form-control">
+					</div>
 				</div>
 				<div class="form-group">
 					<label>Activate Onforwarding Charge?</label>
@@ -106,13 +108,15 @@ $this->params['breadcrumbs'] = array(
 					<label for="">Name</label>
 					<input type="text" class="form-control">
 				</div>
-				<div class="form-group">
-					<label for="">Code</label>
-					<input type="text" class="form-control">
-				</div>
-				<div class="form-group">
-					<label for="">Amount (<span class="currency naira"></span>)</label>
-					<input type="text" class="form-control">
+				<div class="row">
+					<div class="form-group col-xs-6">
+						<label for="">Base Price (<span class="currency naira"></span>)</label>
+						<input type="text" class="form-control">
+					</div>
+					<div class="form-group col-xs-6">
+						<label for="">Base Percentage  (%)</label>
+						<input type="text" class="form-control">
+					</div>
 				</div>
 				<div class="form-group">
 					<label>Status</label>
