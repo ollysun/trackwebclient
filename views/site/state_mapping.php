@@ -22,7 +22,7 @@ $this->params['breadcrumbs'] = array(
 	</div>
 	<div class="main-box-body">
 		<div class="table-responsive">
-			<table id="table" class="table table-hover ">
+			<table id="table" class="table table-bordered ">
 				<thead>
 					<tr>
 						<th style="width: 20px">S/N</th>
@@ -34,17 +34,15 @@ $this->params['breadcrumbs'] = array(
 				<tbody>
 					<tr>
 						<td>1</td>
-						<td></td>
-						<td></td>
+						<td rowspan="2">South West</td>
+						<td>Lagos</td>
 						<td><button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#editModal"><i class="fa fa-edit"></i> Edit</button></td>
 					</tr>
 					<tr>
 						<td>2</td>
-						<td></td>
-						<td></td>
-						<td></td>
+						<td>Ogun</td>
+						<td><button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#editModal"><i class="fa fa-edit"></i> Edit</button></td>
 					</tr>
-
 				</tbody>
 			</table>
 		</div>

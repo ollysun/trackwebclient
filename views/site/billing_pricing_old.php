@@ -3,9 +3,9 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 
 /* @var $this yii\web\View */
-$this->title = 'City - State Mapping';
+$this->title = 'Billing Definitions';
 $this->params['breadcrumbs'] = array(
-	array('label'=> $this->title)
+	array('label'=> 'Billings')
 );
 ?>
 
@@ -14,7 +14,7 @@ $this->params['breadcrumbs'] = array(
 <?= Html::cssFile('@web/css/libs/dataTables.tableTools.css') ?>
 
 <?php
-	$this->params['content_header_button'] = '<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i> Add a City</button>';
+	$this->params['content_header_button'] = '<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i> Add Billing Definition</button>';
 ?>
 
 <div class="main-box">
@@ -26,9 +26,12 @@ $this->params['breadcrumbs'] = array(
 				<thead>
 					<tr>
 						<th style="width: 20px">S/N</th>
-						<th>Name</th>
-						<th>State</th>
-						<th>Onforwarding Charge</th>
+						<th>Zone Name</th>
+						<th>Min Weight</th>
+						<th>Max Weight</th>
+						<th>Incremental Weight</th>
+						<th>Base Price</th>
+						<th>Incremental Price</th>
 						<th>Action</th>
 					</tr>
 				</thead>
@@ -38,10 +41,16 @@ $this->params['breadcrumbs'] = array(
 						<td></td>
 						<td></td>
 						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
 						<td><button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#editModal"><i class="fa fa-edit"></i> Edit</button></td>
 					</tr>
 					<tr>
 						<td>2</td>
+						<td></td>
+						<td></td>
+						<td></td>
 						<td></td>
 						<td></td>
 						<td></td>
@@ -55,45 +64,58 @@ $this->params['breadcrumbs'] = array(
 </div>
 
 
-<!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
 	  	<form class="">
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	        <h4 class="modal-title" id="myModalLabel">Add a New City</h4>
+	        <h4 class="modal-title" id="myModalLabel">Add a Billing Definition</h4>
 	      </div>
 	      <div class="modal-body">
-				<div class="form-group">
-					<label>City Name</label>
-					<input class="form-control">
+				<div class="form-group row">
+					<div class="col-xs-4">
+						<label for="">Min Weight</label>
+						<input type="text" class="form-control">
+					</div>
+					<div class="col-xs-4">
+						<label for="">Incremental Weight</label>
+						<input type="text" class="form-control">
+					</div>
+					<div class="col-xs-4">
+						<label for="">Max Weight</label>
+						<input type="text" class="form-control">
+					</div>
 				</div>
-				<div class="form-group">
-					<label>State</label>
-					<select class="form-control"></select>
+				<div class="form-group row">
+					<div class="col-xs-6">
+						<label for="">Base Price</label>
+						<input type="text" class="form-control">
+					</div>
+					<div class="col-xs-6">
+						<label for="">Incremetal Price</label>
+						<input type="text" class="form-control">
+					</div>
 				</div>
-				<div class="form-group">
-					<label>Onforwarding charge</label>
-					<select class="form-control"></select>
-				</div>
-				<div class="form-group">
-					<label for="">Activate City?</label>
-					<select name="" id="" class="form-control">
-						<option value="">Yes</option>
-						<option value="">No</option>
-					</select>
+				<div class="form-group row">
+					<div class="col-xs-6">
+						<label for="">Base Percentage</label>
+						<input type="text" class="form-control">
+					</div>
+					<div class="col-xs-6">
+						<label for="">Incremental Percentage</label>
+						<input type="text" class="form-control">
+					</div>
 				</div>
 	      </div>
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-	        <button type="button" class="btn btn-primary">Add City</button>
+	        <button type="button" class="btn btn-primary">Add Billing Definition</button>
 	      </div>
 	    </div>
 	  	</form>
   </div>
 </div>
-
 
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
@@ -101,26 +123,48 @@ $this->params['breadcrumbs'] = array(
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	        <h4 class="modal-title" id="myModalLabel">Edit City</h4>
+	        <h4 class="modal-title" id="myModalLabel">Edit a Hub</h4>
 	      </div>
 	      <div class="modal-body">
-				<div class="form-group">
-					<label>City Name</label>
-					<input class="form-control">
+				<div class="form-group row">
+					<div class="col-xs-4">
+						<label for="">Min Weight</label>
+						<input type="text" class="form-control">
+					</div>
+					<div class="col-xs-4">
+						<label for="">Incremental Weight</label>
+						<input type="text" class="form-control">
+					</div>
+					<div class="col-xs-4">
+						<label for="">Max Weight</label>
+						<input type="text" class="form-control">
+					</div>
+				</div>
+				<div class="form-group row">
+					<div class="col-xs-6">
+						<label for="">Base Price</label>
+						<input type="text" class="form-control">
+					</div>
+					<div class="col-xs-6">
+						<label for="">Incremetal Price</label>
+						<input type="text" class="form-control">
+					</div>
+				</div>
+				<div class="form-group row">
+					<div class="col-xs-6">
+						<label for="">Base Percentage</label>
+						<input type="text" class="form-control">
+					</div>
+					<div class="col-xs-6">
+						<label for="">Incremental Percentage</label>
+						<input type="text" class="form-control">
+					</div>
 				</div>
 				<div class="form-group">
-					<label>State</label>
-					<select class="form-control"></select>
-				</div>
-				<div class="form-group">
-					<label>Onforwarding charge</label>
-					<select class="form-control"></select>
-				</div>
-				<div class="form-group">
-					<label for="">Status</label>
-					<select name="" id="" class="form-control">
-						<option value="">Active</option>
-						<option value="">Inactive</option>
+					<label>Status</label>
+					<select class="form-control">
+						<option>Active</option>
+						<option>Inactive</option>
 					</select>
 				</div>
 	      </div>

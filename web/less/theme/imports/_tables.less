@@ -1,4 +1,7 @@
 /* TABLES */
+.table {
+	background: #fff;
+}
 .table-hover > tbody > tr:hover > td,
 .table-hover > tbody > tr:hover > th {
 	background-color: @default-bg-hover-color;
@@ -22,11 +25,12 @@
 			vertical-align: middle;
 			border-top: 1px solid @main-bg-color;
 			padding: 12px 8px;
+			text-align: center;
 
-			&:first-child {
-				font-size: 1.125em;
-				font-weight: 300;
-			}
+			//&:first-child {
+				//font-size: 1.125em;
+				//font-weight: 300;
+			//}
 		}
 		td {
 			.call-type {
@@ -296,6 +300,34 @@
 		&, &:hover {
 			background-color: #FFFECF !important;
 			border-color: #D2D076 !important;
+		}
+	}
+}
+
+.table-matrix {
+	width: auto;
+	margin: 0;
+
+	th, td {
+		//width: 45px !important;
+		//height: 40px !important;
+		//line-height: 34px !important;
+		//vertical-align: middle !important;
+		//border-color: rgba(0,0,0,0.2) !important;
+		text-align: center;
+		font-size: 1em !important;
+	}
+	th, tr > td:first-child {
+		font-weight: bold;
+		color: #fff !important;
+		background-color: @purple-color;
+		border-color: darken(@purple-color, 10%) !important;
+	}
+	thead > tr > th {
+		border-bottom-width: 1px;
+		&:first-child {
+			background-color: #fff;
+			border-color: #ddd !important;
 		}
 	}
 }
