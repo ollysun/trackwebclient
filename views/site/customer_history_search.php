@@ -1,97 +1,104 @@
-<?php include('includes/layouts/head_signed_in.php'); ?>
-<?php include('includes/layouts/sidebar_ec.php'); ?>
+<?php
+use yii\helpers\Html;
+use yii\helpers\Url;
+
+/* @var $this yii\web\View */
+$this->title = 'Customer History';
+$this->params['breadcrumbs'] = array(
+	array(
+		'label'=>'Customer History'
+	)
+);
+?>
 
 <!-- this page specific styles -->
-	<link rel="stylesheet" type="text/css" href="<?php echo ROOT_PATH; ?>/assets/css/libs/dataTables.fixedHeader.css">
-	<link rel="stylesheet" type="text/css" href="<?php echo ROOT_PATH; ?>/assets/css/libs/dataTables.tableTools.css">
+<?= Html::cssFile('@web/css/libs/dataTables.fixedHeader.css') ?>
+<?= Html::cssFile('@web/css/libs/dataTables.tableTools.css') ?>
 
-<div id="content-wrapper">
-	<?php
-		$content_header_title = 'Customer History';
-		$breadcrumb_arr = array(
-			array(
-				'label' => 'Home',
-				'link' => ROOT_PATH.'/dashboard.php'
-			),
-			array(
-				'label' => 'Customer History',
-				'link' => ROOT_PATH.'/customer_history_search.php'
-			)
-		);
-	?>
-	<?php include('includes/partials/content_header.php') ?>
+<?php
+	//$this->params['content_header_button'] = '';
+?>
 
-	<div class="main-box">
-		<div class="main-box-header">
-
-		</div>
-		<div class="main-box-body">
-			<div class="table-responsive">
-				<table id="table" class="table table-hover">
-					<thead>
-						<tr>
-							<th>S/N</th>
-							<th>Customer Name</th>
-							<th>Email address</th>
-							<th>Phone no</th>
-							<th>Address</th>
-							<th>Action</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td>1</td>
-							<td>Aderopo Olusegun</td>
-							<td>aderopo.olusegun@gmail.com</td>
-							<td>08050001234</td>
-							<td>51B, Billings Way, Oregun, Ikeja, NG</td>
-							<td><a href="customer_history.php" class="btn btn-sm btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td>Aderopo Olusegun</td>
-							<td>aderopo.olusegun@gmail.com</td>
-							<td>08050001234</td>
-							<td>51B, Billings Way, Oregun, Ikeja, NG</td>
-							<td><a href="customer_history.php" class="btn btn-sm btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td>Aderopo Olusegun</td>
-							<td>aderopo.olusegun@gmail.com</td>
-							<td>08050001234</td>
-							<td>51B, Billings Way, Oregun, Ikeja, NG</td>
-							<td><a href="customer_history.php" class="btn btn-sm btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td>Aderopo Olusegun</td>
-							<td>aderopo.olusegun@gmail.com</td>
-							<td>08050001234</td>
-							<td>51B, Billings Way, Oregun, Ikeja, NG</td>
-							<td><a href="customer_history.php" class="btn btn-sm btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td>Aderopo Olusegun</td>
-							<td>aderopo.olusegun@gmail.com</td>
-							<td>08050001234</td>
-							<td>51B, Billings Way, Oregun, Ikeja, NG</td>
-							<td><a href="customer_history.php" class="btn btn-sm btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
+<div class="main-box">
+	<div class="main-box-header table-search-form clearfix">
+		<div class="pull-right">
+			<form class="table-search-form form-inline clearfix">
+              <div class="pull-left">
+                  <label for="searchInput">Search customer:</label><br>
+                  <div class="input-group input-group-sm input-group-search">
+                      <input id="searchInput" type="text" name="search" placeholder="Email or phone number" class="search-box form-control">
+                      <div class="input-group-btn">
+                          <button class="btn btn-default" type="submit">
+                              <i class="fa fa-search"></i>
+                          </button>
+                      </div>
+                  </div>
+              </div>
+          </form>
 		</div>
 	</div>
+	<div class="main-box-body">
+		<div class="table-responsive">
+			<table id="table" class="table table-hover">
+				<thead>
+					<tr>
+						<th>S/N</th>
+						<th>Customer Name</th>
+						<th>Email address</th>
+						<th>Phone no</th>
+						<th>Address</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>1</td>
+						<td>Aderopo Olusegun</td>
+						<td>aderopo.olusegun@gmail.com</td>
+						<td>08050001234</td>
+						<td>51B, Billings Way, Oregun, Ikeja, NG</td>
+						<td><a href="<?= Url::to(['site/customerhistorydetails']) ?>" class="btn btn-sm btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
+					</tr>
+					<tr>
+						<td>2</td>
+						<td>Aderopo Olusegun</td>
+						<td>aderopo.olusegun@gmail.com</td>
+						<td>08050001234</td>
+						<td>51B, Billings Way, Oregun, Ikeja, NG</td>
+						<td><a href="<?= Url::to(['site/customerhistorydetails']) ?>" class="btn btn-sm btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
+					</tr>
+					<tr>
+						<td>3</td>
+						<td>Aderopo Olusegun</td>
+						<td>aderopo.olusegun@gmail.com</td>
+						<td>08050001234</td>
+						<td>51B, Billings Way, Oregun, Ikeja, NG</td>
+						<td><a href="<?= Url::to(['site/customerhistorydetails']) ?>" class="btn btn-sm btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
+					</tr>
+					<tr>
+						<td>4</td>
+						<td>Aderopo Olusegun</td>
+						<td>aderopo.olusegun@gmail.com</td>
+						<td>08050001234</td>
+						<td>51B, Billings Way, Oregun, Ikeja, NG</td>
+						<td><a href="<?= Url::to(['site/customerhistorydetails']) ?>" class="btn btn-sm btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
+					</tr>
+					<tr>
+						<td>5</td>
+						<td>Aderopo Olusegun</td>
+						<td>aderopo.olusegun@gmail.com</td>
+						<td>08050001234</td>
+						<td>51B, Billings Way, Oregun, Ikeja, NG</td>
+						<td><a href="<?= Url::to(['site/customerhistorydetails']) ?>" class="btn btn-sm btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
 
-	<?php include_once('includes/layouts/footer.php'); ?>
-</div> <!-- /#content-wrapper -->
-
-<!-- this page specific scripts -->
-<script src="<?php echo ROOT_PATH; ?>/assets/js/libs/jquery.dataTables.js"></script>
-<script src="<?php echo ROOT_PATH; ?>/assets/js/libs/dataTables.fixedHeader.js"></script>
-<script src="<?php echo ROOT_PATH; ?>/assets/js/libs/dataTables.tableTools.js"></script>
-<script src="<?php echo ROOT_PATH; ?>/assets/js/libs/jquery.dataTables.bootstrap.js"></script>
-
-<?php include('includes/layouts/foot_signed_in.php'); ?>
+	<!-- this page specific scripts -->
+<?php $this->registerJsFile('@web/js/libs/jquery.dataTables.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
+<?php $this->registerJsFile('@web/js/libs/dataTables.fixedHeader.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
+<?php $this->registerJsFile('@web/js/libs/dataTables.tableTools.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
+<?php $this->registerJsFile('@web/js/libs/jquery.dataTables.bootstrap.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
