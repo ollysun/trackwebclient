@@ -24,7 +24,5 @@ class UserAdapter extends BaseAdapter {
         ], self::HTTP_POST);
     }
 
-    public function getStaffMembers(){
-        return [];// $this->request(ServiceConstant::URL_USER_BY_PHONE, [ 'phone' => $term ], self::HTTP_GET);
-    }
+
 }

@@ -104,7 +104,7 @@ $this->params['breadcrumbs'] = array(
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
-	  	<form class="">
+	  	<form id="arrived_parcels" class="">
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -116,7 +116,7 @@ $this->params['breadcrumbs'] = array(
 					<div class="form-group" style="width: 300px;">
 						<label>Staff ID</label>
 						<div class="input-group">
-							<input id="staff_no" class="form-control">
+							<input id="staff_no" value="98765" class="form-control">
 							<div class="input-group-btn">
 								<button type="button" id="get_arrival" class="btn btn-default">Load</button>
 							</div>
@@ -157,7 +157,7 @@ $this->params['breadcrumbs'] = array(
 	      </div>
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-	        <button type="button" class="btn btn-primary">Accept</button>
+	        <button id="arrived_parcels_btn" type="button" class="btn btn-primary">Accept</button>
 	      </div>
 	    </div>
 	  	</form>

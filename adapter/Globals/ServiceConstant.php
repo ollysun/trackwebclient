@@ -64,6 +64,7 @@ class ServiceConstant {
     const URL_BRANCH_GET_ALL_HUB = '/branch/getAllHub';
 
     const URL_CREATE_USER = 'admin/register';
+    const URL_GET_USERS = '/admin/getAll';
     public static function getStatus($status){
         switch($status){
             case ServiceConstant::ACTIVE:

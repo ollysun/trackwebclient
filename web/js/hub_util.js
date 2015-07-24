@@ -62,13 +62,23 @@ $(document).ready(function(){
                 $("#parcel_arrival").html("");
                 if(response.status && response.data.length > 0){
                     response.data.forEach(function(v,i){
-                        $("#parcel_arrival").append("<tr id='"+ v.waybill_number+"' style='background-color: rgb(187, 255, 224);'><td>"+(i+1)+"</td><td>"+ v.waybill_number+"</td><td>"+ (v.status == 5?'IN TRANSIT':'<Not Intransit>')+"</td></tr>");
+                        $("#parcel_arrival").append("<tr id='"+ v.waybill_number+"' style='background-color: rgb(187, 255, 224);'><td>"+(i+1)+" <input name='"+ v.waybill_number+"' type='checkbox'></td><td>"+ v.waybill_number+"</td><td>"+ (v.status == 5?'IN TRANSIT':'<Not Intransit>')+"</td></tr>");
                     });
                 }
                 $("#loading_label").html("Loaded");
+                $("#arrived_parcels_btn").unbind('click').on('click',function(d){
+                    var form = $("#arrived_parcels").serializeArray();
+                    log(form);
+                });
             });
         }else{
             alert("Invalid Staff ID");
+        }
+    });
+    $("#role_filter").unbind('change').on('change',function(){
+        var role = $(this).val();
+        if(role.trim().length > 0){
+            window.location.href = "/site/managestaff?role="+role;
         }
     });
 })

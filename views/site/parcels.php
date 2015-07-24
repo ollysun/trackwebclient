@@ -10,7 +10,7 @@ $this->params['breadcrumbs'][] = 'Shipments';
 $show_next = false;
 $show_prev = false;
 
-if($offset == 0 || count($parcels) >= 5 ){
+if($offset == 0 || count($parcels) >= $page_width ){
     $show_next = true;
 }else{
     $show_next = false;
@@ -19,7 +19,7 @@ if($offset == 0 || count($parcels) >= 5 ){
 
 if($offset <= 0){
     $show_prev = false;
-}elseif (($offset - 5) >= 0){
+}elseif (($offset - $page_width) >= 0){
     $show_prev = true;
 }
 
@@ -116,10 +116,10 @@ if($offset <= 0){
 			</table>
             <div class="pull-right form-group">
                 <?php if($show_prev): ?>
-                <a href="<?= Url::to(['site/parcels?offset='.($offset - 5)]) ?>" class="btn btn-primary btn-sm">Prev</a>
+                <a href="<?= Url::to(['site/parcels?offset='.($offset - $page_width)]) ?>" class="btn btn-primary btn-sm">Prev</a>
                 <?php endif;  ?>
                 <?php if($show_next): ?>
-                    <a href="<?= Url::to(['site/parcels?offset='.($offset + 5)]) ?>" class="btn btn-primary btn-sm">Next</a>
+                    <a href="<?= Url::to(['site/parcels?offset='.($offset + $page_width)]) ?>" class="btn btn-primary btn-sm">Next</a>
                 <?php endif;  ?>
             </div>
 		</div>
