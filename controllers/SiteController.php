@@ -200,7 +200,7 @@ class SiteController extends BaseController
         if($response->getStatus() ==  ResponseHandler::STATUS_OK){
             $data = $response->getData();
         }
-        return $this->render('parcels',array('parcels'=>$data,'from_date'=>$from_date,'to_date'=>$to_date,'offset'=>$offset));
+        return $this->render('parcels',array('parcels'=>$data,'from_date'=>$from_date,'to_date'=>$to_date,'offset'=>$offset,'page_width'=>$this->page_width));
     }
 
     public function actionProcessedparcels($offset=0)
@@ -225,7 +225,7 @@ class SiteController extends BaseController
         if($response->getStatus() ==  ResponseHandler::STATUS_OK){
             $data = $response->getData();
         }
-        return $this->render('processed_parcels',array('parcels'=>$data,'from_date'=>$from_date,'to_date'=>$to_date,'offset'=>$offset));
+        return $this->render('processed_parcels',array('parcels'=>$data,'from_date'=>$from_date,'to_date'=>$to_date,'offset'=>$offset,'page_width'=>$this->page_width));
     }
 
      public function actionParcelsfordelivery($offset=0)
@@ -250,7 +250,7 @@ class SiteController extends BaseController
         if($response->getStatus() ==  ResponseHandler::STATUS_OK){
             $data = $response->getData();
         }
-        return $this->render('parcels_for_delivery',array('parcels'=>$data,'from_date'=>$from_date,'to_date'=>$to_date,'offset'=>$offset));
+        return $this->render('parcels_for_delivery',array('parcels'=>$data,'from_date'=>$from_date,'to_date'=>$to_date,'offset'=>$offset,'page_width'=>$this->page_width));
     }
 
     public function actionParcelsforsweep($offset=0)
@@ -275,7 +275,7 @@ class SiteController extends BaseController
         if($response->getStatus() ==  ResponseHandler::STATUS_OK){
             $data = $response->getData();
         }
-        return $this->render('parcels_for_sweep',array('parcels'=>$data,'from_date'=>$from_date,'to_date'=>$to_date,'offset'=>$offset));
+        return $this->render('parcels_for_sweep',array('parcels'=>$data,'from_date'=>$from_date,'to_date'=>$to_date,'offset'=>$offset,'page_width'=>$this->page_width));
     }
     public function actionViewwaybill()
     {
@@ -330,6 +330,20 @@ class SiteController extends BaseController
             return $this->sendSuccessResponse($branches['data']);
         } else {
             return $this->sendErrorResponse($branches['message'], null);
+        }
+    }
+    public function actionGetarrivedparcel(){
+        $staff_no = \Yii::$app->request->get('staff_no');
+        if(!isset($staff_no)) {
+            return $this->sendErrorResponse("Invalid parameter(s) sent!", null);
+        }
+        $parcel = new  ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+        $response = $parcel->getParcel($staff_no,ServiceConstant::IN_TRANSIT);
+
+        if ($response['status'] === ResponseHandler::STATUS_OK) {
+            return $this->sendSuccessResponse($response['data']);
+        } else {
+            return $this->sendErrorResponse($response['message'], null);
         }
     }
 
@@ -527,8 +541,27 @@ class SiteController extends BaseController
         }
     }
 
-    public function actionManagestaff()
+    public function actionManagestaff($offset=0,$role='-1')
     {
+
+        if(Yii::$app->request->isPost){
+            $data = Yii::$app->request->post();
+            $user = new UserAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+            $resp = $user->createNewUser(Calypso::getInstance()->getValue($data,'role'),
+                Calypso::getInstance()->getValue($data,'branch'),Calypso::getInstance()->getValue($data,'staff_id'),
+                Calypso::getInstance()->getValue($data,'email'),Calypso::getInstance()->getValue($data,'firstname').' '.Calypso::getInstance()->getValue($data,'lastname'),
+                Calypso::getInstance()->getValue($data,'phone'));
+
+            $creationResponse = new ResponseHandler($resp);
+            if ($creationResponse->getStatus() == ResponseHandler::STATUS_OK) {
+                Yii::$app->session->setFlash('success', 'User has been created successfully.');
+                //Yii::$app->response->redirect('managestaff');
+            } else {
+                Yii::$app->session->setFlash('danger', 'There was a problem creating this User. Please try again.');
+                //Yii::$app->response->redirect('managestaff');
+            }
+
+        }
 
 
         $refAdp = new RefAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
@@ -539,7 +572,20 @@ class SiteController extends BaseController
         $roles = new ResponseHandler($roles);
         $state_list = $states->getStatus()==ResponseHandler::STATUS_OK?$states->getData(): [];
         $role_list =  $roles->getStatus()==ResponseHandler::STATUS_OK?$roles->getData(): [];
-        return $this->render('managestaff',['states' => $state_list,'roles'=> $role_list]);
+
+        $staffMembers = [];
+        $staffAdp = new AdminAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+        if(isset(Calypso::getInstance()->get()->search) && strlen(Calypso::getInstance()->get()->search) > 0){
+            $is_email = !(filter_var(Calypso::getInstance()->get()->search,FILTER_VALIDATE_EMAIL) === false);
+            $staff_data = $staffAdp->searchStaffMembers(Calypso::getInstance()->get()->search,$is_email,$offset,$this->page_width);
+        }else {
+            $staff_data = $staffAdp->getStaffMembers($offset, $this->page_width, $role);
+        }
+        $resp = new ResponseHandler($staff_data);
+        $staffMembers = $resp->getData();
+
+
+        return $this->render('managestaff',['states' => $state_list,'roles'=> $role_list,'staffMembers' => $staffMembers,'offset'=>$offset,'role'=>$role,'page_width'=>$this->page_width]);
     }
     public function actionHubarrival()
     {
