@@ -28,7 +28,7 @@ class AppAsset extends AssetBundle
     ];
     public $js = [
         //globals
-        //'js/libs/jquery.js',
+        'js/libs/jquery.js',
         'js/libs/bootstrap.min.js',
         'js/libs/jquery.nanoscroller.min.js',
         //theme scripts
@@ -36,7 +36,7 @@ class AppAsset extends AssetBundle
         'js/libs/pace.min.js',
     ];
     public $depends = [
-        'yii\web\YiiAsset',
+        //'yii\web\YiiAsset',
         'yii\bootstrap\BootstrapAsset',
     ];
 }

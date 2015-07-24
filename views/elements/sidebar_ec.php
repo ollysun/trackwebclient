@@ -73,12 +73,6 @@ use yii\helpers\Url;
 							</li> -->
 						</ul>
 					</li>
-					<!--<li>
-						<a href="<?php //echo ROOT_PATH ?>/customer_history_search.php">
-							<i class="fa fa-user"></i>
-							<span>Customer History</span>
-						</a>
-					</li> -->
 					<li>
 						<a href="<?= Url::to(['site/managebranches']) ?>" class="dropdown-toggle">
 							<i class="fa fa-user"></i>
@@ -99,9 +93,6 @@ use yii\helpers\Url;
 										<a href="<?= Url::to(['site/zones']) ?>">Zones</a>
 									</li>
 									<li>
-										<a href="<?= Url::to(['site/billings']) ?>">Billing Definition</a>
-									</li>
-									<li>
 										<a href="<?= Url::to(['site/regions']) ?>">Regions</a>
 									</li>
 									<li>
@@ -110,11 +101,22 @@ use yii\helpers\Url;
 									<li>
 										<a href="<?= Url::to(['site/citymapping']) ?>">City - State Mapping</a>
 									</li>
+									<li>
+										<a href="<?= Url::to(['site/billingpricing']) ?>">Billing Pricing</a>
+									</li>
+									<li>
+										<a href="<?= Url::to(['site/billingexceptions']) ?>">Exceptions</a>
+									</li>
+									<li>
+										<a href="<?= Url::to(['site/billingonforwarding']) ?>">Onforwarding Charges</a>
+									</li>
+									<li>
+										<a href="<?= Url::to(['site/billingmatrix']) ?>">View Matrix</a>
+									</li>
 								</ul>
 							</li>
 						</ul>
 					</li>
-
 					<li>
 						<a href="<?= Url::to(['site/managebranches']) ?>" class="dropdown-toggle">
 							<i class="fa fa-building-o"></i>
@@ -135,6 +137,12 @@ use yii\helpers\Url;
 								<a href="<?= Url::to(['site/hubdispatch']) ?>">Dispatched Shipments</a>
 							</li>
 						</ul>
+					</li>
+					<li>
+						<a href="<?= Url::to(['site/customerhistory']) ?>">
+							<i class="fa fa-user"></i>
+							<span>Customer History</span>
+						</a>
 					</li>
 				</ul>
 			</div>
