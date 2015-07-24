@@ -1,6 +1,8 @@
 <?php
 use yii\helpers\Html;
 use yii\helpers\Url;
+use Adapter\Util\Calypso;
+use Adapter\Globals\ServiceConstant;
 
 /* @var $this yii\web\View */
 $this->title = 'Manage Staff Accounts';
@@ -11,6 +13,25 @@ $this->params['breadcrumbs'] = array(
 	),*/
 	array('label'=> 'Manage Staff Accounts')
 );
+$show_next = false;
+$show_prev = false;
+
+if($offset == 0 && count($staffMembers) >= $page_width ){
+    $show_next = true;
+}else{
+    $show_next = false;
+}
+$role_filter = '';$page_role = '-1';
+if(!empty($role) && $role != '-1') {
+    $role_filter = '&role='.$role;
+    $page_role=$role;
+}
+
+if($offset <= 0){
+    $show_prev = false;
+}elseif (($offset - $page_width) >= 0){
+    $show_prev = true;
+}
 ?>
 
 <!-- this page specific styles -->
@@ -21,24 +42,38 @@ $this->params['breadcrumbs'] = array(
 $this->params['content_header_button'] = '<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i> Add New Staff</button>';
 ?>
 
+<?=Html::cssFile('@web/css/libs/bootstrap-select.min.css')?>
+
+<?php echo Calypso::showFlashMessages(); ?>
+
 <div class="main-box">
     <div class="main-box-header table-search-form">
         <div class="clearfix">
             <div class="form-group pull-left">
                 <label for="">Filter by user role</label><br>
-                <select class="form-control input-sm">
-                    <option>role here</option>
-                    <option>role here</option>
+                <select id="role_filter" class="form-control input-sm">
+                    <option value="-1">Select Filter...</option>
+                    <option value="-1">ALL</option>
+                    <?php
+                    //roles
+                    if(!empty($roles) && is_array($roles)){
+                        foreach($roles as $item){
+                            ?>
+                            <option <?= $item['id']== $page_role?'selected':'' ?> value="<?= $item['id'] ?>"><?= strtoupper($item['name']) ?></option>
+                    <?php
+                        }
+                    }
+                    ?>
                 </select>
             </div>
 
             <div class="pull-right clearfix">
-                <form class="table-search-form form-inline clearfix">
+                <form method="get" enctype="application/x-www-form-urlencoded" class="table-search-form form-inline clearfix">
                     <div class="pull-left form-group">
                         <label for="searchInput">Search</label><br>
 
                         <div class="input-group input-group-sm input-group-search">
-                            <input id="searchInput" type="text" name="search" placeholder=""
+                            <input id="searchInput" type="text" name="search" placeholder="Enter Staff ID or Staff Email"
                                    class="search-box form-control">
 
                             <div class="input-group-btn">
@@ -60,6 +95,8 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                     <th style="width: 20px">S/N</th>
                     <th>Name</th>
                     <th>Email address</th>
+                    <th>Phone Number</th>
+                    <th>Staff ID</th>
                     <th>Branch</th>
                     <th>User role</th>
                     <th>Status</th>
@@ -67,31 +104,42 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td>1</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>
-                        <button type="button" class="btn btn-default btn-xs" data-toggle="modal"
-                                data-target="#editModal"><i class="fa fa-edit"></i> Edit
-                        </button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
+                <?php
+                if(!empty($staffMembers) && is_array($staffMembers)) {
+                    $i = 1;$count = $offset + 1;
+                    foreach($staffMembers as $staffMember):
+                    ?>
+                    <tr>
+                        <td><?= $count++; ?></td>
+                        <td><?= strtoupper($staffMember['fullname']) ?></td>
+                        <td><?= $staffMember['email'] ?></td>
+                        <td><?= $staffMember['phone'] ?></td>
+                        <td><?= $staffMember['staff_id'] ?></td>
+                        <td><?= strtoupper($staffMember['branch']['name'].' ('.$staffMember['branch']['code'].')') ?></td>
+                        <td><?= strtoupper($staffMember['role']['name']) ?></td>
+                        <td><?= ServiceConstant::getStatus($staffMember['status']) ?></td>
+                        <td>
+                            <button type="button" class="btn btn-default btn-xs" data-toggle="modal"
+                                    data-target="#editModal"><i class="fa fa-edit"></i> Edit
+                            </button>
+                        </td>
+                    </tr>
+                    <?php
+                        endforeach;
+                    }
+                ?>
+
 
                 </tbody>
             </table>
+            <div class="pull-right form-group">
+                <?php if($show_prev): ?>
+                    <a href="<?= Url::to(['site/managestaff?offset='.($offset - $page_width)]).$role_filter ?>" class="btn btn-primary btn-sm">Prev</a>
+                <?php endif;  ?>
+                <?php if($show_next): ?>
+                    <a href="<?= Url::to(['site/managestaff?offset='.($offset + $page_width)]).$role_filter ?>" class="btn btn-primary btn-sm">Next</a>
+                <?php endif;  ?>
+            </div>
         </div>
     </div>
 </div>
