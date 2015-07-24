@@ -108,7 +108,7 @@ use yii\helpers\Url;
 										<a href="<?= Url::to(['site/citymapping']) ?>">City - State Mapping</a>
 									</li>
 									<li>
-										<a href="<?= Url::to(['site/billings']) ?>">Billing Definition</a>
+										<a href="<?= Url::to(['site/billingpricing']) ?>">Billing Pricing</a>
 									</li>
 									<li>
 										<a href="<?= Url::to(['site/billingexceptions']) ?>">Exceptions</a>

@@ -107,13 +107,6 @@ $this->params['breadcrumbs'] = array(
 						<input type="text" class="form-control">
 					</div>
 				</div>
-				<div class="form-group">
-					<label>Activate Billing Definition?</label>
-					<select class="form-control">
-						<option>Yes</option>
-						<option>No</option>
-					</select>
-				</div>
 	      </div>
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
