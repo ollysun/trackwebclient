@@ -14,7 +14,7 @@ $this->params['breadcrumbs'] = array(
 <?= Html::cssFile('@web/css/libs/dataTables.tableTools.css') ?>
 
 <?php
-	//$this->params['content_header_button'] = '';
+	$this->params['content_header_button'] = '<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i> Add a new zone</button>';
 ?>
 
 <div class="main-box">
@@ -62,6 +62,34 @@ $this->params['breadcrumbs'] = array(
 	</div>
 </div>
 
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+	  	<form class="">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="myModalLabel">Add a new Zone</h4>
+	      </div>
+	      <div class="modal-body">
+				<div class="form-group">
+					<label for="">Name</label>
+					<input type="text" class="form-control">
+				</div>
+				<div class="form-group">
+					<label for="">Type</label>
+					<select class="form-control" disabled="disabled">
+						<option>Custom</option>
+					</select>
+				</div>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	        <button type="button" class="btn btn-primary">Add Zone</button>
+	      </div>
+	    </div>
+	  	</form>
+  </div>
+</div>
 
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
