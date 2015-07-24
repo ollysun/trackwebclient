@@ -15,7 +15,7 @@ $this->params['breadcrumbs'] = array(
 $show_next = false;
 $show_prev = false;
 
-if($offset == 0 || count($parcels) >= 5 ){
+if($offset == 0 || count($parcels) >= $page_width ){
     $show_next = true;
 }else{
     $show_next = false;
@@ -24,7 +24,7 @@ if($offset == 0 || count($parcels) >= 5 ){
 
 if($offset <= 0){
     $show_prev = false;
-}elseif (($offset - 5) >= 0){
+}elseif (($offset - $page_width) >= 0){
     $show_prev = true;
 }
 
@@ -79,12 +79,12 @@ if($offset <= 0){
                 <tbody>
                 <?php
                 if(isset($parcels) && is_array($parcels)){
-                    $i = 1;
+                    $i = 1;$count = $offset + 1;
                     foreach($parcels as $parcel){
                         ?>
                         <tr>
                             <!--						<td><div class="checkbox-nice"><input id="chbx_w_000--><?//= $i ?><!--" type="checkbox"><label for="chbx_w_0001"> </label></div></td>-->
-                            <td><?= $i++ ?></td>
+                            <td><?= $count++ ?></td>
                             <td><?= strtoupper($parcel['waybill_number']); ?></td>
                             <td><?= strtoupper($parcel['sender']['firstname'].' '. $parcel['sender']['lastname']) ?></td>
                             <td><?= $parcel['sender']['phone'] ?></td>
@@ -101,10 +101,10 @@ if($offset <= 0){
             </table>
             <div class="pull-right form-group">
                 <?php if($show_prev): ?>
-                    <a href="<?= Url::to(['site/parcelsfordelivery?offset='.($offset - 5)]) ?>" class="btn btn-primary btn-sm">Prev</a>
+                    <a href="<?= Url::to(['site/parcelsfordelivery?offset='.($offset - $page_width)]) ?>" class="btn btn-primary btn-sm">Prev</a>
                 <?php endif;  ?>
                 <?php if($show_next): ?>
-                    <a href="<?= Url::to(['site/parcelsfordelivery?offset='.($offset + 5)]) ?>" class="btn btn-primary btn-sm">Next</a>
+                    <a href="<?= Url::to(['site/parcelsfordelivery?offset='.($offset + $page_width)]) ?>" class="btn btn-primary btn-sm">Next</a>
                 <?php endif;  ?>
             </div>
 		</div>
