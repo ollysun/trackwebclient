@@ -71,11 +71,10 @@ var Branch = {
         $("#editModal input[name='name']").val(bObj.name);
         $("#editModal select[name='status']").val(bObj.status);
         $("#editModal input[name='address']").val(bObj.address);
+        $("#editModal select[name='state_id'], #editModal input[name='state_id']").val(bObj.state_id);
         if(bObj.hub_id){
             $("#editModal select[name='hub_id']").val(bObj.hub_id);
         }
-        else
-            $("#editModal select[name='state_id']").val(bObj.state_id);
     },
 };
 $(document).ready(function () {
@@ -84,10 +83,14 @@ $(document).ready(function () {
         Branch.getBranchDetails($(this).attr('data-id'));
     });
 
-    $("select#hub_id").on('change', function (event) {
+    $("#myModal select#hub_id, #editModal select#hub_id").on('change', function (event) {
+        state = $(this).find("option:selected").attr('data-state-id');
+        $(this).next().val(state);
+    });
+    $("select#filter_hub_id").on('change', function (event) {
         $("form#filter").submit();
     });
-    $("select#state_id").on('change', function (event) {
+    $("select#filter_state_id").on('change', function (event) {
         $("form#state_filter").submit();
     });
 });
