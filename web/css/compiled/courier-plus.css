@@ -2141,6 +2141,7 @@ blockquote.pull-right:before {
   vertical-align: middle;
   border-top: 1px solid #e7ebee;
   padding: 12px 8px;
+  text-align: center;
 }
 .table tbody > tr td .call-type {
   display: block;
@@ -3082,6 +3083,12 @@ input[type="radio"] {
 }
 .table-search-form .input-group > .search-box {
   width: 220px;
+}
+.add-billing-pricing-wrap {
+  margin: 25px 0 0;
+}
+.add-billing-pricing-wrap h5 {
+  margin: 0 ;
 }
 /* GALLERY */
 #gallery-photos-wrapper {
