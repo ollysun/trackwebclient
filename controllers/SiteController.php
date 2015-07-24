@@ -711,4 +711,16 @@ class SiteController extends BaseController
     {
         return $this->render('billing_onforwarding');
     }
+    public function actionCustomerhistory()
+    {
+        return $this->render('customer_history');
+    }
+    public function actionCustomerhistorysearch()
+    {
+        return $this->render('customer_history_search');
+    }
+    public function actionCustomerhistorydetails()
+    {
+        return $this->render('customer_history_details');
+    }
 }

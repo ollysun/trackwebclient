@@ -1,101 +1,49 @@
-<?php include('includes/layouts/head_signed_in.php'); ?>
-<?php include('includes/layouts/sidebar_ec.php'); ?>
+<?php
+use yii\helpers\Html;
+use yii\helpers\Url;
+
+/* @var $this yii\web\View */
+$this->title = 'Customer History';
+$this->params['breadcrumbs'] = array(
+	array(
+		'label'=>'Customer History'
+	)
+);
+?>
 
 <!-- this page specific styles -->
-	<link rel="stylesheet" type="text/css" href="<?php echo ROOT_PATH; ?>/assets/css/libs/dataTables.fixedHeader.css">
-	<link rel="stylesheet" type="text/css" href="<?php echo ROOT_PATH; ?>/assets/css/libs/dataTables.tableTools.css">
+<?= Html::cssFile('@web/css/libs/dataTables.fixedHeader.css') ?>
+<?= Html::cssFile('@web/css/libs/dataTables.tableTools.css') ?>
 
-<div id="content-wrapper">
-	<?php
-		$content_header_title = 'Customer History: <small>Aderopo Olusegun</small>';
-		$breadcrumb_arr = array(
-			array(
-				'label' => 'Home',
-				'link' => ROOT_PATH.'/dashboard.php'
-			),
-			array(
-				'label' => 'Customer History',
-				'link' => ROOT_PATH.'/customer_history_search.php'
-			),
-			array(
-				'label' => 'Aderopo Olusegun',
-				'link' => ROOT_PATH.'/customer_history.php'
-			)
-		);
-	?>
-	<?php include('includes/partials/content_header.php') ?>
+<?php
+	//$this->params['content_header_button'] = '';
+?>
 
-	<div class="main-box">
-		<div class="main-box-header">
+<div class="main-box">
+	<div class="main-box-header">
 
-		</div>
-		<div class="main-box-body">
-			<div class="table-responsive">
-				<table id="table" class="table table-hover">
-					<thead>
-						<tr>
-							<th>[--]</th>
-							<th>Waybill No.</th>
-							<th>Shipper</th>
-							<th>Receiver</th>
-							<th>Created at</th>
-							<th>Action</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td><div class="checkbox-nice"><input id="chbx_w_0001" type="checkbox"><label for="chbx_w_0001"> </label></div></td>
-							<td>4F95310912352</td>
-							<td>Aderopo Olusegun</td>
-							<td>Aderopo Olusegun</td>
-							<td>25 Jun 2015 @ 12:08</td>
-							<td><a href="#" class="btn btn-sm btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
-						</tr>
-						<tr>
-							<td><div class="checkbox-nice"><input id="chbx_w_0002" type="checkbox"><label for="chbx_w_0002"> </label></div></td>
-							<td>4F95310912352</td>
-							<td>Aderopo Olusegun</td>
-							<td>Aderopo Olusegun</td>
-							<td>25 Jun 2015 @ 12:08</td>
-							<td><a href="#" class="btn btn-sm btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
-						</tr>
-						<tr>
-							<td><div class="checkbox-nice"><input id="chbx_w_0003" type="checkbox"><label for="chbx_w_0003"> </label></div></td>
-							<td>4F95310912352</td>
-							<td>Aderopo Olusegun</td>
-							<td>Aderopo Olusegun</td>
-							<td>25 Jun 2015 @ 12:08</td>
-							<td><a href="#" class="btn btn-sm btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
-						</tr>
-						<tr>
-							<td><div class="checkbox-nice"><input id="chbx_w_0004" type="checkbox"><label for="chbx_w_0004"> </label></div></td>
-							<td>4F95310912352</td>
-							<td>Aderopo Olusegun</td>
-							<td>Aderopo Olusegun</td>
-							<td>25 Jun 2015 @ 12:08</td>
-							<td><a href="#" class="btn btn-sm btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
-						</tr>
-						<tr>
-							<td><div class="checkbox-nice"><input id="chbx_w_0005" type="checkbox"><label for="chbx_w_0005"> </label></div></td>
-							<td>4F95310912352</td>
-							<td>Aderopo Olusegun</td>
-							<td>Aderopo Olusegun</td>
-							<td>25 Jun 2015 @ 12:08</td>
-							<td><a href="#" class="btn btn-sm btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-		</div>
 	</div>
+	<div class="main-box-body">
+		<br>
 
-	<?php include_once('includes/layouts/footer.php'); ?>
-</div> <!-- /#content-wrapper -->
+		<h2 class="text-muted text-center">Search to find and view customer history details</h2>
+		<br>
+		<form class="row" action="<?= Url::to(['site/customerhistorysearch']) ?>">
+			<div class="col-xs-8 col-xs-offset-2 col-sm-6 col-sm-offset-3 form-group">
+				<div class="input-group input-group-lg">
+					<input type="text" class="form-control" placeholder="Search by email or phone number">
+					<div class="input-group-btn">
+						<button class="btn btn-primary"><i class="fa fa-search"></i> Search</button>
+					</div>
+				</div>
+			</div>
+		</form>
+		<br><br>
+	</div>
+</div>
 
-<!-- this page specific scripts -->
-<script src="<?php echo ROOT_PATH; ?>/assets/js/libs/jquery.dataTables.js"></script>
-<script src="<?php echo ROOT_PATH; ?>/assets/js/libs/dataTables.fixedHeader.js"></script>
-<script src="<?php echo ROOT_PATH; ?>/assets/js/libs/dataTables.tableTools.js"></script>
-<script src="<?php echo ROOT_PATH; ?>/assets/js/libs/jquery.dataTables.bootstrap.js"></script>
-
-<?php include('includes/layouts/foot_signed_in.php'); ?>
+	<!-- this page specific scripts -->
+<?php $this->registerJsFile('@web/js/libs/jquery.dataTables.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
+<?php $this->registerJsFile('@web/js/libs/dataTables.fixedHeader.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
+<?php $this->registerJsFile('@web/js/libs/dataTables.tableTools.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
+<?php $this->registerJsFile('@web/js/libs/jquery.dataTables.bootstrap.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
