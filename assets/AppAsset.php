@@ -19,7 +19,7 @@ class AppAsset extends AssetBundle
     public $baseUrl = '@web';
     public $css = [
         //bootstrap
-        //'css/bootstrap/bootstrap.min.css',
+        'css/bootstrap/bootstrap.min.css',
         //libraries
         'css/libs/font-awesome.min.css',
         'css/libs/nanoscroller.css',
@@ -28,7 +28,7 @@ class AppAsset extends AssetBundle
     ];
     public $js = [
         //globals
-        //'js/libs/jquery.js',
+        'js/libs/jquery.js',
         'js/libs/bootstrap.min.js',
         'js/libs/jquery.nanoscroller.min.js',
         //theme scripts
@@ -36,7 +36,7 @@ class AppAsset extends AssetBundle
         'js/libs/pace.min.js',
     ];
     public $depends = [
-        'yii\web\YiiAsset',
-        'yii\bootstrap\BootstrapAsset',
+        //'yii\web\YiiAsset',
+        //'yii\bootstrap\BootstrapAsset',
     ];
 }
