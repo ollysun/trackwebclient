@@ -1,3 +1,4 @@
+@charset "UTF-8";
 html,
 body {
   font-family: 'Open Sans', sans-serif;
@@ -11,8 +12,7 @@ body {
 }
 body {
   color: #333333;
-  background: url("../../img/whitey.jpg") repeat scroll 0 0 #ffffff;
-  background-size: 220px 220px;
+  background: #e7ebee;
 }
 h1,
 h2,
@@ -223,7 +223,6 @@ a:focus {
   }
 }
 #theme-wrapper {
-  box-shadow: 0 0 53px 0 rgba(0, 0, 0, 0.55);
   max-width: 1920px;
 }
 #page-wrapper {
@@ -240,7 +239,6 @@ a:focus {
   margin-top: 0;
   margin-bottom: 0;
   position: relative;
-  min-height: 1200px;
   padding: 15px 15px 35px 15px;
   margin-left: 240px;
 }
@@ -2122,6 +2120,9 @@ blockquote.pull-right:before {
   display: block;
 }
 /* TABLES */
+.table {
+  background: #fff;
+}
 .table-hover > tbody > tr:hover > td,
 .table-hover > tbody > tr:hover > th {
   background-color: #f8f8f8;
@@ -2140,10 +2141,6 @@ blockquote.pull-right:before {
   vertical-align: middle;
   border-top: 1px solid #e7ebee;
   padding: 12px 8px;
-}
-.table tbody > tr > td:first-child {
-  font-size: 1.125em;
-  font-weight: 300;
 }
 .table tbody > tr td .call-type {
   display: block;
@@ -2382,6 +2379,29 @@ blockquote.pull-right:before {
 .DTTT_selectable tr.active td:hover {
   background-color: #FFFECF !important;
   border-color: #D2D076 !important;
+}
+.table-matrix {
+  width: auto;
+  margin: 0;
+}
+.table-matrix th,
+.table-matrix td {
+  text-align: center;
+  font-size: 1em !important;
+}
+.table-matrix th,
+.table-matrix tr > td:first-child {
+  font-weight: bold;
+  color: #fff !important;
+  background-color: #9c27b0;
+  border-color: #771e86 !important;
+}
+.table-matrix thead > tr > th {
+  border-bottom-width: 1px;
+}
+.table-matrix thead > tr > th:first-child {
+  background-color: #fff;
+  border-color: #ddd !important;
 }
 /* FORMS */
 .form-group {

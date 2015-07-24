@@ -99,9 +99,6 @@ use yii\helpers\Url;
 										<a href="<?= Url::to(['site/zones']) ?>">Zones</a>
 									</li>
 									<li>
-										<a href="<?= Url::to(['site/billings']) ?>">Billing Definition</a>
-									</li>
-									<li>
 										<a href="<?= Url::to(['site/regions']) ?>">Regions</a>
 									</li>
 									<li>
@@ -109,6 +106,18 @@ use yii\helpers\Url;
 									</li>
 									<li>
 										<a href="<?= Url::to(['site/citymapping']) ?>">City - State Mapping</a>
+									</li>
+									<li>
+										<a href="<?= Url::to(['site/billings']) ?>">Billing Definition</a>
+									</li>
+									<li>
+										<a href="<?= Url::to(['site/billingexceptions']) ?>">Exceptions</a>
+									</li>
+									<li>
+										<a href="<?= Url::to(['site/billingonforwarding']) ?>">Onforwarding Charges</a>
+									</li>
+									<li>
+										<a href="<?= Url::to(['site/billingmatrix']) ?>">View Matrix</a>
 									</li>
 								</ul>
 							</li>
