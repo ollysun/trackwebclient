@@ -58,10 +58,10 @@ class ServiceConstant {
     const URL_BRANCH_ADD = '/branch/add';
     const URL_BRANCH_EDIT = '/branch/editDetails';
     const URL_BRANCH_CHANGE_STATUS = '/branch/changeStatus';
-    const URL_BRANCH_RELINK = '/branch/changeStatus';
+    const URL_BRANCH_RELINK = '/branch/relink';
     const URL_BRANCH_GET_ONE = '/branch/get';
     const URL_BRANCH_GET_ALL = '/branch/getAll';
-    const URL_BRANCH_GET_ALL_EC = 'branch/getAllEC';
+    const URL_BRANCH_GET_ALL_EC = '/branch/getAllEC';
     const URL_BRANCH_GET_ALL_HUB = '/branch/getAllHub';
 
     public static function getStatus($status){

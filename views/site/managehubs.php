@@ -29,16 +29,16 @@ $this->params['breadcrumbs'] = array(
 			<div class="pull-left">
 				<?= $this->render('../elements/branch_type_filter', ['branch_type'=>'hub']) ?>
 			</div>
-
 			<div class="pull-right clearfix">
 				<div class="form-group pull-left">
 					<label for="">Filter by State</label><br>
-					<select class="form-control input-sm" name="state_id" id="state_id">
+					<select class="form-control input-sm" name="filter_state_id" id="filter_state_id">
+						<option value="">All States</option>
                         <?php
                         if(isset($States) && is_array(($States))):
                             foreach($States as $state){
                         ?>
-                            <option value="<?= $state['id'] ?>"<?= ($state['id']==$state_id) ? 'selected':''; ?>><?= strtoupper($state['name']); ?></option>
+                            <option value="<?= $state['id'] ?>"<?= ($state['id']==$filter_state_id) ? 'selected':''; ?>><?= strtoupper($state['name']); ?></option>
                         <?php
                             }
                         endif;
@@ -62,7 +62,6 @@ $this->params['breadcrumbs'] = array(
 						<th>Hub Code</th>
 						<th>Hub Name</th>
 						<th>State</th>
-						<th>State Code</th>
 						<th>Address</th>
 						<th>Status</th>
 						<th>Action</th>
@@ -77,8 +76,7 @@ $this->params['breadcrumbs'] = array(
 						<td><?= $count++; ?></td>
 						<td><?= strtoupper($hub['code']); ?></td>
 						<td><?= $hub['name']; ?></td>
-						<td><?= $hub['state_id']; ?></td>
-						<td><?= $hub['state_id']; ?></td>
+						<td><?= strtoupper($hub['state']['name']); ?></td>
 						<td><?= $hub['address']; ?></td>
 						<td><?= ($hub['status']==ServiceConstant::ACTIVE?'Active':'Inactive'); ?></td>
 						<td><button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#editModal" data-id="<?= $hub['id']; ?>"><i class="fa fa-edit"></i> Edit</button></td>
