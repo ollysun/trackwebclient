@@ -27,8 +27,8 @@ $this->params['breadcrumbs'] = array(
 					<tr>
 						<th style="width: 20px">S/N</th>
 						<th>Name</th>
-						<th>Code</th>
 						<th>State</th>
+						<th>Onforwarding Charge</th>
 						<th>Action</th>
 					</tr>
 				</thead>
@@ -70,11 +70,11 @@ $this->params['breadcrumbs'] = array(
 					<input class="form-control">
 				</div>
 				<div class="form-group">
-					<label>City Code</label>
-					<input type="text" class="form-control">
+					<label>State</label>
+					<select class="form-control"></select>
 				</div>
 				<div class="form-group">
-					<label>State</label>
+					<label>Onforwarding charge</label>
 					<select class="form-control"></select>
 				</div>
 				<div class="form-group">
@@ -109,11 +109,11 @@ $this->params['breadcrumbs'] = array(
 					<input class="form-control">
 				</div>
 				<div class="form-group">
-					<label>City Code</label>
-					<input type="text" class="form-control">
+					<label>State</label>
+					<select class="form-control"></select>
 				</div>
 				<div class="form-group">
-					<label>State</label>
+					<label>Onforwarding charge</label>
 					<select class="form-control"></select>
 				</div>
 				<div class="form-group">
