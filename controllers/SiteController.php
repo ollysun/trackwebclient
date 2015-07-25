@@ -177,105 +177,127 @@ class SiteController extends BaseController
         ));
     }
 
-    public function actionParcels($offset=0)
+    public function actionParcels($offset=0,$search=false,$page_width=null)
     {
         $from_date = date('Y/m/d');
         $to_date = date('Y/m/d');
+        $search_action = $search;
+        if($page_width != null){
+            $this->page_width = $page_width;
+        }
         $parcel = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
         if(isset(Calypso::getInstance()->get()->from,Calypso::getInstance()->get()->to)){
             $from_date = Calypso::getInstance()->get()->from.' 00:00:00';
             $to_date = Calypso::getInstance()->get()->to.' 23:59:59';
             $filter = isset(Calypso::getInstance()->get()->date_filter) ? Calypso::getInstance()->get()->date_filter : '-1';
             $response = $parcel->getFilterParcelsByDateAndStatus($from_date,$to_date,$filter,$offset,$this->page_width);
+            $search_action = true;
         }
         elseif(isset(Calypso::getInstance()->get()->search) ){
             $search = Calypso::getInstance()->get()->search;
             $response = $parcel->getSearchParcels('-1',$search,$offset,$this->page_width);
+            $search_action = true;
         }else{
             //$response = $parcel->getParcels(null,null,$offset,$this->page_width);
             $response = $parcel->getNewParcelsByDate(date('Y-m-d'),$offset,$this->page_width);
+            $search_action = false;
         }
         $response = new ResponseHandler($response);
         $data = [];
         if($response->getStatus() ==  ResponseHandler::STATUS_OK){
             $data = $response->getData();
         }
-        return $this->render('parcels',array('parcels'=>$data,'from_date'=>$from_date,'to_date'=>$to_date,'offset'=>$offset,'page_width'=>$this->page_width));
+        return $this->render('parcels',array('parcels'=>$data,'from_date'=>$from_date,'to_date'=>$to_date,'offset'=>$offset,'page_width'=>$this->page_width,'search'=>$search_action));
     }
 
-    public function actionProcessedparcels($offset=0)
+    public function actionProcessedparcels($offset=0,$search=false,$page_width=null)
     {
         $from_date = date('Y/m/d');
         $to_date = date('Y/m/d');
+        $search_action = $search;
+        if($page_width != null){
+            $this->page_width = $page_width;
+        }
         $parcel = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
         if(isset(Calypso::getInstance()->get()->from,Calypso::getInstance()->get()->to)){
             $from_date = Calypso::getInstance()->get()->from.' 00:00:00';
             $to_date = Calypso::getInstance()->get()->to.' 23:59:59';
             $filter = isset(Calypso::getInstance()->get()->date_filter) ? Calypso::getInstance()->get()->date_filter : '-1';
             $response = $parcel->getFilterParcelsByDateAndStatus($from_date,$to_date,$filter,$offset,$this->page_width);
+            $search_action = true;
         }
         elseif(isset(Calypso::getInstance()->get()->search) ){
             $search = Calypso::getInstance()->get()->search;
             $response = $parcel->getSearchParcels('-1',$search,$offset,$this->page_width);
+            $search_action = true;
         }else{
             $response = $parcel->getNewParcelsByDate(date('Y-m-d'),$offset,$this->page_width);
+            $search_action = false;
         }
         $response = new ResponseHandler($response);
         $data = [];
         if($response->getStatus() ==  ResponseHandler::STATUS_OK){
             $data = $response->getData();
         }
-        return $this->render('processed_parcels',array('parcels'=>$data,'from_date'=>$from_date,'to_date'=>$to_date,'offset'=>$offset,'page_width'=>$this->page_width));
+        return $this->render('processed_parcels',array('parcels'=>$data,'from_date'=>$from_date,'to_date'=>$to_date,'offset'=>$offset,'page_width'=>$this->page_width,'search'=>$search_action));
     }
 
-     public function actionParcelsfordelivery($offset=0)
+     public function actionParcelsfordelivery($offset=0,$search=false)
     {
         $from_date =  date('Y/m/d');
         $to_date = date('Y/m/d');
+        $search_action = $search;
         $parcel = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
         if(isset(Calypso::getInstance()->get()->from,Calypso::getInstance()->get()->to)){
             $from_date = Calypso::getInstance()->get()->from.' 00:00:00';
             $to_date = Calypso::getInstance()->get()->to.' 23:59:59';
             $filter = isset(Calypso::getInstance()->get()->date_filter) ? Calypso::getInstance()->get()->date_filter : '-1';
             $response = $parcel->getFilterParcelsByDateAndStatus($from_date,$to_date,$filter,$offset,$this->page_width);
+            $search_action = true;
         }
         elseif(isset(Calypso::getInstance()->get()->search) ){
             $search = Calypso::getInstance()->get()->search;
             $response = $parcel->getSearchParcels('-1',$search,$offset,$this->page_width);
+            $search_action = true;
         }else{
             $response = $parcel->getParcels(ServiceConstant::FOR_DELIVERY,null,$offset,$this->page_width);
+            $search_action = false;
         }
         $response = new ResponseHandler($response);
         $data = [];
         if($response->getStatus() ==  ResponseHandler::STATUS_OK){
             $data = $response->getData();
         }
-        return $this->render('parcels_for_delivery',array('parcels'=>$data,'from_date'=>$from_date,'to_date'=>$to_date,'offset'=>$offset,'page_width'=>$this->page_width));
+        return $this->render('parcels_for_delivery',array('parcels'=>$data,'from_date'=>$from_date,'to_date'=>$to_date,'offset'=>$offset,'page_width'=>$this->page_width,'search'=>$search_action));
     }
 
-    public function actionParcelsforsweep($offset=0)
+    public function actionParcelsforsweep($offset=0,$search=false)
     {
         $from_date = date('Y/m/d');
         $to_date = date('Y/m/d');
+        $search_action = $search;
         $parcel = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
         if(isset(Calypso::getInstance()->get()->from,Calypso::getInstance()->get()->to)){
             $from_date = Calypso::getInstance()->get()->from.' 00:00:00';
             $to_date = Calypso::getInstance()->get()->to.' 23:59:59';
             $filter = isset(Calypso::getInstance()->get()->date_filter) ? Calypso::getInstance()->get()->date_filter : '-1';
             $response = $parcel->getFilterParcelsByDateAndStatus($from_date,$to_date,$filter,$offset,$this->page_width);
+            $search_action = true;
         }
         elseif(isset(Calypso::getInstance()->get()->search) ){
             $search = Calypso::getInstance()->get()->search;
             $response = $parcel->getSearchParcels('-1',$search,$offset,$this->page_width);
+            $search_action = true;
         }else{
             $response = $parcel->getParcels(ServiceConstant::FOR_SWEEPER,null,$offset,$this->page_width);
+            $search_action = false;
         }
         $response = new ResponseHandler($response);
         $data = [];
         if($response->getStatus() ==  ResponseHandler::STATUS_OK){
             $data = $response->getData();
         }
-        return $this->render('parcels_for_sweep',array('parcels'=>$data,'from_date'=>$from_date,'to_date'=>$to_date,'offset'=>$offset,'page_width'=>$this->page_width));
+        return $this->render('parcels_for_sweep',array('parcels'=>$data,'from_date'=>$from_date,'to_date'=>$to_date,'offset'=>$offset,'page_width'=>$this->page_width,'search'=>$search_action));
     }
     public function actionViewwaybill()
     {

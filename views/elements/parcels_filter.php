@@ -30,6 +30,16 @@ use Adapter\Globals\ServiceConstant;
                     ?>
                 </select>
             </div>
+            <div class="pull-left form-group form-group-sm">
+                <label for="">Records</label><br>
+                <select name="page_width" id="" class="form-control ">
+                    <option value="10">10</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                    <option value="200">200</option>
+                    <option value="500">500</option>
+                </select>
+            </div>
             <div class="pull-left">
                 <label>&nbsp;</label><br>
                 <button class="btn btn-default btn-sm"><i class="fa fa-search"></i></button>
