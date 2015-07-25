@@ -79,7 +79,7 @@ $this->params['breadcrumbs'] = array(
 						<td><?= strtoupper($hub['state']['name']); ?></td>
 						<td><?= $hub['address']; ?></td>
 						<td><?= ($hub['status']==ServiceConstant::ACTIVE?'Active':'Inactive'); ?></td>
-						<td><button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#editModal" data-id="<?= $hub['id']; ?>"><i class="fa fa-edit"></i> Edit</button></td>
+						<td><button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#editModal" data-id="<?= $hub['id']; ?>"><i class="fa fa-edit"></i> Edit</button> <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#status" data-id="<?= $hub['id']; ?>"><i class="fa fa-edit"></i> Change Status</button></td>
 					</tr>
                     <?php
                         }
@@ -122,8 +122,7 @@ $this->params['breadcrumbs'] = array(
 				</div>
 				<div class="form-group">
 					<label>Address</label>
-					<input class="form-control" name="address">
-					<input class="form-control address-line-1">
+					<textarea class="form-control" name="address" rows="2"></textarea>
 				</div>
 				<div class="form-group">
 					<label>Status</label>
@@ -134,6 +133,7 @@ $this->params['breadcrumbs'] = array(
 				</div>
 	      </div>
 	      <div class="modal-footer">
+			  <input type="hidden" name="task" value="create">
 	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 	        <button type="submit" class="btn btn-primary">Create Hub</button>
 	      </div>
@@ -144,53 +144,82 @@ $this->params['breadcrumbs'] = array(
 
 
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document">
-	  	<form class="" method="post" action="">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	        <h4 class="modal-title" id="myModalLabel">Edit a Hub</h4>
-	      </div>
-	      <div class="modal-body">
-				<div class="form-group">
-					<label>Hub name</label>
-					<input class="form-control" name="name">
+	<div class="modal-dialog" role="document">
+		<form class="" method="post" action="">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="myModalLabel">Edit a Hub</h4>
 				</div>
-				<div class="form-group">
-					<label>State</label>
-					<select class="form-control" name="state_id">
-						<?php
-						if(isset($States) && is_array(($States))):
-							foreach($States as $state){
-								?>
-								<option value="<?= $state['id'] ?>"><?= strtoupper($state['name']); ?></option>
-								<?php
-							}
-						endif;
-						?>
-					</select>
+				<div class="modal-body">
+					<div class="form-group">
+						<label>Hub name</label>
+						<input class="form-control" name="name">
+					</div>
+					<div class="form-group">
+						<label>State</label>
+						<select class="form-control" name="state_id">
+							<?php
+							if(isset($States) && is_array(($States))):
+								foreach($States as $state){
+									?>
+									<option value="<?= $state['id'] ?>"><?= strtoupper($state['name']); ?></option>
+									<?php
+								}
+							endif;
+							?>
+						</select>
+					</div>
+					<div class="form-group">
+						<label>Address</label>
+						<textarea class="form-control" name="address" rows="3"></textarea>
+					</div>
+					<div class="form-group">
+						<label>Status</label>
+						<select class="form-control" name="status">
+							<option value="<?= ServiceConstant::ACTIVE?>">Active</option>
+							<option value="<?= ServiceConstant::INACTIVE?>">Inactive</option>
+						</select>
+					</div>
 				</div>
-				<div class="form-group">
-					<label>Address</label>
-					<input class="form-control" name="address">
-					<input class="form-control address-line-1">
+				<div class="modal-footer">
+					<input type="hidden" name="id">
+					<input type="hidden" name="task" value="edit">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button type="submit" class="btn btn-primary">Save changes</button>
 				</div>
-				<div class="form-group">
-					<label>Status</label>
-					<select class="form-control" name="status">
-						<option value="<?= ServiceConstant::ACTIVE?>">Active</option>
-						<option value="<?= ServiceConstant::INACTIVE?>">Inactive</option>
-					</select>
+			</div>
+		</form>
+	</div>
+</div>
+
+
+<div class="modal fade" id="status" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document">
+		<form class="" method="post" action="">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="myModalLabel">Change Hub Status</h4>
 				</div>
-	      </div>
-	      <div class="modal-footer">
-			  <input type="hidden" name="id">
-	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-	        <button type="submit" class="btn btn-primary">Save changes</button>
-	      </div>
-	    </div>
-	  	</form>
-  </div>
+				<div class="modal-body">
+					<div class="form-group">
+						<label>Status</label>
+						<select class="form-control" name="status">
+							<option value="<?= ServiceConstant::ACTIVE?>">Active</option>
+							<option value="<?= ServiceConstant::INACTIVE?>">Inactive</option>
+						</select>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<input type="hidden" name="id">
+					<input type="hidden" name="task" value="status">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button type="submit" class="btn btn-primary">Save changes</button>
+				</div>
+			</div>
+		</form>
+	</div>
 </div>
 
 <!-- this page specific scripts -->

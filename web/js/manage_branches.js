@@ -11,7 +11,8 @@ var Branch = {
             code: '',
             branch_type: '',
             status: '',
-            hub_id:''
+            hub_id:'',
+            target:''
         }
     },
 
@@ -46,11 +47,10 @@ var Branch = {
         });
     },
 
-    getBranchDetails: function (branch_id) {
+    getBranchDetails: function (branch_id, target) {
         var self = this;
         $.get(Branch.Url.branch, {id: branch_id}, function (response) {
             if (response.status === 'success') {
-
                 var ex = self.rep();
                 ex.id = response.data.id;
                 ex.name = response.data.name;
@@ -61,32 +61,34 @@ var Branch = {
                 ex.status = response.data.status;
                 if(response.data.parent !== null)
                     ex.hub_id = response.data.parent.id;
-                self.setBranchDetails(ex);
+                self.setBranchDetails(ex, target);
             }
         });
     },
 
-    setBranchDetails: function (bObj) {
-        $("#editModal input[name='id']").val(bObj.id);
-        $("#editModal input[name='name']").val(bObj.name);
-        $("#editModal select[name='status']").val(bObj.status);
-        $("#editModal input[name='address']").val(bObj.address);
-        $("#editModal select[name='state_id'], #editModal input[name='state_id']").val(bObj.state_id);
+    setBranchDetails: function (bObj, target) {
+        $(target+" input[name='id']").val(bObj.id);
+        $(target+" input[name='name']").val(bObj.name);
+        $(target+" select[name='status']").val(bObj.status);
+        $(target+" textarea[name='address']").val(bObj.address);
+        $(target+" select[name='state_id'], #editModal input[name='state_id']").val(bObj.state_id);
         if(bObj.hub_id){
-            $("#editModal select[name='hub_id']").val(bObj.hub_id);
+            $(target+" select[name='hub_id']").val(bObj.hub_id);
         }
     },
 };
 $(document).ready(function () {
 
-    $("button[data-target='#editModal']").on('click', function (event) {
-        Branch.getBranchDetails($(this).attr('data-id'));
+    $("button[data-target='#editModal'], button[data-target='#status'], button[data-target='#relink']").on('click', function (event) {
+
+        $($(this).attr('data-target')+" input[name='id']").val($(this).attr('data-id'));
+        Branch.getBranchDetails($(this).attr('data-id'), $(this).attr('data-target'));
     });
 
-    $("#myModal select#hub_id, #editModal select#hub_id").on('change', function (event) {
+/*    $("#myModal select#hub_id, #editModal select#hub_id").on('change', function (event) {
         state = $(this).find("option:selected").attr('data-state-id');
         $(this).next().val(state);
-    });
+    });*/
     $("select#filter_hub_id").on('change', function (event) {
         $("form#filter").submit();
     });

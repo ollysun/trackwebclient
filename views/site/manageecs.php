@@ -46,7 +46,6 @@ $this->params['breadcrumbs'] = array(
                         endif
                         ?>
                     </select>
-                    <input type="hidden" name="task" value="filter">
                 </div>
                 <div class="pull-left">
                     <label for="">&nbsp;</label><br>
@@ -65,7 +64,7 @@ $this->params['breadcrumbs'] = array(
                     <th style="width: 20px">S/N</th>
                     <th>EC Code</th>
                     <th>EC Name</th>
-                    <th>Parent Hub</th>
+                    <?php if(empty($filter_hub_id)) {?><th>Parent Hub</th><?php } ?>
                     <th>Address</th>
                     <th>Status</th>
                     <th>Action</th>
@@ -81,13 +80,20 @@ $this->params['breadcrumbs'] = array(
                             <td><?= $count++; ?></td>
                             <td><?= strtoupper($centre['code']); ?></td>
                             <td><?= $centre['name']; ?></td>
-                            <td></td>
+                            <?php if(empty($filter_hub_id)) {?><td><?= ucwords($centre['parent']['name']); ?></td><?php } ?>
                             <td><?= $centre['address']; ?></td>
                             <td><?= ($centre['status'] == ServiceConstant::ACTIVE ? 'Active' : 'Inactive'); ?></td>
                             <td>
                                 <button type="button" class="btn btn-default btn-xs" data-toggle="modal"
                                         data-target="#editModal" data-id="<?= $centre['id']; ?>"><i
                                         class="fa fa-edit"></i> Edit
+                                </button>
+                                <button type="button" class="btn btn-default btn-xs" data-toggle="modal"
+                                        data-target="#status" data-id="<?= $centre['id']; ?>" data-toggle="tooltip" data-original-title="Change status"><i
+                                        class="fa fa-edit"></i> Status
+                                </button>
+                                <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#relink" data-id="<?= $centre['id']; ?>" data-toggle="tooltip" data-original-title="Change Parent Hub"><i
+                                        class="fa fa-retweet"></i>
                                 </button>
                             </td>
                         </tr>
@@ -115,6 +121,9 @@ $this->params['breadcrumbs'] = array(
                         <label>EC name</label>
                         <input class="form-control required" name="name">
                     </div>
+                    <div class="">
+                        <div class=""></div>
+                    </div>
                     <div class="form-group">
                         <label>Parent Hub</label>
                         <select class="form-control required" name="hub_id" id="hub_id">
@@ -124,18 +133,16 @@ $this->params['breadcrumbs'] = array(
                                 foreach ($hubs as $hub) {
                                     ?>
                                     <option
-                                        value="<?= $hub['id']; ?>" data-state-id="<?= $hub['state_id']; ?>"><?= ucwords($hub['name']) . " (" . strtoupper($hub['code']) . ")"; ?></option>
+                                        value="<?= $hub['id']; ?>"><?= ucwords($hub['name']) . " (" . strtoupper($hub['code']) . ")"; ?></option>
                                     <?php
                                 }
                             endif;
                             ?>
                         </select>
-                        <input type="hidden" name="state_id" id="state_id">
                     </div>
                     <div class="form-group">
                         <label>Address</label>
-                        <input class="form-control required" name="address">
-                        <input class="form-control address-line-1" name="address2">
+                        <textarea class="form-control" name="address" rows="2"></textarea>
                     </div>
                     <div class="form-group">
                         <label>Activate EC?</label>
@@ -146,8 +153,39 @@ $this->params['breadcrumbs'] = array(
                     </div>
                 </div>
                 <div class="modal-footer">
+                    <input type="hidden" name="task" value="create">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary">Create EC</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="status" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <form class="validate" method="post" action="#">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Edit an Express Centre</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Activate EC?</label>
+                        <select class="form-control" name="status">
+                            <option value="<?= ServiceConstant::ACTIVE ?>">Active</option>
+                            <option value="<?= ServiceConstant::INACTIVE ?>">Inactive</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="hidden" name="id">
+                    <input type="hidden" name="task" value="status">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
                 </div>
             </div>
         </form>
@@ -169,6 +207,46 @@ $this->params['breadcrumbs'] = array(
                         <input class="form-control" name="name">
                     </div>
                     <div class="form-group">
+                        <label>Address</label>
+                        <textarea class="form-control" name="address" rows="2"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>State</label>
+                        <select class="form-control" name="state_id">
+                            <?php
+                            if(isset($States) && is_array(($States))):
+                                foreach($States as $state){
+                                    ?>
+                                    <option value="<?= $state['id'] ?>"><?= strtoupper($state['name']); ?></option>
+                                    <?php
+                                }
+                            endif;
+                            ?>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="hidden" name="id">
+                    <input type="hidden" name="task" value="edit">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="modal fade" id="relink" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <form class="validate" method="post">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Change Parent Hub</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
                         <label>Parent Hub</label>
                         <select class="form-control required" name="hub_id" id="hub_id">
                             <option value="">Select One</option>
@@ -177,29 +255,17 @@ $this->params['breadcrumbs'] = array(
                                 foreach ($hubs as $hub) {
                                     ?>
                                     <option
-                                        value="<?= $hub['id']; ?>" data-state-id="<?= $hub['state_id']; ?>"><?= ucwords($hub['name']) . " (" . strtoupper($hub['code']) . ")"; ?></option>
+                                        value="<?= $hub['id']; ?>"><?= ucwords($hub['name']) . " (" . strtoupper($hub['code']) . ")"; ?></option>
                                     <?php
                                 }
                             endif;
                             ?>
                         </select>
-                        <input type="hidden" name="state_id" id="state_id">
-                    </div>
-                    <div class="form-group">
-                        <label>Address</label>
-                        <input class="form-control" name="address">
-                        <input class="form-control address-line-1">
-                    </div>
-                    <div class="form-group">
-                        <label>Status</label>
-                        <select class="form-control" name="status">
-                            <option value="<?= ServiceConstant::INACTIVE ?>">Inactive</option>
-                            <option value="<?= ServiceConstant::ACTIVE ?>">Active</option>
-                        </select>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <input type="hidden" name="id">
+                    <input type="hidden" name="task" value="relink">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary">Save changes</button>
                 </div>
