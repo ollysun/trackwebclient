@@ -8,7 +8,7 @@ $this->params['breadcrumbs'][] = 'Waybill';
 ?>
 
 <?php
-	$this->params['content_header_button'] = '<span class="label label-success">CONFIRMED DELIVERY</span>';
+	$this->params['content_header_button'] = '<span class="label label-success hidden">CONFIRMED DELIVERY</span>';
 //var_dump($parcelData);
 ?>
 
@@ -89,6 +89,6 @@ $this->params['breadcrumbs'][] = 'Waybill';
 
 ?>
 <?php $this->registerJsFile('@web/js/libs/jquery-barcode.min.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
-<?php $this->registerJsFile('@web/js/barcode.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
+<?php //$this->registerJsFile('@web/js/barcode.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
 
 
