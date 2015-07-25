@@ -18,7 +18,7 @@ $this->params['breadcrumbs'] = array(
 
 <?php echo Calypso::showFlashMessages(); ?>
 
-<form action="#" method="post" enctype="multipart/form-data" class="validate">
+<form action="#" method="post" target="fakeframe" enctype="multipart/form-data" class="validate">
 
 	<div id="newParcelForm" class="l-new-parcel-form carousel slide">
 		<ol class="carousel-indicators hidden">
@@ -281,6 +281,6 @@ if (isset($Banks) && is_array($Banks['data'])) {
 		</div>
 	</div>
 </form>
-
+<iframe name="fakeframe" id="fakeframe" style="visibility: collapse; border: 0px;top: -9999px; left -9999px;"></iframe>
 <?php $this->registerJsFile('@web/js/libs/bootstrap-select.min.js', ['depends' => [\app\assets\AppAsset::className()]])?>
 <?php $this->registerJsFile('@web/js/new_parcel_form.js', ['depends' => [\app\assets\AppAsset::className()]])?>

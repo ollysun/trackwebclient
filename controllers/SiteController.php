@@ -60,15 +60,18 @@ class SiteController extends BaseController
         ];
     }
     public function beforeAction($action){
-        if($action->id != 'login'){
+        if(!in_array($action->id,array('logout','login','gerraout','site'))){
             $s = Calypso::getInstance()->session('user_session');
 
             if(!$s){
                // Calypso::getInstance()->AppRedirect('site','login');
-                return $this->redirect('site/logout');
+                return $this->redirect(['site/logout']);
             }
         }
         $this->enableCsrfValidation = false;
+        if(Calypso::getInstance()->cookie('page_width')){
+            $this->page_width = Calypso::getInstance()->cookie('page_width');
+        }
         return parent::beforeAction($action);
     }
     public function actionIndex()
@@ -138,26 +141,33 @@ class SiteController extends BaseController
     {
 
         if(Yii::$app->request->isPost){
+            $error = 1;
             $data = Yii::$app->request->post();
 
             $parcelService = new ParcelService();
             $payload = $parcelService->buildPostData($data);
-
+            $flash_msg = '';
             if(isset($payload['status'])) {
                 $errorMessages = implode('<br />', $payload['messages']);
-                Yii::$app->session->setFlash('danger', $errorMessages);
-
+                //Yii::$app->session->setFlash('danger', $errorMessages);
+                $flash_msg = $errorMessages;
             } else {
 
                 $parcel = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
                 $response = $parcel->createNewParcel(json_encode($payload));
                 if ($response['status'] === Response::STATUS_OK) {
-                    Yii::$app->response->redirect("viewwaybill?id={$response['data']['id']}");
+                   // Yii::$app->response->redirect("viewwaybill?id={$response['data']['id']}");
+                    $flash_msg = "viewwaybill?id=".$response['data']['id'];
+                    $error = 0;
                 } else {
-                    $this->flashError('There was a problem creating the value. Please try again.');
+                    //$this->flashError('There was a problem creating the value. Please try again.');
+                    $flash_msg =  ('There was a problem creating the value. Please try again.');
                 }
             }
+            echo "<script>window.top.getServerResponse('".$error."','".$flash_msg."');</script>";
         }
+
+
         $refData = new RefAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
 
         $banks = $refData->getBanks();
@@ -177,105 +187,133 @@ class SiteController extends BaseController
         ));
     }
 
-    public function actionParcels($offset=0)
+    public function actionParcels($offset=0,$search=false,$page_width=null)
     {
         $from_date = date('Y/m/d');
         $to_date = date('Y/m/d');
+        $search_action = $search;
+        if($page_width != null){
+            $this->page_width = $page_width;
+            Calypso::getInstance()->cookie('page_width',$page_width);
+        }
         $parcel = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
         if(isset(Calypso::getInstance()->get()->from,Calypso::getInstance()->get()->to)){
             $from_date = Calypso::getInstance()->get()->from.' 00:00:00';
             $to_date = Calypso::getInstance()->get()->to.' 23:59:59';
             $filter = isset(Calypso::getInstance()->get()->date_filter) ? Calypso::getInstance()->get()->date_filter : '-1';
             $response = $parcel->getFilterParcelsByDateAndStatus($from_date,$to_date,$filter,$offset,$this->page_width);
+            $search_action = true;
         }
         elseif(isset(Calypso::getInstance()->get()->search) ){
             $search = Calypso::getInstance()->get()->search;
             $response = $parcel->getSearchParcels('-1',$search,$offset,$this->page_width);
+            $search_action = true;
+            $filter = null;
         }else{
             //$response = $parcel->getParcels(null,null,$offset,$this->page_width);
             $response = $parcel->getNewParcelsByDate(date('Y-m-d'),$offset,$this->page_width);
+            $search_action = false;
+            $filter = null;
         }
         $response = new ResponseHandler($response);
         $data = [];
         if($response->getStatus() ==  ResponseHandler::STATUS_OK){
             $data = $response->getData();
         }
-        return $this->render('parcels',array('parcels'=>$data,'from_date'=>$from_date,'to_date'=>$to_date,'offset'=>$offset,'page_width'=>$this->page_width));
+        return $this->render('parcels',array('filter'=>$filter,'parcels'=>$data,'from_date'=>$from_date,'to_date'=>$to_date,'offset'=>$offset,'page_width'=>$this->page_width,'search'=>$search_action));
     }
 
-    public function actionProcessedparcels($offset=0)
+    public function actionProcessedparcels($offset=0,$search=false,$page_width=null)
     {
         $from_date = date('Y/m/d');
         $to_date = date('Y/m/d');
+        $search_action = $search;
+        if($page_width != null){
+            $this->page_width = $page_width;
+            Calypso::getInstance()->cookie('page_width',$page_width);
+        }
         $parcel = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
         if(isset(Calypso::getInstance()->get()->from,Calypso::getInstance()->get()->to)){
             $from_date = Calypso::getInstance()->get()->from.' 00:00:00';
             $to_date = Calypso::getInstance()->get()->to.' 23:59:59';
             $filter = isset(Calypso::getInstance()->get()->date_filter) ? Calypso::getInstance()->get()->date_filter : '-1';
             $response = $parcel->getFilterParcelsByDateAndStatus($from_date,$to_date,$filter,$offset,$this->page_width);
+            $search_action = true;
         }
         elseif(isset(Calypso::getInstance()->get()->search) ){
             $search = Calypso::getInstance()->get()->search;
             $response = $parcel->getSearchParcels('-1',$search,$offset,$this->page_width);
+            $search_action = true;
+            $filter = null;
         }else{
             $response = $parcel->getNewParcelsByDate(date('Y-m-d'),$offset,$this->page_width);
+            $search_action = false;
+            $filter = null;
         }
         $response = new ResponseHandler($response);
         $data = [];
         if($response->getStatus() ==  ResponseHandler::STATUS_OK){
             $data = $response->getData();
         }
-        return $this->render('processed_parcels',array('parcels'=>$data,'from_date'=>$from_date,'to_date'=>$to_date,'offset'=>$offset,'page_width'=>$this->page_width));
+        return $this->render('processed_parcels',array('filter'=>$filter,'parcels'=>$data,'from_date'=>$from_date,'to_date'=>$to_date,'offset'=>$offset,'page_width'=>$this->page_width,'search'=>$search_action));
     }
 
-     public function actionParcelsfordelivery($offset=0)
+     public function actionParcelsfordelivery($offset=0,$search=false)
     {
         $from_date =  date('Y/m/d');
         $to_date = date('Y/m/d');
+        $search_action = $search;
         $parcel = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
         if(isset(Calypso::getInstance()->get()->from,Calypso::getInstance()->get()->to)){
             $from_date = Calypso::getInstance()->get()->from.' 00:00:00';
             $to_date = Calypso::getInstance()->get()->to.' 23:59:59';
             $filter = isset(Calypso::getInstance()->get()->date_filter) ? Calypso::getInstance()->get()->date_filter : '-1';
             $response = $parcel->getFilterParcelsByDateAndStatus($from_date,$to_date,$filter,$offset,$this->page_width);
+            $search_action = true;
         }
         elseif(isset(Calypso::getInstance()->get()->search) ){
             $search = Calypso::getInstance()->get()->search;
             $response = $parcel->getSearchParcels('-1',$search,$offset,$this->page_width);
+            $search_action = true;
         }else{
             $response = $parcel->getParcels(ServiceConstant::FOR_DELIVERY,null,$offset,$this->page_width);
+            $search_action = false;
         }
         $response = new ResponseHandler($response);
         $data = [];
         if($response->getStatus() ==  ResponseHandler::STATUS_OK){
             $data = $response->getData();
         }
-        return $this->render('parcels_for_delivery',array('parcels'=>$data,'from_date'=>$from_date,'to_date'=>$to_date,'offset'=>$offset,'page_width'=>$this->page_width));
+        return $this->render('parcels_for_delivery',array('parcels'=>$data,'from_date'=>$from_date,'to_date'=>$to_date,'offset'=>$offset,'page_width'=>$this->page_width,'search'=>$search_action));
     }
 
-    public function actionParcelsforsweep($offset=0)
+    public function actionParcelsforsweep($offset=0,$search=false)
     {
         $from_date = date('Y/m/d');
         $to_date = date('Y/m/d');
+        $search_action = $search;
         $parcel = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
         if(isset(Calypso::getInstance()->get()->from,Calypso::getInstance()->get()->to)){
             $from_date = Calypso::getInstance()->get()->from.' 00:00:00';
             $to_date = Calypso::getInstance()->get()->to.' 23:59:59';
             $filter = isset(Calypso::getInstance()->get()->date_filter) ? Calypso::getInstance()->get()->date_filter : '-1';
             $response = $parcel->getFilterParcelsByDateAndStatus($from_date,$to_date,$filter,$offset,$this->page_width);
+            $search_action = true;
         }
         elseif(isset(Calypso::getInstance()->get()->search) ){
             $search = Calypso::getInstance()->get()->search;
             $response = $parcel->getSearchParcels('-1',$search,$offset,$this->page_width);
+            $search_action = true;
         }else{
             $response = $parcel->getParcels(ServiceConstant::FOR_SWEEPER,null,$offset,$this->page_width);
+            $search_action = false;
         }
         $response = new ResponseHandler($response);
         $data = [];
         if($response->getStatus() ==  ResponseHandler::STATUS_OK){
             $data = $response->getData();
         }
-        return $this->render('parcels_for_sweep',array('parcels'=>$data,'from_date'=>$from_date,'to_date'=>$to_date,'offset'=>$offset,'page_width'=>$this->page_width));
+        return $this->render('parcels_for_sweep',array('parcels'=>$data,'from_date'=>$from_date,'to_date'=>$to_date,'offset'=>$offset,'page_width'=>$this->page_width,'search'=>$search_action));
     }
     public function actionViewwaybill()
     {
@@ -296,25 +334,6 @@ class SiteController extends BaseController
     }
 
     /**
-     * Ajax calls to get states when a country is selected
-     */
-    public function actionGetstates() {
-
-        $country_id = \Yii::$app->request->get('id');
-        if(!isset($country_id)) {
-            return $this->sendErrorResponse("Invalid parameter(s) sent!", null);
-        }
-
-        $refData = new RefAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
-        $states = $refData->getStates($country_id);
-        if ($states['status'] === ResponseHandler::STATUS_OK) {
-            return $this->sendSuccessResponse($states['data']);
-        } else {
-            return $this->sendErrorResponse($states['message'], null);
-        }
-    }
-
-    /**
      * It requires atleast a state_id or branch_id, or both
      * @return array
      */
@@ -332,6 +351,37 @@ class SiteController extends BaseController
             return $this->sendErrorResponse($branches['message'], null);
         }
     }
+    public function actionValidatestaff(){
+        $staff_id = \Yii::$app->request->get('staff_id');
+        if(!isset($staff_id)) {
+            return $this->sendErrorResponse("Invalid parameter(s) sent!", null);
+        }
+        $adminAdp = new AdminAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+        $response = $adminAdp->getStaffByStaffID($staff_id);
+        $response = new ResponseHandler($response);
+        if($response->getStatus() == ResponseHandler::STATUS_OK){
+            return $this->sendSuccessResponse($response->getData());
+        } else {
+            return $this->sendErrorResponse($response->getError(), null);
+        }
+    }
+    public function actionCheckinparcel(){
+        if(isset(Calypso::getInstance()->post()->held_by_id,Calypso::getInstance()->post()->waybill_numbers)){
+            $parcel = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+            $response = $parcel->moveToArrival([
+                'held_by_id' => Calypso::getInstance()->post()->held_by_id,
+                'waybill_numbers' => (Calypso::getInstance()->post()->waybill_numbers)
+            ]);
+            $response = new ResponseHandler($response);
+            if($response->getStatus() == ResponseHandler::STATUS_OK){
+                return $this->sendSuccessResponse($response->getData());
+            } else {
+                return $this->sendErrorResponse($response->getError(), null);
+            }
+        }else{
+            return $this->sendErrorResponse("Invalid data", null);
+        }
+    }
     public function actionGetarrivedparcel(){
         $staff_no = \Yii::$app->request->get('staff_no');
         if(!isset($staff_no)) {
@@ -344,49 +394,6 @@ class SiteController extends BaseController
             return $this->sendSuccessResponse($response['data']);
         } else {
             return $this->sendErrorResponse($response['message'], null);
-        }
-    }
-
-    /**
-     * Ajax calls to get states when a country is selected
-     */
-    public function actionUserdetails() {
-
-        $term = \Yii::$app->request->get('term');
-        if(!isset($term)) {
-            return $this->sendErrorResponse("Invalid parameter(s) sent!", null);
-        }
-
-        $userData = new UserAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
-        $userInfo = $userData->getUserDetails($term);
-        if ($userInfo['status'] === ResponseHandler::STATUS_OK) {
-            return $this->sendSuccessResponse($userInfo['data']);
-        } else {
-            return $this->sendErrorResponse($userInfo['message'], null);
-        }
-    }
-
-    /**
-     * Ajax calls to get Account details of sender
-     */
-    public function actionAccountdetails() {
-
-        $owner_id = \Yii::$app->request->get('owner_id');
-        if(!isset($owner_id)) {
-            return $this->sendErrorResponse("Invalid parameter(s) sent!", null);
-        }
-
-        $bankAdapter = new BankAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
-        $bankInfo = $bankAdapter->getSenderBankAccout($owner_id);
-        if ($bankInfo['status'] === ResponseHandler::STATUS_OK) {
-            $resp = [];
-            if(!empty($bankInfo['data'])) {
-                $resp = $bankInfo['data'][0];
-            }
-
-            return $this->sendSuccessResponse($resp);
-        } else {
-            return $this->sendErrorResponse($bankInfo['message'], null);
         }
     }
 
@@ -579,7 +586,35 @@ class SiteController extends BaseController
     }
     public function actionHubarrival()
     {
-        return $this->render('hub_arrival');
+        $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+
+        if(\Yii::$app->request->isPost) {
+            $branch = \Yii::$app->request->post('branch');
+            $waybill_numbers = \Yii::$app->request->post('waybills');
+            if(!isset($branch) || empty($waybill_numbers)) {
+                $this->flashError('Please ensure you set destinations at least a (one) for the parcels');
+            }
+
+            $postParams['waybill_numbers'] = implode(',', $waybill_numbers);
+            $postParams['to_branch_id'] = $branch;
+            $response = $parcelsAdapter->moveToForSweeper($postParams);
+            if($response['status'] === ResponseHandler::STATUS_OK) {
+                $this->flashSuccess('Parcels have been successfully moved to the next destination. <a href="hubmovetodelivery">Generate Manifest</a>');
+            } else {
+                $this->flashError('An error occured while trying to move parcels to next destination. Please try again.');
+            }
+        }
+        $user_session = Calypso::getInstance()->session("user_session");
+        $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+        $arrival_parcels = $parcelsAdapter->getParcelsForNextDestination(ServiceConstant::FOR_ARRIVAL, $user_session['branch_id']);
+        if($arrival_parcels['status'] === ResponseHandler::STATUS_OK) {
+            $viewData['parcel_next'] = $arrival_parcels['data'];
+        } else {
+            $this->flashError('An error occured while trying to fetch parcels. Please try again.');
+            $viewData['parcel_next'] = [];
+        }
+
+        return $this->render('hub_arrival',$viewData);
     }
 
     public function actionHubnextdestination()
@@ -613,27 +648,6 @@ class SiteController extends BaseController
             $viewData['parcel_next'] = [];
         }
         return $this->render('hub_next_destination', $viewData);
-    }
-
-    public function actionHubmovetodelivery()
-    {
-
-        $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
-
-        if(\Yii::$app->request->isPost) {
-
-        }
-
-        $user_session = Calypso::getInstance()->session("user_session");
-        $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
-        $for_delivery_parcels = $parcelsAdapter->getParcelsForNextDestination(ServiceConstant::FOR_DELIVERY, $user_session['branch_id']);
-        if($for_delivery_parcels['status'] === ResponseHandler::STATUS_OK) {
-            $viewData['parcel_delivery'] = $for_delivery_parcels['data'];
-        } else {
-            $this->flashError('An error occured while trying to fetch parcels. Please try again.');
-            $viewData['parcel_delivery'] = [];
-        }
-        return $this->render('hubmovetodelivery', $viewData);
     }
 
     /**

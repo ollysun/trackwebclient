@@ -26,11 +26,6 @@ use yii\helpers\Url;
 						</a>
 						<ul class="submenu">
 							<li>
-								<a href="<?= Url::to(['site/parcels']) ?>">
-									All Shipments
-								</a>
-							</li>
-							<li>
 								<a href="<?= Url::to(['site/processedparcels']) ?>">
 									New Shipments
 								</a>
@@ -45,32 +40,11 @@ use yii\helpers\Url;
 									For Sweep
 								</a>
 							</li>
-                            <!--
-                            <li>
-                                <a href="<?/*= Url::to(['site/parcelscollected']) */?>">
-                                    Collected Parcels
-                                </a>
-                            </li>
-                            <li>
-                                <a href="<?/*= Url::to(['site/parcelsintransit']) */?>">
-                                    In Transit
-                                </a>
-                            </li>
-                            <li>
-                                <a href="<?/*= Url::to(['site/parcelscancelled']) */?>">
-                                    Cancelled
-                                </a>
-                            </li>
-                            <li>
-                                <a href="<?/*= Url::to(['site/parcelsdelivered']) */?>">
-                                    Delivered
-                                </a>
-                            </li> -->
-							<!-- <li>
-								<a href="<?= Url::to(['site/newparcel']) ?>">
-									New
+							<li>
+								<a href="<?= Url::to(['site/parcels']) ?>">
+									All Shipments
 								</a>
-							</li> -->
+							</li>
 						</ul>
 					</li>
 					<li>
@@ -128,10 +102,10 @@ use yii\helpers\Url;
 								<a href="<?= Url::to(['site/hubarrival']) ?>">Shipment Arrivals</a>
 							</li>
 							<li>
-								<a href="<?= Url::to(['site/hubnextdestination']) ?>">Set next destination</a>
+								<a href="<?= Url::to(['hubs/destination']) ?>">Set next destination</a>
 							</li>
 							<li>
-								<a href="<?= Url::to(['site/hubmovetodelivery']) ?>">For Delivery</a>
+								<a href="<?= Url::to(['hubs/delivery']) ?>">For Delivery</a>
 							</li>
 							<li>
 								<a href="<?= Url::to(['site/hubdispatch']) ?>">Dispatched Shipments</a>

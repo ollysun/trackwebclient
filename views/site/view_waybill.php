@@ -3,12 +3,12 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 
 /* @var $this yii\web\View */
-$this->title = 'Waybill No: ' . strtoupper($parcelData['waybill_number']);
+$this->title = 'Waybill No: '.strtoupper($parcelData['waybill_number']);
 $this->params['breadcrumbs'][] = 'Waybill';
 ?>
 
 <?php
-$this->params['content_header_button'] = '<span class="label label-success">CONFIRMED DELIVERY</span>';
+	$this->params['content_header_button'] = '<span class="label label-success">CONFIRMED DELIVERY</span>';
 //var_dump($parcelData);
 ?>
 
@@ -111,6 +111,6 @@ $this->params['content_header_button'] = '<span class="label label-success">CONF
 
 ?>
 <?php $this->registerJsFile('@web/js/libs/jquery-barcode.min.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
-<?php $this->registerJsFile('@web/js/barcode.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
+<?php //$this->registerJsFile('@web/js/barcode.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
 
 
