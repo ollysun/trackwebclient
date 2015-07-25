@@ -321,14 +321,15 @@ var Parcel = {
 		return {
 			name: '',
 			number: '',
-			bank: ''
+			bank: '',
+			id: ''
 		}
 	},
 
 	Url: {
-		'states' : '/site/getstates',
-		'userdetails' : '/site/userdetails',
-		'accountdetails' : '/site/accountdetails'
+		'states' : '/parcels/getstates',
+		'userdetails' : '/parcels/userdetails',
+		'accountdetails' : '/parcels/accountdetails'
 	},
 
 	getStates: function(country_id, selectSelector, selectedValue) {
@@ -396,10 +397,12 @@ var Parcel = {
 			if(response.status === 'success') {
 
 				var accountObj = self.newAccountObject();
-				accountObj.id = response.data.id;
-				accountObj.name = response.data.account_name;
-				accountObj.number = response.data.account_no;
-				accountObj.bank = response.data.bank;
+				if(response.data.length !== 0) {
+					accountObj.id = response.data.id;
+					accountObj.name = response.data.account_name;
+					accountObj.number = response.data.account_no;
+					accountObj.bank = response.data.bank;
+				}
 				self.setAccountDetails(accountObj);
 			}
 		});
