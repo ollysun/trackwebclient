@@ -46,7 +46,6 @@ class HubsController extends BaseController {
             }
         }
         $user_session = Calypso::getInstance()->session("user_session");
-        $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
         $arrival_parcels = $parcelsAdapter->getParcelsForNextDestination(ServiceConstant::FOR_ARRIVAL, $user_session['branch_id']);
         if($arrival_parcels['status'] === ResponseHandler::STATUS_OK) {
             $viewData['parcel_next'] = $arrival_parcels['data'];
@@ -105,16 +104,20 @@ class HubsController extends BaseController {
 
     public function actionDelivery()
     {
-
-        $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
-
-        if(\Yii::$app->request->isPost) {
-
+        //Move to In Transit (waybill_numbers, to_branch_id.
+        //and staff_id (not the code)
+        $viewData = [];
+        $to_branch_id = \Yii::$app->request->get('bid');
+        $btype = \Yii::$app->request->get('btype');
+        if(!isset($to_branch_id, $btype)) {
+            $to_branch_id = null;
         }
 
+        $viewData['to_branch_id'] = $to_branch_id;
+        $viewData['btype'] = $btype;
         $user_session = Calypso::getInstance()->session("user_session");
         $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
-        $for_delivery_parcels = $parcelsAdapter->getParcelsForNextDestination(ServiceConstant::FOR_DELIVERY, $user_session['branch_id']);
+        $for_delivery_parcels = $parcelsAdapter->getParcelsForNextDestination(ServiceConstant::FOR_SWEEPER, $user_session['branch_id'], $to_branch_id);
         if($for_delivery_parcels['status'] === ResponseHandler::STATUS_OK) {
             $viewData['parcel_delivery'] = $for_delivery_parcels['data'];
         } else {
