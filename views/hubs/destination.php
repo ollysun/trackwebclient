@@ -50,17 +50,7 @@ $this->params['breadcrumbs'] = array(
                         <label for="">&nbsp;</label><br>
                         <button type="submit" class="btn btn-sm btn-default" id="btn_apply_dest">Apply</button>
                     </div>
-
                 </div>
-
-                <!--<div class="pull-right clearfix">
-                    <form class="table-search-form form-inline clearfix">
-                        <div class="pull-left form-group">
-                            <label for="searchInput">&nbsp;</label><br>
-                            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">Manifest</button>
-                        </div>
-                    </form>
-                </div>-->
             </div>
         </div>
         <div class="main-box-body">

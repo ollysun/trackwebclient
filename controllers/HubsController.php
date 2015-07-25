@@ -19,6 +19,11 @@ use Adapter\Util\Calypso;
 
 class HubsController extends BaseController {
 
+    public function beforeAction($action) {
+        $this->enableCsrfValidation = false;
+        return parent::beforeAction($action);
+    }
+
     public function actionDestination()
     {
 
