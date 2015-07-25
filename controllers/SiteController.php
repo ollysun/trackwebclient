@@ -62,6 +62,7 @@ class SiteController extends BaseController
     public function beforeAction($action){
         if(!in_array($action->id,array('logout','login','gerraout','site'))){
             $s = Calypso::getInstance()->session('user_session');
+
             if(!$s){
                // Calypso::getInstance()->AppRedirect('site','login');
                 return $this->redirect(['site/logout']);
@@ -333,25 +334,6 @@ class SiteController extends BaseController
     }
 
     /**
-     * Ajax calls to get states when a country is selected
-     */
-    public function actionGetstates() {
-
-        $country_id = \Yii::$app->request->get('id');
-        if(!isset($country_id)) {
-            return $this->sendErrorResponse("Invalid parameter(s) sent!", null);
-        }
-
-        $refData = new RefAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
-        $states = $refData->getStates($country_id);
-        if ($states['status'] === ResponseHandler::STATUS_OK) {
-            return $this->sendSuccessResponse($states['data']);
-        } else {
-            return $this->sendErrorResponse($states['message'], null);
-        }
-    }
-
-    /**
      * It requires atleast a state_id or branch_id, or both
      * @return array
      */
@@ -412,49 +394,6 @@ class SiteController extends BaseController
             return $this->sendSuccessResponse($response['data']);
         } else {
             return $this->sendErrorResponse($response['message'], null);
-        }
-    }
-
-    /**
-     * Ajax calls to get states when a country is selected
-     */
-    public function actionUserdetails() {
-
-        $term = \Yii::$app->request->get('term');
-        if(!isset($term)) {
-            return $this->sendErrorResponse("Invalid parameter(s) sent!", null);
-        }
-
-        $userData = new UserAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
-        $userInfo = $userData->getUserDetails($term);
-        if ($userInfo['status'] === ResponseHandler::STATUS_OK) {
-            return $this->sendSuccessResponse($userInfo['data']);
-        } else {
-            return $this->sendErrorResponse($userInfo['message'], null);
-        }
-    }
-
-    /**
-     * Ajax calls to get Account details of sender
-     */
-    public function actionAccountdetails() {
-
-        $owner_id = \Yii::$app->request->get('owner_id');
-        if(!isset($owner_id)) {
-            return $this->sendErrorResponse("Invalid parameter(s) sent!", null);
-        }
-
-        $bankAdapter = new BankAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
-        $bankInfo = $bankAdapter->getSenderBankAccout($owner_id);
-        if ($bankInfo['status'] === ResponseHandler::STATUS_OK) {
-            $resp = [];
-            if(!empty($bankInfo['data'])) {
-                $resp = $bankInfo['data'][0];
-            }
-
-            return $this->sendSuccessResponse($resp);
-        } else {
-            return $this->sendErrorResponse($bankInfo['message'], null);
         }
     }
 
@@ -719,27 +658,6 @@ class SiteController extends BaseController
             $viewData['parcel_next'] = [];
         }
         return $this->render('hub_next_destination', $viewData);
-    }
-
-    public function actionHubmovetodelivery()
-    {
-
-        $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
-
-        if(\Yii::$app->request->isPost) {
-
-        }
-
-        $user_session = Calypso::getInstance()->session("user_session");
-        $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
-        $for_delivery_parcels = $parcelsAdapter->getParcelsForNextDestination(ServiceConstant::FOR_DELIVERY, $user_session['branch_id']);
-        if($for_delivery_parcels['status'] === ResponseHandler::STATUS_OK) {
-            $viewData['parcel_delivery'] = $for_delivery_parcels['data'];
-        } else {
-            $this->flashError('An error occured while trying to fetch parcels. Please try again.');
-            $viewData['parcel_delivery'] = [];
-        }
-        return $this->render('hubmovetodelivery', $viewData);
     }
 
     /**
