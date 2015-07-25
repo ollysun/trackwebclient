@@ -19,7 +19,7 @@ use Adapter\Util\Calypso;
 
 class HubsController extends BaseController {
 
-    public function actionHubnextdestination()
+    public function actionDestination()
     {
 
         $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
@@ -96,5 +96,26 @@ class HubsController extends BaseController {
         } else {
             return $this->sendErrorResponse($branch['message'], null);
         }
+    }
+
+    public function actionDelivery()
+    {
+
+        $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+
+        if(\Yii::$app->request->isPost) {
+
+        }
+
+        $user_session = Calypso::getInstance()->session("user_session");
+        $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+        $for_delivery_parcels = $parcelsAdapter->getParcelsForNextDestination(ServiceConstant::FOR_DELIVERY, $user_session['branch_id']);
+        if($for_delivery_parcels['status'] === ResponseHandler::STATUS_OK) {
+            $viewData['parcel_delivery'] = $for_delivery_parcels['data'];
+        } else {
+            $this->flashError('An error occured while trying to fetch parcels. Please try again.');
+            $viewData['parcel_delivery'] = [];
+        }
+        return $this->render('delivery', $viewData);
     }
 }
