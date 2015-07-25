@@ -54,4 +54,8 @@ class ParcelAdapter extends BaseAdapter{
     public function moveToForSweeper($postData) {
         return $this->request(ServiceConstant::URL_MOVE_TO_FOR_SWEEPER, $postData, self::HTTP_POST);
     }
+    public function moveToArrival($postData) {
+        return $this->request(ServiceConstant::URL_MOVE_TO_ARRIVAL, $postData, self::HTTP_POST);
+    }
+
 }
