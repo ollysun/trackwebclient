@@ -284,15 +284,22 @@ var Parcel = {
 
 	newUserObject: function() {
 		return {
+			id: '',
 			firstname: '',
 			lastname: '',
 			email: '',
 			phonenumber: '',
-			street1: '',
-			street2: '',
+			address: null
+		}
+	},
+
+	newAddress: function() {
+		return {
+			street_address1: '',
+			street_address2: '',
 			city: '',
-			country: '',
-			state: ''
+			state_id: '',
+			country_id: ''
 		}
 	},
 
@@ -310,12 +317,15 @@ var Parcel = {
 		'accountdetails' : '/site/accountdetails'
 	},
 
-	getStates: function(country_id, selectSelector) {
+	getStates: function(country_id, selectSelector, selectedValue) {
 		$.get( Parcel.Url.states, { id: country_id }, function(response){
 			if(response.status === 'success') {
-				var html = '';
+				var html = '<option value="">Select State...</option>';
+				var selected = '';
 				$.each(response.data, function(i, item){
-					html += "<option value='" + item.id + "'>" + item.name.toUpperCase() + "</option>";
+
+					selected = (selectedValue == item.id) ? 'selected="selected"' : '';
+					html += "<option value='" + item.id + "' " + selected + ">" + item.name.toUpperCase() + "</option>";
 				});
 				$(selectSelector).attr('disabled', false);
 				$(selectSelector).html(html);
@@ -334,7 +344,11 @@ var Parcel = {
 				userObj.lastname = response.data.lastname;
 				userObj.email = response.data.email;
 				userObj.phone = response.data.phone;
-				userObj.address = response.data.address;
+				if(response.data.address) {
+					userObj.address = response.data.address;
+				} else {
+					userObj.address = self.newAddress();
+				}
 
 				self.setUserDetails(userObj, suffix);
 			}
@@ -348,6 +362,18 @@ var Parcel = {
 		$('#lastname_' + suffix).val(userObj.lastname);
 		$('#email_' + suffix).val(userObj.email);
 		$('#phone_' + suffix).val(userObj.phone);
+
+		//Set address information
+		$('#address_' + suffix + '_1').val(userObj.address.street_address1);
+		$('#address_' + suffix + '_2').val(userObj.addressstreet_address2);
+		$('#city_' + suffix).val(userObj.address.city);
+		$('#country_' + suffix).val(userObj.address.country_id);
+		var stateSelector = $('#state_' + suffix);
+		if(userObj.address.country_id !== '') {
+			this.getStates(userObj.address.country_id, stateSelector, userObj.address.state_id);
+		} else {
+			$(stateSelector).attr('disabled', true);
+		}
 	},
 
 	getAccountDetails: function(owner_id) {
