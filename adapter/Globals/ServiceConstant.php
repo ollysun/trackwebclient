@@ -29,6 +29,7 @@ class ServiceConstant {
     const URL_GET_ONE_PARCEL = 'parcel/getone/';
     const URL_GET_ALL_PARCEL = 'parcel/getAll/';
     const URL_MOVE_TO_FOR_SWEEPER = '/parcel/moveToForSweeper/';
+    const URL_MOVE_TO_ARRIVAL = '/parcel/moveToArrival/';
 
     const URL_GET_ALL_BANKS = 'bank/getAll/';
 
@@ -65,19 +66,20 @@ class ServiceConstant {
 
     const URL_CREATE_USER = 'admin/register';
     const URL_GET_USERS = '/admin/getAll';
+    const URL_GET_STAFF_BY_ID = '/admin/getOne';
     public static function getStatus($status){
         switch($status){
             case ServiceConstant::ACTIVE:
-                return 'Active';
+                return '<span class="label label-success">Active</span>';
                 break;
             case ServiceConstant::INACTIVE:
-                return 'Inactive';
+                return '<span class="label label-danger">Inactive</span>';
                 break;
             case ServiceConstant::IN_TRANSIT:
-                return 'In Transit';
+                return '<span class="label label-info">In Transit</span>';
                 break;
             case ServiceConstant::REMOVED:
-                return 'Removed';
+                return '<span class="label label-danger">Removed</span>';
                 break;
             case ServiceConstant::COLLECTED:
                 return 'Collected';
