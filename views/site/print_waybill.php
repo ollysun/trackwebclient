@@ -1,9 +1,9 @@
 <?php
 //var_dump($parcelData);
 use Adapter\Util\Calypso;
-/*
+
 $copies = ["Sender's Copy","Recipient's Copy","Acknowledgement's Copy"," Express Centre's Copy"];
-foreach($copies as $copy) {*/
+foreach($copies as $copy) {
     ?>
     <div class="row">
     <div class="copy">
@@ -87,7 +87,7 @@ foreach($copies as $copy) {*/
     </div>
     </div>
     <?php
-//}
+}
 ?>
 <script type="text/javascript">
     var waybill = "<?= strtoupper($parcelData['waybill_number']); ?>";
