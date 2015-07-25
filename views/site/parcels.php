@@ -28,6 +28,7 @@ if($search){
 	$fro = date('Y/m/d',strtotime($from_date));
 	$to = date('Y/m/d',strtotime($to_date));
 	$link = "&search=true&to=".urlencode($to)."&from=".urlencode($fro)."&page_width=".$page_width;
+	if(!is_null($filter)){$link.= '&date_filter='. $filter;}
 }
 ?>
 
@@ -45,7 +46,7 @@ if($search){
 	<div class="main-box-header table-search-form ">
 		<div class="clearfix">
 			<div class="pull-left">
-				<?= $this->render('../elements/parcels_filter',['from_date'=>$from_date,'to_date'=>$to_date]) ?>
+				<?= $this->render('../elements/parcels_filter',['from_date'=>$from_date,'to_date'=>$to_date,'page_width'=>$page_width,'filter'=>$filter]) ?>
 			</div>
 			<div class="pull-right clearfix">
 
@@ -138,7 +139,7 @@ if($search){
 <?php $this->registerJsFile('@web/js/libs/dataTables.fixedHeader.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/libs/dataTables.tableTools.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/libs/jquery.dataTables.bootstrap.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
-
+<?php $this->registerJsFile('@web/js/hub_util.js', ['depends' => [\app\assets\AppAsset::className()]])?>
 
 <script type="text/javascript">
 	/*$(document).ready(function() {
