@@ -140,26 +140,32 @@ class SiteController extends BaseController
     {
 
         if(Yii::$app->request->isPost){
+            $error = 1;
             $data = Yii::$app->request->post();
 
             $parcelService = new ParcelService();
             $payload = $parcelService->buildPostData($data);
-
+            $flash_msg = '';
             if(isset($payload['status'])) {
                 $errorMessages = implode('<br />', $payload['messages']);
-                Yii::$app->session->setFlash('danger', $errorMessages);
-
+                //Yii::$app->session->setFlash('danger', $errorMessages);
+                $flash_msg = $errorMessages;
             } else {
 
                 $parcel = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
                 $response = $parcel->createNewParcel(json_encode($payload));
                 if ($response['status'] === Response::STATUS_OK) {
-                    Yii::$app->response->redirect("viewwaybill?id={$response['data']['id']}");
+                   // Yii::$app->response->redirect("viewwaybill?id={$response['data']['id']}");
+                    $flash_msg = "viewwaybill?id=".$response['data']['id'];
+                    $error = 0;
                 } else {
-                    $this->flashError('There was a problem creating the value. Please try again.');
+                    //$this->flashError('There was a problem creating the value. Please try again.');
+                    $flash_msg =  ('There was a problem creating the value. Please try again.');
                 }
             }
+            echo "<script>window.top.getServerResponse('".$error."','".$flash_msg."');</script>";
         }
+
 
         $refData = new RefAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
 
