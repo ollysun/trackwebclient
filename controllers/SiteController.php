@@ -158,6 +158,7 @@ class SiteController extends BaseController
                 }
             }
         }
+
         $refData = new RefAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
 
         $banks = $refData->getBanks();
