@@ -1,6 +1,17 @@
 /**
+ * Created by RotelandO on 7/25/15.
+ */
+
+/**
  * Created by RotelandO on 7/20/15.
  */
+
+var parcels = {
+    waybills: [],
+    to_branch_id: '',
+    to_branch_name: ''
+};
+
 var Parcel_Destination = {
 
     Url: {
@@ -8,12 +19,13 @@ var Parcel_Destination = {
         'allecforhubs' : '/hubs/allecforhubs'
     },
 
-    fillSelectOption: function(url, param, selectSelector) {
+    fillSelectOption: function(url, param, selectSelector, selectedValue) {
         $.get( url, param, function(response){
             if(response.status === 'success') {
                 var html = '<option value="">Select Name...</option>';
                 $.each(response.data, function(i, item) {
-                    html += "<option value='" + item.id + "'>" + item.name.toUpperCase() + "</option>";
+                    selected = (selectedValue == item.id) ? 'selected="selected"' : '';
+                    html += "<option value='" + item.id + "'" + selected + ">" + item.name.toUpperCase() + "</option>";
                 });
                 $(selectSelector).html(html);
             }
@@ -124,49 +136,52 @@ var TableHelper = {
 
 $(document).ready(function(){
 
-    Parcel_Destination.fillSelectOption(Parcel_Destination.Url.allecforhubs, {}, '#branch_name');
+    var btype = $('#branch_type').find('option:selected').val();
+    var bid = $('#branch_name').attr('data-bid');
+    fillBranchesOrHub(btype, bid);
 
     $('#branch_type').on('change', function(){
         var type = $(this).val();
+        fillBranchesOrHub(type);
+    });
+
+    function fillBranchesOrHub(type, bid) {
         var url = '';
-        if(type === 'hub') {
+        if (type === 'hub') {
             url = Parcel_Destination.Url.allhubs;
             $('#hub_branch_label').html('Hub Name');
         } else {
             url = Parcel_Destination.Url.allecforhubs;
             $('#hub_branch_label').html('Branch Name');
         }
-        Parcel_Destination.fillSelectOption(url, {}, '#branch_name');
-    });
+        Parcel_Destination.fillSelectOption(url, {}, '#branch_name', bid);
+    }
 
-    $('.chk_next').on('click', function(event){
-        var tr = $(this).closest('tr');
-        var rowIndex = $(tr).index();
-        var waybill = $(tr).attr('data-waybill');
-        var dest_value = $('#branch_name').val();
-        var destination = (dest_value !== '') ? $('#branch_name').find('option:selected').text() : '';
-        var curr = $(this).attr('value');
-        if(curr) {
-            if(curr === waybill) {
-                $(this).removeAttr('value');
-                TableHelper.setCellData('#next_dest', rowIndex, 4, '');
-            } else {
-                $(this).attr('value', waybill);
-                TableHelper.setCellData('#next_dest', rowIndex, 4, destination);
-            }
-        } else {
-            $(this).attr('value', waybill);
-            TableHelper.setCellData('#next_dest', rowIndex, 4, destination);
-        }
-    });
-
-    $('#btn_apply_dest').on('click', function(event){
+    $('#manifest').on('click', function(event) {
 
         var chkboxes = $('.chk_next');
         var selected = false;
+        var same_branch = true;
+        parcels.waybills = [];
+        var old_branch = '';
         $.each(chkboxes, function(i, chk){
-            if($(chk).attr('value')) {
+
+            if($(chk).is(':checked')) {
                 selected = true;
+                var waybill = {};
+                var tr = $(chk).closest('tr');
+                if(i == 0) {
+                    old_branch = parcels.to_branch_id = $(tr).attr('data-to-branch-id');
+                }
+                waybill.number = $(tr).attr('data-waybill');
+                waybill.final = TableHelper.getCellData('#next_dest', 5, $(tr).index());
+                parcels.waybills.push(waybill);
+                parcels.to_branch_id = $(tr).attr('data-to-branch-id');
+                parcels.to_branch_name = TableHelper.getCellData('#next_dest', 4, $(tr).index());
+
+                if(old_branch !== parcels.to_branch_id) {
+                    same_branch = false;
+                }
             }
         });
 
@@ -176,13 +191,49 @@ $(document).ready(function(){
             return;
         }
 
-        var dest_value = $('#branch_name').val();
-        if(dest_value == '') {
-
-            alert('Please select a ' + $('#hub_branch_label').html() + ' to proceed.');
+        if(!same_branch) {
+            alert('Manifest can only be generated for same next destination branch!');
             event.preventDefault();
             return;
         }
+
+        populateDialog(parcels);
+        $('#genManifest').modal('show');
+    });
+
+    function populateDialog(parcels) {
+
+        $('#dlg_location').val(parcels.to_branch_name);
+        var html = '';
+        $.each(parcels.waybills, function(i, waybill){
+            html += "<tr>";
+            html += "<td>" + (i+1) + "</td>";
+            html += "<td>" + waybill.number + "</td>";
+            html += "<td>" + waybill.final + "</td>";
+            html += "</tr>";
+        });
+        $('#tbl_manifest > tbody').html(html);
+    }
+
+    $('.chk_next').on('click', function(event){
+            /*var tr = $(this).closest('tr');
+             var rowIndex = $(tr).index();
+             var waybill = $(tr).attr('data-waybill');
+             var dest_value = $('#branch_name').val();
+             var destination = (dest_value !== '') ? $('#branch_name').find('option:selected').text() : '';
+             var curr = $(this).attr('value');
+             if(curr) {
+             if(curr === waybill) {
+             $(this).removeAttr('value');
+             TableHelper.setCellData('#next_dest', rowIndex, 4, '');
+             } else {
+             $(this).attr('value', waybill);
+             TableHelper.setCellData('#next_dest', rowIndex, 4, destination);
+             }
+             } else {
+             $(this).attr('value', waybill);
+             TableHelper.setCellData('#next_dest', rowIndex, 4, destination);
+             }*/
     });
 
     $('#branch_name').on('change', function(){

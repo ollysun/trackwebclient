@@ -10,7 +10,7 @@ $this->params['breadcrumbs'][] = 'Shipments';
 $show_next = false;
 $show_prev = false;
 
-if($offset == 0 || count($parcels) >= $page_width ){
+if(count($parcels) >= $page_width ){
     $show_next = true;
 }else{
     $show_next = false;
@@ -23,6 +23,13 @@ if($offset <= 0){
     $show_prev = true;
 }
 
+$link = "";
+if($search){
+	$fro = date('Y/m/d',strtotime($from_date));
+	$to = date('Y/m/d',strtotime($to_date));
+	$link = "&search=true&to=".urlencode($to)."&from=".urlencode($fro)."&page_width=".$page_width;
+	if(!is_null($filter)){$link.= '&date_filter='. $filter;}
+}
 ?>
 
 <!-- this page specific styles -->
@@ -39,7 +46,7 @@ if($offset <= 0){
 	<div class="main-box-header table-search-form ">
 		<div class="clearfix">
 			<div class="pull-left">
-				<?= $this->render('../elements/parcels_filter',['from_date'=>$from_date,'to_date'=>$to_date]) ?>
+				<?= $this->render('../elements/parcels_filter',['from_date'=>$from_date,'to_date'=>$to_date,'page_width'=>$page_width,'filter'=>$filter]) ?>
 			</div>
 			<div class="pull-right clearfix">
 
@@ -116,10 +123,10 @@ if($offset <= 0){
 			</table>
             <div class="pull-right form-group">
                 <?php if($show_prev): ?>
-                <a href="<?= Url::to(['site/parcels?offset='.($offset - $page_width)]) ?>" class="btn btn-primary btn-sm">Prev</a>
+                <a href="<?= Url::to(['site/parcels?offset='.($offset - $page_width).$link]) ?>" class="btn btn-primary btn-sm">Prev</a>
                 <?php endif;  ?>
                 <?php if($show_next): ?>
-                    <a href="<?= Url::to(['site/parcels?offset='.($offset + $page_width)]) ?>" class="btn btn-primary btn-sm">Next</a>
+                    <a href="<?= Url::to(['site/parcels?offset='.($offset + $page_width).$link]) ?>" class="btn btn-primary btn-sm">Next</a>
                 <?php endif;  ?>
             </div>
 		</div>
@@ -132,7 +139,7 @@ if($offset <= 0){
 <?php $this->registerJsFile('@web/js/libs/dataTables.fixedHeader.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/libs/dataTables.tableTools.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/libs/jquery.dataTables.bootstrap.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
-
+<?php $this->registerJsFile('@web/js/hub_util.js', ['depends' => [\app\assets\AppAsset::className()]])?>
 
 <script type="text/javascript">
 	/*$(document).ready(function() {

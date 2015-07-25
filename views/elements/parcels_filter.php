@@ -4,6 +4,7 @@ use yii\helpers\Html;
 <?= Html::cssFile('@web/css/libs/datepicker.css') ?>
 <?php
 use Adapter\Globals\ServiceConstant;
+if(!isset($filter)){$filter="-1";}
 ?>
     <form>
         <div class="clearfix">
@@ -24,10 +25,23 @@ use Adapter\Globals\ServiceConstant;
                     $statuses = ServiceConstant::getStatusRef();
                     for($i=0;$i < count($statuses);$i++){
                         ?>
-                        <option value="<?= $statuses[$i] ?>"><?= strtoupper(ServiceConstant::getStatus($statuses[$i])); ?></option>
+                        <option <?= $statuses[$i]==$filter?'selected':'' ?> value="<?= $statuses[$i] ?>"><?= strtoupper(ServiceConstant::getStatus($statuses[$i])); ?></option>
                     <?php
                     }
                     ?>
+                </select>
+            </div>
+            <div class="pull-left form-group form-group-sm">
+                <label for="">Records</label><br>
+                <select name="page_width" id="page_width" class="form-control ">
+                    <?php
+                    for($i = 50; $i <= 500; $i+=50){
+                        ?>
+                        <option <?= $page_width==$i?'selected':'' ?> value="<?= $i ?>"><?= $i ?></option>
+                        <?php
+                    }
+                    ?>
+
                 </select>
             </div>
             <div class="pull-left">
