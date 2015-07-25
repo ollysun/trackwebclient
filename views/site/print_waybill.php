@@ -7,7 +7,7 @@ foreach($copies as $copy) {*/
     ?>
     <div class="row">
     <div class="copy">
-        <?= $copy; ?>
+        Sender's Copy
     </div>
     <div class="waybill-image">
         <!-- drop waybill image here, remove div below -->
