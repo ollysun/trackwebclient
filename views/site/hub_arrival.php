@@ -113,17 +113,25 @@ $this->params['breadcrumbs'] = array(
 	      <div class="modal-body">
 
 				<form class="">
-					<div class="form-group" style="width: 300px;">
-						<label>Staff ID</label>
-						<div class="input-group">
-							<input id="staff_no" value="98765" class="form-control">
-							<div class="input-group-btn">
-								<button type="button" id="get_arrival" class="btn btn-default">Load</button>
+					<div class="row">
+						<div class="col-xs-6">
+							<div class="form-group">
+								<label>Staff ID</label>
+								<div class="input-group">
+									<input id="staff_no" value="98765" class="form-control">
+									<div class="input-group-btn">
+										<button type="button" id="get_arrival" class="btn btn-default">Load</button>
+									</div>
+								</div>
+								<div class="input-group">
+									<label id="loading_label"></label>
+								</div>
 							</div>
 						</div>
-                        <div class="input-group">
-                            <label id="loading_label"></label>
-                        </div>
+						<div class="col-xs-6">
+							<label>&nbsp;</label><br>
+							<div class="form-control-static"><strong>Olawale Oladayo</strong></div>
+						</div>
 					</div>
 				</form>
 
