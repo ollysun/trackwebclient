@@ -31,7 +31,6 @@ class ParcelAdapter extends BaseAdapter{
         $filter = ($type != null ? '&status='.$type:'');
         $filter .= ($branch_id == null ? '':'&branch_id='.$branch_id);
         return $this->request(ServiceConstant::URL_GET_ALL_PARCEL.'?with_to_branch=1&with_sender_address=1&with_receiver_address=1&offset='.$offset.'&count='.$count.$filter,array(),self::HTTP_GET);
-
     }
     public function getSearchParcels($status,$waybill_number,$offset=0, $count=50){
         $parcel_status = $status == '-1'?'': '&status='.$status;
@@ -50,6 +49,12 @@ class ParcelAdapter extends BaseAdapter{
         $filter = '&start_created_date='.$start_created_date;
         return $this->request(ServiceConstant::URL_GET_ALL_PARCEL.'?with_sender=1&with_receiver=1&with_receiver_address=1&offset='.$offset.'&count='.$count.$filter,array(),self::HTTP_GET);
     }
+
+    public function getDispatchedParcels($branch_id){
+        $filter = "?branch_id={$branch_id}&with_to_branch=1&with_from_branch=1&with_holder=1";
+        return $this->request(ServiceConstant::URL_GET_ALL_PARCEL.$filter, array(), self::HTTP_POST);
+    }
+
 
     public function moveToForSweeper($postData) {
         return $this->request(ServiceConstant::URL_MOVE_TO_FOR_SWEEPER, $postData, self::HTTP_POST);

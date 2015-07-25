@@ -1,4 +1,5 @@
 <?php
+use Adapter\Util\Calypso;
 use yii\helpers\Html;
 use yii\helpers\Url;
 
@@ -40,14 +41,21 @@ $this->params['breadcrumbs'] = array(
 			<div class="pull-right clearfix">
 				<form class="table-search-form form-inline clearfix">
 					<div class="pull-left form-group">
-						<label for="searchInput">Filter next location</label><br>
-						<select class="form-control input-sm">
-							<option>Ibadan</option>
-							<option>Lagos</option>
-							<option>Kaduna</option>
+						<label for="">Filter by Hub</label><br>
+						<select class="form-control input-sm" id="filter_hub_id" name="filter_hub_id">
+							<option value="">All Express Centres</option>
+							<?php
+							if (isset($hubs) && is_array(($hubs))):
+								foreach ($hubs as $hub) {
+									?>
+									<option
+										value="<?= $hub['id']; ?>" <?= ($hub['id'] == $filter_hub_id) ? 'selected' : ''; ?>><?= ucwords($hub['name']) . " (" . strtoupper($hub['code']) . ")"; ?></option>
+								<?php }
+							endif
+							?>
 						</select>
 					</div>
-            </form>
+            	</form>
 			</div>
 		</div>
 	</div>
@@ -66,29 +74,21 @@ $this->params['breadcrumbs'] = array(
 					</tr>
 				</thead>
 				<tbody>
-					<tr>
-						<td>1</td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td>
-							<div class="checkbox-nice">
-								<input id="checkbox" type="checkbox"><label for="checkbox"></label>
-							</div>
-						</td>
+				<?php
+				if(isset($parcels)) {
+				$row = 1;
+				foreach ($parcels as $parcel) {
+					?>
+					<tr data-waybill='<?=$parcel['waybill_number']?>'>
+						<td><?=$row++;?></td>
+						<td><?=$parcel['waybill_number'];?></td>
+						<td><?=ucwords($parcel['from_branch']['name']);?></td>
+						<td><?=ucwords($parcel['to_branch']['name']);?></td>
+						<td><?=$parcel['weight'];?> KG</td>
+						<td><?=ucwords($parcel['holder']['fullname']);?></td>
+						<td><a href="<?= Url::to(['site/viewwaybill?id='.$parcel['id']]) ?>" class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
 					</tr>
-					<tr>
-						<td>2</td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-
+					<?php } } ?>
 				</tbody>
 			</table>
 		</div>
