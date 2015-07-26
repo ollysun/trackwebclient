@@ -1,3 +1,17 @@
+function getServerResponse (statusCode,message){
+	alert(message);
+	switch(statusCode){
+		case '0':
+			// Handle error here
+			window.location.href = message;
+			break;
+		default :
+			//Navigate here
+			alert(message);
+			break;
+
+	}
+}
 (function($){
 //Initialize the carousel
 
