@@ -27,10 +27,11 @@ class ParcelAdapter extends BaseAdapter{
 
     }
 
-    public function getParcelsForNextDestination($type=null,$branch_id=null, $to_branch_id=null, $offset=0, $count=50){
+    public function getParcelsForNextDestination($type=null,$branch_id=null, $to_branch_id=null, $held_by_id=null, $offset=0, $count=50){
         $filter = ($type != null ? '&status='.$type:'');
         $filter .= ($branch_id == null ? '':'&branch_id='.$branch_id);
         $filter .= ($to_branch_id == null ? '':'&to_branch_id='.$to_branch_id);
+        $filter .= ($held_by_id == null ? '':'&held_by_id='.$held_by_id);
         return $this->request(ServiceConstant::URL_GET_ALL_PARCEL.'?with_to_branch=1&with_sender_address=1&with_receiver_address=1&offset='.$offset.'&count='.$count.$filter,array(),self::HTTP_GET);
 
     }
@@ -54,5 +55,9 @@ class ParcelAdapter extends BaseAdapter{
 
     public function moveToForSweeper($postData) {
         return $this->request(ServiceConstant::URL_MOVE_TO_FOR_SWEEPER, $postData, self::HTTP_POST);
+    }
+
+    public function generateManifest($postData) {
+        return $this->request(ServiceConstant::URL_MOVE_TO_IN_TRANSIT, $postData, self::HTTP_POST);
     }
 }

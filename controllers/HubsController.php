@@ -9,6 +9,7 @@
 namespace app\controllers;
 
 
+use Adapter\AdminAdapter;
 use Adapter\BranchAdapter;
 use Adapter\Globals\ServiceConstant;
 use Adapter\ParcelAdapter;
@@ -16,6 +17,8 @@ use Adapter\RefAdapter;
 use Adapter\RequestHelper;
 use Adapter\ResponseHandler;
 use Adapter\Util\Calypso;
+use app\services\HubService;
+use app\services\ParcelService;
 
 class HubsController extends BaseController {
 
@@ -102,10 +105,54 @@ class HubsController extends BaseController {
         }
     }
 
+    /**
+     * Ajax calls to get Branch details
+     */
+    public function actionStaffdetails(){
+        $code = \Yii::$app->request->get('code');
+        if(!isset($code)) {
+            return $this->sendErrorResponse("Invalid parameter(s) sent!", null);
+        }
+        $adminData = new AdminAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+        $staff = $adminData->getStaff($code);
+        if ($staff['status'] === ResponseHandler::STATUS_OK) {
+            return $this->sendSuccessResponse($staff['data']);
+        } else {
+            return $this->sendErrorResponse($staff['message'], null);
+        }
+    }
+
+    /**
+     * Ajax calls to get Branch details
+     */
+    public function actionGeneratemanifest(){
+
+    }
+
     public function actionDelivery()
     {
         //Move to In Transit (waybill_numbers, to_branch_id.
         //and staff_id (not the code)
+        if(\Yii::$app->request->isPost) {
+            $rawData = \Yii::$app->request->post('payload');
+            $data = json_decode($rawData, true);
+            $service = new HubService();
+            $payloadData = $service->buildPostData($data);
+            if(!isset($payloadData['waybill_numbers'], $payloadData['to_branch_id'], $payloadData['held_by_id'])) {
+                $this->flashError("Invalid parameter(s) sent!");
+            } else {
+                $parcelData = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+                $response = $parcelData->generateManifest($payloadData);
+                if ($response['status'] === ResponseHandler::STATUS_OK) {
+                    //Forward to manifest page
+                    return $this->viewManifest($payloadData);
+                    //return \Yii::$app->runAction('hubs/manifest', $payloadData);
+                } else {
+                    //Flash error message
+                    $this->flashError($response['message']);
+                }
+            }
+        }
         $viewData = [];
         $to_branch_id = \Yii::$app->request->get('bid');
         $btype = \Yii::$app->request->get('btype');
@@ -125,5 +172,29 @@ class HubsController extends BaseController {
             $viewData['parcel_delivery'] = [];
         }
         return $this->render('delivery', $viewData);
+    }
+
+    public function viewManifest($data) {
+
+        $user_session = Calypso::getInstance()->session("user_session");
+        $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+        $in_transit_parcels = $parcelsAdapter->getParcelsForNextDestination(ServiceConstant::IN_TRANSIT, $user_session['branch_id'], $data['to_branch_id'], $data['held_by_id']);
+        if($in_transit_parcels['status'] === ResponseHandler::STATUS_OK) {
+            $viewData['parcel_delivery'] = $in_transit_parcels['data'];
+
+            $adminData = new AdminAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+            $staff = $adminData->getStaff($data['staff_code']);
+            if ($staff['status'] === ResponseHandler::STATUS_OK) {
+                $viewData['staff'] = $staff['data'];
+            } else {
+                $viewData['staff'] = [];
+            }
+
+        } else {
+            $this->flashError('An error occured while trying to fetch parcels. Please try again.');
+            $viewData['parcel_delivery'] = [];
+        }
+
+        return $this->render('manifest', $viewData);
     }
 }
