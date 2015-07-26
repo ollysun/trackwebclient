@@ -415,7 +415,7 @@ class SiteController extends BaseController
 
     public function actionManagebranches()
     {
-        if(Yii::$app->request->isPost && empty(Calypso::getValue(Yii::$app->request->post(), 'task'))){
+        if(Yii::$app->request->isPost){
             $entry = Yii::$app->request->post();
             $error = [];
 
@@ -427,7 +427,9 @@ class SiteController extends BaseController
             $hub_data['status'] =  Calypso::getValue($entry, 'status');
             $hub_data['branch_id'] = Calypso::getValue($entry, 'id', null);
 
-            if (empty($hub_data['name']) || empty($hub_data['address'])) {
+            $task =  Calypso::getValue(Yii::$app->request->post(), 'task');
+
+            if(($task == 'create' || $task == 'edit') && (empty($hub_data['name']) || empty($hub_data['address']))) {
                 $error[] = "All details are required!";
             }
             if(!empty($error)) {
@@ -436,7 +438,7 @@ class SiteController extends BaseController
             }
             else {
                 $hub = new BranchAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-                if(empty($hub_data['branch_id'])){
+                if($task == 'create'){
                     $response = $hub->createNewHub($hub_data);
                     if ($response['status'] === Response::STATUS_OK) {
                         Yii::$app->session->setFlash('success', 'Hub has been created successfully.');
@@ -445,7 +447,7 @@ class SiteController extends BaseController
                     }
                 }
                 else{
-                    $response = $hub->editOneHub($hub_data);
+                    $response = $hub->editOneHub($hub_data, $task);
                     if ($response['status'] === Response::STATUS_OK) {
                         Yii::$app->session->setFlash('success', 'Hub has been edited successfully.');
                     } else {
@@ -459,19 +461,20 @@ class SiteController extends BaseController
         $states = $refAdp->getStates(1); // Hardcoded Nigeria for now
         $states = new ResponseHandler($states);
 
-        $state_id = Calypso::getValue(Yii::$app->request->post(), 'state_id',null);
+        $filter_state_id = Calypso::getValue(Yii::$app->request->post(), 'filter_state_id',null);
         $hubAdp = new BranchAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
-        $hubs = $hubAdp->getHubs($state_id);
+        $hubs = $hubAdp->getHubs($filter_state_id);
         $hubs = new ResponseHandler($hubs);
 
         $state_list = $states->getStatus()==ResponseHandler::STATUS_OK?$states->getData(): [];
         $hub_list = $hubs->getStatus()==ResponseHandler::STATUS_OK?$hubs->getData(): [];
-        return $this->render('managehubs',array('States'=>$state_list, 'state_id'=>$state_id, 'hubs'=>$hub_list));
+        return $this->render('managehubs',array('States'=>$state_list, 'filter_state_id'=>$filter_state_id, 'hubs'=>$hub_list));
     }
     public function actionManageecs()
     {
         if(Yii::$app->request->isPost){
             $entry = Yii::$app->request->post();
+            $task =  Calypso::getValue(Yii::$app->request->post(), 'task','');
             $error = [];
 
             $data = [];
@@ -481,8 +484,10 @@ class SiteController extends BaseController
             $data['status'] =  Calypso::getValue($entry, 'status');
             $data['hub_id'] = Calypso::getValue($entry, 'hub_id', null);
             $data['branch_id'] = Calypso::getValue($entry, 'id', null);
+            $data['ec_id'] = Calypso::getValue($entry, 'id', null);
+            $data['state_id'] = Calypso::getValue($entry, 'state_id', null);
 
-            if (empty($data['name']) || empty($data['address']) || empty($data['hub_id'])) {
+            if(($task == 'create' || $task == 'edit') && (empty($data['name']) || empty($data['address']))) {
                 $error[] = "All details are required!";
             }
             if(!empty($error)) {
@@ -491,20 +496,20 @@ class SiteController extends BaseController
             }
             else {
                 $center = new BranchAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-                if(empty($data['branch_id'])){
+                if($task == 'create'){
                     $response = $center->createNewCentre($data);
                     if ($response['status'] === Response::STATUS_OK) {
                         Yii::$app->session->setFlash('success', 'Centre has been created successfully.');
                     } else {
-                        Yii::$app->session->setFlash('danger', 'There was a problem creating the centre. Please try again.'.$response['message']);
+                        Yii::$app->session->setFlash('danger', 'There was a problem creating the centre. Please try again.');
                     }
                 }
                 else{
-                    $response = $center->editOneCentre($data);
+                    $response = $center->editOneCentre($data, $task);
                     if ($response['status'] === Response::STATUS_OK) {
-                        Yii::$app->session->setFlash('success', 'Hub has been edited successfully.');
+                        Yii::$app->session->setFlash('success', 'Centre has been edited successfully.');
                     } else {
-                        Yii::$app->session->setFlash('danger', 'There was a problem editing the hub. Please try again.'.$response['message']);
+                        Yii::$app->session->setFlash('danger', 'There was a problem editing the hub. Please try again.');
                     }
                 }
             }
@@ -518,18 +523,16 @@ class SiteController extends BaseController
         $hubs = $hubAdp->getHubs();
         $hubs = new ResponseHandler($hubs);
 
-        $hub_id = 2;
-        if(Yii::$app->request->isPost)
-            $hub_id = Calypso::getValue(Yii::$app->request->post(), 'hub_id',2);
+        $filter_hub_id = Calypso::getValue(Yii::$app->request->post(), 'filter_hub_id', null);
 
         $hubAdp = new BranchAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
-        $centres = $hubAdp->getCentres($hub_id);
+        $centres = $hubAdp->getCentres($filter_hub_id);
         $centres = new ResponseHandler($centres);
 
         $state_list = $states->getStatus()==ResponseHandler::STATUS_OK?$states->getData(): [];
         $hub_list = $hubs->getStatus()==ResponseHandler::STATUS_OK?$hubs->getData(): [];
         $centres_list = $centres->getStatus()==ResponseHandler::STATUS_OK?$centres->getData(): [];
-        return $this->render('manageecs',array('States'=>$state_list, 'hubs'=>$hub_list, 'centres'=>$centres_list, 'hub_id'=>$hub_id));
+        return $this->render('manageecs',array('States'=>$state_list, 'hubs'=>$hub_list, 'centres'=>$centres_list, 'filter_hub_id'=>$filter_hub_id));
     }
     /**
      * Ajax calls to get Branch details
@@ -579,20 +582,7 @@ class SiteController extends BaseController
         $roles = new ResponseHandler($roles);
         $state_list = $states->getStatus()==ResponseHandler::STATUS_OK?$states->getData(): [];
         $role_list =  $roles->getStatus()==ResponseHandler::STATUS_OK?$roles->getData(): [];
-
-        $staffMembers = [];
-        $staffAdp = new AdminAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
-        if(isset(Calypso::getInstance()->get()->search) && strlen(Calypso::getInstance()->get()->search) > 0){
-            $is_email = !(filter_var(Calypso::getInstance()->get()->search,FILTER_VALIDATE_EMAIL) === false);
-            $staff_data = $staffAdp->searchStaffMembers(Calypso::getInstance()->get()->search,$is_email,$offset,$this->page_width);
-        }else {
-            $staff_data = $staffAdp->getStaffMembers($offset, $this->page_width, $role);
-        }
-        $resp = new ResponseHandler($staff_data);
-        $staffMembers = $resp->getData();
-
-
-        return $this->render('managestaff',['states' => $state_list,'roles'=> $role_list,'staffMembers' => $staffMembers,'offset'=>$offset,'role'=>$role,'page_width'=>$this->page_width]);
+        return $this->render('managestaff',['states' => $state_list,'roles'=> $role_list]);
     }
     public function actionHubarrival()
     {
@@ -688,10 +678,25 @@ class SiteController extends BaseController
             return $this->sendErrorResponse($allEcsInHubs['message'], null);
         }
     }
-
+    //@TODO: Implement the display of the content
     public function actionHubdispatch()
     {
-        return $this->render('hub_dispatch');
+        $data = Yii::$app->request->post();
+        $sweeper_id = Calypso::getValue($data, 'sweeper_id', null);
+        $from_branch_id = Calypso::getValue($data, 'from_branch_id', null);
+        $user_session = Calypso::getInstance()->session("user_session");
+
+        $hubAdp = new BranchAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+        $hubs = $hubAdp->getHubs();
+        $hubs = new ResponseHandler($hubs);
+        $hub_list = $hubs->getStatus()==ResponseHandler::STATUS_OK?$hubs->getData(): [];
+
+        $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+        $dispatch_parcels = $parcelsAdapter->getDispatchedParcels($user_session['branch_id']);
+        $parcels = new ResponseHandler($dispatch_parcels);
+        $parcel_list = $parcels->getStatus()==ResponseHandler::STATUS_OK?$parcels->getData(): [];
+
+        return $this->render('hub_dispatch', array('sweeper'=>[], 'hubs'=>$hub_list,'parcels'=>$parcel_list, 'filter_hub_id'=>$from_branch_id));
     }
     public function actionZones()
     {
