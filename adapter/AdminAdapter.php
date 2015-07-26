@@ -22,6 +22,9 @@ class AdminAdapter extends BaseAdapter{
         $role_filter = $is_email?'&email='.$key:'&staff_id='.$key;
         return  $this->request(ServiceConstant::URL_GET_USERS.'&offset='.$offset.'&count='.$count.$role_filter, [], self::HTTP_GET);
     }
+    public function getStaffByStaffID($staff_id){
+        return $this->request(ServiceConstant::URL_GET_STAFF_BY_ID,['staff_id'=>$staff_id],self::HTTP_GET);
+    }
 
     public function getStaff($staff_code) {
         return  $this->request(ServiceConstant::URL_GET_USER.'&staff_id='.$staff_code, [], self::HTTP_GET);
