@@ -29,6 +29,7 @@ class ServiceConstant {
     const URL_GET_ONE_PARCEL = 'parcel/getone/';
     const URL_GET_ALL_PARCEL = 'parcel/getAll/';
     const URL_MOVE_TO_FOR_SWEEPER = '/parcel/moveToForSweeper/';
+    const URL_MOVE_TO_IN_TRANSIT = '/parcel/moveToInTransit/';
     const URL_MOVE_TO_ARRIVAL = '/parcel/moveToArrival/';
 
     const URL_GET_ALL_BANKS = 'bank/getAll/';
@@ -66,6 +67,8 @@ class ServiceConstant {
 
     const URL_CREATE_USER = 'admin/register';
     const URL_GET_USERS = '/admin/getAll';
+    const URL_GET_USER = '/admin/getone';
+
     const URL_GET_STAFF_BY_ID = '/admin/getOne';
     public static function getStatus($status){
         switch($status){

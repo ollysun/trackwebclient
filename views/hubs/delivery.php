@@ -112,7 +112,7 @@ $this->params['breadcrumbs'] = array(
 <!-- Modal -->
 <div class="modal fade" id="genManifest" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
-        <form class="">
+        <form method="post" action="delivery">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -120,6 +120,7 @@ $this->params['breadcrumbs'] = array(
                 </div>
                 <div class="modal-body">
                     <div class="row">
+                        <input type="hidden" id="payload" name="payload" />
                         <div class="col-xs-6">
                             <div class="form-group">
                                 <label for="dlg_location">Location</label>
@@ -129,21 +130,32 @@ $this->params['breadcrumbs'] = array(
                         <div class="col-xs-6">
                             <div class="form-group">
                                 <label>Staff ID</label>
-                                <input class="form-control" id="staff_id">
+                                <input class="form-control" id="staff">
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-xs-6">
-                            <label>Staff Name</label>
-                            <p id="staff_name">Staff Name</p>
-                        </div>
-                        <div class="col-xs-6">
-                            <label>Role</label>
-                            <p id="staff_role">Role</p>
+                    <div id="staff_info" style="display: none;">
+                        <hr />
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <label>Staff Name</label>
+                                <p id="staff_name">Staff Name</p>
+                            </div>
+                            <div class="col-xs-6">
+                                <label>Email</label>
+                                <p id="staff_email">Role</p>
+                            </div>
+                            <div class="col-xs-6">
+                                <label>Phone Number</label>
+                                <p id="staff_phone">Staff Name</p>
+                            </div>
+                            <div class="col-xs-6">
+                                <label>Role</label>
+                                <p id="staff_role">Role</p>
+                            </div>
                         </div>
                     </div>
-                    <br>
+                    <hr />
                     <table class="table table-bordered table-condensed" id="tbl_manifest">
                         <thead>
                         <tr>
@@ -152,28 +164,12 @@ $this->params['breadcrumbs'] = array(
                             <th>Final Destination</th>
                         </tr>
                         </thead>
-                        <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        </tbody>
+                        <tbody></tbody>
                     </table>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Generate</button>
+                    <button type="submit" class="btn btn-primary" id="btnGenerate">Generate</button>
                 </div>
             </div>
         </form>

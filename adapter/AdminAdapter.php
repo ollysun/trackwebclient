@@ -25,4 +25,8 @@ class AdminAdapter extends BaseAdapter{
     public function getStaffByStaffID($staff_id){
         return $this->request(ServiceConstant::URL_GET_STAFF_BY_ID,['staff_id'=>$staff_id],self::HTTP_GET);
     }
+
+    public function getStaff($staff_code) {
+        return  $this->request(ServiceConstant::URL_GET_USER.'&staff_id='.$staff_code, [], self::HTTP_GET);
+    }
 }
