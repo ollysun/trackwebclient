@@ -2059,15 +2059,23 @@ blockquote.pull-right:before {
 /* BREADCRUMBS */
 .breadcrumb {
   background: none;
-  margin-bottom: 0;
+  margin-bottom: 5px;
   padding-top: 0;
   padding-bottom: 0;
+}
+.breadcrumb:before,
+.breadcrumb:after {
+  content: "";
+  display: table;
+}
+.breadcrumb:after {
+  clear: both;
 }
 .breadcrumb > li {
   text-transform: uppercase;
   color: #616161;
-  margin-left: 8px;
   font-size: 0.875em;
+  float: left;
 }
 .breadcrumb > li span {
   padding-left: 8px;
@@ -2076,17 +2084,16 @@ blockquote.pull-right:before {
   color: #616161;
 }
 .breadcrumb > li + li:before {
+  padding: 0 10px;
   color: #616161;
   font-family: FontAwesome;
   content: "\f105";
+  font-weight: 400;
 }
 .breadcrumb > .active {
   font-weight: 600;
   text-transform: none;
   color: #616161;
-}
-.breadcrumb > li:first-child {
-  margin-left: 0;
 }
 /* DROPDOWN OPEN EFFECT */
 .open > .dropdown-menu {
