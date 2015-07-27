@@ -6,7 +6,11 @@ namespace app\controllers;
 class BillingController extends BaseController {
 	public function actionIndex() {
 		//redirect to the appropriate 'default' page
-		return $this->redirect('billing/weightranges');
+		return $this->redirect('billing/matrix');
+	}
+	public function actionMatrix()
+	{
+		return $this->render('matrix');
 	}
 	public function actionZones()
 	{

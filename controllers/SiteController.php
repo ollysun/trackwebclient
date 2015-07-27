@@ -698,10 +698,6 @@ class SiteController extends BaseController
 
         return $this->render('hub_dispatch', array('sweeper'=>[], 'hubs'=>$hub_list,'parcels'=>$parcel_list, 'filter_hub_id'=>$from_branch_id));
     }
-    public function actionBillingmatrix()
-    {
-        return $this->render('billing_matrix');
-    }
     public function actionCustomerhistory()
     {
         return $this->render('customer_history');

@@ -64,6 +64,9 @@ use yii\helpers\Url;
 								<a href="<?= Url::to(['site/billings']) ?>" class="dropdown-toggle">Billing <i class="fa fa-angle-right drop-icon"></i></a>
 								<ul class="submenu">
 									<li>
+										<a href="<?= Url::to(['billing/matrix']) ?>">View Matrix</a>
+									</li>
+									<li>
 										<a href="<?= Url::to(['billing/zones']) ?>">Zones</a>
 									</li>
 									<li>
@@ -86,9 +89,6 @@ use yii\helpers\Url;
 									</li>
 									<li>
 										<a href="<?= Url::to(['billing/onforwarding']) ?>">Onforwarding Charges</a>
-									</li>
-									<li>
-										<a href="<?= Url::to(['site/billingmatrix']) ?>">View Matrix</a>
 									</li>
 								</ul>
 							</li>
