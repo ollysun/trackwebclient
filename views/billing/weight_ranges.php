@@ -3,18 +3,19 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 
 /* @var $this yii\web\View */
-$this->title = 'Manage Regions';
+$this->title = 'Weight Ranges';
 $this->params['breadcrumbs'] = array(
-	array('label'=> 'Regions')
+	array(
+		'label' => 'Billing',
+		'url' => ['billing/']
+	),
+	array('label'=> 'Weight Ranges')
 );
 ?>
 
-<!-- this page specific styles -->
-<?= Html::cssFile('@web/css/libs/dataTables.fixedHeader.css') ?>
-<?= Html::cssFile('@web/css/libs/dataTables.tableTools.css') ?>
 
 <?php
-	$this->params['content_header_button'] = '<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i> Add a Region</button>';
+	$this->params['content_header_button'] = '<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i> Add a Weight Range</button>';
 ?>
 
 <div class="main-box">
@@ -22,18 +23,20 @@ $this->params['breadcrumbs'] = array(
 	</div>
 	<div class="main-box-body">
 		<div class="table-responsive">
-			<table id="table" class="table table-hover ">
+			<table id="table" class="table table-hover">
 				<thead>
 					<tr>
 						<th style="width: 20px">S/N</th>
-						<th>Name</th>
-						<th>Description</th>
+						<th>Minimum Weight (Kg)</th>
+						<th>Incremental Weight (Kg)</th>
+						<th>Maximum Weight (Kg)</th>
 						<th>Action</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr>
 						<td>1</td>
+						<td></td>
 						<td></td>
 						<td></td>
 						<td><button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#editModal"><i class="fa fa-edit"></i> Edit</button></td>
@@ -43,8 +46,15 @@ $this->params['breadcrumbs'] = array(
 						<td></td>
 						<td></td>
 						<td></td>
+						<td></td>
 					</tr>
-
+					<tr>
+						<td>3</td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
 				</tbody>
 			</table>
 		</div>
@@ -52,42 +62,47 @@ $this->params['breadcrumbs'] = array(
 </div>
 
 
-<!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
 	  	<form class="">
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	        <h4 class="modal-title" id="myModalLabel">Add a New Region</h4>
+	        <h4 class="modal-title" id="myModalLabel">Add a Weight Range</h4>
 	      </div>
 	      <div class="modal-body">
-				<div class="form-group">
-					<label>Name</label>
-					<input class="form-control">
+				<div class="form-group row">
+					<div class="col-xs-4">
+						<label for="">Min Weight</label>
+						<div class="input-group">
+							<input type="text" class="form-control">
+							<span class="input-group-addon">Kg</span>
+						</div>
+					</div>
+					<div class="col-xs-4">
+						<label for="">Incremental Weight</label>
+						<div class="input-group">
+							<input type="text" class="form-control">
+							<span class="input-group-addon">Kg</span>
+						</div>
+					</div>
+					<div class="col-xs-4">
+						<label for="">Max Weight</label>
+						<div class="input-group">
+							<input type="text" class="form-control">
+							<span class="input-group-addon">Kg</span>
+						</div>
+					</div>
 				</div>
-				<div class="form-group">
-					<label>Description</label>
-					<textarea class="form-control"></textarea>
-				</div>
-				<div class="form-group">
-					<label for="">Activate Region?</label>
-					<select name="" id="" class="form-control">
-						<option value="">Yes</option>
-						<option value="">No</option>
-					</select>
-				</div>
-
 	      </div>
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-	        <button type="button" class="btn btn-primary">Add Region</button>
+	        <button type="button" class="btn btn-primary">Add Weight Range</button>
 	      </div>
 	    </div>
 	  	</form>
   </div>
 </div>
-
 
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
@@ -95,23 +110,22 @@ $this->params['breadcrumbs'] = array(
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	        <h4 class="modal-title" id="myModalLabel">Edit a Region</h4>
+	        <h4 class="modal-title" id="myModalLabel">Edit Weight Range</h4>
 	      </div>
 	      <div class="modal-body">
-				<div class="form-group">
-					<label>Name</label>
-					<input class="form-control">
-				</div>
-				<div class="form-group">
-					<label>Description</label>
-					<textarea class="form-control"></textarea>
-				</div>
-				<div class="form-group">
-					<label for="">Status</label>
-					<select name="" id="" class="form-control">
-						<option value="">Active</option>
-						<option value="">Inactive</option>
-					</select>
+				<div class="form-group row">
+					<div class="col-xs-4">
+						<label for="">Min Weight</label>
+						<input type="text" class="form-control">
+					</div>
+					<div class="col-xs-4">
+						<label for="">Incremental Weight</label>
+						<input type="text" class="form-control">
+					</div>
+					<div class="col-xs-4">
+						<label for="">Max Weight</label>
+						<input type="text" class="form-control">
+					</div>
 				</div>
 	      </div>
 	      <div class="modal-footer">

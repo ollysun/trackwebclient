@@ -67,13 +67,16 @@ use yii\helpers\Url;
 										<a href="<?= Url::to(['site/zones']) ?>">Zones</a>
 									</li>
 									<li>
-										<a href="<?= Url::to(['site/regions']) ?>">Regions</a>
+										<a href="<?= Url::to(['billing/regions']) ?>">Regions</a>
 									</li>
 									<li>
 										<a href="<?= Url::to(['site/statemapping']) ?>">State - Region Mapping</a>
 									</li>
 									<li>
 										<a href="<?= Url::to(['site/citymapping']) ?>">City - State Mapping</a>
+									</li>
+									<li>
+										<a href="<?= Url::to(['billing/weightranges']) ?>">Weight Ranges</a>
 									</li>
 									<li>
 										<a href="<?= Url::to(['site/billingpricing']) ?>">Billing Pricing</a>
