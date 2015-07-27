@@ -79,7 +79,7 @@ use yii\helpers\Url;
 										<a href="<?= Url::to(['billing/weightranges']) ?>">Weight Ranges</a>
 									</li>
 									<li>
-										<a href="<?= Url::to(['site/billingpricing']) ?>">Billing Pricing</a>
+										<a href="<?= Url::to(['billing/pricing']) ?>">Pricing</a>
 									</li>
 									<li>
 										<a href="<?= Url::to(['site/billingexceptions']) ?>">Exceptions</a>

@@ -26,4 +26,8 @@ class BillingController extends BaseController {
 	public function actionWeightranges() {
 		 return $this->render('weight_ranges');
 	}
+	public function actionPricing()
+	{
+		return $this->render('pricing');
+	}
 }
