@@ -702,10 +702,6 @@ class SiteController extends BaseController
     {
         return $this->render('billing_matrix');
     }
-    public function actionBillingonforwarding()
-    {
-        return $this->render('billing_onforwarding');
-    }
     public function actionCustomerhistory()
     {
         return $this->render('customer_history');
