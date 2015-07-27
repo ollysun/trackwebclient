@@ -26,6 +26,7 @@ $this->params['breadcrumbs'] = array(
 				<thead>
 					<tr>
 						<th style="width: 20px">S/N</th>
+						<th>Code</th>
 						<th>Name</th>
 						<th>Type</th>
 						<th>Action</th>
@@ -34,27 +35,38 @@ $this->params['breadcrumbs'] = array(
 				<tbody>
 					<tr>
 						<td>1</td>
-						<td>Zone A</td>
+						<td>D</td>
 						<td>Direct Express</td>
-						<td><button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#editModal"><i class="fa fa-edit"></i> Edit Name</button></td>
+						<td>Direct Express</td>
+						<td><button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#editModal"><i class="fa fa-edit"></i> Edit</button></td>
 					</tr>
 					<tr>
 						<td>2</td>
-						<td>Zone B</td>
+						<td>CE</td>
 						<td>City Express</td>
-						<td><button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#editModal"><i class="fa fa-edit"></i> Edit Name</button></td>
+						<td>City Express</td>
+						<td><button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#editModal"><i class="fa fa-edit"></i> Edit</button></td>
 					</tr>
 					<tr>
 						<td>3</td>
-						<td>Zone C</td>
+						<td>IA</td>
 						<td>Inter Area Delivery</td>
-						<td><button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#editModal"><i class="fa fa-edit"></i> Edit Name</button></td>
+						<td>Inter Area Delivery</td>
+						<td><button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#editModal"><i class="fa fa-edit"></i> Edit</button></td>
 					</tr>
 					<tr>
 						<td>4</td>
-						<td>Zone D</td>
+						<td>NW</td>
 						<td>Nationwide Express</td>
-						<td><button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#editModal"><i class="fa fa-edit"></i> Edit Name</button></td>
+						<td>Nationwide Express</td>
+						<td><button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#editModal"><i class="fa fa-edit"></i> Edit</button></td>
+					</tr>
+					<tr>
+						<td>5</td>
+						<td>Z5</td>
+						<td>New zone</td>
+						<td>Custom</td>
+						<td><button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#editModal"><i class="fa fa-edit"></i> Edit</button></td>
 					</tr>
 				</tbody>
 			</table>
@@ -74,6 +86,14 @@ $this->params['breadcrumbs'] = array(
 				<div class="form-group">
 					<label for="">Name</label>
 					<input type="text" class="form-control">
+				</div>
+				<div class="form-group">
+					<label for="">Code</label>
+					<input type="text" class="form-control">
+				</div>
+				<div class="form-group">
+					<label for="">Description</label>
+					<textarea class="form-control"></textarea>
 				</div>
 				<div class="form-group">
 					<label for="">Type</label>
@@ -97,12 +117,26 @@ $this->params['breadcrumbs'] = array(
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	        <h4 class="modal-title" id="myModalLabel">Edit Zone Name</h4>
+	        <h4 class="modal-title" id="myModalLabel">Edit Zone</h4>
 	      </div>
 	      <div class="modal-body">
 				<div class="form-group">
 					<label for="">Name</label>
 					<input type="text" class="form-control">
+				</div>
+				<div class="form-group">
+					<label for="">Code</label>
+					<input type="text" class="form-control">
+				</div>
+				<div class="form-group">
+					<label for="">Description</label>
+					<textarea class="form-control"></textarea>
+				</div>
+				<div class="form-group">
+					<label for="">Type</label>
+					<select class="form-control" disabled="disabled">
+						<option></option>
+					</select>
 				</div>
 	      </div>
 	      <div class="modal-footer">
