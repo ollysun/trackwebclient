@@ -3,9 +3,13 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 
 /* @var $this yii\web\View */
-$this->title = 'Billing: Onforwarding Charges';
+$this->title = 'Billing: Exceptions';
 $this->params['breadcrumbs'] = array(
-	array('label'=> 'Onforwarding Charges')
+	array(
+		'label' => 'Billing',
+		'url' => ['billing/']
+	),
+	array('label'=> 'Exceptions')
 );
 ?>
 
@@ -14,7 +18,7 @@ $this->params['breadcrumbs'] = array(
 <?= Html::cssFile('@web/css/libs/dataTables.tableTools.css') ?>
 
 <?php
-	$this->params['content_header_button'] = '<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i> Add an Onforwarding Charge</button>';
+	$this->params['content_header_button'] = '<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i> Add an Exception</button>';
 ?>
 
 <div class="main-box">
@@ -26,25 +30,31 @@ $this->params['breadcrumbs'] = array(
 				<thead>
 					<tr>
 						<th style="width: 20px">S/N</th>
-						<th>Name</th>
-						<th>Base Price (<span class="currency naira"></span>)</th>
-						<th>Base Percentage (%)</th>
+						<th>From</th>
+						<th>From Code</th>
+						<th>To</th>
+						<th>To Code</th>
+						<th>Zone</th>
 						<th>Action</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr>
 						<td>1</td>
-						<td>Some name</td>
-						<td>FA</td>
-						<td>2000</td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
 						<td><button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#editModal"><i class="fa fa-edit"></i> Edit</button></td>
 					</tr>
 					<tr>
 						<td>2</td>
-						<td>Another name</td>
-						<td>FB</td>
-						<td>2200</td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
 						<td></td>
 					</tr>
 
@@ -61,25 +71,23 @@ $this->params['breadcrumbs'] = array(
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	        <h4 class="modal-title" id="myModalLabel">Add an Onforwarding Charge</h4>
+	        <h4 class="modal-title" id="myModalLabel">Add an Exception</h4>
 	      </div>
 	      <div class="modal-body">
 				<div class="form-group">
-					<label for="">Name</label>
-					<input type="text" class="form-control">
-				</div>
-				<div class="row">
-					<div class="form-group col-xs-6">
-						<label for="">Base Price (<span class="currency naira"></span>)</label>
-						<input type="text" class="form-control">
-					</div>
-					<div class="form-group col-xs-6">
-						<label for="">Base Percentage  (%)</label>
-						<input type="text" class="form-control">
-					</div>
+					<label for="">From</label>
+					<select class="form-control"></select>
 				</div>
 				<div class="form-group">
-					<label>Activate Onforwarding Charge?</label>
+					<label for="">To</label>
+					<select class="form-control"></select>
+				</div>
+				<div class="form-group">
+					<label for="">Billing Zone</label>
+					<select class="form-control"></select>
+				</div>
+				<div class="form-group">
+					<label>Activate Exception?</label>
 					<select class="form-control">
 						<option>Yes</option>
 						<option>No</option>
@@ -88,7 +96,7 @@ $this->params['breadcrumbs'] = array(
 	      </div>
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-	        <button type="button" class="btn btn-primary">Add Onforwarding Charge</button>
+	        <button type="button" class="btn btn-primary">Add Exception</button>
 	      </div>
 	    </div>
 	  	</form>
@@ -101,22 +109,20 @@ $this->params['breadcrumbs'] = array(
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	        <h4 class="modal-title" id="myModalLabel">Edit an Onforwarding Charge</h4>
+	        <h4 class="modal-title" id="myModalLabel">Edit Exception</h4>
 	      </div>
 	      <div class="modal-body">
 				<div class="form-group">
-					<label for="">Name</label>
-					<input type="text" class="form-control">
+					<label for="">From</label>
+					<select class="form-control"></select>
 				</div>
-				<div class="row">
-					<div class="form-group col-xs-6">
-						<label for="">Base Price (<span class="currency naira"></span>)</label>
-						<input type="text" class="form-control">
-					</div>
-					<div class="form-group col-xs-6">
-						<label for="">Base Percentage  (%)</label>
-						<input type="text" class="form-control">
-					</div>
+				<div class="form-group">
+					<label for="">To</label>
+					<select class="form-control"></select>
+				</div>
+				<div class="form-group">
+					<label for="">Billing Zone</label>
+					<select class="form-control"></select>
 				</div>
 				<div class="form-group">
 					<label>Status</label>

@@ -3,9 +3,13 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 
 /* @var $this yii\web\View */
-$this->title = 'City - State Mapping';
+$this->title = 'Billing: State - Region Mapping';
 $this->params['breadcrumbs'] = array(
-	array('label'=> $this->title)
+	array(
+		'label' => 'Billing',
+		'url' => ['billing/']
+	),
+	array('label'=> 'State - Region Mapping')
 );
 ?>
 
@@ -14,7 +18,7 @@ $this->params['breadcrumbs'] = array(
 <?= Html::cssFile('@web/css/libs/dataTables.tableTools.css') ?>
 
 <?php
-	$this->params['content_header_button'] = '<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i> Add a City</button>';
+	$this->params['content_header_button'] = '<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i> Add a State Mapping</button>';
 ?>
 
 <div class="main-box">
@@ -22,32 +26,27 @@ $this->params['breadcrumbs'] = array(
 	</div>
 	<div class="main-box-body">
 		<div class="table-responsive">
-			<table id="table" class="table table-hover ">
+			<table id="table" class="table table-bordered ">
 				<thead>
 					<tr>
 						<th style="width: 20px">S/N</th>
-						<th>Name</th>
+						<th>Region</th>
 						<th>State</th>
-						<th>Onforwarding Charge</th>
 						<th>Action</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr>
 						<td>1</td>
-						<td></td>
-						<td></td>
-						<td></td>
+						<td rowspan="2">South West</td>
+						<td>Lagos</td>
 						<td><button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#editModal"><i class="fa fa-edit"></i> Edit</button></td>
 					</tr>
 					<tr>
 						<td>2</td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
+						<td>Ogun</td>
+						<td><button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#editModal"><i class="fa fa-edit"></i> Edit</button></td>
 					</tr>
-
 				</tbody>
 			</table>
 		</div>
@@ -62,23 +61,19 @@ $this->params['breadcrumbs'] = array(
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	        <h4 class="modal-title" id="myModalLabel">Add a New City</h4>
+	        <h4 class="modal-title" id="myModalLabel">Add a State Mapping</h4>
 	      </div>
 	      <div class="modal-body">
-				<div class="form-group">
-					<label>City Name</label>
-					<input class="form-control">
-				</div>
 				<div class="form-group">
 					<label>State</label>
 					<select class="form-control"></select>
 				</div>
 				<div class="form-group">
-					<label>Onforwarding charge</label>
+					<label>Region</label>
 					<select class="form-control"></select>
 				</div>
 				<div class="form-group">
-					<label for="">Activate City?</label>
+					<label for="">Activate State Mapping?</label>
 					<select name="" id="" class="form-control">
 						<option value="">Yes</option>
 						<option value="">No</option>
@@ -87,7 +82,7 @@ $this->params['breadcrumbs'] = array(
 	      </div>
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-	        <button type="button" class="btn btn-primary">Add City</button>
+	        <button type="button" class="btn btn-primary">Add State Mapping</button>
 	      </div>
 	    </div>
 	  	</form>
@@ -101,19 +96,15 @@ $this->params['breadcrumbs'] = array(
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	        <h4 class="modal-title" id="myModalLabel">Edit City</h4>
+	        <h4 class="modal-title" id="myModalLabel">Edit State Mapping</h4>
 	      </div>
 	      <div class="modal-body">
-				<div class="form-group">
-					<label>City Name</label>
-					<input class="form-control">
-				</div>
 				<div class="form-group">
 					<label>State</label>
 					<select class="form-control"></select>
 				</div>
 				<div class="form-group">
-					<label>Onforwarding charge</label>
+					<label>Region</label>
 					<select class="form-control"></select>
 				</div>
 				<div class="form-group">
