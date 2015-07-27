@@ -702,10 +702,6 @@ class SiteController extends BaseController
     {
         return $this->render('billing_pricing');
     }
-    public function actionCitymapping()
-    {
-        return $this->render('city_mapping');
-    }
     public function actionBillingexceptions()
     {
         return $this->render('billing_exceptions');

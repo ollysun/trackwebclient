@@ -73,7 +73,7 @@ use yii\helpers\Url;
 										<a href="<?= Url::to(['billing/statemapping']) ?>">State - Region Mapping</a>
 									</li>
 									<li>
-										<a href="<?= Url::to(['site/citymapping']) ?>">City - State Mapping</a>
+										<a href="<?= Url::to(['billing/citymapping']) ?>">City - State Mapping</a>
 									</li>
 									<li>
 										<a href="<?= Url::to(['billing/weightranges']) ?>">Weight Ranges</a>
