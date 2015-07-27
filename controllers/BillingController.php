@@ -19,6 +19,10 @@ class BillingController extends BaseController {
 	{
 		return $this->render('state_mapping');
 	}
+	public function actionCitymapping()
+	{
+		return $this->render('city_mapping');
+	}
 	public function actionWeightranges() {
 		 return $this->render('weight_ranges');
 	}
