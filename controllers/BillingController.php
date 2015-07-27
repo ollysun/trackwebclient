@@ -8,6 +8,10 @@ class BillingController extends BaseController {
 		//redirect to the appropriate 'default' page
 		 return $this->redirect('billing/weightranges');
 	}
+	public function actionZones()
+	{
+		return $this->render('zones');
+	}
 	public function actionRegions() {
 		 return $this->render('regions');
 	}
