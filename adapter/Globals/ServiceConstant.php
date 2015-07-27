@@ -50,6 +50,8 @@ class ServiceConstant {
     const URL_REF_STATES = 'ref/states';
     const URL_REF_PAYMENT_METHODS = '/ref/paymentType';
 
+    const URL_REF_REGIONS = '/ref/region';
+
     const URL_USER_BY_PHONE = '/user/getByPhone';
 
     const BRANCH_TYPE_EC = 4;
@@ -64,6 +66,16 @@ class ServiceConstant {
     const URL_BRANCH_GET_ALL = '/branch/getAll';
     const URL_BRANCH_GET_ALL_EC = '/branch/getAllEC';
     const URL_BRANCH_GET_ALL_HUB = '/branch/getAllHub';
+
+    const URL_REGION_CREATE = 'region/add';
+    const URL_REGION_EDIT = 'region/edit';
+    const URL_REGION_STATUS = 'region/changeActiveFg';
+    const URL_REGION_STATE = 'region/changeStateRegion';
+    const URL_REGION_CITY_ADD = 'region/addCity';
+    const URL_REGION_CITY_STATUS = 'region/changeCityStatus';
+    const URL_REGION_CITY_EDIT = 'region/editCity';
+    const URL_REGION_CITY_GET_ONE = 'region/getOneCity';
+    const URL_REGION_CITY_GET_ALL = 'region/getAllCity';
 
     const URL_CREATE_USER = 'admin/register';
     const URL_GET_USERS = '/admin/getAll';
