@@ -15,6 +15,10 @@ class BillingController extends BaseController {
 	public function actionRegions() {
 		 return $this->render('regions');
 	}
+	public function actionStatemapping()
+	{
+		return $this->render('state_mapping');
+	}
 	public function actionWeightranges() {
 		 return $this->render('weight_ranges');
 	}
