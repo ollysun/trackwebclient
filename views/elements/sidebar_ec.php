@@ -64,7 +64,7 @@ use yii\helpers\Url;
 								<a href="<?= Url::to(['site/billings']) ?>" class="dropdown-toggle">Billing <i class="fa fa-angle-right drop-icon"></i></a>
 								<ul class="submenu">
 									<li>
-										<a href="<?= Url::to(['site/zones']) ?>">Zones</a>
+										<a href="<?= Url::to(['billing/zones']) ?>">Zones</a>
 									</li>
 									<li>
 										<a href="<?= Url::to(['billing/regions']) ?>">Regions</a>
