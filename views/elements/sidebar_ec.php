@@ -70,7 +70,7 @@ use yii\helpers\Url;
 										<a href="<?= Url::to(['billing/regions']) ?>">Regions</a>
 									</li>
 									<li>
-										<a href="<?= Url::to(['site/statemapping']) ?>">State - Region Mapping</a>
+										<a href="<?= Url::to(['billing/statemapping']) ?>">State - Region Mapping</a>
 									</li>
 									<li>
 										<a href="<?= Url::to(['site/citymapping']) ?>">City - State Mapping</a>
