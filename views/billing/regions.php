@@ -3,7 +3,7 @@ use yii\helpers\Html;
 use Adapter\Globals\ServiceConstant;
 
 /* @var $this yii\web\View */
-$this->title = 'Manage Regions';
+$this->title = 'Billing: Regions';
 $this->params['breadcrumbs'] = array(
     array(
         'label' => 'Billing',
