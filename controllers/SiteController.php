@@ -706,10 +706,6 @@ class SiteController extends BaseController
     {
         return $this->render('billing_pricing');
     }
-    public function actionRegions()
-    {
-        return $this->render('regions');
-    }
     public function actionStatemapping()
     {
         return $this->render('state_mapping');
