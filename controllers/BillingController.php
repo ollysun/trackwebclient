@@ -34,4 +34,8 @@ class BillingController extends BaseController {
 	{
 		return $this->render('exceptions');
 	}
+	public function actionOnforwarding()
+	{
+		return $this->render('onforwarding');
+	}
 }
