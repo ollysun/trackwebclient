@@ -97,4 +97,32 @@ class BillingController extends BaseController
     {
         return $this->render('weight_ranges');
     }
+	public function actionMatrix()
+	{
+		return $this->render('matrix');
+	}
+	public function actionZones()
+	{
+		return $this->render('zones');
+	}
+	public function actionStatemapping()
+	{
+		return $this->render('state_mapping');
+	}
+	public function actionCitymapping()
+	{
+		return $this->render('city_mapping');
+	}
+	public function actionPricing()
+	{
+		return $this->render('pricing');
+	}
+	public function actionExceptions()
+	{
+		return $this->render('exceptions');
+	}
+	public function actionOnforwarding()
+	{
+		return $this->render('onforwarding');
+	}
 }

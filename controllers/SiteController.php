@@ -698,34 +698,6 @@ class SiteController extends BaseController
 
         return $this->render('hub_dispatch', array('sweeper'=>[], 'hubs'=>$hub_list,'parcels'=>$parcel_list, 'filter_hub_id'=>$from_branch_id));
     }
-    public function actionZones()
-    {
-        return $this->render('zones');
-    }
-    public function actionBillingpricing()
-    {
-        return $this->render('billing_pricing');
-    }
-    public function actionStatemapping()
-    {
-        return $this->render('state_mapping');
-    }
-    public function actionCitymapping()
-    {
-        return $this->render('city_mapping');
-    }
-    public function actionBillingexceptions()
-    {
-        return $this->render('billing_exceptions');
-    }
-    public function actionBillingmatrix()
-    {
-        return $this->render('billing_matrix');
-    }
-    public function actionBillingonforwarding()
-    {
-        return $this->render('billing_onforwarding');
-    }
     public function actionCustomerhistory()
     {
         return $this->render('customer_history');

@@ -3,9 +3,13 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 
 /* @var $this yii\web\View */
-$this->title = 'Billing Pricing';
+$this->title = 'Billing: Pricing';
 $this->params['breadcrumbs'] = array(
-	array('label'=> 'Billings')
+	array(
+		'label' => 'Billing',
+		'url' => ['billing/']
+	),
+	array('label'=> 'Pricing')
 );
 ?>
 
@@ -69,7 +73,7 @@ $this->params['breadcrumbs'] = array(
 					</tr>
 					<tr>
 						<td rowspan="4">2</td>
-						<td rowspan="4">10.1 - 20</td>
+						<td rowspan="4">10.01 - 20</td>
 						<td>CE</td>
 						<td></td>
 						<td></td>
@@ -115,26 +119,9 @@ $this->params['breadcrumbs'] = array(
 	      </div>
 	      <div class="modal-body">
 				<div class="form-group row">
-					<div class="col-xs-4">
-						<label for="">Min Weight</label>
-						<div class="input-group">
-							<input type="text" class="form-control">
-							<span class="input-group-addon">Kg</span>
-						</div>
-					</div>
-					<div class="col-xs-4">
-						<label for="">Incremental Weight</label>
-						<div class="input-group">
-							<input type="text" class="form-control">
-							<span class="input-group-addon">Kg</span>
-						</div>
-					</div>
-					<div class="col-xs-4">
-						<label for="">Max Weight</label>
-						<div class="input-group">
-							<input type="text" class="form-control">
-							<span class="input-group-addon">Kg</span>
-						</div>
+					<div class="col-xs-6">
+						<label for="">Select Weight Range</label>
+						<select name="" id="" class="form-control"></select>
 					</div>
 				</div>
 				<div class="form-group add-billing-pricing-wrap">
@@ -223,17 +210,9 @@ $this->params['breadcrumbs'] = array(
 	      </div>
 	      <div class="modal-body">
 				<div class="form-group row">
-					<div class="col-xs-4">
-						<label for="">Min Weight</label>
-						<input type="text" class="form-control">
-					</div>
-					<div class="col-xs-4">
-						<label for="">Incremental Weight</label>
-						<input type="text" class="form-control">
-					</div>
-					<div class="col-xs-4">
-						<label for="">Max Weight</label>
-						<input type="text" class="form-control">
+					<div class="col-xs-6">
+						<label for="">Weight Range</label>
+						<select name="" id="" class="form-control"></select>
 					</div>
 				</div>
 				<div class="form-group add-billing-pricing-wrap">

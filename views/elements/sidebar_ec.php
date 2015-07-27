@@ -64,31 +64,31 @@ use yii\helpers\Url;
 								<a href="<?= Url::to(['site/billings']) ?>" class="dropdown-toggle">Billing <i class="fa fa-angle-right drop-icon"></i></a>
 								<ul class="submenu">
 									<li>
-										<a href="<?= Url::to(['site/zones']) ?>">Zones</a>
+										<a href="<?= Url::to(['billing/matrix']) ?>">View Matrix</a>
+									</li>
+									<li>
+										<a href="<?= Url::to(['billing/zones']) ?>">Zones</a>
 									</li>
 									<li>
 										<a href="<?= Url::to(['billing/regions']) ?>">Regions</a>
 									</li>
 									<li>
-										<a href="<?= Url::to(['site/statemapping']) ?>">State - Region Mapping</a>
+										<a href="<?= Url::to(['billing/statemapping']) ?>">State - Region Mapping</a>
 									</li>
 									<li>
-										<a href="<?= Url::to(['site/citymapping']) ?>">City - State Mapping</a>
+										<a href="<?= Url::to(['billing/citymapping']) ?>">City - State Mapping</a>
 									</li>
 									<li>
 										<a href="<?= Url::to(['billing/weightranges']) ?>">Weight Ranges</a>
 									</li>
 									<li>
-										<a href="<?= Url::to(['site/billingpricing']) ?>">Billing Pricing</a>
+										<a href="<?= Url::to(['billing/pricing']) ?>">Pricing</a>
 									</li>
 									<li>
-										<a href="<?= Url::to(['site/billingexceptions']) ?>">Exceptions</a>
+										<a href="<?= Url::to(['billing/exceptions']) ?>">Exceptions</a>
 									</li>
 									<li>
-										<a href="<?= Url::to(['site/billingonforwarding']) ?>">Onforwarding Charges</a>
-									</li>
-									<li>
-										<a href="<?= Url::to(['site/billingmatrix']) ?>">View Matrix</a>
+										<a href="<?= Url::to(['billing/onforwarding']) ?>">Onforwarding Charges</a>
 									</li>
 								</ul>
 							</li>
