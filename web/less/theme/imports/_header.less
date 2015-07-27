@@ -180,11 +180,24 @@
 		    width: 35px;
 		    border: 2px solid #fff;
 		}
-		> span {
-			float: left;
+		> .profile-details {
 			display: block;
-			margin-right: 3px;
-			font-size: em;
+			height: 35px;
+			margin-right: 6px;
+		   padding-top: 10px;
+			float: left;
+			line-height: 1;
+			.name {
+				display: block;
+				text-transform: capitalize;
+			}
+			.designation {
+				display: block;
+				font-size: 0.85em;
+				font-style: italic;
+				opacity: .65;
+				text-transform: capitalize;
+			}
 		}
 	}
 }
@@ -255,8 +268,8 @@
 	border-left-color: @primary-color;
 }
 #header-navbar .nav > li .caret {
-	border-top-color: #fff;
-	border-bottom-color: #fff;
+	border-top-color: inherit;
+	border-bottom-color: inherit;
 }
 #header-navbar .nav a:hover .caret {
 	border-top-color: #fff;
