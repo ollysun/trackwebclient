@@ -82,7 +82,7 @@ use yii\helpers\Url;
 										<a href="<?= Url::to(['billing/pricing']) ?>">Pricing</a>
 									</li>
 									<li>
-										<a href="<?= Url::to(['site/billingexceptions']) ?>">Exceptions</a>
+										<a href="<?= Url::to(['billing/exceptions']) ?>">Exceptions</a>
 									</li>
 									<li>
 										<a href="<?= Url::to(['site/billingonforwarding']) ?>">Onforwarding Charges</a>
