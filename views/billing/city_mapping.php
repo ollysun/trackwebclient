@@ -3,13 +3,13 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 
 /* @var $this yii\web\View */
-$this->title = 'City - State Mapping';
+$this->title = 'Billing: City - State Mapping';
 $this->params['breadcrumbs'] = array(
 	array(
 		'label' => 'Billing',
 		'url' => ['billing/']
 	),
-	array('label'=> $this->title)
+	array('label'=> 'City - State Mapping')
 );
 ?>
 

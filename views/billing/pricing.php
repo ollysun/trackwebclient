@@ -3,7 +3,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 
 /* @var $this yii\web\View */
-$this->title = 'Billing Pricing';
+$this->title = 'Billing: Pricing';
 $this->params['breadcrumbs'] = array(
 	array(
 		'label' => 'Billing',
