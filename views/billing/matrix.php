@@ -3,9 +3,13 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 
 /* @var $this yii\web\View */
-$this->title = 'Matrix';
+$this->title = 'Billing: Matrix';
 $this->params['breadcrumbs'] = array(
-	array('label'=> 'Billing Matrix')
+	array(
+		'label' => 'Billing',
+		'url' => ['billing/']
+	),
+	array('label'=> 'Matrix')
 );
 ?>
 
