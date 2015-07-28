@@ -66,7 +66,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                 ?>
                 </tbody>
             </table>
-            <div class="clearfix">
+            <div class="clearfix hidden">
                 <div class="pull-left pagination">
                     <?php
                     $pagination = new \yii\data\Pagination(['totalCount' => 190000, 'pageSize' => 30]);
