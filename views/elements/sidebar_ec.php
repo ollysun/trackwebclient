@@ -121,6 +121,21 @@ use yii\helpers\Url;
 							<span>Customer History</span>
 						</a>
 					</li>
+					<li>
+						<a href="<?= Url::to(['finance/']) ?>" class="dropdown-toggle">
+							<i class="fa fa-money"></i>
+							<span>Reconciliations</span>
+							<i class="fa fa-angle-right drop-icon"></i>
+						</a>
+						<ul class="submenu">
+							<li>
+								<a href="<?= Url::to(['finance/customersall']) ?>">Customers</a>
+							</li>
+							<li>
+								<a href="<?= Url::to(['finance/merchantsdue']) ?>">Merchants</a>
+							</li>
+						</ul>
+					</li>
 				</ul>
 			</div>
 		</div>
