@@ -82,7 +82,7 @@ class BillingController extends BaseController
                     if ($response['status'] === Response::STATUS_OK) {
                         Yii::$app->session->setFlash('success', 'Region has been created successfully.');
                     } else {
-                        Yii::$app->session->setFlash('danger', $response['message'] . 'There was a problem creating the region. Please try again.');
+                        Yii::$app->session->setFlash('danger', 'There was a problem creating the region. Please try again.');
                     }
                 } else {
                     $response = $region->editRegion($data, $task);
