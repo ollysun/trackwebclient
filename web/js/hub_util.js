@@ -25,6 +25,7 @@ Hub.Resources = {
     getArrivedParcel:'getarrivedparcel',
     validateStaff:'validatestaff',
     checkInParcel:'checkinparcel',
+    moveToForDelivery:'movetofordelivery',
     BASE_PATH:'/site/'
 }
 Hub.getBranches = function(state_id,branch_id,callback){
@@ -44,6 +45,13 @@ Hub.validateSweeper = function(staff_id,callback){
 }
 Hub.sendParcelToArrival = function(data,callback){
     Hub.postToServer(Hub.Resources.BASE_PATH + Hub.Resources.checkInParcel,data,function(response){
+        if(typeof callback == "function"){
+            callback(response);
+        }
+    });
+}
+Hub.sendParcelToForDelivery = function(data,callback){
+    Hub.postToServer(Hub.Resources.BASE_PATH + Hub.Resources.moveToForDelivery,data,function(response){
         if(typeof callback == "function"){
             callback(response);
         }
@@ -79,10 +87,11 @@ $(document).ready(function(){
 
     $("#get_arrival").unbind('click').on('click',function(){
         var staff_no = $("#staff_no").val();
+        var branch_type= $(this).data("branch_type");
+       // alert(branch_type);
         if(staff_no.length > 0){
             $("#loading_label").html("Validating Staff ID...");
             Hub.validateSweeper(staff_no,function(response){
-                log(response);
                 if(response.status){
                     $("#sweeper_name").html(response.data.fullname.toUpperCase());
                     $("#role").html(response.data.role.name.toUpperCase());
@@ -112,18 +121,41 @@ $(document).ready(function(){
                                 }
                             }
                             if(payloadObj.waybill_numbers.length > 0){
-                                Hub.sendParcelToArrival({held_by_id: payloadObj.held_by_id,waybill_numbers: payloadObj.waybill_numbers.join(',') },function(resp){
-
-                                    var response = JSON.parse(JSON.stringify (resp));
-                                    if(response.status=='success'){
-                                        if(typeof response.data.bad_parcels != "undefined"){
-                                            for(var p in response.data.bad_parcels){
-                                                $("#L"+p).html(response.data.bad_parcels[p]);
-                                                $("#L"+p).attr("style","background-color:red");
+                                switch(branch_type){
+                                    case 'ec':
+                                        Hub.sendParcelToForDelivery({waybill_numbers: payloadObj.waybill_numbers.join(',') },function(resp){
+                                            log(resp);
+                                            var response = JSON.parse(JSON.stringify (resp));
+                                            if(response.status=='success'){
+                                                if(typeof response.data.bad_parcels != "undefined"){
+                                                    for(var p in response.data.bad_parcels){
+                                                        $("#L"+p).html(response.data.bad_parcels[p]);
+                                                        $("#L"+p).attr("style","background-color:red");
+                                                    }
+                                                }else{
+                                                    window.location.reload();
+                                                }
                                             }
-                                        }
-                                    }
-                                });
+                                        });
+                                        break;
+                                    case 'hub':
+                                        Hub.sendParcelToArrival({held_by_id: payloadObj.held_by_id,waybill_numbers: payloadObj.waybill_numbers.join(',') },function(resp){
+
+                                            var response = JSON.parse(JSON.stringify (resp));
+                                            if(response.status=='success'){
+                                                if(typeof response.data.bad_parcels != "undefined"){
+                                                    for(var p in response.data.bad_parcels){
+                                                        $("#L"+p).html(response.data.bad_parcels[p]);
+                                                        $("#L"+p).attr("style","background-color:red");
+                                                    }
+                                                }else{
+                                                    window.location.reload();
+                                                }
+                                            }
+                                        });
+                                        break;
+                                }
+
                             }else{
                                 alert("No item scanned in");
                             }
