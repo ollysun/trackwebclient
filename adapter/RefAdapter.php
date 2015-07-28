@@ -36,8 +36,8 @@ class RefAdapter extends BaseAdapter {
     /**
      * This fetches all states from the middleware
      */
-    public function getStates($id) {
-        return $this->request(ServiceConstant::URL_REF_STATES, [ 'country_id' => $id ], self::HTTP_GET);
+    public function getStates($id, $with_regions=0) {
+        return $this->request(ServiceConstant::URL_REF_STATES, [ 'country_id' =>$id, 'with_region'=>$with_regions ], self::HTTP_GET);
     }
 
     /**
