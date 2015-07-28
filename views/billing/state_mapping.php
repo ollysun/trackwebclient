@@ -1,4 +1,5 @@
 <?php
+use Adapter\Globals\ServiceConstant;
 use yii\helpers\Html;
 use yii\helpers\Url;
 
@@ -21,7 +22,8 @@ $this->params['breadcrumbs'] = array(
 	$this->params['content_header_button'] = '<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i> Add a State Mapping</button>';
 ?>
 
-<div class="main-box">
+<?php echo \Adapter\Util\Calypso::showFlashMessages(); ?>
+<div class="main-box" id="state-mapping">
 	<div class="main-box-header">
 	</div>
 	<div class="main-box-body">
@@ -36,17 +38,17 @@ $this->params['breadcrumbs'] = array(
 					</tr>
 				</thead>
 				<tbody>
+				<?php $a = 1;foreach($output as $arg) {
+					for($i=0; $i < count($arg['states']); $i++) {
+						?>
 					<tr>
-						<td>1</td>
-						<td rowspan="2">South West</td>
-						<td>Lagos</td>
-						<td><button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#editModal"><i class="fa fa-edit"></i> Edit</button></td>
+						<td><?=$a++?></td>
+						<?php if($i==0) { ?><td rowspan="<?= count($arg['states']);?>"><?= ucwords($arg['region']);?></td><?php } ?>
+						<td><?=ucwords($arg['states'][$i]['name']);?></td>
+						<td><button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#editModal" data-id="<?=$arg['states'][$i]['id'];?>" data-region-id="<?=$arg['states'][$i]['region']['id'];?>"><i class="fa fa-edit"></i> Edit</button></td>
 					</tr>
-					<tr>
-						<td>2</td>
-						<td>Ogun</td>
-						<td><button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#editModal"><i class="fa fa-edit"></i> Edit</button></td>
-					</tr>
+					<?php } }
+				?>
 				</tbody>
 			</table>
 		</div>
@@ -57,7 +59,7 @@ $this->params['breadcrumbs'] = array(
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
-	  	<form class="">
+	  	<form class="" method="post" action="#">
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -66,23 +68,44 @@ $this->params['breadcrumbs'] = array(
 	      <div class="modal-body">
 				<div class="form-group">
 					<label>State</label>
-					<select class="form-control"></select>
+					<select class="form-control" name="state_id">
+						<?php
+						if(isset($states) && is_array(($states))):
+							foreach($states as $state){
+								?>
+								<option value="<?= $state['id'] ?>"><?= strtoupper($state['name']); ?></option>
+								<?php
+							}
+						endif;
+						?>
+					</select>
 				</div>
 				<div class="form-group">
 					<label>Region</label>
-					<select class="form-control"></select>
+					<select class="form-control" name="region_id">
+						<?php
+						if(isset($regions) && is_array(($regions))):
+							foreach($regions as $region){
+								?>
+								<option value="<?= $region['id'] ?>"><?= strtoupper($region['name']); ?></option>
+								<?php
+							}
+						endif;
+						?>
+					</select>
 				</div>
 				<div class="form-group">
 					<label for="">Activate State Mapping?</label>
-					<select name="" id="" class="form-control">
-						<option value="">Yes</option>
-						<option value="">No</option>
+					<select name="" class="form-control">
+						<option value="<?= ServiceConstant::ACTIVE;?>">Yes</option>
+						<option value="<?= ServiceConstant::INACTIVE;?>">No</option>
 					</select>
 				</div>
 	      </div>
 	      <div class="modal-footer">
+			  <input type="hidden" name="task" value="create">
 	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-	        <button type="button" class="btn btn-primary">Add State Mapping</button>
+	        <button type="submit" class="btn btn-primary">Add State Mapping</button>
 	      </div>
 	    </div>
 	  	</form>
@@ -92,7 +115,7 @@ $this->params['breadcrumbs'] = array(
 
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
-	  	<form class="">
+	  	<form class="" method="post">
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -101,11 +124,31 @@ $this->params['breadcrumbs'] = array(
 	      <div class="modal-body">
 				<div class="form-group">
 					<label>State</label>
-					<select class="form-control"></select>
+					<select class="form-control" disabled name="state">
+						<?php
+						if(isset($states) && is_array(($states))):
+							foreach($states as $state){
+								?>
+								<option value="<?= $state['id'] ?>"><?= strtoupper($state['name']); ?></option>
+								<?php
+							}
+						endif;
+						?>
+					</select>
 				</div>
 				<div class="form-group">
 					<label>Region</label>
-					<select class="form-control"></select>
+					<select class="form-control" name="region_id">
+						<?php
+						if(isset($regions) && is_array(($regions))):
+							foreach($regions as $region){
+								?>
+								<option value="<?= $region['id'] ?>"><?= strtoupper($region['name']); ?></option>
+								<?php
+							}
+						endif;
+						?>
+					</select>
 				</div>
 				<div class="form-group">
 					<label for="">Status</label>
@@ -116,8 +159,9 @@ $this->params['breadcrumbs'] = array(
 				</div>
 	      </div>
 	      <div class="modal-footer">
+			  <input type="hidden" name="state_id">
 	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-	        <button type="button" class="btn btn-primary">Save changes</button>
+	        <button type="submit" class="btn btn-primary">Save changes</button>
 	      </div>
 	    </div>
 	  	</form>
@@ -129,3 +173,4 @@ $this->params['breadcrumbs'] = array(
 <?php $this->registerJsFile('@web/js/libs/dataTables.fixedHeader.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/libs/dataTables.tableTools.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/libs/jquery.dataTables.bootstrap.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
+<?php $this->registerJsFile('@web/js/regions.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>

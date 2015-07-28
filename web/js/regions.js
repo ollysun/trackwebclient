@@ -55,4 +55,13 @@ $(document).ready(function () {
     $("select#filter_state_id").on('change', function (event) {
         $("form#state_filter").submit();
     });
+
+    $("#state-mapping button[data-target='#editModal']").on('click', function (event) {
+        _id = $(this).attr('data-id');
+        target = $(this).attr('data-target');
+
+        $(target+" select[name='region_id']").val($(this).attr('data-region-id'));
+        $(target+" select[name='state']").val(_id);
+        $(target+" input[name='state_id']").val(_id);
+    });
 });
