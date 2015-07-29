@@ -31,6 +31,7 @@ class ServiceConstant {
     const URL_MOVE_TO_FOR_SWEEPER = '/parcel/moveToForSweeper/';
     const URL_MOVE_TO_IN_TRANSIT = '/parcel/moveToInTransit/';
     const URL_MOVE_TO_ARRIVAL = '/parcel/moveToArrival/';
+    const URL_MOVE_FOR_DELIVERY = '/parcel/moveToForDelivery/';
 
     const URL_GET_ALL_BANKS = 'bank/getAll/';
 
