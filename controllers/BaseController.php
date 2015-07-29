@@ -24,16 +24,14 @@ class BaseController extends Controller {
 
     These are the restricted pages for these users. This can be made dynamic
      * */
-    private $permissionMap = [
-        ServiceConstant::USER_TYPE_ADMIN => [''],
-        ServiceConstant::USER_TYPE_OFFICER => ['parcels/*','shipments/*','hubs/*','finance/*','billing/*','admin/*'],
-        ServiceConstant::USER_TYPE_SWEEPER =>  ['site/*','parcels/*','shipments/*','hubs/*','finance/*','billing/*','admin/*'],
-        ServiceConstant::USER_TYPE_DISPATCHER => ['site/*','parcels/*','shipments/*','hubs/*','finance/*','billing/*','admin/*'],
-    ];
+    private $permissionMap = [];
+    protected function setPermissionMap(){
+        $this->permissionMap = Calypso::getInstance()->permissionMap();
+    }
     public function beforeAction($action){
         if(!in_array($action->id,array('logout','login','gerraout','site'))){
+            $this->setPermissionMap();
             $s = Calypso::getInstance()->session('user_session');
-
             if(!$s){
                 return $this->redirect(['site/gerraout']);
             }
