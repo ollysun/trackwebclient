@@ -1,8 +1,10 @@
+<div id="main_holder">
 <?php
 //var_dump($parcelData);
 use Adapter\Util\Calypso;
 
 $copies = ["Sender's Copy","Recipient's Copy","Acknowledgement's Copy"," Express Centre's Copy"];
+
 foreach($copies as $copy) {
     ?>
 <div class="waybill-wrap">
@@ -14,7 +16,7 @@ foreach($copies as $copy) {
         <label>Waybill Bar Code</label><br/>
 
         <div style="width: 100%; height: 70%; border: 1px solid black;padding: 10px;">
-            <div id="barcode" class="form-control-static"></div>
+            <div id="" class="form-control-static barcode"></div>
         </div>
     </div>
     <br/>
@@ -57,7 +59,7 @@ foreach($copies as $copy) {
 
     <div class="shipment">
         <div class="shipment__packages"><?= $parcelData['no_of_package']; ?></div>
-        <div class="shipment__actual-weight"><?= $parcelData['weight']; ?>Kg</div>
+        <div class="shipment__actual-weight"><?= Calypso::getInstance()->formatWeight($parcelData['weight']); ?>Kg</div>
         <div class="shipment__dimensional-weight"></div>
     </div>
 
@@ -89,6 +91,7 @@ foreach($copies as $copy) {
     <?php
 }
 ?>
+</div>
 <script type="text/javascript">
     var waybill = "<?= strtoupper($parcelData['waybill_number']); ?>";
 </script>

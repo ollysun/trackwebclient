@@ -62,7 +62,6 @@ class SiteController extends BaseController
     public function beforeAction($action){
         if(!in_array($action->id,array('logout','login','gerraout','site'))){
             $s = Calypso::getInstance()->session('user_session');
-
             if(!$s){
                // Calypso::getInstance()->AppRedirect('site','login');
                 return $this->redirect(['site/logout']);

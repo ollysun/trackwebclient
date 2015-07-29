@@ -55,7 +55,7 @@ class ParcelService {
 
         $oldAccount = Calypso::getValue($data, 'merchant', null);
         if($oldAccount !== 'none') {
-            if (!empty($bankData['account_name']) || !empty($bankData['bank_id']) || !empty($bankData['account_name'])) {
+            if (empty($bankData['account_name']) || empty($bankData['bank_id']) || empty($bankData['account_name'])) {
                 $error[] = "All Account Details are required!";
             }
         }
@@ -91,8 +91,8 @@ class ParcelService {
         $payload['receiver_address'] = $senderAddress;
         $payload['parcel'] = $parcel;
 
-        $payload['is_corporate_lead'] = (Calypso::getValue($data, 'corporate_lead') === true) ? 1 : 0;
-        $payload['to_hub'] = (Calypso::getValue($data, 'send_to_hub') === 'true') ? 1 : 0;
+        $payload['is_corporate_lead'] = (Calypso::getValue($data, 'corporate_lead') === 'true') ? 1 : 0;
+        $payload['to_hub'] = (Calypso::getValue($data, 'send_to_hub') === '1') ? 1 : 0;
 
         if(!empty($error)) {
             return [ 'status' => false, 'messages' => $error ];

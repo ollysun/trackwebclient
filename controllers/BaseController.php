@@ -12,8 +12,54 @@ namespace app\controllers;
 use \yii\web\Controller,
     \yii\web\Response;
 use Adapter\Globals\HttpStatusCodes;
+use Adapter\Util\Calypso;
+use Adapter\Globals\ServiceConstant;
 
 class BaseController extends Controller {
+    /*
+     * const USER_TYPE_ADMIN = 1;
+        const USER_TYPE_OFFICER = 2;
+        const USER_TYPE_SWEEPER = 3;
+        const USER_TYPE_DISPATCHER = 4;
+
+    These are the restricted pages for these users. This can be made dynamic
+     * */
+    private $permissionMap = [
+        ServiceConstant::USER_TYPE_ADMIN => [''],
+        ServiceConstant::USER_TYPE_OFFICER => ['parcels/*','shipments/*','hubs/*','finance/*','billing/*','admin/*'],
+        ServiceConstant::USER_TYPE_SWEEPER =>  ['site/*','parcels/*','shipments/*','hubs/*','finance/*','billing/*','admin/*'],
+        ServiceConstant::USER_TYPE_DISPATCHER => ['site/*','parcels/*','shipments/*','hubs/*','finance/*','billing/*','admin/*'],
+    ];
+    public function beforeAction($action){
+        if(!in_array($action->id,array('logout','login','gerraout','site'))){
+            $s = Calypso::getInstance()->session('user_session');
+
+            if(!$s){
+                return $this->redirect(['site/gerraout']);
+            }
+            if(!array_key_exists($s['role_id'],$this->permissionMap)){
+                \Yii::$app->getUser()->logout();
+                Calypso::getInstance()->setPageData("Invalid Login. Check username and password and try again");
+               return $this->redirect(['site/logout']);
+            }
+            $map = $this->permissionMap[$s['role_id']];
+            $current = $action->controller->id;
+            //Wild card
+            if(in_array($current.'/*',$map)){
+                \Yii::$app->getUser()->logout();
+                Calypso::getInstance()->setPageData("Invalid Login. Check username and password and try again");
+                return $this->redirect(['site/logout']);
+            }
+
+            if(in_array($current.'/'.$action->id,$map)){
+                \Yii::$app->getUser()->logout();
+                Calypso::getInstance()->setPageData("Invalid Login. Check username and password and try again");
+                return $this->redirect(['site/logout']);
+            }
+        }
+        $this->enableCsrfValidation = false;
+        return parent::beforeAction($action);
+    }
 
     /**
      * Allow sending success response

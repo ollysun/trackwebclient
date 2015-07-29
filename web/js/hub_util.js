@@ -90,14 +90,14 @@ $(document).ready(function(){
         var branch_type= $(this).data("branch_type");
        // alert(branch_type);
         if(staff_no.length > 0){
-            $("#loading_label").html("Validating Staff ID...");
+            $("#loading_label").removeClass('text-success').removeClass('text-danger').addClass("text-info").html("Validating Staff ID...");
             Hub.validateSweeper(staff_no,function(response){
-                if(response.status){
+                if(response.status == 'success'){
                     $("#sweeper_name").html(response.data.fullname.toUpperCase());
                     $("#role").html(response.data.role.name.toUpperCase());
                     $("#branch").html(response.data.branch.name.toUpperCase()+'('+response.data.branch.code.toUpperCase()+')');
                     $("#staff_user_id").val(response.data.id);
-                    $("#loading_label").html("Staff Validation Successful<br/>Loading parcels... Please wait");
+                    $("#loading_label").removeClass('text-success').removeClass('text-danger').addClass("text-info").html("Staff Validation Successful<br/>Loading parcels... Please wait");
                     Hub.getParcelsForArrival(staff_no,function(response){
                         $("#parcel_arrival").html("");
                         if(response.status && response.data.length > 0){
@@ -105,7 +105,7 @@ $(document).ready(function(){
                                 $("#parcel_arrival").append("<tr id='"+ v.waybill_number+"' style='background-color: rgb(187, 255, 224);'><td>"+(i+1)+" <input name='"+ v.waybill_number+"' type='checkbox'></td><td>"+ v.waybill_number+"</td><td id='L"+v.waybill_number+"'>"+ (v.status == 5?'IN TRANSIT':'Not Intransit')+"</td></tr>");
                             });
                         }
-                        $("#loading_label").html("Loaded");
+                        $("#loading_label").removeClass('text-info').removeClass('text-danger').addClass("text-success").html("Loaded");
                         var payload = function(){
                             this.waybill_numbers = [];
                             this.held_by_id = 0;
@@ -163,7 +163,7 @@ $(document).ready(function(){
                         });
                     });
                 }else{
-                    $("#loading_label").html("Staff Validation Failed");
+                    $("#loading_label").removeClass('text-info').removeClass('text-success').addClass("text-danger").html("Staff Validation Failed");
                 }
             });
 
