@@ -68,7 +68,10 @@ $this->params['breadcrumbs'] = array(
                 	<td></td>
                 	<td></td>
                 	<td></td>
-                	<td><a href="#" class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
+                	<td>
+                		<a href="#" class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i> View</a>
+                		<a href="#" class="btn btn-xs btn-default"><i class="fa fa-money">&nbsp;</i> Process Payment</a>
+                	</td>
 
                 </tbody>
             </table>
