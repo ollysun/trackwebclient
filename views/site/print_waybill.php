@@ -5,9 +5,9 @@ use Adapter\Util\Calypso;
 $copies = ["Sender's Copy","Recipient's Copy","Acknowledgement's Copy"," Express Centre's Copy"];
 foreach($copies as $copy) {
     ?>
-    <div class="row">
+<div class="waybill-wrap">
     <div class="copy">
-        Sender's Copy
+        <?= $copy; ?>
     </div>
     <div class="waybill-image">
         <!-- drop waybill image here, remove div below -->
@@ -85,7 +85,7 @@ foreach($copies as $copy) {
         quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
         consequat. Duis aute irure dolor in reprehenderit in voluptate
     </div>
-    </div>
+</div>
     <?php
 }
 ?>
