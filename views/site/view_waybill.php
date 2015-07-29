@@ -8,7 +8,7 @@ $this->params['breadcrumbs'][] = 'Waybill';
 ?>
 
 <?php
-	$this->params['content_header_button'] = '<span class="label label-success">CONFIRMED DELIVERY</span>';
+	//$this->params['content_header_button'] = '<span class="label label-success">CONFIRMED DELIVERY</span>';
 //var_dump($parcelData);
 ?>
 
