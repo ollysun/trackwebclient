@@ -64,14 +64,7 @@ if($offset <= 0){
     		<div class="pull-left">
     			<label>&nbsp;</label><br>
     			<button type="button" class="btn btn-sm btn-default">Generate Delivery Run</button>
-    		</div>
-            <div class="pull-right clearfix">
-                <form class="table-search-form form-inline clearfix">
-                    <div class="pull-left form-group">
-                        <label for="searchInput">&nbsp;</label><br>
-                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">Receive</button>
-                    </div>
-                </form>
+                <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">Receive Shipments from Hub</button>
             </div>
 		</div>
 	</div>
@@ -133,7 +126,7 @@ if($offset <= 0){
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">Accept Shipments into Hub</h4>
+                    <h4 class="modal-title" id="myModalLabel">Receive Shipments from Hub</h4>
                 </div>
                 <div class="modal-body">
 
