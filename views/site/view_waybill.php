@@ -3,7 +3,8 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 
 /* @var $this yii\web\View */
-$this->title = 'Waybill No: '.strtoupper($parcelData['waybill_number']);
+$this->title = 'View Waybill: '.strtoupper($parcelData['waybill_number']);
+$this->params['page_title'] = 'Waybill No: <strong>'.strtoupper($parcelData['waybill_number']).'</strong>';
 $this->params['breadcrumbs'][] = 'Waybill';
 ?>
 
