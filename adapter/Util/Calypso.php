@@ -254,4 +254,62 @@ class Calypso{
         }
         return $flashMessages;
     }
+    public static function permissionMap(){
+        $permissionMap = [
+            ServiceConstant::USER_TYPE_ADMIN => [''],
+            ServiceConstant::USER_TYPE_OFFICER => ['shipments/*','hubs/*','finance/*','billing/*','admin/*'],
+            ServiceConstant::USER_TYPE_SWEEPER =>  ['site/*','parcels/*','shipments/*','hubs/*','finance/*','billing/*','admin/*'],
+            ServiceConstant::USER_TYPE_DISPATCHER => ['site/*','parcels/*','shipments/*','hubs/*','finance/*','billing/*','admin/*'],
+        ];
+        return $permissionMap;
+    }
+    public static function normaliseLinkLabel($label){
+        return str_replace('_',' ',$label);
+    }
+    public static function getMenus(){
+        $menus = [
+            'Dashboard'=>'site/index',
+            'Shipments'=>[
+                'New_Shipment'=>['link'=>'site/processedparcels','class'=>''],
+                'For_Delivery'=>['link'=>'site/parcelsfordelivery','class'=>''],
+                'For_Sweep'=>['link'=>'site/parcelsforsweep','class'=>''],
+                'All_Shipments'=>['link'=>'site/parcels','class'=>''],
+            ],
+            'Hub'=>[
+                'Shipment_Arrivals'=>['link'=>'site/hubarrival','class'=>''],
+                'Set_next_destination'=>['link'=>'hubs/destination','class'=>''],
+                'For_Delivery'=>['link'=>'hubs/delivery','class'=>''],
+                'Dispatched_Shipments'=>['link'=>'hubs/hubdispatch','class'=>''],
+            ],
+            'Administrator' => [
+                'Manage_branches'=>['link'=>'site/managebranches','class'=>''],
+                'Manage_staff_accounts'=>['link'=>'site/managestaff','class'=>''],
+                'Billing'=>[
+                    'View_Matrix'=>['link'=>'billing/matrix','class'=>''],
+                    'Zones'=>['link'=>'billing/zones','class'=>''],
+                    'Regions'=>['link'=>'billing/regions','class'=>''],
+                    'State_-_Region_Mapping'=>['link'=>'billing/statemapping','class'=>''],
+                    'City_-_State Mapping'=>['link'=>'billing/citymapping','class'=>''],
+                    'Weight_Ranges'=>['link'=>'billing/weightranges','class'=>''],
+                    'Pricing'=>['link'=>'billing/pricing','class'=>''],
+                    'Exceptions'=>['link'=>'billing/exceptions','class'=>''],
+                    'Onforwarding_Charges'=>['link'=>'billing/onforwarding','class'=>''],
+                ]
+            ],
+            'Customer_History'=>'site/customerhistory',
+            'Reconciliations'=>[
+                'Customers'=>['link'=>'finance/customersall','class'=>''],
+                'Merchants' => ['link'=>'finance/merchantsdue','class'=>'']
+            ]
+        ];
+        return $menus;
+    }
+    public static function canAccess($role){
+        $linksMap = [
+            USER_TYPE_ADMIN => [],
+            USER_TYPE_OFFICER => [],
+            USER_TYPE_SWEEPER => [],
+            USER_TYPE_DISPATCHER => [],
+        ];
+    }
 }
