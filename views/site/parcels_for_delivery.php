@@ -22,7 +22,7 @@ if($search){
     $link = "&search=true&to=".urlencode($to)."&from=".urlencode($fro);
 }
 
-if($offset == 0 || count($parcels) >= $page_width ){
+if( count($parcels) >= $page_width ){
     $show_next = true;
 }else{
     $show_next = false;

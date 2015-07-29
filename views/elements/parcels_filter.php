@@ -24,6 +24,7 @@ if(!isset($filter)){$filter="-1";}
                     <?php
                     $statuses = ServiceConstant::getStatusRef();
                     for($i=0;$i < count($statuses);$i++){
+                        if($statuses[$i]==4){continue;}
                         ?>
                         <option <?= $statuses[$i]==$filter?'selected':'' ?> value="<?= $statuses[$i] ?>"><?= strtoupper(ServiceConstant::getStatus($statuses[$i])); ?></option>
                     <?php

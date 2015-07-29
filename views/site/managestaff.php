@@ -16,7 +16,7 @@ $this->params['breadcrumbs'] = array(
 $show_next = false;
 $show_prev = false;
 
-if($offset == 0 && count($staffMembers) >= $page_width ){
+if( count($staffMembers) >= $page_width ){
     $show_next = true;
 }else{
     $show_next = false;
