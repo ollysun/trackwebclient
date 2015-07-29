@@ -382,6 +382,23 @@ class SiteController extends BaseController
             return $this->sendErrorResponse("Invalid data", null);
         }
     }
+    public function actionMovetofordelivery(){
+        if(isset(Calypso::getInstance()->post()->waybill_numbers)){
+            $parcel = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+            $response = $parcel->moveForDelivery([
+                'waybill_numbers' => (Calypso::getInstance()->post()->waybill_numbers)
+            ]);
+            $response = new ResponseHandler($response);
+            if($response->getStatus() == ResponseHandler::STATUS_OK){
+                return $this->sendSuccessResponse($response->getData());
+            } else {
+                return $this->sendErrorResponse($response->getError(), null);
+            }
+        }else{
+            return $this->sendErrorResponse("Invalid data", null);
+        }
+    }
+
     public function actionGetarrivedparcel(){
         $staff_no = \Yii::$app->request->get('staff_no');
         if(!isset($staff_no)) {
