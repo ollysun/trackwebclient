@@ -21,6 +21,10 @@ use Yii;
 
 class ParcelsController extends BaseController {
 
+    public function beforeAction($action){
+        $this->enableCsrfValidation = false;
+        return parent::beforeAction($action);
+    }
     public function actionNew()
     {
 
@@ -29,7 +33,6 @@ class ParcelsController extends BaseController {
 
             $parcelService = new ParcelService();
             $payload = $parcelService->buildPostData($data);
-
             if(isset($payload['status'])) {
                 $errorMessages = implode('<br />', $payload['messages']);
                 Yii::$app->session->setFlash('danger', $errorMessages);

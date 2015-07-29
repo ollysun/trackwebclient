@@ -102,10 +102,18 @@ class Calypso{
         $decimal_holder = explode('.',$value);
         $value_arr = str_split($decimal_holder[0]);
         if(count($value_arr) <= 3)return $value;
-        $final_value = chunk_split($decimal_holder[0], 3, ",");
-        $final_value = rtrim($final_value, ",");
+        $final_value  = number_format($value,2,".",",");
         return $final_value;
     }
+    public function formatWeight($value){
+        if(intval($value) <= 0)return $value;
+        $decimal_holder = explode('.',$value);
+        $value_arr = str_split($decimal_holder[0]);
+        if(count($value_arr) <= 3)return $value;
+        $final_value  = number_format($value,0,".",",");
+        return $final_value;
+    }
+
     public function cookie($key,$value=NULL,$expires=null){
         if(isset($_COOKIE)){
             if($key && $value != NULL){
