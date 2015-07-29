@@ -4,11 +4,11 @@ use yii\helpers\Url;
 use Adapter\Globals\ServiceConstant;
 
 
-$this->title = 'Merchant Reconcialitions: Paid';
+$this->title = 'Merchant Reconciliations: Paid';
 $this->params['breadcrumbs'] = array(
 	array(
 	'url' => ['finance/'],
-	'label' => 'Reconcialitions'
+	'label' => 'Reconciliations'
 	),
 	array(
 	'url' => ['finance/merchantsdue'],
@@ -55,7 +55,7 @@ $this->params['breadcrumbs'] = array(
                     <th>Account Number</th>
                     <th>Account Name</th>
                     <th>Bank</th>
-                    <th>Cash to collect</th>
+                    <th>Cash collected</th>
                     <th>Status</th>
                     <th>Action</th>
                 </tr>
