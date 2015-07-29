@@ -69,10 +69,10 @@ class ParcelService {
         if(!isset($parcel['weight']) || !is_numeric($parcel['weight'])) {
             $error[] = "Weight cannot be empty and must be numeric";
         }
-        $parcel['package_value'] = Calypso::getValue($data, 'parcel_value');
-        if(!isset($parcel['package_value']) || !is_numeric($parcel['package_value'])) {
+        $parcel['package_value'] = Calypso::getValue($data, 'parcel_value', null);
+        /*if(!isset($parcel['package_value']) || !is_numeric($parcel['package_value'])) {
             $error[] = "Package Value cannot be empty and must be numeric";
-        }
+        }*/
         //@Todo To be calculated by the settings in the backend
         $parcel['amount_due'] = Calypso::getValue($data, 'parcel_value');
 
