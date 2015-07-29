@@ -7,7 +7,12 @@ use yii\widgets\Breadcrumbs;
   ]) ?>
 
   <div class="pull-left">
-    <h1><?php echo $this->title; ?></h1>
+    <?php
+      if ( !isset($this->params['page_title']) ) {
+        $this->params['page_title'] = $this->title;
+      }
+    ?>
+    <h1><?= $this->params['page_title']; ?></h1>
   </div>
 
   <?php if (isset($this->params['content_header_button'])): ?>
