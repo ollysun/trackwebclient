@@ -28,7 +28,7 @@ use app\assets\AppAsset;
 <body class="">
 
 <?php $this->beginBody() ?>
-<div class="waybill-wrap">
+<div class="">
     <?= $content ?>
 </div>
 
