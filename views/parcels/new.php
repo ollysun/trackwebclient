@@ -3,11 +3,11 @@ use Adapter\Util\Calypso;
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-$this->title = 'Create a New Parcel';
+$this->title = 'Create a New Shipment';
 $this->params['breadcrumbs'] = array(
     array(
         'url' => ['site/parcels'],
-        'label' => 'Parcels',
+        'label' => 'Shipment',
     ),
     array('label' => $this->title),
 );
