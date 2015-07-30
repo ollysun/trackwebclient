@@ -21,9 +21,14 @@ use Yii;
 
 class ParcelsController extends BaseController {
 
+    public function beforeAction($action)
+    {
+        $this->enableCsrfValidation = false;
+        return parent::beforeAction($action);
+    }
+
     public function actionNew()
     {
-
         if(Yii::$app->request->isPost){
             $data = Yii::$app->request->post();
 

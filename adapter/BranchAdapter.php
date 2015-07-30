@@ -77,4 +77,9 @@ class BranchAdapter extends BaseAdapter
     {
         return $this->request(ServiceConstant::URL_GET_ALL_BRANCH, ['branch_type' => $branch_type], self::HTTP_GET);
     }
+
+    public function getAll()
+    {
+        return $this->request(ServiceConstant::URL_GET_ALL_BRANCH, [], self::HTTP_GET);
+    }
 }

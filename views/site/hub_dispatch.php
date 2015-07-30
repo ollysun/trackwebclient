@@ -15,6 +15,7 @@ $this->params['breadcrumbs'] = array(
 ?>
 
 <!-- this page specific styles -->
+<?= Html::cssFile('@web/css/libs/datepicker.css') ?>
 <?= Html::cssFile('@web/css/libs/dataTables.fixedHeader.css') ?>
 <?= Html::cssFile('@web/css/libs/dataTables.tableTools.css') ?>
 
@@ -29,11 +30,16 @@ $this->params['breadcrumbs'] = array(
 				<form class="clearfix">
 					<div class="pull-left form-group form-group-sm">
 						<label for="">From:</label><br>
-						<input name="from" id="" class="form-control date-range" value="" data-provide="datepicker" data-date-format="yyyy/mm/dd" data-date-end-date="0d">
+						<input name="from" id="" class="form-control date-range" value="<?= $from_date != '-1'? date('Y/m/d', strtotime($from_date)):'';?>" data-provide="datepicker" data-date-format="yyyy/mm/dd" data-date-end-date="0d">
 					</div>
+
 					<div class="pull-left form-group form-group-sm">
 						<label for="">To:</label><br>
-						<input name="to" id="" class="form-control date-range"  value="" data-provide="datepicker" data-date-format="yyyy/mm/dd" data-date-end-date="0d">
+						<input name="to" id="" class="form-control date-range"  value="<?=  date('Y/m/d', strtotime($to_date));?>" data-provide="datepicker" data-date-format="yyyy/mm/dd" data-date-end-date="0d">
+					</div>
+					<div class="pull-left">
+						<label>&nbsp;</label><br>
+						<button class="btn btn-default btn-sm"><i class="fa fa-search"></i></button>
 					</div>
 				</form>
 			</div>
@@ -49,7 +55,7 @@ $this->params['breadcrumbs'] = array(
 								foreach ($hubs as $hub) {
 									?>
 									<option
-										value="<?= $hub['id']; ?>" <?= ($hub['id'] == $filter_hub_id) ? 'selected' : ''; ?>><?= ucwords($hub['name']) . " (" . strtoupper($hub['code']) . ")"; ?></option>
+										value="<?= $hub['id']; ?>" <?= ($hub['id'] == $from_branch_id) ? 'selected' : ''; ?>><?= ucwords($hub['name']) . " (" . strtoupper($hub['code']) . ")"; ?></option>
 								<?php }
 							endif
 							?>
@@ -101,3 +107,4 @@ $this->params['breadcrumbs'] = array(
 <?php $this->registerJsFile('@web/js/libs/dataTables.fixedHeader.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/libs/dataTables.tableTools.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/libs/jquery.dataTables.bootstrap.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
+<?php $this->registerJsFile('@web/js/libs/bootstrap-datepicker.js', ['depends' => [\yii\web\JqueryAsset::className()]]);?>

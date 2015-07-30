@@ -681,22 +681,28 @@ class SiteController extends BaseController
     //@TODO: Implement the display of the content
     public function actionHubdispatch()
     {
-        $data = Yii::$app->request->post();
-        $sweeper_id = Calypso::getValue($data, 'sweeper_id', null);
-        $from_branch_id = Calypso::getValue($data, 'from_branch_id', null);
         $user_session = Calypso::getInstance()->session("user_session");
+        $from_branch_id = $user_session['branch_id'];
 
         $hubAdp = new BranchAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
-        $hubs = $hubAdp->getHubs();
+        $hubs = $hubAdp->getAll();
         $hubs = new ResponseHandler($hubs);
         $hub_list = $hubs->getStatus()==ResponseHandler::STATUS_OK?$hubs->getData(): [];
 
         $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+        $from_date = null;
+        $to_date=null;
+        if(isset(Calypso::getInstance()->get()->from,Calypso::getInstance()->get()->to)){
+            $from_date = Calypso::getInstance()->get()->from.' 00:00:00';
+            $to_date = Calypso::getInstance()->get()->to.' 23:59:59';
+            $filter = isset(Calypso::getInstance()->get()->date_filter) ? Calypso::getInstance()->get()->date_filter : '-1';
+            $dispatch_parcels = $parcelsAdapter->getDispatchedParcels($user_session['branch_id'],$from_date,$to_date,$filter);
+        }else
         $dispatch_parcels = $parcelsAdapter->getDispatchedParcels($user_session['branch_id']);
         $parcels = new ResponseHandler($dispatch_parcels);
         $parcel_list = $parcels->getStatus()==ResponseHandler::STATUS_OK?$parcels->getData(): [];
 
-        return $this->render('hub_dispatch', array('sweeper'=>[], 'hubs'=>$hub_list,'parcels'=>$parcel_list, 'filter_hub_id'=>$from_branch_id));
+        return $this->render('hub_dispatch', array('sweeper'=>[], 'hubs'=>$hub_list,'parcels'=>$parcel_list, 'from_branch_id'=>$from_branch_id, 'from_date'=>$from_date, 'to_date'=>$to_date));
     }
     public function actionCustomerhistory()
     {
