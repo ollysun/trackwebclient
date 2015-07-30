@@ -1,4 +1,6 @@
 var Hub = {};
+Hub.states = {};
+Hub.stateHubs = {};
 function log(msg){
     console.log(msg);
 }
@@ -187,5 +189,25 @@ $(document).ready(function(){
     });
     $('.modal').on('hide.bs.modal', function (e) {
         window.location.reload();
-    })
+    });
+
+    if(typeof hubs != 'undefined' && typeof states != 'undefined'){
+
+        hubs.forEach(function(v,i){
+            if(typeof Hub.stateHubs[v.state_id] == 'undefined'){
+                Hub.stateHubs[v.state_id] = [];
+            }
+            Hub.stateHubs[v.state_id].push(v);
+        });
+        $("#state_hub_selector").unbind("change").on("change",function(){
+            $("#hub_id").html("<option>No Hub</option>");
+            var state_hubs =  Hub.stateHubs[$(this).val()];
+            if(state_hubs){
+                $("#hub_id").html("<option>Select One</option>");
+                state_hubs.forEach(function(v,i){
+                    $("#hub_id").append("<option value='"+ v.id+"'>"+ v.name.toUpperCase() + " ("+ v.code.toUpperCase()+")"+"</option>");
+                });
+            }
+        });
+    }
 })
