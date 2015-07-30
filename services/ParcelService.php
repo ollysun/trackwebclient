@@ -55,7 +55,7 @@ class ParcelService {
 
         $oldAccount = Calypso::getValue($data, 'merchant', null);
         if($oldAccount !== 'none') {
-            if (!empty($bankData['account_name']) || !empty($bankData['bank_id']) || !empty($bankData['account_name'])) {
+            if (empty($bankData['account_name']) || empty($bankData['bank_id']) || empty($bankData['account_name'])) {
                 $error[] = "All Account Details are required!";
             }
         }
@@ -69,10 +69,10 @@ class ParcelService {
         if(!isset($parcel['weight']) || !is_numeric($parcel['weight'])) {
             $error[] = "Weight cannot be empty and must be numeric";
         }
-        $parcel['package_value'] = Calypso::getValue($data, 'parcel_value');
-        if(!isset($parcel['package_value']) || !is_numeric($parcel['package_value'])) {
+        $parcel['package_value'] = Calypso::getValue($data, 'parcel_value', null);
+        /*if(!isset($parcel['package_value']) || !is_numeric($parcel['package_value'])) {
             $error[] = "Package Value cannot be empty and must be numeric";
-        }
+        }*/
         //@Todo To be calculated by the settings in the backend
         $parcel['amount_due'] = Calypso::getValue($data, 'parcel_value');
 
@@ -91,8 +91,8 @@ class ParcelService {
         $payload['receiver_address'] = $senderAddress;
         $payload['parcel'] = $parcel;
 
-        $payload['is_corporate_lead'] = (Calypso::getValue($data, 'corporate_lead') === true) ? 1 : 0;
-        $payload['to_hub'] = (Calypso::getValue($data, 'send_to_hub') === 'true') ? 1 : 0;
+        $payload['is_corporate_lead'] = (Calypso::getValue($data, 'corporate_lead') === 'true') ? 1 : 0;
+        $payload['to_hub'] = (Calypso::getValue($data, 'send_to_hub') === '1') ? 1 : 0;
 
         if(!empty($error)) {
             return [ 'status' => false, 'messages' => $error ];

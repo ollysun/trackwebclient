@@ -22,7 +22,7 @@ if($search){
     $link = "&search=true&to=".urlencode($to)."&from=".urlencode($fro);
 }
 
-if($offset == 0 || count($parcels) >= $page_width ){
+if( count($parcels) >= $page_width ){
     $show_next = true;
 }else{
     $show_next = false;
@@ -64,7 +64,8 @@ if($offset <= 0){
     		<div class="pull-left">
     			<label>&nbsp;</label><br>
     			<button type="button" class="btn btn-sm btn-default">Generate Delivery Run</button>
-    		</div>
+                <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">Receive Shipments from Hub</button>
+            </div>
 		</div>
 	</div>
 	<div class="main-box-body">
@@ -119,9 +120,70 @@ if($offset <= 0){
 </div>
 
 
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <form id="arrived_parcels" class="">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Receive Shipments from Hub</h4>
+                </div>
+                <div class="modal-body">
+
+                    <form class="">
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <div class="form-group">
+                                    <label>Staff ID</label>
+                                    <div class="input-group">
+                                        <input id="staff_no" value="98765" class="form-control">
+                                        <div class="input-group-btn">
+                                            <button type="button" data-branch_type="ec" id="get_arrival" class="btn btn-default">Load</button>
+                                        </div>
+                                    </div>
+                                    <div class="input-group">
+                                        <label id="loading_label"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-6">
+                                <label>Staff Name</label>
+                                <div id="sweeper_name" class="form-control-static"><em>Not Available</em></div>
+                                <label>Department</label><br>
+                                <div id="role" class="form-control-static"><em>Not Available</em></div>
+                                <label>Branch of Operation</label><br>
+                                <div id="branch" class="form-control-static"><em>Not Available</em></div>
+                                <input id="staff_user_id" name="staff_user_id" type="hidden">
+                            </div>
+                        </div>
+                    </form>
+
+                    <br>
+                    <table class="table table-bordered table-condensed">
+                        <thead>
+                        <tr>
+                            <th>S/N</th>
+                            <th>Waybill No.</th>
+                            <th>Status</th>
+                        </tr>
+                        </thead>
+                        <tbody id="parcel_arrival">
+
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button id="arrived_parcels_btn" type="button" class="btn btn-primary">Accept</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 
 <!-- this page specific scripts -->
 <?= $this->registerJsFile('@web/js/libs/jquery.dataTables.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
 <?= $this->registerJsFile('@web/js/libs/dataTables.fixedHeader.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
 <?= $this->registerJsFile('@web/js/libs/dataTables.tableTools.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
 <?= $this->registerJsFile('@web/js/libs/jquery.dataTables.bootstrap.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/hub_util.js', ['depends' => [\app\assets\AppAsset::className()]])?>

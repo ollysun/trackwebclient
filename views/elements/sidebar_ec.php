@@ -1,6 +1,7 @@
 <?php
 use yii\helpers\Html;
 use yii\helpers\Url;
+use Adapter\Util\Calypso;
 ?>
 
 <div id="nav-col">
@@ -95,7 +96,7 @@ use yii\helpers\Url;
 						</ul>
 					</li>
 					<li>
-						<a href="<?= Url::to(['site/managebranches']) ?>" class="dropdown-toggle">
+						<a href="#" class="dropdown-toggle">
 							<i class="fa fa-building-o"></i>
 							<span>Hub</span>
 							<i class="fa fa-angle-right drop-icon"></i>
@@ -121,6 +122,52 @@ use yii\helpers\Url;
 							<span>Customer History</span>
 						</a>
 					</li>
+					<li>
+						<a href="<?= Url::to(['finance/']) ?>" class="dropdown-toggle">
+							<i class="fa fa-money"></i>
+							<span>Reconciliations</span>
+							<i class="fa fa-angle-right drop-icon"></i>
+						</a>
+						<ul class="submenu">
+							<li>
+								<a href="<?= Url::to(['finance/customersall']) ?>">Customers</a>
+							</li>
+							<li>
+								<a href="<?= Url::to(['finance/merchantsdue']) ?>">Merchants</a>
+							</li>
+						</ul>
+					</li>
+					<?php
+/*					$permission = Calypso::getInstance()->permissionMap();
+					$menus = Calypso::getInstance()->getMenus();
+
+					foreach($menus as $k => $v) {
+						//var_dump($k);continue;
+						*/?><!--
+						<li>
+							<a href="<?/*= !is_array($v)? Url::to([$v]):'' */?>" class="dropdown-toggle">
+								<i class="fa fa-money"></i>
+								<span><?/*= Calypso::getInstance()->normaliseLinkLabel($k); */?></span>
+								<i class="fa fa-angle-right drop-icon"></i>
+							</a>
+							<?php
+/*							if(is_array($menus[$k])){
+							*/?>
+							<ul class="submenu">
+								<?php
+/*								//print_r($menus[$k]);
+								foreach($menus[$k] as $key => $value){
+								*/?>
+								<li>
+									<a href="<?/*= Url::to(['finance/customersall']) */?>"><?/*= Calypso::getInstance()->normaliseLinkLabel('Fake_Test'); */?></a>
+								</li>
+								<?php /*} */?>
+							</ul>
+							<?php /*} */?>
+						</li>
+						--><?php
+/*					}
+					*/?>
 				</ul>
 			</div>
 		</div>

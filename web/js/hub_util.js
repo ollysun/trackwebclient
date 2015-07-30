@@ -25,6 +25,7 @@ Hub.Resources = {
     getArrivedParcel:'getarrivedparcel',
     validateStaff:'validatestaff',
     checkInParcel:'checkinparcel',
+    moveToForDelivery:'movetofordelivery',
     BASE_PATH:'/site/'
 }
 Hub.getBranches = function(state_id,branch_id,callback){
@@ -44,6 +45,13 @@ Hub.validateSweeper = function(staff_id,callback){
 }
 Hub.sendParcelToArrival = function(data,callback){
     Hub.postToServer(Hub.Resources.BASE_PATH + Hub.Resources.checkInParcel,data,function(response){
+        if(typeof callback == "function"){
+            callback(response);
+        }
+    });
+}
+Hub.sendParcelToForDelivery = function(data,callback){
+    Hub.postToServer(Hub.Resources.BASE_PATH + Hub.Resources.moveToForDelivery,data,function(response){
         if(typeof callback == "function"){
             callback(response);
         }
@@ -79,16 +87,17 @@ $(document).ready(function(){
 
     $("#get_arrival").unbind('click').on('click',function(){
         var staff_no = $("#staff_no").val();
+        var branch_type= $(this).data("branch_type");
+       // alert(branch_type);
         if(staff_no.length > 0){
-            $("#loading_label").html("Validating Staff ID...");
+            $("#loading_label").removeClass('text-success').removeClass('text-danger').addClass("text-info").html("Validating Staff ID...");
             Hub.validateSweeper(staff_no,function(response){
-                log(response);
-                if(response.status){
+                if(response.status == 'success'){
                     $("#sweeper_name").html(response.data.fullname.toUpperCase());
                     $("#role").html(response.data.role.name.toUpperCase());
                     $("#branch").html(response.data.branch.name.toUpperCase()+'('+response.data.branch.code.toUpperCase()+')');
                     $("#staff_user_id").val(response.data.id);
-                    $("#loading_label").html("Staff Validation Successful<br/>Loading parcels... Please wait");
+                    $("#loading_label").removeClass('text-success').removeClass('text-danger').addClass("text-info").html("Staff Validation Successful<br/>Loading parcels... Please wait");
                     Hub.getParcelsForArrival(staff_no,function(response){
                         $("#parcel_arrival").html("");
                         if(response.status && response.data.length > 0){
@@ -96,7 +105,7 @@ $(document).ready(function(){
                                 $("#parcel_arrival").append("<tr id='"+ v.waybill_number+"' style='background-color: rgb(187, 255, 224);'><td>"+(i+1)+" <input name='"+ v.waybill_number+"' type='checkbox'></td><td>"+ v.waybill_number+"</td><td id='L"+v.waybill_number+"'>"+ (v.status == 5?'IN TRANSIT':'Not Intransit')+"</td></tr>");
                             });
                         }
-                        $("#loading_label").html("Loaded");
+                        $("#loading_label").removeClass('text-info').removeClass('text-danger').addClass("text-success").html("Loaded");
                         var payload = function(){
                             this.waybill_numbers = [];
                             this.held_by_id = 0;
@@ -112,18 +121,45 @@ $(document).ready(function(){
                                 }
                             }
                             if(payloadObj.waybill_numbers.length > 0){
-                                Hub.sendParcelToArrival({held_by_id: payloadObj.held_by_id,waybill_numbers: payloadObj.waybill_numbers.join(',') },function(resp){
-
-                                    var response = JSON.parse(JSON.stringify (resp));
-                                    if(response.status=='success'){
-                                        if(typeof response.data.bad_parcels != "undefined"){
-                                            for(var p in response.data.bad_parcels){
-                                                $("#L"+p).html(response.data.bad_parcels[p]);
-                                                $("#L"+p).attr("style","background-color:red");
+                                switch(branch_type){
+                                    case 'ec':
+                                        Hub.sendParcelToForDelivery({waybill_numbers: payloadObj.waybill_numbers.join(',') },function(resp){
+                                            log(resp);
+                                            var response = JSON.parse(JSON.stringify (resp));
+                                            if(response.status=='success'){
+                                                if(typeof response.data.bad_parcels != "undefined"){
+                                                    for(var p in response.data.bad_parcels){
+                                                        $("#L"+p).html(response.data.bad_parcels[p]);
+                                                        $("#L"+p).attr("style","background-color:red");
+                                                    }
+                                                }else{
+                                                    window.location.reload();
+                                                }
+                                            }else{
+                                                alert("Error.#157-68. Reason:"+response.message);
                                             }
-                                        }
-                                    }
-                                });
+                                        });
+                                        break;
+                                    case 'hub':
+                                        Hub.sendParcelToArrival({held_by_id: payloadObj.held_by_id,waybill_numbers: payloadObj.waybill_numbers.join(',') },function(resp){
+
+                                            var response = JSON.parse(JSON.stringify (resp));
+                                            if(response.status=='success'){
+                                                if(typeof response.data.bad_parcels != "undefined"){
+                                                    for(var p in response.data.bad_parcels){
+                                                        $("#L"+p).html(response.data.bad_parcels[p]);
+                                                        $("#L"+p).attr("style","background-color:red");
+                                                    }
+                                                }else{
+                                                    window.location.reload();
+                                                }
+                                            }else{
+                                                alert("Error.#157-68. Reason:"+response.message);
+                                            }
+                                        });
+                                        break;
+                                }
+
                             }else{
                                 alert("No item scanned in");
                             }
@@ -131,7 +167,7 @@ $(document).ready(function(){
                         });
                     });
                 }else{
-                    $("#loading_label").html("Staff Validation Failed");
+                    $("#loading_label").removeClass('text-info').removeClass('text-success').addClass("text-danger").html("Staff Validation Failed");
                 }
             });
 
