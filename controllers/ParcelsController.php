@@ -44,7 +44,7 @@ class ParcelsController extends BaseController {
                 if ($response['status'] === Response::STATUS_OK) {
                     Yii::$app->response->redirect("/site/viewwaybill?id={$response['data']['id']}");
                 } else {
-                    $this->flashError('There was a problem creating the value. Please try again.');
+                    $this->flashError('There was a problem creating the value. Please try again. #Reason: <strong>'.$response['message'].'</strong>');
                 }
             }
         }
