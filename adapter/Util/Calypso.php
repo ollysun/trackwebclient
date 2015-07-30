@@ -257,7 +257,7 @@ class Calypso{
     public static function permissionMap(){
         $permissionMap = [
             ServiceConstant::USER_TYPE_ADMIN => [''],
-            ServiceConstant::USER_TYPE_OFFICER => ['shipments/*','hubs/*','finance/*','billing/*','admin/*'],
+            ServiceConstant::USER_TYPE_OFFICER => ['finance/*','billing/*','admin/*'],
             ServiceConstant::USER_TYPE_SWEEPER =>  ['site/*','parcels/*','shipments/*','hubs/*','finance/*','billing/*','admin/*'],
             ServiceConstant::USER_TYPE_DISPATCHER => ['site/*','parcels/*','shipments/*','hubs/*','finance/*','billing/*','admin/*'],
         ];
