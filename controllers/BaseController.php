@@ -37,7 +37,7 @@ class BaseController extends Controller {
             }
             if(!array_key_exists($s['role_id'],$this->permissionMap)){
                 \Yii::$app->getUser()->logout();
-                Calypso::getInstance()->setPageData("Invalid Login. Check username and password and try again");
+                Calypso::getInstance()->setPageData("Access Denied");
                return $this->redirect(['site/logout']);
             }
             $map = $this->permissionMap[$s['role_id']];
@@ -45,13 +45,13 @@ class BaseController extends Controller {
             //Wild card
             if(in_array($current.'/*',$map)){
                 \Yii::$app->getUser()->logout();
-                Calypso::getInstance()->setPageData("Invalid Login. Check username and password and try again");
+                Calypso::getInstance()->setPageData("Access Denied");
                 return $this->redirect(['site/logout']);
             }
 
             if(in_array($current.'/'.$action->id,$map)){
                 \Yii::$app->getUser()->logout();
-                Calypso::getInstance()->setPageData("Invalid Login. Check username and password and try again");
+                Calypso::getInstance()->setPageData("Access Denied");
                 return $this->redirect(['site/logout']);
             }
         }

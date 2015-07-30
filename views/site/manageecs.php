@@ -144,7 +144,7 @@ $this->params['breadcrumbs'] = array(
                         <label>Address</label>
                         <textarea class="form-control" name="address" rows="2"></textarea>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group hidden">
                         <label>Activate EC?</label>
                         <select class="form-control" name="status">
                             <option value="<?= ServiceConstant::ACTIVE ?>">Active</option>
@@ -281,5 +281,6 @@ $this->params['breadcrumbs'] = array(
 <?php $this->registerJsFile('@web/js/libs/dataTables.tableTools.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/libs/jquery.dataTables.bootstrap.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/manage_branches.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/hub_util.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 
 
