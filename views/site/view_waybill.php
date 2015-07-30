@@ -90,11 +90,7 @@ $this->params['breadcrumbs'][] = 'Waybill';
 
                     <div class="">Pickup at Allen Office</div>
                 </div>
-                <div class="form-group">
-                    <label>Waybill Bar Code</label>
 
-                    <div id="barcode" class="">Pickup at Allen Office</div>
-                </div>
                 <div class="form-group">
                     <button
                         onclick="javascript:window.open('<?= Url::to(['site/printwaybill?id=' . $id]) ?>', '_blank', 'toolbar=yes, scrollbars=yes, resizable=yes, top=10, left=50%, width=1100, height=800');"
