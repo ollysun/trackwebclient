@@ -5,14 +5,17 @@ class ServiceConstant {
 
     const BASE_PATH = "http://local.courierplus.com";
 
+    const USER_TYPE_SUPER_ADMIN = -1;
     const USER_TYPE_ADMIN = 1;
-    const USER_TYPE_MANAGER = 2;
+    const USER_TYPE_OFFICER = 2;
+    const USER_TYPE_SWEEPER = 3;
+    const USER_TYPE_DISPATCHER = 4;
+    /*const USER_TYPE_MANAGER = 2;
     const USER_TYPE_CASHIER = 3;
     const USER_TYPE_AGENT = 4;
     const USER_TYPE_CUSTOMER = 5;
     const USER_TYPE_SUPPORT = 6;
-    const USER_TYPE_ACCOUNTANT = 7;
-    const USER_TYPE_SUPER_ADMIN = 8;
+    const USER_TYPE_ACCOUNTANT = 7;*/
 
     const ACTIVE = 1;
     const INACTIVE = 2;
@@ -31,6 +34,7 @@ class ServiceConstant {
     const URL_MOVE_TO_FOR_SWEEPER = '/parcel/moveToForSweeper/';
     const URL_MOVE_TO_IN_TRANSIT = '/parcel/moveToInTransit/';
     const URL_MOVE_TO_ARRIVAL = '/parcel/moveToArrival/';
+    const URL_MOVE_FOR_DELIVERY = '/parcel/moveToForDelivery/';
 
     const URL_GET_ALL_BANKS = 'bank/getAll/';
 

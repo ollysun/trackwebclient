@@ -56,7 +56,7 @@ $this->params['breadcrumbs'] = array(
 						<label for="searchInput">&nbsp;</label><br>
 						<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">Receive</button>
 					</div>
-            </form>
+           		</form>
 			</div>
 		</div>
 	</div>
@@ -100,7 +100,13 @@ $this->params['breadcrumbs'] = array(
 				?>
 				</tbody>
 			</table>
+
 		</div>
+		<?php
+		if(count($parcel_next) <= 0){
+			?>
+			<p><strong>No shipment received today</strong></p>
+		<?php } ?>
 	</div>
 </div>
 
@@ -124,7 +130,7 @@ $this->params['breadcrumbs'] = array(
 								<div class="input-group">
 									<input id="staff_no" value="98765" class="form-control">
 									<div class="input-group-btn">
-										<button type="button" id="get_arrival" class="btn btn-default">Load</button>
+										<button type="button" data-branch_type="hub" id="get_arrival" class="btn btn-default">Load</button>
 									</div>
 								</div>
 								<div class="input-group">

@@ -5,6 +5,7 @@
 			<button class="btn btn-default <?=$prefix?>" id="btn_Search_<?=$prefix?>" type="button"><i class="fa fa-search"></i></button>
 		</div>
 	</div>
+	<span class="help-block">Phone number format: 234xxxxxxxxxx</span>
 </div>
 <div id="<?php echo $prefix;?>SearchFlyOutPanelWrap" class="flyout-panel-wrap">
 	<div id="<?php echo $prefix;?>SearchFlyOutPanel" class="flyout-panel">
@@ -46,6 +47,7 @@
 		<div class="form-group">
 			<label for="">Phone number</label>
 			<input name="phone[<?=$prefix?>]" id="phone_<?=$prefix?>" type="text" class="form-control <?php echo $prefix;?>SearchFlyOutPanelTrigger validate required phone" data-target="#<?php echo $prefix;?>SearchFlyOutPanel">
+			<span class="help-block">Format: 234xxxxxxxxxx</span>
 		</div>
 	</div>
 </div>

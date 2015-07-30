@@ -62,7 +62,6 @@ class SiteController extends BaseController
     public function beforeAction($action){
         if(!in_array($action->id,array('logout','login','gerraout','site'))){
             $s = Calypso::getInstance()->session('user_session');
-
             if(!$s){
                // Calypso::getInstance()->AppRedirect('site','login');
                 return $this->redirect(['site/logout']);
@@ -382,6 +381,23 @@ class SiteController extends BaseController
             return $this->sendErrorResponse("Invalid data", null);
         }
     }
+    public function actionMovetofordelivery(){
+        if(isset(Calypso::getInstance()->post()->waybill_numbers)){
+            $parcel = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+            $response = $parcel->moveForDelivery([
+                'waybill_numbers' => (Calypso::getInstance()->post()->waybill_numbers)
+            ]);
+            $response = new ResponseHandler($response);
+            if($response->getStatus() == ResponseHandler::STATUS_OK){
+                return $this->sendSuccessResponse($response->getData());
+            } else {
+                return $this->sendErrorResponse($response->getError(), null);
+            }
+        }else{
+            return $this->sendErrorResponse("Invalid data", null);
+        }
+    }
+
     public function actionGetarrivedparcel(){
         $staff_no = \Yii::$app->request->get('staff_no');
         if(!isset($staff_no)) {
@@ -582,7 +598,20 @@ class SiteController extends BaseController
         $roles = new ResponseHandler($roles);
         $state_list = $states->getStatus()==ResponseHandler::STATUS_OK?$states->getData(): [];
         $role_list =  $roles->getStatus()==ResponseHandler::STATUS_OK?$roles->getData(): [];
-        return $this->render('managestaff',['states' => $state_list,'roles'=> $role_list]);
+
+        $staffMembers = [];
+        $staffAdp = new AdminAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+        if(isset(Calypso::getInstance()->get()->search) && strlen(Calypso::getInstance()->get()->search) > 0){
+            $is_email = !(filter_var(Calypso::getInstance()->get()->search,FILTER_VALIDATE_EMAIL) === false);
+            $staff_data = $staffAdp->searchStaffMembers(Calypso::getInstance()->get()->search,$is_email,$offset,$this->page_width);
+        }else {
+            $staff_data = $staffAdp->getStaffMembers($offset, $this->page_width, $role);
+        }
+        $resp = new ResponseHandler($staff_data);
+        $staffMembers = $resp->getData();
+
+
+        return $this->render('managestaff',['states' => $state_list,'roles'=> $role_list,'staffMembers' => $staffMembers,'offset'=>$offset,'role'=>$role,'page_width'=>$this->page_width]);
     }
     public function actionHubarrival()
     {

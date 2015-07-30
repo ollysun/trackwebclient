@@ -3,12 +3,13 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 
 /* @var $this yii\web\View */
-$this->title = 'Waybill No: '.strtoupper($parcelData['waybill_number']);
+$this->title = 'View Waybill: '.strtoupper($parcelData['waybill_number']);
+$this->params['page_title'] = 'Waybill No: <strong>'.strtoupper($parcelData['waybill_number']).'</strong>';
 $this->params['breadcrumbs'][] = 'Waybill';
 ?>
 
 <?php
-	$this->params['content_header_button'] = '<span class="label label-success">CONFIRMED DELIVERY</span>';
+	//$this->params['content_header_button'] = '<span class="label label-success">CONFIRMED DELIVERY</span>';
 //var_dump($parcelData);
 ?>
 

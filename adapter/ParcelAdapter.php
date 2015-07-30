@@ -71,5 +71,8 @@ class ParcelAdapter extends BaseAdapter{
     public function moveToArrival($postData) {
         return $this->request(ServiceConstant::URL_MOVE_TO_ARRIVAL, $postData, self::HTTP_POST);
     }
+    public function moveForDelivery($postData) {
+        return $this->request(ServiceConstant::URL_MOVE_FOR_DELIVERY, $postData, self::HTTP_POST);
+    }
 
 }
