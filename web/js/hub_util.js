@@ -135,6 +135,8 @@ $(document).ready(function(){
                                                 }else{
                                                     window.location.reload();
                                                 }
+                                            }else{
+                                                alert("Error.#157-68. Reason:"+response.message);
                                             }
                                         });
                                         break;
@@ -151,6 +153,8 @@ $(document).ready(function(){
                                                 }else{
                                                     window.location.reload();
                                                 }
+                                            }else{
+                                                alert("Error.#157-68. Reason:"+response.message);
                                             }
                                         });
                                         break;

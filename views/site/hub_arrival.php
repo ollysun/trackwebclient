@@ -100,7 +100,13 @@ $this->params['breadcrumbs'] = array(
 				?>
 				</tbody>
 			</table>
+
 		</div>
+		<?php
+		if(count($parcel_next) <= 0){
+			?>
+			<p><strong>No shipment received today</strong></p>
+		<?php } ?>
 	</div>
 </div>
 
