@@ -55,7 +55,7 @@ $this->params['breadcrumbs'] = array(
         </div>
         <div class="main-box-body">
             <div class="table-responsive">
-                <table id="next_dest" class="table table-hover next_dest">
+                <table id="next_dest" class="table table-hover next_dest dataTable">
                     <thead>
                     <tr>
                         <th style="width: 20px;"></th>

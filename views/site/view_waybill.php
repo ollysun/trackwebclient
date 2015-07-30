@@ -44,7 +44,7 @@ $this->params['breadcrumbs'][] = 'Waybill';
                 </div>
                 <div class="form-group">
                     <label>Parcel type</label>
-                    <div class="">Document</div>
+                    <div class="">N/A</div>
                 </div>
                 <div class="row">
                     <div class="form-group col-xs-6">
@@ -60,7 +60,7 @@ $this->params['breadcrumbs'][] = 'Waybill';
             <div class="col-xs-12 col-sm-6">
                 <div class="form-group">
                     <label>Delivery date</label>
-                    <div class="">23 June 2015</div>
+                    <div class="">N/A</div>
                 </div>
                 <div class="form-group">
                     <label>Receiver Name</label>
@@ -83,18 +83,14 @@ $this->params['breadcrumbs'][] = 'Waybill';
                 <div class="form-group">
                     <label>Shipment type</label>
 
-                    <div class="">Priority Shipping (Air Mail)</div>
+                    <div class="">N/A</div>
                 </div>
                 <div class="form-group">
                     <label>Delivery type</label>
 
-                    <div class="">Pickup at Allen Office</div>
+                    <div class="">N/A</div>
                 </div>
-                <div class="form-group">
-                    <label>Waybill Bar Code</label>
 
-                    <div id="barcode" class="">Pickup at Allen Office</div>
-                </div>
                 <div class="form-group">
                     <button
                         onclick="javascript:window.open('<?= Url::to(['site/printwaybill?id=' . $id]) ?>', '_blank', 'toolbar=yes, scrollbars=yes, resizable=yes, top=10, left=50%, width=1100, height=800');"
