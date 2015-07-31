@@ -160,7 +160,7 @@ class SiteController extends BaseController
                     $error = 0;
                 } else {
                     //$this->flashError('There was a problem creating the value. Please try again.');
-                    $flash_msg =  ('There was a problem creating the value. Please try again.');
+                    $flash_msg =  ('There was a problem creating the value. Please try again. #Reason:'.$response['message']);
                 }
             }
             echo "<script>window.top.getServerResponse('".$error."','".$flash_msg."');</script>";
@@ -520,7 +520,7 @@ class SiteController extends BaseController
                         Yii::$app->session->setFlash('danger', 'There was a problem creating the centre. Please try again.');
                     }
                 }
-                else{
+                elseif ($task=='edit'){
                     $response = $center->editOneCentre($data, $task);
                     if ($response['status'] === Response::STATUS_OK) {
                         Yii::$app->session->setFlash('success', 'Centre has been edited successfully.');
@@ -528,9 +528,16 @@ class SiteController extends BaseController
                         Yii::$app->session->setFlash('danger', 'There was a problem editing the hub. Please try again.');
                     }
                 }
+                elseif ($task=='relink'){
+                    $response = $center->editOneCentre($data, $task);
+                    if ($response['status'] === Response::STATUS_OK) {
+                        Yii::$app->session->setFlash('success', 'Centre has been re-linked successfully.');
+                    } else {
+                        Yii::$app->session->setFlash('danger', 'There was a problem re-linking this EC to the selected HUB. Please verify the both EC and Hub exist then try again.');
+                    }
+                }
             }
         }
-
         $refAdp = new RefAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
         $states = $refAdp->getStates(1); // Hardcoded Nigeria for now
         $states = new ResponseHandler($states);

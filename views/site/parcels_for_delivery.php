@@ -70,7 +70,7 @@ if($offset <= 0){
 	</div>
 	<div class="main-box-body">
 		<div class="table-responsive">
-            <table id="table" class="table table-hover">
+            <table id="table" class="table table-hover dataTable">
                 <thead>
                 <tr>
                     <!--						<th style="width: 20px"><div class="checkbox-nice"><input id="chbx_w_all" type="checkbox"><label for="chbx_w_all"> </label></div></th>-->
@@ -80,6 +80,7 @@ if($offset <= 0){
                     <th>Shipper Phone</th>
                     <th>Receiver</th>
                     <th>Receiver Phone</th>
+                    <th>Created Date</th>
                     <th>Status</th>
                     <th>Action</th>
                 </tr>
@@ -98,6 +99,7 @@ if($offset <= 0){
                             <td><?= $parcel['sender']['phone'] ?></td>
                             <td><?= strtoupper($parcel['receiver']['firstname'].' '. $parcel['receiver']['lastname']) ?></td>
                             <td><?= $parcel['receiver']['phone'] ?></td>
+                            <td><?= date('Y/m/d @ H:m',strtotime($parcel['created_date'])); ?></td>
                             <td><?= ServiceConstant::getStatus($parcel['status']); ?></td>
                             <td><a href="<?= Url::to(['site/viewwaybill?id='.$parcel['id']]) ?>" class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
                         </tr>
@@ -187,3 +189,8 @@ if($offset <= 0){
 <?= $this->registerJsFile('@web/js/libs/dataTables.tableTools.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
 <?= $this->registerJsFile('@web/js/libs/jquery.dataTables.bootstrap.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/hub_util.js', ['depends' => [\app\assets\AppAsset::className()]])?>
+<?php $this->registerJsFile('@web/js/jquery.dataTables.min.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/dataTables.bootstrap.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/table.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
+
+

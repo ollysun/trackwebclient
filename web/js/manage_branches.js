@@ -30,6 +30,8 @@ var Branch = {
                 });
                 $(selectSelector).attr('disabled', false);
                 $(selectSelector).html(html);
+            }else{
+                alert(response.message);
             }
         });
     },
@@ -43,6 +45,8 @@ var Branch = {
                 });
                 $(selectSelector).attr('disabled', false);
                 $(selectSelector).html(html);
+            }else{
+                alert(response.message);
             }
         });
     },
@@ -62,6 +66,8 @@ var Branch = {
                 if(response.data.parent !== null)
                     ex.hub_id = response.data.parent.id;
                 self.setBranchDetails(ex, target);
+            }else{
+                alert(response.message);
             }
         });
     },
