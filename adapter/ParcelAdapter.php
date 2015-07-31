@@ -6,7 +6,6 @@ use Adapter\Globals\ServiceConstant;
 
 class ParcelAdapter extends BaseAdapter{
 
-
     public function createNewParcel($postData){
         return $this->request(ServiceConstant::URL_ADD_PARCEL, $postData, self::HTTP_POST);
     }
@@ -57,10 +56,9 @@ class ParcelAdapter extends BaseAdapter{
         $filter .= ($to_branch == null ? '':'&to_branch_id='.$to_branch);
         $filter .= ($start_created_date == null ? '':'&start_created_date='.$start_created_date);
         $filter .= ($end_created_date == null ? '':'&end_created_date='.$end_created_date);
-        var_dump(ServiceConstant::URL_GET_ALL_PARCEL.$filter);
+
         return $this->request(ServiceConstant::URL_GET_ALL_PARCEL.'?'.$filter, array(), self::HTTP_POST);
     }
-
 
     public function moveToForSweeper($postData) {
         return $this->request(ServiceConstant::URL_MOVE_TO_FOR_SWEEPER, $postData, self::HTTP_POST);
@@ -75,5 +73,4 @@ class ParcelAdapter extends BaseAdapter{
     public function moveForDelivery($postData) {
         return $this->request(ServiceConstant::URL_MOVE_FOR_DELIVERY, $postData, self::HTTP_POST);
     }
-
 }
