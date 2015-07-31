@@ -7,11 +7,11 @@ use yii\web\View;
 /* @var $this yii\web\View */
 $this->title = 'Shipments: Dispatched';
 $this->params['breadcrumbs'] = array(
-    /*array(
-    'url' => ['site/managebranches'],
-    'label' => 'Manage Branches'
-    ),*/
-    array('label' => 'Dispatched Shipments')
+	/*array(
+	'url' => ['site/managebranches'],
+	'label' => 'Manage Branches'
+	),*/
+	array('label'=> 'Dispatched Shipments')
 );
 ?>
 
@@ -21,7 +21,7 @@ $this->params['breadcrumbs'] = array(
 <?= Html::cssFile('@web/css/libs/dataTables.tableTools.css') ?>
 
 <?php
-//$this->params['content_header_button'] = '<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i> Add New Staff</button>';
+	//$this->params['content_header_button'] = '<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i> Add New Staff</button>';
 ?>
 
 <?php
@@ -121,4 +121,8 @@ $this->registerJs($ex,View::POS_READY);
 <?php $this->registerJsFile('@web/js/libs/dataTables.fixedHeader.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/libs/dataTables.tableTools.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/libs/jquery.dataTables.bootstrap.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
-<?php $this->registerJsFile('@web/js/libs/bootstrap-datepicker.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
+<?php $this->registerJsFile('@web/js/libs/bootstrap-datepicker.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?><?php $this->registerJsFile('@web/js/jquery.dataTables.min.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/dataTables.bootstrap.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/table.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
+
+

@@ -66,7 +66,6 @@ foreach($copies as $copy) {
     <div class="service-type">
         <div class="service-type__inner express"></div>
         <div class="service-type__inner ground is-active"></div>
-        <div class="service-type__inner express-2"></div>
     </div>
 
     <div class="parcel-type">

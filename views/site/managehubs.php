@@ -55,29 +55,32 @@ $this->params['breadcrumbs'] = array(
 	</div>
 	<div class="main-box-body">
 		<div class="table-responsive">
-			<table id="table" class="table table-hover ">
+			<table id="table" class="table table-hover dataTable">
 				<thead>
 					<tr>
 						<th style="width: 20px">S/N</th>
-						<th>Hub Code</th>
 						<th>Hub Name</th>
+						<th>Hub Code</th>
 						<th>State</th>
 						<th>Address</th>
+						<th>Created Date</th>
 						<th>Status</th>
 						<th>Action</th>
 					</tr>
 				</thead>
 				<tbody>
                     <?php
+
                     if(isset($hubs) && is_array(($hubs))):
                         $count=1; foreach($hubs as $hub){
                     ?>
 					<tr class="text-center">
 						<td><?= $count++; ?></td>
-						<td><?= strtoupper($hub['code']); ?></td>
 						<td><?= $hub['name']; ?></td>
+						<td><?= strtoupper($hub['code']); ?></td>
 						<td><?= strtoupper($hub['state']['name']); ?></td>
 						<td><?= $hub['address']; ?></td>
+						<td><?= date('Y/m/d @ H:m',strtotime($hub['created_date'])); ?></td>
 						<td><?= ($hub['status']==ServiceConstant::ACTIVE?'Active':'Inactive'); ?></td>
 						<td><button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#editModal" data-id="<?= $hub['id']; ?>"><i class="fa fa-edit"></i> Edit</button> <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#status" data-id="<?= $hub['id']; ?>"><i class="fa fa-edit"></i> Change Status</button></td>
 					</tr>
@@ -228,3 +231,8 @@ $this->params['breadcrumbs'] = array(
 <?php $this->registerJsFile('@web/js/libs/dataTables.tableTools.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/libs/jquery.dataTables.bootstrap.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/manage_branches.js', ['depends' => [\app\assets\AppAsset::className()]])?>
+<?php $this->registerJsFile('@web/js/jquery.dataTables.min.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/dataTables.bootstrap.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/table.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
+
+
