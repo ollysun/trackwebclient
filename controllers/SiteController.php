@@ -490,7 +490,7 @@ class SiteController extends BaseController
     {
         if(Yii::$app->request->isPost){
             $entry = Yii::$app->request->post();
-            $task =  Calypso::getValue(Yii::$app->request->post(), 'task','');
+            $task =  Calypso::getValue($entry, 'task','');
             $error = [];
 
             $data = [];
@@ -710,8 +710,11 @@ class SiteController extends BaseController
     //@TODO: Implement the display of the content
     public function actionHubdispatch()
     {
+        $from_date = date('Y/m/d');
+        $to_date = date('Y/m/d');
         $user_session = Calypso::getInstance()->session("user_session");
         $from_branch_id = $user_session['branch_id'];
+        $to_branch_id = Calypso::getValue(Yii::$app->request->post(), 'to_branch_id',null);
 
         $hubAdp = new BranchAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
         $hubs = $hubAdp->getAll();
@@ -719,19 +722,17 @@ class SiteController extends BaseController
         $hub_list = $hubs->getStatus()==ResponseHandler::STATUS_OK?$hubs->getData(): [];
 
         $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
-        $from_date = null;
-        $to_date=null;
         if(isset(Calypso::getInstance()->get()->from,Calypso::getInstance()->get()->to)){
             $from_date = Calypso::getInstance()->get()->from.' 00:00:00';
             $to_date = Calypso::getInstance()->get()->to.' 23:59:59';
             $filter = isset(Calypso::getInstance()->get()->date_filter) ? Calypso::getInstance()->get()->date_filter : '-1';
-            $dispatch_parcels = $parcelsAdapter->getDispatchedParcels($user_session['branch_id'],$from_date,$to_date,$filter);
+            $dispatch_parcels = $parcelsAdapter->getDispatchedParcels($user_session['branch_id'], $to_branch_id,$from_date,$to_date,$filter);
         }else
-        $dispatch_parcels = $parcelsAdapter->getDispatchedParcels($user_session['branch_id']);
+            $dispatch_parcels = $parcelsAdapter->getDispatchedParcels($user_session['branch_id'], $to_branch_id);
         $parcels = new ResponseHandler($dispatch_parcels);
         $parcel_list = $parcels->getStatus()==ResponseHandler::STATUS_OK?$parcels->getData(): [];
 
-        return $this->render('hub_dispatch', array('sweeper'=>[], 'hubs'=>$hub_list,'parcels'=>$parcel_list, 'from_branch_id'=>$from_branch_id, 'from_date'=>$from_date, 'to_date'=>$to_date));
+        return $this->render('hub_dispatch', array('sweeper'=>[], 'hubs'=>$hub_list,'parcels'=>$parcel_list, 'branch_id'=>$from_branch_id, 'from_date'=>$from_date, 'to_date'=>$to_date));
     }
     public function actionCustomerhistory()
     {
