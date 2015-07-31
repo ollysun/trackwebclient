@@ -6,7 +6,6 @@ use Adapter\Globals\ServiceConstant;
 
 class ParcelAdapter extends BaseAdapter{
 
-
     public function createNewParcel($postData){
         return $this->request(ServiceConstant::URL_ADD_PARCEL, $postData, self::HTTP_POST);
     }
@@ -19,12 +18,12 @@ class ParcelAdapter extends BaseAdapter{
     public function getOneParcelBySender($id){
         return $this->request(ServiceConstant::URL_GET_ONE_PARCEL,array('id'=>$id),self::HTTP_GET);
     }
-    public function getParcels($type=null,$branch_id=null,$offset=0, $count=50){
-        $filter = ($type != null ? '&status='.$type:'');
+    public function getParcels($start_created_date,$end_created_date,$status,$branch_id=null,$offset=0, $count=50){
+        $filter = ($status != null ? '&status='.$status:'');
+        $filter .= '&start_created_date='.$start_created_date;
+        $filter .= '&end_created_date='.$end_created_date;
         $filter .= ($branch_id == null ? '':'&branch_id='.$branch_id);
-        //$filter = '';
         return $this->request(ServiceConstant::URL_GET_ALL_PARCEL.'?with_sender=1&with_receiver=1&with_receiver_address=1&offset='.$offset.'&count='.$count.$filter,array(),self::HTTP_GET);
-
     }
 
     public function getParcelsForNextDestination($type=null,$branch_id=null, $to_branch_id=null, $held_by_id=null, $offset=0, $count=50){
@@ -52,11 +51,14 @@ class ParcelAdapter extends BaseAdapter{
         return $this->request(ServiceConstant::URL_GET_ALL_PARCEL.'?with_sender=1&with_receiver=1&with_receiver_address=1&offset='.$offset.'&count='.$count.$filter,array(),self::HTTP_GET);
     }
 
-    public function getDispatchedParcels($branch_id){
-        $filter = "?branch_id={$branch_id}&with_to_branch=1&with_from_branch=1&with_holder=1";
-        return $this->request(ServiceConstant::URL_GET_ALL_PARCEL.$filter, array(), self::HTTP_POST);
-    }
+    public function getDispatchedParcels($branch_id,$to_branch=null,$start_created_date=null,$end_created_date=null,$status='-1'){
+        $filter = "branch_id={$branch_id}&with_to_branch=1&with_from_branch=1&with_holder=1";
+        $filter .= ($to_branch == null ? '':'&to_branch_id='.$to_branch);
+        $filter .= ($start_created_date == null ? '':'&start_created_date='.$start_created_date);
+        $filter .= ($end_created_date == null ? '':'&end_created_date='.$end_created_date);
 
+        return $this->request(ServiceConstant::URL_GET_ALL_PARCEL.'?'.$filter, array(), self::HTTP_POST);
+    }
 
     public function moveToForSweeper($postData) {
         return $this->request(ServiceConstant::URL_MOVE_TO_FOR_SWEEPER, $postData, self::HTTP_POST);
@@ -71,5 +73,4 @@ class ParcelAdapter extends BaseAdapter{
     public function moveForDelivery($postData) {
         return $this->request(ServiceConstant::URL_MOVE_FOR_DELIVERY, $postData, self::HTTP_POST);
     }
-
 }
