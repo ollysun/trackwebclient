@@ -81,9 +81,17 @@ class ServiceConstant {
     const URL_REGION_CITY_GET_ONE = 'region/getOneCity';
     const URL_REGION_CITY_GET_ALL = 'region/getAllCity';
 
+    const URL_ZONES_ADD = '/zone/add';
+    const URL_ZONES_EDIT = '/zone/edit';
+    const URL_ZONES_STATUS = '/zone/changeStatus';
+    const URL_ZONES_GET_ALL = '/zone/fetchAll';
+    const URL_ZONES_GET_BY_CODE = '/zone/fetchByCode';
+    const URL_ZONES_GET_BY_ID = '/zone/fetchByID';
+
     const URL_CREATE_USER = 'admin/register';
     const URL_GET_USERS = '/admin/getAll';
     const URL_GET_USER = '/admin/getone';
+
 
     const URL_GET_STAFF_BY_ID = '/admin/getOne';
     public static function getStatus($status){

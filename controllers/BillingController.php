@@ -2,6 +2,7 @@
 namespace app\controllers;
 
 use Adapter\Util\Calypso;
+use Adapter\ZoneAdapter;
 use Yii;
 use Adapter\RegionAdapter;
 use Adapter\RefAdapter;
@@ -51,7 +52,49 @@ class BillingController extends BaseController
 
     public function actionZones()
     {
-        return $this->render('zones');
+        if (Yii::$app->request->isPost) {
+            $entry = Yii::$app->request->post();
+            $task = Calypso::getValue(Yii::$app->request->post(), 'task', '');
+            $error = [];
+
+            $data = [];
+            $data['name'] = Calypso::getValue($entry, 'zone_name', null);
+            $data['description'] = Calypso::getValue($entry, 'zone_desc');
+            $data['code'] = Calypso::getValue($entry, 'zone_code');
+            $data['type'] = Calypso::getValue($entry, 'zone_type');
+            $data['zone_id'] = Calypso::getValue($entry, 'id',null);
+
+            if (($task == 'create' || $task == 'edit') && (empty($data['name']) || empty($data['description']) || empty($data['code']))) {
+                $error[] = "All details are required!";
+            }
+            if (!empty($error)) {
+                $errorMessages = implode('<br />', $error);
+                Yii::$app->session->setFlash('danger', $errorMessages);
+            } else {
+                $zone = new ZoneAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+                if ($task == 'create') {
+                    $response = $zone->createZone($data);
+                    if ($response['status'] === Response::STATUS_OK) {
+                        Yii::$app->session->setFlash('success', 'Zone has been created successfully.');
+                    } else {
+                        Yii::$app->session->setFlash('danger', 'There was a problem creating the zone. Please try again.');
+                    }
+                } else {
+                    $response = $zone->editZone($data);
+                    if ($response['status'] === Response::STATUS_OK) {
+                        Yii::$app->session->setFlash('success', 'Zone has been edited successfully.');
+                    } else {
+                        Yii::$app->session->setFlash('danger', 'There was a problem editing the zone. Please try again.');
+                    }
+                }
+            }
+        }
+        $zAdp = new ZoneAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $zones = $zAdp->getZones();
+        $zones = new ResponseHandler($zones);
+        $zones_list = $zones->getStatus() == ResponseHandler::STATUS_OK ? $zones->getData() : [];
+
+        return $this->render('zones', array('zones'=>$zones_list));
     }
 
     public function actionRegions()
@@ -171,7 +214,55 @@ class BillingController extends BaseController
 
     public function actionCitymapping()
     {
-        return $this->render('city_mapping');
+        if (Yii::$app->request->isPost) {
+            $entry = Yii::$app->request->post();
+            $task = Calypso::getValue(Yii::$app->request->post(), 'task', '');
+            $error = [];
+
+            $data = [];
+            $data['name'] = Calypso::getValue($entry, 'city_name', null);
+            $data['state_id'] = Calypso::getValue($entry, 'state');
+            $data['charge'] = Calypso::getValue($entry, 'charge');
+            $data['status'] = Calypso::getValue($entry, 'status');
+            $data['city_id'] = Calypso::getValue($entry, 'id',null);
+
+            if (($task == 'create' || $task == 'edit') && (empty($data['name']) || empty($data['state_id']))) {
+                $error[] = "All details are required!";
+            }
+            if (!empty($error)) {
+                $errorMessages = implode('<br />', $error);
+                Yii::$app->session->setFlash('danger', $errorMessages);
+            } else {
+                $city = new RegionAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+                if ($task == 'create') {
+                    $response = $city->addCity($data);
+                    if ($response['status'] === Response::STATUS_OK) {
+                        Yii::$app->session->setFlash('success', 'City has been created successfully.');
+                    } else {
+                        Yii::$app->session->setFlash('danger', 'There was a problem creating the city. Please try again.');
+                    }
+                } else {
+                    $response = $city->editCity($data);
+                    if ($response['status'] === Response::STATUS_OK) {
+                        Yii::$app->session->setFlash('success', 'City has been edited successfully.');
+                    } else {
+                        Yii::$app->session->setFlash('danger', 'There was a problem editing the city. Please try again.');
+                    }
+                }
+            }
+        }
+
+        $refAdp = new RefAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+        $states = $refAdp->getStates(1); // Hardcoded Nigeria for now
+        $states = new ResponseHandler($states);
+        $states_list = $states->getStatus()==ResponseHandler::STATUS_OK?$states->getData(): [];
+
+        $cAdp = new RegionAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $cities = $cAdp->getAllCity(1,1);
+        $cities = new ResponseHandler($cities);
+        $cities_list = $cities->getStatus() == ResponseHandler::STATUS_OK ? $cities->getData() : [];
+
+        return $this->render('city_mapping', array('cities'=>$cities_list,'states'=>$states_list));
     }
 
     public function actionPricing()
