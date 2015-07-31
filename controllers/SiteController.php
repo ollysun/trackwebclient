@@ -490,7 +490,7 @@ class SiteController extends BaseController
     {
         if(Yii::$app->request->isPost){
             $entry = Yii::$app->request->post();
-            $task =  Calypso::getValue(Yii::$app->request->post(), 'task','');
+            $task =  Calypso::getValue($entry, 'task','');
             $error = [];
 
             $data = [];
@@ -715,25 +715,6 @@ class SiteController extends BaseController
         }
     }
     //@TODO: Implement the display of the content
-    public function actionHubdispatch()
-    {
-        $data = Yii::$app->request->post();
-        $sweeper_id = Calypso::getValue($data, 'sweeper_id', null);
-        $from_branch_id = Calypso::getValue($data, 'from_branch_id', null);
-        $user_session = Calypso::getInstance()->session("user_session");
-
-        $hubAdp = new BranchAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
-        $hubs = $hubAdp->getHubs();
-        $hubs = new ResponseHandler($hubs);
-        $hub_list = $hubs->getStatus()==ResponseHandler::STATUS_OK?$hubs->getData(): [];
-
-        $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
-        $dispatch_parcels = $parcelsAdapter->getDispatchedParcels($user_session['branch_id']);
-        $parcels = new ResponseHandler($dispatch_parcels);
-        $parcel_list = $parcels->getStatus()==ResponseHandler::STATUS_OK?$parcels->getData(): [];
-
-        return $this->render('hub_dispatch', array('sweeper'=>[], 'hubs'=>$hub_list,'parcels'=>$parcel_list, 'filter_hub_id'=>$from_branch_id));
-    }
     public function actionCustomerhistory()
     {
         return $this->render('customer_history');

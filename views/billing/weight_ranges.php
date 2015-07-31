@@ -18,6 +18,7 @@ $this->params['breadcrumbs'] = array(
 	$this->params['content_header_button'] = '<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i> Add a Weight Range</button>';
 ?>
 
+<?php echo \Adapter\Util\Calypso::showFlashMessages(); ?>
 <div class="main-box">
 	<div class="main-box-header">
 	</div>
@@ -34,27 +35,20 @@ $this->params['breadcrumbs'] = array(
 					</tr>
 				</thead>
 				<tbody>
-					<tr>
-						<td>1</td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td><button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#editModal"><i class="fa fa-edit"></i> Edit</button></td>
-					</tr>
-					<tr>
-						<td>2</td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>3</td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
+				<?php
+				if (isset($ranges)) {
+					$row = 1;
+					foreach ($ranges as $range) {
+						?>
+						<tr>
+							<td><?= $row++; ?></td>
+							<td class="l<?=$range['id'];?>"><?= $range['min_weight']; ?></td>
+							<td class="i<?=$range['id'];?>"><?= $range['increment_weight']; ?></td>
+							<td class="m<?=$range['id'];?>"><?= $range['max_weight']; ?></td>
+							<td><button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#editModal" data-id="<?= $range['id']; ?>"><i class="fa fa-edit"></i> Edit</button></td>
+						</tr>
+					<?php }
+				} ?>
 				</tbody>
 			</table>
 		</div>
@@ -64,7 +58,7 @@ $this->params['breadcrumbs'] = array(
 
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
-	  	<form class="">
+	  	<form class="validate" method="post">
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -75,29 +69,30 @@ $this->params['breadcrumbs'] = array(
 					<div class="col-xs-4">
 						<label for="">Min Weight</label>
 						<div class="input-group">
-							<input type="text" class="form-control">
+							<input type="text" class="form-control required number" name="min_weight">
 							<span class="input-group-addon">Kg</span>
 						</div>
 					</div>
 					<div class="col-xs-4">
 						<label for="">Incremental Weight</label>
 						<div class="input-group">
-							<input type="text" class="form-control">
+							<input type="text" class="form-control required number" name="increment_weight">
 							<span class="input-group-addon">Kg</span>
 						</div>
 					</div>
 					<div class="col-xs-4">
 						<label for="">Max Weight</label>
 						<div class="input-group">
-							<input type="text" class="form-control">
+							<input type="text" class="form-control required number" name="max_weight">
 							<span class="input-group-addon">Kg</span>
 						</div>
 					</div>
 				</div>
 	      </div>
 	      <div class="modal-footer">
+			  <input type="hidden" name="task" value="create">
 	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-	        <button type="button" class="btn btn-primary">Add Weight Range</button>
+	        <button type="submit" class="btn btn-primary">Add Weight Range</button>
 	      </div>
 	    </div>
 	  	</form>
@@ -106,32 +101,43 @@ $this->params['breadcrumbs'] = array(
 
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
-	  	<form class="">
+	  	<form class="validate" method="post">
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 	        <h4 class="modal-title" id="myModalLabel">Edit Weight Range</h4>
 	      </div>
-	      <div class="modal-body">
+			<div class="modal-body">
 				<div class="form-group row">
 					<div class="col-xs-4">
 						<label for="">Min Weight</label>
-						<input type="text" class="form-control">
+						<div class="input-group">
+							<input type="text" class="form-control required number" name="min_weight">
+							<span class="input-group-addon">Kg</span>
+						</div>
 					</div>
 					<div class="col-xs-4">
 						<label for="">Incremental Weight</label>
-						<input type="text" class="form-control">
+						<div class="input-group">
+							<input type="text" class="form-control required number" name="increment_weight">
+							<span class="input-group-addon">Kg</span>
+						</div>
 					</div>
 					<div class="col-xs-4">
 						<label for="">Max Weight</label>
-						<input type="text" class="form-control">
+						<div class="input-group">
+							<input type="text" class="form-control required number" name="max_weight">
+							<span class="input-group-addon">Kg</span>
+						</div>
 					</div>
 				</div>
-	      </div>
-	      <div class="modal-footer">
-	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-	        <button type="button" class="btn btn-primary">Save changes</button>
-	      </div>
+			</div>
+			<div class="modal-footer">
+				<input type="hidden" name="id" value="">
+				<input type="hidden" name="task" value="edit">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="submit" class="btn btn-primary">Save Changes</button>
+			</div>
 	    </div>
 	  	</form>
   </div>
@@ -142,3 +148,4 @@ $this->params['breadcrumbs'] = array(
 <?php $this->registerJsFile('@web/js/libs/dataTables.fixedHeader.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/libs/dataTables.tableTools.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/libs/jquery.dataTables.bootstrap.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
+<?php $this->registerJsFile('@web/js/weights.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
