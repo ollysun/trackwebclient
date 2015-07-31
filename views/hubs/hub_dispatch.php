@@ -24,13 +24,7 @@ $this->params['breadcrumbs'] = array(
 	//$this->params['content_header_button'] = '<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i> Add New Staff</button>';
 ?>
 
-<?php
-$ex='
-    $("select#to_branch_id").on("change", function (event) {
-        $("form#filter").submit();
-    });';
-$this->registerJs($ex,View::POS_READY);
-?>
+<?php echo \Adapter\Util\Calypso::showFlashMessages(); ?>
     <div class="main-box">
         <div class="main-box-header table-search-form">
             <div class="clearfix">
@@ -115,6 +109,13 @@ $this->registerJs($ex,View::POS_READY);
         </div>
     </div>
 
+<?php
+$ex='
+    $("select#to_branch_id").on("change", function (event) {
+        $("form#filter").submit();
+    });';
+$this->registerJs($ex,View::POS_READY);
+?>
 
     <!-- this page specific scripts -->
 <?php $this->registerJsFile('@web/js/libs/jquery.dataTables.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>

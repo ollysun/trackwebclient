@@ -112,7 +112,7 @@ use Adapter\Util\Calypso;
 								<a href="<?= Url::to(['hubs/delivery']) ?>">For Delivery</a>
 							</li>
 							<li>
-								<a href="<?= Url::to(['site/hubdispatch']) ?>">Dispatched Shipments</a>
+								<a href="<?= Url::to(['hubs/hubdispatch']) ?>">Dispatched Shipments</a>
 							</li>
 						</ul>
 					</li>
