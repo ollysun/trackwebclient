@@ -55,44 +55,46 @@ $this->params['breadcrumbs'] = array(
         </div>
         <div class="main-box-body">
             <div class="table-responsive">
-                <table id="next_dest" class="table table-hover next_dest">
-                    <thead>
-                    <tr>
-                        <th style="width: 20px;"></th>
-                        <th style="width: 20px">S/N</th>
-                        <th>Waybill No</th>
-                        <th>Origin</th>
-                        <th>Next Destination</th>
-                        <th>Final Destination</th>
-                        <th>Weight (Kg)</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <?php
 
-                    if(isset($parcel_next)) {
-                        $row = 1;
-                        foreach ($parcel_next as $parcels) {
+                <?php if(!empty($parcel_next)) { ?>
+                    <table id="next_dest" class="table table-hover next_dest">
+                        <thead>
+                        <tr>
+                            <th style="width: 20px;"></th>
+                            <th style="width: 20px">S/N</th>
+                            <th>Waybill No</th>
+                            <th>Origin</th>
+                            <th>Next Destination</th>
+                            <th>Final Destination</th>
+                            <th>Weight (Kg)</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?php
+                            $row = 1;
+                            foreach ($parcel_next as $parcels) {
 
-                            echo "<tr data-waybill='{$parcels['waybill_number']}'>";
-                            echo "<td>
-											<div class='checkbox-nice'>
-												<input name='waybills[]' id='chk_{$row}' type='checkbox' class='chk_next'><label for='chk_{$row}'></label>
-											</div>
-										  </td>";
-                            echo "<td>{$row}</td>";
-                            echo "<td><a href='/site/viewwaybill?id=" . Calypso::getValue($parcels, 'id') . "'>" . Calypso::getValue($parcels, 'waybill_number') . "</a></td>";
-                            echo "<td>" . ucwords(Calypso::getValue($parcels, 'sender_address.city') . ', ' . Calypso::getValue($parcels, 'sender_address.state.name')) . "</td>";
-                            echo "<td></td>";
-                            echo "<td>" . ucwords(Calypso::getValue($parcels, 'receiver_address.city') . ', ' . Calypso::getValue($parcels, 'receiver_address.state.name')) . "</td>";
-                            echo "<td>" . Calypso::getValue($parcels, 'weight') . "</td>";
-                            echo "</tr>";
-                            $row++;
-                        }
-                    }
-                    ?>
-                    </tbody>
-                </table>
+                                echo "<tr data-waybill='{$parcels['waybill_number']}'>";
+                                echo "<td>
+                                                <div class='checkbox-nice'>
+                                                    <input name='waybills[]' id='chk_{$row}' type='checkbox' class='chk_next'><label for='chk_{$row}'></label>
+                                                </div>
+                                              </td>";
+                                echo "<td>{$row}</td>";
+                                echo "<td><a href='/site/viewwaybill?id=" . Calypso::getValue($parcels, 'id') . "'>" . Calypso::getValue($parcels, 'waybill_number') . "</a></td>";
+                                echo "<td>" . ucwords(Calypso::getValue($parcels, 'sender_address.city') . ', ' . Calypso::getValue($parcels, 'sender_address.state.name')) . "</td>";
+                                echo "<td></td>";
+                                echo "<td>" . ucwords(Calypso::getValue($parcels, 'receiver_address.city') . ', ' . Calypso::getValue($parcels, 'receiver_address.state.name')) . "</td>";
+                                echo "<td>" . Calypso::getValue($parcels, 'weight') . "</td>";
+                                echo "</tr>";
+                                $row++;
+                            }
+                        ?>
+                        </tbody>
+                    </table>
+                <?php } else { ?>
+                    <p>No record to display.</p>
+                <?php }  ?>
             </div>
         </div>
     </div>
