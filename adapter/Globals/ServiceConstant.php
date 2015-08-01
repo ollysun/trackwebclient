@@ -94,6 +94,13 @@ class ServiceConstant {
     const URL_WEIGHT_FETCH_ID = 'weightrange/fetchById';
     const URL_WEIGHT_FETCH_ALL = 'weightrange/fetchAll';
 
+    const URL_ONFORWARDING_ADD = 'onforwardingcharge/add';
+    const URL_ONFORWARDING_EDIT = 'onforwardingcharge/edit';
+    const URL_ONFORWARDING_CHANGE_STATUS = 'onforwardingcharge/changeStatus';
+    const URL_ONFORWARDING_FETCH_ID = 'onforwardingcharge/fetchById';
+    const URL_ONFORWARDING_FETCH_ALL = 'onforwardingcharge/fetchAll';
+
+
     const URL_CREATE_USER = 'admin/register';
     const URL_GET_USERS = '/admin/getAll';
     const URL_GET_USER = '/admin/getone';

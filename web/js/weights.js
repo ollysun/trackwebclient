@@ -6,6 +6,5 @@ $(document).ready(function () {
         $(target+" input[name='max_weight']").val($("td[class='m"+_id+"']").text());
         $(target+" input[name='increment_weight']").val($("td[class='i"+_id+"']").text());
         $(target+" input[name='id']").val(_id);
-        alert($("td[class='l"+_id+"']").text());
     });
 });

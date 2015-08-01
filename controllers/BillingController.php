@@ -1,6 +1,7 @@
 <?php
 namespace app\controllers;
 
+use Adapter\BillingAdapter;
 use Adapter\Util\Calypso;
 use Adapter\WeightRangeAdapter;
 use Adapter\ZoneAdapter;
@@ -264,11 +265,13 @@ class BillingController extends BaseController
             $data = [];
             $data['name'] = Calypso::getValue($entry, 'city_name', null);
             $data['state_id'] = Calypso::getValue($entry, 'state');
-            $data['charge'] = Calypso::getValue($entry, 'charge');
+            $data['onforwarding_charge_id'] = Calypso::getValue($entry, 'charge');
+            $data['transit_time'] = Calypso::getValue($entry, 'transit_time');
             $data['status'] = Calypso::getValue($entry, 'status');
+            $data['branch_id'] = 1;
             $data['city_id'] = Calypso::getValue($entry, 'id',null);
 
-            if (($task == 'create' || $task == 'edit') && (empty($data['name']) || empty($data['state_id']))) {
+            if (($task == 'create' || $task == 'edit') && (empty($data['name']) || empty($data['transit_time']))) {
                 $error[] = "All details are required!";
             }
             if (!empty($error)) {
@@ -288,6 +291,7 @@ class BillingController extends BaseController
                     if ($response['status'] === Response::STATUS_OK) {
                         Yii::$app->session->setFlash('success', 'City has been edited successfully.');
                     } else {
+                        var_dump($response);
                         Yii::$app->session->setFlash('danger', 'There was a problem editing the city. Please try again.');
                     }
                 }
@@ -299,12 +303,66 @@ class BillingController extends BaseController
         $states = new ResponseHandler($states);
         $states_list = $states->getStatus()==ResponseHandler::STATUS_OK?$states->getData(): [];
 
+        $refAdp = new RefAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+        $charges = $refAdp->getOnforwadingCharges();
+        $charges = new ResponseHandler($charges);
+        $charges_list = $charges->getStatus()==ResponseHandler::STATUS_OK?$charges->getData(): [];
+
         $cAdp = new RegionAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $cities = $cAdp->getAllCity(1,1);
         $cities = new ResponseHandler($cities);
         $cities_list = $cities->getStatus() == ResponseHandler::STATUS_OK ? $cities->getData() : [];
 
-        return $this->render('city_mapping', array('cities'=>$cities_list,'states'=>$states_list));
+        return $this->render('city_mapping', array('cities'=>$cities_list,'states'=>$states_list,'charges'=>$charges_list));
+    }
+
+    public function actionOnforwarding()
+    {
+        if (Yii::$app->request->isPost) {
+            $entry = Yii::$app->request->post();
+            $task = Calypso::getValue(Yii::$app->request->post(), 'task', '');
+            $error = [];
+
+            $data = [];
+            $data['name'] = Calypso::getValue($entry, 'onforward_name', null);
+            $data['code'] = Calypso::getValue($entry, 'onforward_code');
+            $data['description'] = Calypso::getValue($entry, 'onforward_desc');
+            $data['amount'] = Calypso::getValue($entry, 'onforward_amount');
+            $data['status'] = Calypso::getValue($entry, 'status');
+            $data['charge_id'] = Calypso::getValue($entry, 'id',null);
+
+            if (($task == 'create' || $task == 'edit') && (empty($data['name']) || empty($data['code']) || empty($data['amount']))) {
+                $error[] = "All details are required!";
+            }
+            if (!empty($error)) {
+                $errorMessages = implode('<br />', $error);
+                Yii::$app->session->setFlash('danger', $errorMessages);
+            } else {
+                $bill = new BillingAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+                if ($task == 'create') {
+                    $response = $bill->addOnforwardingCharge($data);
+                    if ($response['status'] === Response::STATUS_OK) {
+                        Yii::$app->session->setFlash('success', 'Charge has been created successfully.');
+                    } else {
+                        Yii::$app->session->setFlash('danger', 'There was a problem creating the charge. Please try again.');
+                    }
+                } else {
+                    $response = $bill->editOnforwardingCharge($data);
+                    if ($response['status'] === Response::STATUS_OK) {
+                        Yii::$app->session->setFlash('success', 'Charge has been edited successfully.');
+                    } else {
+                        Yii::$app->session->setFlash('danger', 'There was a problem editing the charge. Please try again.');
+                    }
+                }
+            }
+        }
+
+        $refAdp = new RefAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+        $charges = $refAdp->getOnforwadingCharges();
+        $charges = new ResponseHandler($charges);
+        $charges_list = $charges->getStatus()==ResponseHandler::STATUS_OK?$charges->getData(): [];
+
+        return $this->render('onforwarding', array('charges'=>$charges_list));
     }
 
     public function actionPricing()
@@ -315,10 +373,5 @@ class BillingController extends BaseController
     public function actionExceptions()
     {
         return $this->render('exceptions');
-    }
-
-    public function actionOnforwarding()
-    {
-        return $this->render('onforwarding');
     }
 }
