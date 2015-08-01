@@ -53,7 +53,7 @@ function validate($parent)
 		}
 		else if($(this).hasClass('email'))
 		{
-			var em = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+			var em = /^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i;
 			if(!em.test(val))
 			{
 				msg = 'Invalid entry';

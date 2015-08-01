@@ -21,6 +21,7 @@ $this->params['breadcrumbs'] = array(
 
 <?php
 //$this->params['content_header_button'] = $this->render('../elements/content_header_new_parcel_button');
+
 ?>
 
 <?php echo \Adapter\Util\Calypso::showFlashMessages(); ?>
@@ -35,7 +36,7 @@ $this->params['breadcrumbs'] = array(
                 <div class="form-group pull-left">
                     <label for="">Filter by Hub</label><br>
                     <select class="form-control input-sm" id="filter_hub_id" name="filter_hub_id">
-                        <option value="">All Express Centres</option>
+                        <option value="">All Hubs</option>
                         <?php
                         if (isset($hubs) && is_array(($hubs))):
                             foreach ($hubs as $hub) {
@@ -58,7 +59,7 @@ $this->params['breadcrumbs'] = array(
     </div>
     <div class="main-box-body">
         <div class="table-responsive">
-            <table id="table" class="table table-hover ">
+            <table id="table" class="table table-hover dataTable">
                 <thead>
                 <tr>
                     <th style="width: 20px">S/N</th>
@@ -66,6 +67,7 @@ $this->params['breadcrumbs'] = array(
                     <th>EC Name</th>
                     <?php if(empty($filter_hub_id)) {?><th>Parent Hub</th><?php } ?>
                     <th>Address</th>
+                    <th>Created Date</th>
                     <th>Status</th>
                     <th>Action</th>
                 </tr>
@@ -82,6 +84,7 @@ $this->params['breadcrumbs'] = array(
                             <td><?= $centre['name']; ?></td>
                             <?php if(empty($filter_hub_id)) {?><td><?= ucwords($centre['parent']['name']); ?></td><?php } ?>
                             <td><?= $centre['address']; ?></td>
+                            <td><?= date('Y/m/d @ H:m',strtotime($centre['created_date'])); ?></td>
                             <td><?= ($centre['status'] == ServiceConstant::ACTIVE ? 'Active' : 'Inactive'); ?></td>
                             <td>
                                 <button type="button" class="btn btn-default btn-xs" data-toggle="modal"
@@ -121,19 +124,14 @@ $this->params['breadcrumbs'] = array(
                         <label>EC name</label>
                         <input class="form-control required" name="name">
                     </div>
-                    <div class="">
-                        <div class=""></div>
-                    </div>
                     <div class="form-group">
-                        <label>Parent Hub</label>
-                        <select class="form-control required" name="hub_id" id="hub_id">
-                            <option value="">Select One</option>
+                        <label>State</label>
+                        <select id="state_hub_selector" class="form-control" name="state_id">
                             <?php
-                            if (isset($hubs) && is_array(($hubs))):
-                                foreach ($hubs as $hub) {
+                            if(isset($States) && is_array(($States))):
+                                foreach($States as $state){
                                     ?>
-                                    <option
-                                        value="<?= $hub['id']; ?>"><?= ucwords($hub['name']) . " (" . strtoupper($hub['code']) . ")"; ?></option>
+                                    <option value="<?= $state['id'] ?>"><?= strtoupper($state['name']); ?></option>
                                     <?php
                                 }
                             endif;
@@ -141,10 +139,26 @@ $this->params['breadcrumbs'] = array(
                         </select>
                     </div>
                     <div class="form-group">
+                        <label>Parent Hub</label>
+                        <select class="form-control required" name="hub_id" id="hub_id">
+                            <option value=""></option>
+                            <?php
+                           /* if (isset($hubs) && is_array(($hubs))):
+                                foreach ($hubs as $hub) {
+                                    */?><!--
+                                    <option
+                                        value="<?/*= $hub['id']; */?>"><?/*= ucwords($hub['name']) . " (" . strtoupper($hub['code']) . ")"; */?></option>
+                                    --><?php
+/*                                }
+                            endif;*/
+                            ?>
+                        </select>
+                    </div>
+                    <div class="form-group">
                         <label>Address</label>
                         <textarea class="form-control" name="address" rows="2"></textarea>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group hidden">
                         <label>Activate EC?</label>
                         <select class="form-control" name="status">
                             <option value="<?= ServiceConstant::ACTIVE ?>">Active</option>
@@ -276,10 +290,18 @@ $this->params['breadcrumbs'] = array(
 
 
 <!-- this page specific scripts -->
+<script type="text/javascript">
+    var hubs = <?= json_encode($hubs); ?>;
+    var states = <?= json_encode($States); ?>;
+</script>
 <?php $this->registerJsFile('@web/js/libs/jquery.dataTables.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/libs/dataTables.fixedHeader.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/libs/dataTables.tableTools.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/libs/jquery.dataTables.bootstrap.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/manage_branches.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/hub_util.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/jquery.dataTables.min.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/dataTables.bootstrap.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/table.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
 
 

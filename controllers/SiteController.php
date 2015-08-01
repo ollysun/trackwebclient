@@ -160,7 +160,7 @@ class SiteController extends BaseController
                     $error = 0;
                 } else {
                     //$this->flashError('There was a problem creating the value. Please try again.');
-                    $flash_msg =  ('There was a problem creating the value. Please try again.');
+                    $flash_msg =  ('There was a problem creating the value. Please try again. #Reason:'.$response['message']);
                 }
             }
             echo "<script>window.top.getServerResponse('".$error."','".$flash_msg."');</script>";
@@ -490,7 +490,7 @@ class SiteController extends BaseController
     {
         if(Yii::$app->request->isPost){
             $entry = Yii::$app->request->post();
-            $task =  Calypso::getValue(Yii::$app->request->post(), 'task','');
+            $task =  Calypso::getValue($entry, 'task','');
             $error = [];
 
             $data = [];
@@ -520,7 +520,7 @@ class SiteController extends BaseController
                         Yii::$app->session->setFlash('danger', 'There was a problem creating the centre. Please try again.');
                     }
                 }
-                else{
+                elseif ($task=='edit'){
                     $response = $center->editOneCentre($data, $task);
                     if ($response['status'] === Response::STATUS_OK) {
                         Yii::$app->session->setFlash('success', 'Centre has been edited successfully.');
@@ -528,9 +528,16 @@ class SiteController extends BaseController
                         Yii::$app->session->setFlash('danger', 'There was a problem editing the hub. Please try again.');
                     }
                 }
+                elseif ($task=='relink'){
+                    $response = $center->editOneCentre($data, $task);
+                    if ($response['status'] === Response::STATUS_OK) {
+                        Yii::$app->session->setFlash('success', 'Centre has been re-linked successfully.');
+                    } else {
+                        Yii::$app->session->setFlash('danger', 'There was a problem re-linking this EC to the selected HUB. Please verify the both EC and Hub exist then try again.');
+                    }
+                }
             }
         }
-
         $refAdp = new RefAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
         $states = $refAdp->getStates(1); // Hardcoded Nigeria for now
         $states = new ResponseHandler($states);
@@ -708,25 +715,6 @@ class SiteController extends BaseController
         }
     }
     //@TODO: Implement the display of the content
-    public function actionHubdispatch()
-    {
-        $data = Yii::$app->request->post();
-        $sweeper_id = Calypso::getValue($data, 'sweeper_id', null);
-        $from_branch_id = Calypso::getValue($data, 'from_branch_id', null);
-        $user_session = Calypso::getInstance()->session("user_session");
-
-        $hubAdp = new BranchAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
-        $hubs = $hubAdp->getHubs();
-        $hubs = new ResponseHandler($hubs);
-        $hub_list = $hubs->getStatus()==ResponseHandler::STATUS_OK?$hubs->getData(): [];
-
-        $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
-        $dispatch_parcels = $parcelsAdapter->getDispatchedParcels($user_session['branch_id']);
-        $parcels = new ResponseHandler($dispatch_parcels);
-        $parcel_list = $parcels->getStatus()==ResponseHandler::STATUS_OK?$parcels->getData(): [];
-
-        return $this->render('hub_dispatch', array('sweeper'=>[], 'hubs'=>$hub_list,'parcels'=>$parcel_list, 'filter_hub_id'=>$from_branch_id));
-    }
     public function actionCustomerhistory()
     {
         return $this->render('customer_history');

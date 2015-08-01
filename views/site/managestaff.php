@@ -89,7 +89,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
     </div>
     <div class="main-box-body">
         <div class="table-responsive">
-            <table id="table" class="table table-hover ">
+            <table id="table" class="table table-hover dataTable">
                 <thead>
                 <tr>
                     <th style="width: 20px">S/N</th>
@@ -376,3 +376,8 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
 <?php $this->registerJsFile('@web/js/libs/dataTables.tableTools.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/libs/jquery.dataTables.bootstrap.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/hub_util.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/jquery.dataTables.min.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/dataTables.bootstrap.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/table.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
+
+

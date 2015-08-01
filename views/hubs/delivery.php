@@ -42,7 +42,7 @@ $this->params['breadcrumbs'] = array(
                         </div>
                         <div class="pull-left form-group">
                             <label for="branch_name" id="hub_branch_label">Branch Name</label><br>
-                            <select id="branch_name" class="form-control input-sm" name="bid" <?php echo isset($to_branch_id) ? "data-bid='$to_branch_id'" : ''; ?>">
+                            <select id="branch_name" class="form-control input-sm" name="bid" <?php echo isset($to_branch_id) ? "data-bid='$to_branch_id'" : ''; ?>>
                                 <option>Select Name...</option>
                             </select>
                         </div>
@@ -55,7 +55,8 @@ $this->params['breadcrumbs'] = array(
                     <div class="pull-right clearfix">
                         <form class="table-search-form form-inline clearfix">
                             <div class="pull-left form-group">
-                                <label for="searchInput">&nbsp;</label><br>
+                                <label for="">&nbsp;</label><br>
+                                <button type="button" class="btn btn-default btn-sm">Create bag</button>
                                 <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" id="manifest">Generate Manifest</button>
                             </div>
                         </form>
