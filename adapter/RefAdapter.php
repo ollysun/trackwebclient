@@ -58,4 +58,8 @@ class RefAdapter extends BaseAdapter {
     public function getWeightRanges(){
         return $this->request(ServiceConstant::URL_WEIGHT_FETCH_ALL, [], self::HTTP_GET);
     }
+
+    public function getOnforwadingCharges(){
+        return $this->request(ServiceConstant::URL_ONFORWARDING_FETCH_ALL, [], self::HTTP_GET);
+    }
 }
