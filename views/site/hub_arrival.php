@@ -62,7 +62,7 @@ $this->params['breadcrumbs'] = array(
 	</div>
 	<div class="main-box-body">
 		<div class="table-responsive">
-			<table id="next_dest" class="table table-hover next_dest">
+			<table id="next_dest" class="table table-hover next_dest dataTable">
 				<thead>
 				<tr>
 					<th style="width: 20px;"></th>
@@ -79,6 +79,7 @@ $this->params['breadcrumbs'] = array(
 
 				if(isset($parcel_next)) {
 					$row = 1;
+					//var_dump($parcel_next);
 					foreach ($parcel_next as $parcels) {
 
 						echo "<tr data-waybill='{$parcels['waybill_number']}'>";
@@ -100,7 +101,13 @@ $this->params['breadcrumbs'] = array(
 				?>
 				</tbody>
 			</table>
+
 		</div>
+		<?php
+		if(count($parcel_next) <= 0){
+			?>
+			<p><strong>No shipment received today</strong></p>
+		<?php } ?>
 	</div>
 </div>
 
@@ -174,3 +181,8 @@ $this->params['breadcrumbs'] = array(
 <?php $this->registerJsFile('@web/js/libs/dataTables.tableTools.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/libs/jquery.dataTables.bootstrap.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/hub_util.js', ['depends' => [\app\assets\AppAsset::className()]])?>
+<?php $this->registerJsFile('@web/js/jquery.dataTables.min.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/dataTables.bootstrap.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/table.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
+
+
