@@ -27,22 +27,22 @@ use Adapter\Util\Calypso;
 						</a>
 						<ul class="submenu">
 							<li>
-								<a href="<?= Url::to(['site/processedparcels']) ?>">
+								<a href="<?= Url::to(['shipments/processed']) ?>">
 									New Shipments
 								</a>
 							</li>
 							<li>
-								<a href="<?= Url::to(['site/parcelsfordelivery']) ?>">
+								<a href="<?= Url::to(['shipments/fordelivery']) ?>">
 									For Delivery
 								</a>
 							</li>
 							<li>
-								<a href="<?= Url::to(['site/parcelsforsweep']) ?>">
+								<a href="<?= Url::to(['shipments/forsweep']) ?>">
 									For Sweep
 								</a>
 							</li>
 							<li>
-								<a href="<?= Url::to(['site/parcels']) ?>">
+								<a href="<?= Url::to(['shipments/all']) ?>">
 									All Shipments
 								</a>
 							</li>
