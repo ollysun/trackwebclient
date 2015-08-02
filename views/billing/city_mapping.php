@@ -31,9 +31,10 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                 <thead>
                 <tr>
                     <th style="width: 20px">S/N</th>
-                    <th>Name</th>
+                    <th>City Name</th>
                     <th>State</th>
-                    <th>Onforwarding Charge</th>
+                    <th>Transit Time</th>
+                    <th>Onforwarding Charge(<span class="currency naira"></span>)</th>
                     <th>Action</th>
                 </tr>
                 </thead>
@@ -47,10 +48,11 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                         <td><?= $row++; ?></td>
                         <td class="n<?= ucwords($city['id']); ?>"><?= ucwords($city['name']); ?></td>
                         <td><?= ucwords($city['state']['name']); ?></td>
-                        <td></td>
+                        <td class="t<?=$city['id'];?>"><?= ucwords($city['transit_time']); ?></td>
+                        <td><?= number_format($city['onforwarding_charge']['amount']); ?></td>
                         <td>
                             <button type="button" class="btn btn-default btn-xs" data-toggle="modal"
-                                    data-target="#editModal" data-id="<?= $city['id']; ?>"
+                                    data-target="#editModal" data-id="<?= $city['id']; ?>" data-charge-id="<?= $city['onforwarding_charge']['id']; ?>"
                                     data-state-id="<?= $city['state']['id']; ?>"><i class="fa fa-edit"></i> Edit
                             </button>
                         </td>
@@ -80,23 +82,43 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                         <label>City Name</label>
                         <input class="form-control" name="city_name">
                     </div>
-                    <div class="form-group">
-                        <label>State</label>
-                        <select class="form-control" name="state">
-                            <?php
-                            if (isset($states) && is_array(($states))):
-                                foreach ($states as $state) {
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <div class="form-group">
+                                <label>Transit Time</label>
+                                <input type="text" class="form-control" name="transit_time">
+                            </div>
+                        </div>
+                        <div class="col-xs-6">
+                            <div class="form-group">
+                                <label>State</label>
+                                <select class="form-control" name="state">
+                                    <?php
+                                    if (isset($states) && is_array(($states))):
+                                        foreach ($states as $state) {
+                                            ?>
+                                            <option value="<?= $state['id'] ?>"><?= strtoupper($state['name']); ?></option>
+                                            <?php
+                                        }
+                                    endif;
                                     ?>
-                                    <option value="<?= $state['id'] ?>"><?= strtoupper($state['name']); ?></option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Onforwarding charge</label>
+                        <select class="form-control" name="charge">
+                            <?php
+                            if (isset($charges) && is_array(($charges))):
+                                foreach ($charges as $charge) {
+                                    ?>
+                                    <option value="<?= $charge['id'] ?>"><?= strtoupper($charge['name']); ?></option>
                                     <?php
                                 }
                             endif;
                             ?>
                         </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Onforwarding charge</label>
-                        <select class="form-control" name="charge"></select>
                     </div>
                     <div class="form-group">
                         <label for="">Activate City?</label>
@@ -131,23 +153,43 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                         <label>City Name</label>
                         <input class="form-control required" name="city_name">
                     </div>
-                    <div class="form-group">
-                        <label>State</label>
-                        <select class="form-control required" name="state">
-                            <?php
-                            if (isset($states) && is_array(($states))):
-                                foreach ($states as $state) {
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <div class="form-group">
+                                <label>Transit Time</label>
+                                <input type="text" class="form-control" name="transit_time">
+                            </div>
+                        </div>
+                        <div class="col-xs-6">
+                            <div class="form-group">
+                                <label>State</label>
+                                <select class="form-control" name="state">
+                                    <?php
+                                    if (isset($states) && is_array(($states))):
+                                        foreach ($states as $state) {
+                                            ?>
+                                            <option value="<?= $state['id'] ?>"><?= strtoupper($state['name']); ?></option>
+                                            <?php
+                                        }
+                                    endif;
                                     ?>
-                                    <option value="<?= $state['id'] ?>"><?= strtoupper($state['name']); ?></option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Onforwarding charge</label>
+                        <select class="form-control" name="charge">
+                            <?php
+                            if (isset($charges) && is_array(($charges))):
+                                foreach ($charges as $charge) {
+                                    ?>
+                                    <option value="<?= $charge['id'] ?>"><?= strtoupper($charge['name']); ?></option>
                                     <?php
                                 }
                             endif;
                             ?>
                         </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Onforwarding charge</label>
-                        <select class="form-control" name="charge"></select>
                     </div>
                     <div class="form-group">
                         <label for="">Status</label>
