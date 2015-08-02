@@ -10,6 +10,11 @@ namespace app\controllers;
 
 
 class AdminController extends BaseController {
-
-
+	public function beforeAction($action) {
+		$this->enableCsrfValidation = false;
+		return parent::beforeAction($action);
+	}
+	public function actionHubmapping() {
+		return $this->render('new_hub_mapping');
+	}
 }
