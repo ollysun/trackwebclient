@@ -58,8 +58,8 @@ $this->params['breadcrumbs'] = array(
 			<tbody>
 				<tr>
 					<td>B01</td>
-					<td>NW</td>
-					<td>NW</td>
+					<td class="matrix_diagonal"></td>
+					<td class="matrix_cell">NW</td>
 					<td>NW</td>
 					<td>NW</td>
 					<td>NW</td>
@@ -85,8 +85,8 @@ $this->params['breadcrumbs'] = array(
 				</tr>
 				<tr>
 					<td>B02</td>
-					<td>NW</td>
-					<td>NW</td>
+					<td></td>
+					<td class="matrix_diagonal"></td>
 					<td>NW</td>
 					<td>NW</td>
 					<td>NW</td>
@@ -711,6 +711,36 @@ $this->params['breadcrumbs'] = array(
 	</div>
 </div>
 
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+	  	<form class="">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="myModalLabel">Edit Matrix Entry</h4>
+	      </div>
+	      <div class="modal-body row">
+				<div class="form-group col-xs-3">
+					<label for="">From</label>
+					<input class="form-control" readonly="readonly">
+				</div>
+				<div class="form-group col-xs-3">
+					<label for="">To</label>
+					<input class="form-control" readonly="readonly">
+				</div>
+				<div class="form-group col-xs-6">
+					<label for="">Billing Zone</label>
+					<select class="form-control"></select>
+				</div>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	        <button type="button" class="btn btn-primary">Save changes</button>
+	      </div>
+	    </div>
+	  	</form>
+  </div>
+</div>
 
 
 <!-- this page specific scripts -->
