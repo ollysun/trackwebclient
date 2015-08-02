@@ -102,7 +102,7 @@ class ShipmentsController extends BaseController {
             $response = $parcel->getSearchParcels('-1',$search,$offset,$this->page_width);
             $search_action = true;
         }else{
-            $response = $parcel->getParcels(ServiceConstant::FOR_SWEEPER,null,$offset,$this->page_width);
+            $response = $parcel->getParcels(null, null, ServiceConstant::FOR_SWEEPER,null,$offset,$this->page_width);
             $search_action = false;
         }
         $response = new ResponseHandler($response);

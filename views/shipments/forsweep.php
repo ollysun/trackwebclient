@@ -1,4 +1,5 @@
 <?php
+use Adapter\Util\Calypso;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use Adapter\Globals\ServiceConstant;
@@ -74,12 +75,12 @@ if($offset <= 0){
                 <thead>
                 <tr>
                     <!--						<th style="width: 20px"><div class="checkbox-nice"><input id="chbx_w_all" type="checkbox"><label for="chbx_w_all"> </label></div></th>-->
+                    <th style="width: 20px;"></th>
                     <th style="width: 20px">No.</th>
                     <th>Waybill No.</th>
                     <th>Shipper</th>
                     <th>Shipper Phone</th>
                     <th>Receiver</th>
-                    <th>Receiver Phone</th>
                     <th>Created Date</th>
                     <th>Status</th>
                     <th>Action</th>
@@ -91,14 +92,18 @@ if($offset <= 0){
                     $i = 1;$count = $offset + 1;
                     foreach($parcels as $parcel){
                         ?>
-                        <tr>
-                            <!--						<td><div class="checkbox-nice"><input id="chbx_w_000--><?//= $i ?><!--" type="checkbox"><label for="chbx_w_0001"> </label></div></td>-->
+                        <tr data-waybill='<?php echo Calypso::getValue($parcels, 'waybill_number'); ?>'
+                                data-to-branch-id='<?php echo Calypso::getValue($parcels, 'to_branch.id'); ?>'>
+                            <td>
+                                <div class='checkbox-nice'>
+                                    <input name='waybills[]' id='chk_<?php echo $count; ?>' type='checkbox' class='chk_next'><label for='chk_<?php echo $count; ?>'></label>
+                                </div>
+                            </td>
                             <td><?= $count++ ?></td>
                             <td><?= strtoupper($parcel['waybill_number']); ?></td>
                             <td><?= strtoupper($parcel['sender']['firstname'].' '. $parcel['sender']['lastname']) ?></td>
                             <td><?= $parcel['sender']['phone'] ?></td>
                             <td><?= strtoupper($parcel['receiver']['firstname'].' '. $parcel['receiver']['lastname']) ?></td>
-                            <td><?= $parcel['receiver']['phone'] ?></td>
                             <td><?= date('Y/m/d @ H:m',strtotime($parcel['created_date'])); ?></td>
                             <td><?= ServiceConstant::getStatus($parcel['status']); ?></td>
                             <td><a href="<?= Url::to(['site/viewwaybill?id='.$parcel['id']]) ?>" class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>

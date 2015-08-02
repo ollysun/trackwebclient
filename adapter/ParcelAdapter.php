@@ -19,10 +19,10 @@ class ParcelAdapter extends BaseAdapter{
         return $this->request(ServiceConstant::URL_GET_ONE_PARCEL,array('id'=>$id),self::HTTP_GET);
     }
     public function getParcels($start_created_date,$end_created_date,$status,$branch_id=null,$offset=0, $count=50){
-        $filter = ($status != null ? '&status='.$status:'');
-        $filter .= '&start_created_date='.$start_created_date;
-        $filter .= '&end_created_date='.$end_created_date;
-        $filter .= ($branch_id == null ? '':'&branch_id='.$branch_id);
+        $filter = !is_null($status) ? '&status='.$status : '';
+        $filter .= !is_null($start_created_date) ? '&start_created_date='.$start_created_date : '';
+        $filter .= !is_null($end_created_date) ? '&end_created_date='.$end_created_date : '';
+        $filter .= !is_null($branch_id) ? '&branch_id='.$branch_id : '';
         return $this->request(ServiceConstant::URL_GET_ALL_PARCEL.'?with_sender=1&with_receiver=1&with_receiver_address=1&offset='.$offset.'&count='.$count.$filter,array(),self::HTTP_GET);
     }
 
