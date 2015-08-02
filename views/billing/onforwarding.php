@@ -77,30 +77,33 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                     <h4 class="modal-title" id="myModalLabel">Add an Onforwarding Charge</h4>
                 </div>
                 <div class="modal-body">
-                    <div class="form-group">
-                        <label for="">Name</label>
-                        <input type="text" class="form-control" name="onforward_name">
-                    </div>
                     <div class="row">
+                        <div class="form-group col-xs-6">
+                            <label for="">Name</label>
+                            <input type="text" class="form-control" name="onforward_name">
+                        </div>
                         <div class="form-group col-xs-6">
                             <label for="">Onforwading Code</label>
                             <input type="text" class="form-control" name="onforward_code">
                         </div>
-                        <div class="form-group col-xs-6">
-                            <label for="">Amount (<span class="currency naira"></span>)</label>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-xs-4">
+                            <label for="">Base Price (<span class="currency naira"></span>)</label>
                             <input type="text" class="form-control" name="onforward_amount">
+                        </div>
+                        <div class="form-group col-xs-4">
+                            <label for="">Percentage (%)</label>
+                            <input type="text" class="form-control" name="onforward_percentage">
+                        </div>
+                        <div class="form-group col-xs-4">
+                            <label for="">Amount (<span class="currency naira"></span>)</label>
+                            <input type="text" class="form-control" readonly="readonly">
                         </div>
                     </div>
                     <div class="form-group">
                         <label>Description</label>
                         <textarea class="form-control" name="onforward_desc"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label>Activate Onforwarding Charge?</label>
-                        <select class="form-control" name="status">
-                            <option value="<?=ServiceConstant::ACTIVE;?>">Yes</option>
-                            <option value="<?=ServiceConstant::INACTIVE;?>">No</option>
-                        </select>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -124,30 +127,33 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                 </div>
                 <div class="modal-body">
                     <div class="modal-body">
-                        <div class="form-group">
-                            <label for="">Name</label>
-                            <input type="text" class="form-control required" name="onforward_name">
-                        </div>
                         <div class="row">
+                            <div class="form-group col-xs-6">
+                                <label for="">Name</label>
+                                <input type="text" class="form-control required" name="onforward_name">
+                            </div>
                             <div class="form-group col-xs-6">
                                 <label for="">Onforwading Code</label>
                                 <input type="text" class="form-control required" name="onforward_code">
                             </div>
-                            <div class="form-group col-xs-6">
-                                <label for="">Amount (<span class="currency naira"></span>)</label>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-xs-4">
+                                <label for="">Base Price (<span class="currency naira"></span>)</label>
                                 <input type="text" class="form-control required number" name="onforward_amount">
+                            </div>
+                            <div class="form-group col-xs-4">
+                                <label for="">Percentage (%)</label>
+                                <input type="text" class="form-control required" name="onforward_percentage">
+                            </div>
+                            <div class="form-group col-xs-4">
+                                <label for="">Amount (<span class="currency naira"></span>)</label>
+                                <input type="text" class="form-control" readonly="readonly">
                             </div>
                         </div>
                         <div class="form-group">
                             <label>Description</label>
                             <textarea class="form-control" name="onforward_desc"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label>Activate Onforwarding Charge?</label>
-                            <select class="form-control" name="status">
-                                <option value="<?=ServiceConstant::ACTIVE;?>">Yes</option>
-                                <option value="<?=ServiceConstant::INACTIVE;?>">No</option>
-                            </select>
                         </div>
                     </div>
                     <div class="modal-footer">
