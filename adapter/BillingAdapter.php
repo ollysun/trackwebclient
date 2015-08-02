@@ -27,8 +27,8 @@ class BillingAdapter extends BaseAdapter
      * This fetches all existing billing/pricing
      * @return array|mixed|string
      */
-    public function fetchAllPricing() {
-        return $this->request(ServiceConstant::URL_PRICING_FETCH_ALL, null, self::HTTP_GET);
+    public function fetchAllBilling() {
+        return $this->request(ServiceConstant::URL_BILLING_FETCH_ALL, [], self::HTTP_GET);
     }
 
     /**
@@ -43,8 +43,8 @@ class BillingAdapter extends BaseAdapter
      * ]
      * @return array|mixed|string
      */
-    public function addPricing($data){
-        return $this->request(ServiceConstant::URL_ONFORWARDING_ADD, $data, self::HTTP_POST);
+    public function addBilling($data){
+        return $this->request(ServiceConstant::URL_BILLING_ADD, $data, self::HTTP_POST);
     }
     public function addException(){}
 

@@ -367,7 +367,27 @@ class BillingController extends BaseController
 
     public function actionPricing()
     {
-        return $this->render('pricing');
+        $viewBag = [
+            'billings'      => [],
+            'zones'         => [],
+            'weightRanges'  => []
+        ];
+        $billingAdp = new BillingAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+        $billings = $billingAdp->fetchAllBilling();
+        if($billings['status'] == ResponseHandler::STATUS_OK) {
+            $viewBag['billings'] = $billings['data'];
+        }
+        $zoneAdp = new ZoneAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+        $zones = $zoneAdp->getZones();
+        if($zones['status'] == ResponseHandler::STATUS_OK) {
+            $viewBag['zones'] = $zones['data'];
+        }
+        $weightAdp = new WeightRangeAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+        $weightRanges = $weightAdp->getRange();
+        if($weightRanges['status'] == ResponseHandler::STATUS_OK) {
+            $viewBag['weightRanges'] = $weightRanges['data'];
+        }
+        return $this->render('pricing', $viewBag);
     }
 
     public function actionExceptions()
