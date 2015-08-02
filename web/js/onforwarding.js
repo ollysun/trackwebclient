@@ -21,7 +21,7 @@ $(document).ready(function () {
 
 		setAmount();
 
-		$(formSelector+' '+basePriceElementSelector+', '+formSelector+' '+percentageElementSelector).on('keyup change', setAmount);
+		$(formSelector+' '+basePriceElementSelector+', '+formSelector+' '+percentageElementSelector).off('keyup change', setAmount).on('keyup change', setAmount);
 
 		function setAmount() {
 			var bP = bPEle.val(),
@@ -33,7 +33,7 @@ $(document).ready(function () {
 				p = '0';
 
 			var amount = bPEle.val() * (1 + (pEle.val() / 100));
-			aEle.val(amount);
+			aEle.val(amount.toFixed(2));
 		}
 	}
 
