@@ -63,7 +63,8 @@ if($offset <= 0){
             </form>
             <div class="pull-left">
                 <label>&nbsp;</label><br>
-                <button type="button" onclick="javascript:window.print();" class="btn btn-sm btn-default">Generate Sweep Run</button>
+                <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" id="manifest">Generate Manifest</button>
+                <!--<button type="button" onclick="javascript:window.print();" class="btn btn-sm btn-default">Generate Sweep Run</button>-->
             </div>
         </div>
     </div>
