@@ -71,7 +71,7 @@ if($offset <= 0){
     </div>
     <div class="main-box-body">
         <div class="table-responsive">
-            <table id="table" class="table table-hover dataTable">
+            <table id="next_dest" class="table table-hover dataTable">
                 <thead>
                 <tr>
                     <!--						<th style="width: 20px"><div class="checkbox-nice"><input id="chbx_w_all" type="checkbox"><label for="chbx_w_all"> </label></div></th>-->
@@ -126,8 +126,72 @@ if($offset <= 0){
     </div>
 </div>
 
-
-
+<!-- Modal -->
+<div class="modal fade" id="genManifest" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <form method="post" action="delivery">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Generate Dispatch Manifest</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <input type="hidden" id="payload" name="payload" />
+                        <div class="col-xs-6">
+                            <div class="form-group">
+                                <label for="dlg_location">Location</label>
+                                <input class="form-control" id="dlg_location" />
+                            </div>
+                        </div>
+                        <div class="col-xs-6">
+                            <div class="form-group">
+                                <label>Staff ID</label>
+                                <input class="form-control" id="staff">
+                            </div>
+                        </div>
+                    </div>
+                    <div id="staff_info" style="display: none;">
+                        <hr />
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <label>Staff Name</label>
+                                <p id="staff_name">Staff Name</p>
+                            </div>
+                            <div class="col-xs-6">
+                                <label>Email</label>
+                                <p id="staff_email">Role</p>
+                            </div>
+                            <div class="col-xs-6">
+                                <label>Phone Number</label>
+                                <p id="staff_phone">Staff Name</p>
+                            </div>
+                            <div class="col-xs-6">
+                                <label>Role</label>
+                                <p id="staff_role">Role</p>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <table class="table table-bordered table-condensed" id="tbl_manifest">
+                        <thead>
+                        <tr>
+                            <th>S/N</th>
+                            <th>Waybill No.</th>
+                            <th>Final Destination</th>
+                        </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" id="btnGenerate">Generate</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 <!-- this page specific scripts -->
 <?= $this->registerJsFile('@web/js/libs/jquery.dataTables.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
 <?= $this->registerJsFile('@web/js/libs/dataTables.fixedHeader.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
@@ -136,5 +200,6 @@ if($offset <= 0){
 <?php $this->registerJsFile('@web/js/jquery.dataTables.min.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/dataTables.bootstrap.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/table.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/ec_forsweeper.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 
 
