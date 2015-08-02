@@ -38,7 +38,9 @@ $this->params['content_header_button'] = '<span class="label label-success">CONF
         <div class="row">
             <div class="main-box-body">
                 <div class="table-responsive">
-                    <table id="next_dest" class="table table-hover next_dest dataTable">
+
+                    <?php if(!empty($parcel_delivery)) { ?>
+                    <table id="next_dest" class="table table-hover next_dest">
                         <thead>
                         <tr>
                             <th style="width: 20px">S/N</th>
@@ -51,8 +53,6 @@ $this->params['content_header_button'] = '<span class="label label-success">CONF
                         </thead>
                         <tbody>
                         <?php
-
-                        if(isset($parcel_delivery)) {
                             $row = 1;
                             foreach ($parcel_delivery as $parcels) {
 
@@ -66,10 +66,12 @@ $this->params['content_header_button'] = '<span class="label label-success">CONF
                                 echo "</tr>";
                                 $row++;
                             }
-                        }
                         ?>
                         </tbody>
                     </table>
+                    <?php } else { ?>
+                        <p>No record to display</p>
+                    <?php }  ?>
                 </div>
             </div>
         </div>

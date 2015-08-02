@@ -27,6 +27,10 @@ class HubsController extends BaseController {
         return parent::beforeAction($action);
     }
 
+    /**
+     * This action allows setting next destination for shopments
+     * @return string
+     */
     public function actionDestination()
     {
 
@@ -85,6 +89,7 @@ class HubsController extends BaseController {
 
         return $this->render('hub_dispatch', array('sweeper'=>[], 'hubs'=>$hub_list,'parcels'=>$parcel_list, 'branch_id'=>$from_branch_id, 'from_date'=>$from_date, 'to_date'=>$to_date));
     }
+
     /**
      * Ajax calls to get all hubs
      */
@@ -155,6 +160,11 @@ class HubsController extends BaseController {
 
     }
 
+    /**
+     * This action moves shipment to in transit.
+     * Shipments are also assigned to sweepers for delivery
+     * @return string
+     */
     public function actionDelivery()
     {
         //Move to In Transit (waybill_numbers, to_branch_id.
@@ -200,6 +210,11 @@ class HubsController extends BaseController {
         return $this->render('delivery', $viewData);
     }
 
+    /**
+     * This is a method to render the view for generating manifest
+     * @param $data
+     * @return string
+     */
     public function viewManifest($data) {
 
         $user_session = Calypso::getInstance()->session("user_session");
