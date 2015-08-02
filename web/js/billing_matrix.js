@@ -13,4 +13,8 @@ $(document).ready(function() {
         leftColumns: 1,
         //rightColumns: 1
     } );
+
+    $('.matrix_cell').on('click',function(){
+        $('#editModal').modal();
+    });
 } );
