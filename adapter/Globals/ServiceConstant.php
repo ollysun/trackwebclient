@@ -100,8 +100,8 @@ class ServiceConstant {
     const URL_ONFORWARDING_FETCH_ID = 'onforwardingcharge/fetchById';
     const URL_ONFORWARDING_FETCH_ALL = 'onforwardingcharge/fetchAll';
 
-    const URL_PRICING_FETCH_ALL = 'zone/fetchbilling';
-    const URL_PRICING_ADD= 'zone/addbilling';
+    const URL_BILLING_FETCH_ALL = 'zone/fetchbilling';
+    const URL_BILLING_ADD= 'zone/addbilling';
 
 
     const URL_CREATE_USER = 'admin/register';
