@@ -48,7 +48,7 @@ $this->params['breadcrumbs'] = array(
                         </div>
                         <div class="pull-left">
                             <label for="">&nbsp;</label><br>
-                            <button type="submit" class="btn btn-sm btn-default" id="btn_apply_dest"><i class="fa fa-search"></i> Search</button>
+                            <button type="submit" class="btn btn-sm btn-default" id="btn_apply_dest"><i class="fa fa-search"></i></button>
                         </div>
                     </div>
 
@@ -62,51 +62,93 @@ $this->params['breadcrumbs'] = array(
                         </form>
                     </div>
                 </div>
+
+                <div class="clearfix">
+                    <div class="pull-left">
+                        <p class="form-control-static input-sm">Showing 1 to 49 of 49 shipments</p>
+                    </div>
+                    <div class="pull-right form-group form-group-sm form-inline">
+                        <label for="page_width">Records</label>
+                        <select name="page_width" id="page_width" class="form-control ">
+                            <?php
+                            $page_width = isset($page_width) ? $page_width : 50;
+                            for($i = 50; $i <= 500; $i+=50){
+                                ?>
+                                <option <?= $page_width==$i?'selected':'' ?> value="<?= $i ?>"><?= $i ?></option>
+                            <?php
+                            }
+                            ?>
+                        </select>
+                    </div>
+                </div>
+
             </div>
         </form>
 
-        <div class="main-box-body">
-            <div class="table-responsive">
-                <table id="next_dest" class="table table-hover next_dest dataTable">
-                    <thead>
-                    <tr>
-                        <th style="width: 20px;"></th>
-                        <th style="width: 20px">S/N</th>
-                        <th>Waybill No</th>
-                        <th>Origin</th>
-                        <th>Next Destination</th>
-                        <th>Final Destination</th>
-                        <th>Weight (Kg)</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <?php
 
-                    if(isset($parcel_delivery)) {
-                        $row = 1;
-                        foreach ($parcel_delivery as $parcels) {
+            <div class="main-box-body">
+                <div class="table-responsive">
+                    <?php if(!empty($parcel_delivery)) { ?>
+                    <table id="next_dest" class="table table-hover next_dest">
+                        <thead>
+                        <tr>
+                            <th style="width: 20px;"></th>
+                            <th style="width: 20px">S/N</th>
+                            <th>Waybill No</th>
+                            <th>Origin</th>
+                            <th>Next Destination</th>
+                            <th>Final Destination</th>
+                            <th>Weight (Kg)</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?php
+                            $row = 1;
+                            foreach ($parcel_delivery as $parcels) {
 
-                            echo "<tr data-waybill='" . Calypso::getValue($parcels, 'waybill_number') . "' ";
-                            echo "data-to-branch-id='" . Calypso::getValue($parcels, 'to_branch.id') . "'>";
-                            echo "<td>
-											<div class='checkbox-nice'>
-												<input name='waybills[]' id='chk_{$row}' type='checkbox' class='chk_next'><label for='chk_{$row}'></label>
-											</div>
-										  </td>";
-                            echo "<td>{$row}</td>";
-                            echo "<td><a href='/site/viewwaybill?id=" . Calypso::getValue($parcels, 'id') . "'>" . Calypso::getValue($parcels, 'waybill_number') . "</a></td>";
-                            echo "<td>" . ucwords(Calypso::getValue($parcels, 'sender_address.city') . ', ' . Calypso::getValue($parcels, 'sender_address.state.name')) . "</td>";
-                            echo "<td>" . strtoupper(Calypso::getValue($parcels, 'to_branch.name')) ."</td>";
-                            echo "<td>" . ucwords(Calypso::getValue($parcels, 'receiver_address.city') . ', ' . Calypso::getValue($parcels, 'receiver_address.state.name')) . "</td>";
-                            echo "<td>" . Calypso::getValue($parcels, 'weight') . "</td>";
-                            echo "</tr>";
-                            $row++;
-                        }
-                    }
-                    ?>
-                    </tbody>
-                </table>
+                                echo "<tr data-waybill='" . Calypso::getValue($parcels, 'waybill_number') . "' ";
+                                echo "data-to-branch-id='" . Calypso::getValue($parcels, 'to_branch.id') . "'>";
+                                echo "<td>
+                                                <div class='checkbox-nice'>
+                                                    <input name='waybills[]' id='chk_{$row}' type='checkbox' class='chk_next'><label for='chk_{$row}'></label>
+                                                </div>
+                                              </td>";
+                                echo "<td>{$row}</td>";
+                                echo "<td><a href='/site/viewwaybill?id=" . Calypso::getValue($parcels, 'id') . "'>" . Calypso::getValue($parcels, 'waybill_number') . "</a></td>";
+                                echo "<td>" . ucwords(Calypso::getValue($parcels, 'sender_address.city') . ', ' . Calypso::getValue($parcels, 'sender_address.state.name')) . "</td>";
+                                echo "<td>" . strtoupper(Calypso::getValue($parcels, 'to_branch.name')) ."</td>";
+                                echo "<td>" . ucwords(Calypso::getValue($parcels, 'receiver_address.city') . ', ' . Calypso::getValue($parcels, 'receiver_address.state.name')) . "</td>";
+                                echo "<td>" . Calypso::getValue($parcels, 'weight') . "</td>";
+                                echo "</tr>";
+                                $row++;
+                            }
+                        ?>
+                        </tbody>
+                    </table>
+                    <?php } else { ?>
+                        <p>No record to display</p>
+                    <?php }  ?>
+
+
+                    <div class="clearfix">
+                        <div class="pull-left">
+                            <p class="form-control-static input-sm">Showing 1 to 49 of 49 shipments</p>
+                        </div>
+                        <div class="pull-right">
+                            <ul class="pagination">
+                                <li><a href="">&larr;</a></li>
+                                <li><a href="">1</a></li>
+                                <li><a href="">2</a></li>
+                                <li><a href="">3</a></li>
+                                <li><a href="">4</a></li>
+                                <li><a href="">&rarr;</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
             </div>
+
         </div>
     </div>
 
