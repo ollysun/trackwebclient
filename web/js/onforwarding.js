@@ -5,6 +5,7 @@ $(document).ready(function () {
         $(target+" input[name='onforward_name']").val($("td[class='n"+_id+"']").text());
         $(target+" input[name='onforward_code']").val($("td[class='c"+_id+"']").text());
         $(target+" textarea[name='onforward_desc']").val($("td[class='d"+_id+"']").text());
+        $(target+" input[name='onforward_percentage']").val(parseFloat($("td[class='p"+_id+"']").text())*100);
         $(target+" input[name='onforward_amount']").val($("td[class='a"+_id+"']").text());
         $(target+" input[name='id']").val(_id);
 		  calculateAmount('#editModal','[name="onforward_amount"]','[name="onforward_percentage"]','[readonly]');
