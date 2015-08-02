@@ -25,6 +25,6 @@ class ZoneAdapter extends BaseAdapter
     }
     public function getZones()
     {
-        return $this->request(ServiceConstant::URL_ZONES_GET, [], self::HTTP_GET);
+        return $this->request(ServiceConstant::URL_ZONES_GET_ALL, [], self::HTTP_GET);
     }
 }
