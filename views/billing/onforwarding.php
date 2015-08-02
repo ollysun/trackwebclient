@@ -34,6 +34,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                     <th>Name</th>
                     <th>Code</th>
                     <th>Description</th>
+                    <th>Percentage %</th>
                     <th>Amount (<span class="currency naira"></span>)</th>
                     <th>Action</th>
                 </tr>
@@ -50,6 +51,8 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                         <td class="c<?= $charge['id'];?>"><?=$charge['code']; ?></td>
                         <td class="d<?= $charge['id'];?>"><?=$charge['description']; ?></td>
                         <td class="a<?= $charge['id'];?>"><?=$charge['amount']; ?></td>
+                        <td class="p<?= $charge['id'];?>"><?=$charge['percentage']; ?></td>
+                        <td class="h<?= $charge['id'];?>"><?=$charge['amount']*(1+floatval($charge['percentage'])); ?></td>
                         <td>
                             <button type="button" class="btn btn-default btn-xs" data-toggle="modal"
                                     data-target="#editModal" data-id="<?= $charge['id']; ?>"><i class="fa fa-edit"></i>
