@@ -238,6 +238,7 @@ class HubsController extends BaseController {
 
         return $this->render('manifest', $viewData);
     }
+
     public function actionViewbag() {
         return $this->render('view_bag');
     }

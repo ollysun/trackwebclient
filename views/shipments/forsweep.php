@@ -71,7 +71,7 @@ if($offset <= 0){
     </div>
     <div class="main-box-body">
         <div class="table-responsive">
-            <table id="next_dest" class="table table-hover dataTable">
+            <table id="next_dest" class="table table-hover">
                 <thead>
                 <tr>
                     <!--						<th style="width: 20px"><div class="checkbox-nice"><input id="chbx_w_all" type="checkbox"><label for="chbx_w_all"> </label></div></th>-->
@@ -79,10 +79,9 @@ if($offset <= 0){
                     <th style="width: 20px">No.</th>
                     <th>Waybill No.</th>
                     <th>Shipper</th>
-                    <th>Shipper Phone</th>
                     <th>Receiver</th>
+                    <th>Final Destination</th>
                     <th>Created Date</th>
-                    <th>Status</th>
                     <th>Action</th>
                 </tr>
                 </thead>
@@ -92,8 +91,10 @@ if($offset <= 0){
                     $i = 1;$count = $offset + 1;
                     foreach($parcels as $parcel){
                         ?>
-                        <tr data-waybill='<?php echo Calypso::getValue($parcels, 'waybill_number'); ?>'
-                                data-to-branch-id='<?php echo Calypso::getValue($parcels, 'to_branch.id'); ?>'>
+                        <tr data-waybill='<?php echo Calypso::getValue($parcel, 'waybill_number'); ?>'
+                                data-to-branch-id='<?php echo Calypso::getValue($parcel, 'to_branch.id'); ?>'
+                                data-to-branch-name='<?php echo Calypso::getValue($parcel, 'to_branch.name'); ?>'
+                            >
                             <td>
                                 <div class='checkbox-nice'>
                                     <input name='waybills[]' id='chk_<?php echo $count; ?>' type='checkbox' class='chk_next'><label for='chk_<?php echo $count; ?>'></label>
@@ -102,10 +103,11 @@ if($offset <= 0){
                             <td><?= $count++ ?></td>
                             <td><?= strtoupper($parcel['waybill_number']); ?></td>
                             <td><?= strtoupper($parcel['sender']['firstname'].' '. $parcel['sender']['lastname']) ?></td>
-                            <td><?= $parcel['sender']['phone'] ?></td>
                             <td><?= strtoupper($parcel['receiver']['firstname'].' '. $parcel['receiver']['lastname']) ?></td>
+                            <td><?= ucwords(Calypso::getValue($parcel, 'receiver_address.city')) . ', ' .
+                                    ucwords(Calypso::getValue($parcel, 'receiver_address.state.name')); ?>
+                            </td>
                             <td><?= date('Y/m/d @ H:m',strtotime($parcel['created_date'])); ?></td>
-                            <td><?= ServiceConstant::getStatus($parcel['status']); ?></td>
                             <td><a href="<?= Url::to(['site/viewwaybill?id='.$parcel['id']]) ?>" class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
                         </tr>
                     <?php
@@ -129,7 +131,7 @@ if($offset <= 0){
 <!-- Modal -->
 <div class="modal fade" id="genManifest" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
-        <form method="post" action="delivery">
+        <form method="post" action="forsweep">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -141,13 +143,20 @@ if($offset <= 0){
                         <div class="col-xs-6">
                             <div class="form-group">
                                 <label for="dlg_location">Location</label>
-                                <input class="form-control" id="dlg_location" />
+                                <input class="form-control input-sm" id="dlg_location" />
                             </div>
                         </div>
                         <div class="col-xs-6">
                             <div class="form-group">
-                                <label>Staff ID</label>
-                                <input class="form-control" id="staff">
+                                <label for="searchInput">Staff ID</label><br>
+                                <div class="input-group input-group-sm input-group-search">
+                                    <input id="staff" type="text" name="search_staff" placeholder="" class="search-box form-control">
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-default" id="btnSearch" type="submit">
+                                            <i class="fa fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -199,7 +208,7 @@ if($offset <= 0){
 <?= $this->registerJsFile('@web/js/libs/jquery.dataTables.bootstrap.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/jquery.dataTables.min.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/dataTables.bootstrap.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
-<?php $this->registerJsFile('@web/js/table.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
+<?php //$this->registerJsFile('@web/js/table.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/ec_forsweeper.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 
 
