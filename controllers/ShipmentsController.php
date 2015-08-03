@@ -201,4 +201,14 @@ class ShipmentsController extends BaseController {
 
         return $this->render('manifest', $viewData);
     }
+
+
+    public function actionCustomerhistory()
+    {
+        return $this->render('customer_history');
+    }
+    public function actionCustomerhistorydetails()
+    {
+        return $this->render('customer_history_details');
+    }
 }

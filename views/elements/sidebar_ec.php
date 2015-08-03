@@ -117,7 +117,7 @@ use Adapter\Util\Calypso;
 						</ul>
 					</li>
 					<li>
-						<a href="<?= Url::to(['site/customerhistory']) ?>">
+						<a href="<?= Url::to(['shipments/customerhistory']) ?>">
 							<i class="fa fa-user"></i>
 							<span>Customer History</span>
 						</a>
