@@ -20,8 +20,32 @@ class BillingAdapter extends BaseAdapter
         return $this->request(ServiceConstant::URL_ONFORWARDING_EDIT, $data, self::HTTP_POST);
     }
     public function getOnforwardingCharge($id){
-        return $this->request(ServiceConstant::URL_ONFORWARDING_FETCH_ID, $id, self::HTTP_GET);}
+        return $this->request(ServiceConstant::URL_ONFORWARDING_FETCH_ID, $id, self::HTTP_GET);
+    }
 
+    /**
+     * This fetches all existing billing/pricing
+     * @return array|mixed|string
+     */
+    public function fetchAllBilling() {
+        return $this->request(ServiceConstant::URL_BILLING_FETCH_ALL, [], self::HTTP_GET);
+    }
+
+    /**
+     * This adds a new billing/pricing
+     * @param $data = [
+     *   zone_id => 1
+     *   weight_range_id => 2
+     *   base_cost => 4000
+     *   base_percentage => 0.9
+     *   increment_cost => 1000
+     *   increment_percentage => 0.85
+     * ]
+     * @return array|mixed|string
+     */
+    public function addBilling($data){
+        return $this->request(ServiceConstant::URL_BILLING_ADD, $data, self::HTTP_POST);
+    }
     public function addException(){}
-    public function addPrincing(){}
+
 }
