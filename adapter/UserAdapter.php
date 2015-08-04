@@ -24,5 +24,8 @@ class UserAdapter extends BaseAdapter {
         ], self::HTTP_POST);
     }
 
-
+    public function getUserDetailsWithParcels($term)
+    {
+        return $this->request(ServiceConstant::URL_USER_BY_PHONE, [ 'phone' => $term, 'fetch_parcel'=>true ], self::HTTP_GET);
+    }
 }
