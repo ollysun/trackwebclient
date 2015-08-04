@@ -301,126 +301,6 @@ class SiteController extends BaseController
         return $this->render('print_waybill',array('parcelData'=>$data));
     }
 
-    public function actionManagebranches()
-    {
-        if(Yii::$app->request->isPost){
-            $entry = Yii::$app->request->post();
-            $error = [];
-
-            $hub_data = [];
-            $hub_data['name'] = Calypso::getValue($entry, 'name', null);
-            $hub_data['address'] = Calypso::getValue($entry, 'address');
-            $hub_data['branch_type'] = ServiceConstant::BRANCH_TYPE_HUB;
-            $hub_data['state_id'] = Calypso::getValue($entry, 'state_id');
-            $hub_data['status'] =  Calypso::getValue($entry, 'status');
-            $hub_data['branch_id'] = Calypso::getValue($entry, 'id', null);
-
-            $task =  Calypso::getValue(Yii::$app->request->post(), 'task');
-
-            if(($task == 'create' || $task == 'edit') && (empty($hub_data['name']) || empty($hub_data['address']))) {
-                $error[] = "All details are required!";
-            }
-            if(!empty($error)) {
-                $errorMessages = implode('<br />', $error);
-                Yii::$app->session->setFlash('danger', $errorMessages);
-            }
-            else {
-                $hub = new BranchAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-                if($task == 'create'){
-                    $response = $hub->createNewHub($hub_data);
-                    if ($response['status'] === Response::STATUS_OK) {
-                        Yii::$app->session->setFlash('success', 'Hub has been created successfully.');
-                        Yii::$app->response->redirect("/admin/hubmapping?hub={$response['data']['id']}");
-                    } else {
-                        Yii::$app->session->setFlash('danger', 'There was a problem creating the hub. Please try again.');
-                    }
-                }
-                else{
-                    $response = $hub->editOneHub($hub_data, $task);
-                    if ($response['status'] === Response::STATUS_OK) {
-                        Yii::$app->session->setFlash('success', 'Hub has been edited successfully.');
-                    } else {
-                        Yii::$app->session->setFlash('danger', 'There was a problem editing the hub. Please try again.'.$response['message']);
-                    }
-                }
-            }
-        }
-
-        $refAdp = new RefAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
-        $states = $refAdp->getStates(1); // Hardcoded Nigeria for now
-        $states = new ResponseHandler($states);
-
-        $filter_state_id = Calypso::getValue(Yii::$app->request->post(), 'filter_state_id',null);
-        $hubAdp = new BranchAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
-        $hubs = $hubAdp->getHubs($filter_state_id);
-        $hubs = new ResponseHandler($hubs);
-
-        $state_list = $states->getStatus()==ResponseHandler::STATUS_OK?$states->getData(): [];
-        $hub_list = $hubs->getStatus()==ResponseHandler::STATUS_OK?$hubs->getData(): [];
-        return $this->render('managehubs',array('States'=>$state_list, 'filter_state_id'=>$filter_state_id, 'hubs'=>$hub_list));
-    }
-    public function actionManageecs()
-    {
-        if(Yii::$app->request->isPost){
-            $entry = Yii::$app->request->post();
-            $task =  Calypso::getValue($entry, 'task','');
-            $error = [];
-
-            $data = [];
-            $data['name'] = Calypso::getValue($entry, 'name', null);
-            $data['address'] = Calypso::getValue($entry, 'address');
-            $data['branch_type'] = ServiceConstant::BRANCH_TYPE_EC;
-            $data['status'] =  Calypso::getValue($entry, 'status');
-            $data['hub_id'] = Calypso::getValue($entry, 'hub_id', null);
-            $data['branch_id'] = Calypso::getValue($entry, 'id', null);
-            $data['ec_id'] = Calypso::getValue($entry, 'id', null);
-            $data['state_id'] = Calypso::getValue($entry, 'state_id', null);
-
-            if(($task == 'create' || $task == 'edit') && (empty($data['name']) || empty($data['address']))) {
-                $error[] = "All details are required!";
-            }
-            if(!empty($error)) {
-                $errorMessages = implode('<br />', $error);
-                Yii::$app->session->setFlash('danger', $errorMessages);
-            }
-            else {
-                $center = new BranchAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-                if($task == 'create'){
-                    $response = $center->createNewCentre($data);
-                    if ($response['status'] === Response::STATUS_OK) {
-                        Yii::$app->session->setFlash('success', 'Centre has been created successfully.');
-                    } else {
-                        Yii::$app->session->setFlash('danger', 'There was a problem creating the centre. Please try again.');
-                    }
-                }
-                elseif($task != ''){
-                    $response = $center->editOneCentre($data, $task);
-                    if ($response['status'] === Response::STATUS_OK) {
-                        Yii::$app->session->setFlash('success', 'Centre has been edited successfully.');
-                    } else {
-                        Yii::$app->session->setFlash('danger', 'There was a problem editing the hub. Please try again.');
-                    }
-                }
-            }
-        }
-        $refAdp = new RefAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
-        $states = $refAdp->getStates(1); // Hardcoded Nigeria for now
-        $states = new ResponseHandler($states);
-
-        $hubAdp = new BranchAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
-        $hubs = $hubAdp->getHubs();
-        $hubs = new ResponseHandler($hubs);
-
-        $filter_hub_id = Calypso::getValue(Yii::$app->request->post(), 'filter_hub_id', null);
-        $hubAdp = new BranchAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
-        $centres = $hubAdp->getCentres($filter_hub_id);
-        $centres = new ResponseHandler($centres);
-
-        $state_list = $states->getStatus()==ResponseHandler::STATUS_OK?$states->getData(): [];
-        $hub_list = $hubs->getStatus()==ResponseHandler::STATUS_OK?$hubs->getData(): [];
-        $centres_list = $centres->getStatus()==ResponseHandler::STATUS_OK?$centres->getData(): [];
-        return $this->render('manageecs',array('States'=>$state_list, 'hubs'=>$hub_list, 'centres'=>$centres_list, 'filter_hub_id'=>$filter_hub_id));
-    }
     /**
      * Ajax calls to get Branch details
      */
@@ -484,42 +364,9 @@ class SiteController extends BaseController
 
         return $this->render('managestaff',['states' => $state_list,'roles'=> $role_list,'staffMembers' => $staffMembers,'offset'=>$offset,'role'=>$role,'page_width'=>$this->page_width]);
     }
-    public function actionHubarrival()
-    {
-        $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
-
-        if(\Yii::$app->request->isPost) {
-            $branch = \Yii::$app->request->post('branch');
-            $waybill_numbers = \Yii::$app->request->post('waybills');
-            if(!isset($branch) || empty($waybill_numbers)) {
-                $this->flashError('Please ensure you set destinations at least a (one) for the parcels');
-            }
-
-            $postParams['waybill_numbers'] = implode(',', $waybill_numbers);
-            $postParams['to_branch_id'] = $branch;
-            $response = $parcelsAdapter->moveToForSweeper($postParams);
-            if($response['status'] === ResponseHandler::STATUS_OK) {
-                $this->flashSuccess('Parcels have been successfully moved to the next destination. <a href="hubmovetodelivery">Generate Manifest</a>');
-            } else {
-                $this->flashError('An error occured while trying to move parcels to next destination. Please try again.');
-            }
-        }
-        $user_session = Calypso::getInstance()->session("user_session");
-        $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
-        $arrival_parcels = $parcelsAdapter->getParcelsForNextDestination(ServiceConstant::FOR_ARRIVAL, $user_session['branch_id']);
-        if($arrival_parcels['status'] === ResponseHandler::STATUS_OK) {
-            $viewData['parcel_next'] = $arrival_parcels['data'];
-        } else {
-            $this->flashError('An error occured while trying to fetch parcels. Please try again.');
-            $viewData['parcel_next'] = [];
-        }
-
-        return $this->render('hub_arrival',$viewData);
-    }
 
     public function actionHubnextdestination()
     {
-
         $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
 
         if(\Yii::$app->request->isPost) {
