@@ -49,17 +49,17 @@ use Adapter\Util\Calypso;
 						</ul>
 					</li>
 					<li>
-						<a href="<?= Url::to(['site/managebranches']) ?>" class="dropdown-toggle">
+						<a href="<?= Url::to(['admin/managebranches']) ?>" class="dropdown-toggle">
 							<i class="fa fa-user"></i>
 							<span>Administrator</span>
 							<i class="fa fa-angle-right drop-icon"></i>
 						</a>
 						<ul class="submenu">
 							<li>
-								<a href="<?= Url::to(['site/managebranches']) ?>">Manage branches</a>
+								<a href="<?= Url::to(['admin/managebranches']) ?>">Manage branches</a>
 							</li>
 							<li>
-								<a href="<?= Url::to(['site/managestaff']) ?>">Manage staff accounts</a>
+								<a href="<?= Url::to(['admin/managestaff']) ?>">Manage staff accounts</a>
 							</li>
 							<li>
 								<a href="<?= Url::to(['site/billings']) ?>" class="dropdown-toggle">Billing <i class="fa fa-angle-right drop-icon"></i></a>
@@ -103,7 +103,7 @@ use Adapter\Util\Calypso;
 						</a>
 						<ul class="submenu">
 							<li>
-								<a href="<?= Url::to(['site/hubarrival']) ?>">Shipment Arrivals</a>
+								<a href="<?= Url::to(['hubs/hubarrival']) ?>">Shipment Arrivals</a>
 							</li>
 							<li>
 								<a href="<?= Url::to(['hubs/destination']) ?>">Set next destination</a>
