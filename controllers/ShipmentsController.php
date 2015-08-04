@@ -12,6 +12,7 @@ namespace app\controllers;
 use Adapter\AdminAdapter;
 use Adapter\Globals\ServiceConstant;
 use Adapter\ParcelAdapter;
+use Adapter\UserAdapter;
 use Adapter\RequestHelper;
 use Adapter\ResponseHandler;
 use Adapter\Util\Calypso;
@@ -200,5 +201,25 @@ class ShipmentsController extends BaseController {
         }
 
         return $this->render('/hubs/manifest', $viewData);
+    }
+
+
+    public function actionCustomerhistory()
+    {
+        return $this->render('customer_history');
+    }
+    public function actionCustomerhistorydetails($search=false,$offset=0,$page_width=null)
+    {
+        if (!$search) { //default, empty
+            // display empty message
+            $this->redirect('customerhistory');
+        }
+        $userAdapter = new UserAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+        $response = new ResponseHandler($userAdapter->getUserDetailsWithParcels($search));
+        $data = [];
+        if($response->getStatus() ==  ResponseHandler::STATUS_OK){
+            $data = $response->getData();
+        }
+        return $this->render('customer_history_details', array('user_data'=>$data,'search'=>$search,'offset'=>$offset, 'page_width'=>$page_width));
     }
 }
