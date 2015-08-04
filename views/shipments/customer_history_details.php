@@ -2,14 +2,23 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 
+if (empty($user_data)) {
+	$user_not_found = true;
+	$user_fullname = 'Customer not found';
+}
+else {
+	$user_not_found = false;
+	$user_fullname = ucwords($user_data['firstname'].' '.$user_data['lastname']);
+}
+
 /* @var $this yii\web\View */
-$this->title = 'Customer History: <small>Aderopo Olusegun</small>';
+$this->title = 'Customer History: <small>'.$user_fullname.'</small>';
 $this->params['breadcrumbs'] = array(
 	array(
 		'label'=>'Customer History',
-		'url'=> ['site/customerhistory']
+		'url'=> ['shipments/customerhistory']
 	),
-	array('label'=> 'Aderopo Olusegun')
+	array('label'=> $user_fullname)
 );
 ?>
 
@@ -25,11 +34,11 @@ $this->params['breadcrumbs'] = array(
 <div class="main-box">
 	<div class="main-box-header table-search-form clearfix">
 		<div class="pull-right">
-			<form class="table-search-form form-inline clearfix">
+			<form action="" class="table-search-form form-inline clearfix">
               <div class="pull-left">
                   <label for="searchInput">Search customer:</label><br>
                   <div class="input-group input-group-sm input-group-search">
-                      <input id="searchInput" type="text" name="search" placeholder="Email or phone number" class="search-box form-control">
+                      <input id="searchInput" type="text" name="search" placeholder="Phone number" class="search-box form-control" value="<?= $search ? $search : '' ?>">
                       <div class="input-group-btn">
                           <button class="btn btn-default" type="submit">
                               <i class="fa fa-search"></i>
@@ -42,60 +51,57 @@ $this->params['breadcrumbs'] = array(
 	</div>
 	<div class="main-box-body">
 		<div class="table-responsive">
-			<table id="table" class="table table-hover">
-				<thead>
-					<tr>
-						<th>S/N</th>
-						<th>Waybill No.</th>
-						<th>Shipper</th>
-						<th>Receiver</th>
-						<th>Created at</th>
-						<th>Action</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>1</td>
-						<td>4F95310912352</td>
-						<td>Aderopo Olusegun</td>
-						<td>Aderopo Olusegun</td>
-						<td>25 Jun 2015 @ 12:08</td>
-						<td><a href="#" class="btn btn-sm btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
-					</tr>
-					<tr>
-						<td>2</td>
-						<td>4F95310912352</td>
-						<td>Aderopo Olusegun</td>
-						<td>Aderopo Olusegun</td>
-						<td>25 Jun 2015 @ 12:08</td>
-						<td><a href="#" class="btn btn-sm btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
-					</tr>
-					<tr>
-						<td>3</td>
-						<td>4F95310912352</td>
-						<td>Aderopo Olusegun</td>
-						<td>Aderopo Olusegun</td>
-						<td>25 Jun 2015 @ 12:08</td>
-						<td><a href="#" class="btn btn-sm btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
-					</tr>
-					<tr>
-						<td>4</td>
-						<td>4F95310912352</td>
-						<td>Aderopo Olusegun</td>
-						<td>Aderopo Olusegun</td>
-						<td>25 Jun 2015 @ 12:08</td>
-						<td><a href="#" class="btn btn-sm btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
-					</tr>
-					<tr>
-						<td>5</td>
-						<td>4F95310912352</td>
-						<td>Aderopo Olusegun</td>
-						<td>Aderopo Olusegun</td>
-						<td>25 Jun 2015 @ 12:08</td>
-						<td><a href="#" class="btn btn-sm btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
-					</tr>
-				</tbody>
-			</table>
+			<?php
+				if($user_not_found) {
+			?>
+			<div class="alert alert-info">
+				<p>We could not find a customer with phone number <strong><?= $search ?></strong>. Please enter another phone number and search again.</p>
+			</div>
+			<?php
+				}
+				else {
+					$parcels = $user_data['parcel'];
+			?>
+				<table id="table" class="table table-hover">
+					<thead>
+						<tr>
+							<th>S/N</th>
+							<th>Waybill No.</th>
+							<th>Shipper</th>
+							<th>Receiver</th>
+							<th>Created at</th>
+							<th>Action</th>
+						</tr>
+					</thead>
+					<tbody>
+						<?php
+							if (empty($parcels)) {
+							 echo '<tr class="text-center"><td colspan="6">The customer has no shipments to display.</td></tr>';
+							}
+							else {
+								$i = $offset + 1;
+								foreach($parcels as $parcel) {
+
+						?>
+							<tr data-shipment-id="<?= $parcel['id'] ?>">
+								<td><?= $i ?></td>
+								<td><?= $parcel['waybill_number'] ?></td>
+								<td data-sender-id="<?= $parcel['sender_id'] ?>"><?= $parcel['sender_id'] ?></td>
+								<td data-receiver-id="<?= $parcel['receiver_id'] ?>"><?= $parcel['receiver_id'] ?></td>
+								<td><?= date('j M Y @ h:m',strtotime($parcel['created_date'])); ?></td>
+								<td><a href="<?= Url::to(['site/viewwaybill?id='.$parcel['id']]) ?>" class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
+							</tr>
+						<?php
+								$i++;
+								}
+							}
+						?>
+					</tbody>
+				</table>
+				<?php //var_dump($parcels); ?>
+			<?php
+				}
+			?>
 		</div>
 	</div>
 </div>
