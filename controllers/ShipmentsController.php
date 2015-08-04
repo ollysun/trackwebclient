@@ -199,6 +199,6 @@ class ShipmentsController extends BaseController {
             $viewData['parcel_delivery'] = [];
         }
 
-        return $this->render('manifest', $viewData);
+        return $this->render('/hubs/manifest', $viewData);
     }
 }
