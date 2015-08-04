@@ -1,6 +1,7 @@
 <?php
 use yii\helpers\Html;
 use yii\helpers\Url;
+use Adapter\Globals\ServiceConstant;
 
 if (empty($user_data)) {
 	$user_not_found = true;
@@ -70,13 +71,14 @@ $this->params['breadcrumbs'] = array(
 							<th>Shipper</th>
 							<th>Receiver</th>
 							<th>Created at</th>
+							<th>Status</th>
 							<th>Action</th>
 						</tr>
 					</thead>
 					<tbody>
 						<?php
 							if (empty($parcels)) {
-							 echo '<tr class="text-center"><td colspan="6">The customer has no shipments to display.</td></tr>';
+							 echo '<tr class="text-center"><td colspan="7">The customer has no shipments to display.</td></tr>';
 							}
 							else {
 								$i = $offset + 1;
@@ -89,6 +91,7 @@ $this->params['breadcrumbs'] = array(
 								<td data-sender-id="<?= $parcel['sender_id'] ?>"><?= $parcel['sender_id'] ?></td>
 								<td data-receiver-id="<?= $parcel['receiver_id'] ?>"><?= $parcel['receiver_id'] ?></td>
 								<td><?= date('j M Y @ h:m',strtotime($parcel['created_date'])); ?></td>
+								<td><?= ServiceConstant::getStatus($parcel['status']); ?></td>
 								<td><a href="<?= Url::to(['site/viewwaybill?id='.$parcel['id']]) ?>" class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
 							</tr>
 						<?php
@@ -98,7 +101,7 @@ $this->params['breadcrumbs'] = array(
 						?>
 					</tbody>
 				</table>
-				<?php //var_dump($parcels); ?>
+				<?php var_dump($parcels); ?>
 			<?php
 				}
 			?>
