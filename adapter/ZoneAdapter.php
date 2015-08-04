@@ -27,4 +27,17 @@ class ZoneAdapter extends BaseAdapter
     {
         return $this->request(ServiceConstant::URL_ZONES_GET_ALL, [], self::HTTP_GET);
     }
+    public function saveMatrix($data){
+        return $this->request(ServiceConstant::URL_ZONES_MATRIX_SAVE, $data, self::HTTP_POST);
+    }
+    public function removeMatrix($data){
+        return $this->request(ServiceConstant::URL_ZONES_MATRIX_REMOVE, $data, self::HTTP_POST);
+    }
+    public function getMatrix($zone_id=null,$branch_id=null,$other_branch_id=null){
+        $filter = '';
+        $filter .= empty($zone_id)?'':'zone_id='.$zone_id;
+        $filter .= empty($branch_id)?'':'&branch_id='.$branch_id;
+        $filter .= empty($other_branch_id)?'':'&other_branch_id='.$other_branch_id;
+        return $this->request(ServiceConstant::URL_ZONES_MATRIX_SAVE.'?'.$filter, [], self::HTTP_GET);
+    }
 }
