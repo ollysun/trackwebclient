@@ -93,11 +93,20 @@ class BillingController extends BaseController
     {
         $branchAdp = new BranchAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $response = new ResponseHandler($branchAdp->getAllHubs());
-        $hubs = [];
+        $branchAdpMatrix = new BranchAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $responseMatrix = new ResponseHandler($branchAdpMatrix->getMatrix());
+        $hubs = [];$hubsMatrix = [];
         if($response->getStatus() == ResponseHandler::STATUS_OK){
             $hubs = $response->getData();
         }
-        return $this->render('matrix',["hubs"=>$hubs]);
+        if($responseMatrix->getStatus() == ResponseHandler::STATUS_OK){
+            $hubsMatrix = $responseMatrix->getData();
+        }
+        $mapList=[];
+        foreach($hubsMatrix as $mapping){
+            $mapList[$mapping['from_branch_id'].'_'.$mapping['to_branch_id']] = $mapping;
+        }
+        return $this->render('matrix',["hubs"=>$hubs,"hubsMatrix"=>$hubsMatrix,"matrixMap"=>$mapList]);
     }
 
     public function actionZones()
