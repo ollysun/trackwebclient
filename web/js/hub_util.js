@@ -113,6 +113,8 @@ $(document).ready(function(){
                             this.held_by_id = 0;
                         }
                         $("#arrived_parcels_btn").unbind('click').on('click',function(d){
+                            var me = $(this);
+                            me.html("Accepting...").addClass("disabled");
                             var form = $("#arrived_parcels").serializeArray();
                             var payloadObj = new payload();
                             for(var k in form){
@@ -130,16 +132,22 @@ $(document).ready(function(){
                                             var response = JSON.parse(JSON.stringify (resp));
                                             if(response.status=='success'){
                                                 if(typeof response.data.bad_parcels != "undefined"){
-                                                    for(var p in response.data.bad_parcels){
-                                                        $("#L"+p).html(response.data.bad_parcels[p]);
-                                                        $("#L"+p).attr("style","background-color:red");
+                                                    for(var waybill_number in payloadObj.waybill_numbers){
+                                                        if(payloadObj.waybill_numbers[waybill_number] in response.data.bad_parcels ){
+                                                            $("#L"+payloadObj.waybill_numbers[waybill_number]).html(response.data.bad_parcels[payloadObj.waybill_numbers[waybill_number]]);
+                                                            $("#L"+payloadObj.waybill_numbers[waybill_number]).attr("style","background-color:red");
+                                                        }else{
+                                                            $(payloadObj.waybill_numbers[waybill_number]).addClass("hidden");
+                                                        }
                                                     }
+
                                                 }else{
                                                     window.location.reload();
                                                 }
                                             }else{
                                                 alert("Error.#157-68. Reason:"+response.message);
                                             }
+                                            me.html("Accept").removeClass("disabled");
                                         });
                                         break;
                                     case 'hub':
@@ -148,16 +156,22 @@ $(document).ready(function(){
                                             var response = JSON.parse(JSON.stringify (resp));
                                             if(response.status=='success'){
                                                 if(typeof response.data.bad_parcels != "undefined"){
-                                                    for(var p in response.data.bad_parcels){
-                                                        $("#L"+p).html(response.data.bad_parcels[p]);
-                                                        $("#L"+p).attr("style","background-color:red");
+                                                    for(var waybill_number in payloadObj.waybill_numbers){
+                                                        if(payloadObj.waybill_numbers[waybill_number] in response.data.bad_parcels ){
+                                                            $("#L"+payloadObj.waybill_numbers[waybill_number]).html(response.data.bad_parcels[payloadObj.waybill_numbers[waybill_number]]);
+                                                            $("#L"+payloadObj.waybill_numbers[waybill_number]).attr("style","background-color:red");
+                                                        }else{
+                                                            $(payloadObj.waybill_numbers[waybill_number]).addClass("hidden");
+                                                        }
                                                     }
+
                                                 }else{
                                                     window.location.reload();
                                                 }
                                             }else{
                                                 alert("Error.#157-68. Reason:"+response.message);
                                             }
+                                            me.html("Accept").removeClass("disabled");
                                         });
                                         break;
                                 }
