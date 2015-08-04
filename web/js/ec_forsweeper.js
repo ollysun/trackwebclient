@@ -210,28 +210,9 @@ var TableHelper = {
 $(document).ready(function(){
 
     $('#staff_info').hide();
-    $('#btnGenerate').attr('disabled', true);
+    var $generateButton = $('#btnGenerate');
+    $generateButton.attr('disabled', true);
 
-    var btype = $('#branch_type').find('option:selected').val();
-    var bid = $('#branch_name').attr('data-bid');
-    fillBranchesOrHub(btype, bid);
-
-    $('#branch_type').on('change', function(){
-        var type = $(this).val();
-        fillBranchesOrHub(type);
-    });
-
-    function fillBranchesOrHub(type, bid) {
-        var url = '';
-        if (type === 'hub') {
-            url = Parcel_Destination.Url.allhubs;
-            $('#hub_branch_label').html('Hub Name');
-        } else {
-            url = Parcel_Destination.Url.allecforhubs;
-            $('#hub_branch_label').html('Branch Name');
-        }
-        Parcel_Destination.fillSelectOption(url, {}, '#branch_name', bid);
-    }
 
     $('#manifest').on('click', function(event) {
 
@@ -254,7 +235,7 @@ $(document).ready(function(){
                 waybill.final = TableHelper.getCellData('#next_dest', 5, $(tr).index());
                 parcels.waybills.push(waybill);
                 parcels.to_branch_id = $(tr).attr('data-to-branch-id');
-                parcels.to_branch_name = TableHelper.getCellData('#next_dest', 4, $(tr).index());
+                parcels.to_branch_name = $(tr).attr('data-to-branch-name').toUpperCase();
 
                 if(old_branch !== parcels.to_branch_id) {
                     same_branch = false;
@@ -307,16 +288,17 @@ $(document).ready(function(){
         }
     });
 
-    $('#btnGenerate').on('click', function(event){
-
-        $('#payload').val(JSON.stringify(parcels));
+    $('#btnSearch').on('click', function (event) {
+        event.preventDefault();
+        var staff_code = $('#staff').val();
+        if(staff_code == '') {
+            return;
+        }
+        Parcel_Destination.searchStaffDetails(staff_code);
     });
 
-    $('#branch_name').on('change', function(){
-        var name = $(this).val();
-        if(name !== '') {
-            name = $(this).find('option:selected').text();
-        }
-        TableHelper.setColumnData('#next_dest', 4, name, true);
+    $generateButton.on('click', function(event){
+
+        $('#payload').val(JSON.stringify(parcels));
     });
 });
