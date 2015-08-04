@@ -330,6 +330,7 @@ class SiteController extends BaseController
                     $response = $hub->createNewHub($hub_data);
                     if ($response['status'] === Response::STATUS_OK) {
                         Yii::$app->session->setFlash('success', 'Hub has been created successfully.');
+                        Yii::$app->response->redirect("/admin/hubmapping?hub={$response['data']['id']}");
                     } else {
                         Yii::$app->session->setFlash('danger', 'There was a problem creating the hub. Please try again.');
                     }
