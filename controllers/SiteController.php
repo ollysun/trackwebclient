@@ -578,13 +578,4 @@ class SiteController extends BaseController
             return $this->sendErrorResponse($allEcsInHubs['message'], null);
         }
     }
-    //@TODO: Implement the display of the content
-    public function actionCustomerhistory()
-    {
-        return $this->render('customer_history');
-    }
-    public function actionCustomerhistorydetails()
-    {
-        return $this->render('customer_history_details');
-    }
 }
