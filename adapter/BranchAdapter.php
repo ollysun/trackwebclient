@@ -81,7 +81,7 @@ class BranchAdapter extends BaseAdapter
     }
     public function getMatrix()
     {
-        return $this->request(ServiceConstant::URL_ZONES_MATRIX, [], self::HTTP_GET);
+        return $this->request(ServiceConstant::URL_ZONES_MATRIX_GET, [], self::HTTP_GET);
     }
 
     public function getAll()
