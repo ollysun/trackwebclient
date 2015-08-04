@@ -13,7 +13,7 @@ else {
 }
 
 /* @var $this yii\web\View */
-$this->title = 'Customer History: <small>'.$user_fullname.'</small>';
+$this->title = 'Customer History: <span class="text-muted">'.$user_fullname.'</span>';
 $this->params['breadcrumbs'] = array(
 	array(
 		'label'=>'Customer History',
@@ -101,7 +101,7 @@ $this->params['breadcrumbs'] = array(
 						?>
 					</tbody>
 				</table>
-				<?php var_dump($parcels); ?>
+				<?php //var_dump($parcels); ?>
 			<?php
 				}
 			?>
