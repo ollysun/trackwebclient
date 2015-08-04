@@ -91,7 +91,13 @@ class BillingController extends BaseController
 
     public function actionMatrix()
     {
-        return $this->render('matrix');
+        $branchAdp = new BranchAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $response = new ResponseHandler($branchAdp->getAllHubs());
+        $hubs = [];
+        if($response->getStatus() == ResponseHandler::STATUS_OK){
+            $hubs = $response->getData();
+        }
+        return $this->render('matrix',["hubs"=>$hubs]);
     }
 
     public function actionZones()

@@ -20,7 +20,9 @@ $this->params['breadcrumbs'] = array(
 <?php
 	$this->params['content_header_button'] = '';
 ?>
-
+<?php
+//var_dump($hubs);
+?>
 <div class="main-box">
 	<div class="main-box-header">
 	</div>
@@ -29,7 +31,14 @@ $this->params['breadcrumbs'] = array(
 			<thead>
 				<tr>
 					<th></th>
-					<th>A01</th>
+					<?php
+					foreach($hubs as $hub){
+						?>
+						<th><?= $hub['code']; ?></th>
+					<?php
+					}
+					?>
+					<!--<th>A01</th>
 					<th>A02</th>
 					<th>A03</th>
 					<th>A04</th>
@@ -52,11 +61,44 @@ $this->params['breadcrumbs'] = array(
 					<th>A21</th>
 					<th>A22</th>
 					<th>A23</th>
-					<th>A24</th>
+					<th>A24</th>-->
 				</tr>
 			</thead>
 			<tbody>
+			<?php
+			foreach($hubs as $hub){
+				?>
 				<tr>
+					<td><?= $hub['code']; ?></td>
+					<td class="matrix_diagonal"></td>
+					<td class="matrix_cell">NW</td>
+					<td>NW</td>
+					<td>NW</td>
+					<td>NW</td>
+					<td>NW</td>
+					<td>NW</td>
+					<td>NW</td>
+					<td>NW</td>
+					<td>NW</td>
+					<td>NW</td>
+					<td>NW</td>
+					<td>NW</td>
+					<td>NW</td>
+					<td>NW</td>
+					<td>NW</td>
+					<td>NW</td>
+					<td>NW</td>
+					<td>NW</td>
+					<td>NW</td>
+					<td>NW</td>
+					<td>NW</td>
+					<td>NW</td>
+					<td>NW</td>
+				</tr>
+				<?php
+			}
+			?>
+				<!--<tr>
 					<td>B01</td>
 					<td class="matrix_diagonal"></td>
 					<td class="matrix_cell">NW</td>
@@ -704,7 +746,7 @@ $this->params['breadcrumbs'] = array(
 					<td>NW</td>
 					<td>NW</td>
 				</tr>
-
+-->
 			</tbody>
 		</table>
 		<br>
