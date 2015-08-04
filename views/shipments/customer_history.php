@@ -31,7 +31,7 @@ $this->params['breadcrumbs'] = array(
 		<form class="row" action="<?= Url::to(['shipments/customerhistorydetails']) ?>">
 			<div class="col-xs-10 col-xs-offset-1 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3 form-group">
 				<div class="input-group input-group-lg">
-					<input type="text" name="search" class="form-control" placeholder="Search by email or phone number">
+					<input type="text" name="search" class="form-control" placeholder="Search by phone number">
 					<div class="input-group-btn">
 						<button class="btn btn-primary"><i class="fa fa-search"></i> Search</button>
 					</div>
