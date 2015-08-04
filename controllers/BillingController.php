@@ -387,7 +387,13 @@ class BillingController extends BaseController
         if($weightRanges['status'] == ResponseHandler::STATUS_OK) {
             $viewBag['weightRanges'] = $weightRanges['data'];
         }
+
+
         return $this->render('pricing', $viewBag);
+    }
+
+    private function buildPricingTable($pricingData) {
+
     }
 
     public function actionExceptions()
