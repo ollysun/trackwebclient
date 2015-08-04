@@ -32,8 +32,11 @@ $('#newParcelForm').on('slide.bs.carousel', function (event) {
 		return validate('.carousel-inner > .item.active');
 	}
 	return true;
-});
+});$
 
+$('form.validate').on('submit',function(event){
+	return validate('.item.active');
+});
 function validate($parent)
 {
 	$($parent+' .has-error .help-block').remove();
@@ -135,6 +138,12 @@ var deliveryShowHide = {
 	callback: function(ele, val, who) {
 		console.log('ele', ele);
 		console.log('val '+val);
+		if (val === '2') {
+			$('select[name="pickup_centres"]').removeClass('validate required').removeClass('has-error');;
+		}
+		else {
+			$('select[name="pickup_centres"]').addClass('validate required');
+		}
 	}
 };
 var CODShowHide = {
@@ -193,11 +202,30 @@ var paymentMethodShowHide = {
 	callback: function(ele, val, who) {
 		console.log('ele', ele);
 		console.log('val '+val);
-		if (val === '3') {
-			$('input[name="amount_in_cash"], input[name="amount_in_pos"]').removeClass('required number').parent().removeClass('has-error');;
+		if (val !== '3') {
+			$('input[name="amount_in_cash"], input[name="amount_in_pos"]').removeClass('validate required number').parent().removeClass('has-error');;
 		}
 		else {
-			$('input[name="amount_in_cash"], input[name="amount_in_pos"]').addClass('required number');
+			$('input[name="amount_in_cash"], input[name="amount_in_pos"]').addClass('validate required number');
+		}
+	}
+};
+var POSIDShowHide = {
+	who: '#POSIDWrap',
+	options: {
+		identifier: 'input[name="payment_method"]',
+		mapping: {
+			'3': true,
+			'1': false,
+			'2': true
+		},
+	},
+	callback: function(ele, val, who) {
+		if (val === '1') {
+			$('input[name="pos_transaction_id"]').removeClass('validate required').removeClass('has-error');;
+		}
+		else {
+			$('input[name="pos_transaction_id"]').addClass('validate required');
 		}
 	}
 };
@@ -205,8 +233,7 @@ showHideWrap(deliveryShowHide);
 showHideWrap(CODShowHide);
 showHideWrap(merchantShowHide);
 showHideWrap(paymentMethodShowHide);
-
-
+showHideWrap(POSIDShowHide);
 
 })(jQuery);
 
