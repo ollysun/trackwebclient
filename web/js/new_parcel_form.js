@@ -32,7 +32,7 @@ $('#newParcelForm').on('slide.bs.carousel', function (event) {
 		return validate('.carousel-inner > .item.active');
 	}
 	return true;
-});$
+});
 
 $('form.validate').on('submit',function(event){
 	return validate('.item.active');
