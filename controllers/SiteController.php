@@ -393,20 +393,12 @@ class SiteController extends BaseController
                         Yii::$app->session->setFlash('danger', 'There was a problem creating the centre. Please try again.');
                     }
                 }
-                elseif ($task=='edit'){
+                elseif($task != ''){
                     $response = $center->editOneCentre($data, $task);
                     if ($response['status'] === Response::STATUS_OK) {
                         Yii::$app->session->setFlash('success', 'Centre has been edited successfully.');
                     } else {
                         Yii::$app->session->setFlash('danger', 'There was a problem editing the hub. Please try again.');
-                    }
-                }
-                elseif ($task=='relink'){
-                    $response = $center->editOneCentre($data, $task);
-                    if ($response['status'] === Response::STATUS_OK) {
-                        Yii::$app->session->setFlash('success', 'Centre has been re-linked successfully.');
-                    } else {
-                        Yii::$app->session->setFlash('danger', 'There was a problem re-linking this EC to the selected HUB. Please verify the both EC and Hub exist then try again.');
                     }
                 }
             }
@@ -420,7 +412,6 @@ class SiteController extends BaseController
         $hubs = new ResponseHandler($hubs);
 
         $filter_hub_id = Calypso::getValue(Yii::$app->request->post(), 'filter_hub_id', null);
-
         $hubAdp = new BranchAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
         $centres = $hubAdp->getCentres($filter_hub_id);
         $centres = new ResponseHandler($centres);
