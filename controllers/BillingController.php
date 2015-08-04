@@ -91,7 +91,22 @@ class BillingController extends BaseController
 
     public function actionMatrix()
     {
-        return $this->render('matrix');
+        $branchAdp = new BranchAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $response = new ResponseHandler($branchAdp->getAllHubs());
+        $branchAdpMatrix = new BranchAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $responseMatrix = new ResponseHandler($branchAdpMatrix->getMatrix());
+        $hubs = [];$hubsMatrix = [];
+        if($response->getStatus() == ResponseHandler::STATUS_OK){
+            $hubs = $response->getData();
+        }
+        if($responseMatrix->getStatus() == ResponseHandler::STATUS_OK){
+            $hubsMatrix = $responseMatrix->getData();
+        }
+        $mapList=[];
+        foreach($hubsMatrix as $mapping){
+            $mapList[$mapping['from_branch_id'].'_'.$mapping['to_branch_id']] = $mapping;
+        }
+        return $this->render('matrix',["hubs"=>$hubs,"hubsMatrix"=>$hubsMatrix,"matrixMap"=>$mapList]);
     }
 
     public function actionZones()
@@ -394,7 +409,13 @@ class BillingController extends BaseController
         if($weightRanges['status'] == ResponseHandler::STATUS_OK) {
             $viewBag['weightRanges'] = $weightRanges['data'];
         }
+
+
         return $this->render('pricing', $viewBag);
+    }
+
+    private function buildPricingTable($pricingData) {
+
     }
 
     public function actionExceptions()
