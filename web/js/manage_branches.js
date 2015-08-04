@@ -86,9 +86,15 @@ var Branch = {
 $(document).ready(function () {
 
     $("button[data-target='#editModal'], button[data-target='#status'], button[data-target='#relink']").on('click', function (event) {
-
-        $($(this).attr('data-target')+" input[name='id']").val($(this).attr('data-id'));
-        Branch.getBranchDetails($(this).attr('data-id'), $(this).attr('data-target'));
+        _parent = $(this).parent('td');
+        _id = _parent.attr('data-id');
+        target =  $(this).attr('data-target');
+        $(target+" input[name='id']").val(_id);
+        $(target+" input[name='name']").val($("td[class='n"+_id+"']").text());
+        $(target+" select[name='status']").val(_parent.attr('data-status'));
+        $(target+" textarea[name='address']").val($("td[class='a"+_id+"']").text());
+        $(target+" select[name='state_id']").val(_parent.attr('data-state-id'));
+        $(target+" select[name='hub_id']").val(_parent.attr('data-parent-id'));
     });
 
 /*    $("#myModal select#hub_id, #editModal select#hub_id").on('change', function (event) {
