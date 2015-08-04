@@ -87,7 +87,10 @@ class ServiceConstant {
     const URL_ZONES_GET_ALL = '/zone/fetchAll';
     const URL_ZONES_GET_BY_CODE = '/zone/fetchByCode';
     const URL_ZONES_GET_BY_ID = '/zone/fetchByID';
-    const URL_ZONES_MATRIX = '/zone/getMatrix';
+    
+    const URL_ZONES_MATRIX_GET = 'zone/getMatrix';
+    const URL_ZONES_MATRIX_SAVE = 'zone/saveMatrix';
+    const URL_ZONES_MATRIX_REMOVE = 'zone/removeMatrix';
 
     const URL_WEIGHT_ADD = 'weightrange/add';
     const URL_WEIGHT_EDIT = 'weightrange/edit';
