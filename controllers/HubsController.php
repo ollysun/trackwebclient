@@ -120,7 +120,7 @@ class HubsController extends BaseController {
         $parcels = new ResponseHandler($dispatch_parcels);
         $parcel_list = $parcels->getStatus()==ResponseHandler::STATUS_OK?$parcels->getData(): [];
 
-        return $this->render('hub_dispatch', array('sweeper'=>[], 'hubs'=>$hub_list,'parcels'=>$parcel_list, 'branch_id'=>$from_branch_id, 'from_date'=>$from_date, 'to_date'=>$to_date));
+        return $this->render('hub_dispatch', array('sweeper'=>[], 'hubs'=>$hub_list,'parcels'=>$parcel_list, 'branch_id'=>$to_branch_id, 'from_date'=>$from_date, 'to_date'=>$to_date));
     }
 
     /**

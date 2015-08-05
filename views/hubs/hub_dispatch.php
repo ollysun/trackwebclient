@@ -73,6 +73,7 @@ $this->params['breadcrumbs'] = array(
         </div>
         <div class="main-box-body">
             <div class="table-responsive">
+                <?php if(count($parcels) > 0) {?>
                 <table id="table" class="table table-hover ">
                     <thead>
                     <tr>
@@ -105,6 +106,11 @@ $this->params['breadcrumbs'] = array(
                     } ?>
                     </tbody>
                 </table>
+                <?php } else {  ?>
+                    <div class="alert alert-info text-center" role="alert">
+                        <p><strong>No dispatched shipments found</strong></p>
+                    </div>
+                <?php }  ?>
             </div>
         </div>
     </div>

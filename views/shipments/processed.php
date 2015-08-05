@@ -75,6 +75,7 @@ $this->params['content_header_button'] = $this->render('../elements/content_head
     </div>
     <div class="main-box-body">
         <div class="table-responsive">
+            <?php if(count($parcels)): ?>
             <table id="table" class="table table-hover dataTable">
                 <thead>
                 <tr>
@@ -104,7 +105,7 @@ $this->params['content_header_button'] = $this->render('../elements/content_head
                             <td><?= $parcel['sender']['phone'] ?></td>
                             <td><?= strtoupper($parcel['receiver']['firstname'].' '. $parcel['receiver']['lastname']) ?></td>
                             <td><?= $parcel['receiver']['phone'] ?></td>
-                            <td><?= date('Y/m/d @ H:m',strtotime($parcel['created_date'])); ?></td>
+                            <td><?= date(ServiceConstant::DATE_TIME_FORMAT,strtotime($parcel['created_date'])); ?></td>
                             <td><?= ServiceConstant::getStatus($parcel['status']); ?></td>
                             <td><a href="<?= Url::to(['site/viewwaybill?id='.$parcel['id']]) ?>" class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
                         </tr>
@@ -122,6 +123,11 @@ $this->params['content_header_button'] = $this->render('../elements/content_head
                     <a href="<?= Url::to(['shipments/processed?offset='.($offset + $page_width).$link]) ?>" class="btn btn-primary btn-sm">Next</a>
                 <?php endif;  ?>
             </div>
+            <?php else:  ?>
+                <div class="alert alert-info text-center" role="alert">
+                    There are no parcels matching the specified criteria.
+                </div>
+            <?php endif;  ?>
         </div>
     </div>
 </div>
