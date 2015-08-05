@@ -192,16 +192,16 @@ class SiteController extends BaseController
         $id = "-1";
         if(isset(Calypso::getInstance()->get()->id)){
             $id = Calypso::getInstance()->get()->id;
-            $parcel = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+            /*$parcel = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
             $response = $parcel->getOneParcel($id);
             $response = new ResponseHandler($response);
             if($response->getStatus() == ResponseHandler::STATUS_OK){
                 $data = $response->getData();
-            }
+            }*/
         }
 
-
-        return $this->render('view_waybill',array('parcelData'=>$data,'id'=> $id));
+        return $this->redirect("/shipments/view?id={$id}");
+        //return $this->render('view_waybill',array('parcelData'=>$data,'id'=> $id));
     }
 
     /**
