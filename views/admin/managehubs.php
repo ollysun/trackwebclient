@@ -76,13 +76,13 @@ $this->params['breadcrumbs'] = array(
                     ?>
 					<tr class="text-center">
 						<td><?= $count++; ?></td>
-						<td><?= $hub['name']; ?></td>
+						<td class="n<?= $hub['id']; ?>"><?= $hub['name']; ?></td>
 						<td><?= strtoupper($hub['code']); ?></td>
 						<td><?= strtoupper($hub['state']['name']); ?></td>
-						<td><?= $hub['address']; ?></td>
+						<td class="a<?= $hub['id']; ?>"><?= $hub['address']; ?></td>
 						<td><?= date('Y/m/d @ H:m',strtotime($hub['created_date'])); ?></td>
 						<td><?= ($hub['status']==ServiceConstant::ACTIVE?'Active':'Inactive'); ?></td>
-						<td><button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#editModal" data-id="<?= $hub['id']; ?>"><i class="fa fa-edit"></i> Edit</button> <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#status" data-id="<?= $hub['id']; ?>"><i class="fa fa-edit"></i> Change Status</button></td>
+						<td data-id="<?= $hub['id']; ?>"data-state-id="<?= $hub['state']['id']; ?>" data-status="<?= $hub['status']; ?>"><button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#editModal"><i class="fa fa-edit"></i> Edit</button> <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#status" data-id="<?= $hub['id']; ?>"><i class="fa fa-edit"></i> Change Status</button></td>
 					</tr>
                     <?php
                         }
@@ -176,13 +176,6 @@ $this->params['breadcrumbs'] = array(
 					<div class="form-group">
 						<label>Address</label>
 						<textarea class="form-control" name="address" rows="3"></textarea>
-					</div>
-					<div class="form-group">
-						<label>Status</label>
-						<select class="form-control" name="status">
-							<option value="<?= ServiceConstant::ACTIVE?>">Active</option>
-							<option value="<?= ServiceConstant::INACTIVE?>">Inactive</option>
-						</select>
 					</div>
 				</div>
 				<div class="modal-footer">
