@@ -224,6 +224,19 @@ class ShipmentsController extends BaseController {
     }
     public function actionView()
     {
-        return $this->render('view');
+        $data = [];
+        $id = "-1";
+        if(isset(Calypso::getInstance()->get()->id)){
+            $id = Calypso::getInstance()->get()->id;
+            $parcel = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+            $response = $parcel->getOneParcel($id);
+            $response = new ResponseHandler($response);
+            if($response->getStatus() == ResponseHandler::STATUS_OK){
+                $data = $response->getData();
+            }
+        }
+
+
+        return $this->render('view',array('parcelData'=>$data));
     }
 }
