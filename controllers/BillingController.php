@@ -311,7 +311,7 @@ class BillingController extends BaseController
                     if ($response['status'] === Response::STATUS_OK) {
                         Yii::$app->session->setFlash('success', 'City has been edited successfully.');
                     } else {
-                        var_dump($response);
+                        //var_dump($response);
                         Yii::$app->session->setFlash('danger', 'There was a problem editing the city. '.$response['messsage']);
                     }
                 }
@@ -421,7 +421,46 @@ class BillingController extends BaseController
     private function buildPricingTable($pricingData) {
 
     }
-
+    public function actionUpdatemapping(){
+        $entry = Yii::$app->request->post();
+        if(!empty($entry)){
+            $zAdp = new ZoneAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+            $zones = $zAdp->saveMatrix(json_encode([$entry]));
+            $zones = new ResponseHandler($zones);
+            if($zones->getStatus() == ResponseHandler::STATUS_OK){
+                $d = $zones->getData();
+                if(empty($d['bad_matrix_info'])){
+                    Yii::$app->session->setFlash('success', 'Zone has been edited successfully.');
+                }else{
+                    Yii::$app->session->setFlash('danger', 'There was a problem editing the zone mapping. Please ensure these hubs have been mapped');
+                }
+            }else{
+                Yii::$app->session->setFlash('danger', 'There was a problem editing the zone mapping. #Reason: Service refused request');
+            }
+            return $zones->getStatus() == ResponseHandler::STATUS_OK ? 1:0;
+        }
+        return 0;
+    }
+    public function actionRemovemapping(){
+        $entry = Yii::$app->request->post();
+        if(!empty($entry)){
+            $zAdp = new ZoneAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+            $zones = $zAdp->removeMatrix($entry);
+            $zones = new ResponseHandler($zones);
+            if($zones->getStatus() == ResponseHandler::STATUS_OK){
+                $d = $zones->getData();
+                if(empty($d['bad_matrix_info'])){
+                    Yii::$app->session->setFlash('success', 'Zone mapping removed successfully.');
+                }else{
+                    Yii::$app->session->setFlash('danger', 'There was a problem removing the zone mapping. Please ensure these hubs have been mapped');
+                }
+            }else{
+                Yii::$app->session->setFlash('danger', 'There was a problem removing the zone mapping. #Reason: Service refused request');
+            }
+            return $zones->getStatus() == ResponseHandler::STATUS_OK ? 1:0;
+        }
+        return 0;
+    }
     public function actionExceptions()
     {
         return $this->render('exceptions');

@@ -1,6 +1,7 @@
 <?php
 use yii\helpers\Html;
 use yii\helpers\Url;
+use Adapter\Util\Calypso;
 
 /* @var $this yii\web\View */
 $this->title = 'Billing: Matrix';
@@ -23,7 +24,9 @@ $this->params['breadcrumbs'] = array(
 <?php
 $hub_data = [];
 $hub_data_col_indexes = [];
+
 ?>
+<?php echo Calypso::showFlashMessages(); ?>
 <div class="main-box">
 	<div class="main-box-header">
 	</div>
@@ -117,7 +120,7 @@ $hub_data_col_indexes = [];
 
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
-	  	<form class="">
+	  	<form id="update_zone_mapping_form" class="">
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -127,22 +130,24 @@ $hub_data_col_indexes = [];
 				<div class="form-group col-xs-3">
 					<label for="">From</label>
 					<input id="from_text" class="form-control" readonly="readonly">
-					<input id="from" type="hidden" class="form-control">
+					<input id="from" name="from_branch_id" type="hidden" class="form-control">
 				</div>
 				<div class="form-group col-xs-3">
 					<label for="">To</label>
 					<input id="to_text" class="form-control" readonly="readonly">
-					<input id="to" type="hidden" class="form-control">
+					<input id="to" name="to_branch_id" type="hidden" class="form-control">
+					<input id="zone_mapping_id" name="zone_matrix_id" type="hidden" class="form-control">
 				</div>
 				<div class="form-group col-xs-6">
 					<label for="">Billing Zone</label>
-					<select class="form-control">
+					<select id="zone_id" name="zone_id" class="form-control">
+
 						<?php
 						if(!is_null($zones_list) && is_array($zones_list)) {
 							foreach($zones_list as $item){
 								if($item['status'] != 1){continue;}
 							?>
-								<option><?= strtoupper($item['name'].' ('.$item['code'].')'); ?></option>
+								<option value="<?= $item['id']; ?>"><?= strtoupper($item['name'].' ('.$item['code'].')'); ?></option>
 							<?php
 							}
 						}
@@ -151,8 +156,9 @@ $hub_data_col_indexes = [];
 				</div>
 	      </div>
 	      <div class="modal-footer">
-	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-	        <button type="button" class="btn btn-primary">Save changes</button>
+			  <button id="remove_mapping" type="button" class="btn btn-danger pull-left">Remove Mapping</button>
+			  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	        <button id="update_mapping" type="button" class="btn btn-primary">Save changes</button>
 	      </div>
 	    </div>
 	  	</form>
@@ -166,4 +172,5 @@ $hub_data_col_indexes = [];
 <?php //$this->registerJsFile('@web/js/libs/dataTables.fixedHeader.js', ['depends' => [\app\assets\AppAsset::className()]]); ?>
 <?php //$this->registerJsFile('@web/js/libs/dataTables.tableTools.js', ['depends' => [\app\assets\AppAsset::className()]]); ?>
 <?php //$this->registerJsFile('@web/js/libs/jquery.dataTables.bootstrap.js', ['depends' => [\app\assets\AppAsset::className()]]); ?>
+<?php $this->registerJsFile('@web/js/hub_util.js', ['depends' => [\app\assets\AppAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/billing_matrix.js', ['depends' => [\app\assets\AppAsset::className()]]); ?>
