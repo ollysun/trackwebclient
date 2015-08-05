@@ -21,32 +21,31 @@ $this->params['breadcrumbs'][] = 'Waybill';
 		<div class="col-xs-12 col-sm-6">
 			<fieldset>
 				<legend>Consignor Information</legend>
-				<div class="form-group">
-					<label>Name</label>
-					<div class="form-control-static"><?= ucwords($parcelData['sender']['firstname'].' '.$parcelData['sender']['lastname']); ?></div>
-				</div>
 				<div class="row form-group">
-					<div class="col-xs-4">
-						<label>Phone number</label>
-						<div class="form-control-static"><?= $parcelData['sender']['phone'] ?></div>
+					<div class="col-xs-6">
+						<label>Name</label>
+						<div class="form-control-static"><?= ucwords($parcelData['sender']['firstname'].' '.$parcelData['sender']['lastname']); ?></div>
 					</div>
-					<div class="col-xs-offset-1 col-xs-7">
+					<div class="col-xs-6">
 						<label for="">Email address</label>
 						<div class="form-control-static"><?= $parcelData['sender']['email'] ?></div>
 					</div>
 				</div>
-				<div class="form-group">
-					<label>Address</label>
-					<div class="form-control-static">
-						<?= $parcelData['sender_address']['street_address1'] ?>
+				<div class="row form-group">
+					<div class="col-xs-6">
+						<label>Phone number</label>
+						<div class="form-control-static"><?= $parcelData['sender']['phone'] ?></div>
 					</div>
-					<?php if($parcelData['sender_address']['street_address2']) { ?>
-					<div>
-						<?= $parcelData['sender_address']['street_address2'] ?>
-					</div>
-					<?php }?>
-					<div class="form-control-static">
-						<?= $parcelData['sender_address']['city'].', '.$parcelData['sender_address']['state_id'].', '.$parcelData['sender_address']['country_id'];  ?>
+
+					<div class="col-xs-6">
+						<label>Address</label>
+						<div class="form-control-static">
+							<?= $parcelData['sender_address']['street_address1'] ?>
+							<?php if($parcelData['sender_address']['street_address2']) { ?>
+								<br><?= $parcelData['sender_address']['street_address2'] ?>
+							<?php }?>
+							<br><?= $parcelData['sender_address']['city'].', '.$parcelData['sender_address']['state_id'].', '.$parcelData['sender_address']['country_id'];  ?>
+						</div>
 					</div>
 				</div>
 			</fieldset>
@@ -55,32 +54,31 @@ $this->params['breadcrumbs'][] = 'Waybill';
 		<div class="col-xs-12 col-sm-6">
 			<fieldset>
 				<legend>Consignee Information</legend>
-				<div class="form-group">
-					<label>Name</label>
-					<div class="form-control-static"><?= ucwords($parcelData['receiver']['firstname'].' '.$parcelData['receiver']['lastname']); ?></div>
-				</div>
 				<div class="row form-group">
-					<div class="col-xs-4">
-						<label>Phone number</label>
-						<div class="form-control-static"><?= $parcelData['receiver']['phone'] ?></div>
+					<div class="col-xs-6">
+						<label>Name</label>
+						<div class="form-control-static"><?= ucwords($parcelData['receiver']['firstname'].' '.$parcelData['receiver']['lastname']); ?></div>
 					</div>
-					<div class="col-xs-offset-1 col-xs-7">
+					<div class="col-xs-6">
 						<label for="">Email address</label>
 						<div class="form-control-static"><?= $parcelData['receiver']['email'] ?></div>
 					</div>
 				</div>
-				<div class="form-group">
-					<label>Address</label>
-					<div class="form-control-static">
-						<?= $parcelData['receiver_address']['street_address1'] ?>
+				<div class="row form-group">
+					<div class="col-xs-6">
+						<label>Phone number</label>
+						<div class="form-control-static"><?= $parcelData['receiver']['phone'] ?></div>
 					</div>
-					<?php if($parcelData['receiver_address']['street_address2']) { ?>
-					<div>
-						<?= $parcelData['receiver_address']['street_address2'] ?>
-					</div>
-					<?php }?>
-					<div class="form-control-static">
-						<?= $parcelData['receiver_address']['city'].', '.$parcelData['receiver_address']['state_id'].', '.$parcelData['receiver_address']['country_id'];  ?>
+					<div class="col-xs-6">
+						<label>Address</label>
+						<div class="form-control-static">
+							<?= $parcelData['receiver_address']['street_address1'] ?>
+							<?php if($parcelData['receiver_address']['street_address2']) { ?>
+								<br><?= $parcelData['receiver_address']['street_address2'] ?>
+							<?php }?>
+							<br><?= $parcelData['receiver_address']['city'].', '.$parcelData['receiver_address']['state_id'].', '.$parcelData['receiver_address']['country_id'];  ?>
+						</div>
+
 					</div>
 				</div>
 			</fieldset>
@@ -96,25 +94,25 @@ $this->params['breadcrumbs'][] = 'Waybill';
 									<label>Parcel type</label>
 									<div class="form-control-static"><?= $parcelData['parcel_type']; ?></div>
 								</div>
+								<div class="col-xs-6">
+									<label>Shipment Weight</label>
+									<div class="form-control-static">
+										<?= $parcelData['weight']; ?>Kg
+									</div>
+								</div>
 								<div class="col-xs-6 hidden">
 									<label>Send parcel to Hub?</label>
 									<div class="form-control-static">Yes</div>
 								</div>
 							</div>
 							<div class="row form-group">
-								<div class="col-xs-4">
+								<div class="col-xs-6">
 									<label>No. of packages</label>
 									<div class="form-control-static">
 										<?= $parcelData['no_of_package']; ?>
 									</div>
 								</div>
-								<div class="col-xs-4">
-									<label>Shipment Weight</label>
-									<div class="form-control-static">
-										<?= $parcelData['weight']; ?>Kg
-									</div>
-								</div>
-								<div class="col-xs-4">
+								<div class="col-xs-6">
 									<label>Shipment Value</label>
 									<div class="form-control-static">
 										<span class="currency naira"></span><?= $parcelData['package_value']; ?>
@@ -131,6 +129,10 @@ $this->params['breadcrumbs'][] = 'Waybill';
 									<label>Service type</label>
 									<div class="form-control-static"><?= $parcelData['shipping_type']; ?></div>
 								</div>
+							</div>
+							<div class="form-group">
+								<label>Other Information</label>
+								<div><?= $parcelData['other_info']; ?></div>
 							</div>
 						</div>
 						<div class="col-xs-12 col-sm-6">
@@ -149,11 +151,11 @@ $this->params['breadcrumbs'][] = 'Waybill';
 								</div>
 							</div>
 							<div class="row">
-								<div class="col-xs-5 form-group">
+								<div class="col-xs-6 form-group">
 									<label>Account Number</label>
 									<div class="form-control-static">not available in api</div>
 								</div>
-								<div class="col-xs-7 form-group">
+								<div class="col-xs-6 form-group">
 									<label>Bank</label>
 									<div class="form-control-static">not available in api</div>
 								</div>
@@ -163,11 +165,11 @@ $this->params['breadcrumbs'][] = 'Waybill';
 								</div>
 							</div>
 							<div class="row form-group">
-								<div class="col-xs-4">
+								<div class="col-xs-6">
 									<label>Cash on Delivery?</label>
 									<div class="form-control-static"><?= $parcelData['cash_on_delivery']; ?></div>
 								</div>
-								<div class="col-xs-8">
+								<div class="col-xs-6">
 									<label>Amount to be collected</label>
 									<div class="form-control-static">
 										<span class="currency naira"></span><?= $parcelData['delivery_amount']; ?>
@@ -176,15 +178,6 @@ $this->params['breadcrumbs'][] = 'Waybill';
 							</div>
 						</div>
 					</div>
-			</fieldset>
-			<br><br>
-		</div>
-		<div class="col-xs-12 col-sm-6">
-			<fieldset>
-				<legend>Other Information</legend>
-				<div>
-					<?= $parcelData['other_info']; ?>
-				</div>
 			</fieldset>
 			<br><br>
 		</div>
