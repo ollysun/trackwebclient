@@ -17,6 +17,7 @@ use Adapter\RequestHelper;
 use Adapter\ResponseHandler;
 use Adapter\Util\Calypso;
 use app\services\HubService;
+use yii\data\Pagination;
 
 class ShipmentsController extends BaseController {
 
@@ -208,23 +209,11 @@ class ShipmentsController extends BaseController {
     {
         return $this->render('customer_history');
     }
-    public function actionCustomerhistorydetails($search=false,$offset=0,$page_width=null)
-    {
-        if (!$search) { //default, empty
-            // display empty message
-            $this->redirect('customerhistory');
-        }
-        $userAdapter = new UserAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
-        $response = new ResponseHandler($userAdapter->getUserDetailsWithParcels($search));
-        $data = [];
-        if($response->getStatus() ==  ResponseHandler::STATUS_OK){
-            $data = $response->getData();
-        }
-        return $this->render('customer_history_details', array('user_data'=>$data,'search'=>$search,'offset'=>$offset, 'page_width'=>$page_width));
-    }
 
-    public function actionCustomerhistorydetails2($search=false,$offset=0,$page_width=null)
+    public function actionCustomerhistorydetails($page=1,$search=false)
     {
+        $page_width=20;
+        $offset=($page-1)*$page_width;
         $from_date = date('Y/m/d', 0);
         $to_date = date('Y/m/d');
         if (!$search) { //default, empty
@@ -241,20 +230,15 @@ class ShipmentsController extends BaseController {
             $user = $userResponse->getData();
             $user_id = $user['id'];
             $parcelAdapter = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
-            $parcelResponse = new ResponseHandler($parcelAdapter->getParcelsByUser($user_id,$from_date,$to_date, null));
-            var_dump($parcelResponse); exit;
+            $parcelResponse = new ResponseHandler($parcelAdapter->getParcelsByUser($user_id,$from_date,$to_date,$offset,$page_width));
             if($parcelResponse->getStatus() ==  ResponseHandler::STATUS_OK){
                 $data = $parcelResponse->getData();
-            }
-            else {
-                // no parcels
+                $parcels = $data['parcels'];
+                $total_count = $data['total_count'];
             }
         }
-        else {
-            // user doen't exist with specified phone number
-        }
-        var_dump($user); var_dump($data); exit;
-        //return $this->render('customer_history_details', array('user'=>$user, user_data'=>$data,'search'=>$search,'offset'=>$offset, 'page_width'=>$page_width));
+        $pagination = new Pagination(['totalCount'=>$total_count,'defaultPageSize'=>$page_width]);
+        return $this->render('customer_history_details', array('user'=>$user, 'parcels'=>$parcels, 'total_count'=>$total_count, 'search'=>$search, 'offset'=>$offset, 'page_width'=>$page_width, 'pagination'=>$pagination));
     }
 
     public function actionView()
