@@ -23,7 +23,6 @@ $this->params['breadcrumbs'] = array(
 <?php
 $hub_data = [];
 $hub_data_col_indexes = [];
-
 ?>
 <div class="main-box">
 	<div class="main-box-header">
@@ -75,7 +74,7 @@ $hub_data_col_indexes = [];
 			<?php
 			$i = 0;$diagonal = '';$can_focus = false;
 			//$diagonal = 'matrix_diagonal';
-			$y = 0;$d = [];
+			$y = 0;$d = [];$already_rendered = [];
 			foreach($hubs as $hub){
 
 				?>
@@ -87,13 +86,18 @@ $hub_data_col_indexes = [];
 						$can_focus = $hub_data_col_indexes[$hub['id']] != $x;
 						if(isset($matrixMap[$hub['id'].'_'.$hubs[$x]['id']])){
 							$d = $matrixMap[$hub['id'].'_'.$hubs[$x]['id']];
+							$already_rendered[$hub['id'].'_'.$hubs[$x]['id']] = true;
 						}
 						if(isset($matrixMap[$hubs[$x]['id'].'_'.$hub['id']])){
 							$d = $matrixMap[$hubs[$x]['id'].'_'.$hub['id']];
+							$already_rendered[$hubs[$x]['id'].'_'.$hub['id']] = true;
 						}
-					?>
-						<td data-payload="<?= json_encode($d); ?>" data-from="<?= $hub['id'] ?>" data-to="<?= $hubs[$x]['id']; ?>" class="<?= $diagonal; ?><?= $can_focus?'matrix_cell':''; ?>"><?/*= $x.','.$y; */?><?= sizeof($d) > 0? $d['zone']['code']:'N/S' ?></td>
-					<?php
+							?>
+							<td data-payload='<?= json_encode($d); ?>' data-from="<?= $hub['id'] ?>"
+								data-to="<?= $hubs[$x]['id']; ?>"
+								class="<?= $diagonal; ?><?= $can_focus ? 'matrix_cell' : ''; ?>"><?= $can_focus ? (sizeof($d) > 0 ? $d['zone']['code'] : 'N/S') : ''; ?></td>
+							<?php
+						
 					}
 					?>
 					<!--<td class="<?/*= $diagonal; */?>"></td>
@@ -122,15 +126,28 @@ $hub_data_col_indexes = [];
 	      <div class="modal-body row">
 				<div class="form-group col-xs-3">
 					<label for="">From</label>
-					<input class="form-control" readonly="readonly">
+					<input id="from_text" class="form-control" readonly="readonly">
+					<input id="from" type="hidden" class="form-control">
 				</div>
 				<div class="form-group col-xs-3">
 					<label for="">To</label>
-					<input class="form-control" readonly="readonly">
+					<input id="to_text" class="form-control" readonly="readonly">
+					<input id="to" type="hidden" class="form-control">
 				</div>
 				<div class="form-group col-xs-6">
 					<label for="">Billing Zone</label>
-					<select class="form-control"></select>
+					<select class="form-control">
+						<?php
+						if(!is_null($zones_list) && is_array($zones_list)) {
+							foreach($zones_list as $item){
+								if($item['status'] != 1){continue;}
+							?>
+								<option><?= strtoupper($item['name'].' ('.$item['code'].')'); ?></option>
+							<?php
+							}
+						}
+						?>
+					</select>
 				</div>
 	      </div>
 	      <div class="modal-footer">
