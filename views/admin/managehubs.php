@@ -55,6 +55,7 @@ $this->params['breadcrumbs'] = array(
 	</div>
 	<div class="main-box-body">
 		<div class="table-responsive">
+			<?php if(count($hubs) > 0) { ?>
 			<table id="table" class="table table-hover dataTable">
 				<thead>
 					<tr>
@@ -80,8 +81,8 @@ $this->params['breadcrumbs'] = array(
 						<td><?= strtoupper($hub['code']); ?></td>
 						<td><?= strtoupper($hub['state']['name']); ?></td>
 						<td class="a<?= $hub['id']; ?>"><?= $hub['address']; ?></td>
-						<td><?= date('Y/m/d @ H:m',strtotime($hub['created_date'])); ?></td>
-						<td><?= ($hub['status']==ServiceConstant::ACTIVE?'Active':'Inactive'); ?></td>
+						<td><?= date(ServiceConstant::DATE_TIME_FORMAT,strtotime($hub['created_date'])); ?></td>
+						<td><?= ServiceConstant::getStatus($hub['status']); ?></td>
 						<td data-id="<?= $hub['id']; ?>"data-state-id="<?= $hub['state']['id']; ?>" data-status="<?= $hub['status']; ?>"><button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#editModal"><i class="fa fa-edit"></i> Edit</button> <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#status" data-id="<?= $hub['id']; ?>"><i class="fa fa-edit"></i> Change Status</button></td>
 					</tr>
                     <?php
@@ -90,6 +91,11 @@ $this->params['breadcrumbs'] = array(
                     ?>
 				</tbody>
 			</table>
+			<?php } else {  ?>
+				<div class="alert alert-info text-center" role="alert">
+					<p><strong>No matching record found</strong></p>
+				</div>
+			<?php }  ?>
 		</div>
 	</div>
 </div>
