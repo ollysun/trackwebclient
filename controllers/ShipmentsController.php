@@ -222,4 +222,21 @@ class ShipmentsController extends BaseController {
         }
         return $this->render('customer_history_details', array('user_data'=>$data,'search'=>$search,'offset'=>$offset, 'page_width'=>$page_width));
     }
+    public function actionView()
+    {
+        $data = [];
+        $id = "-1";
+        if(isset(Calypso::getInstance()->get()->id)){
+            $id = Calypso::getInstance()->get()->id;
+            $parcel = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+            $response = $parcel->getOneParcel($id);
+            $response = new ResponseHandler($response);
+            if($response->getStatus() == ResponseHandler::STATUS_OK){
+                $data = $response->getData();
+            }
+        }
+
+
+        return $this->render('view',array('parcelData'=>$data));
+    }
 }
