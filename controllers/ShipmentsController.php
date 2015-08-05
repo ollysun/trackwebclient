@@ -222,4 +222,8 @@ class ShipmentsController extends BaseController {
         }
         return $this->render('customer_history_details', array('user_data'=>$data,'search'=>$search,'offset'=>$offset, 'page_width'=>$page_width));
     }
+    public function actionView()
+    {
+        return $this->render('view');
+    }
 }
