@@ -73,4 +73,12 @@ class ParcelAdapter extends BaseAdapter{
     public function moveForDelivery($postData) {
         return $this->request(ServiceConstant::URL_MOVE_FOR_DELIVERY, $postData, self::HTTP_POST);
     }
+    public function getParcelsByUser($user_id, $start_created_date,$end_created_date,$status,$offset=0, $count=50){
+        $filter = !is_null($user_id) ? '&user_id='.$user_id : '';
+        $filter = !is_null($status) ? '&status='.$status : '';
+        $filter .= !is_null($start_created_date) ? '&start_created_date='.$start_created_date : '';
+        $filter .= !is_null($end_created_date) ? '&end_created_date='.$end_created_date : '';
+        //$filter .= !is_null($branch_id) ? '&branch_id='.$branch_id : '';
+        return $this->request(ServiceConstant::URL_GET_ALL_PARCEL.'?with_sender=1&with_receiver=1&with_receiver_address=1&with_to_branch=1&offset='.$offset.'&count='.$count.$filter,array(),self::HTTP_GET);
+    }
 }
