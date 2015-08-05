@@ -6493,6 +6493,22 @@ svg {
   float: right;
   color: #e84e40 !important;
 }
+@media (min-width: 768px) {
+  .navbar-collapse.collapse {
+    display: none !important;
+  }
+  .navbar-collapse.collapse.in {
+    display: block !important;
+  }
+}
+@media (min-width: 992px) {
+  .navbar-collapse.collapse {
+    display: block !important;
+    height: auto !important;
+    padding-bottom: 0;
+    overflow: visible !important;
+  }
+}
 .theme-amethyst .navbar > .container .navbar-brand {
   background-color: #9c27b0;
 }
