@@ -106,7 +106,11 @@ class BillingController extends BaseController
         foreach($hubsMatrix as $mapping){
             $mapList[$mapping['from_branch_id'].'_'.$mapping['to_branch_id']] = $mapping;
         }
-        return $this->render('matrix',["hubs"=>$hubs,"hubsMatrix"=>$hubsMatrix,"matrixMap"=>$mapList]);
+        $zAdp = new ZoneAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $zones = $zAdp->getZones();
+        $zones = new ResponseHandler($zones);
+        $zones_list = $zones->getStatus() == ResponseHandler::STATUS_OK ? $zones->getData() : [];
+        return $this->render('matrix',["hubs"=>$hubs,"hubsMatrix"=>$hubsMatrix,"matrixMap"=>$mapList,"zones_list" => $zones_list]);
     }
 
     public function actionZones()
