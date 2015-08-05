@@ -7,7 +7,7 @@ use Adapter\Globals\ServiceConstant;
 $this->title = 'Manage Hubs';
 $this->params['breadcrumbs'] = array(
 	array(
-	'url' => ['site/managebranches'],
+	'url' => ['admin/managebranches'],
 	'label' => 'Manage Branches'
 	),
 	array('label'=> 'Hubs')
