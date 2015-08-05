@@ -222,6 +222,41 @@ class ShipmentsController extends BaseController {
         }
         return $this->render('customer_history_details', array('user_data'=>$data,'search'=>$search,'offset'=>$offset, 'page_width'=>$page_width));
     }
+
+    public function actionCustomerhistorydetails2($search=false,$offset=0,$page_width=null)
+    {
+        $from_date = date('Y/m/d', 0);
+        $to_date = date('Y/m/d');
+        if (!$search) { //default, empty
+            // display empty message
+            $this->redirect('customerhistory');
+        }
+        $user = [];
+        $data = [];
+
+        $userAdapter = new UserAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+        $userResponse = new ResponseHandler($userAdapter->getUserDetails($search));
+
+        if($userResponse->getStatus() ==  ResponseHandler::STATUS_OK){
+            $user = $userResponse->getData();
+            $user_id = $user['id'];
+            $parcelAdapter = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+            $parcelResponse = new ResponseHandler($parcelAdapter->getParcelsByUser($user_id,$from_date,$to_date, null));
+            var_dump($parcelResponse); exit;
+            if($parcelResponse->getStatus() ==  ResponseHandler::STATUS_OK){
+                $data = $parcelResponse->getData();
+            }
+            else {
+                // no parcels
+            }
+        }
+        else {
+            // user doen't exist with specified phone number
+        }
+        var_dump($user); var_dump($data); exit;
+        //return $this->render('customer_history_details', array('user'=>$user, user_data'=>$data,'search'=>$search,'offset'=>$offset, 'page_width'=>$page_width));
+    }
+
     public function actionView()
     {
         $data = [];
