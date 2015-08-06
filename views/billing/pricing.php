@@ -40,68 +40,41 @@ $this->params['breadcrumbs'] = array(
 					</tr>
 				</thead>
 				<tbody>
-					<tr>
-						<td rowspan="4">1</td>
-						<td rowspan="4">0 - 10</td>
-						<td>CE</td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td rowspan="4"><button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#editModal"><i class="fa fa-edit"></i> Edit</button></td>
-					</tr>
-					<tr>
-						<td>IA</td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>D</td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>NW</td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td rowspan="4">2</td>
-						<td rowspan="4">10.01 - 20</td>
-						<td>CE</td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td rowspan="4"><button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#editModal"><i class="fa fa-edit"></i> Edit</button></td>
-					</tr>
-					<tr>
-						<td>IA</td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>D</td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>NW</td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
+					<?php
+					if(isset($billingMatrix)) {
+
+						$row = 1;
+						$billingRow = 1;
+						foreach ($billingMatrix as $matrix) {
+							$billingCount = count($matrix['billing']);
+							$billingRow = 1;
+							foreach ($matrix['billing'] as $billing) {
+								echo '<tr>';
+								if($billingRow == 1) {
+									echo "<td rowspan='{$billingCount}'>{$row}</td>";
+									echo "<td rowspan='{$billingCount}'>{$matrix['weight']['min_weight']} - {$matrix['weight']['max_weight']}</td>";
+								}
+								$basePercentage = (float) $billing['base_percentage'] * 100;
+								$incrPercentage = (float) $billing['increment_percentage'] * 100;
+								$zone = $billing['zone']['code'] .' ('. ucwords($billing['zone']['name']) . ')';
+								echo "<td>{$zone}</td>";
+								echo "<td>{$billing['base_cost']}</td>";
+								echo "<td>{$billing['increment_cost']}</td>";
+								echo "<td>{$basePercentage} %</td>";
+								echo "<td>{$incrPercentage} %</td>";
+
+								if($billingRow == 1) {
+									echo "<td rowspan='{$billingCount}'><button type='button' class='btn btn-default btn-xs'
+										data-toggle='modal' data-target='#editModal'><i class='fa fa-edit'></i> Edit</button></td>";
+								}
+								echo '</tr>';
+								$billingRow++;
+							}
+
+							$row++;
+						}
+					}
+					?>
 				</tbody>
 			</table>
 		</div>

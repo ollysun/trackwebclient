@@ -17,6 +17,7 @@ use Adapter\RequestHelper;
 use Adapter\ResponseHandler;
 use Adapter\Util\Calypso;
 use app\services\HubService;
+use yii\data\Pagination;
 
 class ShipmentsController extends BaseController {
 
@@ -208,18 +209,57 @@ class ShipmentsController extends BaseController {
     {
         return $this->render('customer_history');
     }
-    public function actionCustomerhistorydetails($search=false,$offset=0,$page_width=null)
+
+    public function actionCustomerhistorydetails($page=1,$search=false)
     {
+        $page_width=20;
+        $offset=($page-1)*$page_width;
+        $from_date = date('Y/m/d', 0);
+        $to_date = date('Y/m/d');
         if (!$search) { //default, empty
             // display empty message
             $this->redirect('customerhistory');
         }
-        $userAdapter = new UserAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
-        $response = new ResponseHandler($userAdapter->getUserDetailsWithParcels($search));
+        $user = [];
         $data = [];
-        if($response->getStatus() ==  ResponseHandler::STATUS_OK){
-            $data = $response->getData();
+
+        $userAdapter = new UserAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+        $userResponse = new ResponseHandler($userAdapter->getUserDetails($search));
+
+        if($userResponse->getStatus() ==  ResponseHandler::STATUS_OK){
+            $user = $userResponse->getData();
+            $user_id = $user['id'];
+            $parcelAdapter = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+            $parcelResponse = new ResponseHandler($parcelAdapter->getParcelsByUser($user_id,$from_date,$to_date,$offset,$page_width));
+            if($parcelResponse->getStatus() ==  ResponseHandler::STATUS_OK){
+                $data = $parcelResponse->getData();
+                $parcels = $data['parcels'];
+                $total_count = $data['total_count'];
+            }
         }
-        return $this->render('customer_history_details', array('user_data'=>$data,'search'=>$search,'offset'=>$offset, 'page_width'=>$page_width));
+        $pagination = new Pagination(['totalCount'=>$total_count,'defaultPageSize'=>$page_width]);
+        return $this->render('customer_history_details', array('user'=>$user, 'parcels'=>$parcels, 'total_count'=>$total_count, 'search'=>$search, 'offset'=>$offset, 'page_width'=>$page_width, 'pagination'=>$pagination));
+    }
+
+    public function actionView()
+    {
+        $data = [];
+        $id = "-1";
+        if(isset(Calypso::getInstance()->get()->id)){
+            $id = Calypso::getInstance()->get()->id;
+            $parcel = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+            $response = $parcel->getOneParcel($id);
+            $response = new ResponseHandler($response);
+            if($response->getStatus() == ResponseHandler::STATUS_OK){
+                $data = $response->getData();
+            }
+        }
+
+
+        return $this->render('view',array('parcelData'=>$data));
+    }
+    public function actionDispatched ()
+    {
+        return $this->render('dispatched',array());
     }
 }
