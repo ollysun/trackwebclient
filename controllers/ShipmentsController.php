@@ -258,4 +258,8 @@ class ShipmentsController extends BaseController {
 
         return $this->render('view',array('parcelData'=>$data));
     }
+    public function actionDispatched ()
+    {
+        return $this->render('dispatched',array());
+    }
 }
