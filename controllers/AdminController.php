@@ -16,9 +16,14 @@ use Adapter\ZoneAdapter;
 use Adapter\RequestHelper;
 use Yii;
 use Adapter\Util\Response;
+use Adapter\AdminAdapter;
+use Adapter\UserAdapter;
 
 
 class AdminController extends BaseController {
+
+	private $page_width = 5;
+
 	public function beforeAction($action) {
 		$this->enableCsrfValidation = false;
 		return parent::beforeAction($action);
@@ -99,7 +104,7 @@ class AdminController extends BaseController {
 						Yii::$app->session->setFlash('danger', 'There was a problem creating the hub. Please try again.');
 					}
 				}
-				else{
+				elseif($task != 'filter'){
 					$response = $hub->editOneHub($hub_data, $task);
 					if ($response['status'] === Response::STATUS_OK) {
 						Yii::$app->session->setFlash('success', 'Hub has been edited successfully.');
@@ -158,7 +163,7 @@ class AdminController extends BaseController {
 						Yii::$app->session->setFlash('danger', 'There was a problem creating the centre. Please try again.');
 					}
 				}
-				elseif($task != ''){
+				elseif($task != 'filter'){
 					$response = $center->editOneCentre($data, $task);
 					if ($response['status'] === Response::STATUS_OK) {
 						Yii::$app->session->setFlash('success', 'Centre has been edited successfully.');
@@ -186,4 +191,52 @@ class AdminController extends BaseController {
 		$centres_list = $centres->getStatus()==ResponseHandler::STATUS_OK?$centres->getData(): [];
 		return $this->render('manageecs',array('States'=>$state_list, 'hubs'=>$hub_list, 'centres'=>$centres_list, 'filter_hub_id'=>$filter_hub_id));
 	}
+
+	public function actionManagestaff($offset=0,$role='-1')
+	{
+
+		if(Yii::$app->request->isPost){
+			$data = Yii::$app->request->post();
+			$user = new UserAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+			$resp = $user->createNewUser(Calypso::getInstance()->getValue($data,'role'),
+				Calypso::getInstance()->getValue($data,'branch'),Calypso::getInstance()->getValue($data,'staff_id'),
+				Calypso::getInstance()->getValue($data,'email'),Calypso::getInstance()->getValue($data,'firstname').' '.Calypso::getInstance()->getValue($data,'lastname'),
+				Calypso::getInstance()->getValue($data,'phone'));
+
+			$creationResponse = new ResponseHandler($resp);
+			if ($creationResponse->getStatus() == ResponseHandler::STATUS_OK) {
+				Yii::$app->session->setFlash('success', 'User has been created successfully.');
+				//Yii::$app->response->redirect('managestaff');
+			} else {
+				Yii::$app->session->setFlash('danger', 'There was a problem creating this User. Please try again.');
+				//Yii::$app->response->redirect('managestaff');
+			}
+
+		}
+
+
+		$refAdp = new RefAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+		$states = $refAdp->getStates(1);//Nigeria hardcoded for now ... No offense please.
+		$states = new ResponseHandler($states);
+		$rolesAdp = new RefAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+		$roles = $rolesAdp->getRoles();
+		$roles = new ResponseHandler($roles);
+		$state_list = $states->getStatus()==ResponseHandler::STATUS_OK?$states->getData(): [];
+		$role_list =  $roles->getStatus()==ResponseHandler::STATUS_OK?$roles->getData(): [];
+
+		$staffMembers = [];
+		$staffAdp = new AdminAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+		if(isset(Calypso::getInstance()->get()->search) && strlen(Calypso::getInstance()->get()->search) > 0){
+			$is_email = !(filter_var(Calypso::getInstance()->get()->search,FILTER_VALIDATE_EMAIL) === false);
+			$staff_data = $staffAdp->searchStaffMembers(Calypso::getInstance()->get()->search,$is_email,$offset,$this->page_width);
+		}else {
+			$staff_data = $staffAdp->getStaffMembers($offset, $this->page_width, $role);
+		}
+		$resp = new ResponseHandler($staff_data);
+		$staffMembers = $resp->getData();
+
+
+		return $this->render('managestaff',['states' => $state_list,'roles'=> $role_list,'staffMembers' => $staffMembers,'offset'=>$offset,'role'=>$role,'page_width'=>$this->page_width]);
+	}
+
 }

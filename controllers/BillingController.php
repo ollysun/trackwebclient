@@ -414,12 +414,29 @@ class BillingController extends BaseController
             $viewBag['weightRanges'] = $weightRanges['data'];
         }
 
+        $billingMatrix = $this->buildPricingTable($viewBag);
 
-        return $this->render('pricing', $viewBag);
+        return $this->render('pricing', [ 'billingMatrix' => $billingMatrix ]);
     }
 
     private function buildPricingTable($pricingData) {
+        $matrix = [];
+        $zones = [];
+        foreach ($pricingData['zones'] as $zone) {
+            $zones[$zone['id']] = $zone;
+        }
 
+        $weightRanges = [];
+        foreach ($pricingData['weightRanges'] as $weightRange) {
+            $weightRanges[$weightRange['id']] = $weightRange;
+        }
+
+        foreach ($pricingData['billings'] as $billing) {
+            $matrix[$billing['weight_range_id']]['weight'] = $weightRanges[$billing['weight_range_id']];
+            $matrix[$billing['weight_range_id']]['billing'][] = $billing;
+        }
+
+        return $matrix;
     }
     public function actionUpdatemapping(){
         $entry = Yii::$app->request->post();
