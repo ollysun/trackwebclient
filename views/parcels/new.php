@@ -27,7 +27,7 @@ $this->params['breadcrumbs'] = array(
             <li data-target="#newParcelForm" data-slide-to="2"></li>
         </ol>
         <div class="carousel-inner">
-            <div class="main-box item active">
+            <div class="main-box item">
                 <div class="row">
                     <div class="col-xs-12 col-lg-6">
                         <div class="main-box-header">
@@ -52,7 +52,7 @@ $this->params['breadcrumbs'] = array(
                 </div>
             </div>
 
-            <div class="main-box item">
+            <div class="main-box item active">
                 <div class="main-box-header">
                     <h2>Parcel/Shipment Information</h2>
                 </div>
@@ -127,10 +127,10 @@ $this->params['breadcrumbs'] = array(
                             <div class="form-group">
                                 <label for="">Delivery Type</label>
 
-                                <div>
+                                <div class='validate'>
                                     <div class="radio-inline">
                                         <input id="deliveryAtAddress" type="radio" name="delivery_type" value="2"
-                                               checked="checked"> <label for="deliveryAtAddress"
+                                            > <label for="deliveryAtAddress"
                                                                          class="">Dispatch</label>
                                     </div>
                                     <div class="radio-inline">
@@ -156,6 +156,7 @@ $this->params['breadcrumbs'] = array(
                             <div class="form-group">
                                 <label for="">Service Type</label>
                                 <select name="shipping_type" id="" class="form-control validate required">
+                                    <option></option>
                                     <?php if (isset($ShipmentType) && is_array($ShipmentType['data'])) {
                                         foreach ($ShipmentType['data'] as $item) { ?>
                                             <option

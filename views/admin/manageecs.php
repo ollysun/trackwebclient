@@ -47,6 +47,7 @@ $this->params['breadcrumbs'] = array(
                         endif
                         ?>
                     </select>
+                    <input type="hidden" name="task" value="filter">
                 </div>
                 <div class="pull-left">
                     <label for="">&nbsp;</label><br>
@@ -59,6 +60,7 @@ $this->params['breadcrumbs'] = array(
     </div>
     <div class="main-box-body">
         <div class="table-responsive">
+            <?php if(count($centres) > 0) { ?>
             <table id="table" class="table table-hover dataTable">
                 <thead>
                 <tr>
@@ -86,8 +88,8 @@ $this->params['breadcrumbs'] = array(
                             <?php if (empty($filter_hub_id)) { ?>
                                 <td><?= ucwords($centre['parent']['name']); ?></td><?php } ?>
                             <td class="a<?=$centre['id'];?>"><?= $centre['address']; ?></td>
-                            <td><?= date('Y/m/d @ H:m', strtotime($centre['created_date'])); ?></td>
-                            <td><?= ($centre['status'] == ServiceConstant::ACTIVE ? 'Active' : 'Inactive'); ?></td>
+                            <td><?= date(ServiceConstant::DATE_TIME_FORMAT, strtotime($centre['created_date'])); ?></td>
+                            <td><?= ServiceConstant::getStatus($centre['status']); ?></td>
                             <td data-id="<?= $centre['id']; ?>" data-parent-id="<?= empty($filter_hub_id)?$centre['parent']['id']:$filter_hub_id; ?>" data-state-id="<?= $centre['state']['id']; ?>" data-status="<?= $centre['status']; ?>">
                                 <button type="button" class="btn btn-default btn-xs" data-toggle="modal"
                                         data-target="#editModal"><i class="fa fa-edit"></i> Edit
@@ -109,6 +111,11 @@ $this->params['breadcrumbs'] = array(
                 ?>
                 </tbody>
             </table>
+            <?php } else {  ?>
+                <div class="alert alert-info text-center" role="alert">
+                    <p><strong>No Express Centre found</strong></p>
+                </div>
+            <?php }  ?>
         </div>
     </div>
 </div>

@@ -112,6 +112,10 @@ class ServiceConstant {
     const URL_GET_USERS = '/admin/getAll';
     const URL_GET_USER = '/admin/getone';
 
+    const DATE_TIME_FORMAT = 'd M Y g:i A';
+    const DATE_FORMAT = 'd M Y';
+    const TIME_FORMAT = 'g:i A';
+
     const URL_GET_STAFF_BY_ID = '/admin/getOne';
     public static function getStatus($status){
         switch($status){
