@@ -2,14 +2,15 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 use Adapter\Globals\ServiceConstant;
+use yii\widgets\LinkPager;
 
-if (empty($user_data)) {
+if (empty($user)) {
 	$user_not_found = true;
 	$user_fullname = 'Customer not found';
 }
 else {
 	$user_not_found = false;
-	$user_fullname = ucwords($user_data['firstname'].' '.$user_data['lastname']);
+	$user_fullname = ucwords($user['firstname'].' '.$user['lastname']);
 }
 
 /* @var $this yii\web\View */
@@ -61,57 +62,63 @@ $this->params['breadcrumbs'] = array(
 			<?php
 				}
 				else {
-					$parcels = $user_data['parcel'];
+					//$parcels = $parcel_data['parcel'];
 			?>
-				<table id="table" class="table table-hover">
-					<thead>
-						<tr>
-							<th>S/N</th>
-							<th>Waybill No.</th>
-							<th>Shipper</th>
-							<th>Receiver</th>
-							<th>Created at</th>
-							<th>Status</th>
-							<th>Action</th>
-						</tr>
-					</thead>
-					<tbody>
+				<?php
+					if (empty($parcels)) {
+					 echo '<p class="text-center">The customer has no shipments to display.</p>';
+					}
+					else {
+				?>
+					<table id="table" class="table table-hover">
+						<thead>
+							<tr>
+								<th>S/N</th>
+								<th>Waybill No.</th>
+								<th>Shipper</th>
+								<th>Receiver</th>
+								<th>Created at</th>
+								<th>Status</th>
+								<th>Action</th>
+							</tr>
+						</thead>
+						<tbody>
 						<?php
-							if (empty($parcels)) {
-							 echo '<tr class="text-center"><td colspan="7">The customer has no shipments to display.</td></tr>';
-							}
-							else {
-								$i = $offset + 1;
+								$i = $offset;
 								foreach($parcels as $parcel) {
 
 						?>
 							<tr data-shipment-id="<?= $parcel['id'] ?>">
+								<?php $i++; ?>
 								<td><?= $i ?></td>
 								<td><?= $parcel['waybill_number'] ?></td>
-								<td data-sender-id="<?= $parcel['sender_id'] ?>"><?= $parcel['sender_id'] ?></td>
-								<td data-receiver-id="<?= $parcel['receiver_id'] ?>"><?= $parcel['receiver_id'] ?></td>
-								<td><?= date('j M Y @ h:m',strtotime($parcel['created_date'])); ?></td>
+								<td data-sender-id="<?= $parcel['sender_id'] ?>"><?= ucwords($parcel['sender']['firstname'].' '.$parcel['sender']['lastname']); ?></td>
+								<td data-receiver-id="<?= $parcel['receiver_id'] ?>"><?= ucwords($parcel['receiver']['firstname'].' '.$parcel['receiver']['lastname']); ?></td>
+								<td><?= date('j M Y h:ma',strtotime($parcel['created_date'])); ?></td>
 								<td><?= ServiceConstant::getStatus($parcel['status']); ?></td>
-								<td><a href="<?= Url::to(['site/viewwaybill?id='.$parcel['id']]) ?>" class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
+								<td><a href="<?= Url::to(['shipments/view?id='.$parcel['id']]) ?>" class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
 							</tr>
 						<?php
-								$i++;
 								}
-							}
 						?>
-					</tbody>
-				</table>
-				<?php //var_dump($parcels); ?>
+						</tbody>
+					</table>
+					<div class="clearfix">
+						<div class="pull-left">
+							<div class="form-control-static">
+								Showing <?= $offset+1;?> &ndash; <?= $i; ?> of <?= $total_count; ?>
+							</div>
+						</div>
+						<div class="pull-right">
+							<?= LinkPager::widget(['pagination'=>$pagination]) ?>
+						</div>
+					</div>
+				<?php
+					}
+				?>
 			<?php
 				}
 			?>
 		</div>
 	</div>
 </div>
-
-
-<!-- this page specific scripts -->
-<?php $this->registerJsFile('@web/js/libs/jquery.dataTables.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
-<?php $this->registerJsFile('@web/js/libs/dataTables.fixedHeader.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
-<?php $this->registerJsFile('@web/js/libs/dataTables.tableTools.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
-<?php $this->registerJsFile('@web/js/libs/jquery.dataTables.bootstrap.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
