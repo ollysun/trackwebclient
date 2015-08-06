@@ -102,6 +102,9 @@ class ServiceConstant {
 
     const URL_BILLING_FETCH_ALL = 'zone/fetchbilling';
     const URL_BILLING_ADD= 'zone/addbilling';
+    const URL_BILLING_EDIT = 'zone/editbilling';
+    const URL_BILLING_DELETE = 'zone/removebilling';
+    const URL_BILLING_FETCH_BY_ID = 'zone/fetchBillingById';
 
 
     const URL_CREATE_USER = 'admin/register';
@@ -109,6 +112,7 @@ class ServiceConstant {
     const URL_GET_USER = '/admin/getone';
 
     const URL_GET_STAFF_BY_ID = '/admin/getOne';
+
     public static function getStatus($status){
         switch($status){
             case ServiceConstant::ACTIVE:
