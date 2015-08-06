@@ -41,7 +41,6 @@ function validate($parent)
 {
 	$($parent+' .has-error .help-block').remove();
 	$($parent+' .has-error').removeClass('has-error');
-	$($parent+' .has-success').removeClass('has-success');
 	var hasError = false;
 
 	$($parent+' .validate').each(function()
@@ -113,9 +112,6 @@ function validate($parent)
 				$(this).parent().append('<div class="help-block no-margin clearfix">'+msg+'</div>');
 				$(this).parent().addClass('has-error');
 			}
-		}
-		else{
-			$(this).parent().removeClass('has-error').addClass('has-success');
 		}
 	});
 	if(!hasError)
