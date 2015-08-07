@@ -47,9 +47,9 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                         ?>
                         <tr>
                         <td><?= $row++; ?></td>
-                        <td class="n<?= $charge['id'];?>"><?=$charge['name']; ?></td>
+                        <td class="n<?= $charge['id'];?>"><?= ucfirst($charge['name']); ?></td>
                         <td class="c<?= $charge['id'];?>"><?=$charge['code']; ?></td>
-                        <td class="d<?= $charge['id'];?>"><?=$charge['description']; ?></td>
+                        <td class="d<?= $charge['id'];?>"><?= ucfirst($charge['description']); ?></td>
                         <td class="a<?= $charge['id'];?>"><?=$charge['amount']; ?></td>
                         <td class="p<?= $charge['id'];?>"><?=$charge['percentage']; ?></td>
                         <td class="h<?= $charge['id'];?>"><?=$charge['amount']*(1+floatval($charge['percentage'])); ?></td>
