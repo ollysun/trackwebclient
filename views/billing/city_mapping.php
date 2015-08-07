@@ -33,6 +33,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                     <th style="width: 20px">S/N</th>
                     <th>City Name</th>
                     <th>State</th>
+                    <th>Hub</th>
                     <th>Transit Time</th>
                     <th>Onforwarding Charge(<span class="currency naira"></span>)</th>
                     <th>Action</th>
@@ -48,12 +49,13 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                         <td><?= $row++; ?></td>
                         <td class="n<?= ucwords($city['id']); ?>"><?= ucwords($city['name']); ?></td>
                         <td><?= ucwords($city['state']['name']); ?></td>
+                        <td><?= strtoupper("{$city['branch']['name']} ({$city['branch']['code']})"); ?></td>
                         <td class="t<?=$city['id'];?>"><?= ucwords($city['transit_time']); ?></td>
                         <td><?= number_format($city['onforwarding_charge']['amount']); ?></td>
                         <td>
                             <button type="button" class="btn btn-default btn-xs" data-toggle="modal"
                                     data-target="#editModal" data-id="<?= $city['id']; ?>" data-charge-id="<?= $city['onforwarding_charge']['id']; ?>"
-                                    data-state-id="<?= $city['state']['id']; ?>"><i class="fa fa-edit"></i> Edit
+                                    data-state-id="<?= $city['state']['id']; ?>" data-branch-id="<?= $city['branch_id']; ?>"><i class="fa fa-edit"></i> Edit
                             </button>
                         </td>
                         </tr><?php
@@ -83,13 +85,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                         <input class="form-control" name="city_name">
                     </div>
                     <div class="row">
-                        <div class="col-xs-6">
-                            <div class="form-group">
-                                <label>Transit Time</label>
-                                <input type="text" class="form-control" name="transit_time">
-                            </div>
-                        </div>
-                        <div class="col-xs-6">
+                        <div class="col-xs-4">
                             <div class="form-group">
                                 <label>State</label>
                                 <select class="form-control" name="state">
@@ -103,6 +99,28 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                                     endif;
                                     ?>
                                 </select>
+                            </div>
+                        </div>
+                        <div class="col-xs-4">
+                            <div class="form-group">
+                                <label>Hub</label>
+                                <select class="form-control" name="branch_id">
+                                    <?php
+                                    if (isset($hubs) && is_array(($hubs))):
+                                        foreach ($hubs as $hub) {
+                                            ?>
+                                            <option value="<?= $hub['id'] ?>"><?= strtoupper($hub['name']); ?></option>
+                                            <?php
+                                        }
+                                    endif;
+                                    ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-xs-4">
+                            <div class="form-group">
+                                <label>Transit Time</label>
+                                <input type="text" class="form-control" name="transit_time">
                             </div>
                         </div>
                     </div>
@@ -154,13 +172,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                         <input class="form-control required" name="city_name">
                     </div>
                     <div class="row">
-                        <div class="col-xs-6">
-                            <div class="form-group">
-                                <label>Transit Time</label>
-                                <input type="text" class="form-control" name="transit_time">
-                            </div>
-                        </div>
-                        <div class="col-xs-6">
+                        <div class="col-xs-4">
                             <div class="form-group">
                                 <label>State</label>
                                 <select class="form-control" name="state">
@@ -174,6 +186,28 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                                     endif;
                                     ?>
                                 </select>
+                            </div>
+                        </div>
+                        <div class="col-xs-4">
+                            <div class="form-group">
+                                <label>Hub</label>
+                                <select class="form-control" name="branch_id">
+                                    <?php
+                                    if (isset($hubs) && is_array(($hubs))):
+                                        foreach ($hubs as $hub) {
+                                            ?>
+                                            <option value="<?= $hub['id'] ?>"><?= strtoupper($hub['name']); ?></option>
+                                            <?php
+                                        }
+                                    endif;
+                                    ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-xs-4">
+                            <div class="form-group">
+                                <label>Transit Time</label>
+                                <input type="text" class="form-control" name="transit_time">
                             </div>
                         </div>
                     </div>

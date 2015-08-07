@@ -87,6 +87,10 @@ class ServiceConstant {
     const URL_ZONES_GET_ALL = '/zone/fetchAll';
     const URL_ZONES_GET_BY_CODE = '/zone/fetchByCode';
     const URL_ZONES_GET_BY_ID = '/zone/fetchByID';
+    
+    const URL_ZONES_MATRIX_GET = 'zone/getMatrix';
+    const URL_ZONES_MATRIX_SAVE = 'zone/saveMatrix';
+    const URL_ZONES_MATRIX_REMOVE = 'zone/removeMatrix';
 
     const URL_WEIGHT_ADD = 'weightrange/add';
     const URL_WEIGHT_EDIT = 'weightrange/edit';
@@ -110,6 +114,10 @@ class ServiceConstant {
     const URL_CREATE_USER = 'admin/register';
     const URL_GET_USERS = '/admin/getAll';
     const URL_GET_USER = '/admin/getone';
+
+    const DATE_TIME_FORMAT = 'd M Y g:i A';
+    const DATE_FORMAT = 'd M Y';
+    const TIME_FORMAT = 'g:i A';
 
     const URL_GET_STAFF_BY_ID = '/admin/getOne';
 

@@ -89,6 +89,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
     </div>
     <div class="main-box-body">
         <div class="table-responsive">
+            <?php if(count($staffMembers) > 0) {?>
             <table id="table" class="table table-hover dataTable">
                 <thead>
                 <tr>
@@ -140,6 +141,11 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                     <a href="<?= Url::to(['site/managestaff?offset='.($offset + $page_width)]).$role_filter ?>" class="btn btn-primary btn-sm">Next</a>
                 <?php endif;  ?>
             </div>
+            <?php } else {  ?>
+                <div class="alert alert-info text-center" role="alert">
+                    <p><strong>No staff account found</strong></p>
+                </div>
+            <?php }  ?>
         </div>
     </div>
 </div>

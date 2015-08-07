@@ -25,7 +25,9 @@ class BranchAdapter extends BaseAdapter
 
     public function getOneHub($id)
     {
-        return $this->request(ServiceConstant::URL_BRANCH_GET_ALL, array('id' => $id), self::HTTP_GET);
+        $filter = 'branch_type=' . ServiceConstant::BRANCH_TYPE_HUB;
+        $filter .= 'branch_id=' . $id;
+        return $this->request(ServiceConstant::URL_BRANCH_GET_ONE. '?' . $filter, array() , self::HTTP_GET);
     }
 
     public function getHubs($state = null)
@@ -76,6 +78,10 @@ class BranchAdapter extends BaseAdapter
     public function getAllHubs($branch_type = self::BRANCH_TYPE_HUB)
     {
         return $this->request(ServiceConstant::URL_GET_ALL_BRANCH, ['branch_type' => $branch_type], self::HTTP_GET);
+    }
+    public function getMatrix()
+    {
+        return $this->request(ServiceConstant::URL_ZONES_MATRIX_GET, [], self::HTTP_GET);
     }
 
     public function getAll()

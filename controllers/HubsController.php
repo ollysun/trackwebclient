@@ -33,7 +33,6 @@ class HubsController extends BaseController {
      */
     public function actionDestination()
     {
-
         $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
 
         if(\Yii::$app->request->isPost) {
@@ -47,7 +46,7 @@ class HubsController extends BaseController {
             $postParams['to_branch_id'] = $branch;
             $response = $parcelsAdapter->moveToForSweeper($postParams);
             if($response['status'] === ResponseHandler::STATUS_OK) {
-                $this->flashSuccess('Parcels have been successfully moved to the next destination. <a href="/hubs/hubmovetodelivery">Generate Manifest</a>');
+                $this->flashSuccess('Parcels have been successfully moved to the next destination. <a href="/hubmovetodelivery">Generate Manifest</a>');
             } else {
                 $this->flashError('An error occured while trying to move parcels to next destination. Please try again.');
             }
@@ -61,6 +60,40 @@ class HubsController extends BaseController {
             $viewData['parcel_next'] = [];
         }
         return $this->render('destination', $viewData);
+    }
+
+
+    public function actionHubarrival()
+    {
+        $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+
+        if(\Yii::$app->request->isPost) {
+            $branch = \Yii::$app->request->post('branch');
+            $waybill_numbers = \Yii::$app->request->post('waybills');
+            if(!isset($branch) || empty($waybill_numbers)) {
+                $this->flashError('Please ensure you set destinations at least a (one) for the parcels');
+            }
+
+            $postParams['waybill_numbers'] = implode(',', $waybill_numbers);
+            $postParams['to_branch_id'] = $branch;
+            $response = $parcelsAdapter->moveToForSweeper($postParams);
+            if($response['status'] === ResponseHandler::STATUS_OK) {
+                $this->flashSuccess('Parcels have been successfully moved to the next destination. <a href="hubmovetodelivery">Generate Manifest</a>');
+            } else {
+                $this->flashError('An error occured while trying to move parcels to next destination. Please try again.');
+            }
+        }
+        $user_session = Calypso::getInstance()->session("user_session");
+        $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+        $arrival_parcels = $parcelsAdapter->getParcelsForNextDestination(ServiceConstant::FOR_ARRIVAL, $user_session['branch_id']);
+        if($arrival_parcels['status'] === ResponseHandler::STATUS_OK) {
+            $viewData['parcel_next'] = $arrival_parcels['data'];
+        } else {
+            $this->flashError('An error occured while trying to fetch parcels. Please try again.');
+            $viewData['parcel_next'] = [];
+        }
+
+        return $this->render('hub_arrival',$viewData);
     }
 
     public function actionHubdispatch()
@@ -87,7 +120,7 @@ class HubsController extends BaseController {
         $parcels = new ResponseHandler($dispatch_parcels);
         $parcel_list = $parcels->getStatus()==ResponseHandler::STATUS_OK?$parcels->getData(): [];
 
-        return $this->render('hub_dispatch', array('sweeper'=>[], 'hubs'=>$hub_list,'parcels'=>$parcel_list, 'branch_id'=>$from_branch_id, 'from_date'=>$from_date, 'to_date'=>$to_date));
+        return $this->render('hub_dispatch', array('sweeper'=>[], 'hubs'=>$hub_list,'parcels'=>$parcel_list, 'branch_id'=>$to_branch_id, 'from_date'=>$from_date, 'to_date'=>$to_date));
     }
 
     /**

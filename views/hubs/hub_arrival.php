@@ -62,6 +62,9 @@ $this->params['breadcrumbs'] = array(
 	</div>
 	<div class="main-box-body">
 		<div class="table-responsive">
+			<?php
+			if(count($parcel_next) > 0){
+			?>
 			<table id="next_dest" class="table table-hover next_dest dataTable">
 				<thead>
 				<tr>
@@ -103,11 +106,11 @@ $this->params['breadcrumbs'] = array(
 			</table>
 
 		</div>
-		<?php
-		if(count($parcel_next) <= 0){
-			?>
-			<p><strong>No shipment received today</strong></p>
-		<?php } ?>
+		<?php } else {  ?>
+			<div class="alert alert-info text-center" role="alert">
+				<p><strong>No shipment received today</strong></p>
+			</div>
+		<?php }  ?>
 	</div>
 </div>
 

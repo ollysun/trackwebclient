@@ -16,6 +16,7 @@ use Adapter\RequestHelper;
 use Adapter\ResponseHandler;
 use Adapter\UserAdapter;
 use Adapter\Util\Response;
+use Adapter\BranchAdapter;
 use app\services\ParcelService;
 use Yii;
 
@@ -58,13 +59,19 @@ class ParcelsController extends BaseController {
         $paymentMethod = $refData->getPaymentMethods();
         $countries = $refData->getCountries();
 
+        $hubAdp = new BranchAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+        $centres = $hubAdp->getCentres();
+        $centres = new ResponseHandler($centres);
+        $centres_list = $centres->getStatus()==ResponseHandler::STATUS_OK?$centres->getData(): [];
+
         return $this->render('new',array(
             'Banks'=>$banks,
             'ShipmentType' => $shipmentType,
             'deliveryType'=>$deliveryType,
             'parcelType'=>$parcelType,
             'countries'=>$countries,
-            'paymentMethod'=>$paymentMethod
+            'paymentMethod'=>$paymentMethod,
+            'centres'=>$centres_list
         ));
     }
 

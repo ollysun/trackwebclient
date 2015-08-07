@@ -8,7 +8,7 @@ use \Adapter\Globals\ServiceConstant;
 $this->title = 'Manage Express Centres';
 $this->params['breadcrumbs'] = array(
     array(
-        'url' => ['site/managebranches'],
+        'url' => ['admin/managebranches'],
         'label' => 'Manage Branches'
     ),
     array('label' => 'Express Centres')
@@ -47,6 +47,7 @@ $this->params['breadcrumbs'] = array(
                         endif
                         ?>
                     </select>
+                    <input type="hidden" name="task" value="filter">
                 </div>
                 <div class="pull-left">
                     <label for="">&nbsp;</label><br>
@@ -59,13 +60,15 @@ $this->params['breadcrumbs'] = array(
     </div>
     <div class="main-box-body">
         <div class="table-responsive">
+            <?php if(count($centres) > 0) { ?>
             <table id="table" class="table table-hover dataTable">
                 <thead>
                 <tr>
                     <th style="width: 20px">S/N</th>
                     <th>EC Code</th>
                     <th>EC Name</th>
-                    <?php if(empty($filter_hub_id)) {?><th>Parent Hub</th><?php } ?>
+                    <?php if (empty($filter_hub_id)) { ?>
+                        <th>Parent Hub</th><?php } ?>
                     <th>Address</th>
                     <th>Created Date</th>
                     <th>Status</th>
@@ -81,30 +84,38 @@ $this->params['breadcrumbs'] = array(
                         <tr class="text-center">
                             <td><?= $count++; ?></td>
                             <td><?= strtoupper($centre['code']); ?></td>
-                            <td><?= $centre['name']; ?></td>
-                            <?php if(empty($filter_hub_id)) {?><td><?= ucwords($centre['parent']['name']); ?></td><?php } ?>
-                            <td><?= $centre['address']; ?></td>
-                            <td><?= date('Y/m/d @ H:m',strtotime($centre['created_date'])); ?></td>
-                            <td><?= ($centre['status'] == ServiceConstant::ACTIVE ? 'Active' : 'Inactive'); ?></td>
-                            <td>
+                            <td class="n<?=$centre['id'];?>"><?= $centre['name']; ?></td>
+                            <?php if (empty($filter_hub_id)) { ?>
+                                <td><?= ucwords($centre['parent']['name']); ?></td><?php } ?>
+                            <td class="a<?=$centre['id'];?>"><?= $centre['address']; ?></td>
+                            <td><?= date(ServiceConstant::DATE_TIME_FORMAT, strtotime($centre['created_date'])); ?></td>
+                            <td><?= ServiceConstant::getStatus($centre['status']); ?></td>
+                            <td data-id="<?= $centre['id']; ?>" data-parent-id="<?= empty($filter_hub_id)?$centre['parent']['id']:$filter_hub_id; ?>" data-state-id="<?= $centre['state']['id']; ?>" data-status="<?= $centre['status']; ?>">
                                 <button type="button" class="btn btn-default btn-xs" data-toggle="modal"
-                                        data-target="#editModal" data-id="<?= $centre['id']; ?>"><i
-                                        class="fa fa-edit"></i> Edit
+                                        data-target="#editModal"><i class="fa fa-edit"></i> Edit
                                 </button>
                                 <button type="button" class="btn btn-default btn-xs" data-toggle="modal"
-                                        data-target="#status" data-id="<?= $centre['id']; ?>" data-toggle="tooltip" data-original-title="Change status"><i
+                                        data-target="#status" data-toggle="tooltip"
+                                        data-original-title="Change status"><i
                                         class="fa fa-edit"></i> Status
                                 </button>
-                                <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#relink" data-id="<?= $centre['id']; ?>" data-toggle="tooltip" data-original-title="Change Parent Hub"><i
+                                <button type="button" class="btn btn-default btn-xs" data-toggle="modal"
+                                        data-target="#relink" data-toggle="tooltip"
+                                        data-original-title="Change Parent Hub"><i
                                         class="fa fa-retweet"></i>
                                 </button>
                             </td>
                         </tr>
                         <?php
-                    }  endif;
+                    } endif;
                 ?>
                 </tbody>
             </table>
+            <?php } else {  ?>
+                <div class="alert alert-info text-center" role="alert">
+                    <p><strong>No Express Centre found</strong></p>
+                </div>
+            <?php }  ?>
         </div>
     </div>
 </div>
@@ -128,8 +139,8 @@ $this->params['breadcrumbs'] = array(
                         <label>State</label>
                         <select id="state_hub_selector" class="form-control" name="state_id">
                             <?php
-                            if(isset($States) && is_array(($States))):
-                                foreach($States as $state){
+                            if (isset($States) && is_array(($States))):
+                                foreach ($States as $state) {
                                     ?>
                                     <option value="<?= $state['id'] ?>"><?= strtoupper($state['name']); ?></option>
                                     <?php
@@ -143,14 +154,14 @@ $this->params['breadcrumbs'] = array(
                         <select class="form-control required" name="hub_id" id="hub_id">
                             <option value=""></option>
                             <?php
-                           /* if (isset($hubs) && is_array(($hubs))):
+                            if (isset($hubs) && is_array(($hubs))):
                                 foreach ($hubs as $hub) {
-                                    */?><!--
+                                    ?>
                                     <option
-                                        value="<?/*= $hub['id']; */?>"><?/*= ucwords($hub['name']) . " (" . strtoupper($hub['code']) . ")"; */?></option>
-                                    --><?php
-/*                                }
-                            endif;*/
+                                        value="<?= $hub['id']; ?>"><?= ucwords($hub['name']) . " (" . strtoupper($hub['code']) . ")"; ?></option>
+                                    <?php
+                                }
+                            endif;
                             ?>
                         </select>
                     </div>
@@ -228,8 +239,8 @@ $this->params['breadcrumbs'] = array(
                         <label>State</label>
                         <select class="form-control" name="state_id">
                             <?php
-                            if(isset($States) && is_array(($States))):
-                                foreach($States as $state){
+                            if (isset($States) && is_array(($States))):
+                                foreach ($States as $state) {
                                     ?>
                                     <option value="<?= $state['id'] ?>"><?= strtoupper($state['name']); ?></option>
                                     <?php
