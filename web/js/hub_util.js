@@ -68,7 +68,7 @@ Hub.getParcelsForArrival = function(staff_id,callback){
 }
 
 $(document).ready(function(){
-    $("#branch_type").unbind('change').on('change',function(){
+    $("#branch_type,#state").unbind('change').on('change',function(){
         var id = $("#state").val();
         var branch_id = $(this).val();
         $("#branch").html('<option>Loading...</option>');

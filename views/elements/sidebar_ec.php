@@ -37,6 +37,11 @@ use Adapter\Util\Calypso;
 								</a>
 							</li>
 							<li>
+								<a href="<?= Url::to(['shipments/dispatched']) ?>">
+									Dispatched
+								</a>
+							</li>
+							<li>
 								<a href="<?= Url::to(['shipments/forsweep']) ?>">
 									For Sweep
 								</a>
@@ -59,7 +64,7 @@ use Adapter\Util\Calypso;
 								<a href="<?= Url::to(['admin/managebranches']) ?>">Manage branches</a>
 							</li>
 							<li>
-								<a href="<?= Url::to(['admin/managestaff']) ?>">Manage staff accounts</a>
+								<a href="<?= Url::to(['site/managestaff']) ?>">Manage staff accounts</a>
 							</li>
 							<li>
 								<a href="<?= Url::to(['site/billings']) ?>" class="dropdown-toggle">Billing <i class="fa fa-angle-right drop-icon"></i></a>
