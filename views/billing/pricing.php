@@ -66,10 +66,6 @@ $this->params['breadcrumbs'] = array(
 										<button type='button' data-weight-billing-id='{$billing['id']}' class='btn btn-default btn-xs edit_billing'><i class='fa fa-edit'></i></button>&nbsp;&nbsp;
 										<button type='button' data-weight-billing-id='{$billing['id']}' class='btn btn-danger btn-xs del_billing'>&nbsp;<i class='fa fa-trash-o'></i>&nbsp;</button>
 									  </td>";
-
-								/*if($billingRow == 1) {
-									echo "<td rowspan='{$billingCount}'><button type='button' class='btn btn-default btn-xs edit_billing'><i class='fa fa-edit'></i> Edit</button></td>";
-								}*/
 								echo '</tr>';
 								$billingRow++;
 							}
