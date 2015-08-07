@@ -262,4 +262,10 @@ class ShipmentsController extends BaseController {
     {
         return $this->render('dispatched',array());
     }
+    public function actionDelivered ()
+    {
+        $from_date = date('Y/m/d');
+        $to_date = date('Y/m/d');
+        return $this->render('delivered', array('from_date'=>$from_date, 'to_date'=>$to_date));
+    }
 }

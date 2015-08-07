@@ -3105,7 +3105,11 @@ input[type="radio"] {
   margin-right: 0;
 }
 .table-search-form .date-range {
-  width: 120px;
+  width: 100px;
+}
+.table-search-form .input-group-date-range {
+  width: 140px;
+  float: left: !important;
 }
 .table-search-form .filter-status {
   width: 140px;
