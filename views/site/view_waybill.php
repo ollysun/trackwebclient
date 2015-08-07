@@ -27,7 +27,7 @@ $this->params['breadcrumbs'][] = 'Waybill';
                 <div class="form-group">
                     <label>Shipper Name</label>
                     <div class="">
-                        <?= strtoupper($parcelData['sender']['firstname'] . ' ' . $parcelData['sender']['firstname']); ?>
+                        <?= strtoupper($parcelData['sender']['firstname'] . ' ' . $parcelData['sender']['lastname']); ?>
                     </div>
                 </div>
                 <div class="form-group">
@@ -65,7 +65,7 @@ $this->params['breadcrumbs'][] = 'Waybill';
                 <div class="form-group">
                     <label>Receiver Name</label>
                     <div class="">
-                        <?= strtoupper($parcelData['receiver']['firstname'] . ' ' . $parcelData['receiver']['firstname']); ?>
+                        <?= strtoupper($parcelData['receiver']['firstname'] . ' ' . $parcelData['receiver']['lastname']); ?>
                     </div>
                 </div>
                 <div class="form-group">

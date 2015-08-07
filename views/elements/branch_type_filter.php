@@ -14,8 +14,8 @@ use yii\helpers\Url;
 	$str = "
 		var select = $('#branch_type_filter');
 			var Url = {
-				ec: '".Url::to(['site/manageecs'])."',
-				hub: '".Url::to(['site/managebranches'])."'
+				ec: '".Url::to(['admin/manageecs'])."',
+				hub: '".Url::to(['admin/managebranches'])."'
 			};
 			select.on('change', function() {
 				var val = $(this).val();

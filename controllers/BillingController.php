@@ -4,6 +4,7 @@ namespace app\controllers;
 use Adapter\BillingAdapter;
 use Adapter\Util\Calypso;
 use Adapter\WeightRangeAdapter;
+use Adapter\BranchAdapter;
 use Adapter\ZoneAdapter;
 use app\services\BillingService;
 use Yii;
@@ -69,14 +70,14 @@ class BillingController extends BaseController
                     if ($response['status'] === Response::STATUS_OK) {
                         Yii::$app->session->setFlash('success', 'Weight range has been created successfully.');
                     } else {
-                        Yii::$app->session->setFlash('danger', 'There was a problem creating the weight range. Please try again.');
+                        Yii::$app->session->setFlash('danger', 'There was a problem creating the weight range. '.$response['message']);
                     }
                 } else {
                     $response = $adp->editRange($data, $task);
                     if ($response['status'] === Response::STATUS_OK) {
                         Yii::$app->session->setFlash('success', 'Weight range has been edited successfully.');
                     } else {
-                        Yii::$app->session->setFlash('danger', 'There was a problem editing the weight range. Please try again.');
+                        Yii::$app->session->setFlash('danger', 'There was a problem editing the weight range. '.$response['message']);
                     }
                 }
             }
@@ -91,7 +92,22 @@ class BillingController extends BaseController
 
     public function actionMatrix()
     {
-        return $this->render('matrix');
+        $branchAdp = new BranchAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $response = new ResponseHandler($branchAdp->getAllHubs());
+        $branchAdpMatrix = new BranchAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $responseMatrix = new ResponseHandler($branchAdpMatrix->getMatrix());
+        $hubs = [];$hubsMatrix = [];
+        if($response->getStatus() == ResponseHandler::STATUS_OK){
+            $hubs = $response->getData();
+        }
+        if($responseMatrix->getStatus() == ResponseHandler::STATUS_OK){
+            $hubsMatrix = $responseMatrix->getData();
+        }
+        $mapList=[];
+        foreach($hubsMatrix as $mapping){
+            $mapList[$mapping['from_branch_id'].'_'.$mapping['to_branch_id']] = $mapping;
+        }
+        return $this->render('matrix',["hubs"=>$hubs,"hubsMatrix"=>$hubsMatrix,"matrixMap"=>$mapList]);
     }
 
     public function actionZones()
@@ -121,14 +137,14 @@ class BillingController extends BaseController
                     if ($response['status'] === Response::STATUS_OK) {
                         Yii::$app->session->setFlash('success', 'Zone has been created successfully.');
                     } else {
-                        Yii::$app->session->setFlash('danger', 'There was a problem creating the zone. Please try again.');
+                        Yii::$app->session->setFlash('danger', 'There was a problem creating the zone.'.$response['message']);
                     }
                 } else {
                     $response = $zone->editZone($data);
                     if ($response['status'] === Response::STATUS_OK) {
                         Yii::$app->session->setFlash('success', 'Zone has been edited successfully.');
                     } else {
-                        Yii::$app->session->setFlash('danger', 'There was a problem editing the zone. Please try again.');
+                        Yii::$app->session->setFlash('danger', 'There was a problem editing the zone'.$response['message']);
                     }
                 }
             }
@@ -169,14 +185,14 @@ class BillingController extends BaseController
                     if ($response['status'] === Response::STATUS_OK) {
                         Yii::$app->session->setFlash('success', 'Region has been created successfully.');
                     } else {
-                        Yii::$app->session->setFlash('danger', 'There was a problem creating the region. Please try again.');
+                        Yii::$app->session->setFlash('danger', 'There was a problem creating the region.'.$response['message']);
                     }
                 } else {
                     $response = $region->editRegion($data, $task);
                     if ($response['status'] === Response::STATUS_OK) {
                         Yii::$app->session->setFlash('success', 'Region has been edited successfully.');
                     } else {
-                        Yii::$app->session->setFlash('danger', 'There was a problem editing the region. Please try again.');
+                        Yii::$app->session->setFlash('danger', 'There was a problem editing the region.'.$response['message']);
                     }
                 }
             }
@@ -219,7 +235,7 @@ class BillingController extends BaseController
                 if ($response['status'] === Response::STATUS_OK) {
                     Yii::$app->session->setFlash('success', 'State to Region has been edited successfully.');
                 } else {
-                    Yii::$app->session->setFlash('danger', 'There was a problem mapping state to Region. Please try again.');
+                    Yii::$app->session->setFlash('danger', 'There was a problem mapping state to Region.'.$response['message']);
                 }
             }
         }
@@ -269,7 +285,7 @@ class BillingController extends BaseController
             $data['onforwarding_charge_id'] = Calypso::getValue($entry, 'charge');
             $data['transit_time'] = Calypso::getValue($entry, 'transit_time');
             $data['status'] = Calypso::getValue($entry, 'status');
-            $data['branch_id'] = 1;
+            $data['branch_id'] = Calypso::getValue($entry, 'branch_id');
             $data['city_id'] = Calypso::getValue($entry, 'id',null);
 
             if (($task == 'create' || $task == 'edit') && (empty($data['name']) || empty($data['transit_time']))) {
@@ -285,7 +301,7 @@ class BillingController extends BaseController
                     if ($response['status'] === Response::STATUS_OK) {
                         Yii::$app->session->setFlash('success', 'City has been created successfully.');
                     } else {
-                        Yii::$app->session->setFlash('danger', 'There was a problem creating the city. Please try again.');
+                        Yii::$app->session->setFlash('danger', 'There was a problem editing the city. '.$response['messsage']);
                     }
                 } else {
                     $response = $city->editCity($data);
@@ -293,7 +309,7 @@ class BillingController extends BaseController
                         Yii::$app->session->setFlash('success', 'City has been edited successfully.');
                     } else {
                         var_dump($response);
-                        Yii::$app->session->setFlash('danger', 'There was a problem editing the city. Please try again.');
+                        Yii::$app->session->setFlash('danger', 'There was a problem editing the city. '.$response['messsage']);
                     }
                 }
             }
@@ -314,7 +330,12 @@ class BillingController extends BaseController
         $cities = new ResponseHandler($cities);
         $cities_list = $cities->getStatus() == ResponseHandler::STATUS_OK ? $cities->getData() : [];
 
-        return $this->render('city_mapping', array('cities'=>$cities_list,'states'=>$states_list,'charges'=>$charges_list));
+        $hubAdp = new BranchAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+        $hubs = $hubAdp->getAllHubs();
+        $hubs = new ResponseHandler($hubs);
+        $hub_list = $hubs->getStatus()==ResponseHandler::STATUS_OK?$hubs->getData(): [];
+
+        return $this->render('city_mapping', array('cities'=>$cities_list,'states'=>$states_list,'hubs'=>$hub_list,'charges'=>$charges_list));
     }
 
     public function actionOnforwarding()
@@ -329,6 +350,7 @@ class BillingController extends BaseController
             $data['code'] = Calypso::getValue($entry, 'onforward_code');
             $data['description'] = Calypso::getValue($entry, 'onforward_desc');
             $data['amount'] = Calypso::getValue($entry, 'onforward_amount');
+            $data['percentage'] = Calypso::getValue($entry, 'onforward_percentage',0)/100;
             $data['status'] = Calypso::getValue($entry, 'status');
             $data['charge_id'] = Calypso::getValue($entry, 'id',null);
 
@@ -345,14 +367,14 @@ class BillingController extends BaseController
                     if ($response['status'] === Response::STATUS_OK) {
                         Yii::$app->session->setFlash('success', 'Charge has been created successfully.');
                     } else {
-                        Yii::$app->session->setFlash('danger', 'There was a problem creating the charge. Please try again.');
+                        Yii::$app->session->setFlash('danger', 'There was a problem creating the charge.'.$response['message']);
                     }
                 } else {
                     $response = $bill->editOnforwardingCharge($data);
                     if ($response['status'] === Response::STATUS_OK) {
                         Yii::$app->session->setFlash('success', 'Charge has been edited successfully.');
                     } else {
-                        Yii::$app->session->setFlash('danger', 'There was a problem editing the charge. Please try again.');
+                        Yii::$app->session->setFlash('danger', 'There was a problem editing the charge.'.$response['message']);
                     }
                 }
             }

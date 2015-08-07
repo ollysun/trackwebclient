@@ -107,7 +107,7 @@ if($offset <= 0){
                             <td><?= ucwords(Calypso::getValue($parcel, 'receiver_address.city')) . ', ' .
                                     ucwords(Calypso::getValue($parcel, 'receiver_address.state.name')); ?>
                             </td>
-                            <td><?= date('Y/m/d @ H:m',strtotime($parcel['created_date'])); ?></td>
+                            <td><?= date(ServiceConstant::DATE_TIME_FORMAT,strtotime($parcel['created_date'])); ?></td>
                             <td><a href="<?= Url::to(['site/viewwaybill?id='.$parcel['id']]) ?>" class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
                         </tr>
                     <?php
