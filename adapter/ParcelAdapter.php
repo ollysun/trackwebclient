@@ -94,4 +94,10 @@ class ParcelAdapter extends BaseAdapter{
         $filter .= '&order_by=Parcel.created_date%20DESC';
         return $this->request(ServiceConstant::URL_GET_ALL_PARCEL.'?with_sender=1&with_receiver=1&offset='.$offset.'&count='.$count.$filter,array(),self::HTTP_GET);
     }
+    public function getECDispatchedParcels($branch_id,$offset=0, $count=50){
+        $filter = '&from_branch_id='.$branch_id;
+        $filter .= '&with_total_count=1';
+        $filter .= '&status='.ServiceConstant::BEING_DELIVERED;
+        return $this->request(ServiceConstant::URL_GET_ALL_PARCEL.'?with_receiver=1&with_holder=1&offset='.$offset.'&count='.$count.$filter,array(),self::HTTP_GET);
+    }
 }
