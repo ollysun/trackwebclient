@@ -67,11 +67,11 @@ body {
 }
 .waybill-no {
   position: absolute;
-  top: 159px;
+  top: 154px;
   left: 575px;
   width: auto;
   height: auto;
-  font-size: 18px;
+  font-size: 24px;
 }
 .user {
   position: absolute;
@@ -172,6 +172,11 @@ body {
 }
 .service-type__inner.is-active {
   background: #111;
+}
+.service-type__inner > span {
+  margin-left: -230px;
+  width: 200px;
+  max-width: 200px;
 }
 .parcel-type {
   position: absolute;

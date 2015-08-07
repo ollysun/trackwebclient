@@ -138,8 +138,8 @@ body {
 	.absolute-wrap(@waybill-padding-vertical; @code-left; 220px; 120px);
 }
 .waybill-no {
-	.absolute-wrap(159px; 575px);
-	font-size: 18px;
+	.absolute-wrap(154px; 575px);
+	font-size: 24px;
 }
 .user {
 	.absolute-wrap(auto; @user-left; @user-width; @user-height);
@@ -219,6 +219,11 @@ body {
 		margin-bottom: @service-typer-inner-margin-bottom;
 		&.is-active {
 			background: #111;
+		}
+		>span {
+			margin-left: -230px;
+			width: 200px;
+			max-width: 200px;
 		}
 	}
 }
