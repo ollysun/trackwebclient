@@ -45,14 +45,13 @@ class AdminController extends BaseController {
 			$zone = new ZoneAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
 			$response = $zone->saveMatrix(json_encode($matrix_info));
 			if ($response['status'] === Response::STATUS_OK) {
-				$this->redirect('/site/managebranches');
+				$this->redirect('/admin/managebranches');
 			} else {
 				Yii::$app->session->setFlash('danger', 'There was a problem creating the zone.'.$response['message']);
 			}
 		}
 
 		$hub_id = \Yii::$app->request->get('hub');
-
 		$hubAdp = new BranchAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
 		$hub = $hubAdp->getOneHub($hub_id);
 		$hub = new ResponseHandler($hub);

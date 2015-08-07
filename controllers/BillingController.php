@@ -6,6 +6,7 @@ use Adapter\Util\Calypso;
 use Adapter\WeightRangeAdapter;
 use Adapter\BranchAdapter;
 use Adapter\ZoneAdapter;
+use app\services\BillingService;
 use Yii;
 use Adapter\RegionAdapter;
 use Adapter\RefAdapter;
@@ -106,7 +107,11 @@ class BillingController extends BaseController
         foreach($hubsMatrix as $mapping){
             $mapList[$mapping['from_branch_id'].'_'.$mapping['to_branch_id']] = $mapping;
         }
-        return $this->render('matrix',["hubs"=>$hubs,"hubsMatrix"=>$hubsMatrix,"matrixMap"=>$mapList]);
+        $zAdp = new ZoneAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $zones = $zAdp->getZones();
+        $zones = new ResponseHandler($zones);
+        $zones_list = $zones->getStatus() == ResponseHandler::STATUS_OK ? $zones->getData() : [];
+        return $this->render('matrix',["hubs"=>$hubs,"hubsMatrix"=>$hubsMatrix,"matrixMap"=>$mapList,"zones_list" => $zones_list]);
     }
 
     public function actionZones()
@@ -307,7 +312,6 @@ class BillingController extends BaseController
                     if ($response['status'] === Response::STATUS_OK) {
                         Yii::$app->session->setFlash('success', 'City has been edited successfully.');
                     } else {
-                        var_dump($response);
                         Yii::$app->session->setFlash('danger', 'There was a problem editing the city. '.$response['messsage']);
                     }
                 }
@@ -412,7 +416,12 @@ class BillingController extends BaseController
 
         $billingMatrix = $this->buildPricingTable($viewBag);
 
-        return $this->render('pricing', [ 'billingMatrix' => $billingMatrix ]);
+        return $this->render('pricing',
+            [
+                'billingMatrix' => $billingMatrix,
+                'weightRanges' => $viewBag['weightRanges'],
+                'zones' => $viewBag['zones']
+            ]);
     }
 
     private function buildPricingTable($pricingData) {
@@ -435,6 +444,104 @@ class BillingController extends BaseController
         return $matrix;
     }
 
+    public function actionSave() {
+
+        $rawData = \Yii::$app->request->getRawBody();
+        $postParams = json_decode($rawData, true);
+        $billingSrv = new BillingService();
+        $data = $billingSrv->buildPostData($postParams);
+
+        if(!empty($data['error'])) {
+            return $this->sendErrorResponse(implode($data['error']), null);
+        }
+
+        $billingAdp = new BillingAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+        if(isset($data['payload']['weight_billing_id'])) {
+            $response = $billingAdp->editBilling($data['payload']);
+        } else {
+            $response = $billingAdp->addBilling($data['payload']);
+        }
+        if ($response['status'] === ResponseHandler::STATUS_OK) {
+            if(isset($response['data']['id'])) {
+                $data['payload']['id'] = $response['data']['id'];
+            }
+            return $this->sendSuccessResponse($data['payload']);
+        } else {
+            return $this->sendErrorResponse($response['message'], null);
+        }
+    }
+
+    public function actionDelete() {
+
+        $id = \Yii::$app->request->get('id');
+        if(empty($id)) {
+            return $this->sendErrorResponse('Invalid ', null);
+        }
+
+        $billingAdp = new BillingAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+        $response = $billingAdp->deleteBilling([ 'weight_billing_id' => $id ]);
+        if ($response['status'] === ResponseHandler::STATUS_OK) {
+            return $this->sendSuccessResponse($response['data']);
+        } else {
+            return $this->sendErrorResponse($response['message'], null);
+        }
+    }
+
+    public function actionFetchbyid() {
+
+        $id = \Yii::$app->request->get('id');
+        if(empty($id)) {
+            return $this->sendErrorResponse('Invalid ', null);
+        }
+
+        $billingAdp = new BillingAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+        $response = $billingAdp->fetchBillingById([ 'weight_billing_id' => $id ]);
+        if ($response['status'] === ResponseHandler::STATUS_OK) {
+            return $this->sendSuccessResponse($response['data']);
+        } else {
+            return $this->sendErrorResponse($response['message'], null);
+        }
+    }
+    public function actionUpdatemapping(){
+        $entry = Yii::$app->request->post();
+        if(!empty($entry)){
+            $zAdp = new ZoneAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+            $zones = $zAdp->saveMatrix(json_encode([$entry]));
+            $zones = new ResponseHandler($zones);
+            if($zones->getStatus() == ResponseHandler::STATUS_OK){
+                $d = $zones->getData();
+                if(empty($d['bad_matrix_info'])){
+                    Yii::$app->session->setFlash('success', 'Zone has been edited successfully.');
+                }else{
+                    Yii::$app->session->setFlash('danger', 'There was a problem editing the zone mapping. Please ensure these hubs have been mapped');
+                }
+            }else{
+                Yii::$app->session->setFlash('danger', 'There was a problem editing the zone mapping. #Reason: Service refused request');
+            }
+            return $zones->getStatus() == ResponseHandler::STATUS_OK ? 1:0;
+        }
+        return 0;
+    }
+    public function actionRemovemapping(){
+        $entry = Yii::$app->request->post();
+        if(!empty($entry)){
+            $zAdp = new ZoneAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+            $zones = $zAdp->removeMatrix($entry);
+            $zones = new ResponseHandler($zones);
+            if($zones->getStatus() == ResponseHandler::STATUS_OK){
+                $d = $zones->getData();
+                if(empty($d['bad_matrix_info'])){
+                    Yii::$app->session->setFlash('success', 'Zone mapping removed successfully.');
+                }else{
+                    Yii::$app->session->setFlash('danger', 'There was a problem removing the zone mapping. Please ensure these hubs have been mapped');
+                }
+            }else{
+                Yii::$app->session->setFlash('danger', 'There was a problem removing the zone mapping. #Reason: Service refused request');
+            }
+            return $zones->getStatus() == ResponseHandler::STATUS_OK ? 1:0;
+        }
+        return 0;
+    }
     public function actionExceptions()
     {
         return $this->render('exceptions');
