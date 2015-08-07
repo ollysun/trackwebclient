@@ -258,8 +258,22 @@ class ShipmentsController extends BaseController {
 
         return $this->render('view',array('parcelData'=>$data));
     }
-    public function actionDispatched ()
+    public function actionDispatched ($page=1)
     {
-        return $this->render('dispatched',array());
+        $page_width=20;
+        $offset=($page-1)*$page_width;
+
+        $user_session = Calypso::getInstance()->session("user_session");
+
+        $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+        $dispatch_parcels = $parcelsAdapter->getECDispatchedParcels($user_session['branch_id'],$offset,$page_width);
+        $parcels = new ResponseHandler($dispatch_parcels);
+        $total_count = 0;
+        if($parcels->getStatus() ==  ResponseHandler::STATUS_OK){
+            $data = $parcels->getData();
+            $parcels = $data['parcels'];
+            $total_count = $data['total_count'];
+        }
+        return $this->render('dispatched',array('parcels'=>$parcels, 'total_count'=>$total_count, 'offset'=>$offset, 'page_width'=>$page_width));
     }
 }

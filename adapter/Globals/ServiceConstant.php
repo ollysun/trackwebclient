@@ -27,17 +27,9 @@ class ServiceConstant {
     const FOR_SWEEPER = 8;
     const FOR_ARRIVAL = 9;
     const FOR_DELIVERY = 10;
+    const UNCLEARED = 11;
+    const CLEARED = 12;
     const BEING_DELIVERED = 13;
-
-    const PARCEL_COLLECTED = 4;
-    const PARCEL_IN_TRANSIT = 5;
-    const PARCEL_DELIVERED = 6;
-    const PARCEL_CANCELLED = 7;
-    const PARCEL_FOR_SWEEPER = 8;
-    const PARCEL_ARRIVAL = 9;
-    const PARCEL_FOR_DELIVERY = 10;
-    const PARCEL_UNCLEARED = 11;
-    const PARCEL_CLEARED = 12;
 
     const URL_ADD_PARCEL = 'parcel/add/';
     const URL_GET_ONE_PARCEL = 'parcel/getone/';
