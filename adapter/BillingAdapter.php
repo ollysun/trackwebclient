@@ -46,6 +46,19 @@ class BillingAdapter extends BaseAdapter
     public function addBilling($data){
         return $this->request(ServiceConstant::URL_BILLING_ADD, $data, self::HTTP_POST);
     }
+
+    public function editBilling($data) {
+        return $this->request(ServiceConstant::URL_BILLING_EDIT, $data, self::HTTP_POST);
+    }
+
+    public function deleteBilling($data) {
+        return $this->request(ServiceConstant::URL_BILLING_DELETE, $data, self::HTTP_POST);
+    }
+
+    public function fetchBillingById($data) {
+        return $this->request(ServiceConstant::URL_BILLING_FETCH_BY_ID, $data, self::HTTP_GET);
+    }
+
     public function addException(){}
 
 }
