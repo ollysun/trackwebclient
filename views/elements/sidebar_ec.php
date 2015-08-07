@@ -42,6 +42,11 @@ use Adapter\Util\Calypso;
 								</a>
 							</li>
 							<li>
+								<a href="<?= Url::to(['shipments/delivered']) ?>">
+									Delivered
+								</a>
+							</li>
+							<li>
 								<a href="<?= Url::to(['shipments/forsweep']) ?>">
 									For Sweep
 								</a>
