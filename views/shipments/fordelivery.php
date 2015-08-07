@@ -73,8 +73,8 @@ if($offset <= 0){
             <table id="table" class="table table-hover dataTable">
                 <thead>
                 <tr>
-                    <!--						<th style="width: 20px"><div class="checkbox-nice"><input id="chbx_w_all" type="checkbox"><label for="chbx_w_all"> </label></div></th>-->
-                    <th style="width: 20px">No.</th>
+                    <th style="width: 20px" class="datatable-nosort"><div class="checkbox-nice"><input id="chbx_w_all" type="checkbox"><label for="chbx_w_all"> </label></div></th>
+                    <th style="width: 20px">S/N</th>
                     <th>Waybill No.</th>
                     <th>Shipper</th>
                     <th>Shipper Phone</th>
@@ -92,7 +92,7 @@ if($offset <= 0){
                     foreach($parcels as $parcel){
                         ?>
                         <tr>
-                            <!--						<td><div class="checkbox-nice"><input id="chbx_w_000--><?//= $i ?><!--" type="checkbox"><label for="chbx_w_0001"> </label></div></td>-->
+                            <td><div class="checkbox-nice"><input id="chbx_w_<?= $i; ?>" type="checkbox"><label for="chbx_w_<?= $i++; ?>"> </label></div></td>
                             <td><?= $count++ ?></td>
                             <td><?= strtoupper($parcel['waybill_number']); ?></td>
                             <td><?= strtoupper($parcel['sender']['firstname'].' '. $parcel['sender']['lastname']) ?></td>

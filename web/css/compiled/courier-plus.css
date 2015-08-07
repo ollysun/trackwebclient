@@ -2430,6 +2430,9 @@ blockquote.pull-right:before {
 .table-matrix .matrix_diagonal {
   background: #FFB04C;
 }
+.dataTable .datatable-nosort:after {
+  display: none !important;
+}
 /* FORMS */
 .form-group {
   margin-bottom: 10px;
