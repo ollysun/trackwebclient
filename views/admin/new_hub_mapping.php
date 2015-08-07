@@ -79,7 +79,10 @@ function mapIt($from, $to, $check)
                 </div>
         </form>
     <?php } else { ?>
-        <h2>The Hub does not exist</h2>
+        <div class="alert alert-info">
+
+            <h2>The Hub does not exist</h2>
+        </div>
     <?php }  ?>
 </div>
 </div>
