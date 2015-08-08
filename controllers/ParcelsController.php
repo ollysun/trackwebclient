@@ -179,7 +179,8 @@ class ParcelsController extends BaseController {
         if ($response['status'] === ResponseHandler::STATUS_OK) {
             return $this->sendSuccessResponse($response['data']);
         } else {
-            return $this->sendErrorResponse($response['message'], null);
+            $error_message = $response['message'] . '. Please ensure the source and destination branch are properly mapped in the Zone matrix';
+            return $this->sendErrorResponse($error_message, null);
         }
 
     }
