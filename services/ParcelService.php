@@ -31,7 +31,7 @@ class ParcelService {
         $senderAddress['id'] = Calypso::getValue($data, 'address.shipper.id');
         $senderAddress['street1'] = Calypso::getValue($data, 'address.shipper.0');
         $senderAddress['street2'] = Calypso::getValue($data, 'address.shipper.1');
-        $senderAddress['city'] = Calypso::getValue($data, 'city.shipper');
+        $senderAddress['city_id'] = Calypso::getValue($data, 'city.shipper');
         $senderAddress['state_id'] = Calypso::getValue($data, 'state.shipper');
         $senderAddress['country_id'] = Calypso::getValue($data, 'country.shipper');
 
@@ -43,7 +43,7 @@ class ParcelService {
         $receiverAddress['id'] = Calypso::getValue($data, 'address.receiver.id');
         $receiverAddress['street1'] = Calypso::getValue($data, 'address.receiver.0');
         $receiverAddress['street2'] = Calypso::getValue($data, 'address.receiver.1');
-        $receiverAddress['city'] = Calypso::getValue($data, 'city.receiver');
+        $receiverAddress['city_id'] = Calypso::getValue($data, 'city.receiver');
         $receiverAddress['state_id'] = Calypso::getValue($data, 'state.receiver');
         $receiverAddress['country_id'] = Calypso::getValue($data, 'country.receiver');
 
@@ -60,7 +60,7 @@ class ParcelService {
             }
         }
 
-        $parcel['parcel_type'] = Calypso::getValue($data, 'parcel_type');
+        $parcel['parcel_type'] = Calypso::getValue($data, 'parcel_type'); //note
         $parcel['no_of_package'] = Calypso::getValue($data, 'no_of_packages');
         if(!is_numeric($parcel['no_of_package'])) {
             $error[] = "Number of packages must be an integer";
@@ -70,20 +70,29 @@ class ParcelService {
             $error[] = "Weight cannot be empty and must be numeric";
         }
         $parcel['package_value'] = Calypso::getValue($data, 'parcel_value',0);
-        /*if(!isset($parcel['package_value']) || !is_numeric($parcel['package_value'])) {
-            $error[] = "Package Value cannot be empty and must be numeric";
-        }*/
-        //@Todo To be calculated by the settings in the backend
-        $parcel['amount_due'] = Calypso::getValue($data, 'parcel_value');
 
+        $parcel['amount_due'] = Calypso::getValue($data, 'amount');
+        if(!$parcel['amount_due']) {
+            $error[] = "Amount must be calculated. Please ensure all zone billing and mapping are set.";
+        }
         $parcel['cash_on_delivery'] = ($data['cash_on_delivery'] === 'true') ? 1 : 0;
         $parcel['cash_on_delivery_amount'] = Calypso::getValue($data, 'CODAmount');
         $parcel['delivery_type'] = Calypso::getValue($data, 'delivery_type');
         $parcel['payment_type'] = Calypso::getValue($data, 'payment_method');
         $parcel['shipping_type'] = Calypso::getValue($data, 'shipping_type');
         $parcel['other_info'] = Calypso::getValue($data, 'other_info');
-        $parcel['cash_amount'] = Calypso::getValue($data, 'cash_amount');
-        $parcel['pos_amount'] = Calypso::getValue($data, 'pos_amount');
+        $parcel['cash_amount'] = Calypso::getValue($data, 'amount_in_cash', null);
+        $parcel['pos_amount'] = Calypso::getValue($data, 'amount_in_pos', null);
+        $parcel['pos_trans_id'] = Calypso::getValue($data, 'pos_transaction_id', null);
+
+        if($parcel['payment_type'] == '3' && (!is_null($parcel['cash_amount']) && !is_null($parcel['pos_amount']))) {
+            $cash_amount = (int) $parcel['cash_amount'];
+            $pos_amount = (int) $parcel['pos_amount'];
+            $amount_due = (int) $parcel['amount_due'];
+            if($cash_amount + $pos_amount !== $amount_due) {
+                $error[] = "POS and cash amount must sum up to the amount due.";
+            }
+        }
 
         $payload['sender'] = $senderInfo;
         $payload['receiver'] = $receiverInfo;
@@ -99,5 +108,14 @@ class ParcelService {
         }
 
         return $payload;
+    }
+
+    public function buildBillingCalculationData($data) {
+
+        $response['payload']['from_branch_id'] = $data['from_branch_id'];
+        $response['payload']['to_branch_id'] = $data['to_branch_id'];
+        $response['payload']['onforwarding_charge_id'] = $data['charge_id'];
+        $response['payload']['weight'] = $data['weight'];
+        return $response;
     }
 }

@@ -83,4 +83,8 @@ class ParcelAdapter extends BaseAdapter{
         $filter .= '&order_by=Parcel.created_date%20DESC';
         return $this->request(ServiceConstant::URL_GET_ALL_PARCEL.'?with_sender=1&with_receiver=1&offset='.$offset.'&count='.$count.$filter,array(),self::HTTP_GET);
     }
+
+    public function calcBilling($postData) {
+        return $this->request(ServiceConstant::URL_CALC_BILLING, $postData, self::HTTP_POST);
+    }
 }
