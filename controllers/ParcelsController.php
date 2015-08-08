@@ -96,7 +96,7 @@ class ParcelsController extends BaseController {
     }
 
     /**
-     * Ajax calls to get states when a country is selected
+     * Ajax calls to fetch cities when a state is selected
      */
     public function actionGetcities() {
 
@@ -115,7 +115,7 @@ class ParcelsController extends BaseController {
     }
 
     /**
-     * Ajax calls to get states when a country is selected
+     * Ajax calls to get user details using phone number
      */
     public function actionUserdetails() {
 
@@ -157,8 +157,13 @@ class ParcelsController extends BaseController {
         }
     }
 
+    /**
+     * This action (ajax) calculates the billing amounts for parcels
+     *
+     * @return array
+     */
     public function actionCalculatebilling() {
-        
+
         $rawData = \Yii::$app->request->getRawBody();
         $postParams = json_decode($rawData, true);
         $parcelSrv = new ParcelService();
