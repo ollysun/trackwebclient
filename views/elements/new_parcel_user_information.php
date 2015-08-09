@@ -95,9 +95,7 @@
 				</div>
 				<div class="address-box">
 					<div class="address-box-inner">
-						<address>
-
-						</address>
+						<address></address>
 					</div>
 				</div>
 			</div>
@@ -113,12 +111,9 @@
 	<input name="address[<?=$prefix?>][]" id="address_<?=$prefix?>_1" class="form-control validate required">
 	<input name="address[<?=$prefix?>][]" id="address_<?=$prefix?>_2" class="form-control address-line-1">
 </div>
+
 <div class="form-group">
-	<label for="">City</label>
-	<input name="city[<?=$prefix?>]" id="city_<?=$prefix?>" class="form-control validate required">
-</div>
-<div class="form-group">
-	<label for="">Country</label>
+	<label for="country_<?=$prefix?>">Country</label>
 	<select name="country[<?=$prefix?>]" class="form-control validate required" id="country_<?=$prefix?>">
 		<option value='' selected>Select Country...</option>
 <?php
@@ -131,11 +126,13 @@ if (isset($countries) && is_array($countries['data'])) {
 ?>
 	</select>
 </div>
+
 <div class="form-group">
-	<label for="state[<?=$prefix?>]">State</label>
+	<label for="state_<?=$prefix?>">State</label>
 	<select name="state[<?=$prefix?>]" class="form-control validate required" disabled="disabled" id="state_<?=$prefix?>"></select>
 </div>
-<!--<div class="form-group">
-	<label for="lga[<?/*= $prefix */?>]">LGA</label>
-	<select name="lga[<?/*= $prefix */?>]" class="form-control" disabled="disabled" id="lga_<?/*= $prefix */?>"></select>
-</div>-->
+
+<div class="form-group">
+	<label for="city_<?=$prefix?>">City</label>
+	<select name="city[<?=$prefix?>]" class="form-control validate required" disabled="disabled" id="city_<?=$prefix?>"></select>
+</div>
