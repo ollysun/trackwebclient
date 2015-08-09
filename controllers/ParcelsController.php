@@ -12,6 +12,7 @@ namespace app\controllers;
 use Adapter\BankAdapter;
 use Adapter\ParcelAdapter;
 use Adapter\RefAdapter;
+use Adapter\RegionAdapter;
 use Adapter\RequestHelper;
 use Adapter\ResponseHandler;
 use Adapter\UserAdapter;
@@ -95,7 +96,26 @@ class ParcelsController extends BaseController {
     }
 
     /**
-     * Ajax calls to get states when a country is selected
+     * Ajax calls to fetch cities when a state is selected
+     */
+    public function actionGetcities() {
+
+        $state_id = \Yii::$app->request->get('id');
+        if(!isset($state_id)) {
+            return $this->sendErrorResponse("Invalid parameter(s) sent!", null);
+        }
+
+        $regData = new RegionAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+        $cities = $regData->getAllCity(1,1,$state_id);
+        if ($cities['status'] === ResponseHandler::STATUS_OK) {
+            return $this->sendSuccessResponse($cities['data']);
+        } else {
+            return $this->sendErrorResponse($cities['message'], null);
+        }
+    }
+
+    /**
+     * Ajax calls to get user details using phone number
      */
     public function actionUserdetails() {
 
@@ -135,5 +155,33 @@ class ParcelsController extends BaseController {
         } else {
             return $this->sendErrorResponse($bankInfo['message'], null);
         }
+    }
+
+    /**
+     * This action (ajax) calculates the billing amounts for parcels
+     *
+     * @return array
+     */
+    public function actionCalculatebilling() {
+
+        $rawData = \Yii::$app->request->getRawBody();
+        $postParams = json_decode($rawData, true);
+        $parcelSrv = new ParcelService();
+        $data = $parcelSrv->buildBillingCalculationData($postParams);
+
+        if(!empty($data['error'])) {
+            return $this->sendErrorResponse(implode($data['error']), null);
+        }
+
+        $parcelAdp = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+        $response = $parcelAdp->calcBilling($data['payload']);
+
+        if ($response['status'] === ResponseHandler::STATUS_OK) {
+            return $this->sendSuccessResponse($response['data']);
+        } else {
+            $error_message = $response['message'] . '. Please ensure the source and destination branch are properly mapped in the Zone matrix';
+            return $this->sendErrorResponse($error_message, null);
+        }
+
     }
 }

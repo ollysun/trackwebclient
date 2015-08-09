@@ -101,7 +101,7 @@ $this->params['breadcrumbs'] = array(
                                     <label>Parcel weight</label>
 
                                     <div class="input-group">
-                                        <input name="parcel_weight" class="form-control validate required number">
+                                        <input name="parcel_weight" class="form-control validate required number" id="weight">
                                         <span class="input-group-addon">Kg</span>
                                     </div>
                                 </div>
@@ -267,7 +267,7 @@ $this->params['breadcrumbs'] = array(
                 <div class="clearfix main-box-body main-box-button-wrap">
                     <a href="#newParcelForm" data-slide="prev" class="btn btn-default pull-left"><i
                             class="fa fa-arrow-left"></i> Back</a>
-                    <a href="#newParcelForm" data-slide="next" class="btn btn-default pull-right">Continue <i
+                    <a href="#newParcelForm" data-slide="next" class="btn btn-default pull-right" data-calculate-amount="true">Continue <i
                             class="fa fa-arrow-right"></i></a>
                 </div>
 
@@ -284,6 +284,7 @@ $this->params['breadcrumbs'] = array(
                                     <label for="">Amount Due</label>
 
                                     <div class="amount-due currency naira">3,045.00</div>
+                                    <input type="hidden" name="amount" id="amount" />
                                 </div>
                                 <div class="form-group">
                                     <label for="">Payment Method</label>
