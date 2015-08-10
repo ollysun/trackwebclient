@@ -22,7 +22,6 @@ $this->params['breadcrumbs'] = array(
 ?>
 
 <div class="main-box">
-    <?php if(count($parcels) > 0) { ?>
     <div class="main-box-header clearfix">
         <div class="pull-left">
 
@@ -30,6 +29,7 @@ $this->params['breadcrumbs'] = array(
             <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#passwordModal"><i class="fa fa-check"></i> Mark as delivered</button>
         </div>
     </div>
+    <?php if(count($parcels) > 0) { ?>
     <div class="main-box-body">
         <div class="table-responsive">
             <table class="table table-hover">
@@ -53,8 +53,8 @@ $this->params['breadcrumbs'] = array(
                         foreach ($parcels as $parcel) {
                             ?>
                             <tr data-waybill='<?= $parcel['waybill_number'] ?>'>
-                                <td><div class="checkbox-nice"><input id="chk_<?= ++$row; ?>" value="<?= $parcel['waybill_number'] ?>" type="checkbox"><label for="chk_<?= $row; ?>"> </label></div></td>
-                                <td><?= $row; ?></td>
+                                <td><div class="checkbox-nice"><input class="checkable" value="<?= $parcel['waybill_number'] ?>" type="checkbox"><label for="chk_<?= $row; ?>"> </label></div></td>
+                                <td><?= ++$row; ?></td>
                                 <td><?= $parcel['waybill_number']; ?></td>
                                 <td><?= ucwords($parcel['receiver']['firstname'].' '. $parcel['receiver']['lastname']) ?></td>
                                 <td><?= $parcel['receiver']['phone'] ?></td>
@@ -72,9 +72,7 @@ $this->params['breadcrumbs'] = array(
     </div>
     <?php } else { ?>
     <div class="main-box-body">
-        <div class="alert alert-info text-center" role="alert">
-            There are no parcels that are being delivered.
-        </div>
+        There are no parcels that are being delivered.
     </div>
     <?php } ?>
 </div>
@@ -105,7 +103,7 @@ $this->params['breadcrumbs'] = array(
 </div>
 <?php
 $ex='$("#chbx_w_all").change(function () {
-    $("input:checkbox").prop("checked", $(this).prop("checked"));
+    $("input:checkbox.checkable").prop("checked", $(this).prop("checked"));
 });';
 $this->registerJs($ex,View::POS_READY);
 ?>

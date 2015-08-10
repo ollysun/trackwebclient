@@ -117,6 +117,7 @@ class ServiceConstant {
     const URL_CREATE_USER = 'admin/register';
     const URL_GET_USERS = '/admin/getAll';
     const URL_GET_USER = '/admin/getone';
+    const URL_USER_VALIDATE = '/admin/validate';
 
     const DATE_TIME_FORMAT = 'd M Y g:i A';
     const DATE_FORMAT = 'd M Y';
