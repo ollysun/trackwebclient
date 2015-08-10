@@ -63,7 +63,7 @@ if($offset <= 0){
             </form>
             <div class="pull-left">
                 <label>&nbsp;</label><br>
-                <button type="button" class="btn btn-sm btn-default">Generate Delivery Run</button>
+                <button type="button" class="btn btn-sm btn-default" data-toggle="modal" data-target="#runModal">Generate Delivery Run</button>
                 <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">Receive Shipments from Hub</button>
             </div>
         </div>
@@ -73,8 +73,8 @@ if($offset <= 0){
             <table id="table" class="table table-hover dataTable">
                 <thead>
                 <tr>
-                    <!--						<th style="width: 20px"><div class="checkbox-nice"><input id="chbx_w_all" type="checkbox"><label for="chbx_w_all"> </label></div></th>-->
-                    <th style="width: 20px">No.</th>
+                    <th style="width: 20px" class="datatable-nosort"><div class="checkbox-nice"><input id="chbx_w_all" type="checkbox"><label for="chbx_w_all"> </label></div></th>
+                    <th style="width: 20px">S/N</th>
                     <th>Waybill No.</th>
                     <th>Shipper</th>
                     <th>Shipper Phone</th>
@@ -92,7 +92,7 @@ if($offset <= 0){
                     foreach($parcels as $parcel){
                         ?>
                         <tr>
-                            <!--						<td><div class="checkbox-nice"><input id="chbx_w_000--><?//= $i ?><!--" type="checkbox"><label for="chbx_w_0001"> </label></div></td>-->
+                            <td><div class="checkbox-nice"><input id="chbx_w_<?= $i; ?>" type="checkbox"><label for="chbx_w_<?= $i++; ?>"> </label></div></td>
                             <td><?= $count++ ?></td>
                             <td><?= strtoupper($parcel['waybill_number']); ?></td>
                             <td><?= strtoupper($parcel['sender']['firstname'].' '. $parcel['sender']['lastname']) ?></td>
@@ -177,6 +177,50 @@ if($offset <= 0){
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     <button id="arrived_parcels_btn" type="button" class="btn btn-primary">Accept</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="modal fade" id="runModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <form id="arrived_parcels" class="">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Generate Delivery Run Sheet</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Dispatch officer should enter the details below to authenticate the acceptance of this run sheet.</p>
+                    <div class="row">
+                        <div class="col-xs-6 form-group">
+                            <label>Staff ID</label>
+                            <input type="text" class="form-control">
+                        </div>
+                        <div class="col-xs-6 form-group">
+                            <label>Password</label>
+                            <input type="password" class="form-control">
+                        </div>
+                    </div>
+
+                    <h4>Run Sheet</h4>
+                    <table class="table table-bordered table-condensed">
+                        <thead>
+                        <tr>
+                            <th>S/N</th>
+                            <th>Waybill No.</th>
+                            <th>Status</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Generate Run Sheet</button>
                 </div>
             </div>
         </form>

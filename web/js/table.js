@@ -1,3 +1,8 @@
 $(document).ready(function(){
-    $('.dataTable').dataTable();
+	$('.dataTable').dataTable({
+		"columnDefs": [{
+			targets: "datatable-nosort",
+			orderable: false
+		}]
+	});
 });
