@@ -222,6 +222,8 @@ class ShipmentsController extends BaseController {
         }
         $user = [];
         $data = [];
+        $parcels = [];
+        $total_count = 0;
 
         $userAdapter = new UserAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
         $userResponse = new ResponseHandler($userAdapter->getUserDetails($search));
