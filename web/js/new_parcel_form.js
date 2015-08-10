@@ -502,9 +502,9 @@ var Parcel = {
 			data: JSON.stringify(params),
 			success: function(result) {
 				if(result.status == 'success') {
-					var amount = result.data;
-					$('.amount-due').html(amount);
-					$('#amount').val(amount);
+					amount = result.data;
+					$('.amount-due').text(amount);
+					$('input#amount').val(amount);
 				} else {
 					alert(result.message);
 				}
