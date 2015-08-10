@@ -3,6 +3,7 @@
 		type: 'disable',
 		formAttribute: 'data-keyboard-submit',
 		eventNamespace: '.CP.form.keyboard-submit',
+		inputSelector: 'input:not("[type="checkbox"]"):not("[type="radio"]"):not("[type="submit"]"):not("[type="button"]"):not("[type="range"]")',
 	};
 
 	var formAttr = defaults.formAttribute;
@@ -16,6 +17,7 @@
 
 		type = (typeof type !== 'undefined') ? type : form.attr(formAttr) ? form.attr(formAttr) : defaults.type;
 
+		var input = form.find(defaults.inputSelector);
 
 		if (type === 'enable' || type === '1' || type === 'true')
 			enable();
@@ -24,7 +26,7 @@
 
 
 		function disable() {
-			form.off(eventName).on(eventName,function(e) {
+			$(input).off(eventName).on(eventName,function(e) {
 				if(e.which === 13) { //enter
 					e.preventDefault();
 					return false;
@@ -33,7 +35,7 @@
 			isEnabled = false;
 		}
 		function enable() {
-			form.off(eventName);
+			$(input).off(eventName);
 			isEnabled = true;
 		}
 	};
