@@ -20,7 +20,7 @@ var Parcel_Destination = {
         'allhubs' : '/hubs/allhubs',
         'allecforhubs' : '/hubs/allecforhubs',
         'staffdetails' : '/hubs/staffdetails',
-        'generatemanifest': '/hubs/generatemanifest'
+        'generatemanifest': '/hubs/generatemanifest',
     },
 
     getNewStaffInfo: function() {
@@ -101,193 +101,101 @@ var Parcel_Destination = {
     }
 };
 
-var TableHelper = {
+var Parcel_Delivery = {
 
-    renumberTableSerialNo: function (tableSelector, colIndex) {
-        var trs = $(tableSelector + ' tbody').children();
-        if(!this.isDefined(colIndex)) {
-            colIndex = 0;
-        }
-        for(var i = 0; i < trs.length; i++) {
-            var children = $(trs[i]).find('td:eq(' + colIndex + ')').first().html(i+1);
+    Url: {
+        '' : 'staffcheck',
+        'dispatch' : '/parcel/set',
+        'staffdetails' : '/hubs/staffdetails',
+        'generatemanifest': '/hubs/generatemanifest',
+    },
+
+    getNewStaffInfo: function() {
+        return {
+            id: '',
+            staff_name: '',
+            staff_email: '',
+            staff_phone: '',
+            staff_role: ''
         }
     },
 
-    isItemInTableColumn: function(tableSelector, colIndex, searchItem) {
-
-        var tempText = '';
-        var found = false;
-        var trs = $(tableSelector + ' tbody').children();
-        if(!this.isDefined(colIndex)) {
-            colIndex = 0;
-        }
-
-        $.each(trs, function(index, tr){
-            tempText = $.trim($(tr).children().eq(colIndex).html());
-            if((tempText) == searchItem) {
-                found = true;
-            }
-        });
-        return found;
-    },
-
-    getColumTextData: function(tableSelector, colIndex) {
-
-        var items = [];
-        var trs = $(tableSelector + ' tbody').children();
-        if(!this.isDefined(colIndex)) {
-            colIndex = 0;
-        }
-
-        $.each(trs, function(index, tr){
-            items.push($.trim($(tr).children().eq(colIndex).html()));
-        });
-        return items;
-    },
-
-    setCellData: function(tableSelector, rowIndex, colIndex, content) {
-
-        if(!this.isDefined(rowIndex) || !this.isDefined(colIndex)) {
-            return;
-        }
-        var trs = $(tableSelector + ' tbody').children();
-        $(trs).eq(rowIndex).children().eq(colIndex).html(content);
-    },
-
-    setColumnData: function(tableSelector, colIndex, content, withCheckbox) {
-
-        if(!this.isDefined(colIndex)) {
-            return;
-        }
-        var trs = $(tableSelector + ' tbody').children();
-
-        $.each(trs, function(rowIndex, tr){
-            if(withCheckbox) {
-                var chkValue = $(tr).children().find(':checkbox').attr('value');
-                if(chkValue) {
-                    $(tr).children().eq(colIndex).html(content);
-                }
+    searchStaffDetails: function(code) {
+        var self = this;
+        $.get( Parcel_Destination.Url.staffdetails, { code: code }, function(response){
+            if(response.status === 'success') {
+                var staff = self.getNewStaffInfo();
+                staff.id = response.data.id;
+                staff.code = code;
+                staff.staff_name = response.data.fullname;
+                staff.staff_email = response.data.email;
+                staff.staff_phone = response.data.phone;
+                staff.staff_role = response.data.role.name;
+                self.updateStaffDetails(staff);
+                $('#staff_info').show();
+                $('#btnGenerate').attr('disabled', false);
             } else {
-                $(tr).children().eq(colIndex).html(content);
+                alert(response.message);
+                $('#staff_info').hide();
+                $('#btnGenerate').attr('disabled', true);
             }
         });
     },
 
-    getCellData: function(tableSelector, colIndex, rowIndex) {
-        var cellData = '';
-        var trs = $(tableSelector + ' tbody').children();
-        if(!this.isDefined(colIndex)) {
-            colIndex = 0;
-        }
-
-        $.each(trs, function(index, tr){
-            if(index === rowIndex) {
-                cellData = $.trim($(tr).children().eq(colIndex).html());
+    checkStaff: function(code, password){
+        var self = this;
+        $.get( Parcel_Delivery.Url.login, {staff_id:code, password:password}, function(response){
+            if(response.status === 'success') {
+                var staff = self.getNewStaffInfo();
+                staff.id = response.data.id;
+                //self.updateStaffDetails(staff);
+                $('div#delivery_run').show();
+            } else {
+                alert(response.message);
+                $('div#delivery_run').hide();
             }
         });
-
-        return cellData;
     },
-
-    isCallback: function(callback) {
-        return (callback && typeof(callback) === typeof(Function));
-    },
-
-    isDefined: function (value) {
-
-        return (typeof value !== 'undefined');
-    }
 };
 
 $(document).ready(function(){
-
-    $('#staff_info').hide();
-    $('#btnGenerate').attr('disabled', true);
-
-    var btype = $('#branch_type').find('option:selected').val();
-    var bid = $('#branch_name').attr('data-bid');
-    fillBranchesOrHub(btype, bid);
-
-    $('#branch_type').on('change', function(){
-        var type = $(this).val();
-        fillBranchesOrHub(type);
-    });
-
-    function fillBranchesOrHub(type, bid) {
-        var url = '';
-        if (type === 'hub') {
-            url = Parcel_Destination.Url.allhubs;
-            $('#hub_branch_label').html('Hub Name');
-        } else {
-            url = Parcel_Destination.Url.allecforhubs;
-            $('#hub_branch_label').html('Branch Name');
-        }
-        Parcel_Destination.fillSelectOption(url, {}, '#branch_name', bid);
-    }
-
-    $('#manifest').on('click', function(event) {
-
-        var chkboxes = $('.chk_next');
+    $('[data-target=#runModal]').on('click', function(event) {
+        var chkboxes = $('.checkable:checked');
         var selected = false;
-        var same_branch = true;
-        parcels.waybills = [];
-        var old_branch = '';
-        $.each(chkboxes, function(i, chk){
 
-            var checked = $(chk).is(':checked');
-            if(checked) {
-                selected = true;
-                var waybill = {};
-                var tr = $(chk).closest('tr');
-                if(!old_branch) {
-                    old_branch = parcels.to_branch_id = $(tr).attr('data-to-branch-id');
-                }
-                waybill.number = $(tr).attr('data-waybill');
-                waybill.final = TableHelper.getCellData('#next_dest', 5, $(tr).index());
-                parcels.waybills.push(waybill);
-                parcels.to_branch_id = $(tr).attr('data-to-branch-id');
-                parcels.to_branch_name = TableHelper.getCellData('#next_dest', 4, $(tr).index());
-
-                if(old_branch !== parcels.to_branch_id) {
-                    same_branch = false;
-                }
-            }
-        });
-
-        if(!selected) {
+        if(!chkboxes.length) {
             alert('You must select at least one parcel!');
             event.preventDefault();
             return;
         }
-
-        if(!same_branch) {
-            alert('Manifest can only be generated for same next destination branch!');
-            event.preventDefault();
-            return;
-        }
-
-        populateDialog(parcels);
-        $('#staff_info').hide();
-        $('#btnGenerate').attr('disabled', true);
-        $('#genManifest').modal('show');
-    });
-
-    function populateDialog(parcels) {
+        $.each(chkboxes, function(i, chk){
+            parcels.waybills.push($(this).attr('data-waybill'));
+            selected = true;
+        });
         var html = '';
         $.each(parcels.waybills, function(i, waybill){
             html += "<tr>";
             html += "<td>" + (i+1) + "</td>";
-            html += "<td>" + waybill.number + "</td>";
-            html += "<td>" + waybill.final + "</td>";
+            html += "<td>" + waybill + "</td>";
             html += "</tr>";
         });
-        $('#tbl_manifest > tbody').html(html);
-    }
+        $('#delivery_run>tbody').html(html);
+    });
+
+    $('#staff_id, #password').on('keypress', function (event) {
+        if (event.which == 13) {
+            event.preventDefault();
+            var staff_code = $('#staff_id').val();
+            var pword = $('#password').val();
+            if(staff_code == '' || pword == '') {
+                return;
+            }
+            Parcel_Delivery.checkStaff(staff_code,pword);
+        }
+    });
 
     $('#staff').on('keypress', function (event) {
-
         if (event.which == 13) {
-
             event.preventDefault();
             var staff_code = $(this).val();
             if(staff_code == '') {
@@ -298,15 +206,6 @@ $(document).ready(function(){
     });
 
     $('#btnGenerate').on('click', function(event){
-
         $('#payload').val(JSON.stringify(parcels));
-    });
-
-    $('#branch_name').on('change', function(){
-        var name = $(this).val();
-        if(name !== '') {
-            name = $(this).find('option:selected').text();
-        }
-        TableHelper.setColumnData('#next_dest', 4, name, true);
     });
 });

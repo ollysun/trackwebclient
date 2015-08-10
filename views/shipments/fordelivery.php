@@ -2,6 +2,7 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 use Adapter\Globals\ServiceConstant;
+use yii\web\View;
 
 
 $this->title = 'Shipments: Due for Delivery';
@@ -92,7 +93,7 @@ if($offset <= 0){
                     foreach($parcels as $parcel){
                         ?>
                         <tr>
-                            <td><div class="checkbox-nice"><input id="chbx_w_<?= $i; ?>" type="checkbox"><label for="chbx_w_<?= $i++; ?>"> </label></div></td>
+                            <td><div class="checkbox-nice"><input id="chbx_w_<?= $i++; ?>" class="checkable" data-waybill="<?= strtoupper($parcel['waybill_number']); ?>" type="checkbox"><label for="chbx_w_<?= $i++; ?>"> </label></div></td>
                             <td><?= $count++ ?></td>
                             <td><?= strtoupper($parcel['waybill_number']); ?></td>
                             <td><?= strtoupper($parcel['sender']['firstname'].' '. $parcel['sender']['lastname']) ?></td>
@@ -193,32 +194,32 @@ if($offset <= 0){
                 </div>
                 <div class="modal-body">
                     <p>Dispatch officer should enter the details below to authenticate the acceptance of this run sheet.</p>
-                    <div class="row">
+                    <div class="row" id="staff_login">
                         <div class="col-xs-6 form-group">
                             <label>Staff ID</label>
-                            <input type="text" class="form-control">
+                            <input type="text" class="form-control" name="staff_id" id="staff_id">
                         </div>
                         <div class="col-xs-6 form-group">
                             <label>Password</label>
-                            <input type="password" class="form-control">
+                            <input type="password" class="form-control" name="password" id="password">
                         </div>
                     </div>
-
-                    <h4>Run Sheet</h4>
-                    <table class="table table-bordered table-condensed">
-                        <thead>
-                        <tr>
-                            <th>S/N</th>
-                            <th>Waybill No.</th>
-                            <th>Status</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-
-                        </tbody>
-                    </table>
+                    <div id="delivery_run">
+                        <h4>Run Sheet</h4>
+                        <input type="hidden" id="waybills" name="waybills">
+                        <table class="table table-bordered table-condensed">
+                            <thead>
+                            <tr>
+                                <th>S/N</th>
+                                <th>Waybill No.</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-                <div class="modal-footer">
+                <div class="modal-footer hide">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-primary">Generate Run Sheet</button>
                 </div>
@@ -236,5 +237,13 @@ if($offset <= 0){
 <?php $this->registerJsFile('@web/js/jquery.dataTables.min.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/dataTables.bootstrap.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/table.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/shipment_delivery.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
+<?php
+$ex='
+$("#chbx_w_all").change(function () {
+    $("input:checkbox").prop("checked", $(this).prop("checked"));
+});
 
-
+';
+$this->registerJs($ex,View::POS_READY);
+?>

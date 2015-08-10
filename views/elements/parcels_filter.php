@@ -32,7 +32,7 @@ if(!isset($filter)){$filter="-1";}
                     ?>
                 </select>
             </div>
-            <div class="pull-left form-group form-group-sm">
+            <div class="pull-left form-group form-group-sm hidden">
                 <label for="">Records</label><br>
                 <select name="page_width" id="page_width" class="form-control ">
                     <?php
@@ -42,7 +42,6 @@ if(!isset($filter)){$filter="-1";}
                         <?php
                     }
                     ?>
-
                 </select>
             </div>
             <div class="pull-left">

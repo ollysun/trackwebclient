@@ -137,9 +137,7 @@ $this->params['breadcrumbs'] = array(
                 </div>
 
             <?php } else { ?>
-                <div class="alert alert-info text-center" role="alert">
-                    <p><strong>No matching record found</strong></p>
-                </div>
+                <p>No matching record found</p>
             <?php } ?>
         </div>
     </div>
