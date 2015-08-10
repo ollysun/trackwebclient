@@ -18,7 +18,7 @@ $this->params['breadcrumbs'] = array(
 
 <?php echo Calypso::showFlashMessages(); ?>
 
-<form action="#" method="post" enctype="multipart/form-data" class="validate">
+<form action="#" method="post" enctype="multipart/form-data" class="validate" data-keyboard-submit>
 
     <div id="newParcelForm" class="l-new-parcel-form carousel slide">
         <ol class="carousel-indicators hidden">
@@ -344,4 +344,5 @@ $this->params['breadcrumbs'] = array(
 </form>
 
 <?php $this->registerJsFile('@web/js/libs/bootstrap-select.min.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/keyboardFormSubmit.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/new_parcel_form.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
