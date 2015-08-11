@@ -24,7 +24,7 @@ function validateFxn() {
     }
     else if(input.hasClass('email'))
     {
-        var em = /^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i;
+        var em = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,12}(?:\.[a-z]{2})?)$/i;
         if(!em.test(val))
         {
             msg = 'Invalid entry';
@@ -84,4 +84,5 @@ function validateFxn() {
     $('.validate-form').on('submit',function(event){
         return validate(this);
     });
+    $('.validate-form .item').addClass('active');
 })(jQuery);
