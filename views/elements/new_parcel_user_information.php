@@ -40,13 +40,13 @@
 	<div class="col-xs-12 col-sm-6">
 		<div class="form-group">
 			<label for="">Email address</label>
-			<input name="email[<?=$prefix?>]" id="email_<?=$prefix?>" type="text" class="form-control <?php echo $prefix;?>SearchFlyOutPanelTrigger validate required email" data-target="#<?php echo $prefix;?>SearchFlyOutPanel">
+			<input name="email[<?=$prefix?>]" id="email_<?=$prefix?>" type="text" class="form-control <?php echo $prefix;?>SearchFlyOutPanelTrigger validate active-validate required email" data-target="#<?php echo $prefix;?>SearchFlyOutPanel">
 		</div>
 	</div>
 	<div class="col-xs-12 col-sm-6">
 		<div class="form-group">
 			<label for="">Phone number</label>
-			<input name="phone[<?=$prefix?>]" id="phone_<?=$prefix?>" type="text" class="form-control <?php echo $prefix;?>SearchFlyOutPanelTrigger validate required phone" data-target="#<?php echo $prefix;?>SearchFlyOutPanel">
+			<input name="phone[<?=$prefix?>]" id="phone_<?=$prefix?>" type="text" class="form-control <?php echo $prefix;?>SearchFlyOutPanelTrigger validate active-validate required phone" data-target="#<?php echo $prefix;?>SearchFlyOutPanel">
 			<span class="help-block">Format: 234xxxxxxxxxx</span>
 		</div>
 	</div>
