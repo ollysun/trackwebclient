@@ -84,5 +84,4 @@ function validateFxn() {
     $('.validate-form').on('submit',function(event){
         return validate(this);
     });
-    $('.validate-form .item').addClass('active');
 })(jQuery);
