@@ -75,6 +75,12 @@ class ParcelAdapter extends BaseAdapter{
     public function moveForDelivery($postData) {
         return $this->request(ServiceConstant::URL_MOVE_FOR_DELIVERY, $postData, self::HTTP_POST);
     }
+    public function moveToBeingDelivered($postData) {
+        return $this->request(ServiceConstant::URL_MOVE_TO_BEING_DELIVERED, $postData, self::HTTP_POST);
+    }
+    public function moveToDelivered($postData) {
+        return $this->request(ServiceConstant::URL_MOVE_TO_DELIVERED, $postData, self::HTTP_POST);
+    }
 
     public function getParcelsByPayment($waybill_number=null,$payment_type=null,$start_created_date,$end_created_date,$offset=0, $count=50, $with_total=null){
         $filter = !is_null($waybill_number) ? '&waybill_number='.$waybill_number : '';
@@ -99,5 +105,11 @@ class ParcelAdapter extends BaseAdapter{
         $filter .= '&with_total_count=1';
         $filter .= '&status='.ServiceConstant::BEING_DELIVERED;
         return $this->request(ServiceConstant::URL_GET_ALL_PARCEL.'?with_receiver=1&with_holder=1&offset='.$offset.'&count='.$count.$filter,array(),self::HTTP_GET);
+    }
+    public function getDeliveredParcels($branch_id,$offset=0, $count=50){
+        $filter = '&from_branch_id='.$branch_id;
+        $filter .= '&with_total_count=1';
+        $filter .= '&status='.ServiceConstant::DELIVERED;
+        return $this->request(ServiceConstant::URL_GET_ALL_PARCEL.'?with_receiver=1&with_sender=1&offset='.$offset.'&count='.$count.$filter,array(),self::HTTP_GET);
     }
 }

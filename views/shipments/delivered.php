@@ -27,6 +27,7 @@ $this->params['breadcrumbs'] = array(
         </div>
     </div>
     <div class="main-box-body">
+        <?php if(count($parcels) > 0) { ?>
         <div class="table-responsive">
             <table class="table table-hover">
                 <thead>
@@ -43,39 +44,34 @@ $this->params['breadcrumbs'] = array(
                 </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td><a class="btn btn-xs btn-default" href="#"><i class="fa fa-eye"></i> View</a></td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
+                <?php
+                if (isset($parcels)) {
+                    $row = $offset;
+                    $i = 1;
+                    foreach ($parcels as $parcel) {
+                        ?>
+                        <tr>
+                           <td><?= ++$row; ?></td>
+                            <td><?= $parcel['waybill_number']; ?></td>
+                            <td><?= ucwords($parcel['sender']['firstname'].' '. $parcel['sender']['lastname']) ?></td>
+                            <td><?= $parcel['sender']['phone'] ?></td>
+                            <td><?= ucwords($parcel['receiver']['firstname'].' '. $parcel['receiver']['lastname']) ?></td>
+                            <td><?= $parcel['receiver']['phone'] ?></td>
+                            <td><?= ServiceConstant::getStatus($parcel['status']); ?></td>
+                            <td><a href="<?= Url::to(['site/viewwaybill?id=' . $parcel['id']]) ?>"
+                                   class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
+                        </tr>
+                    <?php }
+                } ?>
                 </tbody>
             </table>
+            <?= $this->render('../elements/pagination_and_summary',['first'=>$offset,'last'=>$row,'page_width'=>$page_width,'total_count'=>$total_count]) ?>
         </div>
+        <?php } else { ?>
+            <div class="main-box-body">
+                There are no parcels that were delivered.
+            </div>
+        <?php } ?>
     </div>
 </div>
 
