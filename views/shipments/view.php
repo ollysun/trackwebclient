@@ -44,7 +44,7 @@ $this->params['breadcrumbs'][] = 'Waybill';
 							<?php if($parcelData['sender_address']['street_address2']) { ?>
 								<br><?= $parcelData['sender_address']['street_address2'] ?>
 							<?php }?>
-							<br><?= $parcelData['sender_address']['city'].', '.$parcelData['sender_address']['state_id'].', '.$parcelData['sender_address']['country_id'];  ?>
+							<br><?= $parcelData['sender_address']['city_id'].', '.$parcelData['sender_address']['state_id'].', '.$parcelData['sender_address']['country_id'];  ?>
 						</div>
 					</div>
 				</div>
@@ -76,7 +76,7 @@ $this->params['breadcrumbs'][] = 'Waybill';
 							<?php if($parcelData['receiver_address']['street_address2']) { ?>
 								<br><?= $parcelData['receiver_address']['street_address2'] ?>
 							<?php }?>
-							<br><?= $parcelData['receiver_address']['city'].', '.$parcelData['receiver_address']['state_id'].', '.$parcelData['receiver_address']['country_id'];  ?>
+							<br><?= $parcelData['receiver_address']['city_id'].', '.$parcelData['receiver_address']['state_id'].', '.$parcelData['receiver_address']['country_id'];  ?>
 						</div>
 
 					</div>

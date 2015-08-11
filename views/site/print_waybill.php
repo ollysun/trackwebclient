@@ -15,7 +15,7 @@ foreach($copies as $copy) {
         <!-- drop waybill image here, remove div below -->
         <label>Waybill Bar Code</label><br/>
 
-        <div style="width: 100%; height: 70%; border: 1px solid black;padding: 10px;">
+        <div style="width: 100%; height: 70%;padding: 10px;">
             <div id="" class="form-control-static barcode"></div>
         </div>
     </div>
@@ -64,8 +64,10 @@ foreach($copies as $copy) {
     </div>
 
     <div class="service-type">
-        <div class="service-type__inner express"></div>
-        <div class="service-type__inner ground is-active"></div>
+        <div class="service-type__inner"><span>Express</span></div>
+        <div class="service-type__inner is-active"><span>Special Projects</span></div>
+        <div class="service-type__inner"><span>Logistics</span></div>
+        <div class="service-type__inner"><span>Bulk mail</span></div>
     </div>
 
     <div class="parcel-type">
@@ -98,6 +100,6 @@ foreach($copies as $copy) {
 
 ?>
 <?php $this->registerJsFile('@web/js/libs/jquery-barcode.min.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
-<?php $this->registerJsFile('@web/js/html2canvas.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
-<?php $this->registerJsFile('@web/js/print.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
+<?php ///$this->registerJsFile('@web/js/html2canvas.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
+<?php //$this->registerJsFile('@web/js/print.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
 

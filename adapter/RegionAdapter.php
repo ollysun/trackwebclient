@@ -39,6 +39,7 @@ class RegionAdapter extends BaseAdapter
         $filter .= ($with_state? '&with_country':'');
         $filter .= ($with_state? '&with_charge':'');
         $filter .= ($with_branch? '&with_branch':'');
-        return $this->request(ServiceConstant::URL_REGION_CITY_GET_ALL .'?'.$filter, [], self::HTTP_GET);
+        $param = !is_null($state_id) ? [ 'state_id' => $state_id ] : [];
+        return $this->request(ServiceConstant::URL_REGION_CITY_GET_ALL .'?'.$filter, $param, self::HTTP_GET);
     }
 }
