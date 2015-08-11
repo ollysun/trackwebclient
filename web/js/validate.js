@@ -51,7 +51,7 @@ function validateFxn() {
     }
     else if(input.hasClass('phone'))
     {
-        var ph = /^(234|0)[0-9]{10}$/;
+        var ph = /^(234|0)[0-9]{7,10}$/;
         if(!ph.test(val))
         {
             msg = 'Invalid entry';
