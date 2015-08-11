@@ -38,6 +38,8 @@ class ServiceConstant {
     const URL_MOVE_TO_IN_TRANSIT = '/parcel/moveToInTransit/';
     const URL_MOVE_TO_ARRIVAL = '/parcel/moveToArrival/';
     const URL_MOVE_FOR_DELIVERY = '/parcel/moveToForDelivery/';
+    const URL_MOVE_TO_BEING_DELIVERED = '/parcel/moveToBeingDelivered/';
+    const URL_MOVE_TO_DELIVERED = '/parcel/moveToDelivered/';
 
     const URL_GET_ALL_BANKS = 'bank/getAll/';
 
@@ -156,6 +158,9 @@ class ServiceConstant {
                 break;
             case ServiceConstant::FOR_DELIVERY:
                 return 'For Delivery';
+                break;
+            case ServiceConstant::BEING_DELIVERED:
+                return 'Being Delivered';
                 break;
 
         }

@@ -2,25 +2,16 @@
  * Created by RotelandO on 7/25/15.
  */
 
-
-/**
- * Created by RotelandO on 7/20/15.
- */
 var parcels = {
     waybills: [],
-    to_branch_id: '',
-    to_branch_name: '',
-    staff_id: '',
-    staff_code: ''
+    held_by_id: '',
+    admin_id: ''
 };
 
-var Parcel_Destination = {
-
+var Parcel_Delivery = {
     Url: {
-        'allhubs' : '/hubs/allhubs',
-        'allecforhubs' : '/hubs/allecforhubs',
         'staffdetails' : '/hubs/staffdetails',
-        'generatemanifest': '/hubs/generatemanifest',
+        'generate_run': '/shipments/fordelivery',
     },
 
     getNewStaffInfo: function() {
@@ -48,7 +39,7 @@ var Parcel_Destination = {
 
     searchStaffDetails: function(code) {
         var self = this;
-        $.get( Parcel_Destination.Url.staffdetails, { code: code }, function(response){
+        $.get( Parcel_Delivery.Url.staffdetails, { code: code }, function(response){
             if(response.status === 'success') {
                 var staff = self.getNewStaffInfo();
                 staff.id = response.data.id;
@@ -59,28 +50,28 @@ var Parcel_Destination = {
                 staff.staff_role = response.data.role.name;
                 self.updateStaffDetails(staff);
                 $('#staff_info').show();
-                $('#btnGenerate').attr('disabled', false);
+                $('input#waybills').val(JSON.stringify(parcels));
+                $('#generate').attr('disabled', false);
             } else {
                 alert(response.message);
                 $('#staff_info').hide();
-                $('#btnGenerate').attr('disabled', true);
+                $('#generate').attr('disabled', true);
             }
         });
     },
 
     updateStaffDetails: function(staff) {
 
-        parcels.staff_id = staff.id;
-        parcels.staff_code = staff.code;
+        parcels.held_by_id = staff.id;
+        $('#staff_id').val(staff.id);
         $('#staff_name').html(staff.staff_name);
-        $('#staff_email').html(staff.staff_email);
         $('#staff_phone').html(staff.staff_phone);
         $('#staff_role').html(staff.staff_role);
     },
 
     moveToInTransit: function(parcels) {
         $.ajax({
-            url: Parcel_Destination.Url.generatemanifest,
+            url: Parcel_Delivery.Url.generatemanifest,
             type: 'POST',
             dataType: 'JSON',
             data: JSON.stringify(parcels),
@@ -99,63 +90,6 @@ var Parcel_Destination = {
             }
         })
     }
-};
-
-var Parcel_Delivery = {
-
-    Url: {
-        '' : 'staffcheck',
-        'dispatch' : '/parcel/set',
-        'staffdetails' : '/hubs/staffdetails',
-        'generatemanifest': '/hubs/generatemanifest',
-    },
-
-    getNewStaffInfo: function() {
-        return {
-            id: '',
-            staff_name: '',
-            staff_email: '',
-            staff_phone: '',
-            staff_role: ''
-        }
-    },
-
-    searchStaffDetails: function(code) {
-        var self = this;
-        $.get( Parcel_Destination.Url.staffdetails, { code: code }, function(response){
-            if(response.status === 'success') {
-                var staff = self.getNewStaffInfo();
-                staff.id = response.data.id;
-                staff.code = code;
-                staff.staff_name = response.data.fullname;
-                staff.staff_email = response.data.email;
-                staff.staff_phone = response.data.phone;
-                staff.staff_role = response.data.role.name;
-                self.updateStaffDetails(staff);
-                $('#staff_info').show();
-                $('#btnGenerate').attr('disabled', false);
-            } else {
-                alert(response.message);
-                $('#staff_info').hide();
-                $('#btnGenerate').attr('disabled', true);
-            }
-        });
-    },
-
-    checkStaff: function(code, password){
-        var self = this;
-        $.get( Parcel_Delivery.Url.login, {staff_id:code, password:password}, function(response){
-            if(response.status === 'success') {
-                var staff = self.getNewStaffInfo();
-                staff.id = response.data.id;
-                //self.updateStaffDetails(staff);
-                $('div#delivery_run').show();
-            } else {
-                alert(response.message);
-                $('div#delivery_run').hide();
-            }
-        });
-    },
 };
 
 $(document).ready(function(){
@@ -180,32 +114,24 @@ $(document).ready(function(){
             html += "</tr>";
         });
         $('#delivery_run>tbody').html(html);
+        $('input#waybills').val(JSON.stringify(parcels));
     });
 
-    $('#staff_id, #password').on('keypress', function (event) {
-        if (event.which == 13) {
-            event.preventDefault();
-            var staff_code = $('#staff_id').val();
-            var pword = $('#password').val();
-            if(staff_code == '' || pword == '') {
-                return;
-            }
-            Parcel_Delivery.checkStaff(staff_code,pword);
+    $('#get_details').on('click', function (event) {
+        var staff_code = $('input#disp_id').val();
+        if(staff_code == '') {
+            return;
         }
+        Parcel_Delivery.searchStaffDetails(staff_code);
     });
-
-    $('#staff').on('keypress', function (event) {
+    $('input#disp_id').on('keypress', function (event) {
         if (event.which == 13) {
             event.preventDefault();
             var staff_code = $(this).val();
             if(staff_code == '') {
                 return;
             }
-            Parcel_Destination.searchStaffDetails(staff_code);
+            Parcel_Delivery.searchStaffDetails(staff_code);
         }
-    });
-
-    $('#btnGenerate').on('click', function(event){
-        $('#payload').val(JSON.stringify(parcels));
     });
 });

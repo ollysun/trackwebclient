@@ -21,12 +21,13 @@ $this->params['breadcrumbs'] = array(
 //$this->params['content_header_button'] = $this->render('../elements/content_header_new_parcel_button');
 ?>
 
+<?php echo \Adapter\Util\Calypso::showFlashMessages(); ?>
 <div class="main-box">
     <div class="main-box-header clearfix">
         <div class="pull-left">
 
-            <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#passwordModal">Receive from Dispatcher</button>
-            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#passwordModal"><i class="fa fa-check"></i> Mark as delivered</button>
+            <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#passwordModal" data-action="receive">Receive from Dispatcher</button>
+            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#passwordModal" data-action="deliver"><i class="fa fa-check"></i> Mark as delivered</button>
         </div>
     </div>
     <?php if(count($parcels) > 0) { ?>
@@ -50,16 +51,17 @@ $this->params['breadcrumbs'] = array(
                     <?php
                     if (isset($parcels)) {
                         $row = $offset;
+                        $i = 1;
                         foreach ($parcels as $parcel) {
                             ?>
-                            <tr data-waybill='<?= $parcel['waybill_number'] ?>'>
-                                <td><div class="checkbox-nice"><input class="checkable" value="<?= $parcel['waybill_number'] ?>" type="checkbox"><label for="chk_<?= $row; ?>"> </label></div></td>
+                            <tr>
+                                <td><div class="checkbox-nice"><input class="checkable" id="chbx_w_<?= $i; ?>" class="checkable" data-waybill="<?= strtoupper($parcel['waybill_number']); ?>" type="checkbox"><label for="chbx_w_<?= $i++; ?>"> </label></div></td>
                                 <td><?= ++$row; ?></td>
                                 <td><?= $parcel['waybill_number']; ?></td>
                                 <td><?= ucwords($parcel['receiver']['firstname'].' '. $parcel['receiver']['lastname']) ?></td>
                                 <td><?= $parcel['receiver']['phone'] ?></td>
                                 <td><?= ucwords($parcel['holder']['fullname']); ?></td>
-                                <td></td>
+                                <td><?= ServiceConstant::getStatus($parcel['status']); ?></td>
                                 <td><a href="<?= Url::to(['site/viewwaybill?id=' . $parcel['id']]) ?>"
                                        class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
                             </tr>
@@ -79,7 +81,7 @@ $this->params['breadcrumbs'] = array(
 
 <div class="modal fade" id="passwordModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
-        <form id="arrived_parcels" class="">
+        <form id="arrived_parcels" class="" method="post">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -87,15 +89,16 @@ $this->params['breadcrumbs'] = array(
                 </div>
                 <div class="modal-body">
                     <p>Please enter your password to authenticate this operation.</p>
-
                     <div class="form-group">
                         <label>Password</label>
-                        <input type="password" class="form-control">
+                        <input type="password" class="form-control" name="password">
                     </div>
                 </div>
                 <div class="modal-footer">
+                    <input type="hidden" name="waybills" id="waybills">
+                    <input type="hidden" name="task" id="task">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Authenticate</button>
+                    <button type="submit" class="btn btn-primary">Authenticate</button>
                 </div>
             </div>
         </form>
@@ -104,6 +107,21 @@ $this->params['breadcrumbs'] = array(
 <?php
 $ex='$("#chbx_w_all").change(function () {
     $("input:checkbox.checkable").prop("checked", $(this).prop("checked"));
-});';
+});
+    $("[data-target=#passwordModal]").on("click", function(event) {
+        var chkboxes = $(".checkable:checked");
+
+        if(!chkboxes.length) {
+            alert("You must select at least one parcel!");
+            event.preventDefault();
+            return;
+        }
+        waybill_numbers = [];
+        $.each(chkboxes, function(i, chk){
+            waybill_numbers.push($(this).attr("data-waybill"));
+        });
+        $("input#task").val($(this).attr("data-action"));
+        $("input#waybills").val(JSON.stringify(waybill_numbers));
+    });';
 $this->registerJs($ex,View::POS_READY);
 ?>
