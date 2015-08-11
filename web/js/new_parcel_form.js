@@ -550,6 +550,12 @@ $(document).ready(function(){
 		Parcel.getUserInformation(term, suffix);
 	});
 
+	$('#shipperSearchBox, #receiverSearchBox').on('keyup', function(e) {
+		if (e.which === 13) { //enter key
+			$(this).parent().find('.btn').trigger('click');
+		};
+	});
+
 	$('#merchantNew').on('click', function(event){
 		Parcel.setAccountDetails(Parcel.newAccountObject());
 	});
