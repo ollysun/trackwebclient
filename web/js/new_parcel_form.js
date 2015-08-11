@@ -23,7 +23,7 @@ function getServerResponse (statusCode,message){
 });*/
 
 
-$('#newParcelForm').carousel('pause');
+$('#newParcelForm').carousel('pause').off('keydown.bs.carousel');
 $('#newParcelForm').on('slide.bs.carousel', function (event) {
 	$("html, body").animate({scrollTop:0},'fast');
 
