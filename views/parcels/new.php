@@ -18,7 +18,7 @@ $this->params['breadcrumbs'] = array(
 
 <?php echo Calypso::showFlashMessages(); ?>
 
-<form action="#" method="post" enctype="multipart/form-data" class="validate">
+<form action="#" method="post" enctype="multipart/form-data" class="validate" data-keyboard-submit>
 
     <div id="newParcelForm" class="l-new-parcel-form carousel slide">
         <ol class="carousel-indicators hidden">
@@ -27,7 +27,7 @@ $this->params['breadcrumbs'] = array(
             <li data-target="#newParcelForm" data-slide-to="2"></li>
         </ol>
         <div class="carousel-inner">
-            <div class="main-box item active">
+            <div class="main-box item">
                 <div class="row">
                     <div class="col-xs-12 col-lg-6">
                         <div class="main-box-header">
@@ -51,7 +51,8 @@ $this->params['breadcrumbs'] = array(
                             class="fa fa-arrow-right"></i></a>
                 </div>
             </div>
-            <div class="main-box item ">
+
+            <div class="main-box item">
                 <div class="main-box-header">
                     <h2>Parcel/Shipment Information</h2>
                 </div>
@@ -100,7 +101,7 @@ $this->params['breadcrumbs'] = array(
                                     <label>Parcel weight</label>
 
                                     <div class="input-group">
-                                        <input name="parcel_weight" class="form-control validate required number">
+                                        <input name="parcel_weight" class="form-control validate required number" id="weight">
                                         <span class="input-group-addon">Kg</span>
                                     </div>
                                 </div>
@@ -138,7 +139,7 @@ $this->params['breadcrumbs'] = array(
                                     </div>
                                 </div>
                             </div>
-                            <div id="" class="form-group hidden">
+                            <div id="pickUpWrap" class="form-group hidden">
                                 <label for="">Pickup Centre</label>
                                 <select name="pickup_centres" id="" class="form-control">
                                     <option value="">Choose One</option>
@@ -266,7 +267,7 @@ $this->params['breadcrumbs'] = array(
                 <div class="clearfix main-box-body main-box-button-wrap">
                     <a href="#newParcelForm" data-slide="prev" class="btn btn-default pull-left"><i
                             class="fa fa-arrow-left"></i> Back</a>
-                    <a href="#newParcelForm" data-slide="next" class="btn btn-default pull-right">Continue <i
+                    <a href="#newParcelForm" data-slide="next" class="btn btn-default pull-right" data-calculate-amount="true">Continue <i
                             class="fa fa-arrow-right"></i></a>
                 </div>
 
@@ -283,6 +284,7 @@ $this->params['breadcrumbs'] = array(
                                     <label for="">Amount Due</label>
 
                                     <div class="amount-due currency naira">3,045.00</div>
+                                    <input type="hidden" name="amount" id="amount" />
                                 </div>
                                 <div class="form-group">
                                     <label for="">Payment Method</label>
@@ -342,4 +344,5 @@ $this->params['breadcrumbs'] = array(
 </form>
 
 <?php $this->registerJsFile('@web/js/libs/bootstrap-select.min.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/keyboardFormSubmit.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/new_parcel_form.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>

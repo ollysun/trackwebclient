@@ -35,6 +35,16 @@ $this->params['breadcrumbs'] = array(
 
 <div class="main-box">
 	<div class="main-box-header table-search-form clearfix">
+		<?php
+			if($user_not_found) {
+		?>
+			<div class="pull-left">
+				<label>&nbsp;</label>
+				<div class="form-control-static text-danger">Invalid customer</div>
+			</div>
+		<?php
+			}
+		?>
 		<div class="pull-right">
 			<form action="" class="table-search-form form-inline clearfix">
               <div class="pull-left">
@@ -56,9 +66,9 @@ $this->params['breadcrumbs'] = array(
 			<?php
 				if($user_not_found) {
 			?>
-			<div class="alert alert-info">
+			<!-- <div class="alert alert-info">
 				<p>We could not find a customer with phone number <strong><?= $search ?></strong>. Please enter another phone number and search again.</p>
-			</div>
+			</div> -->
 			<?php
 				}
 				else {

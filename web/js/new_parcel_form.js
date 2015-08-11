@@ -28,11 +28,40 @@ $('#newParcelForm').on('slide.bs.carousel', function (event) {
 	$("html, body").animate({scrollTop:0},'fast');
 
 	var direction = event.direction;
+	var isValidate = true;
 	if(direction=='left'){
-		return validate('.carousel-inner > .item.active');
+		isValidate = validate('.carousel-inner > .item.active');
+		if(isValidate && canCalculateAmount()) {
+			calculateAmount();
+		}
 	}
-	return true;
+	return isValidate;
 });
+
+function canCalculateAmount() {
+	var from_branch_id = $('#city_shipper').find('option:selected').attr('data-branch-id');
+	if(!from_branch_id) { return false; }
+
+	var to_branch_id = $('#city_receiver').find('option:selected').attr('data-branch-id');
+	if(!to_branch_id) { return false; }
+
+	var charge_id = $('#city_receiver').find('option:selected').attr('data-charges-id');
+	if(!charge_id) { return false; }
+
+	var weight = $('#weight').val();
+	if(!weight && !isNaN(weight)) { return false; }
+
+	return true;
+}
+
+function calculateAmount() {
+	var params = {};
+	params.from_branch_id = $('#city_shipper').find('option:selected').attr('data-branch-id');
+	params.to_branch_id = $('#city_receiver').find('option:selected').attr('data-branch-id');
+	params.charge_id = $('#city_receiver').find('option:selected').attr('data-charges-id');
+	params.weight = $('#weight').val();
+	Parcel.calculateAmount(params);
+}
 
 $('form.validate').on('submit',function(event){
 	return validate('.item.active');
@@ -135,7 +164,7 @@ function validate($parent)
 		console.log('ele', ele);
 		console.log('val '+val);
 		if (val === '2') {
-			$('select[name="pickup_centres"]').removeClass('validate required').removeClass('has-error');;
+			$('select[name="pickup_centres"]').removeClass('validate required').removeClass('has-error');
 		}
 		else {
 			$('select[name="pickup_centres"]').addClass('validate required');
@@ -334,7 +363,7 @@ var Parcel = {
 		return {
 			street_address1: '',
 			street_address2: '',
-			city: '',
+			city_id: '',
 			state_id: '',
 			country_id: ''
 		}
@@ -351,8 +380,10 @@ var Parcel = {
 
 	Url: {
 		'states' : '/parcels/getstates',
+		'cities' : '/parcels/getcities',
 		'userdetails' : '/parcels/userdetails',
-		'accountdetails' : '/parcels/accountdetails'
+		'accountdetails' : '/parcels/accountdetails',
+		'calcbilling' : '/parcels/calculatebilling'
 	},
 
 	getStates: function(country_id, selectSelector, selectedValue) {
@@ -364,6 +395,22 @@ var Parcel = {
 
 					selected = (selectedValue == item.id) ? 'selected="selected"' : '';
 					html += "<option value='" + item.id + "' " + selected + ">" + item.name.toUpperCase() + "</option>";
+				});
+				$(selectSelector).attr('disabled', false);
+				$(selectSelector).html(html);
+			}
+		});
+	},
+
+	getCities: function(state_id, selectSelector, selectedValue) {
+		$.get( Parcel.Url.cities, { id: state_id }, function(response){
+			if(response.status === 'success') {
+				var html = '<option value="">Select City...</option>';
+				var selected = '';
+				$.each(response.data, function(i, item){
+
+					selected = (selectedValue == item.id) ? 'selected="selected"' : '';
+					html += "<option value='" + item.id + "' data-branch-id='" + item.branch_id + "' data-charges-id='" + item.onforwarding_charge_id + "' " + selected + ">" + item.name.toUpperCase() + "</option>";
 				});
 				$(selectSelector).attr('disabled', false);
 				$(selectSelector).html(html);
@@ -404,13 +451,17 @@ var Parcel = {
 		//Set address information
 		$('#address_' + suffix + '_1').val(userObj.address.street_address1);
 		$('#address_' + suffix + '_2').val(userObj.addressstreet_address2);
-		$('#city_' + suffix).val(userObj.address.city);
 		$('#country_' + suffix).val(userObj.address.country_id);
 		var stateSelector = $('#state_' + suffix);
 		if(userObj.address.country_id !== '') {
 			this.getStates(userObj.address.country_id, stateSelector, userObj.address.state_id);
 		} else {
 			$(stateSelector).attr('disabled', true);
+		}
+
+		var citySelector = $('#city_' + suffix);
+		if(userObj.address.state_id !== '') {
+			this.getCities(userObj.address.state_id, citySelector, userObj.address.city_id);
 		}
 	},
 
@@ -436,6 +487,37 @@ var Parcel = {
 		$('#account_name').val(accountObj.name);
 		$('#account_no').val(accountObj.number);
 		$('#bank').val(accountObj.bank.id);
+	},
+
+	calculateAmount: function (params) {
+
+		$('.amount-due').html("calculating...");
+		var amount = '';
+		$('#amount').val(amount);
+
+		$.ajax({
+			url: this.Url.calcbilling,
+			type: 'POST',
+			dataType: 'JSON',
+			data: JSON.stringify(params),
+			success: function(result) {
+				if(result.status == 'success') {
+					amount = result.data;
+					$('.amount-due').text(amount);
+					$('input#amount').val(amount);
+				} else {
+					alert(result.message);
+				}
+			},
+			error: function(err) {
+				console.log(err);
+			},
+			complete: function(jqXHR) {
+				if(!amount) {
+					$('.amount-due').html("Unable to calculate amount...");
+				}
+			}
+		})
 	}
 };
 $(document).ready(function(){
@@ -446,6 +528,14 @@ $(document).ready(function(){
 		var elementName = $(this).attr('name');
 		var selector = elementName.indexOf('shipper') !== -1 ? '#state_shipper' : '#state_receiver';
 		Parcel.getStates(country_id, $(selector));
+	});
+
+	$('#state_shipper, #state_receiver').on('change', function(evt) {
+
+		var state_id = $(this).val();
+		var elementName = $(this).attr('name');
+		var selector = elementName.indexOf('shipper') !== -1 ? '#city_shipper' : '#city_receiver';
+		Parcel.getCities(state_id, $(selector));
 	});
 
 	$('#btn_Search_shipper, #btn_Search_receiver').on('click', function(event){
