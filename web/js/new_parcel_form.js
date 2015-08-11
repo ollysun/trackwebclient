@@ -437,6 +437,9 @@ var Parcel = {
 
 				self.setUserDetails(userObj, suffix);
 			}
+			else if (response.status === 'error') {
+				alert(response.message);
+			}
 		});
 	},
 
@@ -553,7 +556,7 @@ $(document).ready(function(){
 	$('#shipperSearchBox, #receiverSearchBox').on('keyup', function(e) {
 		if (e.which === 13) { //enter key
 			$(this).parent().find('.btn').trigger('click');
-		};
+		}
 	});
 
 	$('#merchantNew').on('click', function(event){
