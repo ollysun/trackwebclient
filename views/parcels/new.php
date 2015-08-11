@@ -18,7 +18,7 @@ $this->params['breadcrumbs'] = array(
 
 <?php echo Calypso::showFlashMessages(); ?>
 
-<form action="#" method="post" enctype="multipart/form-data" class="validate" data-keyboard-submit>
+<form action="#" method="post" enctype="multipart/form-data" class="validate-form" data-keyboard-submit>
 
     <div id="newParcelForm" class="l-new-parcel-form carousel slide">
         <ol class="carousel-indicators hidden">

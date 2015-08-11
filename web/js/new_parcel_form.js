@@ -54,10 +54,6 @@ function calculateAmount() {
 	Parcel.calculateAmount(params);
 }
 
-$('form.validate').on('submit',function(event){
-	return validate('.item.active');
-});
-
 
 var deliveryShowHide = {
 	who: '#pickUpWrap',
