@@ -90,7 +90,7 @@ $(document).ready(function(){
     $("#get_arrival").unbind('click').on('click',function(){
         var staff_no = $("#staff_no").val();
         var branch_type= $(this).data("branch_type");
-       // alert(branch_type);
+        // alert(branch_type);
         if(staff_no.length > 0){
             $("#loading_label").removeClass('text-success').removeClass('text-danger').addClass("text-info").html("Validating Staff ID...");
             Hub.validateSweeper(staff_no,function(response){
