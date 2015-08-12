@@ -256,8 +256,6 @@ class ShipmentsController extends BaseController {
                 $data = $response->getData();
             }
         }
-
-
         return $this->render('view',array('parcelData'=>$data));
     }
     public function actionDispatched ()
