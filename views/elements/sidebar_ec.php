@@ -69,10 +69,10 @@ use Adapter\Util\Calypso;
 								<a href="<?= Url::to(['admin/managebranches']) ?>">Manage branches</a>
 							</li>
 							<li>
-								<a href="<?= Url::to(['site/managestaff']) ?>">Manage staff accounts</a>
+								<a href="<?= Url::to(['admin/managestaff']) ?>">Manage staff accounts</a>
 							</li>
 							<li>
-								<a href="<?= Url::to(['site/billings']) ?>" class="dropdown-toggle">Billing <i class="fa fa-angle-right drop-icon"></i></a>
+								<a href="<?= Url::to(['billing/matrix']) ?>" class="dropdown-toggle">Billing <i class="fa fa-angle-right drop-icon"></i></a>
 								<ul class="submenu">
 									<li>
 										<a href="<?= Url::to(['billing/matrix']) ?>">View Matrix</a>
