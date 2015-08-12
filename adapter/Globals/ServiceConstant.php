@@ -27,6 +27,9 @@ class ServiceConstant {
     const FOR_SWEEPER = 8;
     const FOR_ARRIVAL = 9;
     const FOR_DELIVERY = 10;
+    const UNCLEARED = 11;
+    const CLEARED = 12;
+    const BEING_DELIVERED = 13;
 
     const URL_ADD_PARCEL = 'parcel/add/';
     const URL_GET_ONE_PARCEL = 'parcel/getone/';
@@ -36,6 +39,8 @@ class ServiceConstant {
     const URL_MOVE_TO_ARRIVAL = '/parcel/moveToArrival/';
     const URL_MOVE_FOR_DELIVERY = '/parcel/moveToForDelivery/';
     const URL_CALC_BILLING = 'zone/calcBilling';
+    const URL_MOVE_TO_BEING_DELIVERED = '/parcel/moveToBeingDelivered/';
+    const URL_MOVE_TO_DELIVERED = '/parcel/moveToDelivered/';
 
     const URL_GET_ALL_BANKS = 'bank/getAll/';
 
@@ -115,6 +120,7 @@ class ServiceConstant {
     const URL_CREATE_USER = 'admin/register';
     const URL_GET_USERS = '/admin/getAll';
     const URL_GET_USER = '/admin/getone';
+    const URL_USER_VALIDATE = '/admin/validate';
 
     const DATE_TIME_FORMAT = 'd M Y g:i A';
     const DATE_FORMAT = 'd M Y';
@@ -153,6 +159,9 @@ class ServiceConstant {
                 break;
             case ServiceConstant::FOR_DELIVERY:
                 return 'For Delivery';
+                break;
+            case ServiceConstant::BEING_DELIVERED:
+                return 'Being Delivered';
                 break;
 
         }

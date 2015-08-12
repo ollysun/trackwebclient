@@ -2,6 +2,7 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 use Adapter\Globals\ServiceConstant;
+use yii\web\View;
 
 
 $this->title = 'Shipments: Due for Delivery';
@@ -45,6 +46,7 @@ if($offset <= 0){
 //$this->params['content_header_button'] = $this->render('../elements/content_header_new_parcel_button');
 ?>
 
+<?php echo \Adapter\Util\Calypso::showFlashMessages(); ?>
 <div class="main-box">
     <div class="main-box-header clearfix">
         <div class="clearfix">
@@ -92,7 +94,7 @@ if($offset <= 0){
                     foreach($parcels as $parcel){
                         ?>
                         <tr>
-                            <td><div class="checkbox-nice"><input id="chbx_w_<?= $i; ?>" type="checkbox"><label for="chbx_w_<?= $i++; ?>"> </label></div></td>
+                            <td><div class="checkbox-nice"><input id="chbx_w_<?= $i; ?>" class="checkable" data-waybill="<?= strtoupper($parcel['waybill_number']); ?>" type="checkbox"><label for="chbx_w_<?= $i++; ?>"> </label></div></td>
                             <td><?= $count++ ?></td>
                             <td><?= strtoupper($parcel['waybill_number']); ?></td>
                             <td><?= strtoupper($parcel['sender']['firstname'].' '. $parcel['sender']['lastname']) ?></td>
@@ -106,7 +108,6 @@ if($offset <= 0){
                     <?php
                     }}
                 ?>
-
                 </tbody>
             </table>
             <div class="pull-right form-group">
@@ -170,7 +171,6 @@ if($offset <= 0){
                         </tr>
                         </thead>
                         <tbody id="parcel_arrival">
-
                         </tbody>
                     </table>
                 </div>
@@ -185,7 +185,7 @@ if($offset <= 0){
 
 <div class="modal fade" id="runModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
-        <form id="arrived_parcels" class="">
+        <form id="arrived_parcels" class="" method="post">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -194,33 +194,50 @@ if($offset <= 0){
                 <div class="modal-body">
                     <p>Dispatch officer should enter the details below to authenticate the acceptance of this run sheet.</p>
                     <div class="row">
-                        <div class="col-xs-6 form-group">
-                            <label>Staff ID</label>
-                            <input type="text" class="form-control">
+                        <div class="col-xs-6">
+                            <div class="form-group">
+                                <label>Dispatcher Staff ID</label>
+                                <div class="input-group">
+                                    <input id="disp_id" value="DISP1" class="form-control">
+                                    <div class="input-group-btn">
+                                        <button type="button" id="get_details" class="btn btn-default">Load</button>
+                                    </div>
+                                </div>
+                                <div class="input-group">
+                                    <label id="loading_label"></label>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-xs-6 form-group">
-                            <label>Password</label>
-                            <input type="password" class="form-control">
+                        <div class="col-xs-6" id="staff_info" style="display: none;">
+                            <div class="form-group">
+                                <label>Staff Name</label>
+                                <p id="staff_name">Staff Name</p>
+                            </div>
+                            <div class="form-group">
+                                <label>Role</label>
+                                <p id="staff_role">Role</p>
+                            </div>
                         </div>
                     </div>
-
-                    <h4>Run Sheet</h4>
-                    <table class="table table-bordered table-condensed">
-                        <thead>
-                        <tr>
-                            <th>S/N</th>
-                            <th>Waybill No.</th>
-                            <th>Status</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-
-                        </tbody>
-                    </table>
+                    <div id="delivery_run">
+                        <h4>Run Sheet</h4>
+                        <table class="table table-bordered table-condensed" id="delivery_run">
+                            <thead>
+                            <tr>
+                                <th>S/N</th>
+                                <th>Waybill No.</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 <div class="modal-footer">
+                    <input type="hidden" name="staff_id" id="staff_id">
+                    <input type="hidden" id="waybills" name="waybills">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Generate Run Sheet</button>
+                    <button type="submit" id="generate" class="btn btn-primary" disabled="disabled">Generate Run Sheet</button>
                 </div>
             </div>
         </form>
@@ -236,5 +253,13 @@ if($offset <= 0){
 <?php $this->registerJsFile('@web/js/jquery.dataTables.min.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/dataTables.bootstrap.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/table.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/shipment_delivery.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
+<?php
+$ex='
+$("#chbx_w_all").change(function () {
+    $("input:checkbox").prop("checked", $(this).prop("checked"));
+});
 
-
+';
+$this->registerJs($ex,View::POS_READY);
+?>
