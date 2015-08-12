@@ -30,11 +30,11 @@ class BranchAdapter extends BaseAdapter
         return $this->request(ServiceConstant::URL_BRANCH_GET_ONE. '?' . $filter, array() , self::HTTP_GET);
     }
 
-    public function getHubs($state = null)
+    public function getHubs($state = null, $offset=0, $count=50)
     {
         $filter = 'branch_type=' . ServiceConstant::BRANCH_TYPE_HUB;
         $filter .= ($state != null ? '&state_id=' . $state : '');
-        //$filter = '';
+        $filter .= ($offset > -1) ? '&offset='.$offset.'&count='.$count : '';
         return $this->request(ServiceConstant::URL_BRANCH_GET_ALL . '?' . $filter, array(), self::HTTP_GET);
     }
 
@@ -58,7 +58,7 @@ class BranchAdapter extends BaseAdapter
         return $this->request(ServiceConstant::URL_BRANCH_GET_ONE, array('id' => $id), self::HTTP_GET);
     }
 
-    public function getCentres($hub_id = null)
+    public function getCentres($hub_id = null, $offset=0, $count=50)
     {
         $url = ServiceConstant::URL_BRANCH_GET_ALL;
         if ($hub_id == null) {
@@ -67,6 +67,7 @@ class BranchAdapter extends BaseAdapter
             $url = ServiceConstant::URL_BRANCH_GET_ALL_EC;
             $filter = ($hub_id != null ? 'hub_id=' . $hub_id : '');
         }
+        $filter .= ($offset > -1) ? '&offset='.$offset.'&count='.$count : '';
         return $this->request($url . '?' . $filter . '&with_parent=1', array(), self::HTTP_GET);;
     }
 
