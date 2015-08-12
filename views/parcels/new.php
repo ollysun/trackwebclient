@@ -277,7 +277,7 @@ $this->params['breadcrumbs'] = array(
                     <div class="col-xs-12 col-sm-6 col-sm-push-3">
                         <div class="main-box">
                             <div class="main-box-header">
-                                <h2>Money Information</h2>
+                                <h2>Payment Information</h2>
                             </div>
                             <div class="main-box-body">
                                 <div class="form-group amount-due-wrap">
