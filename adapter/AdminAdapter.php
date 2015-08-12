@@ -12,7 +12,6 @@ class AdminAdapter extends BaseAdapter{
             'identifier' => $identifier,
             'password' => $password
         ),self::HTTP_POST);
-
     }
     public function getStaffMembers($offset,$count,$role='-1'){
         $role_filter = $role == '-1'?'':'&role_id='.$role;
@@ -28,5 +27,11 @@ class AdminAdapter extends BaseAdapter{
 
     public function getStaff($staff_code) {
         return  $this->request(ServiceConstant::URL_GET_USER.'&staff_id='.$staff_code, [], self::HTTP_GET);
+    }
+
+    public function revalidate($staff=null, $password){
+        $filter = is_null($staff) ? '':'identifier='.$staff;
+        $filter .= is_null($password) ? '':'&password='.$password;
+        return  $this->request(ServiceConstant::URL_USER_VALIDATE.'?'.$filter, [], self::HTTP_POST);
     }
 }

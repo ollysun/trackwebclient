@@ -106,7 +106,6 @@ class SiteController extends BaseController
             }else{
                 Calypso::getInstance()->setPageData("Invalid Login. Check username and password and try again");
             }
-
         }
         return $this->render('login');
     }

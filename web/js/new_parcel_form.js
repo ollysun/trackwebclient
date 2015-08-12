@@ -55,7 +55,7 @@ function calculateAmount() {
 }
 
 
-var deliveryShowHide = {
+/*var deliveryShowHide = {
 	who: '#pickUpWrap',
 	options: {
 		identifier: 'input[name="delivery_type"]',
@@ -74,7 +74,7 @@ var deliveryShowHide = {
 			$('select[name="pickup_centres"]').addClass('validate required');
 		}
 	}
-};
+};*/
 var CODShowHide = {
 	who: '#CODAmountWrap',
 	options: {
@@ -158,7 +158,7 @@ var POSIDShowHide = {
 		}
 	}
 };
-showHideWrap(deliveryShowHide);
+//showHideWrap(deliveryShowHide);
 showHideWrap(CODShowHide);
 showHideWrap(merchantShowHide);
 showHideWrap(paymentMethodShowHide);
