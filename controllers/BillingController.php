@@ -292,7 +292,7 @@ class BillingController extends BaseController
             $data['branch_id'] = Calypso::getValue($entry, 'branch_id');
             $data['city_id'] = Calypso::getValue($entry, 'id',null);
 
-            if (($task == 'create' || $task == 'edit') && (empty($data['name']) || empty($data['transit_time']))) {
+            if (($task == 'create' || $task == 'edit') && (empty($data['name']) || !isset($data['transit_time']))) {
                 $error[] = "All details are required!";
             }
             if (!empty($error)) {

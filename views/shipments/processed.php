@@ -124,9 +124,7 @@ $this->params['content_header_button'] = $this->render('../elements/content_head
                 <?php endif;  ?>
             </div>
             <?php else:  ?>
-                <div class="alert alert-info text-center" role="alert">
                     There are no parcels matching the specified criteria.
-                </div>
             <?php endif;  ?>
         </div>
     </div>
