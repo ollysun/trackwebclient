@@ -96,8 +96,8 @@ class ParcelService {
 
         $payload['sender'] = $senderInfo;
         $payload['receiver'] = $receiverInfo;
-        $payload['sender_address'] = $receiverAddress;
-        $payload['receiver_address'] = $senderAddress;
+        $payload['sender_address'] = $senderAddress;
+        $payload['receiver_address'] = $receiverAddress;
         $payload['parcel'] = $parcel;
 
         $payload['is_corporate_lead'] = (Calypso::getValue($data, 'corporate_lead') === 'true') ? 1 : 0;
