@@ -14,7 +14,7 @@ use yii\data\Pagination;
 
 class FinanceController extends BaseController
 {
-    var $page_width = 10;
+    var $page_width = 100;
     var $offset = 0;
 
     public function beforeAction($action)

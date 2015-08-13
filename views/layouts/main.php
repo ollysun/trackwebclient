@@ -5,11 +5,13 @@ use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
+use Adapter\Util\Calypso;
 
 /* @var $this \yii\web\View */
 /* @var $content string */
 
 AppAsset::register($this);
+$session_data = Calypso::getInstance()->session('user_session');
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -38,7 +40,7 @@ AppAsset::register($this);
 
         <div id="page-wrapper" class="container">
             <div class="row">
-                <?= $this->render('../elements/sidebar_ec') ?>
+                <?= $this->render('../elements/sidebar_ec',['session_data' => $session_data]) ?>
                 <div id="content-wrapper">
                     <?= $this->render('../elements/content_header') ?>
 
