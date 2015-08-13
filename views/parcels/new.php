@@ -77,20 +77,15 @@ $this->params['breadcrumbs'] = array(
                             <div class="form-group">
                                 <label for="">Parcel Type</label>
 
-                                <div class='validate'>
-                                    <div class="radio-inline">
-                                        <input id="parcelTypeDoc" type="radio" name="parcel_type" value="1"> <label
-                                            for="parcelTypeDoc" class="">NORMAL</label>
-                                    </div>
-                                    <div class="radio-inline">
-                                        <input id="parcelTypeNonDoc" type="radio" name="parcel_type" value="2"> <label
-                                            for="parcelTypeNonDoc" class="">RETURNS</label>
-                                    </div>
-                                    <div class="radio-inline">
-                                        <input id="parcelTypeHighValue" type="radio" name="parcel_type" value="3">
-                                        <label for="parcelTypeHighValue" class="">EXPRESS</label>
-                                    </div>
-                                </div>
+                                <select name="parcel_type" id="" class="form-control validate required">
+                                    <option value="">Please select</option>
+                                    <?php if (isset($parcelType) && is_array($parcelType['data'])) {
+                                        foreach ($parcelType['data'] as $item) { ?>
+                                            <option
+                                                value="<?= $item['id'] ?>"><?= strtoupper($item['name']); ?></option>
+                                        <?php }
+                                    } ?>
+                                </select>
                             </div>
                             <div class="row">
                                 <div class="col-xs-12 col-sm-3 form-group">
@@ -156,7 +151,7 @@ $this->params['breadcrumbs'] = array(
                             <div class="form-group">
                                 <label for="">Service Type</label>
                                 <select name="shipping_type" id="" class="form-control validate required">
-                                    <option></option>
+                                    <option value="">Please select</option>
                                     <?php if (isset($ShipmentType) && is_array($ShipmentType['data'])) {
                                         foreach ($ShipmentType['data'] as $item) { ?>
                                             <option
