@@ -23,17 +23,13 @@ use yii\web\Response;
 
 class ShipmentsController extends BaseController {
 
-    private $page_width = 10;
-
-    public function actionAll($page=1,$search=false,$page_width=50)
+    public function actionAll($page=1,$search=false,$page_width=null)
     {
         $from_date = date('Y/m/d');
         $to_date = date('Y/m/d');
         $search_action = $search;
-        if($page_width != null){
-            $this->page_width = $page_width;
-            Calypso::getInstance()->cookie('page_width',$page_width);
-        }
+
+        $page_width = is_null($page_width) ? $this->page_width : $page_width;
         $offset = ($page-1)*$page_width;
         $parcel = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
         if(isset(Calypso::getInstance()->get()->from,Calypso::getInstance()->get()->to)){
@@ -65,12 +61,13 @@ class ShipmentsController extends BaseController {
         return $this->render('all',array('filter'=>$filter,'parcels'=>$data,'from_date'=>$from_date,'to_date'=>$to_date,'offset'=>$offset,'page_width'=>$this->page_width,'search'=>$search_action,'total_count'=>$total_count));
     }
 
-    public function actionFordelivery($page=1,$search=false,$page_width=50)
+    public function actionFordelivery($page=1,$search=false,$page_width=null)
     {
         $from_date =  date('Y/m/d');
         $to_date = date('Y/m/d');
         $search_action = $search;
         $parcel = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+        $page_width = is_null($page_width) ? $this->page_width : $page_width;
         $offset = ($page-1)*$page_width;
         if(\Yii::$app->request->isPost) {
             $rawData = \Yii::$app->request->post('waybills');
@@ -148,7 +145,7 @@ class ShipmentsController extends BaseController {
         }
     }
 
-    public function actionForsweep($page=1,$search=false,$page_width=50)
+    public function actionForsweep($page=1,$search=false,$page_width=null)
     {
 
         //Move to In Transit (waybill_numbers, to_branch_id.
@@ -176,6 +173,7 @@ class ShipmentsController extends BaseController {
         $from_date = date('Y/m/d');
         $to_date = date('Y/m/d');
         $search_action = $search;
+        $page_width = is_null($page_width) ? $this->page_width : $page_width;
         $offset = ($page-1)*$page_width;
         $parcel = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
         if(isset(Calypso::getInstance()->get()->from,Calypso::getInstance()->get()->to)){
@@ -204,7 +202,7 @@ class ShipmentsController extends BaseController {
         return $this->render('forsweep',array('parcels'=>$data,'from_date'=>$from_date,'to_date'=>$to_date,'offset'=>$offset,'page_width'=>$page_width,'search'=>$search_action, 'total_count'=>$total_count));
     }
 
-    public function actionProcessed($page=1,$search=false,$page_width=50)
+    public function actionProcessed($page=1,$search=false,$page_width=null)
     {
         $from_date = date('Y/m/d');
         $to_date = date('Y/m/d');
@@ -326,8 +324,9 @@ class ShipmentsController extends BaseController {
         }
         return $this->render('view',array('parcelData'=>$data));
     }
-    public function actionDispatched ($page=1, $page_width=50)
+    public function actionDispatched ($page=1, $page_width=null)
     {
+        $page_width = is_null($page_width) ? $this->page_width : $page_width;
         $offset=($page-1)*$page_width;
 
         if(\Yii::$app->request->isPost) {
@@ -383,8 +382,9 @@ class ShipmentsController extends BaseController {
         }
         return $this->render('dispatched',array('parcels'=>$parcels, 'total_count'=>$total_count, 'offset'=>$offset, 'page_width'=>$page_width));
     }
-    public function actionDelivered ($page=1, $page_width=20)
+    public function actionDelivered ($page=1, $page_width=null)
     {
+        $page_width = is_null($page_width) ? $this->page_width : $page_width;
         $offset=($page-1)*$page_width;
 
         $from_date = date('Y/m/d');
