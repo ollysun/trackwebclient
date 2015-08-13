@@ -102,7 +102,7 @@ class SiteController extends BaseController
                     RequestHelper::setClientID($data['id']);
                 }
                 Calypso::getInstance()->session("user_session",$response->getData());
-                return $this->redirect('/shipments/processed');
+                return $this->redirect('/site');
             }else{
                 Calypso::getInstance()->setPageData("Invalid Login. Check username and password and try again");
             }
