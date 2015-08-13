@@ -94,12 +94,12 @@ $this->params['content_header_button'] = $this->render('../elements/content_head
                 <tbody>
                 <?php
                 if(isset($parcels) && is_array($parcels)){
-                    $i = 1;
+                    $i = $offset;
                     foreach($parcels as $parcel){
                         ?>
                         <tr>
                             <!--						<td><div class="checkbox-nice"><input id="chbx_w_000--><?//= $i ?><!--" type="checkbox"><label for="chbx_w_0001"> </label></div></td>-->
-                            <td><?= $i++ ?></td>
+                            <td><?= ++$i ?></td>
                             <td><?= strtoupper($parcel['waybill_number']); ?></td>
                             <td><?= strtoupper($parcel['sender']['firstname'].' '. $parcel['sender']['lastname']) ?></td>
                             <td><?= $parcel['sender']['phone'] ?></td>
@@ -115,7 +115,8 @@ $this->params['content_header_button'] = $this->render('../elements/content_head
 
                 </tbody>
             </table>
-            <div class="pull-right form-group">
+                <?= $this->render('../elements/pagination_and_summary', ['first' => $offset, 'last'=>$i, 'total_count'=> $total_count,'page_width'=>$page_width]) ?>
+            <div class="pull-right form-group hidden">
                 <?php if($show_prev): ?>
                     <a href="<?= Url::to(['shipments/processed?offset='.($offset - $page_width).$link]) ?>" class="btn btn-primary btn-sm">Prev</a>
                 <?php endif;  ?>
