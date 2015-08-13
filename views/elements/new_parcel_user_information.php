@@ -25,14 +25,14 @@
 	<div class="col-xs-12 col-sm-6">
 		<div class="form-group">
 			<label for="">First Name</label>
-			<input name="firstname[<?=$prefix?>]" id="firstname_<?=$prefix?>" type="text" class="form-control validate required">
+			<input name="firstname[<?=$prefix?>]" id="firstname_<?=$prefix?>" type="text" class="form-control validate required name active-validate">
 
 		</div>
 	</div>
 	<div class="col-xs-12 col-sm-6">
 		<div class="form-group">
 			<label for="">Last Name</label>
-			<input name="lastname[<?=$prefix?>]" id="lastname_<?=$prefix?>" type="text" class="form-control validate required">
+			<input name="lastname[<?=$prefix?>]" id="lastname_<?=$prefix?>" type="text" class="form-control validate required name active-validate">
 		</div>
 	</div>
 </div>
