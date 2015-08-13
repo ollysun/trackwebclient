@@ -10,6 +10,7 @@ namespace app\controllers;
 
 
 use Adapter\AdminAdapter;
+use Adapter\BranchAdapter;
 use Adapter\Globals\ServiceConstant;
 use Adapter\ParcelAdapter;
 use Adapter\UserAdapter;
@@ -170,6 +171,9 @@ class ShipmentsController extends BaseController {
         $to_date = date('Y/m/d');
         $search_action = $search;
         $parcel = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+        $user_data = (Calypso::getInstance()->session('user_session'));
+        $branchData = new BranchAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+        $branch = $branchData->getOneHub($user_data['branch']['id']);
         if(isset(Calypso::getInstance()->get()->from,Calypso::getInstance()->get()->to)){
             $from_date = Calypso::getInstance()->get()->from.' 00:00:00';
             $to_date = Calypso::getInstance()->get()->to.' 23:59:59';
@@ -190,7 +194,7 @@ class ShipmentsController extends BaseController {
         if($response->getStatus() ==  ResponseHandler::STATUS_OK){
             $data = $response->getData();
         }
-        return $this->render('forsweep',array('parcels'=>$data,'from_date'=>$from_date,'to_date'=>$to_date,'offset'=>$offset,'page_width'=>$this->page_width,'search'=>$search_action));
+        return $this->render('forsweep',array('branch'=>$branch['data'], 'parcels'=>$data,'from_date'=>$from_date,'to_date'=>$to_date,'offset'=>$offset,'page_width'=>$this->page_width,'search'=>$search_action));
     }
 
     public function actionProcessed($offset=0,$search=false,$page_width=null)
