@@ -148,36 +148,39 @@ use Adapter\Util\Calypso;
 						</ul>
 					</li>
 					<?php
-/*					$permission = Calypso::getInstance()->permissionMap();
+					$permission = Calypso::getInstance()->permissionMap();
 					$menus = Calypso::getInstance()->getMenus();
 
 					foreach($menus as $k => $v) {
-						//var_dump($k);continue;
-						*/?><!--
+						?>
 						<li>
-							<a href="<?/*= !is_array($v)? Url::to([$v]):'' */?>" class="dropdown-toggle">
+							<a href="<?= !is_array($v)? Url::to([$v]):'' ?>" class="<?php echo is_array($menus[$k])?'dropdown-toggle':'' ?>">
 								<i class="fa fa-money"></i>
-								<span><?/*= Calypso::getInstance()->normaliseLinkLabel($k); */?></span>
+								<span><?= Calypso::getInstance()->normaliseLinkLabel($k); ?></span>
+								<?php
+								if(is_array($menus[$k])){
+								?>
 								<i class="fa fa-angle-right drop-icon"></i>
+								<?php } ?>
 							</a>
 							<?php
-/*							if(is_array($menus[$k])){
-							*/?>
+							if(is_array($menus[$k])){
+							?>
 							<ul class="submenu">
 								<?php
-/*								//print_r($menus[$k]);
+								//print_r($menus[$k]);
 								foreach($menus[$k] as $key => $value){
-								*/?>
+								?>
 								<li>
-									<a href="<?/*= Url::to(['finance/customersall']) */?>"><?/*= Calypso::getInstance()->normaliseLinkLabel('Fake_Test'); */?></a>
+									<a href="<?= Url::to(['finance/customersall']) ?>"><?= Calypso::getInstance()->normaliseLinkLabel('Fake_Test'); ?></a>
 								</li>
-								<?php /*} */?>
+								<?php } ?>
 							</ul>
-							<?php /*} */?>
+							<?php } ?>
 						</li>
-						--><?php
-/*					}
-					*/?>
+						<?php
+					}
+					?>
 				</ul>
 			</div>
 		</div>
