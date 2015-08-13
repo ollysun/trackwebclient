@@ -195,7 +195,7 @@ $(document).ready(function(){
     $("#role_filter").unbind('change').on('change',function(){
         var role = $(this).val();
         if(role.trim().length > 0){
-            window.location.href = "/site/managestaff?role="+role;
+            window.location.href = "/admin/managestaff?role="+role;
         }
     });
     $("#page_width").unbind('change').on('change',function(){

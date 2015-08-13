@@ -93,7 +93,7 @@ class ServiceConstant {
     const URL_ZONES_GET_ALL = '/zone/fetchAll';
     const URL_ZONES_GET_BY_CODE = '/zone/fetchByCode';
     const URL_ZONES_GET_BY_ID = '/zone/fetchByID';
-    
+
     const URL_ZONES_MATRIX_GET = 'zone/getMatrix';
     const URL_ZONES_MATRIX_SAVE = 'zone/saveMatrix';
     const URL_ZONES_MATRIX_REMOVE = 'zone/removeMatrix';
@@ -127,6 +127,10 @@ class ServiceConstant {
     const TIME_FORMAT = 'g:i A';
 
     const URL_GET_STAFF_BY_ID = '/admin/getOne';
+
+    const REF_PAYMENT_METHOD_CASH = 1;
+    const REF_PAYMENT_METHOD_POS = 2;
+    const REF_PAYMENT_METHOD_CASH_POS = 3;
 
     public static function getStatus($status){
         switch($status){
@@ -170,5 +174,23 @@ class ServiceConstant {
         return [ServiceConstant::IN_TRANSIT,ServiceConstant::DELIVERED,ServiceConstant::CANCELLED,ServiceConstant::FOR_ARRIVAL
         ,ServiceConstant::FOR_DELIVERY,ServiceConstant::FOR_SWEEPER,ServiceConstant::COLLECTED, ServiceConstant::BEING_DELIVERED];
     }
+    public static function getPaymentMethod($method){
+        switch ($method) {
+            case ServiceConstant::REF_PAYMENT_METHOD_CASH:
+                return 'Cash';
+                break;
 
+            case ServiceConstant::REF_PAYMENT_METHOD_POS:
+                return 'POS';
+                break;
+
+            case ServiceConstant::REF_PAYMENT_METHOD_CASH_POS:
+                return 'Cash & POS';
+                break;
+
+            default:
+                return $method; // return id
+                break;
+        }
+    }
 }

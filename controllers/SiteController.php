@@ -23,7 +23,7 @@ use Adapter\Util\Response;
 
 class SiteController extends BaseController
 {
-    private $page_width = 5;
+    private $page_width = 500;
     public function behaviors()
     {
         return [
@@ -102,7 +102,7 @@ class SiteController extends BaseController
                     RequestHelper::setClientID($data['id']);
                 }
                 Calypso::getInstance()->session("user_session",$response->getData());
-                return $this->redirect('/shipments/processed');
+                return $this->redirect('/site');
             }else{
                 Calypso::getInstance()->setPageData("Invalid Login. Check username and password and try again");
             }
