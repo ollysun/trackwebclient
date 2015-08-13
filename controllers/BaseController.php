@@ -25,6 +25,7 @@ class BaseController extends Controller {
     These are the restricted pages for these users. This can be made dynamic
      * */
     private $permissionMap = [];
+    public $page_width = 50;
     protected function setPermissionMap(){
         $this->permissionMap = Calypso::getInstance()->permissionMap();
     }

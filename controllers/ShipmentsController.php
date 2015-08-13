@@ -26,9 +26,7 @@ use yii\web\Response;
 
 class ShipmentsController extends BaseController {
 
-    private $page_width = 100;
-
-    public function actionAll($offset=0,$search=false,$page_width=null)
+    public function actionAll($page=1,$search=false,$page_width=null)
     {
         $from_date = date('Y/m/d');
         $to_date = date('Y/m/d');
@@ -38,17 +36,20 @@ class ShipmentsController extends BaseController {
             $this->page_width = $page_width;
             Calypso::getInstance()->cookie('page_width',$page_width);
         }
+
+        $page_width = is_null($page_width) ? $this->page_width : $page_width;
+        $offset = ($page-1)*$page_width;
         $parcel = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
         if(isset(Calypso::getInstance()->get()->from,Calypso::getInstance()->get()->to)){
             $from_date = Calypso::getInstance()->get()->from.' 00:00:00';
             $to_date = Calypso::getInstance()->get()->to.' 23:59:59';
             $filter = isset(Calypso::getInstance()->get()->date_filter) ? Calypso::getInstance()->get()->date_filter : '-1';
-            $response = $parcel->getFilterParcelsByDateAndStatus($from_date,$to_date,$filter,$offset,$this->page_width);
+            $response = $parcel->getFilterParcelsByDateAndStatus($from_date,$to_date,$filter,$offset,$this->page_width, 1);
             $search_action = true;
         }
         elseif(isset(Calypso::getInstance()->get()->search) ){
             $search = Calypso::getInstance()->get()->search;
-            $response = $parcel->getSearchParcels('-1',$search,$offset,$this->page_width);
+            $response = $parcel->getSearchParcels('-1',$search,$offset,$this->page_width, 1);
             $search_action = true;
             $filter = null;
         }else{
@@ -56,24 +57,30 @@ class ShipmentsController extends BaseController {
                 ($user_session['role_id'] == ServiceConstant::USER_TYPE_ADMIN ) ? null : $user_session['branch_id']; //displays all when null
 
             $response = $parcel->getParcels(null,null,null,$branch_to_view,$offset,$this->page_width);
+            //$response = $parcel->getParcels(null,null,$offset,$this->page_width);
+            $response = $parcel->getNewParcelsByDate(date('Y-m-d'),$offset,$this->page_width, 1);
             $search_action = false;
             $filter = null;
         }
         $response = new ResponseHandler($response);
         $data = [];
+        $total_count = 0;
         if($response->getStatus() ==  ResponseHandler::STATUS_OK){
             $data = $response->getData();
+            $total_count = $data['total_count'];
+            $data = $data['parcels'];
         }
-        return $this->render('all',array('filter'=>$filter,'parcels'=>$data,'from_date'=>$from_date,'to_date'=>$to_date,'offset'=>$offset,'page_width'=>$this->page_width,'search'=>$search_action));
+        return $this->render('all',array('filter'=>$filter,'parcels'=>$data,'from_date'=>$from_date,'to_date'=>$to_date,'offset'=>$offset,'page_width'=>$this->page_width,'search'=>$search_action,'total_count'=>$total_count));
     }
 
-    public function actionFordelivery($offset=0,$search=false)
+    public function actionFordelivery($page=1,$search=false,$page_width=null)
     {
         $from_date =  date('Y/m/d');
         $to_date = date('Y/m/d');
         $search_action = $search;
         $parcel = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
-
+        $page_width = is_null($page_width) ? $this->page_width : $page_width;
+        $offset = ($page-1)*$page_width;
         if(\Yii::$app->request->isPost) {
             $rawData = \Yii::$app->request->post('waybills');
             $data = json_decode($rawData, true);
@@ -89,10 +96,12 @@ class ShipmentsController extends BaseController {
             } else {
                 $parcelData = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
                 $response = $parcelData->moveToBeingDelivered($record);
-                $bad_parcels = $response['data']['bad_parcels'];
-                if ($response['status'] === ResponseHandler::STATUS_OK && !count($bad_parcels)) {
+                $data = $response['data'];
+                $response = new ResponseHandler($response);
+                if ($response->getStatus() === ResponseHandler::STATUS_OK && empty($data['bad_parcels'])) {
                     $this->flashSuccess('Shipments dispatched');
                 } else {
+                    $bad_parcels = $data['bad_parcels'];
                     foreach($bad_parcels as $key=>$bad_parcel){
                         $this->flashError($key.' - '.$bad_parcel);
                     }
@@ -103,24 +112,27 @@ class ShipmentsController extends BaseController {
             $from_date = Calypso::getInstance()->get()->from.' 00:00:00';
             $to_date = Calypso::getInstance()->get()->to.' 23:59:59';
             $filter = isset(Calypso::getInstance()->get()->date_filter) ? Calypso::getInstance()->get()->date_filter : '-1';
-            $response = $parcel->getFilterParcelsByDateAndStatus($from_date,$to_date,$filter,$offset,$this->page_width);
+            $response = $parcel->getFilterParcelsByDateAndStatus($from_date,$to_date,$filter,$offset,$page_width, 1);
             $search_action = true;
         }
         elseif(isset(Calypso::getInstance()->get()->search) ){
             $search = Calypso::getInstance()->get()->search;
-            $response = $parcel->getSearchParcels('-1',$search,$offset,$this->page_width);
+            $response = $parcel->getSearchParcels('-1',$search,$offset,$page_width, 1);
             $search_action = true;
         }else{
             $user_session = Calypso::getInstance()->session("user_session");
-            $response = $parcel->getParcels(null, null, ServiceConstant::FOR_DELIVERY,$user_session['branch_id'],$offset,$this->page_width);
+            $response = $parcel->getParcels(null, null, ServiceConstant::FOR_DELIVERY,$user_session['branch_id'],$offset,$page_width, null, 1);
             $search_action = false;
         }
         $response = new ResponseHandler($response);
         $data = [];
+        $total_count = 0;
         if($response->getStatus() ==  ResponseHandler::STATUS_OK){
             $data = $response->getData();
+            $total_count = $data['total_count'];
+            $data = $data['parcels'];
         }
-        return $this->render('fordelivery',array('parcels'=>$data,'from_date'=>$from_date,'to_date'=>$to_date,'offset'=>$offset,'page_width'=>$this->page_width,'search'=>$search_action));
+        return $this->render('fordelivery',array('parcels'=>$data,'from_date'=>$from_date,'to_date'=>$to_date,'offset'=>$offset,'page_width'=>$page_width,'search'=>$search_action,'total_count'=>$total_count));
     }
 
     public function actionStaffcheck(){
@@ -145,7 +157,7 @@ class ShipmentsController extends BaseController {
         }
     }
 
-    public function actionForsweep($offset=0,$search=false)
+    public function actionForsweep($page=1,$search=false,$page_width=null)
     {
 
         //Move to In Transit (waybill_numbers, to_branch_id.
@@ -173,6 +185,8 @@ class ShipmentsController extends BaseController {
         $from_date = date('Y/m/d');
         $to_date = date('Y/m/d');
         $search_action = $search;
+        $page_width = is_null($page_width) ? $this->page_width : $page_width;
+        $offset = ($page-1)*$page_width;
         $parcel = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
         $user_data = (Calypso::getInstance()->session('user_session'));
         $branchData = new BranchAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
@@ -181,26 +195,29 @@ class ShipmentsController extends BaseController {
             $from_date = Calypso::getInstance()->get()->from.' 00:00:00';
             $to_date = Calypso::getInstance()->get()->to.' 23:59:59';
             $filter = isset(Calypso::getInstance()->get()->date_filter) ? Calypso::getInstance()->get()->date_filter : '-1';
-            $response = $parcel->getFilterParcelsByDateAndStatus($from_date,$to_date,$filter,$offset,$this->page_width);
+            $response = $parcel->getFilterParcelsByDateAndStatus($from_date,$to_date,$filter,$offset,$page_width, 1);
             $search_action = true;
         }
         elseif(isset(Calypso::getInstance()->get()->search)){
             $search = Calypso::getInstance()->get()->search;
-            $response = $parcel->getSearchParcels('-1',$search,$offset,$this->page_width);
+            $response = $parcel->getSearchParcels('-1',$search,$offset,$page_width, 1);
             $search_action = true;
         }else{
-            $response = $parcel->getParcels(null, null, ServiceConstant::FOR_SWEEPER,null,$offset,$this->page_width);
+            $response = $parcel->getParcels(null, null, ServiceConstant::FOR_SWEEPER,null,$offset,$page_width, null, 1);
             $search_action = false;
         }
         $response = new ResponseHandler($response);
         $data = [];
+        $total_count = 0;
         if($response->getStatus() ==  ResponseHandler::STATUS_OK){
             $data = $response->getData();
+            $total_count = $data['total_count'];
+            $data = $data['parcels'];
         }
-        return $this->render('forsweep',array('branch'=>$branch['data'], 'parcels'=>$data,'from_date'=>$from_date,'to_date'=>$to_date,'offset'=>$offset,'page_width'=>$this->page_width,'search'=>$search_action));
+        return $this->render('forsweep',array('branch'=>$branch['data'], 'parcels'=>$data,'from_date'=>$from_date,'to_date'=>$to_date,'offset'=>$offset,'page_width'=>$page_width,'search'=>$search_action, 'total_count'=>$total_count));
     }
 
-    public function actionProcessed($offset=0,$search=false,$page_width=null)
+    public function actionProcessed($page=1,$search=false,$page_width=null)
     {
         $from_date = date('Y/m/d');
         $to_date = date('Y/m/d');
@@ -209,30 +226,34 @@ class ShipmentsController extends BaseController {
             $this->page_width = $page_width;
             Calypso::getInstance()->cookie('page_width',$page_width);
         }
+        $offset = ($page-1)*$page_width;
         $parcel = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
         if(isset(Calypso::getInstance()->get()->from,Calypso::getInstance()->get()->to)){
             $from_date = Calypso::getInstance()->get()->from.' 00:00:00';
             $to_date = Calypso::getInstance()->get()->to.' 23:59:59';
             $filter = isset(Calypso::getInstance()->get()->date_filter) ? Calypso::getInstance()->get()->date_filter : '-1';
-            $response = $parcel->getFilterParcelsByDateAndStatus($from_date,$to_date,$filter,$offset,$this->page_width);
+            $response = $parcel->getFilterParcelsByDateAndStatus($from_date,$to_date,$filter,$offset,$this->page_width, 1);
             $search_action = true;
         }
         elseif(isset(Calypso::getInstance()->get()->search) ){
             $search = Calypso::getInstance()->get()->search;
-            $response = $parcel->getSearchParcels('-1',$search,$offset,$this->page_width);
+            $response = $parcel->getSearchParcels('-1',$search,$offset,$this->page_width,1);
             $search_action = true;
             $filter = null;
         }else{
-            $response = $parcel->getNewParcelsByDate(date('Y-m-d'),$offset,$this->page_width);
+            $response = $parcel->getNewParcelsByDate(date('Y-m-d'),$offset,$this->page_width, 1);
             $search_action = false;
             $filter = null;
         }
         $response = new ResponseHandler($response);
         $data = [];
+        $total_count = 0;
         if($response->getStatus() ==  ResponseHandler::STATUS_OK){
             $data = $response->getData();
+            $total_count = $data['total_count'];
+            $data = $data['parcels'];
         }
-        return $this->render('processed',array('filter'=>$filter,'parcels'=>$data,'from_date'=>$from_date,'to_date'=>$to_date,'offset'=>$offset,'page_width'=>$this->page_width,'search'=>$search_action));
+        return $this->render('processed',array('filter'=>$filter,'parcels'=>$data,'from_date'=>$from_date,'to_date'=>$to_date,'offset'=>$offset,'page_width'=>$this->page_width,'search'=>$search_action, 'total_count'=>$total_count));
     }
 
     /**
@@ -345,9 +366,9 @@ class ShipmentsController extends BaseController {
             'receiverLocation'=>$receiver_location
         ));
     }
-    public function actionDispatched ($page=1)
+    public function actionDispatched ($page=1, $page_width=null)
     {
-        $page_width=20;
+        $page_width = is_null($page_width) ? $this->page_width : $page_width;
         $offset=($page-1)*$page_width;
 
         if(\Yii::$app->request->isPost) {
@@ -403,9 +424,9 @@ class ShipmentsController extends BaseController {
         }
         return $this->render('dispatched',array('parcels'=>$parcels, 'total_count'=>$total_count, 'offset'=>$offset, 'page_width'=>$page_width));
     }
-    public function actionDelivered ($page=1)
+    public function actionDelivered ($page=1, $page_width=null)
     {
-        $page_width=20;
+        $page_width = is_null($page_width) ? $this->page_width : $page_width;
         $offset=($page-1)*$page_width;
 
         $from_date = date('Y/m/d');
