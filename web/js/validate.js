@@ -58,6 +58,16 @@ function validateFxn() {
             isValid = false;
         }
     }
+    else if (input.hasClass('name'))
+    {
+        var filter = /^([a-zA-Z]+)([a-zA-Z\.\-\' ]*)([a-zA-Z]+)$/;
+        if(!filter.test(val))
+        {
+            msg = 'Invalid entry';
+            isValid = false;
+        }
+
+    }
     else if(input.hasClass('match'))
     {
         var match = (input.attr('match'));
@@ -75,13 +85,13 @@ function validateFxn() {
     if(msg !== ''){
         formgroup.addClass('has-error').append('<div class="help-block no-margin clearfix">'+msg+'</div>');
         if(!input.hasClass('active-validate'))
-            input.one('blur',validateFxn);
+            input.one('blur.CP.form.validate',validateFxn);
     }
     return isValid;
 }
 (function($){
-    $('.validate-form .active-validate').on('blur', validateFxn);
-    $('.validate-form').on('submit',function(event){
+    $('.validate-form .active-validate').off('blur.CP.form.validate').on('blur.CP.form.validate', validateFxn);
+    $('.validate-form').on('submit.CP.form.validate',function(event){
         return validate(this);
     });
 })(jQuery);
