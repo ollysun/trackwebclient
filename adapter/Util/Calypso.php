@@ -3,129 +3,159 @@ namespace Adapter\Util;
 
 use Adapter\Globals\ServiceConstant;
 
-class Calypso{
+class Calypso
+{
     private static $instance = null;
     private $httpReqPostData = null;
 
     private $httpReqGetData = null;
     private $httpReqFileData = null;
-    public static function getInstance(){
-        if(self::$instance==null){
+
+    public static function getInstance()
+    {
+        if (self::$instance == null) {
             return self::$instance = new Calypso();
         }
         return self::$instance;
     }
 
-    public function __construct() {
-        if(isset($_POST) && !empty($_POST)){
-            $this->httpReqPostData = json_decode(json_encode($_POST),false);
-        }else{
+    public function __construct()
+    {
+        if (isset($_POST) && !empty($_POST)) {
+            $this->httpReqPostData = json_decode(json_encode($_POST), false);
+        } else {
             $this->httpReqPostData = new \stdClass();
         }
 
-        if(isset($_GET) && !empty($_GET)){
-            $this->httpReqGetData = json_decode(json_encode($_GET),false);
-        }else{
+        if (isset($_GET) && !empty($_GET)) {
+            $this->httpReqGetData = json_decode(json_encode($_GET), false);
+        } else {
             $this->httpReqGetData = new \stdClass();
         }
 
-        if(isset($_FILES)){
-            $this->httpReqFileData = json_decode(json_encode($_FILES),false);
-        }else{
+        if (isset($_FILES)) {
+            $this->httpReqFileData = json_decode(json_encode($_FILES), false);
+        } else {
             $this->httpReqFileData = new \stdClass();
         }
     }
 
-    public function post(){
-        try{
+    public function post()
+    {
+        try {
             return $this->httpReqPostData;
-        }catch (\Exception $ex){
+        } catch (\Exception $ex) {
             return false;
         }
 
     }
-    public function get(){
 
-        try{
+    public function get()
+    {
+
+        try {
             return $this->httpReqGetData;
-        }catch (\Exception $ex){
+        } catch (\Exception $ex) {
             return false;
         }
     }
-    public function file(){
-        try{
+
+    public function file()
+    {
+        try {
             return $this->httpReqFileData;
-        }catch (\Exception $ex){
+        } catch (\Exception $ex) {
             return false;
         }
     }
-    public function upload($filename,$directory){
-        return @move_uploaded_file($filename,$directory);
+
+    public function upload($filename, $directory)
+    {
+        return @move_uploaded_file($filename, $directory);
     }
-    public function flashErrorMsg(){
+
+    public function flashErrorMsg()
+    {
         $error = $this->session('error_msg');
         $this->unsetSession('error_msg');
         return $error;
     }
-    public function flashSuccessMsg(){
+
+    public function flashSuccessMsg()
+    {
         $error = $this->session('success_msg');
         $this->unsetSession('success_msg');
         return $error;
     }
-    public function setPageData($data){
-        $this->session('PAGE_DATA',$data);
+
+    public function setPageData($data)
+    {
+        $this->session('PAGE_DATA', $data);
     }
-    public function getPageData(){
+
+    public function getPageData()
+    {
         $data = $this->session('PAGE_DATA');
         $this->unsetSession('PAGE_DATA');
         return $data;
     }
-    public function setFlashErrorMsg($message){
-        $this->session('error_msg',$message);
+
+    public function setFlashErrorMsg($message)
+    {
+        $this->session('error_msg', $message);
     }
-    public function setFlashSuccessMsg($message){
-        $this->session('success_msg',$message);
+
+    public function setFlashSuccessMsg($message)
+    {
+        $this->session('success_msg', $message);
     }
-    public function session($key,$value=NULL){
-        if(isset($_SESSION)){
-            if($key && $value != NULL){
+
+    public function session($key, $value = NULL)
+    {
+        if (isset($_SESSION)) {
+            if ($key && $value != NULL) {
                 $_SESSION[$key] = $value;
-            }
-            elseif($key && $value==NULL && isset($_SESSION[$key])){
+            } elseif ($key && $value == NULL && isset($_SESSION[$key])) {
                 return $_SESSION[$key];
             }
         }
         return false;
     }
-    public function formatCurrency($value){
-        if(intval($value) <= 0)return $value;
-        $decimal_holder = explode('.',$value);
+
+    public function formatCurrency($value)
+    {
+        if (intval($value) <= 0) return $value;
+        $decimal_holder = explode('.', $value);
         $value_arr = str_split($decimal_holder[0]);
-        if(count($value_arr) <= 3)return $value;
-        $final_value  = number_format($value,2,".",",");
-        return $final_value;
-    }
-    public function formatWeight($value){
-        if(intval($value) <= 0)return $value;
-        $decimal_holder = explode('.',$value);
-        $value_arr = str_split($decimal_holder[0]);
-        if(count($value_arr) <= 3)return $value;
-        $final_value  = number_format($value,0,".",",");
+        if (count($value_arr) <= 3) return $value;
+        $final_value = number_format($value, 2, ".", ",");
         return $final_value;
     }
 
-    public function cookie($key,$value=NULL,$expires=null){
-        if(isset($_COOKIE)){
-            if($key && $value != NULL){
-                setcookie($key,$value);
-            }
-            elseif($key && $value==NULL && isset($_COOKIE[$key])){
+    public function formatWeight($value)
+    {
+        if (intval($value) <= 0) return $value;
+        $decimal_holder = explode('.', $value);
+        $value_arr = str_split($decimal_holder[0]);
+        if (count($value_arr) <= 3) return $value;
+        $final_value = number_format($value, 0, ".", ",");
+        return $final_value;
+    }
+
+    public function cookie($key, $value = NULL, $expires = null)
+    {
+        if (isset($_COOKIE)) {
+            if ($key && $value != NULL) {
+                setcookie($key, $value);
+            } elseif ($key && $value == NULL && isset($_COOKIE[$key])) {
                 return $_COOKIE[$key];
             }
         }
         return false;
     }
-    public function isLoggedIn(){
+
+    public function isLoggedIn()
+    {
         return $this->session('loggedin');
     }
 
@@ -138,11 +168,13 @@ class Calypso{
      * pulled from php.net
      * http://php.net/manual/en/book.mcrypt.php
      */
-    public function encrypt($decrypted, $password='5ok@0moOlopeQQ', $salt='!kQm*fF3pXe1Kbm%9') {
+    public function encrypt($decrypted, $password = '5ok@0moOlopeQQ', $salt = '!kQm*fF3pXe1Kbm%9')
+    {
         // Build a 256-bit $key which is a SHA256 hash of $salt and $password.
         $key = hash('SHA256', $salt . $password, true);
         // Build $iv and $iv_base64.  We use a block size of 128 bits (AES compliant) and CBC mode.  (Note: ECB mode is inadequate as IV is not used.)
-        srand(); $iv = mcrypt_create_iv(mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_CBC), MCRYPT_RAND);
+        srand();
+        $iv = mcrypt_create_iv(mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_CBC), MCRYPT_RAND);
         if (strlen($iv_base64 = rtrim(base64_encode($iv), '=')) != 22) return false;
         // Encrypt $decrypted and an MD5 of $decrypted using $key.  MD5 is fine to use here because it's just to verify successful decryption.
         $encrypted = base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_128, $key, $decrypted . md5($decrypted), MCRYPT_MODE_CBC, $iv));
@@ -159,45 +191,55 @@ class Calypso{
      * pulled from php.net
      * http://php.net/manual/en/book.mcrypt.php
      */
-    public function decrypt($encrypted,  $password='5ok@0moOlopeQQ', $salt='!kQm*fF3pXe1Kbm%9') {
-    // Build a 256-bit $key which is a SHA256 hash of $salt and $password.
+    public function decrypt($encrypted, $password = '5ok@0moOlopeQQ', $salt = '!kQm*fF3pXe1Kbm%9')
+    {
+        // Build a 256-bit $key which is a SHA256 hash of $salt and $password.
         $key = hash('SHA256', $salt . $password, true);
-    // Retrieve $iv which is the first 22 characters plus ==, base64_decoded.
+        // Retrieve $iv which is the first 22 characters plus ==, base64_decoded.
         $iv = base64_decode(substr($encrypted, 0, 22) . '==');
-    // Remove $iv from $encrypted.
+        // Remove $iv from $encrypted.
         $encrypted = substr($encrypted, 22);
-    // Decrypt the data.  rtrim won't corrupt the data because the last 32 characters are the md5 hash; thus any \0 character has to be padding.
+        // Decrypt the data.  rtrim won't corrupt the data because the last 32 characters are the md5 hash; thus any \0 character has to be padding.
         $decrypted = rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, $key, base64_decode($encrypted), MCRYPT_MODE_CBC, $iv), "\0\4");
-    // Retrieve $hash which is the last 32 characters of $decrypted.
+        // Retrieve $hash which is the last 32 characters of $decrypted.
         $hash = substr($decrypted, -32);
-    // Remove the last 32 characters from $decrypted.
+        // Remove the last 32 characters from $decrypted.
         $decrypted = substr($decrypted, 0, -32);
-    // Integrity check.  If this fails, either the data is corrupted, or the password/salt was incorrect.
+        // Integrity check.  If this fails, either the data is corrupted, or the password/salt was incorrect.
         if (md5($decrypted) != $hash) return false;
         return $decrypted;
     }
 
-    public function setIsLoggedIn(){
-        return $this->session('loggedin',true);
+    public function setIsLoggedIn()
+    {
+        return $this->session('loggedin', true);
     }
-    public function unsetSession($key=null){
-        if($key!=null){
+
+    public function unsetSession($key = null)
+    {
+        if ($key != null) {
             unset($_SESSION[$key]);
-        }else{
+        } else {
             session_destroy();
         }
     }
-    public function redirect($path){
-        header('location:'.$path);
+
+    public function redirect($path)
+    {
+        header('location:' . $path);
     }
-    public function AppRedirect($controller,$action='index',$args=null){
+
+    public function AppRedirect($controller, $action = 'index', $args = null)
+    {
         $str = '';
-        if($args != null){
-            if(is_array($args)){
-                $str = join('/',$args);
-            }else{ $str = $args;}
+        if ($args != null) {
+            if (is_array($args)) {
+                $str = join('/', $args);
+            } else {
+                $str = $args;
+            }
         }
-        header('location:'.ServiceConstant::BASE_PATH.'/'.$controller.'/'.$action.'/'.$str);
+        header('location:' . ServiceConstant::BASE_PATH . '/' . $controller . '/' . $action . '/' . $str);
     }
 
     /**
@@ -216,7 +258,7 @@ class Calypso{
      */
     public static function getValue($array, $key, $default = null)
     {
-        if(!isset($array)) {
+        if (!isset($array)) {
             return $default;
         }
 
@@ -246,7 +288,8 @@ class Calypso{
         }
     }
 
-    public static function showFlashMessages() {
+    public static function showFlashMessages()
+    {
         $flashMessages = '';
         $allMessages = \Yii::$app->session->getAllFlashes();
         foreach ($allMessages as $key => $message) {
@@ -254,62 +297,81 @@ class Calypso{
         }
         return $flashMessages;
     }
-    public static function permissionMap(){
+
+    public static function permissionMap()
+    {
         $permissionMap = [
-            ServiceConstant::USER_TYPE_ADMIN => [''],
-            ServiceConstant::USER_TYPE_OFFICER => ['finance/*','billing/*','admin/*'],
-            ServiceConstant::USER_TYPE_SWEEPER =>  ['site/*','parcels/*','shipments/*','hubs/*','finance/*','billing/*','admin/*'],
-            ServiceConstant::USER_TYPE_DISPATCHER => ['site/*','parcels/*','shipments/*','hubs/*','finance/*','billing/*','admin/*'],
+            ServiceConstant::USER_TYPE_ADMIN => [],
+            ServiceConstant::USER_TYPE_OFFICER => ['finance/*', 'billing/*', 'admin/*'],
+            ServiceConstant::USER_TYPE_SWEEPER => ['site/*', 'parcels/*', 'shipments/*', 'hubs/*', 'finance/*', 'billing/*', 'admin/*'],
+            ServiceConstant::USER_TYPE_DISPATCHER => ['site/*', 'parcels/*', 'shipments/*', 'hubs/*', 'finance/*', 'billing/*', 'admin/*'],
         ];
         return $permissionMap;
     }
-    public static function normaliseLinkLabel($label){
-        return str_replace('_',' ',$label);
+
+    public static function normaliseLinkLabel($label)
+    {
+        return str_replace('_', ' ', $label);
     }
-    public static function getMenus(){
+
+    public static function getMenus()
+    {
         $menus = [
-            'Dashboard'=>'site/index',
-            'Shipments'=>[
-                'New_Shipment'=>['link'=>'site/processedparcels','class'=>''],
-                'For_Delivery'=>['link'=>'site/parcelsfordelivery','class'=>''],
-                'For_Sweep'=>['link'=>'site/parcelsforsweep','class'=>''],
-                'All_Shipments'=>['link'=>'site/parcels','class'=>''],
-            ],
-            'Hub'=>[
-                'Shipment_Arrivals'=>['link'=>'site/hubarrival','class'=>''],
-                'Set_next_destination'=>['link'=>'hubs/destination','class'=>''],
-                'For_Delivery'=>['link'=>'hubs/delivery','class'=>''],
-                'Dispatched_Shipments'=>['link'=>'hubs/hubdispatch','class'=>''],
-            ],
-            'Administrator' => [
-                'Manage_branches'=>['link'=>'site/managebranches','class'=>''],
-                'Manage_staff_accounts'=>['link'=>'site/managestaff','class'=>''],
-                'Billing'=>[
-                    'View_Matrix'=>['link'=>'billing/matrix','class'=>''],
-                    'Zones'=>['link'=>'billing/zones','class'=>''],
-                    'Regions'=>['link'=>'billing/regions','class'=>''],
-                    'State_-_Region_Mapping'=>['link'=>'billing/statemapping','class'=>''],
-                    'City_-_State Mapping'=>['link'=>'billing/citymapping','class'=>''],
-                    'Weight_Ranges'=>['link'=>'billing/weightranges','class'=>''],
-                    'Pricing'=>['link'=>'billing/pricing','class'=>''],
-                    'Exceptions'=>['link'=>'billing/exceptions','class'=>''],
-                    'Onforwarding_Charges'=>['link'=>'billing/onforwarding','class'=>''],
-                ]
-            ],
-            'Customer_History'=>'site/customerhistory',
-            'Reconciliations'=>[
-                'Customers'=>['link'=>'finance/customersall','class'=>''],
-                'Merchants' => ['link'=>'finance/merchantsdue','class'=>'']
-            ]
+            'Dashboard' => ['base' => 'site', 'base_link' => 'site/index','class' => 'fa fa-dashboard'],
+            'Shipments' => ['base' => 'shipments', 'class' => 'fa fa-gift', 'base_link' => [
+                'New_Shipments' => ['base_link' => 'shipments/processed', 'class' => ''],
+                'For_Delivery' => ['base_link' => 'shipments/fordelivery', 'class' => ''],
+                'Dispatched' => ['base_link' => 'shipments/dispatched', 'class' => ''],
+                'Delivered' => ['base_link' => 'shipments/delivered', 'class' => ''],
+                'For_Sweep' => ['base_link' => 'shipments/forsweep', 'class' => ''],
+                'All_Shipments' => ['base_link' => 'shipments/all', 'class' => ''],
+            ]],
+            'Hub' => ['base' => 'hubs', 'class' => 'fa fa-building-o', 'base_link' =>[
+                'Shipment_Arrivals' => ['base_link' => 'hubs/hubarrival', 'class' => ''],
+                'Set_next_destination' => ['base_link' => 'hubs/destination', 'class' => ''],
+                'For_Delivery' => ['base_link' => 'hubs/delivery', 'class' => ''],
+                'Dispatched_Shipments' => ['base_link' => 'hubs/hubdispatch', 'class' => ''],
+            ]],
+            'Administrator' => ['base' => 'admin', 'class' => 'fa fa-user', 'base_link' => [
+                'Manage_branches' => ['base_link' => 'admin/managebranches', 'class' => ''],
+                'Manage_staff_accounts' => ['base_link' => 'admin/managestaff', 'class' => ''],
+                'Billing' => ['base' => 'billing', 'class' => '', 'base_link' => [
+                    'View_Matrix' => ['base_link' => 'billing/matrix', 'class' => ''],
+                    'Zones' => ['base_link' => 'billing/zones', 'class' => ''],
+                    'Regions' => ['base_link' => 'billing/regions', 'class' => ''],
+                    'State_-_Region_Mapping' => ['base_link' => 'billing/statemapping', 'class' => ''],
+                    'City_-_State Mapping' => ['base_link' => 'billing/citymapping', 'class' => ''],
+                    'Weight_Ranges' => ['base_link' => 'billing/weightranges', 'class' => ''],
+                    'Pricing' => ['base_link' => 'billing/pricing', 'class' => ''],
+                    'Exceptions' => ['base_link' => 'billing/exceptions', 'class' => ''],
+                    'Onforwarding_Charges' => ['base_link' => 'billing/onforwarding', 'class' => ''],
+                ]]
+            ]],
+            'Customer_History' => ['base' => 'shipments', 'base_link' => 'shipments/customerhistory','class' => 'fa fa-user'] ,
+            'Reconciliations' => ['base' => 'finance', 'class' => 'fa fa-money', 'base_link' =>[
+                'Customers' => ['base_link' => 'finance/customersall', 'class' => ''],
+                'Merchants' => ['base_link' => 'finance/merchantsdue', 'class' => '']
+            ]]
         ];
         return $menus;
     }
-    public static function canAccess($role){
-        $linksMap = [
-            USER_TYPE_ADMIN => [],
-            USER_TYPE_OFFICER => [],
-            USER_TYPE_SWEEPER => [],
-            USER_TYPE_DISPATCHER => [],
-        ];
+
+    public static function canAccess($role,$link)
+    {
+        $permissions = self::permissionMap();
+        if (!array_key_exists($role, $permissions)) return false;
+
+        $current_user_permission = $permissions[$role];
+        $link_temp = explode('/',$link);
+        if(in_array($link_temp[0].'/*',$current_user_permission))
+        {
+            return false;
+        }
+
+        if(in_array($link,$current_user_permission))
+        {
+            return false;
+        }
+        return true;
     }
 }
