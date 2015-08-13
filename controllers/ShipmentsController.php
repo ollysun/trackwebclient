@@ -13,6 +13,8 @@ use Adapter\AdminAdapter;
 use Adapter\Globals\ServiceConstant;
 use Adapter\ParcelAdapter;
 use Adapter\UserAdapter;
+use Adapter\RefAdapter;
+use Adapter\RegionAdapter;
 use Adapter\RequestHelper;
 use Adapter\ResponseHandler;
 use Adapter\Util\Calypso;
@@ -297,7 +299,16 @@ class ShipmentsController extends BaseController {
     public function actionView()
     {
         $data = [];
+        $sender_location = [];
+        $receiver_location = [];
         $id = "-1";
+
+        $refData = new RefAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+
+        $serviceType = $refData->getShipmentType();
+        $parcelType = $refData->getparcelType();
+        $deliveryType = $refData->getdeliveryType();
+
         if(isset(Calypso::getInstance()->get()->id)){
             $id = Calypso::getInstance()->get()->id;
             $parcel = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
@@ -305,11 +316,27 @@ class ShipmentsController extends BaseController {
             $response = new ResponseHandler($response);
             if($response->getStatus() == ResponseHandler::STATUS_OK){
                 $data = $response->getData();
+                if (isset($data['sender_address']) && isset($data['sender_address']['city_id'])) {
+                    $city_id = $data['sender_address']['city_id'];
+                    $regionAdp = new RegionAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+                    $sender_location = $regionAdp->getCity($city_id);
+                }
+                if (isset($data['receiver_address']) && isset($data['receiver_address']['city_id'])) {
+                    $city_id = $data['receiver_address']['city_id'];
+                    $regionAdp = new RegionAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+                    $receiver_location = $regionAdp->getCity($city_id);
+                }
             }
         }
 
-
-        return $this->render('view',array('parcelData'=>$data));
+        return $this->render('view',array(
+            'parcelData'=>$data,
+            'serviceType'=>$serviceType,
+            'parcelType'=>$parcelType,
+            'deliveryType'=>$deliveryType,
+            'senderLocation'=>$sender_location,
+            'receiverLocation'=>$receiver_location
+        ));
     }
     public function actionDispatched ($page=1)
     {

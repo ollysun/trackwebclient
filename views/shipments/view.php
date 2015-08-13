@@ -1,6 +1,7 @@
 <?php
 use yii\helpers\Html;
 use yii\helpers\Url;
+use Adapter\Globals\ServiceConstant;
 
 /* @var $this yii\web\View */
 $this->title = 'View Waybill: '.strtoupper($parcelData['waybill_number']);
@@ -44,7 +45,13 @@ $this->params['breadcrumbs'][] = 'Waybill';
 							<?php if($parcelData['sender_address']['street_address2']) { ?>
 								<br><?= $parcelData['sender_address']['street_address2'] ?>
 							<?php }?>
-							<br><?= $parcelData['sender_address']['city_id'].', '.$parcelData['sender_address']['state_id'].', '.$parcelData['sender_address']['country_id'];  ?>
+							<br>
+							<?php
+								if (isset($senderLocation) && is_array($senderLocation['data'])) {
+									$data = $senderLocation['data'];
+									echo ucwords($data['name']).', '.ucwords($data['state']['name']).', '.ucwords($data['country']['name']);
+								}
+							?>
 						</div>
 					</div>
 				</div>
@@ -76,7 +83,13 @@ $this->params['breadcrumbs'][] = 'Waybill';
 							<?php if($parcelData['receiver_address']['street_address2']) { ?>
 								<br><?= $parcelData['receiver_address']['street_address2'] ?>
 							<?php }?>
-							<br><?= $parcelData['receiver_address']['city_id'].', '.$parcelData['receiver_address']['state_id'].', '.$parcelData['receiver_address']['country_id'];  ?>
+							<br>
+							<?php
+								if (isset($receiverLocation) && is_array($receiverLocation['data'])) {
+									$data = $receiverLocation['data'];
+									echo ucwords($data['name']).', '.ucwords($data['state']['name']).', '.ucwords($data['country']['name']);
+								}
+							?>
 						</div>
 
 					</div>
@@ -84,7 +97,7 @@ $this->params['breadcrumbs'][] = 'Waybill';
 			</fieldset>
 			<br><br>
 		</div>
-		<div class="col-xs-12 row">
+		<div class="col-xs-12">
 			<fieldset>
 				<legend>Shipment Information</legend>
 					<div class="row">
@@ -92,7 +105,15 @@ $this->params['breadcrumbs'][] = 'Waybill';
 							<div class="row form-group">
 								<div class="col-xs-6">
 									<label>Parcel type</label>
-									<div class="form-control-static"><?= $parcelData['parcel_type']; ?></div>
+									<?php
+										if(isset($parcelType) && is_array($parcelType['data'])) {
+											foreach ($parcelType['data'] as $item) {
+												if($item['id'] == $parcelData['parcel_type']) {
+													echo '<div class="form-control-static">'.ucwords($item['name']).'</div>';
+												}
+											}
+										}
+									?>
 								</div>
 								<div class="col-xs-6">
 									<label>Shipment Weight</label>
@@ -122,12 +143,29 @@ $this->params['breadcrumbs'][] = 'Waybill';
 							<div class="row form-group">
 								<div class="col-xs-6">
 									<label>Delivery</label>
-									<div class="form-control-static"><?= $parcelData['delivery_type']; ?></div>
+									<?php
+										if(isset($deliveryType) && is_array($deliveryType['data'])) {
+											foreach ($deliveryType['data'] as $item) {
+												if($item['id'] == $parcelData['delivery_type']) {
+													echo '<div class="form-control-static">'.ucwords($item['name']).'</div>';
+												}
+											}
+										}
+									?>
+									<!-- <div class="form-control-static"><?= $parcelData['delivery_type']; ?></div> -->
 									<!-- Address delivery // Pickup at Opebi EC -->
 								</div>
 								<div class="col-xs-6">
 									<label>Service type</label>
-									<div class="form-control-static"><?= $parcelData['shipping_type']; ?></div>
+									<?php
+										if(isset($serviceType) && is_array($serviceType['data'])) {
+											foreach ($serviceType['data'] as $item) {
+												if($item['id'] == $parcelData['shipping_type']) {
+													echo '<div class="form-control-static">'.ucwords($item['name']).'</div>';
+												}
+											}
+										}
+									?>
 								</div>
 							</div>
 							<div class="form-group">
@@ -167,14 +205,16 @@ $this->params['breadcrumbs'][] = 'Waybill';
 							<div class="row form-group">
 								<div class="col-xs-6">
 									<label>Cash on Delivery?</label>
-									<div class="form-control-static"><?= $parcelData['cash_on_delivery']; ?></div>
+									<div class="form-control-static"><?= ($parcelData['cash_on_delivery']) ? 'Yes': 'No' ; ?></div>
 								</div>
+								<?php if ($parcelData['cash_on_delivery']) { ?>
 								<div class="col-xs-6">
 									<label>Amount to be collected</label>
 									<div class="form-control-static">
 										<span class="currency naira"></span><?= $parcelData['delivery_amount']; ?>
 									</div>
 								</div>
+								<?php } ?>
 							</div>
 						</div>
 					</div>
@@ -192,21 +232,43 @@ $this->params['breadcrumbs'][] = 'Waybill';
 				</div>
 				<div class="form-group">
 					<label>Payment Method</label>
-					<div class="form-control-static"><?= $parcelData['payment_type']; ?></div>
+					<div class="form-control-static"><?= ServiceConstant::getPaymentMethod($parcelData['payment_type']); ?></div>
 				</div>
 				<div class="row">
+				<?php
+					$cash = false;
+					$pos = false;
+					switch ($parcelData['payment_type']) {
+						case ServiceConstant::REF_PAYMENT_METHOD_CASH:
+							$cash = true;
+							break;
+
+						case ServiceConstant::REF_PAYMENT_METHOD_POS:
+							$pos = true;
+							break;
+
+						case ServiceConstant::REF_PAYMENT_METHOD_CASH_POS:
+							$cash = true;
+							$pos = true;
+							break;
+					}
+				?>
+				<?php if ($cash) { ?>
 					<div class="col-xs-6 form-group">
 						<label> Amount collected in cash</label>
 						<div class="form-control-static"><span class="currency naira"></span><?= $parcelData['cash_amount']; ?></div>
 					</div>
+				<?php } ?>
+				<?php if ($pos) { ?>
 					<div class="col-xs-6 form-group">
 						<label> Amount collected via POS</label>
 						<div class="form-control-static"><span class="currency naira"></span><?= $parcelData['pos_amount']; ?></div>
 					</div>
-					<div class="col-xs-12 form-group">
+					<div class="col-xs-6 form-group">
 						<label>POS Transaction ID</label>
-						<div class="form-control-static">not available in api</div>
+						<div class="form-control-static"><?= $parcelData['pos_trans_id']; ?></div>
 					</div>
+				<?php } ?>
 				</div>
 			</fieldset>
 			<br><br>

@@ -31,8 +31,12 @@ class RegionAdapter extends BaseAdapter
     public function changeCityStatus($data){
         return $this->request(ServiceConstant::URL_REGION_CITY_STATUS, $data, self::HTTP_POST);
     }
-    public function getCity($city_id){
-        return $this->request(ServiceConstant::URL_REGION_CITY_GET_ONE, $city_id, self::HTTP_POST);
+    public function getCity($city_id,$with_state=1,$with_charge=0, $with_branch=0){
+        $filter = '?'.($with_state? 'with_state':'');
+        $filter .= ($with_state? '&with_country':'');
+        $filter .= ($with_charge? '&with_charge':'');
+        $filter .= ($with_branch? '&with_branch':'');
+        return $this->request(ServiceConstant::URL_REGION_CITY_GET_ONE.$filter.'&city_id='.$city_id,[], self::HTTP_POST);
     }
     public function getAllCity($with_state=1,$with_region=1,$state_id=null, $with_charge=1, $with_branch=1){
         $filter = ''.($with_state? 'with_state':'');
