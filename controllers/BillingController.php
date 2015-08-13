@@ -542,8 +542,4 @@ class BillingController extends BaseController
         }
         return 0;
     }
-    public function actionExceptions()
-    {
-        return $this->render('exceptions');
-    }
 }

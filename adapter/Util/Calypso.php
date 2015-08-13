@@ -343,7 +343,6 @@ class Calypso
                     'City_-_State Mapping' => ['base_link' => 'billing/citymapping', 'class' => ''],
                     'Weight_Ranges' => ['base_link' => 'billing/weightranges', 'class' => ''],
                     'Pricing' => ['base_link' => 'billing/pricing', 'class' => ''],
-                    'Exceptions' => ['base_link' => 'billing/exceptions', 'class' => ''],
                     'Onforwarding_Charges' => ['base_link' => 'billing/onforwarding', 'class' => ''],
                 ]]
             ]],
