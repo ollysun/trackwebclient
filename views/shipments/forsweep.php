@@ -88,7 +88,7 @@ if($offset <= 0){
                 <tbody>
                 <?php
                 if(isset($parcels) && is_array($parcels)){
-                    $i = 1;$count = $offset + 1;
+                    $i = $offset;
                     foreach($parcels as $parcel){
                         ?>
                         <tr data-waybill='<?php echo Calypso::getValue($parcel, 'waybill_number'); ?>'
@@ -97,10 +97,10 @@ if($offset <= 0){
                             >
                             <td>
                                 <div class='checkbox-nice'>
-                                    <input name='waybills[]' id='chk_<?php echo $count; ?>' type='checkbox' class='chk_next'><label for='chk_<?php echo $count; ?>'></label>
+                                    <input name='waybills[]' id='chk_<?php echo ++$i; ?>' type='checkbox' class='chk_next'><label for='chk_<?php echo $i; ?>'></label>
                                 </div>
                             </td>
-                            <td><?= $count++ ?></td>
+                            <td><?= $i ?></td>
                             <td><?= strtoupper($parcel['waybill_number']); ?></td>
                             <td><?= strtoupper($parcel['sender']['firstname'].' '. $parcel['sender']['lastname']) ?></td>
                             <td><?= strtoupper($parcel['receiver']['firstname'].' '. $parcel['receiver']['lastname']) ?></td>
@@ -116,14 +116,7 @@ if($offset <= 0){
 
                 </tbody>
             </table>
-            <div class="pull-right form-group">
-                <?php if($show_prev): ?>
-                    <a href="<?= Url::to(['shipments/forsweep?offset='.($offset - $page_width).$link]) ?>" class="btn btn-primary btn-sm">Prev</a>
-                <?php endif;  ?>
-                <?php if($show_next): ?>
-                    <a href="<?= Url::to(['shipments/forsweep?offset='.($offset + $page_width).$link]) ?>" class="btn btn-primary btn-sm">Next</a>
-                <?php endif;  ?>
-            </div>
+            <?= $this->render('../elements/pagination_and_summary', ['first' => $offset, 'last'=>$i, 'total_count'=> $total_count,'page_width'=>$page_width]) ?>
         </div>
     </div>
 </div>
