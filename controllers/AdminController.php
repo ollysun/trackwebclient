@@ -22,7 +22,7 @@ use Adapter\UserAdapter;
 
 class AdminController extends BaseController {
 
-	private $page_width = 5;
+	private $page_width = 500;
 
 	public function beforeAction($action) {
 		$this->enableCsrfValidation = false;
