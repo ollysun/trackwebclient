@@ -24,7 +24,7 @@ use yii\web\Response;
 
 class ShipmentsController extends BaseController {
 
-    private $page_width = 10;
+    private $page_width = 100;
 
     public function actionAll($offset=0,$search=false,$page_width=null)
     {

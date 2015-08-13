@@ -23,7 +23,7 @@ use Adapter\Util\Response;
 
 class SiteController extends BaseController
 {
-    private $page_width = 5;
+    private $page_width = 500;
     public function behaviors()
     {
         return [
