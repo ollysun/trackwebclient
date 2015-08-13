@@ -65,8 +65,6 @@ function calculateAmount() {
 		}
 	},
 	callback: function(ele, val, who) {
-		console.log('ele', ele);
-		console.log('val '+val);
 		if (val === '2') {
 			$('select[name="pickup_centres"]').removeClass('validate required').removeClass('has-error');
 		}
@@ -85,8 +83,6 @@ var CODShowHide = {
 		},
 	},
 	callback: function(ele, val, who) {
-		console.log('ele', ele);
-		console.log('val '+val);
 		if (val === 'false') {
 			$('#CODAmount').val('');
 			$('input[name="CODAmount"]').removeClass('required number').parent().removeClass('has-error');;
@@ -129,8 +125,6 @@ var paymentMethodShowHide = {
 		},
 	},
 	callback: function(ele, val, who) {
-		console.log('ele', ele);
-		console.log('val '+val);
 		if (val !== '3') {
 			$('input[name="amount_in_cash"], input[name="amount_in_pos"]').removeClass('validate required number').parent().removeClass('has-error');;
 		}
