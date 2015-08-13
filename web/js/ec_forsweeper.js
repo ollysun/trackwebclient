@@ -296,7 +296,13 @@ $(document).ready(function(){
         }
         Parcel_Destination.searchStaffDetails(staff_code);
     });
-
+    $("#chbx_w_all").unbind('click').on('click',function(){
+        if ($(this).is(':checked')){
+            $(".chk_next").prop("checked","checked");
+        }else{
+            $(".chk_next").removeAttr("checked");
+        }
+    });
     $generateButton.on('click', function(event){
 
         $('#payload').val(JSON.stringify(parcels));

@@ -54,7 +54,7 @@ if($offset <= 0){
                 <div class="pull-left form-group">
                     <label for="searchInput">Search</label><br>
                     <div class="input-group input-group-sm input-group-search">
-                        <input id="searchInput" type="text" name="search" placeholder="" class="search-box form-control">
+                        <input id="searchInput" type="text" name="search" placeholder="Search by Waybill number" class="search-box form-control">
                         <div class="input-group-btn">
                             <button class="btn btn-default" type="submit">
                                 <i class="fa fa-search"></i>

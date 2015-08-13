@@ -148,7 +148,7 @@ use Adapter\Util\Calypso;
 						</ul>
 					</li>
 					<?php
-/*					$permission = Calypso::getInstance()->permissionMap();
+					/*$permission = Calypso::getInstance()->permissionMap();
 					$menus = Calypso::getInstance()->getMenus();
 
 					foreach($menus as $k => $v) {
@@ -165,22 +165,54 @@ use Adapter\Util\Calypso;
 							*/?>
 							<ul class="submenu">
 								<?php
-/*								//print_r($menus[$k]);
-								foreach($menus[$k] as $key => $value){
-								*/?>
+/*								foreach($menus[$k] as $key => $value){
+									if(is_array($value) && isset($value['link'])){
+									*/?>
 								<li>
-									<a href="<?/*= Url::to(['finance/customersall']) */?>"><?/*= Calypso::getInstance()->normaliseLinkLabel('Fake_Test'); */?></a>
+									<a href="<?/*= Url::to([$value['link']]) */?>">
+										<i class="<?/*= $value['class'] */?>"></i>
+										<span><?/*= Calypso::getInstance()->normaliseLinkLabel($key); */?></span></a>
 								</li>
-								<?php /*} */?>
+								<?php /*}else{
+												*/?>
+										<li>
+											<a href="<?/*= !is_array($value)? Url::to([$value]):'' */?>" class="dropdown-toggle">
+												<i class="fa fa-money"></i>
+												<span><?/*= Calypso::getInstance()->normaliseLinkLabel($key); */?></span>
+												<i class="fa fa-angle-right drop-icon"></i>
+											</a>
+											<?php /*if(is_array($value)): */?>
+												<ul class="submenu">
+													<?php
+/*													foreach($value as $subkey => $subvalue){
+														if(is_array($subvalue) && isset($subvalue['link'])){
+															*/?>
+															<li>
+																<a href="<?/*= Url::to([$subvalue['link']]) */?>">
+																	<i class="<?/*= $subvalue['class'] */?>"></i>
+																	<span><?/*= Calypso::getInstance()->normaliseLinkLabel($subkey); */?></span></a>
+															</li>
+														<?php /*}else{
+															print_r($subvalue);
+														}
+													} */?>
+												</ul>
+											<?php /*endif */?>
+										</li>
+											<?php
+/*
+									}
+								} */?>
 							</ul>
 							<?php /*} */?>
 						</li>
 						--><?php
-/*					}
-					*/?>
+/*					}*/
+					?>
 				</ul>
 			</div>
 		</div>
 	</section>
 	<div id="nav-col-submenu"></div>
 </div>
+
