@@ -101,13 +101,12 @@ if($search){
                 <tbody>
                 <?php
                 if(isset($parcels) && is_array($parcels)){
-                    $i = 1;
-                    $count = $offset + 1;
+                    $i = $offset;
                     foreach($parcels as $parcel){
                         ?>
                         <tr>
                             <!--						<td><div class="checkbox-nice"><input id="chbx_w_000--><?//= $i ?><!--" type="checkbox"><label for="chbx_w_0001"> </label></div></td>-->
-                            <td><?= $count++ ?></td>
+                            <td><?= ++$i; ?></td>
                             <td><?= strtoupper($parcel['waybill_number']); ?></td>
                             <td><?= strtoupper($parcel['sender']['firstname'].' '. $parcel['sender']['lastname']) ?></td>
                             <td><?= $parcel['sender']['phone'] ?></td>
@@ -123,14 +122,7 @@ if($search){
 
                 </tbody>
             </table>
-            <div class="pull-right form-group">
-                <?php if($show_prev): ?>
-                    <a href="<?= Url::to(['shipments/all?offset='.($offset - $page_width).$link]) ?>" class="btn btn-primary btn-sm">Prev</a>
-                <?php endif;  ?>
-                <?php if($show_next): ?>
-                    <a href="<?= Url::to(['shipments/all?offset='.($offset + $page_width).$link]) ?>" class="btn btn-primary btn-sm">Next</a>
-                <?php endif;  ?>
-            </div>
+            <?= $this->render('../elements/pagination_and_summary', ['first' => $offset, 'last'=>$i, 'total_count'=> $total_count,'page_width'=>$page_width]) ?>
         </div>
     </div>
 </div>

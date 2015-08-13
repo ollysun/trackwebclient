@@ -48,8 +48,7 @@ class FinanceController extends BaseController
             $data = $response->getData();
         }
         $total_count = empty($data['total_count'])?0:$data['total_count'];
-        $pages = new Pagination(['totalCount' => $total_count,'defaultPageSize'=>$page_width]);
-        return $this->render('customers_all',array('parcels'=>$data,'payment_type'=>$method,'from_date'=>$from_date,'to_date'=>$to_date,'offset'=>$offset,'pages'=>$pages, 'total_count'=>$total_count));
+        return $this->render('customers_all',array('parcels'=>$data,'payment_type'=>$method,'from_date'=>$from_date,'to_date'=>$to_date,'offset'=>$offset,'page_width'=>$page_width, 'total_count'=>$total_count));
     }
 
     public function actionMerchantspending()

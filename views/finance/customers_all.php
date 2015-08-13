@@ -130,11 +130,7 @@ $this->params['breadcrumbs'] = array(
                     } ?>
                     </tbody>
                 </table>
-                <div class="clearfix">
-                    <div class="pull-left">Showing <?= "" . ($offset + 1) . " to " . $row . " of " . $total_count; ?>
-                    </div>
-                    <div class="pull-right"><?= LinkPager::widget(['pagination' => $pages]); ?></div>
-                </div>
+                <?= $this->render('../elements/pagination_and_summary', ['first' => $offset, 'last'=>$row, 'total_count'=> $total_count,'page_width'=>$page_width]) ?>
 
             <?php } else { ?>
                 <p>No matching record found</p>
