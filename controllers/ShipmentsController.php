@@ -31,6 +31,8 @@ class ShipmentsController extends BaseController {
         $from_date = date('Y/m/d');
         $to_date = date('Y/m/d');
         $search_action = $search;
+        $user_session = Calypso::getInstance()->session("user_session");
+        var_dump($user_session);
         if($page_width != null){
             $this->page_width = $page_width;
             Calypso::getInstance()->cookie('page_width',$page_width);
@@ -49,8 +51,10 @@ class ShipmentsController extends BaseController {
             $search_action = true;
             $filter = null;
         }else{
-            //$response = $parcel->getParcels(null,null,$offset,$this->page_width);
-            $response = $parcel->getNewParcelsByDate(date('Y-m-d'),$offset,$this->page_width);
+            $branch_to_view = ($user_session['role_id'] == ServiceConstant::USER_TYPE_SUPER_ADMIN ) ? null :
+                ($user_session['role_id'] == ServiceConstant::USER_TYPE_ADMIN ) ? null : $user_session['branch_id']; //displays all when null
+
+            $response = $parcel->getParcels(null,null,null,$branch_to_view,$offset,$this->page_width);
             $search_action = false;
             $filter = null;
         }
