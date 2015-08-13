@@ -32,7 +32,6 @@ class ShipmentsController extends BaseController {
         $to_date = date('Y/m/d');
         $search_action = $search;
         $user_session = Calypso::getInstance()->session("user_session");
-        var_dump($user_session);
         if($page_width != null){
             $this->page_width = $page_width;
             Calypso::getInstance()->cookie('page_width',$page_width);
