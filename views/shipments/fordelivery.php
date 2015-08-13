@@ -49,16 +49,14 @@ if($offset <= 0){
     <div class="main-box-header clearfix">
         <div class="clearfix">
             <form class="table-search-form form-inline pull-right clearfix">
-
                 <div class="pull-left form-group">
-                    <label for="searchInput">Extended Search</label><br>
+                    <label for="searchInput">Search</label><br>
                     <div class="input-group input-group-sm input-group-search">
-                        <input id="searchInput" type="text" name="search" placeholder="Enter Waybill number" class="search-box form-control">
+                        <input id="searchInput" type="text" name="search" placeholder="Search by Waybill number" class="search-box form-control">
                         <div class="input-group-btn">
                             <button class="btn btn-default" type="submit">
-                                <i class="fa fa-search"></i>&nbsp;&nbsp; Extend Search
+                                <i class="fa fa-search"></i>
                             </button>
-
                         </div>
                     </div>
                 </div>
