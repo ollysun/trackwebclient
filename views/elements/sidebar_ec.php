@@ -148,66 +148,66 @@ use Adapter\Util\Calypso;
 						</ul>
 					</li>
 					<?php
-					/*$permission = Calypso::getInstance()->permissionMap();
+					$permission = Calypso::getInstance()->permissionMap();
 					$menus = Calypso::getInstance()->getMenus();
 
 					foreach($menus as $k => $v) {
 						//var_dump($k);continue;
-						*/?><!--
+						?>
 						<li>
-							<a href="<?/*= !is_array($v)? Url::to([$v]):'' */?>" class="dropdown-toggle">
+							<a href="<?= !is_array($v)? Url::to([$v]):'' ?>" class="dropdown-toggle">
 								<i class="fa fa-money"></i>
-								<span><?/*= Calypso::getInstance()->normaliseLinkLabel($k); */?></span>
+								<span><?= Calypso::getInstance()->normaliseLinkLabel($k); ?></span>
 								<i class="fa fa-angle-right drop-icon"></i>
 							</a>
 							<?php
-/*							if(is_array($menus[$k])){
-							*/?>
+							if(is_array($menus[$k])){
+							?>
 							<ul class="submenu">
 								<?php
-/*								foreach($menus[$k] as $key => $value){
+								foreach($menus[$k] as $key => $value){
 									if(is_array($value) && isset($value['link'])){
-									*/?>
+									?>
 								<li>
-									<a href="<?/*= Url::to([$value['link']]) */?>">
-										<i class="<?/*= $value['class'] */?>"></i>
-										<span><?/*= Calypso::getInstance()->normaliseLinkLabel($key); */?></span></a>
+									<a href="<?= Url::to([$value['link']]) ?>">
+										<i class="<?= $value['class'] ?>"></i>
+										<span><?= Calypso::getInstance()->normaliseLinkLabel($key); ?></span></a>
 								</li>
-								<?php /*}else{
-												*/?>
+								<?php }else{
+												?>
 										<li>
-											<a href="<?/*= !is_array($value)? Url::to([$value]):'' */?>" class="dropdown-toggle">
+											<a href="<?= !is_array($value)? Url::to([$value]):'' ?>" class="dropdown-toggle">
 												<i class="fa fa-money"></i>
-												<span><?/*= Calypso::getInstance()->normaliseLinkLabel($key); */?></span>
+												<span><?= Calypso::getInstance()->normaliseLinkLabel($key); ?></span>
 												<i class="fa fa-angle-right drop-icon"></i>
 											</a>
-											<?php /*if(is_array($value)): */?>
+											<?php if(is_array($value)): ?>
 												<ul class="submenu">
 													<?php
-/*													foreach($value as $subkey => $subvalue){
+													foreach($value as $subkey => $subvalue){
 														if(is_array($subvalue) && isset($subvalue['link'])){
-															*/?>
+															?>
 															<li>
-																<a href="<?/*= Url::to([$subvalue['link']]) */?>">
-																	<i class="<?/*= $subvalue['class'] */?>"></i>
-																	<span><?/*= Calypso::getInstance()->normaliseLinkLabel($subkey); */?></span></a>
+																<a href="<?= Url::to([$subvalue['link']]) ?>">
+																	<i class="<?= $subvalue['class'] ?>"></i>
+																	<span><?= Calypso::getInstance()->normaliseLinkLabel($subkey); ?></span></a>
 															</li>
-														<?php /*}else{
+														<?php }else{
 															print_r($subvalue);
 														}
-													} */?>
+													} ?>
 												</ul>
-											<?php /*endif */?>
+											<?php endif ?>
 										</li>
 											<?php
-/*
+
 									}
-								} */?>
+								} ?>
 							</ul>
-							<?php /*} */?>
+							<?php } ?>
 						</li>
-						--><?php
-/*					}*/
+						<?php
+					}
 					?>
 				</ul>
 			</div>
