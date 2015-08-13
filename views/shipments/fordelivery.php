@@ -110,8 +110,8 @@ if($offset <= 0){
                 ?>
                 </tbody>
             </table>
-            <?= $this->render('../elements/pagination_and_summary', ['first' => $offset, 'last'=>$i, 'total_count'=> $total_count,'page_width'=>$page_width]) ?>
         </div>
+        <?= $this->render('../elements/pagination_and_summary', ['first' => $offset, 'last'=>$i, 'total_count'=> $total_count,'page_width'=>$page_width]) ?>
     </div>
 </div>
 
