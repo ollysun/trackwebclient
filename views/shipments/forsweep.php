@@ -35,7 +35,6 @@ if($offset <= 0){
 }elseif (($offset - $page_width) >= 0){
     $show_prev = true;
 }
-
 ?>
 <!-- this page specific styles -->
 <?= Html::cssFile('@web/css/libs/dataTables.fixedHeader.css') ?>
@@ -74,12 +73,12 @@ if($offset <= 0){
             <table id="next_dest" class="table table-hover">
                 <thead>
                 <tr>
-                    <!--						<th style="width: 20px"><div class="checkbox-nice"><input id="chbx_w_all" type="checkbox"><label for="chbx_w_all"> </label></div></th>-->
-                    <th style="width: 20px;"></th>
+                    <th style="width: 20px"><div class="checkbox-nice"><input id="chbx_w_all" type="checkbox"><label for="chbx_w_all"> </label></div></th>
                     <th style="width: 20px">No.</th>
                     <th>Waybill No.</th>
                     <th>Shipper</th>
                     <th>Receiver</th>
+                    <th>Next Destination</th>
                     <th>Final Destination</th>
                     <th>Created Date</th>
                     <th>Action</th>
@@ -98,12 +97,14 @@ if($offset <= 0){
                             <td>
                                 <div class='checkbox-nice'>
                                     <input name='waybills[]' id='chk_<?php echo ++$i; ?>' type='checkbox' class='chk_next'><label for='chk_<?php echo $i; ?>'></label>
+                                    <input name='waybills[]' value="<?= $parcel['waybill_number'] ?>" id='chk_<?php echo ++$i; ?>' type='checkbox' class='chk_next'><label for='chk_<?php echo $i; ?>'></label>
                                 </div>
                             </td>
                             <td><?= $i ?></td>
                             <td><?= strtoupper($parcel['waybill_number']); ?></td>
                             <td><?= strtoupper($parcel['sender']['firstname'].' '. $parcel['sender']['lastname']) ?></td>
                             <td><?= strtoupper($parcel['receiver']['firstname'].' '. $parcel['receiver']['lastname']) ?></td>
+                            <td><?= strtoupper($branch['parent']['name']) ?></td>
                             <td><?= ucwords(Calypso::getValue($parcel, 'receiver_address.city')) . ', ' .
                                     ucwords(Calypso::getValue($parcel, 'receiver_address.state.name')); ?>
                             </td>

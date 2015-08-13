@@ -10,9 +10,12 @@ namespace app\controllers;
 
 
 use Adapter\AdminAdapter;
+use Adapter\BranchAdapter;
 use Adapter\Globals\ServiceConstant;
 use Adapter\ParcelAdapter;
 use Adapter\UserAdapter;
+use Adapter\RefAdapter;
+use Adapter\RegionAdapter;
 use Adapter\RequestHelper;
 use Adapter\ResponseHandler;
 use Adapter\Util\Calypso;
@@ -28,6 +31,11 @@ class ShipmentsController extends BaseController {
         $from_date = date('Y/m/d');
         $to_date = date('Y/m/d');
         $search_action = $search;
+        $user_session = Calypso::getInstance()->session("user_session");
+        if($page_width != null){
+            $this->page_width = $page_width;
+            Calypso::getInstance()->cookie('page_width',$page_width);
+        }
 
         $page_width = is_null($page_width) ? $this->page_width : $page_width;
         $offset = ($page-1)*$page_width;
@@ -45,6 +53,10 @@ class ShipmentsController extends BaseController {
             $search_action = true;
             $filter = null;
         }else{
+            $branch_to_view = ($user_session['role_id'] == ServiceConstant::USER_TYPE_SUPER_ADMIN ) ? null :
+                ($user_session['role_id'] == ServiceConstant::USER_TYPE_ADMIN ) ? null : $user_session['branch_id']; //displays all when null
+
+            $response = $parcel->getParcels(null,null,null,$branch_to_view,$offset,$this->page_width);
             //$response = $parcel->getParcels(null,null,$offset,$this->page_width);
             $response = $parcel->getNewParcelsByDate(date('Y-m-d'),$offset,$this->page_width, 1);
             $search_action = false;
@@ -176,6 +188,9 @@ class ShipmentsController extends BaseController {
         $page_width = is_null($page_width) ? $this->page_width : $page_width;
         $offset = ($page-1)*$page_width;
         $parcel = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+        $user_data = (Calypso::getInstance()->session('user_session'));
+        $branchData = new BranchAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+        $branch = $branchData->getOneHub($user_data['branch']['id']);
         if(isset(Calypso::getInstance()->get()->from,Calypso::getInstance()->get()->to)){
             $from_date = Calypso::getInstance()->get()->from.' 00:00:00';
             $to_date = Calypso::getInstance()->get()->to.' 23:59:59';
@@ -199,7 +214,7 @@ class ShipmentsController extends BaseController {
             $total_count = $data['total_count'];
             $data = $data['parcels'];
         }
-        return $this->render('forsweep',array('parcels'=>$data,'from_date'=>$from_date,'to_date'=>$to_date,'offset'=>$offset,'page_width'=>$page_width,'search'=>$search_action, 'total_count'=>$total_count));
+        return $this->render('forsweep',array('branch'=>$branch['data'], 'parcels'=>$data,'from_date'=>$from_date,'to_date'=>$to_date,'offset'=>$offset,'page_width'=>$page_width,'search'=>$search_action, 'total_count'=>$total_count));
     }
 
     public function actionProcessed($page=1,$search=false,$page_width=null)
@@ -312,7 +327,16 @@ class ShipmentsController extends BaseController {
     public function actionView()
     {
         $data = [];
+        $sender_location = [];
+        $receiver_location = [];
         $id = "-1";
+
+        $refData = new RefAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+
+        $serviceType = $refData->getShipmentType();
+        $parcelType = $refData->getparcelType();
+        $deliveryType = $refData->getdeliveryType();
+
         if(isset(Calypso::getInstance()->get()->id)){
             $id = Calypso::getInstance()->get()->id;
             $parcel = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
@@ -320,9 +344,27 @@ class ShipmentsController extends BaseController {
             $response = new ResponseHandler($response);
             if($response->getStatus() == ResponseHandler::STATUS_OK){
                 $data = $response->getData();
+                if (isset($data['sender_address']) && isset($data['sender_address']['city_id'])) {
+                    $city_id = $data['sender_address']['city_id'];
+                    $regionAdp = new RegionAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+                    $sender_location = $regionAdp->getCity($city_id);
+                }
+                if (isset($data['receiver_address']) && isset($data['receiver_address']['city_id'])) {
+                    $city_id = $data['receiver_address']['city_id'];
+                    $regionAdp = new RegionAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+                    $receiver_location = $regionAdp->getCity($city_id);
+                }
             }
         }
-        return $this->render('view',array('parcelData'=>$data));
+
+        return $this->render('view',array(
+            'parcelData'=>$data,
+            'serviceType'=>$serviceType,
+            'parcelType'=>$parcelType,
+            'deliveryType'=>$deliveryType,
+            'senderLocation'=>$sender_location,
+            'receiverLocation'=>$receiver_location
+        ));
     }
     public function actionDispatched ($page=1, $page_width=null)
     {
