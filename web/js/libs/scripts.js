@@ -4,27 +4,27 @@ $(function($) {
 			opacity: 1
 		});
 	}, 200);
-	
+
 	$('#sidebar-nav,#nav-col-submenu').on('click', '.dropdown-toggle', function (e) {
 		e.preventDefault();
-		
+
 		var $item = $(this).parent();
 
 		if (!$item.hasClass('open')) {
 			$item.parent().find('.open .submenu').slideUp('fast');
 			$item.parent().find('.open').toggleClass('open');
 		}
-		
+
 		$item.toggleClass('open');
-		
+
 		if ($item.hasClass('open')) {
 			$item.children('.submenu').slideDown('fast');
-		} 
+		}
 		else {
 			$item.children('.submenu').slideUp('fast');
 		}
 	});
-	
+
 	$('body').on('mouseenter', '#page-wrapper.nav-small #sidebar-nav .dropdown-toggle', function (e) {
 		if ($( document ).width() >= 992) {
 			var $item = $(this).parent();
@@ -44,17 +44,17 @@ $(function($) {
 			$item.children('.submenu').slideDown('fast');
 		}
 	});
-	
+
 	$('body').on('mouseleave', '#page-wrapper.nav-small #sidebar-nav > .nav-pills > li', function (e) {
 		if ($( document ).width() >= 992) {
 			var $item = $(this);
-	
+
 			if ($item.hasClass('open')) {
 				$item.find('.open .submenu').slideUp('fast');
 				$item.find('.open').removeClass('open');
 				$item.children('.submenu').slideUp('fast');
 			}
-			
+
 			$item.removeClass('open');
 		}
 	});
@@ -68,20 +68,20 @@ $(function($) {
 			$('#nav-col-submenu').html('');
 		}
 	});
-	
+
 	$('#make-small-nav').click(function (e) {
 		$('#page-wrapper').toggleClass('nav-small');
 	});
-	
+
 	$(window).smartresize(function(){
 		if ($( document ).width() <= 991) {
 			$('#page-wrapper').removeClass('nav-small');
 		}
 	});
-	
+
 	$('.mobile-search').click(function(e) {
 		e.preventDefault();
-		
+
 		$('.mobile-search').addClass('active');
 		$('.mobile-search form input.form-control').focus();
 	});
@@ -109,11 +109,17 @@ $(function($) {
 		});
 	});
 
-	// Disable backspace button on all pages
+	// CourierPlus: Disable backspace button on all pages
 	$(document).on("keydown", function (e) {
 		if (e.which === 8 && !$(e.target).is("input:not([readonly]):not([type=radio]):not([type=checkbox]), textarea, [contentEditable], [contentEditable=true]")) {
 			e.preventDefault();
 		}
+	});
+
+	// CourierPlus: Disable form submit button on form submit
+	$("form").on('submit.CP.form.disableOnSubmit',function(){
+		$(this).find("button[type=submit]").attr('type', 'button').addClass('disabled');
+		$(this).find("input[type=submit]").attr('type', 'button').addClass('disabled');
 	});
 
   // activate tooltip // collapse/expand
@@ -153,7 +159,7 @@ $.fn.removeClassPrefix = function(prefix) {
 			timeout = setTimeout(delayed, threshold || 100);
 		};
 	}
-	// smartresize 
+	// smartresize
 	jQuery.fn[sr] = function(fn){	return fn ? this.bind('resize', debounce(fn)) : this.trigger(sr); };
 
 })(jQuery,'smartresize');
