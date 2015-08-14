@@ -85,12 +85,13 @@ function validateFxn() {
     if(msg !== ''){
         formgroup.addClass('has-error').append('<div class="help-block no-margin clearfix">'+msg+'</div>');
         if(!input.hasClass('active-validate'))
-            input.one('blur.CP.form.validate',validateFxn);
+            input.one('blur.CP.form.validate change.CP.form.validate',validateFxn);
     }
     return isValid;
 }
 (function($){
-    $('.validate-form .active-validate').off('blur.CP.form.validate').on('blur.CP.form.validate', validateFxn);
+    $('.validate-form .active-validate')
+        .off('blur.CP.form.validate change.CP.form.validate').on('blur.CP.form.validate change.CP.form.validate', validateFxn);
     $('.validate-form').on('submit.CP.form.validate',function(event){
         return validate(this);
     });
