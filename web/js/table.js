@@ -16,8 +16,5 @@ $(document).ready(function(){
 			$(v).attr('type', 'button').addClass('disabled');
 		});*!/
 	});*/
-	$("form").on('submit',function(){
-		$(this).find("button[type=submit]").attr('type', 'button').addClass('disabled');
-		$(this).find("input[type=submit]").attr('type', 'button').addClass('disabled');
-	});
+
 });
