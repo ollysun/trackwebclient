@@ -118,8 +118,11 @@ $(function($) {
 
 	// CourierPlus: Disable form submit button on form submit
 	$("form").on('submit.CP.form.disableOnSubmit',function(){
-		$(this).find("button[type=submit]").attr('type', 'button').addClass('disabled');
-		$(this).find("input[type=submit]").attr('type', 'button').addClass('disabled');
+		var btns = $(this).find("[type=submit]");
+		btns.attr('type', 'button').addClass('disabled');
+		window.setTimeout(function(){
+			btns.attr('type','submit').removeClass('disabled');
+		},4000);
 	});
 
   // activate tooltip // collapse/expand
