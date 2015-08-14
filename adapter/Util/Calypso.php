@@ -295,6 +295,7 @@ class Calypso
         foreach ($allMessages as $key => $message) {
             $flashMessages .= '<div class="alert alert-' . $key . '">' . $message . '</div>';
         }
+        \Yii::$app->session->removeAllFlashes();
         return $flashMessages;
     }
 

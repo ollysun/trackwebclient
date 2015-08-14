@@ -18,7 +18,7 @@ $this->params['breadcrumbs'] = array(
 <?= Html::cssFile('@web/css/libs/dataTables.tableTools.css') ?>
 
 <?php
-	$this->params['content_header_button'] = '<button type="button" class="btn btn-primary" id="add_billing"><i class="fa fa-plus"></i> Add Billing Pricing</button>';
+	$this->params['content_header_button'] = '<button type="button" class="btn btn-primary" id="add_billing"><i class="fa fa-plus"></i> Add Billing Price</button>';
 ?>
 
 <div class="main-box">

@@ -58,7 +58,7 @@ $this->params['content_header_button'] = '<span class="label label-success">CONF
 
                                 echo "<tr>";
                                 echo "<td>{$row}</td>";
-                                echo "<td><a href='/site/viewwaybill?id=" . Calypso::getValue($parcels, 'id') . "'>" . Calypso::getValue($parcels, 'waybill_number') . "</a></td>";
+                                echo "<td>". Calypso::getValue($parcels, 'waybill_number')."</td>";
                                 echo "<td>" . ucwords(Calypso::getValue($parcels, 'sender_address.city') . ', ' . Calypso::getValue($parcels, 'sender_address.state.name')) . "</td>";
                                 echo "<td>" . strtoupper(Calypso::getValue($parcels, 'to_branch.name')) ."</td>";
                                 echo "<td>" . ucwords(Calypso::getValue($parcels, 'receiver_address.city') . ', ' . Calypso::getValue($parcels, 'receiver_address.state.name')) . "</td>";
@@ -77,7 +77,7 @@ $this->params['content_header_button'] = '<span class="label label-success">CONF
         </div>
 
         <div class="pull-right">
-            <button onclick="PrintElem('#print_area')" class="btn btn-primary">Print Manifest</button>
+            <button onclick="PrintElem('#print_area',this)" class="btn btn-primary">Print Manifest</button>
         </div>
 
         <div class="clearfix"></div>
@@ -93,26 +93,34 @@ $this->params['content_header_button'] = '<span class="label label-success">CONF
 <?php $this->registerJsFile('@web/js/barcode.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
 
 <script>
-    function PrintElem(elem)
+    function PrintElem(elem,ref)
     {
-        Popup($(elem).html());
+        $(ref).addClass('hidden');
+        $(ref).attr('style','display:none');
+        Popup($(elem).html(),function(){
+            $(ref).removeClass('hidden');
+            $(ref).attr('style','');
+        });
     }
 
-    function Popup(data)
+    function Popup(data, callback)
     {
-        var mywindow = window.open('', 'Manifest Generation', 'height=400,width=600');
-        mywindow.document.write('<html><head><title>Manifest Generation</title>');
-        /*optional stylesheet*/ //mywindow.document.write('<link rel="stylesheet" href="main.css" type="text/css" />');
-        mywindow.document.write('</head><body >');
-        mywindow.document.write(data);
-        mywindow.document.write('</body></html>');
+        /*var mywindow = window.open('', 'Manifest Generation', 'height=400,width=600');
+     mywindow.document.write('<html><head><title>Manifest Generation</title>');
+     /!*optional stylesheet*!/ //mywindow.document.write('<link rel="stylesheet" href="main.css" type="text/css" />');
+     mywindow.document.write('</head><body >');
+     mywindow.document.write(data);
+     mywindow.document.write('</body></html>');
 
-        mywindow.document.close(); // necessary for IE >= 10
-        mywindow.focus(); // necessary for IE >= 10
+     mywindow.document.close(); // necessary for IE >= 10
+     mywindow.focus(); // necessary for IE >= 10
 
-        mywindow.print();
-        mywindow.close();
-
+     mywindow.print();
+     mywindow.close();*/
+        window.print();
+        if(typeof callback == 'function'){
+            callback();
+        }
         return true;
     }
 </script>
