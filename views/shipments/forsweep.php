@@ -78,7 +78,6 @@ if($offset <= 0){
                     <th>Waybill No.</th>
                     <th>Shipper</th>
                     <th>Receiver</th>
-                    <th>Next Destination</th>
                     <th>Final Destination</th>
                     <th>Created Date</th>
                     <th>Action</th>
@@ -104,7 +103,6 @@ if($offset <= 0){
                             <td><?= strtoupper($parcel['waybill_number']); ?></td>
                             <td><?= strtoupper($parcel['sender']['firstname'].' '. $parcel['sender']['lastname']) ?></td>
                             <td><?= strtoupper($parcel['receiver']['firstname'].' '. $parcel['receiver']['lastname']) ?></td>
-                            <td><?= strtoupper($branch['parent']['name']) ?></td>
                             <td><?= ucwords(Calypso::getValue($parcel, 'receiver_address.city')) . ', ' .
                                     ucwords(Calypso::getValue($parcel, 'receiver_address.state.name')); ?>
                             </td>
@@ -129,7 +127,7 @@ if($offset <= 0){
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">Generate Dispatch Manifest</h4>
+                    <h4 class="modal-title" id="myModalLabel">Generate Sweep Manifest</h4>
                 </div>
                 <div class="modal-body">
                     <div class="row">
@@ -142,7 +140,7 @@ if($offset <= 0){
                         </div>
                         <div class="col-xs-6">
                             <div class="form-group">
-                                <label for="searchInput">Staff ID</label><br>
+                                <label for="searchInput">Sweeper Staff ID</label><br>
                                 <div class="input-group input-group-sm input-group-search">
                                     <input id="staff" type="text" name="search_staff" placeholder="" class="search-box form-control">
                                     <div class="input-group-btn">

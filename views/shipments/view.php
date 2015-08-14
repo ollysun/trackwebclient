@@ -15,9 +15,6 @@ $this->params['breadcrumbs'][] = 'Waybill';
 ?>
 
 <div class="main-box no-header">
-	<div>
-		<?php //var_dump($parcelData); ?>
-	</div>
 	<div class="main-box-body row">
 		<div class="col-xs-12 col-sm-6">
 			<fieldset>
@@ -178,30 +175,32 @@ $this->params['breadcrumbs'][] = 'Waybill';
 								<div class="col-xs-6">
 									<label>Consignor is a Merchant?</label>
 									<div class="form-control-static">
-										not available in api
+										<?= (empty($senderMerchant)) ? 'No' : 'Yes'; ?>
 									</div>
 								</div>
-								<div class="col-xs-6">
+								<div class="col-xs-6 hidden">
 									<label>Consignor is a Corporate lead?</label>
 									<div class="class-form-control-static">
 										not available in api
 									</div>
 								</div>
 							</div>
+							<?php if(!empty($senderMerchant)) { ?>
 							<div class="row">
 								<div class="col-xs-6 form-group">
 									<label>Account Number</label>
-									<div class="form-control-static">not available in api</div>
+									<div class="form-control-static"><?= $senderMerchant['account_no']; ?></div>
 								</div>
 								<div class="col-xs-6 form-group">
 									<label>Bank</label>
-									<div class="form-control-static">not available in api</div>
+									<div class="form-control-static"><?= ucwords($senderMerchant['bank']['name']); ?></div>
 								</div>
 								<div class="col-xs-12 form-group">
 									<label>Account Name</label>
-									<div class="form-control-static">not available in api</div>
+									<div class="form-control-static"><?= $senderMerchant['account_name']; ?></div>
 								</div>
 							</div>
+							<?php } ?>
 							<div class="row form-group">
 								<div class="col-xs-6">
 									<label>Cash on Delivery?</label>
