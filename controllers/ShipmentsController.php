@@ -10,6 +10,7 @@ namespace app\controllers;
 
 
 use Adapter\AdminAdapter;
+use Adapter\BankAdapter;
 use Adapter\BranchAdapter;
 use Adapter\Globals\ServiceConstant;
 use Adapter\ParcelAdapter;
@@ -329,6 +330,7 @@ class ShipmentsController extends BaseController {
         $data = [];
         $sender_location = [];
         $receiver_location = [];
+        $sender_merchant = [];
         $id = "-1";
 
         $refData = new RefAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
@@ -354,6 +356,14 @@ class ShipmentsController extends BaseController {
                     $regionAdp = new RegionAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
                     $receiver_location = $regionAdp->getCity($city_id);
                 }
+                $bankAdapter = new BankAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+                $bankInfo = $bankAdapter->getSenderBankAccout($data['sender']['id']);
+                if ($bankInfo['status'] === ResponseHandler::STATUS_OK) {
+                    if(!empty($bankInfo['data'])) {
+                        $sender_merchant = $bankInfo['data']['0'];
+                    }
+                }
+
             }
         }
 
@@ -363,7 +373,8 @@ class ShipmentsController extends BaseController {
             'parcelType'=>$parcelType,
             'deliveryType'=>$deliveryType,
             'senderLocation'=>$sender_location,
-            'receiverLocation'=>$receiver_location
+            'receiverLocation'=>$receiver_location,
+            'senderMerchant'=>$sender_merchant,
         ));
     }
     public function actionDispatched ($page=1, $page_width=null)
