@@ -9,26 +9,30 @@ use Adapter\Util\Calypso;
 
 $this->title = 'Change Password';
 $data = Calypso::getInstance()->getPageData();
+
 ?>
 <div class="l-sigin-page">
 
     <div class="card card-signin">
+
+        <?php echo Calypso::showFlashMessages(); ?>
         <div class="card-header">
             <h3 class="card-title">Change Password</h3>
         </div>
-        <form action="" method="post" enctype="multipart/form-data">
+        <form action="changepassword" method="post" enctype="multipart/form-data">
             <div class="form-group">
-                <label for="password">Old Password</label>
-                <input id="password" name="" type="password" class="form-control" />
+                <label for="old_password">Old Password</label>
+                <input id="old_password" name="old_password" type="password" class="form-control" />
             </div>
             <div class="form-group">
-                <label for="password">New Password</label>
-                <input id="password" name="" type="password" class="form-control" />
+                <label for="new_password">New Password</label>
+                <input id="new_password" name="new_password" type="password" class="form-control" />
             </div>
             <div class="form-group">
                 <label for="password">Confirm Password</label>
-                <input id="password" name="" type="password" class="form-control" />
+                <input id="password" name="password" type="password" class="form-control" />
             </div>
+            <input type="hidden" name="task" value="change">
             <button type="submit" class="btn btn-primary btn-block">Change Password</button>
         </form>
     </div>

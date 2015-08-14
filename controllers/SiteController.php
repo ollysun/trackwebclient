@@ -59,7 +59,7 @@ class SiteController extends BaseController
         ];
     }
     public function beforeAction($action){
-        if(!in_array($action->id,array('logout','login','gerraout','site'))){
+        if(!in_array($action->id,array('logout','changepassword','login','gerraout','site'))){
             $s = Calypso::getInstance()->session('user_session');
             if(!$s){
                // Calypso::getInstance()->AppRedirect('site','login');
@@ -70,6 +70,8 @@ class SiteController extends BaseController
         if(Calypso::getInstance()->cookie('page_width')){
             $this->page_width = Calypso::getInstance()->cookie('page_width');
         }
+//        var_dump($action->id);
+//        exit;
         return parent::beforeAction($action);
     }
     public function actionIndex()
@@ -101,6 +103,9 @@ class SiteController extends BaseController
                     RequestHelper::setClientID($data['id']);
                 }
                 Calypso::getInstance()->session("user_session",$response->getData());
+                if($data['created_date']==$data['modified_date'] && $data['status']== ServiceConstant::INACTIVE){
+                    return $this->render('changepassword');
+                }
                 return $this->redirect('/site');
             }else{
                 Calypso::getInstance()->setPageData("Invalid Login. Check username and password and try again");
@@ -378,6 +383,47 @@ class SiteController extends BaseController
     }
     public function actionChangepassword()
     {
+        $post = (Yii::$app->request->post());
+
+        if(isset($post['task']) && $post['task']=='change'){
+            $new_password = $post['new_password'];
+            $old_password = $post['old_password'];
+            $password = $post['password'];
+
+            if(in_array(null, [$new_password, $old_password, $password])){
+                $this->flashError('All fields are required');
+            }
+            elseif($new_password == $old_password){
+                $this->flashError('Change the password');
+            }
+            elseif($new_password !== $password){
+                $this->flashError('Password mismatch');
+            }
+            else{
+                $adm = new UserAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+                $resp = $adm->revalidate(null,$old_password);
+                $resp = new ResponseHandler($resp);
+                if ($resp->getStatus() == ResponseHandler::STATUS_OK) {
+                    $user = new UserAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+                    $resp = $user->changePassword(['password'=>$password]);
+
+                    $user = new UserAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+                    $resp = $user->changeStatus(['status'=>ServiceConstant::ACTIVE]);
+
+                    $creationResponse = new ResponseHandler($resp);
+                    if ($creationResponse->getStatus() == ResponseHandler::STATUS_OK) {
+                        $this->flashSuccess('Password successfully changed.');
+                        $this->redirect('logout');
+                    } else {
+                       $this->flashError('Password not changed.');
+                    }
+                    $this->redirect('login');
+                }
+                else{
+                    $this->flashError('Invalid credential.');
+                }
+            }
+        }
         $this->layout = 'login';
         return $this->render('changepassword');
     }
