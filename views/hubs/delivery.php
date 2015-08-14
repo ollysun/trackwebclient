@@ -64,7 +64,7 @@ $this->params['breadcrumbs'] = array(
                 </div>
 
                 <div class="clearfix">
-                    <div class="pull-left">
+                    <div class="pull-left hidden">
                         <p class="form-control-static input-sm">Showing 1 to 49 of 49 shipments</p>
                     </div>
                     <div class="pull-right form-group form-group-sm form-inline">
@@ -129,10 +129,10 @@ $this->params['breadcrumbs'] = array(
                         <p>No record to display</p>
                     <?php }  ?>
 
-
+<!--
                     <div class="clearfix">
                         <div class="pull-left">
-                            <p class="form-control-static input-sm">Showing 1 to 49 of 49 shipments</p>
+                            <p class="form-control-static input-sm hidden">Showing 1 to 49 of 49 shipments</p>
                         </div>
                         <div class="pull-right">
                             <ul class="pagination">
@@ -144,7 +144,7 @@ $this->params['breadcrumbs'] = array(
                                 <li><a href="">&rarr;</a></li>
                             </ul>
                         </div>
-                    </div>
+                    </div>-->
 
                 </div>
             </div>
