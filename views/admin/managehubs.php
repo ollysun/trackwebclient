@@ -122,7 +122,7 @@ $this->params['breadcrumbs'] = array(
                         if(isset($States) && is_array(($States))):
                             foreach($States as $state){
                         ?>
-                            <option value="<?= $state['id'] ?>"><?= strtoupper($state['name']); ?></option>
+                            <option value="<?= $state['id'] ?>"><?= ucwords($state['name']); ?></option>
                         <?php
                             }
                         endif;

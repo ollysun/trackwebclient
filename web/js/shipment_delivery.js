@@ -100,7 +100,7 @@ $(document).ready(function(){
         if(!chkboxes.length) {
             alert('You must select at least one parcel!');
             event.preventDefault();
-            return;
+            return false;
         }
         $.each(chkboxes, function(i, chk){
             parcels.waybills.push($(this).attr('data-waybill'));
