@@ -154,7 +154,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
-        <form class="" method="post">
+        <form class="validate-form" method="post">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
@@ -162,17 +162,18 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                     <h4 class="modal-title" id="myModalLabel">Add a New Staff Account</h4>
                 </div>
                 <div class="modal-body">
+                    <p>Please fill the following information carefully. <strong>All fields are required.</strong></p>
                     <div class="row">
                         <div class="col-xs-6">
                             <div class="form-group">
                                 <label>First name</label>
-                                <input name="firstname" class="form-control">
+                                <input name="firstname" class="form-control validate required name">
                             </div>
                         </div>
                         <div class="col-xs-6">
                             <div class="form-group">
                                 <label>Last name</label>
-                                <input name="lastname" class="form-control">
+                                <input name="lastname" class="form-control  validate required name">
                             </div>
                         </div>
                     </div>
@@ -180,25 +181,25 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                         <div class="col-xs-6">
                             <div class="form-group">
                                 <label>Email address</label>
-                                <input name="email" class="form-control">
+                                <input name="email" class="form-control  validate required email">
                             </div>
                         </div>
                         <div class="col-xs-6">
                             <div class="form-group">
                                 <label>Phone no</label>
-                                <input name="phone" class="form-control">
+                                <input name="phone" class="form-control validate required phone">
                             </div>
                         </div>
                     </div>
                     <div class="form-group">
                         <label>Staff ID</label>
-                        <input name="staff_id" class="form-control">
+                        <input name="staff_id" class="form-control validate required">
                     </div>
                     <div class="row">
                         <div class="col-xs-4">
                             <div class="form-group">
                                 <label>State</label>
-                                <select id="state" name="state" class="form-control">
+                                <select id="state" name="state" class="form-control validate required">
                                     <?php
                                     if (isset($states) && is_array($states) && !empty($states)):
                                         foreach ($states as $state):
@@ -215,7 +216,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                         <div class="col-xs-3">
                             <div class="form-group">
                                 <label>Branch type</label>
-                                <select id="branch_type" name="branch_type" class="form-control">
+                                <select id="branch_type" name="branch_type" class="form-control validate required">
                                     <option value="">Select ...</option>
                                     <option value="1">HQ</option>
                                     <option value="2">Hub</option>
@@ -226,7 +227,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                         <div class="col-xs-5">
                             <div class="form-group">
                                 <label>Branch</label>
-                                <select id="branch" name="branch" class="form-control">
+                                <select id="branch" name="branch" class="form-control validate required">
                                 </select>
                             </div>
                         </div>
@@ -235,7 +236,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                         <div class="col-xs-6">
                             <div class="form-group">
                                 <label>User role</label>
-                                <select name="role" class="form-control">
+                                <select name="role" class="form-control validate required">
                                     <?php
 
                                     if (isset($roles) && is_array($roles) && !empty($roles)):
@@ -255,7 +256,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                                 <label>Activate user?
                                     <small>(Users can be activated later)</small>
                                 </label>
-                                <select name="status" class="form-control">
+                                <select name="status" class="form-control  validate required">
                                     <option>YES</option>
                                     <option>NO</option>
                                 </select>
@@ -385,5 +386,6 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
 <?php $this->registerJsFile('@web/js/jquery.dataTables.min.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/dataTables.bootstrap.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/table.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/validate.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 
 
