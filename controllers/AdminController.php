@@ -193,7 +193,6 @@ class AdminController extends BaseController {
 
 	public function actionManagestaff($offset=0,$role='-1')
 	{
-
 		if(Yii::$app->request->isPost){
 			$data = Yii::$app->request->post();
 			$user = new UserAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
