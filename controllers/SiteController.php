@@ -376,4 +376,9 @@ class SiteController extends BaseController
             return $this->sendErrorResponse($allEcsInHubs['message'], null);
         }
     }
+    public function actionChangepassword()
+    {
+        $this->layout = 'login';
+        return $this->render('changepassword');
+    }
 }
