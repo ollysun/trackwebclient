@@ -140,15 +140,7 @@ $this->params['breadcrumbs'][] = 'Waybill';
 							<div class="row form-group">
 								<div class="col-xs-6">
 									<label>Delivery</label>
-									<?php
-										if(isset($deliveryType) && is_array($deliveryType['data'])) {
-											foreach ($deliveryType['data'] as $item) {
-												if($item['id'] == $parcelData['delivery_type']) {
-													echo '<div class="form-control-static">'.ucwords($item['name']).'</div>';
-												}
-											}
-										}
-									?>
+									<?= ucwords(ServiceConstant::getDeliveryType($parcelData['delivery_type'])); ?>
 									<!-- <div class="form-control-static"><?= $parcelData['delivery_type']; ?></div> -->
 									<!-- Address delivery // Pickup at Opebi EC -->
 								</div>
