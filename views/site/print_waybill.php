@@ -1,6 +1,5 @@
 <div id="main_holder">
 <?php
-//var_dump($parcelData);
 use Adapter\Util\Calypso;
 
 $copies = ["Sender's Copy","Recipient's Copy","Acknowledgement's Copy"," Express Centre's Copy"];

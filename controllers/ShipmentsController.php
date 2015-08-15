@@ -65,7 +65,7 @@ class ShipmentsController extends BaseController {
             $filter = null;
         }else{
 
-            $response = $parcel->getParcels(null,null,null,$branch_to_view,$offset,$this->page_width, 1, 1, 1);
+            $response = $parcel->getParcels(null,null,null,$this->branch_to_view,$offset,$this->page_width, 1, 1, 1);
             //$response = $parcel->getParcels(null,null,$offset,$this->page_width);
             //$response = $parcel->getNewParcelsByDate(date('Y-m-d', strtotime('now')).' 00:00:00',$offset,$this->page_width, 1,$this->userData['branch_id']);
             $search_action = false;
