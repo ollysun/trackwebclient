@@ -202,15 +202,12 @@ class ServiceConstant {
         switch ($type) {
             case ServiceConstant::DELIVERY_DISPATCH:
                 return 'Dispatch';
-                break;
 
             case ServiceConstant::DELIVERY_PICKUP:
                 return 'Pickup';
-                break;
 
             default:
-                return $type; // return id
-                break;
+                return false;
         }
     }
 }
