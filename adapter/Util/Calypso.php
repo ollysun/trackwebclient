@@ -326,13 +326,13 @@ class Calypso
                 'Delivered' => ['base_link' => 'shipments/delivered', 'class' => ''],
                 'For_Sweep' => ['base_link' => 'shipments/forsweep', 'class' => ''],
                 'All_Shipments' => ['base_link' => 'shipments/all', 'class' => ''],
-            ]],
+            ],'branch' => [ ServiceConstant::BRANCH_TYPE_EC, ServiceConstant::BRANCH_TYPE_HQ]],
             'Hub' => ['base' => 'hubs', 'class' => 'fa fa-building-o', 'base_link' =>[
                 'Shipment_Arrivals' => ['base_link' => 'hubs/hubarrival', 'class' => ''],
                 'Set_next_destination' => ['base_link' => 'hubs/destination', 'class' => ''],
                 'For_Delivery' => ['base_link' => 'hubs/delivery', 'class' => ''],
                 'Dispatched_Shipments' => ['base_link' => 'hubs/hubdispatch', 'class' => ''],
-            ]],
+            ],'branch' => [ ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
             'Administrator' => ['base' => 'admin', 'class' => 'fa fa-user', 'base_link' => [
                 'Manage_branches' => ['base_link' => 'admin/managebranches', 'class' => ''],
                 'Manage_staff_accounts' => ['base_link' => 'admin/managestaff', 'class' => ''],
@@ -345,13 +345,14 @@ class Calypso
                     'Weight_Ranges' => ['base_link' => 'billing/weightranges', 'class' => ''],
                     'Pricing' => ['base_link' => 'billing/pricing', 'class' => ''],
                     'Onforwarding_Charges' => ['base_link' => 'billing/onforwarding', 'class' => ''],
-                ]]
-            ]],
-            'Customer_History' => ['base' => 'shipments', 'base_link' => 'shipments/customerhistory','class' => 'fa fa-user'] ,
+                ],'branch' => [ ServiceConstant::BRANCH_TYPE_HQ]]
+            ],'branch' => [ ServiceConstant::BRANCH_TYPE_HQ]],
+            'Customer_History' => ['base' => 'shipments', 'base_link' => 'shipments/customerhistory','class' => 'fa fa-user'
+                ,'branch' => [ ServiceConstant::BRANCH_TYPE_EC, ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]] ,
             'Reconciliations' => ['base' => 'finance', 'class' => 'fa fa-money', 'base_link' =>[
                 'Customers' => ['base_link' => 'finance/customersall', 'class' => ''],
                 'Merchants' => ['base_link' => 'finance/merchantsdue', 'class' => '']
-            ]]
+            ],'branch' => [ ServiceConstant::BRANCH_TYPE_HQ]]
         ];
         return $menus;
     }
