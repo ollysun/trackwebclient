@@ -32,7 +32,7 @@ class ShipmentsController extends BaseController {
         $this->userData = (Calypso::getInstance()->session('user_session'));
         $this->branch_to_view = ($this->userData['role_id'] == ServiceConstant::USER_TYPE_SUPER_ADMIN ) ? null :
             ($this->userData['role_id'] == ServiceConstant::USER_TYPE_ADMIN ) ? null : $this->userData['branch_id']; //displays all when null
-
+        //print_r($this->userData);
         if(empty($this->userData)){
             return false;
         }
@@ -43,7 +43,6 @@ class ShipmentsController extends BaseController {
         $from_date = date('Y/m/d');
         $to_date = date('Y/m/d');
         $search_action = $search;
-        $user_session = Calypso::getInstance()->session("user_session");
         if($page_width != null){
             $this->page_width = $page_width;
             Calypso::getInstance()->cookie('page_width',$page_width);
@@ -66,7 +65,7 @@ class ShipmentsController extends BaseController {
             $filter = null;
         }else{
 
-            $response = $parcel->getParcels(null,null,null,$this->userData['branch_id'],$offset,$this->page_width,1,1);
+            $response = $parcel->getParcels(null,null,null,$this->branch_to_view,$offset,$this->page_width,1,1);
             //$response = $parcel->getParcels(null,null,$offset,$this->page_width);
             //$response = $parcel->getNewParcelsByDate(date('Y-m-d', strtotime('now')).' 00:00:00',$offset,$this->page_width, 1,$this->userData['branch_id']);
             $search_action = false;
@@ -258,7 +257,7 @@ class ShipmentsController extends BaseController {
             $search_action = true;
             $filter = null;
         }else{
-            $response = $parcel->getNewParcelsByDate(date('Y-m-d'),$offset,$this->page_width, 1, $this->branch_to_view);
+            $response = $parcel->getNewParcelsByDate(date('Y-m-d 00:00:00', strtotime('now')),$offset,$this->page_width, 1, $this->branch_to_view);
             $search_action = false;
             $filter = null;
         }
@@ -266,9 +265,18 @@ class ShipmentsController extends BaseController {
         $data = [];
         $total_count = 0;
         if($response->getStatus() ==  ResponseHandler::STATUS_OK){
+
             $data = $response->getData();
-            $total_count = $data['total_count'];
-            $data = $data['parcels'];
+            $total_count = 0;
+            if(isset($data['total_count']))
+            {
+                $total_count = $data['total_count'];
+            }
+            if(isset($data['parcels']))
+            {
+                $data = $data['parcels'];
+                $total_count = $total_count <= 0? count($data) : $total_count;
+            }
         }
         return $this->render('processed',array('filter'=>$filter,'parcels'=>$data,'from_date'=>$from_date,'to_date'=>$to_date,'offset'=>$offset,'page_width'=>$this->page_width,'search'=>$search_action, 'total_count'=>$total_count));
     }
