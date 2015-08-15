@@ -65,12 +65,13 @@ if($offset <= 0){
             </form>
             <div class="pull-left">
                 <label>&nbsp;</label><br>
-                <button type="button" class="btn btn-sm btn-default" data-toggle="modal" data-target="#runModal">Generate Delivery Run</button>
+                <?php if(count($parcels)): ?><button type="button" class="btn btn-sm btn-default" data-toggle="modal" data-target="#runModal">Generate Delivery Run</button><?php endif; ?>
                 <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">Receive Shipments from Hub</button>
             </div>
         </div>
     </div>
     <div class="main-box-body">
+        <?php if(count($parcels)): ?>
         <div class="table-responsive">
             <table id="table" class="table table-hover dataTable">
                 <thead>
@@ -112,6 +113,9 @@ if($offset <= 0){
             </table>
         </div>
         <?= $this->render('../elements/pagination_and_summary', ['first' => $offset, 'last'=>$i, 'total_count'=> $total_count,'page_width'=>$page_width]) ?>
+        <?php else:  ?>
+            There are no parcels matching the specified criteria.
+        <?php endif;  ?>
     </div>
 </div>
 
