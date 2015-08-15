@@ -51,7 +51,7 @@ class ParcelAdapter extends BaseAdapter{
         $filter .= !is_null($branch_id) ? '&branch_id='.$branch_id : '';
         return $this->request(ServiceConstant::URL_GET_ALL_PARCEL.'?with_sender=1&with_receiver=1&with_receiver_address=1&with_to_branch=1&offset='.$offset.'&count='.$count.$filter,array(),self::HTTP_GET);
     }
-    public function getNewParcelsByDate($start_created_date,$offset=0, $count=50, $with_total=null,$branch_id=null){
+    public function getNewParcelsByDate($start_created_date,$offset=0, $count=500, $with_total=null,$branch_id=null){
         $filter = '&start_created_date='.$start_created_date;
         $filter .= !is_null($with_total) ? '&with_total_count=1' : '';
         $filter .= !is_null($branch_id) ? '&branch_id='.$branch_id : '';
