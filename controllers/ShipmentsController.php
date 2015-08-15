@@ -68,19 +68,20 @@ class ShipmentsController extends BaseController {
             $branch_to_view = ($user_session['role_id'] == ServiceConstant::USER_TYPE_SUPER_ADMIN ) ? null :
                 ($user_session['role_id'] == ServiceConstant::USER_TYPE_ADMIN ) ? null : $user_session['branch_id']; //displays all when null
 
-            $response = $parcel->getParcels(null,null,null,$branch_to_view,$offset,$this->page_width,1,1);
+            //$response = $parcel->getParcels(null,null,null,$branch_to_view,$offset,$this->page_width,1,1);
             //$response = $parcel->getParcels(null,null,$offset,$this->page_width);
-            //$response = $parcel->getNewParcelsByDate(date('Y-m-d'),$offset,$this->page_width, 1,$this->userData['branch_id']);
+            $response = $parcel->getNewParcelsByDate(date('Y-m-d', strtotime('now')).' 00:00:00',$offset,$this->page_width, 1,$this->userData['branch_id']);
             $search_action = false;
             $filter = null;
         }
+        var_dump($response);
         $response = new ResponseHandler($response);
         $data = [];
         $total_count = 0;
         if($response->getStatus() ==  ResponseHandler::STATUS_OK){
             $data = $response->getData();
-            $total_count = $data['total_count'];
-            $data = $data['parcels'];
+            $total_count = 0;// $data['total_count'];
+            $data = [];// $data['parcels'];
         }
         return $this->render('all',array('filter'=>$filter,'parcels'=>$data,'from_date'=>$from_date,'to_date'=>$to_date,'offset'=>$offset,'page_width'=>$this->page_width,'search'=>$search_action,'total_count'=>$total_count));
     }
