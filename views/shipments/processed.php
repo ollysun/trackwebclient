@@ -22,20 +22,6 @@ if($search){
     $link = "&search=true&to=".urlencode($to)."&from=".urlencode($fro)."&page_width=".$page_width;
     if(!is_null($filter)){$link.= '&date_filter='.$filter;}
 }
-
-if(count($parcels) >= $page_width ){
-    $show_next = true;
-}else{
-    $show_next = false;
-}
-
-
-if($offset <= 0){
-    $show_prev = false;
-}elseif (($offset - $page_width) >= 0){
-    $show_prev = true;
-}
-
 ?>
 <!-- this page specific styles -->
 <?= Html::cssFile('@web/css/libs/dataTables.fixedHeader.css') ?>
@@ -87,7 +73,7 @@ $this->params['content_header_button'] = $this->render('../elements/content_head
                     <th>Receiver</th>
                     <th>Receiver Phone</th>
                     <th>Created Date</th>
-                    <th>Status</th>
+                    <th># Parcels</th>
                     <th>Action</th>
                 </tr>
                 </thead>
@@ -106,7 +92,7 @@ $this->params['content_header_button'] = $this->render('../elements/content_head
                             <td><?= strtoupper($parcel['receiver']['firstname'].' '. $parcel['receiver']['lastname']) ?></td>
                             <td><?= $parcel['receiver']['phone'] ?></td>
                             <td><?= date(ServiceConstant::DATE_TIME_FORMAT,strtotime($parcel['created_date'])); ?></td>
-                            <td><?= ServiceConstant::getStatus($parcel['status']); ?></td>
+                            <td><?= $parcel['no_of_package']; ?></td>
                             <td><a href="<?= Url::to(['site/viewwaybill?id='.$parcel['id']]) ?>" class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
                         </tr>
                     <?php
@@ -115,15 +101,7 @@ $this->params['content_header_button'] = $this->render('../elements/content_head
 
                 </tbody>
             </table>
-                <?= $this->render('../elements/pagination_and_summary', ['first' => $offset, 'last'=>$i, 'total_count'=> $total_count,'page_width'=>$page_width]) ?>
-            <div class="pull-right form-group hidden">
-                <?php if($show_prev): ?>
-                    <a href="<?= Url::to(['shipments/processed?offset='.($offset - $page_width).$link]) ?>" class="btn btn-primary btn-sm">Prev</a>
-                <?php endif;  ?>
-                <?php if($show_next): ?>
-                    <a href="<?= Url::to(['shipments/processed?offset='.($offset + $page_width).$link]) ?>" class="btn btn-primary btn-sm">Next</a>
-                <?php endif;  ?>
-            </div>
+            <?= $this->render('../elements/pagination_and_summary', ['first' => $offset, 'last'=>$i, 'total_count'=> $total_count,'page_width'=>$page_width]) ?>
             <?php else:  ?>
                     There are no parcels matching the specified criteria.
             <?php endif;  ?>
