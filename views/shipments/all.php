@@ -83,6 +83,7 @@ if($search){
     </div>
     <div class="main-box-body">
         <div class="table-responsive">
+            <?php if(count($parcels)) : ?>
             <table id="table" class="table table-hover dataTable">
                 <thead>
                 <tr>
@@ -94,7 +95,7 @@ if($search){
                     <th>Receiver</th>
                     <th>Receiver Phone</th>
                     <th>Created Date</th>
-                    <th>Status</th>
+                    <th># Parcels</th>
                     <th>Action</th>
                 </tr>
                 </thead>
@@ -113,7 +114,7 @@ if($search){
                             <td><?= strtoupper($parcel['receiver']['firstname'].' '. $parcel['receiver']['lastname']) ?></td>
                             <td><?= $parcel['receiver']['phone'] ?></td>
                             <td><?= date(ServiceConstant::DATE_TIME_FORMAT,strtotime($parcel['created_date'])); ?></td>
-                            <td><?= ServiceConstant::getStatus($parcel['status']); ?></td>
+                            <td><?= $parcel['no_of_package']; ?></td>
                             <td><a href="<?= Url::to(['site/viewwaybill?id='.$parcel['id']]) ?>" class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
                         </tr>
                     <?php
@@ -123,6 +124,9 @@ if($search){
                 </tbody>
             </table>
             <?= $this->render('../elements/pagination_and_summary', ['first' => $offset, 'last'=>$i, 'total_count'=> $total_count,'page_width'=>$page_width]) ?>
+            <?php else:  ?>
+                There are no parcels matching the specified criteria.
+            <?php endif;  ?>
         </div>
     </div>
 </div>

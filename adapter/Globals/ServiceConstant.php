@@ -134,6 +134,9 @@ class ServiceConstant {
     const REF_PAYMENT_METHOD_POS = 2;
     const REF_PAYMENT_METHOD_CASH_POS = 3;
 
+    const DELIVERY_DISPATCH = 2;
+    const DELIVERY_PICKUP = 1;
+
     public static function getStatus($status){
         switch($status){
             case ServiceConstant::ACTIVE:
@@ -193,6 +196,18 @@ class ServiceConstant {
             default:
                 return $method; // return id
                 break;
+        }
+    }
+    public static function getDeliveryType($type){
+        switch ($type) {
+            case ServiceConstant::DELIVERY_DISPATCH:
+                return 'Dispatch';
+
+            case ServiceConstant::DELIVERY_PICKUP:
+                return 'Pickup';
+
+            default:
+                return false;
         }
     }
 }
