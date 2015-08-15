@@ -93,7 +93,7 @@ $this->params['breadcrumbs'] = array(
                                     <input name="no_of_packages" class="form-control validate required number">
                                 </div>
                                 <div class="col-xs-12 col-sm-4 form-group">
-                                    <label>Parcel weight</label>
+                                    <label>Total weight</label>
 
                                     <div class="input-group">
                                         <input name="parcel_weight" class="form-control validate required number" id="weight">

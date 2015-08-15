@@ -61,14 +61,17 @@ if($offset <= 0){
                     </div>
                 </div>
             </form>
+            <?php if(count($parcels)): ?>
             <div class="pull-left">
                 <label>&nbsp;</label><br>
                 <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" id="manifest">Generate Manifest</button>
                 <!--<button type="button" onclick="javascript:window.print();" class="btn btn-sm btn-default">Generate Sweep Run</button>-->
             </div>
+            <?php endif; ?>
         </div>
     </div>
     <div class="main-box-body">
+        <?php if(count($parcels)): ?>
         <div class="table-responsive">
             <table id="next_dest" class="table table-hover">
                 <thead>
@@ -95,7 +98,6 @@ if($offset <= 0){
                             >
                             <td>
                                 <div class='checkbox-nice'>
-                                    <input name='waybills[]' id='chk_<?php echo ++$i; ?>' type='checkbox' class='chk_next'><label for='chk_<?php echo $i; ?>'></label>
                                     <input name='waybills[]' value="<?= $parcel['waybill_number'] ?>" id='chk_<?php echo ++$i; ?>' type='checkbox' class='chk_next'><label for='chk_<?php echo $i; ?>'></label>
                                 </div>
                             </td>
@@ -117,6 +119,9 @@ if($offset <= 0){
             </table>
             <?= $this->render('../elements/pagination_and_summary', ['first' => $offset, 'last'=>$i, 'total_count'=> $total_count,'page_width'=>$page_width]) ?>
         </div>
+        <?php else:  ?>
+            There are no parcels matching the specified criteria.
+        <?php endif;  ?>
     </div>
 </div>
 
