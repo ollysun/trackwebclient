@@ -34,4 +34,5 @@ class AdminAdapter extends BaseAdapter{
         $filter .= is_null($password) ? '':'&password='.$password;
         return  $this->request(ServiceConstant::URL_USER_VALIDATE.'?'.$filter, [], self::HTTP_POST);
     }
+
 }
