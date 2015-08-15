@@ -305,10 +305,10 @@ class ShipmentsController extends BaseController {
 
     public function actionCustomerhistorydetails($page=1,$search=false)
     {
-        $page_width=20;
+        $page_width=$this->page_width;
         $offset=($page-1)*$page_width;
-        $from_date = date('Y/m/d', 0);
-        $to_date = date('Y/m/d');
+        $from_date = date('Y-m-d', 0).'%2000:00:00';
+        $to_date = date('Y-m-d').'%2023:59:59';
         if (!$search) { //default, empty
             // display empty message
             $this->redirect('customerhistory');
