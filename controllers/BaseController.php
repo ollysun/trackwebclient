@@ -30,6 +30,7 @@ class BaseController extends Controller {
         $this->permissionMap = Calypso::getInstance()->permissionMap();
     }
     public function beforeAction($action){
+        $access_denied_msg = "You are not eligible to access this system, kindly contact your administrator";
         if(!in_array($action->id,array('logout','login','gerraout','site'))){
             $this->setPermissionMap();
             $s = Calypso::getInstance()->session('user_session');
@@ -38,7 +39,7 @@ class BaseController extends Controller {
             }
             if(!array_key_exists($s['role_id'],$this->permissionMap)){
                 \Yii::$app->getUser()->logout();
-                Calypso::getInstance()->setPageData("Access Denied");
+                Calypso::getInstance()->setPageData($access_denied_msg);
                return $this->redirect(['site/logout']);
             }
             $map = $this->permissionMap[$s['role_id']];
@@ -46,13 +47,13 @@ class BaseController extends Controller {
             //Wild card
             if(in_array($current.'/*',$map)){
                 \Yii::$app->getUser()->logout();
-                Calypso::getInstance()->setPageData("Access Denied");
+                Calypso::getInstance()->setPageData($access_denied_msg);
                 return $this->redirect(['site/logout']);
             }
 
             if(in_array($current.'/'.$action->id,$map)){
                 \Yii::$app->getUser()->logout();
-                Calypso::getInstance()->setPageData("Access Denied");
+                Calypso::getInstance()->setPageData($access_denied_msg);
                 return $this->redirect(['site/logout']);
             }
         }

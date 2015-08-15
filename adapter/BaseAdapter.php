@@ -5,7 +5,8 @@ namespace Adapter;
 use Adapter\Util\CurlAgent;
 use Adapter\Util\Response;
 
-abstract class BaseAdapter {
+abstract class BaseAdapter
+{
 //    const ROOT_PATH = 'http://api.sanwo.org/'; # must always end with a '/'
     const ROOT_PATH = 'http://52.26.122.248/tnt-service/'; # must always end with a '/'
 //    const ROOT_PATH = 'http://local.sanwo-service.me/'; # must always end with a '/'
@@ -24,7 +25,8 @@ abstract class BaseAdapter {
     protected $_response_as_json;
     protected $_use_root_path;
 
-    public function __construct($client_id=null,  $access_token=null, $response_as_json=false, $use_root_path=true){
+    public function __construct($client_id = null, $access_token = null, $response_as_json = false, $use_root_path = true)
+    {
         $this->_curlagent = new CurlAgent('', true);
         $this->_client_id = $client_id;
         $this->_access_token = $access_token;
@@ -83,54 +85,58 @@ abstract class BaseAdapter {
     /**
      * @return string|null
      */
-    public function getClientId(){
+    public function getClientId()
+    {
         return $this->_client_id;
     }
 
     /**
      * @param string $client_id
      */
-    public function setClientId($client_id){
+    public function setClientId($client_id)
+    {
         $this->_client_id = $client_id;
     }
 
-    protected function request($url, $params, $http_method){
-        if ($this->_access_token != null){
+    protected function request($url, $params, $http_method)
+    {
+        if ($this->_access_token != null) {
             $this->_curlagent->setHeader('i', $this->_client_id);
             $this->_curlagent->setHeader('a', $this->_access_token);
         }
 
         $url = trim($url);
-        if ($this->_use_root_path){
+        if ($this->_use_root_path) {
             $url = BaseAdapter::ROOT_PATH . ltrim($url, '/');
         }
 
-        if ($http_method == BaseAdapter::HTTP_POST){
+        if ($http_method == BaseAdapter::HTTP_POST) {
             $this->_curlagent->setPost($params);
-        }else if ($http_method == BaseAdapter::HTTP_GET){
+        } else if ($http_method == BaseAdapter::HTTP_GET) {
             $this->injectUrlParams($url, $params);
         }
         $this->_curlagent->createCurl($url);
-        if ($this->_curlagent->getHttpStatus() == BaseAdapter::HTTP_STATUS_OK){
+        if ($this->_curlagent->getHttpStatus() == BaseAdapter::HTTP_STATUS_OK) {
             return Response::direct($this->_curlagent->getResponse(), $this->_response_as_json);
         } else {
             return Response::unknown($this->_curlagent->getHttpStatus(), $this->_curlagent->getResponse());
         }
     }
 
-    protected function injectUrlParams(&$url, $params){
+    protected function injectUrlParams(&$url, $params)
+    {
         $url = trim($url);
         $url_params = array();
-        foreach ($params as $key => $value){
+        foreach ($params as $key => $value) {
             $url_params[] = $key . '=' . urlencode($value);
         }
 
         $url_query = parse_url($url, PHP_URL_QUERY);
 
-        if ($url_query == null){
+        if ($url_query == null) {
             $url = rtrim($url, '?');
             $url .= '?';
-        }else{
+        } else {
             $url = rtrim($url, '&');
             $url .= '&';
         }
@@ -138,7 +144,8 @@ abstract class BaseAdapter {
         $url .= join('&', $url_params);
     }
 
-    public function getHttpStatus(){
+    public function getHttpStatus()
+    {
         return $this->_curlagent->getHttpStatus();
     }
 } 
