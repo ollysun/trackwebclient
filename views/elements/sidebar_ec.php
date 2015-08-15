@@ -17,8 +17,13 @@ use Adapter\Util\Calypso;
 					$permission = Calypso::getInstance()->permissionMap();
 					$menus = Calypso::getInstance()->getMenus();
 					$role = $session_data['role']['id'];
+					$branch = $session_data['branch']['branch_type'];
 					foreach($menus as $k => $v) {
 						if(isset($v['base']) && !Calypso::canAccess($role,$v['base'].'/*'))
+						{
+							continue;
+						}
+						if(isset($v['branch']) && !in_array($branch,$v['branch']))
 						{
 							continue;
 						}
@@ -45,7 +50,10 @@ use Adapter\Util\Calypso;
 									if(isset($value['base_link']) && !is_array($value['base_link']) && !Calypso::canAccess($role,$value['base_link'])) {
 										continue;
 									}
-
+									if(isset($value['branch']) && !in_array($branch,$value['branch']))
+									{
+										continue;
+									}
 									if(isset($value['base_link']) && !is_array($value['base_link'])){
 									?>
 								<li>
@@ -74,6 +82,10 @@ use Adapter\Util\Calypso;
 															continue;
 														}
 														if (isset($subvalue['base_link']) && !is_array($subvalue['base_link']) && !Calypso::canAccess($role, $subvalue['base_link'])) {
+															continue;
+														}
+														if(isset($subvalue['branch']) && !in_array($branch,$subvalue['branch']))
+														{
 															continue;
 														}
 														if (isset($subvalue['base_link']) && !is_array($subvalue['base_link'])) {
