@@ -407,9 +407,6 @@ class SiteController extends BaseController
                     $user = new UserAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
                     $resp = $user->changePassword(['password'=>$password]);
 
-                    $user = new UserAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
-                    $resp = $user->changeStatus(['status'=>ServiceConstant::ACTIVE]);
-
                     $creationResponse = new ResponseHandler($resp);
                     if ($creationResponse->getStatus() == ResponseHandler::STATUS_OK) {
                         $this->flashSuccess('Password successfully changed.');
@@ -420,7 +417,7 @@ class SiteController extends BaseController
                     $this->redirect('login');
                 }
                 else{
-                    $this->flashError('Invalid credential.');
+                    $this->flashError('Invalid credentials.');
                 }
             }
         }
