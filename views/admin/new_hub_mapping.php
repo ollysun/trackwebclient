@@ -30,8 +30,8 @@ function mapIt($from, $to, $check)
 
 ?>
 <div class="main-box">
-    <?php if (!empty($hub)) { ?>
-        <form class="table-responsive" method="post">
+    <form class="table-responsive" method="post">
+        <?php if (!empty($hub) && $hub['branch_type'] == 2) { ?>
             <div class="main-box-header">
                 <h2>Hub mapping for <?= ucwords($hub['name']); ?></h2>
             </div>
@@ -48,42 +48,39 @@ function mapIt($from, $to, $check)
                     <?php
                     $total = count($hubs);
                     for ($i = 0; $i < $total; $i++) {
-                        if ($hub['id'] != $hubs[$i]['id']) {
-                            ?>
-                            <tr>
-                                <?php if ($i == 0) { ?>
-                                    <td
-                                    rowspan="<?= count($hubs) - 1; ?>"><?= strtoupper($hub['code']); ?></td><?php } ?>
-                                <td><?= ucwords($hubs[$i]['name']) . " (" . strtoupper($hubs[$i]['code']) . ")"; ?></td>
-                                <td>
-                                    <input type="hidden" name="branches[]" value="<?= $hubs[$i]['id']; ?>">
-                                    <select name="zones[]" class="form-control input-sm">
-                                        <?php
-                                        if (isset($zones) && is_array(($zones))):
-                                            foreach ($zones as $zone) { ?>
-                                                <option
-                                                    value="<?= $zone['id']; ?>" <?= mapIt($hub, $hubs[$i], $zone['id']); ?>><?= ucwords($zone['name']); ?>
-                                                    (<?= $zone['code']; ?>)
-                                                </option>
-                                            <?php } endif; ?>
-                                    </select>
-                                </td>
-                            </tr>
-                        <?php }
-                    } ?>
+                        ?>
+                        <tr>
+                            <?php if ($i == 0) { ?>
+                            <td rowspan="<?= count($hubs); ?>"><?= strtoupper($hub['code']); ?></td><?php } ?>
+                            <td><?= ucwords($hubs[$i]['name']) . " (" . strtoupper($hubs[$i]['code']) . ")"; ?></td>
+                            <td>
+                                <input type="hidden" name="branches[]" value="<?= $hubs[$i]['id']; ?>">
+                                <select name="zones[]" class="form-control input-sm">
+                                    <?php
+                                    if (isset($zones) && is_array(($zones))):
+                                        foreach ($zones as $zone) { ?>
+                                            <option
+                                                value="<?= $zone['id']; ?>" <?= mapIt($hub, $hubs[$i], $zone['id']); ?>><?= ucwords($zone['name']); ?>
+                                                (<?= $zone['code']; ?>)
+                                            </option>
+                                        <?php } endif; ?>
+                                </select>
+                            </td>
+                        </tr>
+                    <?php } ?>
                     </tbody>
                 </table>
                 <div class="clearfix">
                     <input type="hidden" name="from_id" value="<?= $hub['id']; ?>">
                     <button class="pull-right btn btn-primary" type="submit">Submit</button>
                 </div>
-        </form>
-    <?php } else { ?>
-        <div class="alert alert-info">
-
-            <h2>The Hub does not exist</h2>
-        </div>
-    <?php }  ?>
+            </div>
+        <?php } else { ?>
+            <div class="main-box-body">
+                The hub does not exist
+            </div>
+        <?php } ?>
+    </form>
 </div>
 </div>
 
