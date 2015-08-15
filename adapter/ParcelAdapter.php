@@ -100,10 +100,9 @@ class ParcelAdapter extends BaseAdapter{
     }
     public function getParcelsByUser($user_id, $start_created_date,$end_created_date,$offset=0, $count=100,$branch_id=null){
         $filter = !is_null($user_id) ? '&user_id='.$user_id : '';
+        $filter .= '&with_total_count=1';
         $filter .= !is_null($start_created_date) ? '&start_created_date='.$start_created_date : '';
         $filter .= !is_null($end_created_date) ? '&end_created_date='.$end_created_date : '';
-        $filter .= !is_null($branch_id) ? '&branch_id='.$branch_id : '';
-        $filter .= '&with_total_count=1';
         $filter .= '&order_by=Parcel.created_date%20DESC';
         return $this->request(ServiceConstant::URL_GET_ALL_PARCEL.'?with_sender=1&with_receiver=1&offset='.$offset.'&count='.$count.$filter,array(),self::HTTP_GET);
     }
