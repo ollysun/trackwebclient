@@ -35,23 +35,26 @@ class ParcelAdapter extends BaseAdapter{
         $filter .= ($held_by_id == null ? '':'&held_by_id='.$held_by_id);
         return $this->request(ServiceConstant::URL_GET_ALL_PARCEL.'?with_to_branch=1&with_sender_address=1&with_receiver_address=1&offset='.$offset.'&count='.$count.$filter,array(),self::HTTP_GET);
     }
-    public function getSearchParcels($status,$waybill_number,$offset=0, $count=50, $with_total=null){
+    public function getSearchParcels($status,$waybill_number,$offset=0, $count=50, $with_total=null,$branch_id=null){
         $parcel_status = $status == '-1'?'': '&status='.$status;
         $filter = $parcel_status.'&waybill_number='.$waybill_number;
         $filter .= !is_null($with_total) ? '&with_total_count=1' : '';
+        $filter .= !is_null($branch_id) ? '&branch_id='.$branch_id : '';
         return $this->request(ServiceConstant::URL_GET_ALL_PARCEL.'?with_sender=1&with_receiver=1&with_receiver_address=1&with_to_branch=1&offset='.$offset.'&count='.$count.$filter,array(),self::HTTP_GET);
 
     }
-    public function getFilterParcelsByDateAndStatus($start_created_date,$end_created_date,$status,$offset=0, $count=50, $with_total=null){
+    public function getFilterParcelsByDateAndStatus($start_created_date,$end_created_date,$status,$offset=0, $count=50, $with_total=null,$branch_id=null){
         $parcel_status = $status == '-1'?'': '&status='.$status;
         $filter = !is_null($with_total) ? '&with_total_count=1' : '';
         $filter .= $parcel_status.'&start_created_date='.$start_created_date;
         $filter .= $parcel_status.'&end_created_date='.$end_created_date;
+        $filter .= !is_null($branch_id) ? '&branch_id='.$branch_id : '';
         return $this->request(ServiceConstant::URL_GET_ALL_PARCEL.'?with_sender=1&with_receiver=1&with_receiver_address=1&with_to_branch=1&offset='.$offset.'&count='.$count.$filter,array(),self::HTTP_GET);
     }
-    public function getNewParcelsByDate($start_created_date,$offset=0, $count=50, $with_total=null){
+    public function getNewParcelsByDate($start_created_date,$offset=0, $count=50, $with_total=null,$branch_id=null){
         $filter = '&start_created_date='.$start_created_date;
         $filter .= !is_null($with_total) ? '&with_total_count=1' : '';
+        $filter .= !is_null($branch_id) ? '&branch_id='.$branch_id : '';
         return $this->request(ServiceConstant::URL_GET_ALL_PARCEL.'?with_sender=1&with_receiver=1&with_receiver_address=1&offset='.$offset.'&count='.$count.$filter,array(),self::HTTP_GET);
     }
 
@@ -84,7 +87,7 @@ class ParcelAdapter extends BaseAdapter{
         return $this->request(ServiceConstant::URL_MOVE_TO_DELIVERED, $postData, self::HTTP_POST);
     }
 
-    public function getParcelsByPayment($waybill_number=null,$payment_type=null,$start_created_date,$end_created_date,$offset=0, $count=50, $with_total=null){
+    public function getParcelsByPayment($waybill_number=null,$payment_type=null,$start_created_date,$end_created_date,$offset=0, $count=50, $with_total=null,$branch_id=null){
         $filter = !is_null($waybill_number) ? '&waybill_number='.$waybill_number : '';
         if(is_null($waybill_number)){
             $filter = !is_null($payment_type) ? '&payment_type='.$payment_type : '';
@@ -92,12 +95,14 @@ class ParcelAdapter extends BaseAdapter{
             $filter .= !is_null($end_created_date) ? '&end_created_date='.$end_created_date : '';
         }
         $filter .= !is_null($with_total) ? '&with_total_count=1' : '';
+        $filter .= !is_null($branch_id) ? '&branch_id='.$branch_id : '';
         return $this->request(ServiceConstant::URL_GET_ALL_PARCEL.'?with_from_branch=1&offset='.$offset.'&count='.$count.$filter,array(),self::HTTP_GET);
     }
-    public function getParcelsByUser($user_id, $start_created_date,$end_created_date,$offset=0, $count=50){
+    public function getParcelsByUser($user_id, $start_created_date,$end_created_date,$offset=0, $count=100,$branch_id=null){
         $filter = !is_null($user_id) ? '&user_id='.$user_id : '';
         $filter .= !is_null($start_created_date) ? '&start_created_date='.$start_created_date : '';
         $filter .= !is_null($end_created_date) ? '&end_created_date='.$end_created_date : '';
+        $filter .= !is_null($branch_id) ? '&branch_id='.$branch_id : '';
         $filter .= '&with_total_count=1';
         $filter .= '&order_by=Parcel.created_date%20DESC';
         return $this->request(ServiceConstant::URL_GET_ALL_PARCEL.'?with_sender=1&with_receiver=1&offset='.$offset.'&count='.$count.$filter,array(),self::HTTP_GET);
