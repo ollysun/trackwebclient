@@ -59,9 +59,9 @@ $this->params['content_header_button'] = '<span class="label label-success">CONF
                                 echo "<tr>";
                                 echo "<td>{$row}</td>";
                                 echo "<td>". Calypso::getValue($parcels, 'waybill_number')."</td>";
-                                echo "<td>" . ucwords(Calypso::getValue($parcels, 'sender_address.city') . ', ' . Calypso::getValue($parcels, 'sender_address.state.name')) . "</td>";
+                                echo "<td>" . ucwords(Calypso::getValue($parcels, 'sender_address.city.name') . ', ' . Calypso::getValue($parcels, 'sender_address.state.name')) . "</td>";
                                 echo "<td>" . strtoupper(Calypso::getValue($parcels, 'to_branch.name')) ."</td>";
-                                echo "<td>" . ucwords(Calypso::getValue($parcels, 'receiver_address.city') . ', ' . Calypso::getValue($parcels, 'receiver_address.state.name')) . "</td>";
+                                echo "<td>" . ucwords(Calypso::getValue($parcels, 'receiver_address.city.name') . ', ' . Calypso::getValue($parcels, 'receiver_address.state.name')) . "</td>";
                                 echo "<td>" . Calypso::getValue($parcels, 'weight') . "</td>";
                                 echo "</tr>";
                                 $row++;
