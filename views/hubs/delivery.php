@@ -115,9 +115,9 @@ $this->params['breadcrumbs'] = array(
                                               </td>";
                                 echo "<td>{$row}</td>";
                                 echo "<td><a href='/site/viewwaybill?id=" . Calypso::getValue($parcels, 'id') . "'>" . Calypso::getValue($parcels, 'waybill_number') . "</a></td>";
-                                echo "<td>" . ucwords(Calypso::getValue($parcels, 'sender_address.city') . ', ' . Calypso::getValue($parcels, 'sender_address.state.name')) . "</td>";
+                                echo "<td>" . ucwords(Calypso::getValue($parcels, 'sender_address.city.name') . ', ' . Calypso::getValue($parcels, 'sender_address.state.name')) . "</td>";
                                 echo "<td>" . strtoupper(Calypso::getValue($parcels, 'to_branch.name')) ."</td>";
-                                echo "<td>" . ucwords(Calypso::getValue($parcels, 'receiver_address.city') . ', ' . Calypso::getValue($parcels, 'receiver_address.state.name')) . "</td>";
+                                echo "<td>" . ucwords(Calypso::getValue($parcels, 'receiver_address.city.name') . ', ' . Calypso::getValue($parcels, 'receiver_address.state.name')) . "</td>";
                                 echo "<td>" . Calypso::getValue($parcels, 'weight') . "</td>";
                                 echo "</tr>";
                                 $row++;
