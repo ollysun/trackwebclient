@@ -260,6 +260,7 @@ class SiteController extends BaseController
         if(isset(Calypso::getInstance()->post()->waybill_numbers)){
             $parcel = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
             $response = $parcel->moveForDelivery([
+                'held_by_id' => Calypso::getInstance()->post()->held_by_id,
                 'waybill_numbers' => (Calypso::getInstance()->post()->waybill_numbers)
             ]);
             $response = new ResponseHandler($response);
