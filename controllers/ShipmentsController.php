@@ -258,8 +258,8 @@ class ShipmentsController extends BaseController {
             $search_action = true;
             $filter = null;
         }else{
-            $response = $parcel->getNewParcelsByDate(date('Y-m-d'),$offset,$this->page_width, 1, $this->branch_to_view, 1);
-            $response = $parcel->getNewParcelsByDate(date('Y-m-d 00:00:00', strtotime('now')),$offset,$this->page_width, 1, $this->branch_to_view);
+            //$response = $parcel->getNewParcelsByDate(date('Y-m-d'),$offset,$this->page_width, 1, $this->branch_to_view, 1);
+            $response = $parcel->getNewParcelsByDate(date('Y-m-d 00:00:00', strtotime('now')),$offset,$this->page_width, 1, $this->branch_to_view, 1);
             $search_action = false;
             $filter = null;
         }
