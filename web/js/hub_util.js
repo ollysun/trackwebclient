@@ -127,7 +127,7 @@ $(document).ready(function(){
                             if(payloadObj.waybill_numbers.length > 0){
                                 switch(branch_type){
                                     case 'ec':
-                                        Hub.sendParcelToForDelivery({waybill_numbers: payloadObj.waybill_numbers.join(',') },function(resp){
+                                        Hub.sendParcelToForDelivery({held_by_id: payloadObj.held_by_id, waybill_numbers: payloadObj.waybill_numbers.join(',') },function(resp){
                                             log(resp);
                                             var response = JSON.parse(JSON.stringify (resp));
                                             if(response.status=='success'){

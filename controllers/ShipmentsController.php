@@ -137,7 +137,7 @@ class ShipmentsController extends BaseController {
             $response = $parcel->getSearchParcels('-1',$search,$offset,$page_width, 1, $this->branch_to_view);
             $search_action = true;
         }else{
-            $response = $parcel->getParcels(null, null, ServiceConstant::FOR_DELIVERY,$this->branch_to_view,$offset,$page_width, null,1);
+            $response = $parcel->getParcelsForDelivery(null, null, ServiceConstant::FOR_DELIVERY,$this->branch_to_view,$offset,$page_width, null,1);
             $search_action = false;
         }
         $response = new ResponseHandler($response);
@@ -258,8 +258,8 @@ class ShipmentsController extends BaseController {
             $search_action = true;
             $filter = null;
         }else{
-            $response = $parcel->getNewParcelsByDate(date('Y-m-d'),$offset,$this->page_width, 1, $this->branch_to_view, 1);
-            $response = $parcel->getNewParcelsByDate(date('Y-m-d 00:00:00', strtotime('now')),$offset,$this->page_width, 1, $this->branch_to_view);
+            //$response = $parcel->getNewParcelsByDate(date('Y-m-d'),$offset,$this->page_width, 1, $this->branch_to_view, 1);
+            $response = $parcel->getNewParcelsByDate(date('Y-m-d 00:00:00', strtotime('now')),$offset,$this->page_width, 1, $this->branch_to_view, 1);
             $search_action = false;
             $filter = null;
         }

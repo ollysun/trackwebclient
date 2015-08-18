@@ -105,7 +105,7 @@ if($offset <= 0){
                             <td><?= strtoupper($parcel['waybill_number']); ?></td>
                             <td><?= strtoupper($parcel['sender']['firstname'].' '. $parcel['sender']['lastname']) ?></td>
                             <td><?= strtoupper($parcel['receiver']['firstname'].' '. $parcel['receiver']['lastname']) ?></td>
-                            <td><?= ucwords(Calypso::getValue($parcel, 'receiver_address.city')) . ', ' .
+                            <td><?= ucwords(Calypso::getValue($parcel, 'receiver_address.city.name')) . ', ' .
                                     ucwords(Calypso::getValue($parcel, 'receiver_address.state.name')); ?>
                             </td>
                             <td><?= date(ServiceConstant::DATE_TIME_FORMAT,strtotime($parcel['created_date'])); ?></td>
