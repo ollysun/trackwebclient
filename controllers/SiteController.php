@@ -108,7 +108,7 @@ class SiteController extends BaseController
                 }
                 return $this->redirect('/site');
             }else{
-                Calypso::getInstance()->setPageData("Invalid Login. Check username and password and try again");
+                Calypso::getInstance()->setPageData("You are not eligible to access this system, kindly contact your administrator");
             }
         }
         return $this->render('login');
