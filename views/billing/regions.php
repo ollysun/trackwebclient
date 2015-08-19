@@ -101,13 +101,6 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                         <label>Description</label>
                         <textarea class="form-control" name="description"></textarea>
                     </div>
-                    <div class="form-group">
-                        <label for="">Activate Region?</label>
-                        <select class="form-control required" name="status">
-                            <option value="<?= ServiceConstant::ACTIVE; ?>">Yes</option>
-                            <option value="<?= ServiceConstant::INACTIVE; ?>">No</option>
-                        </select>
-                    </div>
                 </div>
                 <div class="modal-footer">
                     <input type="hidden" name="task" value="create">
