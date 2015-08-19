@@ -342,7 +342,7 @@ var Parcel = {
 
 				self.setUserDetails(userObj, suffix);
 			}
-			else if (response.status === 'error') {
+			else {
 				alert(response.message);
 			}
 		});
@@ -385,7 +385,13 @@ var Parcel = {
 					accountObj.number = response.data.account_no;
 					accountObj.bank = response.data.bank;
 				}
+				else {
+					alert('No bank records found.');
+				}
 				self.setAccountDetails(accountObj);
+			}
+			else {
+				alert(response.message);
 			}
 		});
 	},
