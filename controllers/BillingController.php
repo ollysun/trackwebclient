@@ -352,12 +352,12 @@ class BillingController extends BaseController
             $data['name'] = Calypso::getValue($entry, 'onforward_name', null);
             $data['code'] = Calypso::getValue($entry, 'onforward_code');
             $data['description'] = Calypso::getValue($entry, 'onforward_desc');
-            $data['amount'] = Calypso::getValue($entry, 'onforward_amount');
+            $data['amount'] = Calypso::getValue($entry, 'onforward_amount', 0);
             $data['percentage'] = Calypso::getValue($entry, 'onforward_percentage',0)/100;
             $data['status'] = Calypso::getValue($entry, 'status');
             $data['charge_id'] = Calypso::getValue($entry, 'id',null);
 
-            if (($task == 'create' || $task == 'edit') && (empty($data['name']) || empty($data['code']) || empty($data['amount']))) {
+            if (($task == 'create' || $task == 'edit') && in_array(null, [$data['name'],$data['code'], $data['amount']])) {
                 $error[] = "All details are required!";
             }
             if (!empty($error)) {
