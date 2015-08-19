@@ -33,7 +33,7 @@ $this->params['breadcrumbs'] = array(
 						<th style="width: 20px">S/N</th>
 						<th>Code</th>
 						<th>Name</th>
-						<th>Type</th>
+						<th>Description</th>
 						<th>Action</th>
 					</tr>
 				</thead>
@@ -86,12 +86,6 @@ $this->params['breadcrumbs'] = array(
 					<label for="">Description</label>
 					<textarea class="form-control" name="zone_desc"></textarea>
 				</div>
-				<div class="form-group">
-					<label for="">Type</label>
-					<select class="form-control" disabled="disabled" name="zone_type">
-						<option>Custom</option>
-					</select>
-				</div>
 	      </div>
 	      <div class="modal-footer">
 			  <input type="hidden" name="task" value="create">
@@ -123,12 +117,6 @@ $this->params['breadcrumbs'] = array(
 				<div class="form-group">
 					<label for="">Description</label>
 					<textarea class="form-control" name="zone_desc"></textarea>
-				</div>
-				<div class="form-group">
-					<label for="">Type</label>
-					<select class="form-control" disabled="disabled" name="zone_type">
-						<option>Custom</option>
-					</select>
 				</div>
 			</div>
 	      <div class="modal-footer">
