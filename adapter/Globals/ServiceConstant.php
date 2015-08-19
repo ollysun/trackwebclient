@@ -124,7 +124,7 @@ class ServiceConstant {
     const URL_USER_CHANGE_PASSWORD = 'admin/changePassword';
     const URL_USER_CHANGE_STATUS = 'admin/changeStatus';
 
-    const DATE_TIME_FORMAT = 'd M Y g:i A';
+    const DATE_TIME_FORMAT = 'd M Y H:i';
     const DATE_FORMAT = 'd M Y';
     const TIME_FORMAT = 'g:i A';
 
