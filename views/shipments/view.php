@@ -139,10 +139,10 @@ $this->params['breadcrumbs'][] = 'Waybill';
 							</div>
 							<div class="row form-group">
 								<div class="col-xs-6">
-									<label>Delivery</label>
-									<?= ucwords(ServiceConstant::getDeliveryType($parcelData['delivery_type'])); ?>
-									<!-- <div class="form-control-static"><?= $parcelData['delivery_type']; ?></div> -->
-									<!-- Address delivery // Pickup at Opebi EC -->
+									<label>Delivery Type</label>
+									<div class="form-control-static">
+										<?= ucwords(ServiceConstant::getDeliveryType($parcelData['delivery_type'])); ?>
+									</div>
 								</div>
 								<div class="col-xs-6">
 									<label>Service type</label>
