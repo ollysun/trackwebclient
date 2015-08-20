@@ -1,7 +1,7 @@
 $(document).ready(function(){
-    $(".barcode").barcode(waybill,"code128");
-    var waybillelement = document.querySelectorAll(".waybill-wrap");
-
+    $(".barcode").barcode(waybill,"code128", {barWidth:2, showHRI: false, addQuietZone: false, bgColor: 'transparent', barHeight: 90});
+    window.print();
+    /* var waybillelement = document.querySelectorAll(".waybill-wrap");
     setTimeout(function(){
         var temp_el = null;
         for(var i =0; i < waybillelement.length; i++){
@@ -16,6 +16,6 @@ $(document).ready(function(){
         }
         $("#main_holder").addClass('hidden');
 
-    },100);
+    },100); */
 
 });

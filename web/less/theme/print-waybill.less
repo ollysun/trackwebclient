@@ -47,17 +47,17 @@
 @service-type-top: 467px;
 @service-type-left: 678px;
 @service-type-width: 25px;
-@service-type-inner-height: 17px;
-@service-typer-inner-margin-bottom: 15.5px;
+@service-type-inner-height: 18px;
+@service-typer-inner-margin-bottom: 14.5px;
 
 
-@parcel-type-top: 630px;
+@parcel-type-top: 640px;
 @parcel-type-left: @code-left;
 @parcel-type-width: @code-width;
 @parcel-type-height: 1em;
 @parcel-type-font-size: 18px;
 
-@cod-top: 277px;
+@cod-top: 276px;
 @cod-left: 735px;
 @cod-width: 280px;
 @cod-height: 95px;
@@ -74,6 +74,10 @@
 @other-info-height: 117px;
 @other-info-font-size: 14px;
 @other-info-line-height: 1.2;
+
+@page {
+	margin: 0.15cm;
+}
 
 .clearfix {
 	&:before, &:after {
@@ -120,11 +124,20 @@ body {
 	position: relative;
 	width: @waybill-width;
 	height: @waybill-height;
-	margin: auto;
-	background: url('../../img/waybill-bg.png');
+	margin: 0 auto 10px;
 	@media print {
-		background: url('../../img/waybill-bg.png');
+		margin: 0 auto;
 	}
+}
+.waybill-divider {
+	@media print {
+		margin: 0px 0;
+		border-top: 2px dotted #000;
+	}
+}
+.waybill-bg {
+	.absolute-wrap(0; 0; 100%; 100%);
+	display: block;
 }
 .copy {
 	.absolute-wrap(@waybill-padding-vertical; auto; 335px);
@@ -134,8 +147,11 @@ body {
 	text-align: center;
 	&:extend(.text-uppercase);
 }
-.waybill-image {
+.waybill-barcode {
 	.absolute-wrap(@waybill-padding-vertical; @code-left; 220px; 120px);
+	.barcode {
+		zoom: 0.85;
+	}
 }
 .waybill-no {
 	.absolute-wrap(154px; 575px);
@@ -218,7 +234,20 @@ body {
 		height: @service-type-inner-height;
 		margin-bottom: @service-typer-inner-margin-bottom;
 		&.is-active {
-			background: #111;
+			background-color: #000;
+			@media print {
+				position: relative;
+				@half-height: floor(@service-type-inner-height / 2);
+				border: @half-height solid #000;
+				border-width: @half-height 50%;
+				> span {
+					position: absolute;
+					left: (@service-type-width / -3);
+					//left: -8px;
+					top: -@half-height;
+					display: block;
+				}
+			}
 		}
 		>span {
 			margin-left: -230px;
@@ -237,6 +266,8 @@ body {
 
 .cod {
 	.absolute-wrap(@cod-top; @cod-left; @cod-width; @cod-height);
+	@box-width: @cod-inner-width;
+	@box-height: @cod-inner-height;
 	&__inner {
 		position: relative;
 		width: 100%;
@@ -245,8 +276,8 @@ body {
 	&__yes, &__no {
 		position: absolute;
 		top: 0;
-		width: @cod-inner-width;
-		height: @cod-inner-height;
+		width: @box-width;
+		height: @box-height;
 	}
 	&__yes {
 		left: 80px;
@@ -255,7 +286,9 @@ body {
 		right: 12px;
 	}
 	.is-active {
-		background: black;
+		background-color: #000 !important;
+		border: 1px solid #000;
+		border-width: (@box-height / 2) (@box-width / 2);
 	}
 	&__amt {
 		&:before {
