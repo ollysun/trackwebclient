@@ -94,13 +94,6 @@ $this->params['breadcrumbs'] = array(
 						?>
 					</select>
 				</div>
-				<div class="form-group">
-					<label for="">Activate State Mapping?</label>
-					<select name="" class="form-control">
-						<option value="<?= ServiceConstant::ACTIVE;?>">Yes</option>
-						<option value="<?= ServiceConstant::INACTIVE;?>">No</option>
-					</select>
-				</div>
 	      </div>
 	      <div class="modal-footer">
 			  <input type="hidden" name="task" value="create">
@@ -148,13 +141,6 @@ $this->params['breadcrumbs'] = array(
 							}
 						endif;
 						?>
-					</select>
-				</div>
-				<div class="form-group">
-					<label for="">Status</label>
-					<select name="" id="" class="form-control">
-						<option value="">Active</option>
-						<option value="">Inactive</option>
 					</select>
 				</div>
 	      </div>
