@@ -93,6 +93,10 @@ function validateFxn() {
     $('.validate-form .active-validate')
         .off('blur.CP.form.validate change.CP.form.validate').on('blur.CP.form.validate change.CP.form.validate', validateFxn);
     $('.validate-form').on('submit.CP.form.validate',function(event){
-        return validate(this);
+        var valid = validate(this);
+        if (!valid) {
+            $(this).trigger('enable.CP.form.submitButton');
+        }
+        return valid;
     });
 })(jQuery);
