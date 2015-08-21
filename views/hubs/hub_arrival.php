@@ -10,7 +10,7 @@ $this->params['breadcrumbs'] = array(
 	'url' => ['site/managebranches'],
 	'label' => 'Manage Branches'
 	),*/
-	array('label'=> 'Shipments Arriving')
+	array('label'=> 'Receive Shipments')
 );
 ?>
 
@@ -132,7 +132,7 @@ $this->params['breadcrumbs'] = array(
 							<div class="form-group">
 								<label>Staff ID</label>
 								<div class="input-group">
-									<input id="staff_no" value="98765" class="form-control">
+									<input id="staff_no" value="" class="form-control">
 									<div class="input-group-btn">
 										<button type="button" data-branch_type="hub" id="get_arrival" class="btn btn-default">Load</button>
 									</div>

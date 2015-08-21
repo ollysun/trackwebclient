@@ -305,6 +305,15 @@ $(document).ready(function(){
         }
     });
 
+    $('#btn_staff').on('click', function(event){
+        var staff_code = $('#staff').val();
+        if(staff_code == '') {
+            return;
+        }
+        Parcel_Destination.searchStaffDetails(staff_code);
+        event.preventDefault();
+    });
+
     $('#btnGenerate').on('click', function(event){
 
         $('#payload').val(JSON.stringify(parcels));
@@ -316,5 +325,19 @@ $(document).ready(function(){
             name = $(this).find('option:selected').text();
         }
         TableHelper.setColumnData('#next_dest', 4, name, true);
+    });
+
+    $('#chk_all').on('click', function(event){
+        var is_checked = $(this).is(':checked');
+        var checkboxes = $('#next_dest tr input:checkbox');
+        if(is_checked) {
+            $.each(checkboxes, function(i, chk){
+                $(chk).prop('checked', true);
+            });
+        } else {
+            $.each(checkboxes, function(i, chk){
+                $(chk).prop('checked', false);
+            });
+        }
     });
 });
