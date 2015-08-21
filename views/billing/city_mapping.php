@@ -138,13 +138,6 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                             ?>
                         </select>
                     </div>
-                    <div class="form-group">
-                        <label for="">Activate City?</label>
-                        <select name="" id="" class="form-control">
-                            <option value="">Yes</option>
-                            <option value="">No</option>
-                        </select>
-                    </div>
                 </div>
                 <div class="modal-footer">
                     <input type="hidden" name="task" value="create">
@@ -223,13 +216,6 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                                 }
                             endif;
                             ?>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="">Status</label>
-                        <select name="" id="" class="form-control">
-                            <option value="">Active</option>
-                            <option value="">Inactive</option>
                         </select>
                     </div>
                 </div>
