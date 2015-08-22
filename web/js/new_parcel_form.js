@@ -460,15 +460,17 @@ $(document).ready(function(){
 		} else {
 			suffix = 'receiver';
 		}
-		var term = $("#" + suffix + "SearchBox").val();
-		Parcel.getUserInformation(term, suffix).then(function(response){
-			var searchTextbox = $("#" + suffix + "SearchBox");
-			if(response.status !== 'success') {
-				$('#phone_'+suffix).val(searchTextbox.val());
-				$('#firstname_'+suffix).trigger('focus');
-			}
-			searchTextbox.val('');
-		});
+		var searchTextbox = $("#" + suffix + "SearchBox");
+		if(validateFxn.apply(searchTextbox)){
+			var term = searchTextbox.val();
+			Parcel.getUserInformation(term, suffix).then(function(response){
+				if(response.status !== 'success') {
+					$('#phone_'+suffix).val(searchTextbox.val());
+					$('#firstname_'+suffix).trigger('focus');
+				}
+				searchTextbox.val('');
+			});
+		}
 	});
 
 	$('#shipperSearchBox, #receiverSearchBox').on('keyup', function(e) {

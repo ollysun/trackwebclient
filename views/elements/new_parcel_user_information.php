@@ -1,6 +1,6 @@
 <div class="form-group">
 	<div class="input-group">
-		<input id="<?=$prefix?>SearchBox"  data-target="#<?php echo $prefix;?>SearchFlyOutPanel" type="text" class="form-control" placeholder="Search customers by phone number">
+		<input id="<?=$prefix?>SearchBox"  data-target="#<?php echo $prefix;?>SearchFlyOutPanel" type="text" class="form-control phone" placeholder="Search customers by phone number">
 		<div class="input-group-btn">
 			<button class="btn btn-default <?=$prefix?>" id="btn_Search_<?=$prefix?>" type="button"><i class="fa fa-search"></i></button>
 		</div>
