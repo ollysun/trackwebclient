@@ -16,7 +16,7 @@ function validateFxn() {
         formgroup = input.closest('.form-group');
     var msg = '';
 
-    formgroup.removeClass('has-error has-success').find('.help-block').remove();
+    formgroup.removeClass('has-error has-success').find('.help-block.help-validation-error').remove();
     if(input.hasClass('required') && val === '')
     {
         msg = 'Required field';
@@ -83,9 +83,17 @@ function validateFxn() {
         isValid = false;
     }
     if(msg !== ''){
-        formgroup.addClass('has-error').append('<div class="help-block no-margin clearfix">'+msg+'</div>');
-        if(!input.hasClass('active-validate'))
+        var errorMsg = '<div class="help-block help-validation-error" style="margin:0">'+msg+'</div>';
+        formgroup.addClass('has-error');
+        if(formgroup.find('.help-block').length > 0) {
+            $(errorMsg).insertBefore(formgroup.find('.help-block')[0]);
+        }
+        else {
+            formgroup.append(errorMsg);
+        }
+        if(!input.hasClass('active-validate')) {
             input.one('blur.CP.form.validate change.CP.form.validate',validateFxn);
+        }
     }
     return isValid;
 }
