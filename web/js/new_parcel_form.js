@@ -325,7 +325,7 @@ var Parcel = {
 
 	getUserInformation: function(term, suffix) {
 		var self = this;
-		$.get( Parcel.Url.userdetails, { term: term }, function(response) {
+		return $.get( Parcel.Url.userdetails, { term: term }, function(response) {
 			if(response.status === 'success') {
 
 				var userObj = self.newUserObject();
@@ -461,7 +461,14 @@ $(document).ready(function(){
 			suffix = 'receiver';
 		}
 		var term = $("#" + suffix + "SearchBox").val();
-		Parcel.getUserInformation(term, suffix);
+		Parcel.getUserInformation(term, suffix).then(function(response){
+			var searchTextbox = $("#" + suffix + "SearchBox");
+			if(response.status !== 'success') {
+				$('#phone_'+suffix).val(searchTextbox.val());
+				$('#firstname_'+suffix).trigger('focus');
+			}
+			searchTextbox.val('');
+		});
 	});
 
 	$('#shipperSearchBox, #receiverSearchBox').on('keyup', function(e) {
