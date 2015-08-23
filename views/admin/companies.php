@@ -85,120 +85,138 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
 
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <form class="validate-form" method="post">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                            aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">Add a New Staff Account</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Add a New Company</h4>
                 </div>
                 <div class="modal-body">
-                    <p>Please fill the following information carefully. <strong>All fields are required.</strong></p>
+                    <fieldset>
+                        <legend>Company Details</legend>
+                        <div class="row">
+                            <div class="col-xs-6 form-group">
+                                <label for="">Name</label>
+                                <input type="text" class="form-control validate required name">
+                            </div>
+                            <div class="col-xs-6 form-group">
+                                <label for="">Registration No</label>
+                                <input type="text" class="form-control validate required">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-6 form-group">
+                                <label for="">Email address</label>
+                                <input type="text" class="form-control validate required email">
+                            </div>
+                            <div class="col-xs-6 form-group">
+                                <label for="">Phone number</label>
+                                <input type="text" class="form-control validate required phone">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Address</label>
+                            <input type="text" class="form-control validate required">
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-6 form-group">
+                                <label for="">State</label>
+                                <select name="" id="" class="form-control validate required"></select>
+                            </div>
+                            <div class="col-xs-6 form-group">
+                                <label for="">City</label>
+                                <select name="" id="" class="form-control validate required"></select>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <br>
                     <div class="row">
-                        <div class="col-xs-6">
-                            <div class="form-group">
-                                <label>First name</label>
-                                <input name="firstname" class="form-control validate required name">
+                        <fieldset class="col-xs-6">
+                            <legend>Relationship Officer</legend>
+                            <div class="row">
+                                <div class="col-xs-4 form-group">
+                                    <label for="">Staff ID</label>
+                                    <input type="text" class="form-control validate required">
+                                </div>
+                                <div class="col-xs-4 form-group">
+                                    <label for="">Name</label>
+                                    <input type="text" readonly="readonly" class="form-control validate required">
+                                </div>
+                                <div class="col-xs-4 form-group">
+                                    <label for="">Email address</label>
+                                    <input type="text" readonly="readonly" class="form-control validate required">
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-xs-6">
-                            <div class="form-group">
-                                <label>Last name</label>
-                                <input name="lastname" class="form-control  validate required name">
+                        </fieldset>
+                        <fieldset class="col-xs-6">
+                            <legend>Business Offers</legend>
+                            <div class="row">
+                                <div class="col-xs-6 form-group">
+                                    <label for="">Credit Limit <span class="currency naira"></span></label>
+                                    <input type="text" class="form-control validate required number">
+                                </div>
+                                <div class="col-xs-6 form-group">
+                                    <label for="">Discount (%)</label>
+                                    <input type="text" class="form-control validate number">
+                                </div>
                             </div>
-                        </div>
+                        </fieldset>
                     </div>
+                    <br>
                     <div class="row">
-                        <div class="col-xs-6">
-                            <div class="form-group">
-                                <label>Email address</label>
-                                <input name="email" class="form-control  validate required email">
+                        <fieldset class="col-xs-6">
+                            <legend>Primary Contact</legend>
+                            <div class="row">
+                                <div class="col-xs-6 form-group">
+                                    <label for="">First name</label>
+                                    <input type="text" class="form-control validate required name">
+                                </div>
+                                <div class="col-xs-6 form-group">
+                                    <label for="">Last name</label>
+                                    <input type="text" class="form-control validate required name">
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-xs-6">
-                            <div class="form-group">
-                                <label>Phone no</label>
-                                <input name="phone" class="form-control validate required phone">
+                            <div class="row">
+                                <div class="col-xs-12 form-group">
+                                    <label for="">Email address</label>
+                                    <input type="text" class="form-control validate required email">
+                                </div>
+                                <div class="col-xs-12 form-group">
+                                    <label for="">Phone number</label>
+                                    <input type="text" class="form-control validate required phone">
+                                </div>
                             </div>
-                        </div>
+                        </fieldset>
+                        <fieldset class="col-xs-6">
+                            <legend>Secondary Contact <small>(optional)</small></legend>
+                            <div class="row">
+                                <div class="col-xs-6 form-group">
+                                    <label for="">First name</label>
+                                    <input type="text" class="form-control validate required name">
+                                </div>
+                                <div class="col-xs-6 form-group">
+                                    <label for="">Last name</label>
+                                    <input type="text" class="form-control validate required name">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12 form-group">
+                                    <label for="">Email address</label>
+                                    <input type="text" class="form-control validate required email">
+                                </div>
+                                <div class="col-xs-12 form-group">
+                                    <label for="">Phone number</label>
+                                    <input type="text" class="form-control validate required phone">
+                                </div>
+                            </div>
+                        </fieldset>
                     </div>
-                    <div class="form-group">
-                        <label>Staff ID</label>
-                        <input name="staff_id" class="form-control validate required">
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-4">
-                            <div class="form-group">
-                                <label>State</label>
-                                <select id="state" name="state" class="form-control validate required">
-                                    <?php
-                                    if (isset($states) && is_array($states) && !empty($states)):
-                                        foreach ($states as $state):
-                                            ?>
-                                            <option
-                                                value="<?= $state['id'] ?>"><?= strtoupper($state['name']); ?></option>
-                                            <?php
-                                        endforeach;
-                                    endif;
-                                    ?>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-xs-3">
-                            <div class="form-group">
-                                <label>Branch type</label>
-                                <select id="branch_type" name="branch_type" class="form-control validate required">
-                                    <option value="">Select ...</option>
-                                    <option value="1">HQ</option>
-                                    <option value="2">Hub</option>
-                                    <option value="4">EC</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-xs-5">
-                            <div class="form-group">
-                                <label>Branch</label>
-                                <select id="branch" name="branch" class="form-control validate required">
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-6">
-                            <div class="form-group">
-                                <label>User role</label>
-                                <select name="role" class="form-control validate required">
-                                    <?php
-
-                                    if (isset($roles) && is_array($roles) && !empty($roles)):
-                                        foreach ($roles as $role):
-                                            ?>
-                                            <option
-                                                value="<?= $role['id'] ?>"><?= strtoupper($role['name']); ?></option>
-                                            <?php
-                                        endforeach;
-                                    endif;
-                                    ?>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-xs-6">
-                            <div class="form-group">
-                                <label>Activate user?
-                                    <small>(Users can be activated later)</small>
-                                </label>
-                                <select name="status" class="form-control  validate required">
-                                    <option>YES</option>
-                                    <option>NO</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
+                    <br>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Create Staff Account</button>
+                    <button type="submit" class="btn btn-primary">Register</button>
                 </div>
             </div>
         </form>
@@ -207,98 +225,134 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
 
 
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <form class="">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                            aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">Edit a Staff Account</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Edit Company</h4>
                 </div>
                 <div class="modal-body">
+                    <fieldset>
+                        <legend>Company Details</legend>
+                        <div class="row">
+                            <div class="col-xs-6 form-group">
+                                <label for="">Name</label>
+                                <input type="text" class="form-control validate required name">
+                            </div>
+                            <div class="col-xs-6 form-group">
+                                <label for="">Registration No</label>
+                                <input type="text" class="form-control validate required">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-6 form-group">
+                                <label for="">Email address</label>
+                                <input type="text" class="form-control validate required email">
+                            </div>
+                            <div class="col-xs-6 form-group">
+                                <label for="">Phone number</label>
+                                <input type="text" class="form-control validate required phone">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Address</label>
+                            <input type="text" class="form-control validate required">
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-6 form-group">
+                                <label for="">State</label>
+                                <select name="" id="" class="form-control validate required"></select>
+                            </div>
+                            <div class="col-xs-6 form-group">
+                                <label for="">City</label>
+                                <select name="" id="" class="form-control validate required"></select>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <br>
                     <div class="row">
-                        <div class="col-xs-6">
-                            <div class="form-group">
-                                <label>First name</label>
-                                <input class="form-control">
+                        <fieldset class="col-xs-6">
+                            <legend>Relationship Officer</legend>
+                            <div class="row">
+                                <div class="col-xs-4 form-group">
+                                    <label for="">Staff ID</label>
+                                    <input type="text" class="form-control validate required">
+                                </div>
+                                <div class="col-xs-4 form-group">
+                                    <label for="">Name</label>
+                                    <input type="text" readonly="readonly" class="form-control validate required">
+                                </div>
+                                <div class="col-xs-4 form-group">
+                                    <label for="">Email address</label>
+                                    <input type="text" readonly="readonly" class="form-control validate required">
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-xs-6">
-                            <div class="form-group">
-                                <label>Last name</label>
-                                <input class="form-control">
+                        </fieldset>
+                        <fieldset class="col-xs-6">
+                            <legend>Business Offers</legend>
+                            <div class="row">
+                                <div class="col-xs-6 form-group">
+                                    <label for="">Credit Limit <span class="currency naira"></span></label>
+                                    <input type="text" class="form-control validate required number">
+                                </div>
+                                <div class="col-xs-6 form-group">
+                                    <label for="">Discount (%)</label>
+                                    <input type="text" class="form-control validate number">
+                                </div>
                             </div>
-                        </div>
+                        </fieldset>
                     </div>
+                    <br>
                     <div class="row">
-                        <div class="col-xs-6">
-                            <div class="form-group">
-                                <label>Email address</label>
-                                <input class="form-control">
+                        <fieldset class="col-xs-6">
+                            <legend>Primary Contact</legend>
+                            <div class="row">
+                                <div class="col-xs-6 form-group">
+                                    <label for="">First name</label>
+                                    <input type="text" class="form-control validate required name">
+                                </div>
+                                <div class="col-xs-6 form-group">
+                                    <label for="">Last name</label>
+                                    <input type="text" class="form-control validate required name">
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-xs-6">
-                            <div class="form-group">
-                                <label>Phone no</label>
-                                <input class="form-control">
+                            <div class="row">
+                                <div class="col-xs-12 form-group">
+                                    <label for="">Email address</label>
+                                    <input type="text" class="form-control validate required email">
+                                </div>
+                                <div class="col-xs-12 form-group">
+                                    <label for="">Phone number</label>
+                                    <input type="text" class="form-control validate required phone">
+                                </div>
                             </div>
-                        </div>
+                        </fieldset>
+                        <fieldset class="col-xs-6">
+                            <legend>Secondary Contact <small>(optional)</small></legend>
+                            <div class="row">
+                                <div class="col-xs-6 form-group">
+                                    <label for="">First name</label>
+                                    <input type="text" class="form-control validate required name">
+                                </div>
+                                <div class="col-xs-6 form-group">
+                                    <label for="">Last name</label>
+                                    <input type="text" class="form-control validate required name">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12 form-group">
+                                    <label for="">Email address</label>
+                                    <input type="text" class="form-control validate required email">
+                                </div>
+                                <div class="col-xs-12 form-group">
+                                    <label for="">Phone number</label>
+                                    <input type="text" class="form-control validate required phone">
+                                </div>
+                            </div>
+                        </fieldset>
                     </div>
-                    <div class="form-group">
-                        <label>Staff ID</label>
-                        <input class="form-control">
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-3">
-                            <div class="form-group">
-                                <label>State</label>
-                                <select id="state" name="state" class="form-control">
-                                    <?php
-                                    if (isset($states) && is_array($states) && !empty($states)):
-                                        foreach ($states as $state):
-                                            ?>
-                                            <option
-                                                value="<?= $state['id'] ?>"><?= strtoupper($state['name']); ?></option>
-                                            <?php
-                                        endforeach;
-                                    endif;
-                                    ?>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-xs-4">
-                            <div class="form-group">
-                                <label>Branch type</label>
-                                <select class="form-control">
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-xs-5">
-                            <div class="form-group">
-                                <label>Branch</label>
-                                <select class="form-control">
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-6">
-                            <div class="form-group">
-                                <label>User role</label>
-                                <select class="form-control">
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-xs-6">
-                            <div class="form-group">
-                                <label>Status</label>
-                                <select class="form-control">
-                                    <option>Active</option>
-                                    <option>Inactive</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
+                    <br>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -310,14 +364,6 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
 </div>
 
 <!-- this page specific scripts -->
-<?php $this->registerJsFile('@web/js/libs/jquery.dataTables.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
-<?php $this->registerJsFile('@web/js/libs/dataTables.fixedHeader.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
-<?php $this->registerJsFile('@web/js/libs/dataTables.tableTools.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
-<?php $this->registerJsFile('@web/js/libs/jquery.dataTables.bootstrap.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
-<?php $this->registerJsFile('@web/js/hub_util.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
-<?php $this->registerJsFile('@web/js/jquery.dataTables.min.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
-<?php $this->registerJsFile('@web/js/dataTables.bootstrap.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
-<?php $this->registerJsFile('@web/js/table.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/validate.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 
 
