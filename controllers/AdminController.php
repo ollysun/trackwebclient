@@ -236,5 +236,8 @@ class AdminController extends BaseController {
 
 		return $this->render('managestaff',['states' => $state_list,'roles'=> $role_list,'staffMembers' => $staffMembers,'offset'=>$offset,'role'=>$role,'page_width'=>$this->page_width]);
 	}
+	public function actionCompanies() {
+		return $this->render('companies');
+	}
 
 }
