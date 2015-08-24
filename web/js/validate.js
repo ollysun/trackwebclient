@@ -40,6 +40,24 @@ function validateFxn() {
             isValid = false;
         }
     }
+    else if(input.hasClass('non-zero-integer'))
+    {
+        var test = /^[1-9]\d*$/;
+        if(!test.test(val))
+        {
+            msg = 'Invalid entry';
+            isValid = false;
+        }
+    }
+    else if(input.hasClass('non-zero-number'))
+    {
+        var test = /^(?=.*[1-9])\d+(\.\d+)?$/;
+        if(!test.test(val))
+        {
+            msg = 'Invalid entry';
+            isValid = false;
+        }
+    }
     else if(input.hasClass('number'))
     {
         var ph = /^[0-9]+(\.[0-9][0-9]?)?$/;
