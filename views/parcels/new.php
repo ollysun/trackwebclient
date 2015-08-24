@@ -27,7 +27,7 @@ $this->params['breadcrumbs'] = array(
             <li data-target="#newParcelForm" data-slide-to="2"></li>
         </ol>
         <div class="carousel-inner">
-            <div class="main-box item active">
+            <div class="main-box item">
                 <div class="row">
                     <div class="col-xs-12 col-lg-6">
                         <div class="main-box-header">
@@ -52,7 +52,7 @@ $this->params['breadcrumbs'] = array(
                 </div>
             </div>
 
-            <div class="main-box item">
+            <div class="main-box item active">
                 <div class="main-box-header">
                     <h2>Parcel/Shipment Information</h2>
                 </div>
@@ -194,7 +194,7 @@ $this->params['breadcrumbs'] = array(
                                 <div class="row">
                                     <div class="col-xs-12 col-sm-6 col-lg-5 form-group">
                                         <label>Account No</label>
-                                        <input name="account_no" class="form-control" id="account_no">
+                                        <input name="account_no" class="form-control" data-validate-limit="10" id="account_no">
                                     </div>
                                     <div class="col-xs-12 col-sm-6 col-lg-7 form-group">
                                         <label>Bank</label>
@@ -252,7 +252,7 @@ $this->params['breadcrumbs'] = array(
                             </div>
                             <div class="form-group">
                                 <label>Other Information</label>
-                                <textarea name="other_info" class="form-control validate word-limit" data-max-input="50"></textarea>
+                                <textarea name="other_info" class="form-control validate limit max word" data-validate-limit="50"></textarea>
                             </div>
                         </div>
                     </div>

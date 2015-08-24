@@ -95,20 +95,38 @@ function validateFxn() {
             isValid = false;
         }
     }
-    else if(input.hasClass('word-limit'))
-    {
-        var max = (input.attr('data-max-input'));
-        var entered = val.split(/\s/).length;
-        if(entered > max)
-        {
-            msg = 'Limit exceeded. Max. allowed '+max+' words';
-            isValid = false;
-        }
-    }
     else if(input.find("input[type=radio]").length>0 && input.find("input[type=radio]:checked").length==0)
     {
         msg = 'Required field';
         isValid = false;
+    }
+    if(input.hasClass('limit') && isValid)
+    {
+        var limit = (input.attr('data-validate-limit'));
+        var entered = input.hasClass('word') ? val.split(/\s/).length : val.length;
+        var type = input.hasClass('word') ? ' word' : ' character';
+
+        if(input.hasClass('min')){
+            if(entered < limit)
+            {
+                msg = 'Min. allowed '+limit+type+'s';
+                isValid = false;
+            }
+        }
+        else if(input.hasClass('max')){
+            if(entered > limit)
+            {
+                msg = 'Limit exceeded. Max. allowed '+limit+type+'s';
+                isValid = false;
+            }
+        }
+        else{
+            if(limit != entered)
+            {
+                msg = 'Must be '+limit+type+'s';
+                isValid = false;
+            }
+        }
     }
     if(msg !== ''){
         var errorMsg = '<div class="help-block help-validation-error" style="margin:0">'+msg+'</div>';
