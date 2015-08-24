@@ -10,7 +10,7 @@ $this->params['breadcrumbs'] = array(
     'url' => ['site/managebranches'],
     'label' => 'Manage Branches'
     ),*/
-    array('label'=> 'Next Destination Shipments')
+    array('label'=> 'Ready for Shipments')
 );
 ?>
 
@@ -60,7 +60,11 @@ $this->params['breadcrumbs'] = array(
                     <table id="next_dest" class="table table-hover next_dest">
                         <thead>
                         <tr>
-                            <th style="width: 20px;"></th>
+                            <th style="width: 20px;">
+                                <div class='checkbox-nice'>
+                                    <input id='chk_all' type='checkbox' class='chk_all'><label for='chk_all'></label>
+                                </div>
+                            </th>
                             <th style="width: 20px">S/N</th>
                             <th>Waybill No</th>
                             <th>Origin</th>
@@ -113,7 +117,7 @@ $this->params['breadcrumbs'] = array(
                     <div class="row">
                         <div class="col-xs-6">
                             <div class="form-group">
-                                <label>Location</label>
+                                <label>Next Destination</label>
                                 <select class="form-control"></select>
                             </div>
                         </div>
