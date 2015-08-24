@@ -10,7 +10,7 @@ $this->params['breadcrumbs'] = array(
     'url' => ['site/managebranches'],
     'label' => 'Manage Branches'
     ),*/
-    array('label'=> 'For Delivery')
+    array('label'=> 'Sorted Shipments')
 );
 ?>
 
@@ -92,7 +92,11 @@ $this->params['breadcrumbs'] = array(
                     <table id="next_dest" class="table table-hover next_dest">
                         <thead>
                         <tr>
-                            <th style="width: 20px;"></th>
+                            <th style="width: 20px;">
+                                <div class='checkbox-nice'>
+                                    <input id='chk_all' type='checkbox' class='chk_all'><label for='chk_all'></label>
+                                </div>
+                            </th>
                             <th style="width: 20px">S/N</th>
                             <th>Waybill No</th>
                             <th>Origin</th>
@@ -166,14 +170,19 @@ $this->params['breadcrumbs'] = array(
                         <input type="hidden" id="payload" name="payload" />
                         <div class="col-xs-6">
                             <div class="form-group">
-                                <label for="dlg_location">Location</label>
-                                <input class="form-control" id="dlg_location" />
+                                <label for="dlg_location">Next Destination</label>
+                                <input class="form-control" id="dlg_location" readonly="true" />
                             </div>
                         </div>
                         <div class="col-xs-6">
                             <div class="form-group">
                                 <label>Staff ID</label>
-                                <input class="form-control" id="staff">
+                                <div class="input-group">
+                                    <input class="form-control" id="staff">
+                                    <div class="input-group-btn">
+                                        <button type="button" id="btn_staff" class="btn btn-default"><i class="fa fa-search"></i></button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

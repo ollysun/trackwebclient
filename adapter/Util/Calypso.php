@@ -328,9 +328,9 @@ class Calypso
                 'All_Shipments' => ['base_link' => 'shipments/all', 'class' => ''],
             ],'branch' => [ ServiceConstant::BRANCH_TYPE_EC, ServiceConstant::BRANCH_TYPE_HQ]],
             'Hub' => ['base' => 'hubs', 'class' => 'fa fa-building-o', 'base_link' =>[
-                'Shipment_Arrivals' => ['base_link' => 'hubs/hubarrival', 'class' => ''],
-                'Set_next_destination' => ['base_link' => 'hubs/destination', 'class' => ''],
-                'For_Delivery' => ['base_link' => 'hubs/delivery', 'class' => ''],
+                'Receive_Shipments' => ['base_link' => 'hubs/hubarrival', 'class' => ''],
+                'Ready_for_Sorting' => ['base_link' => 'hubs/destination', 'class' => ''],
+                'Sorted_Shipments' => ['base_link' => 'hubs/delivery', 'class' => ''],
                 'Dispatched_Shipments' => ['base_link' => 'hubs/hubdispatch', 'class' => ''],
             ],'branch' => [ ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
             'Administrator' => ['base' => 'admin', 'class' => 'fa fa-user', 'base_link' => [
