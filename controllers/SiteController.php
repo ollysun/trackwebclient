@@ -5,6 +5,7 @@ namespace app\controllers;
 use Adapter\BankAdapter;
 use Adapter\BranchAdapter;
 use Adapter\ParcelAdapter;
+use Adapter\RegionAdapter;
 use Adapter\RefAdapter;
 use Adapter\UserAdapter;
 use app\services\ParcelService;
@@ -195,16 +196,8 @@ class SiteController extends BaseController
         $id = "-1";
         if(isset(Calypso::getInstance()->get()->id)){
             $id = Calypso::getInstance()->get()->id;
-            /*$parcel = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
-            $response = $parcel->getOneParcel($id);
-            $response = new ResponseHandler($response);
-            if($response->getStatus() == ResponseHandler::STATUS_OK){
-                $data = $response->getData();
-            }*/
         }
-
         return $this->redirect("/shipments/view?id={$id}");
-        //return $this->render('view_waybill',array('parcelData'=>$data,'id'=> $id));
     }
 
     /**
@@ -292,6 +285,10 @@ class SiteController extends BaseController
     public function actionPrintwaybill()
     {
         $data = [];
+        $sender_location = [];
+        $receiver_location = [];
+        $serviceType = [];
+        $parcelType = [];
         if(isset(Calypso::getInstance()->get()->id)){
             $id = Calypso::getInstance()->get()->id;
             $parcel = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
@@ -299,10 +296,44 @@ class SiteController extends BaseController
             $response = new ResponseHandler($response);
             if($response->getStatus() == ResponseHandler::STATUS_OK){
                 $data = $response->getData();
+                if (isset($data['sender_address']) && isset($data['sender_address']['city_id'])) {
+                    $city_id = $data['sender_address']['city_id'];
+                    $regionAdp = new RegionAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+                    $sender_location = $regionAdp->getCity($city_id);
+                    $resp = new ResponseHandler($sender_location);
+                    if ($resp->getStatus() == ResponseHandler::STATUS_OK) {
+                        $sender_location = $resp->getData();
+                    }
+                }
+                if (isset($data['receiver_address']) && isset($data['receiver_address']['city_id'])) {
+                    $city_id = $data['receiver_address']['city_id'];
+                    $regionAdp = new RegionAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+                    $receiver_location = $regionAdp->getCity($city_id);
+                    $resp = new ResponseHandler($receiver_location);
+                    if ($resp->getStatus() == ResponseHandler::STATUS_OK) {
+                        $receiver_location = $resp->getData();
+                    }
+                }
+            }
+            $refData = new RefAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+            $refResponse = new ResponseHandler($refData->getShipmentType());
+            if ($refResponse->getStatus() == ResponseHandler::STATUS_OK) {
+                $serviceType = $refResponse->getData();
+            }
+            $parcelTypeResponse = new ResponseHandler($refData->getparcelType());
+            if ($parcelTypeResponse->getStatus() == ResponseHandler::STATUS_OK) {
+                $parcelType = $parcelTypeResponse->getData();
             }
         }
         $this->layout = 'waybill';
-        return $this->render('print_waybill',array('parcelData'=>$data));
+
+        return $this->render('print_waybill', array(
+            'parcelData'=>$data,
+            'sender_location'=>$sender_location,
+            'receiver_location'=>$receiver_location,
+            'serviceType'=>$serviceType,
+            'parcelType'=>$parcelType,
+        ));
     }
 
     /**

@@ -1,22 +1,18 @@
-<div id="main_holder">
 <?php
 use Adapter\Util\Calypso;
+use yii\helpers\Html;
 
-$copies = ["Sender's Copy","Recipient's Copy","Acknowledgement's Copy"," Express Centre's Copy"];
-
-foreach($copies as $copy) {
-    ?>
+$copies = ["Sender's Copy","Recipient's Copy","Acknowledgement Copy"," Express Centre's Copy"];
+?>
+<div id="main_holder">
+<?php for ($i=0; $i < count($copies); $i++) { ?>
 <div class="waybill-wrap">
+    <?= Html::img('@web/img/waybill-bg.png', ['class' => 'waybill-bg']) ?>
     <div class="copy">
-        <?= $copy; ?>
+        <?= $copies[$i]; ?>
     </div>
-    <div class="waybill-image">
-        <!-- drop waybill image here, remove div below -->
-        <label>Waybill Bar Code</label><br/>
-
-        <div style="width: 100%; height: 70%;padding: 10px;">
-            <div id="" class="form-control-static barcode"></div>
-        </div>
+    <div class="waybill-barcode">
+        <div id="" class="barcode"></div>
     </div>
     <br/>
     <div class="waybill-no">
@@ -26,22 +22,58 @@ foreach($copies as $copy) {
 
     <div class="user user--sender">
         <div class="user__inner">
-            <div
-                class="user__name"><?= strtoupper($parcelData['sender']['lastname'] . ' ' . $parcelData['sender']['firstname']) ?></div>
+            <div class="user__name">
+                <?= strtoupper($parcelData['sender']['firstname'] . ' ' . $parcelData['sender']['lastname']) ?>
+            </div>
             <div class="user__tel"><?= $parcelData['sender']['phone'] ?></div>
-            <div
-                class="user__address"><?= $parcelData['sender_address']['street_address1'] . '<br/>' . $parcelData['sender_address']['street_address2'] ?></div>
-            <div class="user__country">Nigeria</div>
+            <div class="user__address">
+                <?= $parcelData['sender_address']['street_address1'] . '<br/>' . $parcelData['sender_address']['street_address2'] . '<br/>';?>
+                <?php
+                    if (!empty($sender_location)) {
+                        echo ucwords($sender_location['name']) . ', ' . ucwords($sender_location['state']['name']);
+                    }else {
+                        echo $parcelData['sender_address']['city_id'] . ', ' . $parcelData['sender_address']['state_id'];
+                    }
+                ?>
+            </div>
+            <div class="user__country">
+                <?php
+                    if (!empty($sender_location)) {
+                        echo strtoupper($sender_location['country']['name']);
+                    }
+                    else {
+                        echo $parcelData['sender_address']['country_id'];
+                    }
+                ?>
+            </div>
         </div>
     </div>
     <div class="user user--receiver">
         <div class="user__inner">
-            <div
-                class="user__name"><?= strtoupper($parcelData['receiver']['lastname'] . ' ' . $parcelData['receiver']['firstname']) ?></div>
+            <div class="user__name">
+                <?= strtoupper($parcelData['receiver']['firstname'] . ' ' . $parcelData['receiver']['lastname']) ?>
+            </div>
             <div class="user__tel"><?= $parcelData['receiver']['phone'] ?></div>
-            <div
-                class="user__address"><?= $parcelData['receiver_address']['street_address1'] . '<br/>' . $parcelData['receiver_address']['street_address2'] ?></div>
-            <div class="user__country">Nigeria</div>
+            <div class="user__address">
+                <?= $parcelData['receiver_address']['street_address1'] . '<br/>' . $parcelData['receiver_address']['street_address2'] . '<br/>';?>
+                <?php
+                    if (!empty($receiver_location)) {
+                        echo ucwords($receiver_location['name']) . ', ' . ucwords($receiver_location['state']['name']);
+                    }else {
+                        echo $parcelData['receiver_address']['city_id'] . ', ' . $parcelData['receiver_address']['state_id'];
+                    }
+                ?>
+            </div>
+            <div class="user__country">
+                <?php
+                    if (!empty($receiver_location)) {
+                        echo strtoupper($receiver_location['country']['name']);
+                    }
+                    else {
+                        echo $parcelData['receiver_address']['country_id'];
+                    }
+                ?>
+            </div>
         </div>
     </div>
 
@@ -52,8 +84,8 @@ foreach($copies as $copy) {
     </div>
 
     <div class="code">
-        <div class="code__origin">NG-LOS</div>
-        <div class="code__destination">NG-ABJ</div>
+        <div class="code__origin"></div>
+        <div class="code__destination"></div>
     </div>
 
     <div class="shipment">
@@ -63,41 +95,46 @@ foreach($copies as $copy) {
     </div>
 
     <div class="service-type">
-        <div class="service-type__inner"><span>Express</span></div>
-        <div class="service-type__inner is-active"><span>Special Projects</span></div>
-        <div class="service-type__inner"><span>Logistics</span></div>
-        <div class="service-type__inner"><span>Bulk mail</span></div>
+        <?php
+            if(isset($serviceType) && !empty($serviceType)) {
+                foreach ($serviceType as $item) {
+        ?>
+            <div class="service-type__inner<?php if($item['id'] == $parcelData['shipping_type']){echo ' is-active';}?>"><span><?= ucwords($item['name']) ?></span></div>
+        <?php
+                }
+            }
+        ?>
     </div>
 
     <div class="parcel-type">
-        <?= $parcelData['other_info']; ?>
+        <?php
+            if(isset($parcelType) && !empty($parcelType)) {
+                foreach ($parcelType as $item) {
+                    if($item['id'] == $parcelData['parcel_type']) {
+                        echo ucwords($item['name']);
+                    }
+                }
+            }
+        ?>
     </div>
 
     <div class="cod">
         <div class="cod__inner">
             <div class="cod__yes <?= $parcelData['cash_on_delivery'] == '1' ? 'is-active' : '' ?> "></div>
             <div class="cod__no <?= $parcelData['cash_on_delivery'] == '1' ? '' : 'is-active' ?>"></div>
-            <div class="cod__amt"><?= Calypso::getInstance()->formatCurrency($parcelData['delivery_amount']); ?></div>
+            <?php if($parcelData['cash_on_delivery']) { echo '<div class="cod__amt">'.Calypso::getInstance()->formatCurrency($parcelData['delivery_amount']).'</div>'; } ?>
         </div>
     </div>
 
     <div class="other-info">
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-        consequat. Duis aute irure dolor in reprehenderit in voluptate
+        <?= $parcelData['other_info']; ?>
     </div>
 </div>
-    <?php
-}
-?>
+<?php if (!($i & 1)) { echo '<div class="waybill-divider"></div>'; } } ?>
 </div>
 <script type="text/javascript">
     var waybill = "<?= strtoupper($parcelData['waybill_number']); ?>";
 </script>
-<?php
-
-?>
 <?php $this->registerJsFile('@web/js/libs/jquery-barcode.min.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/html2canvas.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/print.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
