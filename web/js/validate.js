@@ -95,6 +95,16 @@ function validateFxn() {
             isValid = false;
         }
     }
+    else if(input.hasClass('word-limit'))
+    {
+        var max = (input.attr('data-max-input'));
+        var entered = val.split(/\s/).length;
+        if(entered > max)
+        {
+            msg = 'Limit exceeded. Max. allowed '+max+' words';
+            isValid = false;
+        }
+    }
     else if(input.find("input[type=radio]").length>0 && input.find("input[type=radio]:checked").length==0)
     {
         msg = 'Required field';
