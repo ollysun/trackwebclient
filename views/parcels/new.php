@@ -90,13 +90,13 @@ $this->params['breadcrumbs'] = array(
                             <div class="row">
                                 <div class="col-xs-12 col-sm-3 form-group">
                                     <label>No. of Packages</label>
-                                    <input name="no_of_packages" class="form-control validate required number">
+                                    <input name="no_of_packages" class="form-control validate required non-zero-integer">
                                 </div>
                                 <div class="col-xs-12 col-sm-4 form-group">
                                     <label>Total weight</label>
 
                                     <div class="input-group">
-                                        <input name="parcel_weight" class="form-control validate required number" id="weight">
+                                        <input name="parcel_weight" class="form-control validate required non-zero-number" id="weight">
                                         <span class="input-group-addon">Kg</span>
                                     </div>
                                 </div>
@@ -114,7 +114,7 @@ $this->params['breadcrumbs'] = array(
                                                 <option title="GBP" value="GBP">British Pounds</option>
                                             </select>
                                         </div>
-                                        <input name="parcel_value" type="text" class="form-control required number">
+                                        <input name="parcel_value" type="text" class="form-control required non-zero-number">
                                     </div>
                                 </div>
                             </div>
