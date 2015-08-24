@@ -252,7 +252,7 @@ $this->params['breadcrumbs'] = array(
                             </div>
                             <div class="form-group">
                                 <label>Other Information</label>
-                                <textarea name="other_info" class="form-control"></textarea>
+                                <textarea name="other_info" class="form-control validate word-limit" data-max-input="50"></textarea>
                             </div>
                         </div>
                     </div>
