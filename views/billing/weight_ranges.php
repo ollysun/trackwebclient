@@ -58,32 +58,32 @@ $this->params['breadcrumbs'] = array(
 
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
-	  	<form class="validate" method="post">
+	  	<form class="validate-form" method="post">
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 	        <h4 class="modal-title" id="myModalLabel">Add a Weight Range</h4>
 	      </div>
 	      <div class="modal-body">
-				<div class="form-group row">
-					<div class="col-xs-4">
+				<div class="row">
+					<div class="form-group col-xs-4">
 						<label for="">Min Weight</label>
 						<div class="input-group">
-							<input type="text" class="form-control required number" name="min_weight">
+							<input type="text" class="form-control validate required number" name="min_weight">
 							<span class="input-group-addon">Kg</span>
 						</div>
 					</div>
-					<div class="col-xs-4">
+					<div class="form-group col-xs-4">
 						<label for="">Incremental Weight</label>
 						<div class="input-group">
-							<input type="text" class="form-control required number" name="increment_weight">
+							<input type="text" class="form-control validate required number" name="increment_weight">
 							<span class="input-group-addon">Kg</span>
 						</div>
 					</div>
-					<div class="col-xs-4">
+					<div class="form-group col-xs-4">
 						<label for="">Max Weight</label>
 						<div class="input-group">
-							<input type="text" class="form-control required number" name="max_weight">
+							<input type="text" class="form-control validate required number" name="max_weight">
 							<span class="input-group-addon">Kg</span>
 						</div>
 					</div>
@@ -101,32 +101,32 @@ $this->params['breadcrumbs'] = array(
 
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
-	  	<form class="validate" method="post">
+	  	<form class="validate-form" method="post">
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 	        <h4 class="modal-title" id="myModalLabel">Edit Weight Range</h4>
 	      </div>
 			<div class="modal-body">
-				<div class="form-group row">
-					<div class="col-xs-4">
+				<div class="row">
+					<div class="form-group col-xs-4">
 						<label for="">Min Weight</label>
 						<div class="input-group">
-							<input type="text" class="form-control required number" name="min_weight">
+							<input type="text" class="form-control validate required number" name="min_weight">
 							<span class="input-group-addon">Kg</span>
 						</div>
 					</div>
-					<div class="col-xs-4">
+					<div class="form-group col-xs-4">
 						<label for="">Incremental Weight</label>
 						<div class="input-group">
-							<input type="text" class="form-control required number" name="increment_weight">
+							<input type="text" class="form-control validate required number" name="increment_weight">
 							<span class="input-group-addon">Kg</span>
 						</div>
 					</div>
-					<div class="col-xs-4">
+					<div class="form-group col-xs-4">
 						<label for="">Max Weight</label>
 						<div class="input-group">
-							<input type="text" class="form-control required number" name="max_weight">
+							<input type="text" class="form-control validate required number" name="max_weight">
 							<span class="input-group-addon">Kg</span>
 						</div>
 					</div>
@@ -144,8 +144,9 @@ $this->params['breadcrumbs'] = array(
 </div>
 
 <!-- this page specific scripts -->
-<?php $this->registerJsFile('@web/js/libs/jquery.dataTables.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
-<?php $this->registerJsFile('@web/js/libs/dataTables.fixedHeader.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
-<?php $this->registerJsFile('@web/js/libs/dataTables.tableTools.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
-<?php $this->registerJsFile('@web/js/libs/jquery.dataTables.bootstrap.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
+<?php //$this->registerJsFile('@web/js/libs/jquery.dataTables.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
+<?php //$this->registerJsFile('@web/js/libs/dataTables.fixedHeader.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
+<?php //$this->registerJsFile('@web/js/libs/dataTables.tableTools.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
+<?php //$this->registerJsFile('@web/js/libs/jquery.dataTables.bootstrap.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
+<?php $this->registerJsFile('@web/js/validate.js', ['depends' => [\app\assets\AppAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/weights.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
