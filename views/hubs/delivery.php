@@ -29,9 +29,9 @@ $this->params['breadcrumbs'] = array(
 
     <div class="main-box">
 
-        <form class="clearfix" method="get">
+        <div class="clearfix">
             <div class="main-box-header table-search-form">
-                <div class="clearfix">
+                <form class="clearfix" method="get">
                     <div class="pull-left">
                         <div class="pull-left form-group">
                             <label for="branch_type">Branch type</label><br>
@@ -53,17 +53,17 @@ $this->params['breadcrumbs'] = array(
                     </div>
 
                     <div class="pull-right clearfix">
-                        <form class="table-search-form form-inline clearfix">
+                        <div class="table-search-form form-inline clearfix">
                             <div class="pull-left form-group">
                                 <label for="">&nbsp;</label><br>
                                 <button type="button" class="btn btn-default btn-sm">Create bag</button>
                                 <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" id="manifest">Generate Manifest</button>
                             </div>
-                        </form>
+                        </div>
                     </div>
-                </div>
+                </form>
 
-                <div class="clearfix">
+                <form class="clearfix" method="get" id="records_filter">
                     <div class="pull-left hidden">
                         <p class="form-control-static input-sm">Showing 1 to 49 of 49 shipments</p>
                     </div>
@@ -80,10 +80,10 @@ $this->params['breadcrumbs'] = array(
                             ?>
                         </select>
                     </div>
-                </div>
+                </form>
 
             </div>
-        </form>
+        </div>
 
 
             <div class="main-box-body">
@@ -107,9 +107,9 @@ $this->params['breadcrumbs'] = array(
                         </thead>
                         <tbody>
                         <?php
-                            $row = 1;
+                            $row = $offset;
                             foreach ($parcel_delivery as $parcels) {
-
+                                ++$row;
                                 echo "<tr data-waybill='" . Calypso::getValue($parcels, 'waybill_number') . "' ";
                                 echo "data-to-branch-id='" . Calypso::getValue($parcels, 'to_branch.id') . "'>";
                                 echo "<td>
@@ -124,11 +124,12 @@ $this->params['breadcrumbs'] = array(
                                 echo "<td>" . ucwords(Calypso::getValue($parcels, 'receiver_address.city.name') . ', ' . Calypso::getValue($parcels, 'receiver_address.state.name')) . "</td>";
                                 echo "<td>" . Calypso::getValue($parcels, 'weight') . "</td>";
                                 echo "</tr>";
-                                $row++;
                             }
                         ?>
                         </tbody>
                     </table>
+                    <?= $this->render('../elements/pagination_and_summary', ['first' => $offset, 'last'=>$row, 'total_count'=> $total_count,'page_width'=>$page_width]) ?>
+
                     <?php } else { ?>
                         <p>No record to display</p>
                     <?php }  ?>
