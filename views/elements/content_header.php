@@ -20,4 +20,10 @@ use yii\widgets\Breadcrumbs;
       <?php echo $this->params['content_header_button']; ?>
     </div>
   <?php endif; ?>
+
+  <?php if (isset($this->params['graph_stats'])): ?>
+    <div class="pull-right">
+      <?= $this->params['graph_stats']; ?>
+    </div>
+  <?php endif; ?>
 </div> <!-- /#content-header -->
