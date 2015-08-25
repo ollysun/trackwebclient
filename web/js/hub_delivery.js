@@ -340,4 +340,8 @@ $(document).ready(function(){
             });
         }
     });
+
+    $("select#page_width").on('change', function (event) {
+        $("form#records_filter").submit();
+    });
 });
