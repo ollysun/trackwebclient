@@ -42,11 +42,12 @@ class ParcelAdapter extends BaseAdapter{
         return $this->request($url,array(),self::HTTP_GET);
     }
 
-    public function getParcelsForNextDestination($type=null,$branch_id=null, $to_branch_id=null, $held_by_id=null, $offset=0, $count=50){
+    public function getParcelsForNextDestination($type=null,$branch_id=null, $to_branch_id=null, $held_by_id=null, $offset=0, $count=50, $with_total=null){
         $filter = ($type != null ? '&status='.$type:'');
         //$filter .= ($branch_id == null ? '':'&branch_id='.$branch_id);
         $filter .= ($to_branch_id == null ? '':'&to_branch_id='.$to_branch_id);
         $filter .= ($held_by_id == null ? '':'&held_by_id='.$held_by_id);
+        $filter .= is_null($with_total) ? '':'&with_total_count=1';
         return $this->request(ServiceConstant::URL_GET_ALL_PARCEL.'?with_to_branch=1&with_city=1&with_sender_address=1&with_receiver_address=1&offset='.$offset.'&count='.$count.$filter,array(),self::HTTP_GET);
     }
     public function getSearchParcels($status,$waybill_number,$offset=0, $count=50, $with_total=null,$branch_id=null, $only_parents=null){

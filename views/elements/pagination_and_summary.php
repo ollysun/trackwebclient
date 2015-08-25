@@ -2,7 +2,8 @@
 <?php
 use yii\data\Pagination;
 use yii\widgets\LinkPager;
-$pagination = new Pagination(['totalCount'=>$total_count,'defaultPageSize'=>$page_width]);
+
+$pagination = new Pagination(['totalCount'=>$total_count,'defaultPageSize'=>$page_width, 'pageSizeLimit' => [1, 500] ]);
 ?>
 
 
