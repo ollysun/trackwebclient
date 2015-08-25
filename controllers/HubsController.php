@@ -111,10 +111,10 @@ class HubsController extends BaseController {
 
         $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
         if(isset(Calypso::getInstance()->get()->from,Calypso::getInstance()->get()->to)){
-            $from_date = Calypso::getInstance()->get()->from.' 00:00:00';
-            $to_date = Calypso::getInstance()->get()->to.' 23:59:59';
+            $from_date = Calypso::getInstance()->get()->from;
+            $to_date = Calypso::getInstance()->get()->to;
             $filter = isset(Calypso::getInstance()->get()->date_filter) ? Calypso::getInstance()->get()->date_filter : '-1';
-            $dispatch_parcels = $parcelsAdapter->getDispatchedParcels($user_session['branch_id'], $to_branch_id,$from_date,$to_date,$filter);
+            $dispatch_parcels = $parcelsAdapter->getDispatchedParcels($user_session['branch_id'], $to_branch_id,$from_date.'%2000:00:00',$to_date.'%2023:59:59',$filter);
         }else
             $dispatch_parcels = $parcelsAdapter->getDispatchedParcels($user_session['branch_id'], $to_branch_id);
         $parcels = new ResponseHandler($dispatch_parcels);
