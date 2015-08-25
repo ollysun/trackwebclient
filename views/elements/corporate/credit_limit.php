@@ -1,12 +1,6 @@
 <?php
 use Adapter\Util\Calypso;
 
-$stats = array(
-	'total'=> '20000',
-	'used'=> '12500',
-	'class'=> 'success'
-);
-
 ?>
 
 <?php if (isset($stats)): ?>
