@@ -12,6 +12,11 @@ $this->params['breadcrumbs'] = array(
     ),
     array('label'=> 'Requests')
 );
+$stats = array(
+    'total'=> '20000',
+    'used'=> '12500',
+    'class'=> 'success'
+);
 $from_date = '1970/01/01 00:00:00';
 $to_date = '2015/09/09 23:59:59';
 ?>
@@ -20,7 +25,7 @@ $to_date = '2015/09/09 23:59:59';
 <?php
 
 $this->params['content_header_button'] = '<a href="'.Url::to(['corporate/newrequest']).'" class="btn btn-primary"><i class="fa fa-plus"></i> New Request</a>';
-$this->params['graph_stats'] = $this->render('../elements/corporate/credit_limit');
+$this->params['graph_stats'] = $this->render('../elements/corporate/credit_limit',['stats'=>$stats]);
 
 ?>
 
