@@ -21,9 +21,15 @@
 	}
 	&-header {
 		padding: @padding-base-vertical @padding-base-horizontal;
-		&:extend(.clearfix all);
 		background: #ddd;
 		border-bottom: 1px solid #ccc;
+		&:before, &:after {
+			content: "";
+			display: table;
+		}
+		&:after {
+			clear: both;
+		}
 	}
 	.close {
 		color: #000 !important;
