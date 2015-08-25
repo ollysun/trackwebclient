@@ -14,7 +14,7 @@ $this->params['breadcrumbs'] = array(
 );
 $stats = array(
     'total'=> '20000',
-    'used'=> '12500',
+    'used'=> '12230.63',
     'class'=> 'success'
 );
 $from_date = '1970/01/01 00:00:00';

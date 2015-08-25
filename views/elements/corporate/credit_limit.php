@@ -13,7 +13,7 @@ use Adapter\Util\Calypso;
 		<?php
 			$used = $stat['used'];
 			$total = $stat['total'];
-			$per = ($used * 100 ) / $total;
+			$per = number_format(($used * 100  / $total) , 2);
 			$class = !empty($stat['class']) ? ' progress-bar-'.$stat['class'] : '';
 			// form used and total
 			$used_fmt = Calypso::getInstance()->formatCurrency($used);
