@@ -1,7 +1,7 @@
 <?php
 use yii\helpers\Html;
 use yii\helpers\Url;
-use Adapter\Globals\ServiceConstant;
+use Adapter\Util\Calypso;
 use yii\data\Pagination;
 use yii\widgets\LinkPager;
 
@@ -72,7 +72,7 @@ $this->params['breadcrumbs'] = array(
                     <div class="pull-left">
                         <label for="searchInput">Search</label><br>
                         <div class="input-group input-group-sm input-group-search">
-                            <input id="searchInput" type="text" name="waybillnumber" placeholder="Waybill Number" class="search-box form-control">
+                            <input id="searchInput" type="text" name="waybillnumber" placeholder="Waybill Number" class="search-box form-control" value="<?= $search ? $search : '' ?>">
                             <div class="input-group-btn">
                                 <button class="btn btn-default" type="submit">
                                     <i class="fa fa-search"></i>
@@ -116,9 +116,9 @@ $this->params['breadcrumbs'] = array(
                                 <td><?= ++$row; ?></td>
                                 <td><?= strtoupper($parcel['waybill_number']); ?></td>
                                 <td><?= number_format($parcel['amount_due'], 2, '.', ','); ?></td>
-                                <td><?= ($parcel['cash_amount'] > 0) ? number_format($parcel['cash_amount'], 2, '.', ',') : '-'; ?></td>
-                                <td><?= ($parcel['pos_amount'] > 0) ? number_format($parcel['pos_amount'], 2, '.', ',') : '-'; ?></td>
-                                <td></td>
+                                <td><?= ($parcel['cash_amount'] > 0) ? Calypso::getInstance()->formatCurrency($parcel['cash_amount']) : '-'; ?></td>
+                                <td><?= ($parcel['pos_amount'] > 0) ? Calypso::getInstance()->formatCurrency($parcel['pos_amount']) : '-'; ?></td>
+                                <td><?= ($parcel['pos_trans_id'] > 0) ? $parcel['pos_trans_id'] : '-'; ?></td>
                                 <td><?= ucwords($parcel['from_branch']['name']); ?></td>
                                 <td>N/A</td>
                                 <td>

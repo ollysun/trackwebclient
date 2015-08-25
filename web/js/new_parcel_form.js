@@ -85,10 +85,10 @@ var CODShowHide = {
 	callback: function(ele, val, who) {
 		if (val === 'false') {
 			$('#CODAmount').val('');
-			$('input[name="CODAmount"]').removeClass('required number').parent().removeClass('has-error');;
+			$('input[name="CODAmount"]').removeClass('validate required number').parent().removeClass('has-error');;
 		}
 		else {
-			$('input[name="CODAmount"]').addClass('required number');
+			$('input[name="CODAmount"]').addClass('validate required number');
 		}
 	}
 };
@@ -109,14 +109,14 @@ var merchantShowHide = {
 				.removeClass('required validate active-validate')
 				.off('blur.CP.form.validate')
 				.parent().removeClass('has-error');
-			$('input[name="account_no"]').removeClass('integer');
+			$('input[name="account_no"]').removeClass('integer length');
 			$('input[name="account_name"]').removeClass('name');
 		}
 		else {
 			$('input[name="account_name"], input[name="account_no"], select[name="bank"]')
 				.addClass('required validate active-validate')
 				.on('blur.CP.form.validate', validateFxn);
-			$('input[name="account_no"]').addClass('integer');
+			$('input[name="account_no"]').addClass('integer length');
 			$('input[name="account_name"]').addClass('name');
 		}
 	}
