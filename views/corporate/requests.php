@@ -98,7 +98,7 @@ $this->params['graph_stats'] = $this->render('../elements/corporate/credit_limit
 
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog modal-lg" role="document">
-        <form class="validate-form" method="post">
+        <form data-keyboard-submit="disable" class="validate-form" method="post">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
@@ -220,4 +220,5 @@ $this->params['graph_stats'] = $this->render('../elements/corporate/credit_limit
     </div>
 </div>
 
+<?php $this->registerJsFile('@web/js/keyboardFormSubmit.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/validate.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
