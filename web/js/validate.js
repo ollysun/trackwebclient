@@ -40,6 +40,24 @@ function validateFxn() {
             isValid = false;
         }
     }
+    else if(input.hasClass('non-zero-integer'))
+    {
+        var test = /^[1-9]\d*$/;
+        if(!test.test(val))
+        {
+            msg = 'Invalid entry';
+            isValid = false;
+        }
+    }
+    else if(input.hasClass('non-zero-number'))
+    {
+        var test = /^(?=.*[1-9])\d+(\.\d+)?$/;
+        if(!test.test(val))
+        {
+            msg = 'Invalid entry';
+            isValid = false;
+        }
+    }
     else if(input.hasClass('number'))
     {
         var ph = /^[0-9]+(\.[0-9][0-9]?)?$/;
@@ -81,6 +99,37 @@ function validateFxn() {
     {
         msg = 'Required field';
         isValid = false;
+    }
+    if(input.hasClass('length') && isValid)
+    {
+        var limit = 0;
+        var entered = input.data('validate-length-type')=='word' ? val.split(/\s/).length : val.length;
+        var type = input.data('validate-length-type')=='word' ? ' word' : ' character';
+
+        if(input.data('validate-min-length') !== undefined){
+            limit = input.data('validate-min-length');
+            if(entered < limit)
+            {
+                msg = 'Min. allowed '+limit+type+'s';
+                isValid = false;
+            }
+        }
+        else if(input.data('validate-max-length') !== undefined){
+            limit = input.data('validate-max-length');
+            if(entered > limit)
+            {
+                msg = 'Limit exceeded. Max. allowed '+limit+type+'s';
+                isValid = false;
+            }
+        }
+        else{
+            limit = input.data('validate-length');
+            if(limit != entered)
+            {
+                msg = 'Must be '+limit+type+'s';
+                isValid = false;
+            }
+        }
     }
     if(msg !== ''){
         var errorMsg = '<div class="help-block help-validation-error" style="margin:0">'+msg+'</div>';

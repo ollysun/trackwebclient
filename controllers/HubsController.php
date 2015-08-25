@@ -111,10 +111,10 @@ class HubsController extends BaseController {
 
         $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
         if(isset(Calypso::getInstance()->get()->from,Calypso::getInstance()->get()->to)){
-            $from_date = Calypso::getInstance()->get()->from.' 00:00:00';
-            $to_date = Calypso::getInstance()->get()->to.' 23:59:59';
+            $from_date = Calypso::getInstance()->get()->from;
+            $to_date = Calypso::getInstance()->get()->to;
             $filter = isset(Calypso::getInstance()->get()->date_filter) ? Calypso::getInstance()->get()->date_filter : '-1';
-            $dispatch_parcels = $parcelsAdapter->getDispatchedParcels($user_session['branch_id'], $to_branch_id,$from_date,$to_date,$filter);
+            $dispatch_parcels = $parcelsAdapter->getDispatchedParcels($user_session['branch_id'], $to_branch_id,$from_date.'%2000:00:00',$to_date.'%2023:59:59',$filter);
         }else
             $dispatch_parcels = $parcelsAdapter->getDispatchedParcels($user_session['branch_id'], $to_branch_id);
         $parcels = new ResponseHandler($dispatch_parcels);
@@ -198,7 +198,7 @@ class HubsController extends BaseController {
      * Shipments are also assigned to sweepers for delivery
      * @return string
      */
-    public function actionDelivery()
+    public function actionDelivery($page=1, $page_width=null)
     {
         //Move to In Transit (waybill_numbers, to_branch_id.
         //and staff_id (not the code)
@@ -231,14 +231,19 @@ class HubsController extends BaseController {
 
         $viewData['to_branch_id'] = $to_branch_id;
         $viewData['btype'] = $btype;
+        $viewData['page_width'] = is_null($page_width) ? $this->page_width : $page_width;
+        $viewData['offset'] = ($page-1)*$viewData['page_width'];
+
         $user_session = Calypso::getInstance()->session("user_session");
         $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
-        $for_delivery_parcels = $parcelsAdapter->getParcelsForNextDestination(ServiceConstant::FOR_SWEEPER, $user_session['branch_id'], $to_branch_id);
+        $for_delivery_parcels = $parcelsAdapter->getParcelsForNextDestination(ServiceConstant::FOR_SWEEPER, $user_session['branch_id'], $to_branch_id, null, $viewData['offset'],$viewData['page_width'], 1);
         if($for_delivery_parcels['status'] === ResponseHandler::STATUS_OK) {
-            $viewData['parcel_delivery'] = $for_delivery_parcels['data'];
+            $viewData['parcel_delivery'] = $for_delivery_parcels['data']['parcels'];
+            $viewData['total_count'] = $for_delivery_parcels['data']['total_count'];
         } else {
             $this->flashError('An error occured while trying to fetch parcels. Please try again.');
             $viewData['parcel_delivery'] = [];
+            $viewData['total_count'] = 0;
         }
         return $this->render('delivery', $viewData);
     }
