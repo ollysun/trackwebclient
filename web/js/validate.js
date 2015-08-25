@@ -100,20 +100,22 @@ function validateFxn() {
         msg = 'Required field';
         isValid = false;
     }
-    if(input.hasClass('limit') && isValid)
+    if(input.hasClass('length') && isValid)
     {
-        var limit = (input.attr('data-validate-limit'));
-        var entered = input.hasClass('word') ? val.split(/\s/).length : val.length;
-        var type = input.hasClass('word') ? ' word' : ' character';
+        var limit = 0;
+        var entered = input.data('validate-length-type')=='word' ? val.split(/\s/).length : val.length;
+        var type = input.data('validate-length-type')=='word' ? ' word' : ' character';
 
-        if(input.hasClass('min')){
+        if(input.data('validate-min-length') !== undefined){
+            limit = input.data('validate-min-length');
             if(entered < limit)
             {
                 msg = 'Min. allowed '+limit+type+'s';
                 isValid = false;
             }
         }
-        else if(input.hasClass('max')){
+        else if(input.data('validate-max-length') !== undefined){
+            limit = input.data('validate-max-length');
             if(entered > limit)
             {
                 msg = 'Limit exceeded. Max. allowed '+limit+type+'s';
@@ -121,6 +123,7 @@ function validateFxn() {
             }
         }
         else{
+            limit = input.data('validate-length');
             if(limit != entered)
             {
                 msg = 'Must be '+limit+type+'s';
