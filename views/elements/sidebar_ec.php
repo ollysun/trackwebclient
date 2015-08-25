@@ -110,6 +110,21 @@ use Adapter\Util\Calypso;
 						<?php
 					}
 					?>
+					<li>
+						<a href="#" class="dropdown-toggle">
+							<i class="fa fa-gift"></i>
+							<span>Corporate</span>
+							<i class="fa fa-angle-right drop-icon"></i>
+						</a>
+						<ul class="submenu">
+							<li>
+								<a href="<?= Url::to(['corporate/requests']); ?>">
+									<i class=""></i>
+									<span>Requests</span>
+								</a>
+							</li>
+						</ul>
+					</li>
 				</ul>
 			</div>
 		</div>
