@@ -27,6 +27,11 @@ $session_data = Calypso::getInstance()->session('user_session');
 					</li>
 				</ul>
 			</div>
+			<?php if(!empty($session_data['branch']) && !empty($session_data['branch']['name'])): ?>
+			<div class="nav-no-collapse pull-left navbar-text text-muted text-uppercase">
+				<?= $session_data['branch']['name']; ?>
+			</div>
+			<?php endif; ?>
 			<div class="nav-no-collapse pull-right" id="header-nav">
 				<ul class="nav navbar-nav pull-right">
 					<li class="dropdown profile-dropdown">
