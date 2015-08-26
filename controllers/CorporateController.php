@@ -16,4 +16,8 @@ class CorporateController extends BaseController {
 	public function actionRequests() {
 		return $this->render('requests');
 	}
+
+	public function actionUsers() {
+		return $this->render('users');
+	}
 }

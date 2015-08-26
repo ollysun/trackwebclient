@@ -123,6 +123,12 @@ use Adapter\Util\Calypso;
 									<span>Requests</span>
 								</a>
 							</li>
+							<li>
+								<a href="<?= Url::to(['corporate/users']); ?>">
+									<i class=""></i>
+									<span>Users</span>
+								</a>
+							</li>
 						</ul>
 					</li>
 				</ul>
