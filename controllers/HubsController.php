@@ -46,11 +46,12 @@ class HubsController extends BaseController {
             $postParams['to_branch_id'] = $branch;
             $response = $parcelsAdapter->moveToForSweeper($postParams);
             if($response['status'] === ResponseHandler::STATUS_OK) {
-                $this->flashSuccess('Parcels have been successfully moved to the next destination. <a href="/hubmovetodelivery">Generate Manifest</a>');
+                $this->flashSuccess('Parcels have been successfully moved to the next destination. <a href="delivery">Generate Manifest</a>');
             } else {
                 $this->flashError('An error occured while trying to move parcels to next destination. Please try again.');
             }
         }
+        $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
         $user_session = Calypso::getInstance()->session("user_session");
         $arrival_parcels = $parcelsAdapter->getParcelsForNextDestination(ServiceConstant::FOR_ARRIVAL, $user_session['branch_id']);
         if($arrival_parcels['status'] === ResponseHandler::STATUS_OK) {
