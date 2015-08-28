@@ -34,8 +34,12 @@
 	$.fn.checkForChanges = function(action) {
 		var self = this,
 		    $window = $(window),
-		    nsp = '.CP.Form.watchChanges';
-		var evt = 'beforeunload'+nsp;
+		    nsp = '.CP.Form.watchChanges', //namespace for events
+		    duration = 2000; // duration for momentary disable on form submit
+		var evt = {
+			bu: 'beforeunload'+nsp,
+			s: 'submit'+nsp,
+		};
 
 		switch (action) {
 			case 'off':
@@ -50,10 +54,10 @@
 		}
 
 		function disable() {
-			$window.off(evt);
+			$window.off(evt.bu);
 		}
 		function enable() {
-			$window.on(evt, function() {
+			$window.on(evt.bu, function() {
 				hasChanges = false;
 				self.each(function(){
 					checkForChanges(this);
@@ -61,6 +65,13 @@
 				if (hasChanges) {
 					return "You have unsaved changes in your form." ;
 				}
+			});
+			// hack to disable momentarily on form submit for beforeunload to pass through
+			$window.one(evt.s, function(){
+				disable();
+				window.setTimeout(function(){
+					enable();
+				}, duration);
 			});
 		}
 		return this;
