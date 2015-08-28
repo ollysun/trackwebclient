@@ -130,7 +130,8 @@ $this->params['graph_stats'] = $this->render('../elements/corporate/credit_limit
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Save changes</button>
+                    <button type="button" class="btn btn-danger">Decline</button>
+                    <button type="submit" class="btn btn-primary">Approve</button>
                 </div>
             </div>
         </form>
