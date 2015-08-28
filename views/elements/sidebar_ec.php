@@ -124,6 +124,12 @@ use Adapter\Util\Calypso;
 								</a>
 							</li>
 							<li>
+								<a href="<?= Url::to(['corporate/pending']); ?>">
+									<i class=""></i>
+									<span>Pending</span>
+								</a>
+							</li>
+							<li>
 								<a href="<?= Url::to(['corporate/users']); ?>">
 									<i class=""></i>
 									<span>Users</span>
