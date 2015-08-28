@@ -114,7 +114,7 @@ $this->params['breadcrumbs'] = array(
                                                 <option title="GBP" value="GBP">British Pounds</option>
                                             </select>
                                         </div>
-                                        <input name="parcel_value" type="text" class="form-control required non-zero-number">
+                                        <input name="parcel_value" type="text" class="form-control validate required non-zero-number">
                                     </div>
                                 </div>
                             </div>
