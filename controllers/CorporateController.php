@@ -20,4 +20,8 @@ class CorporateController extends BaseController {
 	public function actionUsers() {
 		return $this->render('users');
 	}
+
+	public function actionPending() {
+		return $this->render('pending');
+	}
 }
