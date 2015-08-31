@@ -87,7 +87,7 @@ $this->params['breadcrumbs'] = array(
     <div class="main-box-body">
         <div class="table-responsive">
 
-            <?php if (count($parcels['parcels']) > 0) { ?>
+            <?php if (count($parcels) > 0) { ?>
                 <table id="table" class="table table- table-striped table-hover">
                     <thead>
                     <tr>
@@ -110,7 +110,7 @@ $this->params['breadcrumbs'] = array(
                     <?php
                     if (isset($parcels)) {
                         $row = $offset;
-                        foreach ($parcels['parcels'] as $parcel) {
+                        foreach ($parcels as $parcel) {
                             ?>
                             <tr>
                                 <td><?= ++$row; ?></td>

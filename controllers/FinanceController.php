@@ -42,10 +42,12 @@ class FinanceController extends BaseController
         $response = $parcel->getParcelsByPayment($waybillnumber,$method,$from_date.'%2000:00:00',$to_date.'%2023:59:59',$offset,$page_width,1,null,1);
         $response = new ResponseHandler($response);
         $data = [];
+        $total_count = 0;
         if($response->getStatus() ==  ResponseHandler::STATUS_OK){
             $data = $response->getData();
+            $total_count = $data['total_count'];
+            $data = $data['parcels'];
         }
-        $total_count = empty($data['total_count'])?0:$data['total_count'];
         return $this->render('customers_all',array('search'=>$waybillnumber,'parcels'=>$data,'payment_type'=>$method,'from_date'=>$from_date,'to_date'=>$to_date,'offset'=>$offset,'page_width'=>$page_width, 'total_count'=>$total_count));
     }
 
