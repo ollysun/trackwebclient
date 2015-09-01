@@ -59,6 +59,9 @@ class ParcelService {
                 $error[] = "All Account Details are required!";
             }
         }
+        else{
+            $bankData = null;
+        }
 
         $parcel['parcel_type'] = Calypso::getValue($data, 'parcel_type');
         $parcel['no_of_package'] = Calypso::getValue($data, 'no_of_packages');
