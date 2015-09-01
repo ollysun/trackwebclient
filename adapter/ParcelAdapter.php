@@ -138,6 +138,14 @@ class ParcelAdapter extends BaseAdapter{
         return $this->request(ServiceConstant::URL_GET_ALL_PARCEL.'?with_receiver=1&with_sender=1&offset='.$offset.'&count='.$count.$filter,array(),self::HTTP_GET);
     }
 
+    public function getMerchantParcels($with_bank_account=1, $payment_status=null, $offset=0, $count=50, $with_total=1, $only_parents=1){
+        $filter = !is_null($with_bank_account) ? '&with_bank_account=1' : '';
+        $filter .= !is_null($with_total) ? '&with_total_count=1' : '';
+        $filter .= !is_null($only_parents) ? '&show_parents=1' : '';
+        $url = ServiceConstant::URL_GET_ALL_PARCEL.'?cash_on_delivery=1&with_sender=1&offset='.$offset.'&count='.$count.$filter;
+        return $this->request($url,array(),self::HTTP_GET);
+    }
+
     public function calcBilling($postData) {
         return $this->request(ServiceConstant::URL_CALC_BILLING, $postData, self::HTTP_POST);
     }
