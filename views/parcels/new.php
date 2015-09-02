@@ -12,6 +12,8 @@ $this->params['breadcrumbs'] = array(
     ),
     array('label' => $this->title),
 );
+
+$is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
 ?>
 
 
@@ -62,7 +64,7 @@ $this->params['breadcrumbs'] = array(
                         <div class="main-box-body">
                             <div class="row">
                                 <div class="col-xs-12 col-sm-6 form-group">
-                                    <label><?= ($branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB) ? "Forward to another branch":"Send parcel to Hub";?>?</label>
+                                    <label><?= ($is_hub) ? "Forward to another branch":"Send parcel to Hub";?>?</label>
                                     <div>
                                         <div class="radio-inline">
                                             <input id="sendToHubYes" type="radio" name="send_to_hub" value="1"
@@ -74,7 +76,7 @@ $this->params['breadcrumbs'] = array(
                                         </div>
                                     </div>
                                 </div>
-                                <?php if($branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB){
+                                <?php if($is_hub){
                                     ?>
                                 <div class="col-xs-12 col-sm-6 form-group" id="hubsWrap">
                                     <label>Destination</label>
