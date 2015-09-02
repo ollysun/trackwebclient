@@ -1,5 +1,6 @@
 <?php
 use Adapter\Util\Calypso;
+use Adapter\Globals\ServiceConstant;
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
@@ -61,7 +62,7 @@ $this->params['breadcrumbs'] = array(
                         <div class="main-box-body">
                             <div class="row">
                                 <div class="col-xs-12 col-sm-6 form-group">
-                                    <label>Send parcel to Hub?</label>
+                                    <label><?= ($branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB) ? "Forward to another branch":"Send parcel to Hub";?>?</label>
                                     <div>
                                         <div class="radio-inline">
                                             <input id="sendToHubYes" type="radio" name="send_to_hub" value="1"
@@ -73,10 +74,10 @@ $this->params['breadcrumbs'] = array(
                                         </div>
                                     </div>
                                 </div>
-                                <?php if($branch['branch_type'] == \Adapter\Globals\ServiceConstant::BRANCH_TYPE_HUB){
+                                <?php if($branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB){
                                     ?>
                                 <div class="col-xs-12 col-sm-6 form-group" id="hubsWrap">
-                                    <label>Destination Hub</label>
+                                    <label>Destination</label>
                                     <div>
                                         <select class="form-control required validate" name="to_branch_id" id="to_branch_id">
                                             <option value="">Select One</option>
