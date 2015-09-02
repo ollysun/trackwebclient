@@ -9,6 +9,12 @@ function validate(parentSelector) {
     });
     return isValid;
 }
+function removeValidateMsg(parentSelector) {
+    var inputs = $(parentSelector).find('.validate');
+    $(inputs).each(function() {
+        $(this).closest('.form-group').removeClass('has-error has-success').find('.help-block.help-validation-error').remove();
+    });
+}
 function validateFxn() {
     var input = $(this),
         isValid = true;
