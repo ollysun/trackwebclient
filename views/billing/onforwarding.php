@@ -34,7 +34,8 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                     <th>Name</th>
                     <th>Code</th>
                     <th>Description</th>
-                    <th>Percentage %</th>
+                    <th>Base Price (<span class="currency naira"></span>)</th>
+                    <th>Percentage (%)</th>
                     <th>Amount (<span class="currency naira"></span>)</th>
                     <th>Action</th>
                 </tr>
@@ -51,8 +52,8 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                         <td class="c<?= $charge['id'];?>"><?=$charge['code']; ?></td>
                         <td class="d<?= $charge['id'];?>"><?= ucfirst($charge['description']); ?></td>
                         <td class="a<?= $charge['id'];?>"><?=$charge['amount']; ?></td>
-                        <td class="p<?= $charge['id'];?>"><?=$charge['percentage']; ?></td>
-                        <td class="h<?= $charge['id'];?>"><?=$charge['amount']*(1+floatval($charge['percentage'])); ?></td>
+                        <td class="p<?= $charge['id'];?>"><?=$charge['percentage'] * 100; ?></td>
+                        <td class="h<?= $charge['id'];?>"><?= number_format((float) $charge['amount']*(1+floatval($charge['percentage'])) , 2, '.', ''); ?></td>
                         <td>
                             <button type="button" class="btn btn-default btn-xs" data-toggle="modal"
                                     data-target="#editModal" data-id="<?= $charge['id']; ?>"><i class="fa fa-edit"></i>
@@ -72,7 +73,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
 
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
-        <form class="validate" method="post">
+        <form class="validate-form" method="post">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
@@ -83,21 +84,21 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                     <div class="row">
                         <div class="form-group col-xs-6">
                             <label for="">Name</label>
-                            <input type="text" class="form-control" name="onforward_name">
+                            <input type="text" class="form-control validate required " name="onforward_name">
                         </div>
                         <div class="form-group col-xs-6">
                             <label for="">Onforwading Code</label>
-                            <input type="text" class="form-control" name="onforward_code">
+                            <input type="text" class="form-control validate required" name="onforward_code">
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group col-xs-4">
                             <label for="">Base Price (<span class="currency naira"></span>)</label>
-                            <input type="text" class="form-control" name="onforward_amount">
+                            <input type="text" class="form-control validate active-validate required number" name="onforward_amount">
                         </div>
                         <div class="form-group col-xs-4">
                             <label for="">Percentage (%)</label>
-                            <input type="text" class="form-control" name="onforward_percentage">
+                            <input type="text" class="form-control validate active-validate required number" name="onforward_percentage">
                         </div>
                         <div class="form-group col-xs-4">
                             <label for="">Amount (<span class="currency naira"></span>)</label>
@@ -106,7 +107,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                     </div>
                     <div class="form-group">
                         <label>Description</label>
-                        <textarea class="form-control" name="onforward_desc"></textarea>
+                        <textarea class="form-control validate required" name="onforward_desc"></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -121,7 +122,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
 
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
-        <form class="validate" method="post">
+        <form class="validate-form" method="post">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
@@ -133,21 +134,21 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                         <div class="row">
                             <div class="form-group col-xs-6">
                                 <label for="">Name</label>
-                                <input type="text" class="form-control required" name="onforward_name">
+                                <input type="text" class="form-control validate required" name="onforward_name">
                             </div>
                             <div class="form-group col-xs-6">
                                 <label for="">Onforwading Code</label>
-                                <input type="text" class="form-control required" name="onforward_code">
+                                <input type="text" class="form-control validate required" name="onforward_code">
                             </div>
                         </div>
                         <div class="row">
                             <div class="form-group col-xs-4">
                                 <label for="">Base Price (<span class="currency naira"></span>)</label>
-                                <input type="text" class="form-control required number" name="onforward_amount">
+                                <input type="text" class="form-control validate active-validate required number" name="onforward_amount">
                             </div>
                             <div class="form-group col-xs-4">
                                 <label for="">Percentage (%)</label>
-                                <input type="text" class="form-control required" name="onforward_percentage">
+                                <input type="text" class="form-control validate active-validate required number" name="onforward_percentage">
                             </div>
                             <div class="form-group col-xs-4">
                                 <label for="">Amount (<span class="currency naira"></span>)</label>
@@ -156,7 +157,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                         </div>
                         <div class="form-group">
                             <label>Description</label>
-                            <textarea class="form-control" name="onforward_desc"></textarea>
+                            <textarea class="form-control validate required" name="onforward_desc"></textarea>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -171,8 +172,5 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
 </div>
 
 <!-- this page specific scripts -->
-<?php $this->registerJsFile('@web/js/libs/jquery.dataTables.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
-<?php $this->registerJsFile('@web/js/libs/dataTables.fixedHeader.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
-<?php $this->registerJsFile('@web/js/libs/dataTables.tableTools.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
-<?php $this->registerJsFile('@web/js/libs/jquery.dataTables.bootstrap.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
+<?php $this->registerJsFile('@web/js/validate.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/onforwarding.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
