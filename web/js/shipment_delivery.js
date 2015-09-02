@@ -20,7 +20,8 @@ var Parcel_Delivery = {
             staff_name: '',
             staff_email: '',
             staff_phone: '',
-            staff_role: ''
+            staff_role: '',
+            status:''
         }
     },
 
@@ -48,10 +49,16 @@ var Parcel_Delivery = {
                 staff.staff_email = response.data.email;
                 staff.staff_phone = response.data.phone;
                 staff.staff_role = response.data.role.name;
-                self.updateStaffDetails(staff);
-                $('#staff_info').show();
-                $('input#waybills').val(JSON.stringify(parcels));
-                $('#generate').attr('disabled', false);
+                staff.status = response.data.status;
+                if(staff.status == 1){
+                    self.updateStaffDetails(staff);
+                    $('#staff_info').show();
+                    $('input#waybills').val(JSON.stringify(parcels));
+                    $('#generate').attr('disabled', false);
+                }
+                else{
+                    alert('Only ACTIVE accounts can be used');
+                }
             } else {
                 alert(response.message);
                 $('#staff_info').hide();

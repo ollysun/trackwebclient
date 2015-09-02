@@ -2,6 +2,7 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 use Adapter\Globals\ServiceConstant;
+use Adapter\Util\Calypso;
 use yii\web\View;
 
 
@@ -36,6 +37,9 @@ if($offset <= 0){
     $show_prev = true;
 }
 
+
+$user = Calypso::getInstance()->session('user_session');
+$is_hub = $user['branch']['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
 ?>
 <!-- this page specific styles -->
 <?= Html::cssFile('@web/css/libs/dataTables.fixedHeader.css') ?>
@@ -66,7 +70,7 @@ if($offset <= 0){
             <div class="pull-left">
                 <label>&nbsp;</label><br>
                 <?php if(count($parcels)): ?><button type="button" class="btn btn-sm btn-default" data-toggle="modal" data-target="#runModal">Generate Delivery Run</button><?php endif; ?>
-                <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">Receive Shipments from Hub</button>
+                <?php if(!$is_hub): ?><button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">Receive Shipments from Hub</button><?php endif; ?>
             </div>
         </div>
     </div>
@@ -195,7 +199,7 @@ if($offset <= 0){
                             <div class="form-group">
                                 <label>Dispatcher Staff ID</label>
                                 <div class="input-group">
-                                    <input id="disp_id" value="DISP1" class="form-control">
+                                    <input id="disp_id" value="" class="form-control">
                                     <div class="input-group-btn">
                                         <button type="button" id="get_details" class="btn btn-default">Load</button>
                                     </div>
