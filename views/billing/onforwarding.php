@@ -172,5 +172,5 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
 </div>
 
 <!-- this page specific scripts -->
-<?php $this->registerJsFile('@web/js/validate.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/onforwarding.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
+<?php $this->registerJsFile('@web/js/validate.js', ['depends' => [\app\assets\AppAsset::className()]]); ?>
