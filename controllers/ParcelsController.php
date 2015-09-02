@@ -19,6 +19,7 @@ use Adapter\UserAdapter;
 use Adapter\Util\Response;
 use Adapter\BranchAdapter;
 use app\services\ParcelService;
+use Adapter\Util\Calypso;
 use Yii;
 
 class ParcelsController extends BaseController {
@@ -61,9 +62,11 @@ class ParcelsController extends BaseController {
         $countries = $refData->getCountries();
 
         $hubAdp = new BranchAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
-        $centres = $hubAdp->getCentres();
+        $centres = $hubAdp->getAllHubs();
         $centres = new ResponseHandler($centres);
         $centres_list = $centres->getStatus()==ResponseHandler::STATUS_OK?$centres->getData(): [];
+
+        $user = Calypso::getInstance()->session('user_session');
 
         return $this->render('new',array(
             'Banks'=>$banks,
@@ -72,7 +75,8 @@ class ParcelsController extends BaseController {
             'parcelType'=>$parcelType,
             'countries'=>$countries,
             'paymentMethod'=>$paymentMethod,
-            'centres'=>$centres_list
+            'centres'=>$centres_list,
+            'branch'=>$user['branch']
         ));
     }
 

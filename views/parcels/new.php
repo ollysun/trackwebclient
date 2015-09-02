@@ -59,19 +59,42 @@ $this->params['breadcrumbs'] = array(
                 <div class="row">
                     <div class="col-xs-12 col-sm-6">
                         <div class="main-box-body">
-                            <div class="form-group">
-                                <label>Send parcel to Hub?</label>
-
-                                <div>
-                                    <div class="radio-inline">
-                                        <input id="sendToHubYes" type="radio" name="send_to_hub" value="1"
-                                               checked="checked"> <label for="sendToHubYes" class="">Yes</label>
-                                    </div>
-                                    <div class="radio-inline">
-                                        <input id="sendToHubNo" type="radio" name="send_to_hub" value="0"> <label
-                                            for="sendToHubNo" class="">No</label>
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-6 form-group">
+                                    <label>Send parcel to Hub?</label>
+                                    <div>
+                                        <div class="radio-inline">
+                                            <input id="sendToHubYes" type="radio" name="send_to_hub" value="1"
+                                                   checked="checked"> <label for="sendToHubYes" class="">Yes</label>
+                                        </div>
+                                        <div class="radio-inline">
+                                            <input id="sendToHubNo" type="radio" name="send_to_hub" value="0"> <label
+                                                for="sendToHubNo" class="">No</label>
+                                        </div>
                                     </div>
                                 </div>
+                                <?php if($branch['branch_type'] == \Adapter\Globals\ServiceConstant::BRANCH_TYPE_HUB){
+                                    ?>
+                                <div class="col-xs-12 col-sm-6 form-group" id="hubsWrap">
+                                    <label>Destination Hub</label>
+                                    <div>
+                                        <select class="form-control required validate" name="to_branch_id" id="to_branch_id">
+                                            <option value="">Select One</option>
+                                            <?php
+                                            if (isset($centres) && is_array(($centres))):
+                                                foreach ($centres as $hub) {
+                                                    if($branch['id'] != $hub['id']) {
+                                                    ?>
+                                                    <option
+                                                        value="<?= $hub['id']; ?>"><?= strtoupper($hub['name']); ?></option>
+                                                    <?php
+                                                } }
+                                            endif;
+                                            ?>
+                                        </select>
+                                    </div>
+                                </div>
+                                <?php } ?>
                             </div>
 
                             <div class="form-group">

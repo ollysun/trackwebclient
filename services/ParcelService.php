@@ -59,6 +59,9 @@ class ParcelService {
                 $error[] = "All Account Details are required!";
             }
         }
+        else{
+            $bankData = null;
+        }
 
         $parcel['parcel_type'] = Calypso::getValue($data, 'parcel_type');
         $parcel['no_of_package'] = Calypso::getValue($data, 'no_of_packages');
@@ -100,7 +103,7 @@ class ParcelService {
         $payload['receiver_address'] = $receiverAddress;
         $payload['parcel'] = $parcel;
         $payload['bank_account'] = $bankData;
-
+        $payload['to_branch_id'] = Calypso::getValue($data, 'to_branch_id');
         $payload['is_corporate_lead'] = (Calypso::getValue($data, 'corporate_lead') === 'true') ? 1 : 0;
         $payload['to_hub'] = (Calypso::getValue($data, 'send_to_hub') === '1') ? 1 : 0;
 
