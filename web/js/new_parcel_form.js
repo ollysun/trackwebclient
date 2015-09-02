@@ -159,11 +159,31 @@ var POSIDShowHide = {
 		}
 	}
 };
+var HubShowHide = {
+	who: '#hubsWrap',
+	options: {
+		identifier: 'input[name="send_to_hub"]',
+		mapping: {
+			'0': false,
+			'1': true
+		},
+	},
+	callback: function(ele, val, who) {
+		if (val === '1') {
+			$('select[name="to_branch_id"]').addClass('validate required');
+		}
+		else {
+			$('select[name="to_branch_id"]').removeClass('validate required').removeClass('has-error');
+		}
+	}
+};
 //showHideWrap(deliveryShowHide);
 showHideWrap(CODShowHide);
 showHideWrap(merchantShowHide);
 showHideWrap(paymentMethodShowHide);
 showHideWrap(POSIDShowHide);
+showHideWrap(HubShowHide);
+
 
 })(jQuery);
 
