@@ -170,10 +170,10 @@ var HubShowHide = {
 	},
 	callback: function(ele, val, who) {
 		if (val === '1') {
-			$('select[name="to_branch_id"]').addClass('validate required');
+			$('select[name="to_branch_id"]').addClass('validate required').prop('disabled','');
 		}
 		else {
-			$('select[name="to_branch_id"]').removeClass('validate required').removeClass('has-error');
+			$('select[name="to_branch_id"]').removeClass('validate required').removeClass('has-error').prop('disabled','disabled');
 		}
 	}
 };
@@ -501,6 +501,16 @@ $(document).ready(function(){
 
 	$('#merchantNew').on('click', function(event){
 		Parcel.setAccountDetails(Parcel.newAccountObject());
+	});
+
+	$('input[name="send_to_hub"]').on('change', function(event){
+		alert(this.val());
+		if(this.val()=='1'){
+			$('select[name="to_branch_id"]').addClass('validate required').prop('disabled','');
+		}
+		else {
+			$('select[name="to_branch_id"]').removeClass('validate required').removeClass('has-error').prop('disabled','disabled');
+		}
 	});
 
 	$('#merchantOld').on('click', function(event){
