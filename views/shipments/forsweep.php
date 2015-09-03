@@ -61,7 +61,7 @@ if($offset <= 0){
                     </div>
                 </div>
             </form>
-            <?php if(count($parcels)): ?>
+            <?php if(!empty($parcels)): ?>
             <div class="pull-left">
                 <label>&nbsp;</label><br>
                 <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" id="manifest">Generate Manifest</button>
@@ -71,7 +71,7 @@ if($offset <= 0){
         </div>
     </div>
     <div class="main-box-body">
-        <?php if(count($parcels)): ?>
+        <?php if(!empty($parcels)): ?>
         <div class="table-responsive">
             <table id="next_dest" class="table table-hover">
                 <thead>
@@ -114,7 +114,6 @@ if($offset <= 0){
                     <?php
                     }}
                 ?>
-
                 </tbody>
             </table>
             <?= $this->render('../elements/pagination_and_summary', ['first' => $offset, 'last'=>$i, 'total_count'=> $total_count,'page_width'=>$page_width]) ?>

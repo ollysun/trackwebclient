@@ -113,16 +113,7 @@ $this->params['breadcrumbs'] = array(
 						?>
 						</tbody>
 					</table>
-					<div class="clearfix">
-						<div class="pull-left">
-							<div class="form-control-static">
-								Showing <?= $offset+1;?> &ndash; <?= $i; ?> of <?= $total_count; ?>
-							</div>
-						</div>
-						<div class="pull-right">
-							<?= LinkPager::widget(['pagination'=>$pagination]) ?>
-						</div>
-					</div>
+					<?= $this->render('../elements/pagination_and_summary', ['first' => $offset, 'last'=>$i, 'total_count'=> $total_count,'page_width'=>$page_width]) ?>
 				<?php
 					}
 				?>

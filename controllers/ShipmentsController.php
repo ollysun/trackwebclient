@@ -149,8 +149,8 @@ class ShipmentsController extends BaseController {
         $total_count = 0;
         if($response->getStatus() ==  ResponseHandler::STATUS_OK){
             $data = $response->getData();
-            $total_count = $data['total_count'];
-            $data = $data['parcels'];
+            $total_count = empty($data['total_count']) ? 0 : $data['total_count'];
+            $data = empty($data['parcels']) ? 0 : $data['parcels'];
         }
         return $this->render('fordelivery',array('parcels'=>$data,'from_date'=>$from_date,'to_date'=>$to_date,'offset'=>$offset,'page_width'=>$page_width,'search'=>$search_action,'total_count'=>$total_count));
     }
@@ -231,8 +231,8 @@ class ShipmentsController extends BaseController {
         $total_count = 0;
         if($response->getStatus() ==  ResponseHandler::STATUS_OK){
             $data = $response->getData();
-            $total_count = $data['total_count'];
-            $data = $data['parcels'];
+            $total_count = empty($data['total_count']) ? 0 : $data['total_count'];
+            $data = empty($data['parcels']) ? 0 : $data['parcels'];
         }
         return $this->render('forsweep',array('branch'=>$branch['data'], 'parcels'=>$data,'from_date'=>$from_date,'to_date'=>$to_date,'offset'=>$offset,'page_width'=>$page_width,'search'=>$search_action, 'total_count'=>$total_count));
     }
@@ -273,16 +273,8 @@ class ShipmentsController extends BaseController {
         if($response->getStatus() ==  ResponseHandler::STATUS_OK){
 
             $data = $response->getData();
-            $total_count = 0;
-            if(isset($data['total_count']))
-            {
-                $total_count = $data['total_count'];
-            }
-            if(isset($data['parcels']))
-            {
-                $data = $data['parcels'];
-                $total_count = $total_count <= 0? count($data) : $total_count;
-            }
+            $total_count = empty($data['total_count']) ? 0 : $data['total_count'];
+            $data = empty($data['parcels']) ? 0 : $data['parcels'];
         }
         return $this->render('processed',array('filter'=>$filter,'parcels'=>$data,'from_date'=>$from_date,'to_date'=>$to_date,'offset'=>$offset,'page_width'=>$this->page_width,'search'=>$search_action, 'total_count'=>$total_count));
     }
@@ -351,8 +343,7 @@ class ShipmentsController extends BaseController {
                 $total_count = $data['total_count'];
             }
         }
-        $pagination = new Pagination(['totalCount'=>$total_count,'defaultPageSize'=>$page_width]);
-        return $this->render('customer_history_details', array('user'=>$user, 'parcels'=>$parcels, 'total_count'=>$total_count, 'search'=>$search, 'offset'=>$offset, 'page_width'=>$page_width, 'pagination'=>$pagination));
+        return $this->render('customer_history_details', array('user'=>$user, 'parcels'=>$parcels, 'total_count'=>$total_count, 'search'=>$search, 'offset'=>$offset, 'page_width'=>$page_width));
     }
 
     public function actionView()
