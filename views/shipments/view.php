@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = 'Waybill';
 	<div class="main-box-body row">
 		<div class="col-xs-12 col-sm-6">
 			<fieldset>
-				<legend>Consignor Information</legend>
+				<legend>Sender Information</legend>
 				<div class="row form-group">
 					<div class="col-xs-6">
 						<label>Name</label>
@@ -57,7 +57,7 @@ $this->params['breadcrumbs'][] = 'Waybill';
 		</div>
 		<div class="col-xs-12 col-sm-6">
 			<fieldset>
-				<legend>Consignee Information</legend>
+				<legend>Receiver Information</legend>
 				<div class="row form-group">
 					<div class="col-xs-6">
 						<label>Name</label>
@@ -158,7 +158,7 @@ $this->params['breadcrumbs'][] = 'Waybill';
 								</div>
 							</div>
 							<div class="form-group">
-								<label>Other Information</label>
+								<label>Parcel Description</label>
 								<div><?= $parcelData['other_info']; ?></div>
 							</div>
 						</div>
