@@ -456,4 +456,8 @@ class SiteController extends BaseController
         $this->layout = 'login';
         return $this->render('changepassword');
     }
+    public function actionPrintmanifest() {
+        $this->layout = 'print';
+        return $this->render('print_manifest');
+    }
 }
