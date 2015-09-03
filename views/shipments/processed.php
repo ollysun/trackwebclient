@@ -61,7 +61,7 @@ $this->params['content_header_button'] = $this->render('../elements/content_head
     </div>
     <div class="main-box-body">
         <div class="table-responsive">
-            <?php if(count($parcels)): ?>
+            <?php if(!empty($parcels)): ?>
             <table id="table" class="table table-hover dataTable">
                 <thead>
                 <tr>
