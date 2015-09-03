@@ -129,7 +129,7 @@ var Billing = {
 
     fetchBillingById: function(id) {
         var self = this;
-        $.ajax({
+        return $.ajax({
             url: this.Url.fetchbyid,
             type: 'GET',
             dataType: 'JSON',
@@ -164,17 +164,25 @@ var Billing = {
 $(document).ready(function(){
 
     $('#add_billing').on('click', function(evt){
+        removeValidateMsg('#billing-form');
         Billing.clearBillingFormData();
         $('#modal_pricing').modal('show');
     });
 
     $('.edit_billing').on('click', function(evt){
-        var id = $(this).attr('data-weight-billing-id');
+        var btn = $(this);
+        btn.prop('disabled', true);
+        var id = btn.attr('data-weight-billing-id');
         $('#id').val(id);
         $('#zone').attr('disabled', true);
         $('#weight_range').attr('disabled', true);
-        Billing.fetchBillingById(id);
-        $('#modal_pricing').modal('show');
+        removeValidateMsg('#billing-form');
+        Billing.fetchBillingById(id).then(function(result){
+            if (result.status === 'success') {
+                $('#modal_pricing').modal('show');
+            }
+            btn.prop('disabled', false);
+        });
     });
 
     $('.del_billing').on('click', function(evt){
@@ -187,8 +195,11 @@ $(document).ready(function(){
     });
 
     $('#save_billing').on('click', function(evt){
-        var billing = Billing.getBillingFormData();
-        Billing.saveBilling(billing);
+        var formIsValid = validate('#billing-form');
+        if (formIsValid) {
+            var billing = Billing.getBillingFormData();
+            Billing.saveBilling(billing);
+        }
     });
 
     $('#refresh').on('click', function(evt){
