@@ -325,7 +325,7 @@ class SiteController extends BaseController
                 $parcelType = $parcelTypeResponse->getData();
             }
         }
-        $this->layout = 'waybill';
+        $this->layout = 'print';
 
         return $this->render('print_waybill', array(
             'parcelData'=>$data,
