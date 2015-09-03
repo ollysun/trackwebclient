@@ -25,9 +25,10 @@ $this->params['breadcrumbs'] = array(
 <div class="main-box">
     <div class="main-box-header clearfix">
         <div class="pull-left">
-
+            <?php if(count($parcels) > 0) { ?>
             <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#passwordModal" data-action="receive">Receive from Dispatcher</button>
             <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#passwordModal" data-action="deliver"><i class="fa fa-check"></i> Mark as delivered</button>
+            <?php } ?>
         </div>
     </div>
     <?php if(count($parcels) > 0) { ?>

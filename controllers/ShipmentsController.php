@@ -434,18 +434,28 @@ class ShipmentsController extends BaseController {
                     $record['waybill_numbers'] = implode(",", $waybills);
 
                     $parcelData = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-                    if($task == 'receive'){ }
+                    $success_msg = '';
+                    if($task == 'receive'){
+                        $response = $parcelData->receiveFromBeingDelivered($record);
+                        $success_msg = 'Shipments successfully received';
+                    }
                     elseif($task == 'deliver'){
                         $response = $parcelData->moveToDelivered($record);
+                        $success_msg = 'Shipments successfully delivered';
                     }
-
-                    $bad_parcels = $response['data']['bad_parcels'];
-                    if ($response['status'] === ResponseHandler::STATUS_OK && !count($bad_parcels)) {
-                        $this->flashSuccess('Shipments successfully delivered');
-                    } else {
-                        foreach($bad_parcels as $key=>$bad_parcel){
-                            $this->flashError($key.' - '.$bad_parcel);
+                    $responseHandler = new ResponseHandler($response);
+                    $data = $responseHandler->getData();
+                    if ($responseHandler->getStatus() === ResponseHandler::STATUS_OK) {
+                        if(empty($data['bad_parcels']))
+                            $this->flashSuccess($success_msg);
+                        else{
+                            $bad_parcels = $data['bad_parcels'];
+                            foreach($bad_parcels as $key=>$bad_parcel){
+                                $this->flashError($key.' - '.$bad_parcel);
+                            }
                         }
+                    } else {
+                        $this->flashError($responseHandler->getError());
                     }
                 }
                 else{
