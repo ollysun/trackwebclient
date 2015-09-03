@@ -1,5 +1,5 @@
 $(document).ready(function(){
-    $(".barcode").barcode(waybill,"code128", {barWidth:2, showHRI: false, addQuietZone: false, bgColor: 'transparent', barHeight: 90});
+    $(".barcode").barcode(waybill,"code128", {barWidth:2, showHRI: false, addQuietZone: true, bgColor: 'transparent', barHeight: 90});
     window.print();
     /* var waybillelement = document.querySelectorAll(".waybill-wrap");
     setTimeout(function(){
