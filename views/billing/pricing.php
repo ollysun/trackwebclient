@@ -83,18 +83,18 @@ $this->params['breadcrumbs'] = array(
 
 <div class="modal fade" id="modal_pricing" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
-	  	<form class="">
+	  	<form id="billing-form" class="validate-form">
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 	        <h4 class="modal-title" id="myModalLabel">Add a Billing Pricing</h4>
 	      </div>
 	      <div class="modal-body">
-				<div class="form-group row">
-					<div class="col-xs-6">
+				<div class="row">
+					<div class="form-group col-xs-6">
 						<label for="weight_range">Select Weight Range</label>
-						<select name="weight_range" id="weight_range" class="form-control">
-							<option>Select a weight range</option>
+						<select name="weight_range" id="weight_range" class="form-control validate required">
+							<option value="">Select a weight range</option>
 							<?php
 							if(!empty($weightRanges)) {
 								foreach ($weightRanges as $weightRange) {
@@ -104,10 +104,10 @@ $this->params['breadcrumbs'] = array(
 							?>
 						</select>
 					</div>
-					<div class="col-xs-6">
+					<div class="form-group col-xs-6">
 						<label for="zone">Zones</label>
-						<select name="zone" id="zone" class="form-control">
-							<option>Select a zone</option>
+						<select name="zone" id="zone" class="form-control validate required">
+							<option value="">Select a zone</option>
 							<?php
 							if(!empty($zones)) {
 								foreach ($zones as $zone) {
@@ -118,36 +118,36 @@ $this->params['breadcrumbs'] = array(
 						</select>
 					</div>
 				</div>
-				<div class="form-group add-billing-pricing-wrap">
+				<div class="add-billing-pricing-wrap">
 					<!--<h5 id="zone_name">City Express (CE)</h5>-->
 					<input type="hidden" id="id" />
 					<div style="height: 20px;"></div>
 					<div class="row">
-						<div class="col-xs-3">
+						<div class="form-group col-xs-3">
 							<label for="base_cost">Base Price</label>
 							<div class="input-group">
 								<span class="input-group-addon currency naira"></span>
-								<input type="text" class="form-control" id="base_cost">
+								<input type="text" class="form-control validate required number" id="base_cost">
 							</div>
 						</div>
-						<div class="col-xs-3">
+						<div class="form-group col-xs-3">
 							<label for="incr_cost">Incr. Price</label>
 							<div class="input-group">
 								<span class="input-group-addon currency naira"></span>
-								<input type="text" class="form-control" id="incr_cost">
+								<input type="text" class="form-control validate required number" id="incr_cost">
 							</div>
 						</div>
-						<div class="col-xs-3">
+						<div class="form-group col-xs-3">
 							<label for="base_percent">Base Percentage</label>
 							<div class="input-group">
-								<input type="text" class="form-control" id="base_percent">
+								<input type="text" class="form-control validate required number" id="base_percent">
 								<span class="input-group-addon">%</span>
 							</div>
 						</div>
-						<div class="col-xs-3">
+						<div class="form-group col-xs-3">
 							<label for="incr_percent">Incr. Percentage</label>
 							<div class="input-group">
-								<input type="text" class="form-control" id="incr_percent">
+								<input type="text" class="form-control validate required number" id="incr_percent">
 								<span class="input-group-addon">%</span>
 							</div>
 						</div>
@@ -190,4 +190,5 @@ $this->params['breadcrumbs'] = array(
 <?php $this->registerJsFile('@web/js/libs/dataTables.fixedHeader.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/libs/dataTables.tableTools.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/libs/jquery.dataTables.bootstrap.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
-<?php $this->registerJsFile('@web/js/pricing.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
+<?php $this->registerJsFile('@web/js/validate.js', ['depends' => [\app\assets\AppAsset::className()]]); ?>
+<?php $this->registerJsFile('@web/js/pricing.js', ['depends' => [\app\assets\AppAsset::className()]]); ?>

@@ -1,5 +1,6 @@
 <?php
 use Adapter\Util\Calypso;
+use Adapter\Globals\ServiceConstant;
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
@@ -11,6 +12,8 @@ $this->params['breadcrumbs'] = array(
     ),
     array('label' => $this->title),
 );
+
+$is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
 ?>
 
 
@@ -31,7 +34,7 @@ $this->params['breadcrumbs'] = array(
                 <div class="row">
                     <div class="col-xs-12 col-lg-6">
                         <div class="main-box-header">
-                            <h2>Consignor Information</h2>
+                            <h2>Sender Information</h2>
                         </div>
                         <div class="main-box-body">
                             <?= $this->render('../elements/new_parcel_user_information', ['prefix' => 'shipper', 'countries' => $countries]) ?>
@@ -39,7 +42,7 @@ $this->params['breadcrumbs'] = array(
                     </div>
                     <div class="col-xs-12 col-lg-6">
                         <div class="main-box-header">
-                            <h2>Consignee Information</h2>
+                            <h2>Receiver Information</h2>
                         </div>
                         <div class="main-box-body">
                             <?= $this->render('../elements/new_parcel_user_information', ['prefix' => 'receiver', 'countries' => $countries]) ?>
@@ -61,7 +64,7 @@ $this->params['breadcrumbs'] = array(
                         <div class="main-box-body">
                             <div class="row">
                                 <div class="col-xs-12 col-sm-6 form-group">
-                                    <label>Send parcel to Hub?</label>
+                                    <label><?= ($is_hub) ? "Forward to another branch":"Send parcel to Hub";?>?</label>
                                     <div>
                                         <div class="radio-inline">
                                             <input id="sendToHubYes" type="radio" name="send_to_hub" value="1"
@@ -73,10 +76,10 @@ $this->params['breadcrumbs'] = array(
                                         </div>
                                     </div>
                                 </div>
-                                <?php if($branch['branch_type'] == \Adapter\Globals\ServiceConstant::BRANCH_TYPE_HUB){
+                                <?php if($is_hub){
                                     ?>
                                 <div class="col-xs-12 col-sm-6 form-group" id="hubsWrap">
-                                    <label>Destination Hub</label>
+                                    <label>Destination</label>
                                     <div>
                                         <select class="form-control required validate" name="to_branch_id" id="to_branch_id">
                                             <option value="">Select One</option>
@@ -274,7 +277,7 @@ $this->params['breadcrumbs'] = array(
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label>Other Information</label>
+                                <label>Parcel Description</label>
                                 <textarea name="other_info" class="form-control validate length" data-validate-length-type='word' data-validate-max-length="50"></textarea>
                             </div>
                         </div>

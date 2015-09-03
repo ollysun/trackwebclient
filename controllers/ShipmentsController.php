@@ -105,23 +105,27 @@ class ShipmentsController extends BaseController {
             foreach ($data['waybills'] as $wb) {
                 $waybills[] = $wb;
             }
-            $record = [];
-            $record['waybill_numbers'] = implode(",", $waybills);
-            $record['held_by_id'] = Calypso::getValue($data, 'held_by_id', null);
+            $record = array('waybill_numbers'=>implode(",", $waybills),'held_by_id'=>Calypso::getValue($data, 'held_by_id', null));
+
             if(!isset($record['waybill_numbers'], $record['held_by_id'])) {
                 $this->flashError("Invalid parameter(s) sent!");
             } else {
                 $parcelData = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
                 $response = $parcelData->moveToBeingDelivered($record);
-                $data = $response['data'];
-                $response = new ResponseHandler($response);
-                if ($response->getStatus() === ResponseHandler::STATUS_OK && empty($data['bad_parcels'])) {
-                    $this->flashSuccess('Shipments dispatched');
-                } else {
-                    $bad_parcels = $data['bad_parcels'];
-                    foreach($bad_parcels as $key=>$bad_parcel){
-                        $this->flashError($key.' - '.$bad_parcel);
+                $responseHandler = new ResponseHandler($response);
+                $data = $responseHandler->getData();
+
+                if ($responseHandler->getStatus() === ResponseHandler::STATUS_OK) {
+                    if(empty($data['bad_parcels']))
+                        $this->flashSuccess('Shipments dispatched');
+                    else{
+                        $bad_parcels = $data['bad_parcels'];
+                        foreach($bad_parcels as $key=>$bad_parcel){
+                            $this->flashError($key.' - '.$bad_parcel);
+                        }
                     }
+                } else {
+                    $this->flashError($responseHandler->getError());
                 }
             }
         }
