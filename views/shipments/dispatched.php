@@ -115,7 +115,7 @@ $ex='$("#chbx_w_all").change(function () {
         if(!chkboxes.length) {
             alert("You must select at least one parcel!");
             event.preventDefault();
-            return;
+            return false;
         }
         waybill_numbers = [];
         $.each(chkboxes, function(i, chk){
