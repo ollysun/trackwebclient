@@ -269,11 +269,14 @@ class SiteController extends BaseController
 
     public function actionGetarrivedparcel(){
         $staff_no = \Yii::$app->request->get('staff_no');
+        $session_data = Calypso::getInstance()->session('user_session');
+        $branch_id = $session_data['branch']['id'];
+
         if(!isset($staff_no)) {
             return $this->sendErrorResponse("Invalid parameter(s) sent!", null);
         }
         $parcel = new  ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
-        $response = $parcel->getParcel($staff_no,ServiceConstant::IN_TRANSIT);
+        $response = $parcel->getParcel($staff_no,ServiceConstant::IN_TRANSIT, $branch_id);
 
         if ($response['status'] === ResponseHandler::STATUS_OK) {
             return $this->sendSuccessResponse($response['data']);
