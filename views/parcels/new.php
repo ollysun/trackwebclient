@@ -135,12 +135,12 @@ $is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
                                                     data-width="70px" data-style="btn-default"
                                                     title="Please choose a currency">
                                                 <option title="NGN" value="NGN" selected="selected">Naira</option>
-                                                <option title="USD" value="USD">United States Dollars</option>
+                                                <!-- <option title="USD" value="USD">United States Dollars</option>
                                                 <option title="EUR" value="EUR">Euro</option>
-                                                <option title="GBP" value="GBP">British Pounds</option>
+                                                <option title="GBP" value="GBP">British Pounds</option> -->
                                             </select>
                                         </div>
-                                        <input name="parcel_value" type="text" class="form-control validate required non-zero-number">
+                                        <input name="parcel_value" type="text" class="form-control validate non-zero-number">
                                     </div>
                                 </div>
                             </div>
