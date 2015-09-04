@@ -27,7 +27,7 @@ $this->params['breadcrumbs'] = array(
         </div>
     </div>
     <div class="main-box-body">
-        <?php if(count($parcels) > 0) { ?>
+        <?php if(!empty($parcels)) { ?>
         <div class="table-responsive">
             <table class="table table-hover">
                 <thead>
@@ -68,9 +68,7 @@ $this->params['breadcrumbs'] = array(
             <?= $this->render('../elements/pagination_and_summary',['first'=>$offset,'last'=>$row,'page_width'=>$page_width,'total_count'=>$total_count]) ?>
         </div>
         <?php } else { ?>
-            <div class="main-box-body">
-                There are no parcels that were delivered.
-            </div>
+            There are no shipments that were delivered.
         <?php } ?>
     </div>
 </div>
