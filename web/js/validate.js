@@ -58,7 +58,7 @@ function validateFxn() {
     else if(input.hasClass('non-zero-number'))
     {
         var test = /^(?=.*[1-9])\d+(\.\d+)?$/;
-        if(!test.test(val))
+        if(!test.test(val) && val !== "")
         {
             msg = 'Invalid entry';
             isValid = false;
