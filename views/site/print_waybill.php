@@ -4,6 +4,8 @@ use yii\helpers\Html;
 
 $copies = ["Sender's Copy","Recipient's Copy","Acknowledgement Copy"," Express Centre's Copy"];
 ?>
+<?= Html::cssFile('@web/css/compiled/print-waybill.css') ?>
+
 <div id="main_holder">
 <?php for ($i=0; $i < count($copies); $i++) { ?>
 <div class="waybill-wrap">
