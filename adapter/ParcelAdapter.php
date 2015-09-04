@@ -133,8 +133,6 @@ class ParcelAdapter extends BaseAdapter{
         $filter .= '&with_total_count=1';
         $filter .= '&status='.ServiceConstant::BEING_DELIVERED;
         $url = ServiceConstant::URL_GET_ALL_PARCEL.'?with_receiver=1&with_holder=1&offset='.$offset.'&count='.$count.$filter;
-//        var_dump($url);
-//        exit;
         return $this->request($url,array(),self::HTTP_GET);
     }
     public function getDeliveredParcels($branch_id,$offset=0, $count=50){
