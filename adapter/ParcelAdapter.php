@@ -126,7 +126,7 @@ class ParcelAdapter extends BaseAdapter{
         $filter .= !is_null($start_created_date) ? '&start_created_date='.$start_created_date : '';
         $filter .= !is_null($end_created_date) ? '&end_created_date='.$end_created_date : '';
         $filter .= '&order_by=Parcel.created_date%20DESC';
-        return $this->request(ServiceConstant::URL_GET_ALL_PARCEL.'?with_sender=1&show_parents=1&with_receiver=1&offset='.$offset.'&count='.$count.$filter,array(),self::HTTP_GET);
+        return $this->request(ServiceConstant::URL_GET_ALL_PARCEL.'?with_sender=1&with_receiver=1&offset='.$offset.'&count='.$count.$filter,array(),self::HTTP_GET);
     }
     public function getECDispatchedParcels($branch_id,$offset=0, $count=50){
         $filter = '&from_branch_id='.$branch_id;
