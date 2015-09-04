@@ -5,13 +5,13 @@ use yii\helpers\Url;
 use Adapter\Globals\ServiceConstant;
 
 
-$this->title = 'Shipments: Due to Sweep';
+$this->title = 'Shipments: Due for Sweep';
 $this->params['breadcrumbs'] = array(
     array(
         'url' => ['shipments/all'],
         'label' => 'Shipments'
     ),
-    array('label'=> 'Due to sweep')
+    array('label'=> 'Due for sweep')
 );
 $show_next = false;
 $show_prev = false;
