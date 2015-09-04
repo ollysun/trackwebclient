@@ -67,7 +67,7 @@ body {
   position: absolute;
   top: 27px;
   left: auto;
-  width: 335px;
+  width: 250px;
   height: auto;
   right: 25px;
   font-size: 22px;
@@ -86,8 +86,8 @@ body {
 }
 .waybill-no {
   position: absolute;
-  top: 154px;
-  left: 575px;
+  top: 153px;
+  left: 441px;
   width: auto;
   height: auto;
   font-size: 24px;
