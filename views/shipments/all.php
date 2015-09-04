@@ -3,6 +3,7 @@ use Adapter\Util\Calypso;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use Adapter\Globals\ServiceConstant;
+use yii\web\View;
 
 /* @var $this yii\web\View */
 $this->title = 'All Shipments';
@@ -87,15 +88,15 @@ if($search){
             <table id="table" class="table table-hover dataTable">
                 <thead>
                 <tr>
-                    <!--						<th style="width: 20px"><div class="checkbox-nice"><input id="chbx_w_all" type="checkbox"><label for="chbx_w_all"> </label></div></th>-->
-                    <th style="width: 20px">No.</th>
+                    <th style="width: 20px" class="datatable-nosort"><div class="checkbox-nice"><input id="chbx_w_all" type="checkbox"><label for="chbx_w_all"> </label></div></th>
+                    <th style="width: 20px">S/N</th>
                     <th>Waybill No.</th>
                     <th>Shipper</th>
                     <th>Shipper Phone</th>
                     <th>Receiver</th>
                     <th>Receiver Phone</th>
                     <th>Created Date</th>
-                    <th># Parcels</th>
+                    <th>Pieces</th>
                     <th>Action</th>
                 </tr>
                 </thead>
@@ -106,8 +107,8 @@ if($search){
                     foreach($parcels as $parcel){
                         ?>
                         <tr>
-                            <!--						<td><div class="checkbox-nice"><input id="chbx_w_000--><?//= $i ?><!--" type="checkbox"><label for="chbx_w_0001"> </label></div></td>-->
-                            <td><?= ++$i; ?></td>
+                            <td><div class="checkbox-nice"><input id="chbx_w_<?= ++$i; ?>" class="checkable" data-waybill="<?= strtoupper($parcel['waybill_number']); ?>" type="checkbox"><label for="chbx_w_<?= $i; ?>"> </label></div></td>
+                            <td><?= $i; ?></td>
                             <td><?= strtoupper($parcel['waybill_number']); ?></td>
                             <td><?= strtoupper($parcel['sender']['firstname'].' '. $parcel['sender']['lastname']) ?></td>
                             <td><?= $parcel['sender']['phone'] ?></td>
@@ -197,3 +198,12 @@ if($search){
 <?php $this->registerJsFile('@web/js/table.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/validate.js', ['depends' => [\app\assets\AppAsset::className()]])?>
 
+<?php
+    $ex='
+    $("#chbx_w_all").change(function () {
+        $("input:checkbox").prop("checked", $(this).prop("checked"));
+    });
+
+    ';
+    $this->registerJs($ex,View::POS_READY);
+?>
