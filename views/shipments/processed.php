@@ -36,7 +36,7 @@ $this->params['content_header_button'] = $this->render('../elements/content_head
     <div class="main-box-header table-search-form clearfix">
         <div class=" clearfix">
             <div class="pull-left">
-                <?= $this->render('../elements/parcels_filter',['from_date'=>$from_date,'to_date'=>$to_date,'page_width'=>$page_width,'filter'=>$filter]) ?>
+                <?= $this->render('../elements/parcels_filter',['from_date'=>$from_date,'to_date'=>$to_date,'page_width'=>$page_width,'filter'=>$filter, 'hideStatusFilter'=>true]) ?>
             </div>
             <div class="pull-right clearfix">
                 <form class="form-inline clearfix">
