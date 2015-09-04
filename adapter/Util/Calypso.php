@@ -321,10 +321,10 @@ class Calypso
             'Dashboard' => ['base' => 'site', 'base_link' => 'site/index','class' => 'fa fa-dashboard'],
             'Shipments' => ['base' => 'shipments', 'class' => 'fa fa-gift', 'base_link' => [
                 'New_Shipments' => ['base_link' => 'shipments/processed', 'class' => ''],
-                'For_Delivery' => ['base_link' => 'shipments/fordelivery', 'class' => ''],
+                'Due_for_Delivery' => ['base_link' => 'shipments/fordelivery', 'class' => ''],
                 'Dispatched' => ['base_link' => 'shipments/dispatched', 'class' => ''],
                 'Delivered' => ['base_link' => 'shipments/delivered', 'class' => ''],
-                'For_Sweep' => ['base_link' => 'shipments/forsweep', 'class' => '', 'branch' => [ ServiceConstant::BRANCH_TYPE_EC, ServiceConstant::BRANCH_TYPE_HQ]],
+                'Due_for_Sweep' => ['base_link' => 'shipments/forsweep', 'class' => '', 'branch' => [ ServiceConstant::BRANCH_TYPE_EC, ServiceConstant::BRANCH_TYPE_HQ]],
                 'All_Shipments' => ['base_link' => 'shipments/all', 'class' => ''],
             ],'branch' => [ ServiceConstant::BRANCH_TYPE_EC, ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
             'Hub' => ['base' => 'hubs', 'class' => 'fa fa-building-o', 'base_link' =>[
