@@ -69,13 +69,13 @@ $is_hub = $user['branch']['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
             </form>
             <div class="pull-left">
                 <label>&nbsp;</label><br>
-                <?php if(count($parcels)): ?><button type="button" class="btn btn-sm btn-default" data-toggle="modal" data-target="#runModal">Generate Delivery Run</button><?php endif; ?>
+                <?php if(!empty($parcels)): ?><button type="button" class="btn btn-sm btn-default" data-toggle="modal" data-target="#runModal">Generate Delivery Run</button><?php endif; ?>
                 <?php if(!$is_hub): ?><button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">Receive Shipments from Hub</button><?php endif; ?>
             </div>
         </div>
     </div>
     <div class="main-box-body">
-        <?php if(count($parcels)): ?>
+        <?php if(!empty($parcels)): ?>
         <div class="table-responsive">
             <table id="table" class="table table-hover dataTable">
                 <thead>
@@ -93,9 +93,8 @@ $is_hub = $user['branch']['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
                 </tr>
                 </thead>
                 <tbody>
-                <?php
+                <?php $i = $offset;
                 if(isset($parcels) && is_array($parcels)){
-                    $i = $offset;
                     foreach($parcels as $parcel){
                         ?>
                         <tr>

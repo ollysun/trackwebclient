@@ -23,14 +23,15 @@ $this->params['breadcrumbs'] = array(
 
 <?php echo \Adapter\Util\Calypso::showFlashMessages(); ?>
 <div class="main-box">
+    <?php if(!empty($parcels)) { ?>
     <div class="main-box-header clearfix">
         <div class="pull-left">
-
             <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#passwordModal" data-action="receive">Receive from Dispatcher</button>
             <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#passwordModal" data-action="deliver"><i class="fa fa-check"></i> Mark as delivered</button>
         </div>
     </div>
-    <?php if(count($parcels) > 0) { ?>
+    <?php } ?>
+    <?php if(!empty($parcels)) { ?>
     <div class="main-box-body">
         <div class="table-responsive">
             <table class="table table-hover">
