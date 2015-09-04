@@ -2,7 +2,7 @@
 use Adapter\Util\Calypso;
 use yii\helpers\Html;
 
-$copies = ["Sender's Copy","Recipient's Copy","Acknowledgement Copy"," Express Centre's Copy"];
+$copies = ["Sender's Copy","Recipient's Copy","Ack. Copy"," EC Copy"];
 ?>
 <?= Html::cssFile('@web/css/compiled/print-waybill.css') ?>
 
