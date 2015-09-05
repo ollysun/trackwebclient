@@ -223,7 +223,7 @@ class ShipmentsController extends BaseController {
             $response = $parcel->getSearchParcels('-1',$search,$offset,$page_width, 1, $this->branch_to_view);
             $search_action = true;
         }else{
-            $response = $parcel->getParcels($from_date, $to_date, ServiceConstant::FOR_SWEEPER,$this->branch_to_view,$offset,$page_width, null, 1);
+            $response = $parcel->getParcels($from_date.'%2000:00:00',$to_date.'%2023:59:59', ServiceConstant::FOR_SWEEPER,$this->branch_to_view,$offset,$page_width, null, 1);
             $search_action = false;
         }
         $response = new ResponseHandler($response);
