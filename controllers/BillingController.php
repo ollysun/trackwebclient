@@ -254,14 +254,6 @@ class BillingController extends BaseController
         $states = new ResponseHandler($states);
         $state_list = $states->getStatus() == ResponseHandler::STATUS_OK ? $states->getData() : [];
 
-        $maps = array(
-            array('state_id' => 1, 'state' => 'Lagos', 'region'=>array('region_id' => 1, 'name' => "Department")),
-            array('state_id' => 2, 'state' => 'Oyo', 'region'=>array('region_id' => 2, 'name' => "Institute")),
-            array('state_id' => 3, 'state' => 'Ogun', 'region'=>array('region_id' => 1, 'name' => "Department")),
-            array('state_id' => 4, 'state' => 'Kwara', 'region'=>array('region_id' => 1, 'name' => "Department")),
-            array('state_id' => 5, 'state' => 'Sokoto', 'region'=>array('region_id' => 2, 'name' => "Institute")),
-        );
-
         $tmp = array();
         foreach($state_list as $arg)
         {
