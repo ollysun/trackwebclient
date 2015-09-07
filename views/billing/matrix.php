@@ -43,7 +43,7 @@ $hub_data_col_indexes = [];
 						$hub_data[$hub['id']] = $hub;
 						$hub_data_col_indexes[$hub['id']] = $i++;
 						?>
-						<th><?= $hub['code']; ?></th>
+						<th><?= strtoupper($hub['name']); ?></th>
 					<?php
 					}
 					?>
@@ -75,18 +75,18 @@ $hub_data_col_indexes = [];
 			</thead>
 			<tbody>
 			<?php
-			$i = 0;$diagonal = '';$can_focus = false;
+			$i = 0;$diagonal = '';$can_focus = true;
 			//$diagonal = 'matrix_diagonal';
 			$y = 0;$d = [];$already_rendered = [];
 			foreach($hubs as $hub){
 
 				?>
 				<tr>
-					<td><?= $hub['code']; ?></td>
+					<td><?= strtoupper($hub['name']); ?></td>
 					<?php
 					for($x = 0; $x < count($hubs); $x++) {
 						$diagonal = $hub_data_col_indexes[$hub['id']] == $x ? 'matrix_diagonal':'';
-						$can_focus = $hub_data_col_indexes[$hub['id']] != $x;
+//						$can_focus = $hub_data_col_indexes[$hub['id']] != $x;
 						if(isset($matrixMap[$hub['id'].'_'.$hubs[$x]['id']])){
 							$d = $matrixMap[$hub['id'].'_'.$hubs[$x]['id']];
 							$already_rendered[$hub['id'].'_'.$hubs[$x]['id']] = true;
@@ -98,7 +98,7 @@ $hub_data_col_indexes = [];
 							?>
 							<td data-payload='<?= json_encode($d); ?>' data-from="<?= $hub['id'] ?>"
 								data-to="<?= $hubs[$x]['id']; ?>"
-								class="<?= $diagonal; ?><?= $can_focus ? 'matrix_cell' : ''; ?>"><?= $can_focus ? (sizeof($d) > 0 ? $d['zone']['code'] : 'N/S') : ''; ?></td>
+								class="<?= $diagonal; ?><?= $can_focus ? ' matrix_cell' : ''; ?>"><?= $can_focus ? (sizeof($d) > 0 ? $d['zone']['code'] : 'N/S') : ''; ?></td>
 							<?php
 						
 					}
