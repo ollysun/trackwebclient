@@ -304,7 +304,7 @@ $is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
                                 <div class="form-group amount-due-wrap">
                                     <label for="">Amount Due</label>
 
-                                    <div class="amount-due currency naira">3,045.00</div>
+                                    <div class="amount-due currency naira">0.00</div>
                                     <input type="hidden" name="amount" id="amount" />
                                 </div>
                                 <div class="form-group">
@@ -324,6 +324,9 @@ $is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
                                             <input id="paymentMethodCashPOS" type="radio" name="payment_method"
                                                    value="3"> <label for="paymentMethodCashPOS" class="">Cash &amp;
                                                 POS</label>
+                                        </div>
+                                        <div class="radio-inline">
+                                            <input id="paymentMethodDeferred" type="radio" name="payment_method" value="4"> <label for="paymentMethodDeferred" class="">Deferred</label>
                                         </div>
                                     </div>
                                 </div>
