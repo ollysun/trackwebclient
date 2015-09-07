@@ -104,7 +104,7 @@ $this->params['breadcrumbs'] = array(
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
-	  	<form class="validate" method="post" action="#">
+	  	<form class="validate-form" method="post" action="#">
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -113,11 +113,16 @@ $this->params['breadcrumbs'] = array(
 	      <div class="modal-body">
 				<div class="form-group">
 					<label>Hub name</label>
-					<input class="form-control" name="name">
+					<input class="form-control validate required" name="name">
+				</div>
+				<div class="form-group">
+					<label>Address</label>
+					<textarea class="form-control validate required" name="address" rows="2"></textarea>
 				</div>
 				<div class="form-group">
 					<label>State</label>
-					<select class="form-control" name="state_id">
+					<select class="form-control validate required" name="state_id">
+						<option value="">Select a state</option>
                         <?php
                         if(isset($States) && is_array(($States))):
                             foreach($States as $state){
@@ -130,12 +135,12 @@ $this->params['breadcrumbs'] = array(
 					</select>
 				</div>
 				<div class="form-group">
-					<label>Address</label>
-					<textarea class="form-control" name="address" rows="2"></textarea>
+					<label>City</label>
+					<select name="city_id" disabled="disabled" class="form-control validate required"></select>
 				</div>
 				<div class="form-group">
 					<label>Status</label>
-					<select class="form-control" name="status">
+					<select class="form-control validate required" name="status">
 						<option value="<?= ServiceConstant::ACTIVE?>">Active</option>
 						<option value="<?= ServiceConstant::INACTIVE?>">Inactive</option>
 					</select>
@@ -154,7 +159,7 @@ $this->params['breadcrumbs'] = array(
 
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 	<div class="modal-dialog" role="document">
-		<form class="" method="post" action="">
+		<form class="validate-form" method="post" action="">
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -163,11 +168,15 @@ $this->params['breadcrumbs'] = array(
 				<div class="modal-body">
 					<div class="form-group">
 						<label>Hub name</label>
-						<input class="form-control" name="name">
+						<input class="form-control validate required" name="name">
+					</div>
+					<div class="form-group">
+						<label>Address</label>
+						<textarea class="form-control validate required" name="address" rows="3"></textarea>
 					</div>
 					<div class="form-group">
 						<label>State</label>
-						<select class="form-control" name="state_id">
+						<select class="form-control validate required" name="state_id">
 							<?php
 							if(isset($States) && is_array(($States))):
 								foreach($States as $state){
@@ -180,8 +189,8 @@ $this->params['breadcrumbs'] = array(
 						</select>
 					</div>
 					<div class="form-group">
-						<label>Address</label>
-						<textarea class="form-control" name="address" rows="3"></textarea>
+						<label>City</label>
+						<select name="city_id" disabled="disabled" class="form-control validate required"></select>
 					</div>
 				</div>
 				<div class="modal-footer">
@@ -198,7 +207,7 @@ $this->params['breadcrumbs'] = array(
 
 <div class="modal fade" id="status" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 	<div class="modal-dialog" role="document">
-		<form class="" method="post" action="">
+		<form class="validate-form" method="post" action="">
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -207,7 +216,7 @@ $this->params['breadcrumbs'] = array(
 				<div class="modal-body">
 					<div class="form-group">
 						<label>Status</label>
-						<select class="form-control" name="status">
+						<select class="form-control validate required" name="status">
 							<option value="<?= ServiceConstant::ACTIVE?>">Active</option>
 							<option value="<?= ServiceConstant::INACTIVE?>">Inactive</option>
 						</select>
@@ -225,13 +234,9 @@ $this->params['breadcrumbs'] = array(
 </div>
 
 <!-- this page specific scripts -->
-<?php $this->registerJsFile('@web/js/libs/jquery.dataTables.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
-<?php $this->registerJsFile('@web/js/libs/dataTables.fixedHeader.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
-<?php $this->registerJsFile('@web/js/libs/dataTables.tableTools.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
-<?php $this->registerJsFile('@web/js/libs/jquery.dataTables.bootstrap.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/manage_branches.js', ['depends' => [\app\assets\AppAsset::className()]])?>
 <?php $this->registerJsFile('@web/js/jquery.dataTables.min.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/dataTables.bootstrap.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/table.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
-
+<?php $this->registerJsFile('@web/js/validate.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 
