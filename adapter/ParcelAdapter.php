@@ -138,10 +138,12 @@ class ParcelAdapter extends BaseAdapter{
         $url = ServiceConstant::URL_GET_ALL_PARCEL.'?with_receiver=1&with_holder=1&offset='.$offset.'&count='.$count.$filter;
         return $this->request($url,array(),self::HTTP_GET);
     }
-    public function getDeliveredParcels($branch_id,$offset=0, $count=50){
-        $filter = '&from_branch_id='.$branch_id;
+    public function getDeliveredParcels($branch_id,$offset=0, $count=50, $start_modified_date=  null, $end_modified_date=null ){
+        $filter = !is_null($branch_id) ? '&branch_id='.$branch_id : '';
         $filter .= '&with_total_count=1';
         $filter .= '&status='.ServiceConstant::DELIVERED;
+        $filter .= !is_null($start_modified_date) ? '&start_modified_date='.$start_modified_date : '';
+        $filter .= !is_null($end_modified_date) ? '&end_modified_date='.$end_modified_date : '';
         return $this->request(ServiceConstant::URL_GET_ALL_PARCEL.'?with_receiver=1&with_sender=1&offset='.$offset.'&count='.$count.$filter,array(),self::HTTP_GET);
     }
 

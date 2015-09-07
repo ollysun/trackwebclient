@@ -474,13 +474,19 @@ class ShipmentsController extends BaseController {
         $from_date = date('Y-m-d');
         $to_date = date('Y-m-d');
 
+        if(isset(Calypso::getInstance()->get()->from,Calypso::getInstance()->get()->to)){
+            $from_date = Calypso::getInstance()->get()->from;
+            $to_date = Calypso::getInstance()->get()->to;
+        }
+
         $user_session = Calypso::getInstance()->session("user_session");
         $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
-        $delivered_parcels = $parcelsAdapter->getDeliveredParcels($user_session['branch_id'],$offset,$page_width);
-        $parcels = new ResponseHandler($delivered_parcels);
+        $delivered_parcels = $parcelsAdapter->getDeliveredParcels($this->branch_to_view,$offset,$page_width, $from_date.'%2000:00:00',$to_date.'%2023:59:59');
+        $parcelsHandler = new ResponseHandler($delivered_parcels);
         $total_count = 0;
-        if($parcels->getStatus() ==  ResponseHandler::STATUS_OK){
-            $data = $parcels->getData();
+        $parcels = [];
+        if($parcelsHandler->getStatus() ==  ResponseHandler::STATUS_OK){
+            $data = $parcelsHandler->getData();
             $parcels = $data['parcels'];
             $total_count = $data['total_count'];
         }

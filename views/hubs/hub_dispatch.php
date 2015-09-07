@@ -85,6 +85,7 @@ $this->params['breadcrumbs'] = array(
                         <th>Destination</th>
                         <th>Weight</th>
                         <th>Sweeper</th>
+                        <th>Age analysis</th>
                         <th style="width: 30px;">Action</th>
                     </tr>
                     </thead>
@@ -101,6 +102,7 @@ $this->params['breadcrumbs'] = array(
                                 <td><?= ucwords($parcel['to_branch']['name']); ?></td>
                                 <td><?= $parcel['weight']; ?> KG</td>
                                 <td><?= ucwords($parcel['holder']['fullname']); ?></td>
+                                <td></td>
                                 <td><a href="<?= Url::to(['site/viewwaybill?id=' . $parcel['id']]) ?>"
                                        class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
                             </tr>
