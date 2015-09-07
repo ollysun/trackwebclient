@@ -319,20 +319,16 @@ class Calypso
     {
         $menus = [
             'Dashboard' => ['base' => 'site', 'base_link' => 'site/index','class' => 'fa fa-dashboard'],
-            'Shipments' => ['base' => 'shipments', 'class' => 'fa fa-gift', 'base_link' => [
-                'New_Shipments' => ['base_link' => 'shipments/processed', 'class' => ''],
-                'Due_for_Delivery' => ['base_link' => 'shipments/fordelivery', 'class' => ''],
-                'Dispatched' => ['base_link' => 'shipments/dispatched', 'class' => ''],
-                'Delivered' => ['base_link' => 'shipments/delivered', 'class' => ''],
-                'Due_for_Sweep' => ['base_link' => 'shipments/forsweep', 'class' => '', 'branch' => [ ServiceConstant::BRANCH_TYPE_EC, ServiceConstant::BRANCH_TYPE_HQ]],
-                'All_Shipments' => ['base_link' => 'shipments/all', 'class' => ''],
-            ],'branch' => [ ServiceConstant::BRANCH_TYPE_EC, ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
-            'Hub' => ['base' => 'hubs', 'class' => 'fa fa-building-o', 'base_link' =>[
-                'Receive_Shipments' => ['base_link' => 'hubs/hubarrival', 'class' => ''],
-                'Ready_for_Sorting' => ['base_link' => 'hubs/destination', 'class' => ''],
-                'Sorted_Shipments' => ['base_link' => 'hubs/delivery', 'class' => ''],
-                'Dispatched_Shipments' => ['base_link' => 'hubs/hubdispatch', 'class' => ''],
-            ],'branch' => [ ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
+            'New_Shipments' => ['base_link' => 'shipments/processed', 'class' => '','branch' => [ ServiceConstant::BRANCH_TYPE_EC, ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
+            'Receive_Shipments' => ['base_link' => 'hubs/hubarrival', 'class' => '','branch' => [ ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
+            'Ready_for_Sorting' => ['base_link' => 'hubs/destination', 'class' => '','branch' => [ ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
+            'Sorted_Shipments' => ['base_link' => 'hubs/delivery', 'class' => '','branch' => [ ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
+            'Due_for_Delivery' => ['base_link' => 'shipments/fordelivery', 'class' => '','branch' => [ ServiceConstant::BRANCH_TYPE_EC, ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
+            'Due_for_Sweep' => ['base_link' => 'shipments/forsweep', 'class' => '', 'branch' => [ ServiceConstant::BRANCH_TYPE_EC, ServiceConstant::BRANCH_TYPE_HQ]],
+            'Dispatched_to_Customers' => ['base_link' => 'shipments/dispatched', 'class' => '','branch' => [ ServiceConstant::BRANCH_TYPE_EC, ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
+            'Dispatched_to_Branches' => ['base_link' => 'hubs/hubdispatch', 'class' => '','branch' => [ ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
+            'Delivered' => ['base_link' => 'shipments/delivered', 'class' => '','branch' => [ ServiceConstant::BRANCH_TYPE_EC, ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
+            'All_Shipments' => ['base_link' => 'shipments/all', 'class' => '','branch' => [ ServiceConstant::BRANCH_TYPE_EC, ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
             'Administrator' => ['base' => 'admin', 'class' => 'fa fa-user', 'base_link' => [
                 'Manage_branches' => ['base_link' => 'admin/managebranches', 'class' => ''],
                 'Manage_staff_accounts' => ['base_link' => 'admin/managestaff', 'class' => ''],
