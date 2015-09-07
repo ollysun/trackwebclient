@@ -45,6 +45,7 @@ $this->params['breadcrumbs'] = array(
                     <th>Receiver Phone</th>
                     <th>Dispatcher</th>
                     <th>Status</th>
+                    <th>Age analysis</th>
                     <th>Action</th>
                 </tr>
                 </thead>
@@ -63,6 +64,7 @@ $this->params['breadcrumbs'] = array(
                                 <td><?= $parcel['receiver']['phone'] ?></td>
                                 <td><?= ucwords($parcel['holder']['fullname']); ?></td>
                                 <td><?= ServiceConstant::getStatus($parcel['status']); ?></td>
+                                <td></td>
                                 <td><a href="<?= Url::to(['site/viewwaybill?id=' . $parcel['id']]) ?>"
                                        class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
                             </tr>
