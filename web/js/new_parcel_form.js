@@ -126,9 +126,10 @@ var paymentMethodShowHide = {
 	options: {
 		identifier: 'input[name="payment_method"]',
 		mapping: {
-			'3': true,
 			'1': false,
-			'2': false
+			'2': false,
+			'3': true,
+			'4': false
 		},
 	},
 	callback: function(ele, val, who) {
@@ -145,9 +146,10 @@ var POSIDShowHide = {
 	options: {
 		identifier: 'input[name="payment_method"]',
 		mapping: {
-			'3': true,
 			'1': false,
-			'2': true
+			'2': true,
+			'3': true,
+			'4': false
 		},
 	},
 	callback: function(ele, val, who) {
