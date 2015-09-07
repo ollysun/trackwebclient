@@ -43,7 +43,7 @@ $hub_data_col_indexes = [];
 						$hub_data[$hub['id']] = $hub;
 						$hub_data_col_indexes[$hub['id']] = $i++;
 						?>
-						<th><?= $hub['code']; ?></th>
+						<th><?= strtoupper($hub['name']); ?></th>
 					<?php
 					}
 					?>
@@ -82,7 +82,7 @@ $hub_data_col_indexes = [];
 
 				?>
 				<tr>
-					<td><?= $hub['code']; ?></td>
+					<td><?= strtoupper($hub['name']); ?></td>
 					<?php
 					for($x = 0; $x < count($hubs); $x++) {
 						$diagonal = $hub_data_col_indexes[$hub['id']] == $x ? 'matrix_diagonal':'';
