@@ -10,7 +10,8 @@ $this->params['breadcrumbs'][] = 'Waybill';
 ?>
 
 <?php
-	$this->params['content_header_button'] = '<button onclick="javascript:window.open(\'/site/printwaybill?id='.$parcelData['id'].'\', \'_blank\', \'toolbar=yes, scrollbars=yes, resizable=yes, top=10, left=50%, width=1100, height=800\');" class="btn btn-primary">Print Waybill
+	$status = ''.strtoupper(ServiceConstant::getStatus($parcelData['status'])).'';
+	$this->params['content_header_button'] = $status.' <button onclick="javascript:window.open(\'/site/printwaybill?id='.$parcelData['id'].'\', \'_blank\', \'toolbar=yes, scrollbars=yes, resizable=yes, top=10, left=50%, width=1100, height=800\');" class="btn btn-primary">Print Waybill
                     </button>';
 ?>
 
