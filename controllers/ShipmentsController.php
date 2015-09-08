@@ -202,8 +202,6 @@ class ShipmentsController extends BaseController {
             }
         }
 
-        $from_date = date('Y/m/d');
-        $to_date = date('Y/m/d');
         $search_action = $search;
         $page_width = is_null($page_width) ? $this->page_width : $page_width;
         $offset = ($page-1)*$page_width;
@@ -211,19 +209,13 @@ class ShipmentsController extends BaseController {
 
         $branchData = new BranchAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
         $branch = $branchData->getOneHub($this->userData['branch_id']);
-        if(isset(Calypso::getInstance()->get()->from,Calypso::getInstance()->get()->to)){
-            $from_date = Calypso::getInstance()->get()->from;
-            $to_date = Calypso::getInstance()->get()->to;
-            $filter = isset(Calypso::getInstance()->get()->date_filter) ? Calypso::getInstance()->get()->date_filter : '-1';
-            $response = $parcel->getFilterParcelsByDateAndStatus($from_date.'%2000:00:00',$to_date.'%2023:59:59',$filter,$offset,$page_width, 1,$this->branch_to_view);
-            $search_action = true;
-        }
-        elseif(!empty(Calypso::getInstance()->get()->search)){  //check if not empty criteria
+
+        if(!empty(Calypso::getInstance()->get()->search)){  //check if not empty criteria
             $search = Calypso::getInstance()->get()->search;
             $response = $parcel->getSearchParcels('-1',$search,$offset,$page_width, 1, $this->branch_to_view);
             $search_action = true;
         }else{
-            $response = $parcel->getParcels($from_date.'%2000:00:00',$to_date.'%2023:59:59', ServiceConstant::FOR_SWEEPER,$this->branch_to_view,$offset,$page_width, null, 1);
+            $response = $parcel->getParcels(null,null, ServiceConstant::FOR_SWEEPER,$this->branch_to_view,$offset,$page_width, null, 1);
             $search_action = false;
         }
         $response = new ResponseHandler($response);
@@ -234,7 +226,7 @@ class ShipmentsController extends BaseController {
             $total_count = empty($data['total_count']) ? 0 : $data['total_count'];
             $data = empty($data['parcels']) ? 0 : $data['parcels'];
         }
-        return $this->render('forsweep',array('branch'=>$branch['data'], 'parcels'=>$data,'from_date'=>$from_date,'to_date'=>$to_date,'offset'=>$offset,'page_width'=>$page_width,'search'=>$search_action, 'total_count'=>$total_count));
+        return $this->render('forsweep',array('branch'=>$branch['data'], 'parcels'=>$data,'offset'=>$offset,'page_width'=>$page_width,'search'=>$search_action, 'total_count'=>$total_count));
     }
 
     public function actionProcessed($page=1,$search=false,$page_width=null)
