@@ -325,7 +325,7 @@ class Calypso
             'Sorted_Shipments' => ['base_link' => 'hubs/delivery', 'class' => '','branch' => [ ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
             'Due_for_Delivery' => ['base_link' => 'shipments/fordelivery', 'class' => '','branch' => [ ServiceConstant::BRANCH_TYPE_EC, ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
             'Due_for_Sweep' => ['base_link' => 'shipments/forsweep', 'class' => '', 'branch' => [ ServiceConstant::BRANCH_TYPE_EC, ServiceConstant::BRANCH_TYPE_HQ]],
-            'Dispatched_to_Customers' => ['base_link' => 'shipments/dispatched', 'class' => '','branch' => [ ServiceConstant::BRANCH_TYPE_EC, ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
+            'Direct_Delivery_to_Customers' => ['base_link' => 'shipments/dispatched', 'class' => '','branch' => [ ServiceConstant::BRANCH_TYPE_EC, ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
             'Dispatched_to_Branches' => ['base_link' => 'hubs/hubdispatch', 'class' => '','branch' => [ ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
             'Delivered' => ['base_link' => 'shipments/delivered', 'class' => '','branch' => [ ServiceConstant::BRANCH_TYPE_EC, ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
             'All_Shipments' => ['base_link' => 'shipments/all', 'class' => '','branch' => [ ServiceConstant::BRANCH_TYPE_EC, ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
