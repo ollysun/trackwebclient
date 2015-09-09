@@ -21,18 +21,26 @@ use app\services\HubService;
 use app\services\ParcelService;
 
 class HubsController extends BaseController {
+    public $userData = null;
+    public $branch_to_view = null;
 
     public function beforeAction($action) {
         $this->enableCsrfValidation = false;
+        $this->userData = (Calypso::getInstance()->session('user_session'));
+        $this->branch_to_view = ($this->userData['role_id'] == ServiceConstant::USER_TYPE_SUPER_ADMIN ) ? null :
+            ($this->userData['role_id'] == ServiceConstant::USER_TYPE_ADMIN ) ? null : $this->userData['branch_id']; //displays all when null
         return parent::beforeAction($action);
     }
 
     /**
-     * This action allows setting next destination for shopments
+     * This action allows setting next destination for shipments
      * @return string
      */
-    public function actionDestination()
+    public function actionDestination($page=1, $page_width=null)
     {
+        $viewData['page_width'] = is_null($page_width) ? $this->page_width : $page_width;
+        $viewData['offset'] = ($page-1)*$viewData['page_width'];
+
         $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
 
         if(\Yii::$app->request->isPost) {
@@ -48,16 +56,18 @@ class HubsController extends BaseController {
             if($response['status'] === ResponseHandler::STATUS_OK) {
                 $this->flashSuccess('Parcels have been successfully moved to the next destination. <a href="delivery">Generate Manifest</a>');
             } else {
-                $this->flashError('An error occured while trying to move parcels to next destination. Please try again.');
+                $this->flashError('An error occurred while trying to move parcels to next destination. Please try again.');
             }
         }
         $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
-        $user_session = Calypso::getInstance()->session("user_session");
-        $arrival_parcels = $parcelsAdapter->getParcelsForNextDestination(ServiceConstant::FOR_ARRIVAL, $user_session['branch_id']);
+        $arrival_parcels = $parcelsAdapter->getParcelsForNextDestination(ServiceConstant::FOR_ARRIVAL, null, $this->branch_to_view, null, $viewData['offset'], 50, 1);
+
+
         if($arrival_parcels['status'] === ResponseHandler::STATUS_OK) {
-            $viewData['parcel_next'] = $arrival_parcels['data'];
+            $viewData['parcel_next'] = $arrival_parcels['data']['parcels'];
+            $viewData['total_count'] = $arrival_parcels['data']['total_count'];
         } else {
-            $this->flashError('An error occured while trying to fetch parcels. Please try again.');
+            $this->flashError('An error occurred while trying to fetch parcels. Please try again.');
             $viewData['parcel_next'] = [];
         }
         return $this->render('destination', $viewData);
@@ -81,16 +91,16 @@ class HubsController extends BaseController {
             if($response['status'] === ResponseHandler::STATUS_OK) {
                 $this->flashSuccess('Parcels have been successfully moved to the next destination. <a href="hubmovetodelivery">Generate Manifest</a>');
             } else {
-                $this->flashError('An error occured while trying to move parcels to next destination. Please try again.');
+                $this->flashError('An error occurred while trying to move parcels to next destination. Please try again.');
             }
         }
         $user_session = Calypso::getInstance()->session("user_session");
         $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
-        $arrival_parcels = $parcelsAdapter->getParcelsForNextDestination(ServiceConstant::FOR_ARRIVAL, $user_session['branch_id']);
+        $arrival_parcels = $parcelsAdapter->getParcelsForNextDestination(ServiceConstant::FOR_ARRIVAL,null, $user_session['branch_id']);
         if($arrival_parcels['status'] === ResponseHandler::STATUS_OK) {
             $viewData['parcel_next'] = $arrival_parcels['data'];
         } else {
-            $this->flashError('An error occured while trying to fetch parcels. Please try again.');
+            $this->flashError('An error occurred while trying to fetch parcels. Please try again.');
             $viewData['parcel_next'] = [];
         }
 
@@ -242,7 +252,7 @@ class HubsController extends BaseController {
             $viewData['parcel_delivery'] = $for_delivery_parcels['data']['parcels'];
             $viewData['total_count'] = $for_delivery_parcels['data']['total_count'];
         } else {
-            $this->flashError('An error occured while trying to fetch parcels. Please try again.');
+            $this->flashError('An error occurred while trying to fetch parcels. Please try again.');
             $viewData['parcel_delivery'] = [];
             $viewData['total_count'] = 0;
         }
@@ -271,7 +281,7 @@ class HubsController extends BaseController {
             }
 
         } else {
-            $this->flashError('An error occured while trying to fetch parcels. Please try again.');
+            $this->flashError('An error occurred while trying to fetch parcels. Please try again.');
             $viewData['parcel_delivery'] = [];
         }
 
