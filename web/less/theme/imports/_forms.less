@@ -8,6 +8,13 @@ label {
 	font-size: 0.875em;
 	margin-bottom: 0px; // mine
 }
+.required-asterisk {
+	&:after, // IE8
+	&::after {
+		content: " *";
+		color: @red-color;
+	}
+}
 .form-control {
 	.border-radius(@border-radius-base);
 	border-color: @main-bg-color;

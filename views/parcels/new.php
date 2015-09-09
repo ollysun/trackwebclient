@@ -21,7 +21,7 @@ $is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
 
 <?php echo Calypso::showFlashMessages(); ?>
 
-<form action="#" method="post" enctype="multipart/form-data" class="validate-form" data-required-asteriks data-keyboard-submit data-watch-changes>
+<form action="#" method="post" enctype="multipart/form-data" class="validate-form add-required-asterisks" data-keyboard-submit data-watch-changes>
 
     <div id="newParcelForm" class="l-new-parcel-form carousel slide">
         <ol class="carousel-indicators hidden">

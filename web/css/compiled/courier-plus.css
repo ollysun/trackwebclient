@@ -2441,6 +2441,11 @@ label {
   font-size: 0.875em;
   margin-bottom: 0px;
 }
+.required-asterisk:after,
+.required-asterisk::after {
+  content: " *";
+  color: #e84e40;
+}
 .form-control {
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
