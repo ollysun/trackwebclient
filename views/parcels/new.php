@@ -298,7 +298,7 @@ $is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
                     <div class="col-xs-12 col-sm-6 col-sm-push-3">
                         <div class="main-box">
                             <div class="main-box-header">
-                                <h2>Payment Information</h2>
+                                <h2>Shipping Cost</h2>
                             </div>
                             <div class="main-box-body">
                                 <div class="form-group amount-due-wrap">
@@ -326,7 +326,7 @@ $is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
                                                 POS</label>
                                         </div>
                                         <div class="radio-inline">
-                                            <input id="paymentMethodDeferred" type="radio" name="payment_method" value="4"> <label for="paymentMethodDeferred" class="">Deferred</label>
+                                            <input id="paymentMethodDeferred" type="radio" name="payment_method" value="4"> <label for="paymentMethodDeferred" class="">Deferred (Freight)</label>
                                         </div>
                                     </div>
                                 </div>
