@@ -152,6 +152,18 @@ function validateFxn() {
     }
     return isValid;
 }
+function addAsteriks(formSelector) {
+    var form = $(formSelector);
+    var inputs = form.find('.validate.required, .validate input[type=radio], .validate input[type=checkbox]');
+    $(inputs).each(function(){
+        var label = $(this).closest('.form-group').find('label')[0];
+        label = $(label);
+        if (!label.hasClass('has-asteriks')) {
+            label.addClass('has-asteriks').html(label.html()+' <span style="color: red">*</span>');
+        }
+    });
+
+}
 (function($){
     $('.validate-form .active-validate')
         .off('blur.CP.form.validate change.CP.form.validate').on('blur.CP.form.validate change.CP.form.validate', validateFxn);
@@ -162,4 +174,5 @@ function validateFxn() {
         }
         return valid;
     });
+    addAsteriks('[data-required-asteriks]');
 })(jQuery);
