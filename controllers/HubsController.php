@@ -56,11 +56,12 @@ class HubsController extends BaseController {
             if($response['status'] === ResponseHandler::STATUS_OK) {
                 $this->flashSuccess('Parcels have been successfully moved to the next destination. <a href="delivery">Generate Manifest</a>');
             } else {
+                var_dump($response);
                 $this->flashError('An error occurred while trying to move parcels to next destination. Please try again.');
             }
         }
         $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
-        $arrival_parcels = $parcelsAdapter->getParcelsForNextDestination(ServiceConstant::FOR_ARRIVAL, $this->branch_to_view, null, null, $viewData['offset'], 50, 1);
+        $arrival_parcels = $parcelsAdapter->getParcelsForNextDestination(ServiceConstant::FOR_ARRIVAL, null, $this->branch_to_view, null, $viewData['offset'], 50, 1);
 
 
         if($arrival_parcels['status'] === ResponseHandler::STATUS_OK) {
@@ -96,7 +97,7 @@ class HubsController extends BaseController {
         }
         $user_session = Calypso::getInstance()->session("user_session");
         $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
-        $arrival_parcels = $parcelsAdapter->getParcelsForNextDestination(ServiceConstant::FOR_ARRIVAL, $user_session['branch_id']);
+        $arrival_parcels = $parcelsAdapter->getParcelsForNextDestination(ServiceConstant::FOR_ARRIVAL,null, $user_session['branch_id']);
         if($arrival_parcels['status'] === ResponseHandler::STATUS_OK) {
             $viewData['parcel_next'] = $arrival_parcels['data'];
         } else {

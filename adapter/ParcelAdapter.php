@@ -47,7 +47,7 @@ class ParcelAdapter extends BaseAdapter{
 
     public function getParcelsForNextDestination($status=null,$branch_id=null, $to_branch_id=null, $held_by_id=null, $offset=0, $count=50, $with_total=null){
         $filter = is_null($status) ? '':'&status='.$status;
-//        $filter .= is_null($branch_id) ? '':'&branch_id='.$branch_id;
+        $filter .= is_null($branch_id) ? '':'&from_branch_id='.$branch_id;
         $filter .= is_null($to_branch_id) ? '':'&to_branch_id='.$to_branch_id;
         $filter .= is_null($held_by_id) ? '':'&held_by_id='.$held_by_id;
         $filter .= is_null($with_total) ? '':'&with_total_count=1';
