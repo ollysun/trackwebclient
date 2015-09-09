@@ -137,7 +137,7 @@ $(document).ready(function(){
                                                             $("#L"+payloadObj.waybill_numbers[waybill_number]).html(response.data.bad_parcels[payloadObj.waybill_numbers[waybill_number]]);
                                                             $("#L"+payloadObj.waybill_numbers[waybill_number]).attr("style","background-color:red");
                                                         }else{
-                                                            $(payloadObj.waybill_numbers[waybill_number]).addClass("hidden");
+                                                            $("#L"+payloadObj.waybill_numbers[waybill_number]).html("Parcel received").parent().attr("style","background-color:green");
                                                         }
                                                     }
 
@@ -161,7 +161,7 @@ $(document).ready(function(){
                                                             $("#L"+payloadObj.waybill_numbers[waybill_number]).html(response.data.bad_parcels[payloadObj.waybill_numbers[waybill_number]]);
                                                             $("#L"+payloadObj.waybill_numbers[waybill_number]).attr("style","background-color:red");
                                                         }else{
-                                                            $(payloadObj.waybill_numbers[waybill_number]).addClass("hidden");
+                                                            $("#L"+payloadObj.waybill_numbers[waybill_number]).html("Parcel received").parent().attr("style","background-color:green");
                                                         }
                                                     }
 

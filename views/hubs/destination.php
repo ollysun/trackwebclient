@@ -54,54 +54,55 @@ $this->params['breadcrumbs'] = array(
             </div>
         </div>
         <div class="main-box-body">
+            <?php if(!empty($parcel_next)) { ?>
             <div class="table-responsive">
+                <table id="next_dest" class="table table-hover next_dest">
+                    <thead>
+                    <tr>
+                        <th style="width: 20px;">
+                            <div class='checkbox-nice'>
+                                <input id='chk_all' type='checkbox' class='chk_all'><label for='chk_all'></label>
+                            </div>
+                        </th>
+                        <th style="width: 20px">S/N</th>
+                        <th>Waybill No</th>
+                        <th>Origin</th>
+                        <th>Next Destination</th>
+                        <th>Final Destination</th>
+                        <th>Weight (Kg)</th>
+                        <th>Age analysis</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php
+                        $row = $offset;
+                        foreach ($parcel_next as $parcels) {
+                            ++$row;
 
-                <?php if(!empty($parcel_next)) { ?>
-                    <table id="next_dest" class="table table-hover next_dest">
-                        <thead>
-                        <tr>
-                            <th style="width: 20px;">
-                                <div class='checkbox-nice'>
-                                    <input id='chk_all' type='checkbox' class='chk_all'><label for='chk_all'></label>
-                                </div>
-                            </th>
-                            <th style="width: 20px">S/N</th>
-                            <th>Waybill No</th>
-                            <th>Origin</th>
-                            <th>Next Destination</th>
-                            <th>Final Destination</th>
-                            <th>Weight (Kg)</th>
-                            <th>Age analysis</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <?php
-                            $row = 1;
-                            foreach ($parcel_next as $parcels) {
-
-                                echo "<tr data-waybill='{$parcels['waybill_number']}'>";
-                                echo "<td>
-                                                <div class='checkbox-nice'>
-                                                    <input name='waybills[]' id='chk_{$row}' type='checkbox' class='chk_next'><label for='chk_{$row}'></label>
-                                                </div>
-                                              </td>";
-                                echo "<td>{$row}</td>";
-                                echo "<td><a href='/site/viewwaybill?id=" . Calypso::getValue($parcels, 'id') . "'>" . Calypso::getValue($parcels, 'waybill_number') . "</a></td>";
-                                echo "<td>" . ucwords(Calypso::getValue($parcels, 'sender_address.city.name') . ', ' . Calypso::getValue($parcels, 'sender_address.state.name')) . "</td>";
-                                echo "<td></td>";
-                                echo "<td>" . ucwords(Calypso::getValue($parcels, 'receiver_address.city.name') . ', ' . Calypso::getValue($parcels, 'receiver_address.state.name')) . "</td>";
-                                echo "<td>" . Calypso::getValue($parcels, 'weight') . "</td>";
-                                echo "<td></td>";
-                                echo "</tr>";
-                                $row++;
-                            }
-                        ?>
-                        </tbody>
-                    </table>
-                <?php } else { ?>
-                    <p>No record to display.</p>
-                <?php }  ?>
+                            echo "<tr data-waybill='{$parcels['waybill_number']}'>";
+                            echo "<td>
+                                            <div class='checkbox-nice'>
+                                                <input name='waybills[]' id='chk_{$row}' type='checkbox' class='chk_next'><label for='chk_{$row}'></label>
+                                            </div>
+                                          </td>";
+                            echo "<td>{$row}</td>";
+                            echo "<td><a href='/site/viewwaybill?id=" . Calypso::getValue($parcels, 'id') . "'>" . Calypso::getValue($parcels, 'waybill_number') . "</a></td>";
+                            echo "<td>" . ucwords(Calypso::getValue($parcels, 'sender_address.city.name') . ', ' . Calypso::getValue($parcels, 'sender_address.state.name')) . "</td>";
+                            echo "<td></td>";
+                            echo "<td>" . ucwords(Calypso::getValue($parcels, 'receiver_address.city.name') . ', ' . Calypso::getValue($parcels, 'receiver_address.state.name')) . "</td>";
+                            echo "<td>" . Calypso::getValue($parcels, 'weight') . "</td>";
+                            echo "<td></td>";
+                            echo "</tr>";
+                        }
+                    ?>
+                    </tbody>
+                </table>
             </div>
+            <?= $this->render('../elements/pagination_and_summary', ['first' => $offset, 'last'=>$row, 'total_count'=> $total_count,'page_width'=>$page_width]) ?>
+
+            <?php } else { ?>
+                <p>No record to display.</p>
+            <?php }  ?>
         </div>
     </div>
 </form>

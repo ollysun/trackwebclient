@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 
 /* @var $this yii\web\View */
-$this->title = 'Shipment: Generate Manifest for Delivery';
+$this->title = 'Shipment: Generate Manifest';
 $this->params['breadcrumbs'] = array(
     /*array(
     'url' => ['site/managebranches'],
