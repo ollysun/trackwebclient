@@ -21,7 +21,7 @@ $is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
 
 <?php echo Calypso::showFlashMessages(); ?>
 
-<form action="#" method="post" enctype="multipart/form-data" class="validate-form" data-keyboard-submit data-watch-changes>
+<form action="#" method="post" enctype="multipart/form-data" class="validate-form add-required-asterisks" data-keyboard-submit data-watch-changes>
 
     <div id="newParcelForm" class="l-new-parcel-form carousel slide">
         <ol class="carousel-indicators hidden">
@@ -65,7 +65,7 @@ $is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
                             <div class="row">
                                 <div class="col-xs-12 col-sm-6 form-group">
                                     <label><?= ($is_hub) ? "Forward to another branch":"Send parcel to Hub";?>?</label>
-                                    <div>
+                                    <div class="validate">
                                         <div class="radio-inline">
                                             <input id="sendToHubYes" type="radio" name="send_to_hub" value="1"
                                                    checked="checked"> <label for="sendToHubYes" class="">Yes</label>
@@ -193,7 +193,7 @@ $is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
                             <div class="form-group">
                                 <label>Merchant?</label>
 
-                                <div>
+                                <div class="validate">
                                     <div class="radio-inline">
                                         <input id="merchantNew" type="radio" name="merchant" value="new"> <label
                                             for="merchantNew" class="">New</label>
@@ -266,14 +266,15 @@ $is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
 
                             <div class="form-group">
                                 <label>Corporate lead?</label><br>
-
-                                <div class="radio-inline">
-                                    <input id="cLeadYes" type="radio" name="corporate_lead" value="true"> <label
-                                        for="cLeadYes" class="">Yes</label>
-                                </div>
-                                <div class="radio-inline">
-                                    <input id="cLeadNo" type="radio" name="corporate_lead" value="false"
-                                           checked="checked"> <label for="cLeadNo" class="">No</label>
+                                <div class="validate">
+                                    <div class="radio-inline">
+                                        <input id="cLeadYes" type="radio" name="corporate_lead" value="true"> <label
+                                            for="cLeadYes" class="">Yes</label>
+                                    </div>
+                                    <div class="radio-inline">
+                                        <input id="cLeadNo" type="radio" name="corporate_lead" value="false"
+                                               checked="checked"> <label for="cLeadNo" class="">No</label>
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-group">
