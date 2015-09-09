@@ -71,6 +71,7 @@ $this->params['breadcrumbs'] = array(
                             <th>Next Destination</th>
                             <th>Final Destination</th>
                             <th>Weight (Kg)</th>
+                            <th>Age analysis</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -90,6 +91,7 @@ $this->params['breadcrumbs'] = array(
                                 echo "<td></td>";
                                 echo "<td>" . ucwords(Calypso::getValue($parcels, 'receiver_address.city.name') . ', ' . Calypso::getValue($parcels, 'receiver_address.state.name')) . "</td>";
                                 echo "<td>" . Calypso::getValue($parcels, 'weight') . "</td>";
+                                echo "<td></td>";
                                 echo "</tr>";
                                 $row++;
                             }
