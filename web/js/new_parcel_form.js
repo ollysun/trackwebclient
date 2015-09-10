@@ -153,7 +153,7 @@ var POSIDShowHide = {
 		},
 	},
 	callback: function(ele, val, who) {
-		if (val === '1') {
+		if (val === '1' || val === '4') {
 			$('input[name="pos_transaction_id"]').removeClass('validate required').removeClass('has-error');;
 		}
 		else {

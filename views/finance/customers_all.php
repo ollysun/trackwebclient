@@ -2,7 +2,7 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 use Adapter\Util\Calypso;
-use yii\data\Pagination;
+use Adapter\Globals\ServiceConstant;
 use yii\widgets\LinkPager;
 
 
@@ -45,9 +45,10 @@ $this->params['breadcrumbs'] = array(
                             <label for="">Payment method</label><br>
                             <select name="payment_type" id="" class="form-control  filter-status">
                                 <option value=""<?=($payment_type==''?'selected':'');?>>All method</option>
-                                <option value="1"<?=($payment_type==1?'selected':'');?>>Cash Only</option>
-                                <option value="2"<?=($payment_type==2?'selected':'');?>>POS Only</option>
-                                <option value="3"<?=($payment_type==3?'selected':'');?>>Cash &amp; POS</option>
+                                <option value="<?= ServiceConstant::REF_PAYMENT_METHOD_CASH; ?>" <?=($payment_type==ServiceConstant::REF_PAYMENT_METHOD_CASH?'selected':'');?>><?=ServiceConstant::getPaymentMethod(ServiceConstant::REF_PAYMENT_METHOD_CASH); ?></option>
+                                <option value="<?= ServiceConstant::REF_PAYMENT_METHOD_POS; ?>" <?=($payment_type==ServiceConstant::REF_PAYMENT_METHOD_POS?'selected':'');?>><?=ServiceConstant::getPaymentMethod(ServiceConstant::REF_PAYMENT_METHOD_POS); ?></option>
+                                <option value="<?= ServiceConstant::REF_PAYMENT_METHOD_CASH_POS; ?>" <?=($payment_type==ServiceConstant::REF_PAYMENT_METHOD_CASH_POS?'selected':'');?>><?=ServiceConstant::getPaymentMethod(ServiceConstant::REF_PAYMENT_METHOD_CASH_POS); ?></option>
+                                <option value="<?= ServiceConstant::REF_PAYMENT_METHOD_DEFERRED; ?>" <?=($payment_type==ServiceConstant::REF_PAYMENT_METHOD_DEFERRED?'selected':'');?>><?=ServiceConstant::getPaymentMethod(ServiceConstant::REF_PAYMENT_METHOD_DEFERRED); ?></option>
                             </select>
                         </div>
                         <div class="pull-left form-group form-group-sm hidden">
