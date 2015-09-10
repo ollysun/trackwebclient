@@ -24,9 +24,14 @@
 .manifest-header:after {
   clear: both;
 }
+.manifest-header-box {
+  margin-top: -10px;
+  border: 3px solid #111;
+  padding: 25px 25px 10px;
+}
 .manifest .logo {
   display: block;
-  height: 80px;
+  height: 70px;
   width: auto;
 }
 .manifest .big-logo {
@@ -36,8 +41,8 @@
   margin: 0 auto 10px;
 }
 .manifest-title {
-  margin: 60px 0 0;
-  font-size: 20px;
+  margin: 35.25px 0 0;
+  font-size: 23px;
   line-height: 1;
   z-index: 1;
 }
@@ -54,6 +59,18 @@
   border-bottom: 1px solid #111;
   min-width: 200px;
   margin-bottom: 15px;
+}
+.inline-underline-sm {
+  min-width: 130px;
+}
+.inline-underline-xs {
+  min-width: 75px;
+}
+.inline-underline-lg {
+  min-width: 300px;
+}
+.inline-underline-full {
+  width: 100%;
 }
 .inline-underline-title {
   display: block;
@@ -80,4 +97,28 @@
   border-left-color: transparent !important;
   border-bottom-color: transparent !important;
   font-weight: bold;
+}
+.rotate-90 {
+  transform: rotate(90deg);
+}
+.delivery-run-table {
+  border-width: 2px;
+}
+.show-only-right-cell-border {
+  width: 45px;
+  border-top-color: transparent !important;
+  border-left-color: transparent !important;
+  border-bottom-color: transparent !important;
+  text-align: right;
+}
+table > thead:first-child > tr:first-child > th.show-only-right-cell-border {
+  border-top: 1px solid transparent !important;
+}
+@media print {
+  th.show-only-right-cell-border,
+  td.show-only-right-cell-border {
+    border-left: 1px solid transparent !important;
+    border-bottom: 1px solid transparent !important;
+    border-top: 1px solid transparent !important;
+  }
 }
