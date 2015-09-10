@@ -463,4 +463,8 @@ class SiteController extends BaseController
         $this->layout = 'print';
         return $this->render('print_manifest');
     }
+    public function actionPrintdeliveryrun() {
+        $this->layout = 'print';
+        return $this->render('print_delivery_run');
+    }
 }
