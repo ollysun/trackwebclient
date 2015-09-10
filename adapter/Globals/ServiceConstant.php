@@ -134,6 +134,7 @@ class ServiceConstant {
     const REF_PAYMENT_METHOD_CASH = 1;
     const REF_PAYMENT_METHOD_POS = 2;
     const REF_PAYMENT_METHOD_CASH_POS = 3;
+    const REF_PAYMENT_METHOD_DEFERRED = 4;
 
     const DELIVERY_DISPATCH = 2;
     const DELIVERY_PICKUP = 1;
@@ -192,6 +193,10 @@ class ServiceConstant {
 
             case ServiceConstant::REF_PAYMENT_METHOD_CASH_POS:
                 return 'Cash & POS';
+                break;
+
+            case ServiceConstant::REF_PAYMENT_METHOD_DEFERRED:
+                return 'Deferred Payment';
                 break;
 
             default:
