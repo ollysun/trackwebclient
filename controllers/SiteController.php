@@ -459,8 +459,4 @@ class SiteController extends BaseController
         $this->layout = 'login';
         return $this->render('changepassword');
     }
-    public function actionPrintdeliveryrun() {
-        $this->layout = 'print';
-        return $this->render('print_delivery_run');
-    }
 }
