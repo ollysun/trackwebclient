@@ -1,4 +1,5 @@
 @header-height: 80px;
+@logo-height: 70px;
 @logo-big-height: 100px;
 
 @page {
@@ -31,10 +32,15 @@ body {
 		display: block;
 		padding-bottom: 20px;
 		.clearfix();
+		&-box {
+			margin-top: -10px;
+			border: 3px solid #111;
+			padding: 25px 25px 10px;
+		}
 	}
 	.logo {
 		display: block;
-		height: @header-height;
+		height: @logo-height;
 		width: auto;
 	}
 	.big-logo {
@@ -44,8 +50,8 @@ body {
 		margin: 0 auto 10px;
 	}
 	&-title {
-		margin: (@header-height - 20) 0 0;
-		font-size: 20px;
+		margin: ((@logo-height - 23) * 0.75) 0 0;
+		font-size: 23px;
 		line-height: 1;
 		z-index: 1;
 		&.big-logo-title {
@@ -63,6 +69,18 @@ body {
 	border-bottom: 1px solid #111;
 	min-width: 200px;
 	margin-bottom: 15px;
+	&-sm {
+		min-width: 130px;
+	}
+	&-xs {
+		min-width: 75px;
+	}
+	&-lg {
+		min-width: 300px;
+	}
+	&-full {
+		width: 100%;
+	}
 }
 .inline-underline-title {
 	display: block;
@@ -90,5 +108,30 @@ body {
 		border-left-color: transparent !important;
 		border-bottom-color: transparent !important;
 		font-weight: bold;
+	}
+}
+
+.rotate-90 {
+	transform: rotate(90deg);
+}
+
+.delivery-run-table {
+	border-width: 2px;
+}
+.show-only-right-cell-border {
+	width: 45px;
+	border-top-color: transparent !important;
+	border-left-color: transparent !important;
+	border-bottom-color: transparent !important;
+	text-align: right;
+	table>thead:first-child>tr:first-child>th& {
+		border-top: 1px solid transparent !important;
+	}
+	@media print {
+		th&, td& {
+			border-left: 1px solid transparent !important;
+			border-bottom: 1px solid transparent !important;
+			border-top: 1px solid transparent !important;
+		}
 	}
 }
