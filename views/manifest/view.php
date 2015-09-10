@@ -14,7 +14,7 @@ $this->params['breadcrumbs'] = array(
     array('label'=> 'View '.$this->title)
 );
 
-$this->params['content_header_button'] = '<a href="'.Url::to(['manifest/print?id='.$id]).'" class="btn btn-primary" data-toggle="modal" data-target="#myModal"><i class="fa fa-print"></i> Print Manifest</a>';
+$this->params['content_header_button'] = '<a href="'.Url::to(['manifest/print?id='.$id]).'" class="btn btn-primary"><i class="fa fa-print"></i> Print Manifest</a>';
 
 ?>
 <!-- this page specific styles -->

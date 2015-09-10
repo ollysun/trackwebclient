@@ -56,4 +56,8 @@ class ManifestController extends BaseController {
 	public function actionView() {
 		return $this->render('view');
 	}
+	public function actionPrint() {
+		$this->layout = 'print';
+		return $this->render('print');
+	}
 }
