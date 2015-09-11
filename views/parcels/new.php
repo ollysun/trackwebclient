@@ -374,9 +374,5 @@ $is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
 <?php $this->registerJsFile('@web/js/validate.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/new_parcel_form.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php
-$ex='
-$(".alert").delay(5000).fadeOut(1500);
-
-';
-$this->registerJs($ex,View::POS_READY);
+$this->registerJs('$(".alert").delay(5000).fadeOut(1500);',View::POS_READY);
 ?>
