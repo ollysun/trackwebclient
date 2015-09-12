@@ -40,7 +40,7 @@ class BaseController extends Controller {
             if(!array_key_exists($s['role_id'],$this->permissionMap)){
                 \Yii::$app->getUser()->logout();
                 Calypso::getInstance()->setPageData($access_denied_msg);
-               return $this->redirect(['site/logout']);
+               return $this->redirect(['site/accessdenied']);
             }
             $map = $this->permissionMap[$s['role_id']];
             $current = $action->controller->id;
@@ -48,13 +48,13 @@ class BaseController extends Controller {
             if(in_array($current.'/*',$map)){
                 \Yii::$app->getUser()->logout();
                 Calypso::getInstance()->setPageData($access_denied_msg);
-                return $this->redirect(['site/logout']);
+                return $this->redirect(['site/accessdenied']);
             }
 
             if(in_array($current.'/'.$action->id,$map)){
                 \Yii::$app->getUser()->logout();
                 Calypso::getInstance()->setPageData($access_denied_msg);
-                return $this->redirect(['site/logout']);
+                return $this->redirect(['site/accessdenied']);
             }
         }
         $this->enableCsrfValidation = false;
