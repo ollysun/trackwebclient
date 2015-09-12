@@ -10,6 +10,7 @@ class ServiceConstant {
     const USER_TYPE_OFFICER = 2;
     const USER_TYPE_SWEEPER = 3;
     const USER_TYPE_DISPATCHER = 4;
+    const USER_TYPE_GROUNDSMAN = 5;
     /*const USER_TYPE_MANAGER = 2;
     const USER_TYPE_CASHIER = 3;
     const USER_TYPE_AGENT = 4;
