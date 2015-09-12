@@ -244,7 +244,7 @@ class ShipmentsController extends BaseController {
         if(\Yii::$app->request->isPost) {
             $records = \Yii::$app->request->post();
 
-            if(empty($records['bank_id']) || empty($records['account_no']) || empty($records['amount_paid']) || empty($records['teller_no']) || empty($records['waybill_numbers'])) {
+            if(!isset($records['bank_id'], $records['account_no'],$records['amount_paid'],$records['teller_no'],$records['waybill_numbers'])) {
                 $this->flashError("Invalid parameter(s) sent!");
             } else {
                 $teller = new TellerAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());

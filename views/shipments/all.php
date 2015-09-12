@@ -37,10 +37,6 @@ if($search){
 <?= Html::cssFile('@web/css/libs/dataTables.fixedHeader.css') ?>
 <?= Html::cssFile('@web/css/libs/dataTables.tableTools.css') ?>
 
-<?php
-//    $this->params['content_header_button'] = '<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#teller-modal">Submit Teller</button>';
-?>
-
 <?php echo Calypso::showFlashMessages(); ?>
 
 <div class="main-box">

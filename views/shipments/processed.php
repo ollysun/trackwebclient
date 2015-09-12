@@ -2,7 +2,6 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 use Adapter\Globals\ServiceConstant;
-use yii\web\View;
 
 
 $this->title = 'New Shipments';
@@ -13,8 +12,6 @@ $this->params['breadcrumbs'] = array(
     ),
     array('label'=> $this->title)
 );
-$show_next = false;
-$show_prev = false;
 
 $link = "";
 if($search){
@@ -62,7 +59,7 @@ $this->params['content_header_button'] = $this->render('../elements/content_head
         </div>
     </div>
     <div class="main-box-body">
-        <?php if(!empty($parcels)): ?>
+        <?php if(isset($parcels)): ?>
         <div class="table-responsive">
             <table id="table" class="table table-hover dataTable">
                 <thead>
@@ -193,37 +190,3 @@ $this->params['content_header_button'] = $this->render('../elements/content_head
 <?php $this->registerJsFile('@web/js/keyboardFormSubmit.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/form-watch-changes.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/validate.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
-
-<?php
-$ex='
-    $("#chbx_w_all").change(function () {
-        $("input:checkbox").prop("checked", $(this).prop("checked"));
-    });
-
-    $("[data-target=#teller-modal]").on("click", function(event) {
-        var chkboxes = $(".checkable:checked");
-
-        if(!chkboxes.length) {
-            alert("You must select at least one parcel!");
-            event.preventDefault();
-            return false;
-        }
-        var shipments = {};
-        $.each(chkboxes, function(i, chk){
-            shipments[$(this).data("waybill")]=$(this).data("sender");
-        });
-        var html = "";
-        var i=1;
-        $.each(shipments, function(waybill, sender){
-            html += "<tr>";
-            html += "<td>" + (i++) + "</td>";
-            html += "<td>" + waybill + "</td>";
-            html += "<td>" + sender + "</td>";
-            html += "</tr>";
-        });
-        $("#teller-modal-table>tbody").html(html);
-        $("input#waybill_numbers").val(Object.keys(shipments).toString());
-    });';
-$this->registerJs($ex,View::POS_READY);
-?>
-
