@@ -95,7 +95,10 @@ $this->params['content_header_button'] = $this->render('../elements/content_head
                             <td><?= $parcel['receiver']['phone'] ?></td>
                             <td><?= date(ServiceConstant::DATE_TIME_FORMAT,strtotime($parcel['created_date'])); ?></td>
                             <td><?= $parcel['no_of_package']; ?></td>
-                            <td><a href="<?= Url::to(['site/viewwaybill?id='.$parcel['id']]) ?>" class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
+                            <td>
+                                <a href="<?= Url::to(['site/viewwaybill?id='.$parcel['id']]) ?>" class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i> View</a>
+                                <button type="button" class="btn btn-xs btn-danger" data-toggle="modal" data-target="#teller-modal"><i class="fa fa-times">&nbsp;</i>Cancel</button>
+                            </td>
                         </tr>
                     <?php
                     }}
