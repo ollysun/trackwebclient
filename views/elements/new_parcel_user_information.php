@@ -41,6 +41,7 @@
 		<div class="form-group">
 			<label for="">Email address</label>
 			<input name="email[<?=$prefix?>]" id="email_<?=$prefix?>" type="text" class="form-control <?php echo $prefix;?>SearchFlyOutPanelTrigger validate active-validate required email" data-target="#<?php echo $prefix;?>SearchFlyOutPanel">
+			<span class="help-block">Format: xyz@example.com</span>
 		</div>
 	</div>
 	<div class="col-xs-12 col-sm-6">

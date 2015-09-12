@@ -357,7 +357,7 @@ $is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
                                 <a href="#newParcelForm" data-slide="prev" class="btn btn-default pull-left"><i
                                         class="fa fa-arrow-left"></i> Back</a>
                                 <button type="submit" class="btn btn-primary pull-right"><i class="fa fa-check"></i>
-                                    Save &amp; Print
+                                    CREATE
                                 </button>
                             </div>
                         </div>

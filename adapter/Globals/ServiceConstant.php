@@ -172,7 +172,7 @@ class ServiceConstant {
                 return 'For Delivery';
                 break;
             case ServiceConstant::BEING_DELIVERED:
-                return 'Being Delivered';
+                return 'In Transit to Customer';
                 break;
 
         }
