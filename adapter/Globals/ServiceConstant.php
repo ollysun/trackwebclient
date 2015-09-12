@@ -117,6 +117,8 @@ class ServiceConstant {
     const URL_BILLING_DELETE = 'zone/removebilling';
     const URL_BILLING_FETCH_BY_ID = 'zone/fetchBillingById';
 
+    const URL_TELLER_ADD = 'teller/add';
+
 
     const URL_CREATE_USER = 'admin/register';
     const URL_GET_USERS = '/admin/getAll';
