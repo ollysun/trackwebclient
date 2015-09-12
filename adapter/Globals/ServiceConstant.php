@@ -31,11 +31,13 @@ class ServiceConstant {
     const UNCLEARED = 11;
     const CLEARED = 12;
     const BEING_DELIVERED = 13;
+    const ASSIGNED_TO_GROUNDSMAN = 17;
 
     const URL_ADD_PARCEL = 'parcel/add/';
     const URL_GET_ONE_PARCEL = 'parcel/getone/';
     const URL_GET_ALL_PARCEL = 'parcel/getAll/';
     const URL_MOVE_TO_FOR_SWEEPER = '/parcel/moveToForSweeper/';
+    const URL_ASSIGN_TO_GROUNDSMAN = '/parcel/assignToGroundsMan/';
     const URL_MOVE_TO_IN_TRANSIT = '/parcel/moveToInTransit/';
     const URL_MOVE_TO_ARRIVAL = '/parcel/moveToArrival/';
     const URL_MOVE_FOR_DELIVERY = '/parcel/moveToForDelivery/';

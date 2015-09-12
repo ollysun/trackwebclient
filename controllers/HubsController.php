@@ -43,7 +43,7 @@ class HubsController extends BaseController {
         $isGroundman = $this->userData['role_id'] == ServiceConstant::USER_TYPE_GROUNDSMAN;
 
         $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
-
+        $move_on = false;
         if(\Yii::$app->request->isPost) {
             $branch = \Yii::$app->request->post('branch');
             $waybill_numbers = \Yii::$app->request->post('waybills');
@@ -52,8 +52,12 @@ class HubsController extends BaseController {
             }
 
             $postParams['waybill_numbers'] = implode(',', $waybill_numbers);
-            $postParams['to_branch_id'] = $branch;
-            $response = $parcelsAdapter->moveToForSweeper($postParams);
+            if($branch == $this->userData['branch_id']){
+                $response = $parcelsAdapter->assignToGroundsMan($postParams);
+            }else{
+                $postParams['to_branch_id'] = $branch;
+                $response = $parcelsAdapter->moveToForSweeper($postParams);
+            }
             if($response['status'] === ResponseHandler::STATUS_OK) {
                 $this->flashSuccess('Parcels have been successfully moved to the next destination. <a href="delivery">Generate Manifest</a>');
             } else {
@@ -61,7 +65,7 @@ class HubsController extends BaseController {
             }
         }
         $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
-        $arrival_parcels = $parcelsAdapter->getParcelsForNextDestination(ServiceConstant::FOR_ARRIVAL,$isGroundman ? $this->userData['branch_id'] :  null,$isGroundman ? $this->userData['branch_id'] : $this->branch_to_view, null, $viewData['offset'], 50, 1);
+        $arrival_parcels = $parcelsAdapter->getParcelsForNextDestination($isGroundman ? ServiceConstant::ASSIGNED_TO_GROUNDSMAN : ServiceConstant::FOR_ARRIVAL,$isGroundman ? null :  $this->userData['branch_id'],$isGroundman ? $this->userData['branch_id'] : $this->branch_to_view, null, $viewData['offset'], 50, 1);
 
 
         if($arrival_parcels['status'] === ResponseHandler::STATUS_OK) {
