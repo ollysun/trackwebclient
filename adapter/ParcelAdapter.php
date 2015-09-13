@@ -92,7 +92,7 @@ class ParcelAdapter extends BaseAdapter{
     }
 
     public function assignToGroundsMan($postData) {
-        return $this->request(ServiceConstant::URL_MOVE_TO_FOR_SWEEPER, $postData, self::HTTP_POST);
+        return $this->request(ServiceConstant::URL_ASSIGN_TO_GROUNDSMAN, $postData, self::HTTP_POST);
     }
 
     public function generateManifest($postData) {
