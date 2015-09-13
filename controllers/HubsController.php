@@ -59,8 +59,7 @@ class HubsController extends BaseController {
                 $postParams['to_branch_id'] = $branch;
                 $response = $parcelsAdapter->moveToForSweeper($postParams);
             }
-            /*var_dump($postParams);
-            var_dump($response);*/
+
             if($response['status'] === ResponseHandler::STATUS_OK) {
                 $this->flashSuccess('Parcels have been successfully moved to the next destination. <a href="delivery">Generate Manifest</a>');
             } else {
@@ -68,7 +67,7 @@ class HubsController extends BaseController {
             }
         }
         $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
-        $arrival_parcels = $parcelsAdapter->getParcelsForNextDestination($isGroundman ? ServiceConstant::ASSIGNED_TO_GROUNDSMAN : ServiceConstant::FOR_ARRIVAL,!$isGroundman ? null :  $this->userData['branch_id'],$isGroundman ? $this->userData['branch_id'] : $this->branch_to_view, null, $viewData['offset'], 50, 1);
+        $arrival_parcels = $parcelsAdapter->getParcelsForNextDestination($isGroundman ? ServiceConstant::ASSIGNED_TO_GROUNDSMAN : ServiceConstant::FOR_ARRIVAL, null,$isGroundman ? $this->userData['branch_id'] : $this->branch_to_view, null, $viewData['offset'], 50, 1);
 
 
         if($arrival_parcels['status'] === ResponseHandler::STATUS_OK) {
