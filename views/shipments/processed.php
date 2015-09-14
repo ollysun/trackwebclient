@@ -110,10 +110,7 @@ $this->params['content_header_button'] = $this->render('../elements/content_head
                                        class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i> View</a>
                                     <?php if (in_array($parcel['status'], [ServiceConstant::FOR_DELIVERY, ServiceConstant::FOR_SWEEPER])) : ?>
                                         <form method="post">
-                                            <button type="submit" class="btn btn-xs btn-danger" name="parcel_id"><i
-                                                    class="fa fa-times">
-                                                    &nbsp;</i>Cancel
-                                            </button>
+                                            <button title="Cancel this shipment" type="submit" class="btn btn-xs btn-danger" name="parcel_id"><i class="fa fa-times"></i></button>
                                             <input type="hidden" name="waybill_numbers" value="<?= $parcel['waybill_number'] ?>">
                                             <input type="hidden" name="task" value="cancel_shipment">
                                         </form>
