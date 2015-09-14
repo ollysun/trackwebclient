@@ -2381,13 +2381,16 @@ blockquote.pull-right:before {
 .footable .footable-row-detail .footable-row-detail-cell {
   font-size: 1em;
 }
-.table .btn {
+.table td > .btn {
   margin-top: -5px;
   margin-bottom: -6px;
 }
-.table .btn-sm {
+.table td > .btn.btn-sm {
   margin-top: -3px;
   margin-bottom: -3px;
+}
+.table td > .btn + form {
+  display: inline-block;
 }
 .DTTT_selectable tr td {
   border-top: none !important;

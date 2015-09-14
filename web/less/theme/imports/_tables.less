@@ -278,13 +278,16 @@
 
 // MINE
 .table {
-	.btn {
+	td > .btn {
 		margin-top: -5px;
 		margin-bottom: -6px;
-	}
-	.btn-sm {
-		margin-top: -3px;
-		margin-bottom: -3px;
+		&.btn-sm {
+			margin-top: -3px;
+			margin-bottom: -3px;
+		}
+		& + form {
+			display: inline-block;
+		}
 	}
 }
 .DTTT_selectable tr {
