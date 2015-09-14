@@ -7,10 +7,9 @@ use Adapter\Util\Response;
 
 abstract class BaseAdapter
 {
-//    const ROOT_PATH = 'http://api.sanwo.org/'; # must always end with a '/'
-    const ROOT_PATH = 'http://52.26.122.248/tnt-service/'; # must always end with a '/'
-//    const ROOT_PATH = 'http://local.sanwo-service.me/'; # must always end with a '/'
-//    const ROOT_PATH = 'http://127.0.0.1/tnt-service/'; # must always end with a '/'
+    //TODO move to configs
+    const ROOT_PATH = 'http://staging-tnt-service.cottacush.com/'; # must always end with a '/'
+    //const ROOT_PATH = 'http://local.courierplus.tntservice.com/'; # must always end with a '/'
 
     const HTTP_GET = 1;
     const HTTP_POST = 2;
