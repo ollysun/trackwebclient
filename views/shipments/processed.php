@@ -61,49 +61,74 @@ $this->params['content_header_button'] = $this->render('../elements/content_head
         </div>
     </div>
     <div class="main-box-body">
-        <?php if(isset($parcels)): ?>
-        <div class="table-responsive">
-            <table id="table" class="table table-hover dataTable">
-                <thead>
-                <tr>
-                    <th style="width: 20px" class="datatable-nosort"><div class="checkbox-nice"><input id="chbx_w_all" type="checkbox"><label for="chbx_w_all"> </label></div></th>
-                    <th style="width: 20px">No.</th>
-                    <th>Waybill No.</th>
-                    <th>Shipper</th>
-                    <th>Shipper Phone</th>
-                    <th>Receiver</th>
-                    <th>Receiver Phone</th>
-                    <th>Created Date</th>
-                    <th># Parcels</th>
-                    <th>Action</th>
-                </tr>
-                </thead>
-                <tbody>
-                <?php
-                if(isset($parcels) && is_array($parcels)){
-                    $i = $offset;
-                    foreach($parcels as $parcel){
-                        ?>
-                        <tr>
-                            <td><div class="checkbox-nice"><input id="chbx_w_<?= ++$i; ?>" class="checkable" data-waybill="<?= strtoupper($parcel['waybill_number']); ?>" data-sender="<?= $sender = strtoupper($parcel['sender']['firstname'].' '. $parcel['sender']['lastname']) ?>" type="checkbox"><label for="chbx_w_<?= $i; ?>"> </label></div></td>
-                            <td><?= $i ?></td>
-                            <td><?= strtoupper($parcel['waybill_number']); ?></td>
-                            <td><?= $sender ?></td>
-                            <td><?= $parcel['sender']['phone'] ?></td>
-                            <td><?= strtoupper($parcel['receiver']['firstname'].' '. $parcel['receiver']['lastname']) ?></td>
-                            <td><?= $parcel['receiver']['phone'] ?></td>
-                            <td><?= date(ServiceConstant::DATE_TIME_FORMAT,strtotime($parcel['created_date'])); ?></td>
-                            <td><?= $parcel['no_of_package']; ?></td>
-                            <td><a href="<?= Url::to(['site/viewwaybill?id='.$parcel['id']]) ?>" class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
-                        </tr>
+        <?php if (!empty($parcels)): ?>
+            <div class="table-responsive">
+                <table id="table" class="table table-hover dataTable">
+                    <thead>
+                    <tr>
+                        <th style="width: 20px" class="datatable-nosort">
+                            <div class="checkbox-nice"><input id="chbx_w_all" type="checkbox"><label
+                                    for="chbx_w_all"> </label></div>
+                        </th>
+                        <th style="width: 20px">No.</th>
+                        <th>Waybill No.</th>
+                        <th>Shipper</th>
+                        <th>Shipper Phone</th>
+                        <th>Receiver</th>
+                        <th>Receiver Phone</th>
+                        <th>Created Date</th>
+                        <th># of Pcs</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
                     <?php
-                    }}
-                ?>
-                </tbody>
-            </table>
-        </div>
-        <?= $this->render('../elements/pagination_and_summary', ['first' => $offset, 'last'=>$i, 'total_count'=> $total_count,'page_width'=>$page_width]) ?>
-        <?php else:  ?>
+                    $i = $offset;
+                    if (isset($parcels) && is_array($parcels)) {
+                        foreach ($parcels as $parcel) {;
+                            ?>
+                            <tr>
+                                <td>
+                                    <div class="checkbox-nice">
+
+                                        <input id="chbx_w_<?= ++$i; ?>" class="checkable"
+                                               data-waybill="<?= strtoupper($parcel['waybill_number']); ?>"
+                                               data-sender="<?= strtoupper($parcel['sender']['firstname'] . ' ' . $parcel['sender']['lastname']) ?>"
+                                               type="checkbox"><label
+                                            for="chbx_w_<?= $i; ?>"> </label>
+                                    </div></td>
+                                <td><?= $i ?></td>
+                                <td><?= strtoupper($parcel['waybill_number']); ?></td>
+                                <td><?= strtoupper($parcel['sender']['firstname'] . ' ' . $parcel['sender']['lastname']) ?></td>
+                                <td><?= $parcel['sender']['phone'] ?></td>
+                                <td><?= strtoupper($parcel['receiver']['firstname'] . ' ' . $parcel['receiver']['lastname']) ?></td>
+                                <td><?= $parcel['receiver']['phone'] ?></td>
+                                <td><?= date(ServiceConstant::DATE_TIME_FORMAT, strtotime($parcel['created_date'])); ?></td>
+                                <td><?= $parcel['no_of_package']; ?></td>
+                                <td>
+                                    <a href="<?= Url::to(['site/viewwaybill?id=' . $parcel['id']]) ?>"
+                                       class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i> View</a>
+                                    <?php if (in_array($parcel['status'], [ServiceConstant::FOR_DELIVERY, ServiceConstant::FOR_SWEEPER])) : ?>
+                                        <form method="post">
+                                            <button type="submit" class="btn btn-xs btn-danger" name="parcel_id"><i
+                                                    class="fa fa-times">
+                                                    &nbsp;</i>Cancel
+                                            </button>
+                                            <input type="hidden" name="waybill_numbers" value="<?= $parcel['waybill_number'] ?>">
+                                            <input type="hidden" name="task" value="cancel_shipment">
+                                        </form>
+                                    <?php endif; ?>
+                                </td>
+                            </tr>
+                            <?php
+                        }
+                    }
+                    ?>
+                    </tbody>
+                </table>
+            </div>
+            <?= $this->render('../elements/pagination_and_summary', ['first' => $offset, 'last' => $i, 'total_count' => $total_count, 'page_width' => $page_width]) ?>
+        <?php else: ?>
             There are no parcels matching the specified criteria.
         <?php endif; ?>
     </div>
