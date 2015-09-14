@@ -248,22 +248,16 @@ class ShipmentsController extends BaseController {
                 $response = $parcel->cancel($records);
                 $response = new ResponseHandler($response);
 
-            if(!isset($records['bank_id'], $records['account_no'],$records['amount_paid'],$records['teller_no'],$records['waybill_numbers'])) {
-                $this->flashError("Invalid parameter(s) sent!");
-            } else {
-                $teller = new TellerAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
-                $teller = $teller->addTeller($records);
-                $response = new ResponseHandler($teller);
-
                 if($response->getStatus() ==  ResponseHandler::STATUS_OK){
-                    $this->flashSuccess('Parcel successfully marked as cancelled');
+                    $this->flashSuccess('Shipment successfully marked as CANCELLED');
                 }
                 else{
                     $this->flashError('An error occurred while trying to cancel shipment. #'.$response->getError());
                 }
+
             }
             elseif($records['submit_teller']) {
-                if(isset($records['bank_id'], $records['account_no'], $records['amount_paid'], $records['teller_no'], $records['waybill_numbers'])) {
+                if(!isset($records['bank_id'], $records['account_no'], $records['amount_paid'], $records['teller_no'], $records['waybill_numbers'])) {
                     $this->flashError("Invalid parameter(s) sent!");
                 } else {
                     $teller = new TellerAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
