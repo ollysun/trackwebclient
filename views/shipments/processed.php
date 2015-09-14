@@ -2,7 +2,6 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 use Adapter\Globals\ServiceConstant;
-use yii\web\View;
 
 
 $this->title = 'New Shipments';
@@ -44,11 +43,8 @@ $this->params['content_header_button'] = $this->render('../elements/content_head
                 <form class="form-inline clearfix">
                     <div class="pull-left form-group">
                         <label for="searchInput">Search</label><br>
-
                         <div class="input-group input-group-sm input-group-search">
-                            <input id="searchInput" type="text" name="search" placeholder="Waybill Number"
-                                   class="search-box form-control">
-
+                            <input id="searchInput" type="text" name="search" placeholder="Waybill Number" class="search-box form-control">
                             <div class="input-group-btn">
                                 <button class="btn btn-default" type="submit">
                                     <i class="fa fa-search"></i>
@@ -59,8 +55,7 @@ $this->params['content_header_button'] = $this->render('../elements/content_head
                 </form>
                 <div class="pull-left hidden">
                     <label>&nbsp;</label><br>
-                    <button type="button" class="btn btn-sm btn-default"><i class="fa fa-download"></i> Download
-                    </button>
+                    <button type="button" class="btn btn-sm btn-default"><i class="fa fa-download"></i> Download</button>
                 </div>
             </div>
         </div>
@@ -119,8 +114,7 @@ $this->params['content_header_button'] = $this->render('../elements/content_head
                                                     class="fa fa-times">
                                                     &nbsp;</i>Cancel
                                             </button>
-                                            <input type="hidden" name="waybill_numbers"
-                                                   value="<?= $parcel['waybill_number'] ?>">
+                                            <input type="hidden" name="waybill_numbers" value="<?= $parcel['waybill_number'] ?>">
                                             <input type="hidden" name="task" value="cancel_shipment">
                                         </form>
                                     <?php endif; ?>
@@ -146,8 +140,7 @@ $this->params['content_header_button'] = $this->render('../elements/content_head
         <form method="post" action="" class="validate-form">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                            aria-hidden="true">&times;</span></button>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title" id="myModalLabel">Submit Teller Details</h4>
                 </div>
                 <div class="modal-body">
@@ -169,8 +162,7 @@ $this->params['content_header_button'] = $this->render('../elements/content_head
                         </div>
                         <div class="col-xs-6 form-group">
                             <label for="">Account no</label>
-                            <input type="text" class="form-control validate required non-zero-integer"
-                                   name="account_no">
+                            <input type="text" class="form-control validate required non-zero-integer" name="account_no">
                         </div>
                     </div>
                     <div class="row">
@@ -180,11 +172,9 @@ $this->params['content_header_button'] = $this->render('../elements/content_head
                         </div>
                         <div class="col-xs-6 form-group">
                             <label for="">Amount paid</label>
-
                             <div class="input-group">
                                 <span class="input-group-addon currency naira"></span>
-                                <input type="text" class="form-control validate required non-zero-number"
-                                       name="amount_paid">
+                                <input type="text" class="form-control validate required non-zero-number" name="amount_paid">
                             </div>
                         </div>
                     </div>
@@ -228,37 +218,4 @@ $this->params['content_header_button'] = $this->render('../elements/content_head
 <?php $this->registerJsFile('@web/js/keyboardFormSubmit.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/form-watch-changes.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/validate.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
-
-<?php
-$ex = '
-    $("#chbx_w_all").change(function () {
-        $("input:checkbox").prop("checked", $(this).prop("checked"));
-    });
-
-    $("[data-target=#teller-modal]").on("click", function(event) {
-        var chkboxes = $(".checkable:checked");
-
-        if(!chkboxes.length) {
-            alert("You must select at least one parcel!");
-            event.preventDefault();
-            return false;
-        }
-        var shipments = {};
-        $.each(chkboxes, function(i, chk){
-            shipments[$(this).data("waybill")]=$(this).data("sender");
-        });
-        var html = "";
-        var i=1;
-        $.each(shipments, function(waybill, sender){
-            html += "<tr>";
-            html += "<td>" + (i++) + "</td>";
-            html += "<td>" + waybill + "</td>";
-            html += "<td>" + sender + "</td>";
-            html += "</tr>";
-        });
-        $("#teller-modal-table>tbody").html(html);
-        $("input#waybill_numbers").val(Object.keys(shipments).toString());
-    });';
-$this->registerJs($ex, View::POS_READY);
-?>
-
+<?php $this->registerJsFile('@web/js/submit_teller.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
