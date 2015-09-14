@@ -243,19 +243,32 @@ class ShipmentsController extends BaseController {
 
         if(\Yii::$app->request->isPost) {
             $records = \Yii::$app->request->post();
-
-            if(empty($records['bank_id']) || empty($records['account_no']) || empty($records['amount_paid']) || empty($records['teller_no']) || empty($records['waybill_numbers'])) {
-                $this->flashError("Invalid parameter(s) sent!");
-            } else {
-                $teller = new TellerAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
-                $teller = $teller->addTeller($records);
-                $response = new ResponseHandler($teller);
+            if($records['task'] == 'cancel_shipment'){
+                $parcel = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+                $response = $parcel->cancel($records);
+                $response = new ResponseHandler($response);
 
                 if($response->getStatus() ==  ResponseHandler::STATUS_OK){
-                    $this->flashSuccess('Teller successfully added');
+                    $this->flashSuccess('Parcel successfully marked as cancelled');
                 }
                 else{
-                    $this->flashError('An error occurred while trying to add teller. #'.$response->getError());
+                    $this->flashError('An error occurred while trying to cancel shipment. #'.$response->getError());
+                }
+            }
+            elseif($records['submit_teller']) {
+                if(isset($records['bank_id'], $records['account_no'], $records['amount_paid'], $records['teller_no'], $records['waybill_numbers'])) {
+                    $this->flashError("Invalid parameter(s) sent!");
+                } else {
+                    $teller = new TellerAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+                    $teller = $teller->addTeller($records);
+                    $response = new ResponseHandler($teller);
+
+                    if($response->getStatus() ==  ResponseHandler::STATUS_OK){
+                        $this->flashSuccess('Teller successfully added');
+                    }
+                    else{
+                        $this->flashError('An error occurred while trying to add teller. #'.$response->getError());
+                    }
                 }
             }
         }
