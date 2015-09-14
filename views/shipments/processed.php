@@ -106,8 +106,8 @@ $this->params['content_header_button'] = $this->render('../elements/content_head
                                 <td><?= date(ServiceConstant::DATE_TIME_FORMAT, strtotime($parcel['created_date'])); ?></td>
                                 <td><?= $parcel['no_of_package']; ?></td>
                                 <td>
-                                    <a href="<?= Url::to(['site/viewwaybill?id=' . $parcel['id']]) ?>"
-                                       class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i> View</a>
+                                    <a title="View this shipment" href="<?= Url::to(['site/viewwaybill?id=' . $parcel['id']]) ?>"
+                                       class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>
                                     <?php if (in_array($parcel['status'], [ServiceConstant::FOR_DELIVERY, ServiceConstant::FOR_SWEEPER])) : ?>
                                         <form method="post">
                                             <button title="Cancel this shipment" type="submit" class="btn btn-xs btn-danger" name="parcel_id"><i class="fa fa-times"></i></button>
