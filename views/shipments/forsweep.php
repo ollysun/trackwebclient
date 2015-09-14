@@ -17,11 +17,6 @@ $show_next = false;
 $show_prev = false;
 
 $link = "";
-if($search){
-    $fro = date('Y/m/d',strtotime($from_date));
-    $to = date('Y/m/d',strtotime($to_date));
-    $link = "&search=true&to=".urlencode($to)."&from=".urlencode($fro);
-}
 
 if( count($parcels) >= $page_width ){
     $show_next = true;
@@ -52,7 +47,7 @@ if($offset <= 0){
                 <div class="pull-left form-group">
                     <label for="searchInput">Search</label><br>
                     <div class="input-group input-group-sm input-group-search">
-                        <input id="searchInput" type="text" name="search" placeholder="" class="search-box form-control">
+                        <input id="searchInput" type="text" name="search" placeholder="" class="search-box form-control" value="<?= $search; ?>">
                         <div class="input-group-btn">
                             <button class="btn btn-default" type="submit">
                                 <i class="fa fa-search"></i>
