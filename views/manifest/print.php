@@ -8,7 +8,7 @@ use yii\helpers\Html;
 
 <div class="manifest">
 	<div class="manifest-header">
-		<?= Html::img('@web/img/logo.jpg', ['class' => 'big-logo']) ?>
+		<?= Html::img('@web/img/tnt-cp-logo.png', ['class' => 'big-logo']) ?>
 		<div class="clearfix">
 			<h3 class="pull-left manifest-title big-logo-title">SHUTTLE CONTROL SHEET</h3>
 			<div class="pull-right clearfix">

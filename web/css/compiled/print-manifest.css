@@ -31,17 +31,17 @@
 }
 .manifest .logo {
   display: block;
-  height: 70px;
+  height: 50px;
   width: auto;
 }
 .manifest .big-logo {
   display: block;
-  height: 100px;
+  height: 60px;
   width: auto;
   margin: 0 auto 10px;
 }
 .manifest-title {
-  margin: 35.25px 0 0;
+  margin: 20.25px 0 0;
   font-size: 23px;
   line-height: 1;
   z-index: 1;
