@@ -40,6 +40,7 @@ class HubsController extends BaseController {
     {
         $viewData['page_width'] = is_null($page_width) ? $this->page_width : $page_width;
         $viewData['offset'] = ($page-1)*$viewData['page_width'];
+        $isGroundman = $this->userData['role_id'] == ServiceConstant::USER_TYPE_GROUNDSMAN;
 
         $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
 
@@ -51,8 +52,14 @@ class HubsController extends BaseController {
             }
 
             $postParams['waybill_numbers'] = implode(',', $waybill_numbers);
-            $postParams['to_branch_id'] = $branch;
-            $response = $parcelsAdapter->moveToForSweeper($postParams);
+
+            if($branch == $this->userData['branch_id']){
+                $response = $parcelsAdapter->assignToGroundsMan($postParams);
+            }else{
+                $postParams['to_branch_id'] = $branch;
+                $response = $parcelsAdapter->moveToForSweeper($postParams);
+            }
+
             if($response['status'] === ResponseHandler::STATUS_OK) {
                 $this->flashSuccess('Parcels have been successfully moved to the next destination. <a href="delivery">Generate Manifest</a>');
             } else {
@@ -60,7 +67,7 @@ class HubsController extends BaseController {
             }
         }
         $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
-        $arrival_parcels = $parcelsAdapter->getParcelsForNextDestination(ServiceConstant::FOR_ARRIVAL, null, $this->branch_to_view, null, $viewData['offset'], 50, 1);
+        $arrival_parcels = $parcelsAdapter->getParcelsForNextDestination($isGroundman ? ServiceConstant::ASSIGNED_TO_GROUNDSMAN : ServiceConstant::FOR_ARRIVAL, null,$isGroundman ? $this->userData['branch_id'] : $this->branch_to_view, null, $viewData['offset'], 50, 1);
 
 
         if($arrival_parcels['status'] === ResponseHandler::STATUS_OK) {
@@ -70,6 +77,7 @@ class HubsController extends BaseController {
             $this->flashError('An error occurred while trying to fetch parcels. Please try again.');
             $viewData['parcel_next'] = [];
         }
+        $viewData['isGroundsman'] = $isGroundman;
         return $this->render('destination', $viewData);
     }
 

@@ -10,6 +10,7 @@ class ServiceConstant {
     const USER_TYPE_OFFICER = 2;
     const USER_TYPE_SWEEPER = 3;
     const USER_TYPE_DISPATCHER = 4;
+    const USER_TYPE_GROUNDSMAN = 5;
     /*const USER_TYPE_MANAGER = 2;
     const USER_TYPE_CASHIER = 3;
     const USER_TYPE_AGENT = 4;
@@ -30,11 +31,13 @@ class ServiceConstant {
     const UNCLEARED = 11;
     const CLEARED = 12;
     const BEING_DELIVERED = 13;
+    const ASSIGNED_TO_GROUNDSMAN = 17;
 
     const URL_ADD_PARCEL = 'parcel/add/';
     const URL_GET_ONE_PARCEL = 'parcel/getone/';
     const URL_GET_ALL_PARCEL = 'parcel/getAll/';
     const URL_MOVE_TO_FOR_SWEEPER = '/parcel/moveToForSweeper/';
+    const URL_ASSIGN_TO_GROUNDSMAN = '/parcel/assignToGroundsMan/';
     const URL_MOVE_TO_IN_TRANSIT = '/parcel/moveToInTransit/';
     const URL_MOVE_TO_ARRIVAL = '/parcel/moveToArrival/';
     const URL_MOVE_FOR_DELIVERY = '/parcel/moveToForDelivery/';
