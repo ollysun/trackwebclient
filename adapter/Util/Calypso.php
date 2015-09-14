@@ -306,6 +306,14 @@ class Calypso
             ServiceConstant::USER_TYPE_OFFICER => ['finance/*', 'billing/*', 'admin/*'],
             ServiceConstant::USER_TYPE_SWEEPER => ['site/*', 'parcels/*', 'shipments/*', 'hubs/*', 'finance/*', 'billing/*', 'admin/*'],
             ServiceConstant::USER_TYPE_DISPATCHER => ['site/*', 'parcels/*', 'shipments/*', 'hubs/*', 'finance/*', 'billing/*', 'admin/*'],
+            ServiceConstant::USER_TYPE_GROUNDSMAN => [
+                'parcels/*',
+                'shipments/forsweep',
+                'shipments/delivered',
+                'hubs/hubarrival',
+                'finance/*',
+                'billing/*',
+                'admin/*'],
         ];
         return $permissionMap;
     }

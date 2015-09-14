@@ -10,15 +10,17 @@ $this->params['breadcrumbs'] = array(
         'url' => ['shipments/all'],
         'label' => 'Shipments'
     ),
-    array('label'=> $this->title)
+    array('label' => $this->title)
 );
 
 $link = "";
-if($search){
-    $fro = date('Y/m/d',strtotime($from_date));
-    $to = date('Y/m/d',strtotime($to_date));
-    $link = "&search=true&to=".urlencode($to)."&from=".urlencode($fro)."&page_width=".$page_width;
-    if(!is_null($filter)){$link.= '&date_filter='.$filter;}
+if ($search) {
+    $fro = date('Y/m/d', strtotime($from_date));
+    $to = date('Y/m/d', strtotime($to_date));
+    $link = "&search=true&to=" . urlencode($to) . "&from=" . urlencode($fro) . "&page_width=" . $page_width;
+    if (!is_null($filter)) {
+        $link .= '&date_filter=' . $filter;
+    }
 }
 ?>
 <!-- this page specific styles -->
@@ -27,7 +29,7 @@ if($search){
 
 
 <?php
-$this->params['content_header_button'] = $this->render('../elements/content_header_new_parcel_button').' <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#teller-modal">Submit Teller</button>';
+$this->params['content_header_button'] = $this->render('../elements/content_header_new_parcel_button') . ' <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#teller-modal">Submit Teller</button>';
 ?>
 
 <?php echo \Adapter\Util\Calypso::showFlashMessages(); ?>
@@ -35,7 +37,7 @@ $this->params['content_header_button'] = $this->render('../elements/content_head
     <div class="main-box-header table-search-form clearfix">
         <div class=" clearfix">
             <div class="pull-left">
-                <?= $this->render('../elements/parcels_filter',['from_date'=>$from_date,'to_date'=>$to_date,'page_width'=>$page_width,'filter'=>$filter, 'hideStatusFilter'=>true]) ?>
+                <?= $this->render('../elements/parcels_filter', ['from_date' => $from_date, 'to_date' => $to_date, 'page_width' => $page_width, 'filter' => $filter, 'hideStatusFilter' => true]) ?>
             </div>
             <div class="pull-right clearfix">
                 <form class="form-inline clearfix">
@@ -103,7 +105,7 @@ $this->params['content_header_button'] = $this->render('../elements/content_head
         <?= $this->render('../elements/pagination_and_summary', ['first' => $offset, 'last'=>$i, 'total_count'=> $total_count,'page_width'=>$page_width]) ?>
         <?php else:  ?>
             There are no parcels matching the specified criteria.
-        <?php endif;  ?>
+        <?php endif; ?>
     </div>
 </div>
 
@@ -156,7 +158,7 @@ $this->params['content_header_button'] = $this->render('../elements/content_head
                         <input type="file" class="form-control">
                     </div>
 
-                    <hr />
+                    <hr/>
                     <table class="table table-bordered table-condensed" id="teller-modal-table">
                         <thead>
                         <tr>
@@ -169,6 +171,7 @@ $this->params['content_header_button'] = $this->render('../elements/content_head
                     </table>
                 </div>
                 <div class="modal-footer">
+                    <input type="hidden" name="task" value="submit_teller">
                     <input type="hidden" id="waybill_numbers" name="waybill_numbers">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary" id="btnGenerate">Submit</button>
@@ -183,7 +186,7 @@ $this->params['content_header_button'] = $this->render('../elements/content_head
 <?= $this->registerJsFile('@web/js/libs/dataTables.fixedHeader.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
 <?= $this->registerJsFile('@web/js/libs/dataTables.tableTools.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
 <?= $this->registerJsFile('@web/js/libs/jquery.dataTables.bootstrap.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
-<?php $this->registerJsFile('@web/js/hub_util.js', ['depends' => [\app\assets\AppAsset::className()]])?>
+<?php $this->registerJsFile('@web/js/hub_util.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/jquery.dataTables.min.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/dataTables.bootstrap.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/table.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
