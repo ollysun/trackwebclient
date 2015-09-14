@@ -157,4 +157,8 @@ class ParcelAdapter extends BaseAdapter{
     public function calcBilling($postData) {
         return $this->request(ServiceConstant::URL_CALC_BILLING, $postData, self::HTTP_POST);
     }
+
+    public function cancel($postData){
+        return $this->request(ServiceConstant::URL_CANCEL_PARCEL, $postData, self::HTTP_POST);
+    }
 }
