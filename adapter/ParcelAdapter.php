@@ -91,6 +91,10 @@ class ParcelAdapter extends BaseAdapter{
         return $this->request(ServiceConstant::URL_MOVE_TO_FOR_SWEEPER, $postData, self::HTTP_POST);
     }
 
+    public function assignToGroundsMan($postData) {
+        return $this->request(ServiceConstant::URL_ASSIGN_TO_GROUNDSMAN, $postData, self::HTTP_POST);
+    }
+
     public function generateManifest($postData) {
         return $this->request(ServiceConstant::URL_MOVE_TO_IN_TRANSIT, $postData, self::HTTP_POST);
     }
@@ -156,5 +160,9 @@ class ParcelAdapter extends BaseAdapter{
 
     public function calcBilling($postData) {
         return $this->request(ServiceConstant::URL_CALC_BILLING, $postData, self::HTTP_POST);
+    }
+
+    public function cancel($postData){
+        return $this->request(ServiceConstant::URL_CANCEL_PARCEL, $postData, self::HTTP_POST);
     }
 }

@@ -4,7 +4,10 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 
 /* @var $this yii\web\View */
-$this->title = 'Shipments: Next Destination';
+if(!isset($isGroundsman)) {
+    $isGroundsman = false;
+}
+$this->title = 'Shipments: Next Destination'. ($isGroundsman ? ' - GroundsMan' : '');
 $this->params['breadcrumbs'] = array(
     /*array(
     'url' => ['site/managebranches'],
@@ -36,8 +39,12 @@ $this->params['breadcrumbs'] = array(
                     <div class="pull-left form-group">
                         <label for="branch_type">Branch type</label><br>
                         <select id="branch_type" class="form-control input-sm" name="branch_type">
-                            <option value="exp" selected>Express Centres</option>
-                            <option value="hub">Hub</option>
+                            <?php if(!$isGroundsman): ?>
+                                <option value="hub">Hub</option>
+                            <?php else:  ?>
+                                <option value="" selected>Select...</option>
+                            <?php endif;  ?>
+                            <option value="exp" <?php echo ($isGroundsman ? '' : 'selected') ?> >Express Centres</option>
                         </select>
                     </div>
                     <div class="pull-left form-group">
