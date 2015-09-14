@@ -101,7 +101,7 @@ $this->params['breadcrumbs'] = array(
                     <input type="hidden" name="waybills" id="waybills">
                     <input type="hidden" name="task" id="task">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Authenticate</button>
+                    <button type="submit" class="btn btn-primary">Mark</button>
                 </div>
             </div>
         </form>

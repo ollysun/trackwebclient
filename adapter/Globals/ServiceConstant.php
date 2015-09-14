@@ -45,6 +45,7 @@ class ServiceConstant {
     const URL_MOVE_TO_BEING_DELIVERED = '/parcel/moveToBeingDelivered/';
     const URL_MOVE_TO_DELIVERED = '/parcel/moveToDelivered/';
     const URL_RECEIVE_RETURN = '/parcel/receiveReturn/';
+    const URL_CANCEL_PARCEL = '/parcel/cancel';
 
     const URL_GET_ALL_BANKS = 'bank/getAll/';
 
@@ -120,6 +121,8 @@ class ServiceConstant {
     const URL_BILLING_DELETE = 'zone/removebilling';
     const URL_BILLING_FETCH_BY_ID = 'zone/fetchBillingById';
 
+    const URL_TELLER_ADD = 'teller/add';
+
 
     const URL_CREATE_USER = 'admin/register';
     const URL_GET_USERS = '/admin/getAll';
@@ -175,7 +178,7 @@ class ServiceConstant {
                 return 'For Delivery';
                 break;
             case ServiceConstant::BEING_DELIVERED:
-                return 'Being Delivered';
+                return 'In Transit to Customer';
                 break;
 
         }
