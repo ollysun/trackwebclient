@@ -8,7 +8,6 @@ use app\assets\AppAsset;
 /* @var $this \yii\web\View */
 /* @var $content string */
 
-//AppAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -18,20 +17,15 @@ use app\assets\AppAsset;
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
-
     <?= Html::cssFile('@web/css/bootstrap/bootstrap.min.css') ?>
-    <?= Html::cssFile('@web/css/compiled/print-waybill.css') ?>
 
     <?php $this->head() ?>
-
 </head>
 <body class="">
-
 <?php $this->beginBody() ?>
-<div class="waybill-wrap">
+<div class="">
     <?= $content ?>
 </div>
-
 <?php $this->endBody() ?>
 </body>
 </html>
