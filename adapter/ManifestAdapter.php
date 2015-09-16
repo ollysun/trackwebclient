@@ -14,19 +14,11 @@ class ManifestAdapter extends BaseAdapter
      * Gets all manifests
      * Includes Origin, Destination and Driver
      * @author Adegoke Obasa <goke@cottacush.com>
-     * @param $allFilters
+     * @param $filters
      * @return array|mixed|string
      */
-    public function getManifests($allFilters)
+    public function getManifests($filters)
     {
-        $validFilters = ['status'];
-        $filters = [];
-        foreach($allFilters as $filterKey => $filterValue) {
-            if(in_array($filterKey, $validFilters)){
-                $filters[$filterKey] = $filterValue;
-            }
-        }
-
         $filters = array_merge($filters, array(
             'with_holder' => '',
             'with_from_branch' => '',

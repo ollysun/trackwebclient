@@ -31,25 +31,39 @@ class ManifestController extends BaseController
      * @author Adegoke Obasa <goke@cottacush.com>
      * @return string
      */
-    public function actionIndex($page = 1)
+    public function actionIndex()
     {
-        $page_width = 50;
-        $offset = $page_width * ($page - 1);
-
         // Filters
-        $filters = \Yii::$app->getRequest()->get();
+        $filters = [];
+
+        $validFilters = ['status' => 'status', 'from' => 'start_created_date', 'to' => 'end_created_date'];
+
+        foreach($validFilters as $clientFilter => $serverFilter) {
+            $value = \Yii::$app->getRequest()->get($clientFilter, null);
+            if(!is_null($value) && $value != -1){
+                if(preg_match('/\bstart\_\w+\_date\b/', $serverFilter)){
+                    $filters[$serverFilter] = $value . " 00:00:00";
+                } else if(preg_match('/\bend\_\w+\_date\b/', $serverFilter)) {
+                    $filters[$serverFilter] = $value . " 23:59:59";
+                } else {
+                    $filters[$serverFilter] = $value;
+                }
+            }
+        }
+
+        $defaultDate = date('Y/m/d');
+        $fromDate = Calypso::getValue($filters, 'start_created_date', $defaultDate);
+        $toDate = Calypso::getValue($filters, 'end_created_date', $defaultDate);
 
         $adapter = new ManifestAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
         $response = new ResponseHandler($adapter->getManifests($filters));
 
-        $total_count = 0;
-
         $manifests = [];
         if($response->getStatus() == ResponseHandler::STATUS_OK){
             $manifests = $response->getData();
-            $total_count = count($manifests);
         }
-        return $this->render('index', ['manifests' => $manifests]);
+
+        return $this->render('index', ['manifests' => $manifests, 'fromDate' => $fromDate, 'toDate' => $toDate]);
     }
 
     public function actionView()
