@@ -1,7 +1,8 @@
 <?php
 namespace Adapter\Globals;
 
-class ServiceConstant {
+class ServiceConstant
+{
 
     const BASE_PATH = "http://local.courierplus.com";
 
@@ -32,6 +33,11 @@ class ServiceConstant {
     const CLEARED = 12;
     const BEING_DELIVERED = 13;
     const ASSIGNED_TO_GROUNDSMAN = 17;
+    const MANIFEST_PENDING = 18;
+    const MANIFEST_IN_TRANSIT = 19;
+    const MANIFEST_RESOLVED = 20;
+    const MANIFEST_CANCELLED = 21;
+    const MANIFEST_HAS_ISSUE = 22;
 
     const URL_ADD_PARCEL = 'parcel/add/';
     const URL_GET_ONE_PARCEL = 'parcel/getone/';
@@ -116,12 +122,14 @@ class ServiceConstant {
     const URL_ONFORWARDING_FETCH_ALL = 'onforwardingcharge/fetchAll';
 
     const URL_BILLING_FETCH_ALL = 'zone/fetchbilling';
-    const URL_BILLING_ADD= 'zone/addbilling';
+    const URL_BILLING_ADD = 'zone/addbilling';
     const URL_BILLING_EDIT = 'zone/editbilling';
     const URL_BILLING_DELETE = 'zone/removebilling';
     const URL_BILLING_FETCH_BY_ID = 'zone/fetchBillingById';
 
     const URL_TELLER_ADD = 'teller/add';
+
+    const URL_MANIFEST_ALL = 'manifest/getAll';
 
 
     const URL_CREATE_USER = 'admin/register';
@@ -145,8 +153,9 @@ class ServiceConstant {
     const DELIVERY_DISPATCH = 2;
     const DELIVERY_PICKUP = 1;
 
-    public static function getStatus($status){
-        switch($status){
+    public static function getStatus($status)
+    {
+        switch ($status) {
             case ServiceConstant::ACTIVE:
                 return '<span class="label label-success">Active</span>';
                 break;
@@ -180,14 +189,32 @@ class ServiceConstant {
             case ServiceConstant::BEING_DELIVERED:
                 return 'In Transit to Customer';
                 break;
-
+            case ServiceConstant::MANIFEST_PENDING:
+                return 'Pending';
+                break;
+            case ServiceConstant::MANIFEST_IN_TRANSIT:
+                return 'In Transit';
+                break;
+            case ServiceConstant::MANIFEST_HAS_ISSUE:
+                return 'Has Issue';
+                break;
+            case ServiceConstant::MANIFEST_RESOLVED:
+                return 'Resolved';
+                break;
+            case ServiceConstant::MANIFEST_CANCELLED:
+                return 'Cancelled';
+                break;
         }
     }
-    public static function getStatusRef(){
-        return [ServiceConstant::IN_TRANSIT,ServiceConstant::DELIVERED,ServiceConstant::CANCELLED,ServiceConstant::FOR_ARRIVAL
-        ,ServiceConstant::FOR_DELIVERY,ServiceConstant::FOR_SWEEPER,ServiceConstant::COLLECTED, ServiceConstant::BEING_DELIVERED];
+
+    public static function getStatusRef()
+    {
+        return [ServiceConstant::IN_TRANSIT, ServiceConstant::DELIVERED, ServiceConstant::CANCELLED, ServiceConstant::FOR_ARRIVAL
+            , ServiceConstant::FOR_DELIVERY, ServiceConstant::FOR_SWEEPER, ServiceConstant::COLLECTED, ServiceConstant::BEING_DELIVERED];
     }
-    public static function getPaymentMethod($method){
+
+    public static function getPaymentMethod($method)
+    {
         switch ($method) {
             case ServiceConstant::REF_PAYMENT_METHOD_CASH:
                 return 'Cash';
@@ -210,7 +237,9 @@ class ServiceConstant {
                 break;
         }
     }
-    public static function getDeliveryType($type){
+
+    public static function getDeliveryType($type)
+    {
         switch ($type) {
             case ServiceConstant::DELIVERY_DISPATCH:
                 return 'Dispatch';
@@ -221,5 +250,11 @@ class ServiceConstant {
             default:
                 return false;
         }
+    }
+
+    public static function getManifestStatuses()
+    {
+        return [ServiceConstant::MANIFEST_PENDING, ServiceConstant::MANIFEST_RESOLVED, ServiceConstant::MANIFEST_HAS_ISSUE,
+            ServiceConstant::MANIFEST_IN_TRANSIT, ServiceConstant::MANIFEST_CANCELLED];
     }
 }

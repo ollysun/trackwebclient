@@ -1,4 +1,5 @@
 <?php
+use Adapter\Util\Calypso;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use Adapter\Globals\ServiceConstant;
@@ -36,7 +37,7 @@ $this->params['breadcrumbs'] = array(
                     <div class="pull-left form-group">
                         <label for="searchInput">Search</label><br>
                         <div class="input-group input-group-sm input-group-search">
-                            <input id="searchInput" type="text" name="search" placeholder="Waybill Number" class="search-box form-control">
+                            <input id="searchInput" type="text" name="search" placeholder="Manifest Number" class="search-box form-control">
                             <div class="input-group-btn">
                                 <button class="btn btn-default" type="submit">
                                     <i class="fa fa-search"></i>
@@ -54,7 +55,6 @@ $this->params['breadcrumbs'] = array(
     </div>
     <div class="main-box-body">
         <div class="table-responsive">
-        		<?php $manifests = 'hello'; ?>
             <?php if(!empty($manifests)): ?>
             <table id="table" class="table table-hover dataTable">
                 <thead>
@@ -77,15 +77,19 @@ $this->params['breadcrumbs'] = array(
                     foreach($manifests as $manifest){
                         ?>
                         <tr>
-                            <!--	<td><div class="checkbox-nice"><input id="chbx_w_000--><?//= $i ?><!--" type="checkbox"><label for="chbx_w_000--><?//= $i ?><!--"> </label></div></td>-->
                             <td><?= ++$i ?></td>
-
+                            <td><?= Calypso::getValue($manifest, 'id'); ?></td>
+                            <td><?= strtoupper(Calypso::getValue($manifest, 'from_branch.name')); ?></td>
+                            <td><?= strtoupper(Calypso::getValue($manifest, 'to_branch.name')); ?></td>
+                            <td><?= ucwords(Calypso::getValue($manifest, 'holder.fullname')); ?></td>
+                            <td><?= Calypso::getValue($manifest, 'no_of_parcels'); ?></td>
+                            <td><?= date(ServiceConstant::DATE_TIME_FORMAT, strtotime(Calypso::getValue($manifest, 'created_date'))); ?></td>
+                            <td><?= ServiceConstant::getStatus(Calypso::getValue($manifest, 'status')); ?></td>
                             <td><a href="<?= Url::to(['manifest/view?id='.$manifest['id']]) ?>" class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
                         </tr>
                     <?php
                     }}
                 ?>
-
                 </tbody>
             </table>
             <?php //= $this->render('../elements/pagination_and_summary', ['first' => $offset, 'last'=>$i, 'total_count'=> $total_count,'page_width'=>$page_width]) ?>
