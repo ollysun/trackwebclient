@@ -6,6 +6,7 @@ use Adapter\Globals\ServiceConstant;
 
 
 $this->title = 'Manifests';
+$offset = 0;
 $this->params['breadcrumbs'] = array(
     /* array(
          'url' => ['manifests/index'],
