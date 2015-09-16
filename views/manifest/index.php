@@ -24,10 +24,7 @@ $this->params['breadcrumbs'] = array(
     <div class="main-box-header table-search-form clearfix">
         <div class=" clearfix">
             <div class="pull-left">
-                <?php
-                $filter = '';
-                ?>
-                <?= $this->render('../elements/manifests_filter', ['from_date' => $fromDate, 'to_date' => $toDate, 'filter' => $filter]) ?>
+                <?= $this->render('../elements/manifests_filter', ['from_date' => $fromDate, 'to_date' => $toDate, 'filter' => $filter, 'branchId' => $branchId]) ?>
             </div>
             <div class="pull-right clearfix">
                 <form class="form-inline clearfix">
