@@ -83,7 +83,7 @@ class ManifestController extends BaseController
             $manifests = $response->getData();
         }
 
-        return $this->render('index', ['manifests' => $manifests, 'fromDate' => $fromDate, 'toDate' => $toDate, 'branchId' => $branchId, 'filter' => $filter, 'offset', 0]);
+        return $this->render('index', ['manifests' => $manifests, 'fromDate' => $fromDate, 'toDate' => $toDate, 'branchId' => $branchId, 'filter' => $filter, 'offset' => 0]);
     }
 
     /**
