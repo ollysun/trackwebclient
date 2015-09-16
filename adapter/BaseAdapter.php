@@ -9,7 +9,7 @@ abstract class BaseAdapter
 {
     //TODO move to configs
     const ROOT_PATH = 'http://staging-tnt-service.cottacush.com/'; # must always end with a '/'
-    //const ROOT_PATH = 'http://local.courierplus.tntservice.com/'; # must always end with a '/'
+//    const ROOT_PATH = 'http://local.courierplus.tntservice.com/'; # must always end with a '/'
 
     const HTTP_GET = 1;
     const HTTP_POST = 2;
