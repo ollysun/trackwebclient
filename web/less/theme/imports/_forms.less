@@ -8,6 +8,13 @@ label {
 	font-size: 0.875em;
 	margin-bottom: 0px; // mine
 }
+.required-asterisk {
+	&:after, // IE8
+	&::after {
+		content: " *";
+		color: @red-color;
+	}
+}
 .form-control {
 	.border-radius(@border-radius-base);
 	border-color: @main-bg-color;
@@ -134,7 +141,8 @@ input[type="radio"] {
 }
 .has-error {
 	.form-control {
-		border-color: @red-color;
+		//border-color: @red-color;
+		border-color: @main-bg-color;
 	}
 	.help-block,
 	.control-label {
@@ -151,14 +159,14 @@ input[type="radio"] {
 	}
 }
 
-.input-group > .form-control,
-.input-group > .input-group-addon,
-.input-group > .input-group-btn > .btn {
-	line-height: 1;
-}
+// .input-group > .form-control,
+// .input-group > .input-group-addon,
+// .input-group > .input-group-btn > .btn {
+// 	line-height: 1;
+// }
 .input-group > .input-group-btn > .btn {
 	border: 0;
-	height: 34px;
+	//height: 34px;
 }
 .input-group-addon {
 	background: transparent;
@@ -555,18 +563,31 @@ input[type="radio"] {
 }
 
 .table-search-form {
-	.input-group-search,
-	.date-range,
-	.filter-status {
+	.form-group
+	{
 		margin-right: 6px;
+		&:last-child {
+			margin-right: 0;
+		}
 	}
 	.date-range {
-		width: 120px;
+		width: 100px;
+	}
+	.input-group-date-range {
+		width: 140px;
+		float: left: !important;
 	}
 	.filter-status {
 		width: 140px;
 	}
 	.input-group > .search-box {
 		width: 220px;
+	}
+}
+// on the add billing pricing page (modal)
+.add-billing-pricing-wrap {
+	margin: 25px 0 0;
+	 h5 {
+		margin: 0 ;
 	}
 }

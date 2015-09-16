@@ -1,0 +1,124 @@
+@page {
+  margin: 0.15cm;
+}
+@media screen {
+  body {
+    background: #ddd;
+  }
+}
+.manifest {
+  width: 960px;
+  background: #fff;
+  margin: 10px auto;
+  padding: 20px 30px;
+}
+.manifest-header {
+  display: block;
+  padding-bottom: 20px;
+}
+.manifest-header:before,
+.manifest-header:after {
+  content: "";
+  display: table;
+}
+.manifest-header:after {
+  clear: both;
+}
+.manifest-header-box {
+  margin-top: -10px;
+  border: 3px solid #111;
+  padding: 25px 25px 10px;
+}
+.manifest .logo {
+  display: block;
+  height: 50px;
+  width: auto;
+}
+.manifest .big-logo {
+  display: block;
+  height: 60px;
+  width: auto;
+  margin: 0 auto 10px;
+}
+.manifest-title {
+  margin: 20.25px 0 0;
+  font-size: 23px;
+  line-height: 1;
+  z-index: 1;
+}
+.manifest-title.big-logo-title {
+  margin-top: 0;
+}
+.manifest-hr {
+  margin: 0;
+  border-color: #333;
+}
+.inline-underline {
+  font-size: 1em;
+  height: 1.4em;
+  border-bottom: 1px solid #111;
+  min-width: 200px;
+  margin-bottom: 15px;
+}
+.inline-underline-sm {
+  min-width: 130px;
+}
+.inline-underline-xs {
+  min-width: 75px;
+}
+.inline-underline-lg {
+  min-width: 300px;
+}
+.inline-underline-full {
+  width: 100%;
+}
+.inline-underline-title {
+  display: block;
+  margin-bottom: -10px;
+  padding-bottom: 10px;
+  padding-right: 3px;
+  background-color: #fff;
+}
+@media print {
+  .table-bordered,
+  .table-bordered th,
+  .table-bordered td {
+    border-color: #000 !important;
+  }
+  .table-bordered th {
+    border-bottom-width: 1px !important;
+  }
+}
+.table th {
+  text-align: center;
+  font-weight: bold;
+}
+.table .total-cell {
+  border-left-color: transparent !important;
+  border-bottom-color: transparent !important;
+  font-weight: bold;
+}
+.rotate-90 {
+  transform: rotate(90deg);
+}
+.delivery-run-table {
+  border-width: 2px;
+}
+.show-only-right-cell-border {
+  width: 45px;
+  border-top-color: transparent !important;
+  border-left-color: transparent !important;
+  border-bottom-color: transparent !important;
+  text-align: right;
+}
+table > thead:first-child > tr:first-child > th.show-only-right-cell-border {
+  border-top: 1px solid transparent !important;
+}
+@media print {
+  th.show-only-right-cell-border,
+  td.show-only-right-cell-border {
+    border-left: 1px solid transparent !important;
+    border-bottom: 1px solid transparent !important;
+    border-top: 1px solid transparent !important;
+  }
+}
