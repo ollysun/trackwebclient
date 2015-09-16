@@ -26,9 +26,10 @@ if(!isset($filter)){$filter="-1";}
             </div>
             <div class="pull-left form-group form-group-sm<?= (!empty($hideStatusFilter) && $hideStatusFilter)? ' hidden' : '' ?>">
                 <label for="">Filter status</label><br>
-                <select name="date_filter" id="" class="form-control  filter-status">
-                    <option value="-1">NOT APPLICABLE</option>
-                    <option>Treated</option>
+                <select name="status" id="" class="form-control filter-status">
+                    <?php foreach(ServiceConstant::getManifestStatuses() as $status): ?>
+                        <option value="<?= $status?>" <?= $status == Yii::$app->getRequest()->get('status') ? 'selected' : '';?>><?= ServiceConstant::getStatus($status); ?></option>
+                    <?php endforeach; ?>
                 </select>
             </div>
             <div class="pull-left">
