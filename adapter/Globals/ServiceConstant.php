@@ -130,7 +130,7 @@ class ServiceConstant
     const URL_TELLER_ADD = 'teller/add';
 
     const URL_MANIFEST_ALL = 'manifest/getAll';
-
+    const URL_MANIFEST_ONE = 'manifest/getOne';
 
     const URL_CREATE_USER = 'admin/register';
     const URL_GET_USERS = '/admin/getAll';

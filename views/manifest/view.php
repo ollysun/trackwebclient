@@ -1,9 +1,8 @@
 <?php
+use Adapter\Util\Calypso;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use Adapter\Globals\ServiceConstant;
-
-$id = 39292093;
 
 $this->title = 'Manifest: #'.$id;
 $this->params['breadcrumbs'] = array(
@@ -28,27 +27,27 @@ $this->params['content_header_button'] = '<a href="'.Url::to(['manifest/print?id
         <div class="row">
             <div class="col-xs-4">
                 <label for="">Origin Station</label>
-                <div class="form-control-static">NG-LOS</div>
+                <div class="form-control-static"><?= strtoupper(Calypso::getValue($manifest, 'from_branch.code'));?> </div>
             </div>
             <div class="col-xs-4">
                 <label for="">Destination</label>
-                <div class="form-control-static">NG-ABV</div>
+                <div class="form-control-static"><?= strtoupper(Calypso::getValue($manifest, 'to_branch.code'));?> </div>
             </div>
             <div class="col-xs-4">
                 <label for="">Created Date</label>
-                <div class="form-control-static"><?= Date('Y/m/d'); ?></div>
+                <div class="form-control-static"><?= date(ServiceConstant::DATE_TIME_FORMAT, strtotime(Calypso::getValue($manifest, 'created_date'))); ?></div>
             </div>
             <div class="col-xs-4">
                 <label for="">Driver</label>
-                <div class="form-control-static">Driver's name (Staff ID)</div>
+                <div class="form-control-static"><?= ucwords(Calypso::getValue($manifest, 'holder.fullname'));?> (<?= Calypso::getValue($manifest, 'holder.staff_id');?>)</div>
             </div>
             <div class="col-xs-4">
                 <label for="">Driver Phone no</label>
-                <div class="form-control-static">08050001234</div>
+                <div class="form-control-static"><?= Calypso::getValue($manifest, 'holder.phone');?></div>
             </div>
             <div class="col-xs-4">
                 <label for="">Prepared by</label>
-                <div class="form-control-static">Officer's name (Staff ID)</div>
+                <div class="form-control-static"><?= ucwords(Calypso::getValue($manifest, 'sender_admin.fullname'));?> (<?=Calypso::getValue($manifest, 'sender_admin.staff_id');?>)</div>
             </div>
         </div>
         <br>
