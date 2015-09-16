@@ -66,6 +66,12 @@ class ManifestController extends BaseController
         $fromDate = Calypso::getValue($filters, 'start_created_date', $defaultDate);
         $toDate = Calypso::getValue($filters, 'end_created_date', $defaultDate);
 
+        $query = \Yii::$app->getRequest()->get('search');
+
+        if(!is_null($query)) {
+            $filters = ['id' => $query];
+        }
+
         $adapter = new ManifestAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
         $response = new ResponseHandler($adapter->getManifests($filters));
 
@@ -90,18 +96,33 @@ class ManifestController extends BaseController
         $adapter = new ManifestAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
         $response = new ResponseHandler($adapter->getManifest($id));
 
-        // TODO handle errors
         $manifest = [];
         if($response->getStatus() == ResponseHandler::STATUS_OK) {
             $manifest = $response->getData();
+        } else {
+            $this->flashError('An error occurred while trying to fetch manifest details. Please try again.');
         }
         return $this->render('view', ['manifest' => $manifest, 'id' => $id]);
     }
 
+    /**
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @return string
+     */
     public function actionPrint()
     {
         $this->layout = 'print';
-        return $this->render('print');
+        $id = \Yii::$app->getRequest()->get('id');
+        $adapter = new ManifestAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+        $response = new ResponseHandler($adapter->getManifest($id));
+
+        $manifest = [];
+        if($response->getStatus() == ResponseHandler::STATUS_OK) {
+            $manifest = $response->getData();
+        } else {
+            $this->flashError('An error occurred while trying to fetch manifest details. Please try again.');
+        }
+        return $this->render('print', ['manifest' => $manifest, 'id' => $id]);
     }
 
     public function actionPrintdelivery()

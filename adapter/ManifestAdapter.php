@@ -43,6 +43,7 @@ class ManifestAdapter extends BaseAdapter
             'with_holder' => '',
             'with_from_branch' => '',
             'with_sender_admin' => '',
+            'with_parcels' => '',
             'with_to_branch' => ''), self::HTTP_GET);
     }
 }
