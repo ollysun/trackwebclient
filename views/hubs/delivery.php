@@ -219,8 +219,8 @@ $this->params['breadcrumbs'] = [ [ 'label'=> 'Sorted Shipments' ] ];
                         <input type="hidden" id="payload" name="payload" />
                         <div class="col-xs-6">
                             <div class="form-group">
-                                <label for="dlg_location">Next Destination</label>
-                                <input class="form-control" id="dlg_location" readonly="true" />
+                                <label for="bag_dlg_location">Next Destination</label>
+                                <input class="form-control" id="bag_dlg_location" readonly="true" />
                             </div>
                         </div>
                     </div>

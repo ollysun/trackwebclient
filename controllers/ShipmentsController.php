@@ -484,8 +484,4 @@ class ShipmentsController extends BaseController {
         }
         return $this->render('delivered', array('parcels'=>$parcels,'total_count'=>$total_count, 'offset'=>$offset, 'page_width'=>$page_width,'from_date'=>$from_date, 'to_date'=>$to_date));
     }
-
-    public function actionCreatebag() {
-
-    }
 }

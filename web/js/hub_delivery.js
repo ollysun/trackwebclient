@@ -20,7 +20,8 @@ var Parcel_Destination = {
         'allhubs' : '/hubs/allhubs',
         'allecforhubs' : '/hubs/allecforhubs',
         'staffdetails' : '/hubs/staffdetails',
-        'generatemanifest': '/hubs/generatemanifest'
+        'generatemanifest': '/hubs/generatemanifest',
+        'createbag': '/hubs/createbag'
     },
 
     getNewStaffInfo: function() {
@@ -96,6 +97,30 @@ var Parcel_Destination = {
             },
             error: function(err) {
                 alert('An error occurred when generating manifest. Please try again later');
+            },
+            complete: function(jqXHR) {
+
+            }
+        })
+    },
+
+    createBag: function(parcels) {
+
+
+        $.ajax({
+            url: Parcel_Destination.Url.createbag,
+            type: 'POST',
+            dataType: 'JSON',
+            data: JSON.stringify(parcels),
+            success: function(response) {
+                if(response.status == 'success') {
+                    alert('Bag with id ' + response.data.id + ' has been created successfully!');
+                } else {
+                    alert('An error occurred while trying to create bag. #' + response.message);
+                }
+            },
+            error: function(err) {
+                alert('We are unable to process this request. Please try again later.');
             },
             complete: function(jqXHR) {
 
@@ -280,7 +305,7 @@ $(document).ready(function(){
 
     function populateDialog(parcels) {
 
-        $('#dlg_location').val(parcels.to_branch_name);
+        $('#bag_dlg_location').val(parcels.to_branch_name);
         var html = '';
         $.each(parcels.waybills, function(i, waybill){
             html += "<tr>";
@@ -386,5 +411,10 @@ $(document).ready(function(){
         }
         populateDialog(parcels);
         $('#createBag').modal('show');
+    });
+
+    $('#btnBag').on('click', function(event){
+        event.preventDefault();
+        Parcel_Destination.createBag(parcels);
     });
 });
