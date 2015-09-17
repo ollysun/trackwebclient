@@ -58,6 +58,15 @@ class BaseController extends Controller {
             }
         }
         $this->enableCsrfValidation = false;
+
+        /**
+         * Set Current Transaction in New Relic
+         * @author Adegoke Obasa <goke@cottacush.com>
+         */
+        if (extension_loaded ('newrelic')) {
+            newrelic_name_transaction ($action->controller->id . '/' . $action->id);
+        }
+
         return parent::beforeAction($action);
     }
 
