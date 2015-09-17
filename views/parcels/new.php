@@ -316,6 +316,20 @@ $is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
                                     <input type="hidden" name="amount" id="amount" />
                                 </div>
                                 <div class="form-group">
+                                    <label for="">Manual Billing</label>
+                                    <div>
+                                        <div class="radio-inline">
+                                            <input id="paymentMethodCash" type="radio" name="payment_method" value="1"
+                                                   checked="checked"> <label for="paymentMethodCash"
+                                                                             class="">Cash</label>
+                                        </div>
+                                        <div class="radio-inline">
+                                            <input id="paymentMethodPOS" type="radio" name="payment_method" value="2">
+                                            <label for="paymentMethodPOS" class="">POS</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
                                     <label for="">Payment Method</label>
 
                                     <div>
