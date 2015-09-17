@@ -241,6 +241,13 @@ $is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
 
                                 <div class="row">
                                     <div class="col-xs-12 col-sm-6 col-lg-5 form-group">
+                                        <label>Merchant Order Number</label>
+                                        <input name="merchant_order_no" class="form-control" id="merchant_order_no">
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-6 col-lg-5 form-group">
                                         <label>Cash on Delivery?</label><br>
 
                                         <div class="radio-inline">
