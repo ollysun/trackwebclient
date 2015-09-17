@@ -29,7 +29,6 @@ use Adapter\Globals\ServiceConstant;
                     <option value="-1">Select Status</option>
                     <option value="to_branch_id=<?= $branchId?>" <?= $filter == "to_branch_id=$branchId" ? 'selected' : ''?>>Incoming</option>
                     <option value="from_branch_id=<?= $branchId?>" <?= $filter == "from_branch_id=$branchId" ? 'selected' : ''?>>Outgoing</option>
-                    <option value="treated" <?= $filter == "treated" ? 'selected' : ''?>>Treated</option>
                 </select>
             </div>
             <div class="pull-left">
