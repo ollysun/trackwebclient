@@ -14,7 +14,14 @@ use Adapter\RequestHelper;
 use Adapter\ResponseHandler;
 use Adapter\Util\Response;
 
-
+/**
+ * Class BillingController
+ * @author Adeyemi Olaoye <yemi@cottacush.com>
+ * @author Richard Boyewa <boye@cottacush.com>
+ * @author Wale Lawal <wale@cottacush.com>
+ * @author Rotimi Akintewe <akintewe.rotimi@gmail.com>
+ * @package app\controllers
+ */
 class BillingController extends BaseController
 {
     public function beforeAction($action)
@@ -90,10 +97,16 @@ class BillingController extends BaseController
         return $this->render('weight_ranges', array('ranges'=>$ranges_list));
     }
 
+    /**
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     * @author Richard Boyewa <boye@cottacush.com>
+     * @author Wale Lawal <wale@cottacush.com>
+     * @return string
+     */
     public function actionMatrix()
     {
         $branchAdp = new BranchAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $response = new ResponseHandler($branchAdp->getAllHubs());
+        $response = new ResponseHandler($branchAdp->getAllHubs(BranchAdapter::BRANCH_TYPE_HUB, false));
         $branchAdpMatrix = new BranchAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $responseMatrix = new ResponseHandler($branchAdpMatrix->getMatrix());
         $hubs = [];$hubsMatrix = [];
