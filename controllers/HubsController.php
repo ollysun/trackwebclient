@@ -278,6 +278,46 @@ class HubsController extends BaseController {
         return $this->render('manifest', $viewData);
     }
 
+    public function actionCreatebag() {
+        $rawData = \Yii::$app->request->getRawBody();
+        $data = json_decode($rawData, true);
+        $paramWaybills = [];
+
+        foreach ($data['waybills'] as $wb) {
+            $paramWaybills[] = $wb['number'];
+        }
+
+        if(empty($paramWaybills)) {
+            return $this->sendErrorResponse("Invalid parameter(s) sent!", null);
+        }
+        $waybills = implode(",", $paramWaybills);
+        $payload = [
+            'waybill_numbers'   => $waybills,
+            'to_branch_id'      => Calypso::getValue($data, 'to_branch_id', null),
+            'status'            => ServiceConstant::FOR_SWEEPER
+        ];
+
+        $parcelData = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $response = $parcelData->createBag($payload);
+        $responseHandler = new ResponseHandler($response);
+        $data = $responseHandler->getData();
+
+        if ($responseHandler->getStatus() === ResponseHandler::STATUS_OK) {
+            if(empty($data['bad_parcels']))
+                return $this->sendSuccessResponse([ 'data' => 'Items successfully added to bag!' ]);
+            else{
+                $bad_parcels = $data['bad_parcels'];
+                $error_message = 'The following parcels cannot be bagged: ';
+                foreach($bad_parcels as $key=>$bad_parcel){
+                    $error_message .= '[' . $key . '#' . $bad_parcel . ']';
+                }
+                return $this->sendErrorResponse($error_message, null);
+            }
+        } else {
+            return $this->sendErrorResponse($responseHandler->getError(), null);
+        }
+    }
+
     public function actionViewbag() {
         return $this->render('view_bag');
     }
