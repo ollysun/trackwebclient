@@ -344,4 +344,47 @@ $(document).ready(function(){
     $("select#page_width").on('change', function (event) {
         $("form#records_filter").submit();
     });
+
+    $('#btnCreateBag').on('click', function(event){
+        var chkboxes = $('.chk_next');
+        var selected = false;
+        var same_branch = true;
+        parcels.waybills = [];
+        var old_branch = '';
+        $.each(chkboxes, function(i, chk){
+
+            var checked = $(chk).is(':checked');
+            if(checked) {
+                selected = true;
+                var waybill = {};
+                var tr = $(chk).closest('tr');
+                if(!old_branch) {
+                    old_branch = parcels.to_branch_id = $(tr).attr('data-to-branch-id');
+                }
+                waybill.number = $(tr).attr('data-waybill');
+                waybill.final = TableHelper.getCellData('#next_dest', 5, $(tr).index());
+                parcels.waybills.push(waybill);
+                parcels.to_branch_id = $(tr).attr('data-to-branch-id');
+                parcels.to_branch_name = TableHelper.getCellData('#next_dest', 4, $(tr).index());
+
+                if(old_branch !== parcels.to_branch_id) {
+                    same_branch = false;
+                }
+            }
+        });
+
+        if(!selected) {
+            alert('You must select at least one parcel!');
+            event.preventDefault();
+            return;
+        }
+
+        if(!same_branch) {
+            alert('Manifest can only be generated for same next destination branch!');
+            event.preventDefault();
+            return;
+        }
+        populateDialog(parcels);
+        $('#createBag').modal('show');
+    });
 });

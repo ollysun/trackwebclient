@@ -5,13 +5,7 @@ use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 $this->title = 'Shipment: Generate Manifest for Delivery';
-$this->params['breadcrumbs'] = array(
-    /*array(
-    'url' => ['site/managebranches'],
-    'label' => 'Manage Branches'
-    ),*/
-    array('label'=> 'Sorted Shipments')
-);
+$this->params['breadcrumbs'] = [ [ 'label'=> 'Sorted Shipments' ] ];
 ?>
 
 <!-- this page specific styles -->
@@ -56,7 +50,7 @@ $this->params['breadcrumbs'] = array(
                         <div class="table-search-form form-inline clearfix">
                             <div class="pull-left form-group">
                                 <label for="">&nbsp;</label><br>
-                                <button type="button" class="btn btn-default btn-sm">Create bag</button>
+                                <button type="button" class="btn btn-default btn-sm" data-toggle="modal" id="btnCreateBag">Create bag</button>
                                 <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" id="manifest">Generate Manifest</button>
                             </div>
                         </div>
@@ -135,24 +129,6 @@ $this->params['breadcrumbs'] = array(
                     <?php } else { ?>
                         <p>No record to display</p>
                     <?php }  ?>
-
-<!--
-                    <div class="clearfix">
-                        <div class="pull-left">
-                            <p class="form-control-static input-sm hidden">Showing 1 to 49 of 49 shipments</p>
-                        </div>
-                        <div class="pull-right">
-                            <ul class="pagination">
-                                <li><a href="">&larr;</a></li>
-                                <li><a href="">1</a></li>
-                                <li><a href="">2</a></li>
-                                <li><a href="">3</a></li>
-                                <li><a href="">4</a></li>
-                                <li><a href="">&rarr;</a></li>
-                            </ul>
-                        </div>
-                    </div>-->
-
                 </div>
             </div>
 
@@ -228,6 +204,43 @@ $this->params['breadcrumbs'] = array(
                 </div>
             </div>
         </form>
+    </div>
+</div>
+
+<div class="modal fade" id="createBag" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Create Bag from Items</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <input type="hidden" id="payload" name="payload" />
+                        <div class="col-xs-6">
+                            <div class="form-group">
+                                <label for="dlg_location">Next Destination</label>
+                                <input class="form-control" id="dlg_location" readonly="true" />
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <table class="table table-bordered table-condensed" id="tbl_manifest">
+                        <thead>
+                        <tr>
+                            <th>S/N</th>
+                            <th>Waybill No.</th>
+                            <th>Final Destination</th>
+                        </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="btnBag">Create a Bag</button>
+                </div>
+            </div>
     </div>
 </div>
 
