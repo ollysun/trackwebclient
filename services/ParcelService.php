@@ -63,6 +63,9 @@ class ParcelService {
             $bankData = null;
         }
 
+        // Add Merchant Order Number
+        $parcel['reference_number'] = Calypso::getValue($data, 'reference_number', null);
+
         $parcel['parcel_type'] = Calypso::getValue($data, 'parcel_type');
         $parcel['no_of_package'] = Calypso::getValue($data, 'no_of_packages');
         if(!is_numeric($parcel['no_of_package'])) {
