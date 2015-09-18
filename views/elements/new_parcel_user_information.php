@@ -32,7 +32,7 @@
 	<div class="col-xs-12 col-sm-6">
 		<div class="form-group">
 			<label for="">Last Name</label>
-			<input name="lastname[<?=$prefix?>]" id="lastname_<?=$prefix?>" type="text" class="form-control validate required name active-validate">
+			<input name="lastname[<?=$prefix?>]" id="lastname_<?=$prefix?>" type="text" class="form-control">
 		</div>
 	</div>
 </div>
@@ -47,7 +47,11 @@
 	<div class="col-xs-12 col-sm-6">
 		<div class="form-group">
 			<label for="">Phone number</label>
-			<input name="phone[<?=$prefix?>]" id="phone_<?=$prefix?>" type="text" class="form-control <?php echo $prefix;?>SearchFlyOutPanelTrigger validate active-validate required phone" data-target="#<?php echo $prefix;?>SearchFlyOutPanel">
+			<?php if($prefix == 'receiver') { ?>
+				<input name="phone[<?=$prefix?>]" id="phone_<?=$prefix?>" type="text" class="form-control <?php echo $prefix;?>SearchFlyOutPanelTrigger" data-target="#<?php echo $prefix;?>SearchFlyOutPanel">
+			<?php } else { ?>
+				<input name="phone[<?=$prefix?>]" id="phone_<?=$prefix?>" type="text" class="form-control <?php echo $prefix;?>SearchFlyOutPanelTrigger validate active-validate required phone" data-target="#<?php echo $prefix;?>SearchFlyOutPanel">
+			<?php } ?>
 			<span class="help-block">Format: 234xxxxxxxxxx</span>
 		</div>
 	</div>
