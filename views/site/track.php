@@ -44,7 +44,7 @@ $data = Calypso::getInstance()->getPageData();
             <div class="tracking-info-value">2.5Kg</div>
         </div>
     </div>
-    <br><br><br> <!-- leave these brs btw info and tracking map  -->
+    <br><br><br><br> <!-- leave these brs btw info and tracking map  -->
 
     <!-- Uncomment below to see other possible tracking map status -->
     <!--
@@ -55,7 +55,7 @@ $data = Calypso::getInstance()->getPageData();
             <div class="tracking-circle"></div>
             <div class="tracking-bar"></div>
             <div class="tracking-status">
-                <span class="tracking-status-inner">Ready for sweep</span>
+                <span class="tracking-status-inner">Parcel created</span>
             </div>
         </div>
 
