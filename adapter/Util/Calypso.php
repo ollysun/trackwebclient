@@ -288,6 +288,23 @@ class Calypso
         }
     }
 
+    /**
+     * Get's a value if it's non empty
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @param $array
+     * @param $key
+     * @param null $default
+     * @return null
+     */
+    public static function getDisplayValue($array, $key, $default = null)
+    {
+        $value = self::getValue($array, $key, null);
+        if(empty(trim($value))) {
+            return $default;
+        }
+        return $value;
+    }
+
     public static function showFlashMessages()
     {
         $flashMessages = '';
