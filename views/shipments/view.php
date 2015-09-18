@@ -166,13 +166,13 @@ $this->params['breadcrumbs'][] = 'Waybill';
 						<div class="col-xs-12 col-sm-6">
 							<div class="row form-group">
 								<div class="col-xs-6">
-									<label>Consignor is a Merchant?</label>
+									<label>Sender is a Merchant?</label>
 									<div class="form-control-static">
 										<?= (empty($senderMerchant)) ? 'No' : 'Yes'; ?>
 									</div>
 								</div>
 								<div class="col-xs-6 hidden">
-									<label>Consignor is a Corporate lead?</label>
+									<label>Sender is a Corporate lead?</label>
 									<div class="class-form-control-static">
 										not available in api
 									</div>
