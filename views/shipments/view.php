@@ -1,4 +1,5 @@
 <?php
+use Adapter\Util\Calypso;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use Adapter\Globals\ServiceConstant;
@@ -171,6 +172,14 @@ $this->params['breadcrumbs'][] = 'Waybill';
 										<?= (empty($senderMerchant)) ? 'No' : 'Yes'; ?>
 									</div>
 								</div>
+								<?php if(!empty($senderMerchant)):?>
+								<div class="col-xs-6">
+									<label>Merchant Order Number</label>
+									<div class="form-control-static">
+										<?= Calypso::getValue($parcelData, 'reference_number', ''); ?>
+									</div>
+								</div>
+								<?php endif; ?>
 								<div class="col-xs-6 hidden">
 									<label>Sender is a Corporate lead?</label>
 									<div class="class-form-control-static">
@@ -216,12 +225,18 @@ $this->params['breadcrumbs'][] = 'Waybill';
 		<div class="col-xs-12 col-sm-6">
 			<fieldset>
 				<legend>Billing Information</legend>
-				<div class="form-group">
-					<label>Billed Amount</label>
-					<div class="form-control-static">
-						<span class="currency naira"></span><?= $parcelData['amount_due']; ?>
-					</div>
-				</div>
+                <div class="form-group">
+                    <label>Billed Amount</label>
+                    <div class="form-control-static">
+                        <span class="currency naira"></span><?= $parcelData['amount_due']; ?>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Manual Billing</label>
+                    <div class="form-control-static">
+                        <span class=""></span><?= Calypso::getValue($parcelData, 'is_billing_overridden', 0) == 1 ? 'Yes' : 'No'?>
+                    </div>
+                </div>
 				<div class="form-group">
 					<label>Payment Method</label>
 					<div class="form-control-static"><?= ServiceConstant::getPaymentMethod($parcelData['payment_type']); ?></div>
