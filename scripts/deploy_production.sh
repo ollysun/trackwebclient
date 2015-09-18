@@ -10,6 +10,9 @@ git checkout develop
 
 echo "Enter ssh key file and press [ENTER]"
 read ssh_key_file
-command_after_ssh = "cd /var/www/html/courierplusng && git pull";
-ssh ubuntu@tnt_fe -i $ssh_key_file $command_after_ssh
-
+ssh ubuntu@tnt_fe -i $ssh_key_file <<'ENDSSH'
+#commands to run on remote host
+cd /var/www/html/courierplusng
+git pull
+exit
+ENDSSH
