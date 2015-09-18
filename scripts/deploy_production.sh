@@ -3,8 +3,9 @@
 git checkout develop
 git pull origin develop
 git checkout production
-git pull production
+git pull origin production
 git merge develop
+git push origin production
 
 echo "Enter ssh key file and press [ENTER]"
 read ssh_key_file
