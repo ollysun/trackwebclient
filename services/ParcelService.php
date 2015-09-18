@@ -24,7 +24,7 @@ class ParcelService {
         $payload = [];
 
         $senderInfo['firstname'] = Calypso::getValue($data, 'firstname.shipper');
-        $senderInfo['lastname'] = Calypso::getValue($data, 'lastname.shipper');
+        $senderInfo['lastname'] = Calypso::getValue($data, 'lastname.shipper', '');
         $senderInfo['phone'] = Calypso::getValue($data, 'phone.shipper');
         $senderInfo['email'] = Calypso::getValue($data, 'email.shipper');
 
@@ -36,8 +36,8 @@ class ParcelService {
         $senderAddress['country_id'] = Calypso::getValue($data, 'country.shipper');
 
         $receiverInfo['firstname'] = Calypso::getValue($data, 'firstname.receiver');
-        $receiverInfo['lastname'] = Calypso::getValue($data, 'lastname.receiver');
-        $receiverInfo['phone'] = Calypso::getValue($data, 'phone.receiver');
+        $receiverInfo['lastname'] = Calypso::getValue($data, 'lastname.receiver', '');
+        $receiverInfo['phone'] = Calypso::getValue($data, 'phone.receiver', '');
         $receiverInfo['email'] = Calypso::getValue($data, 'email.receiver');
 
         $receiverAddress['id'] = Calypso::getValue($data, 'address.receiver.id');
