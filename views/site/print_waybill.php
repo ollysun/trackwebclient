@@ -129,7 +129,7 @@ $copies = ["Sender's Copy","Recipient's Copy","Ack. Copy"," EC Copy"];
     </div>
 
     <div class="other-info">
-        <?= $parcelData['other_info']; ?>
+        <?= $parcelData['other_info']; ?> <?= !is_null(Calypso::getValue($parcelData, 'reference_number')) ? ' (Reference Number: ' . Calypso::getValue($parcelData, 'reference_number') . ')'  : '';?>
     </div>
 </div>
 <?php if (!($i & 1)) { echo '<div class="waybill-divider"></div>'; } } ?>
