@@ -342,7 +342,8 @@ h3 .small {
 .l-sigin-page a.forgot-link {
   color: #777777;
 }
-.l-sigin-page #footer-bar {
+.l-sigin-page #footer-bar,
+#footer-bar.footer-transparent {
   margin: 0;
   text-align: center;
   color: #777777;
@@ -520,16 +521,21 @@ h3 .small {
   position: relative;
   z-index: 99;
 }
+#header-navbar .navbar-brand-transparent {
+  background-color: transparent ;
+}
 #header-navbar .navbar-form .form-group {
   position: relative;
 }
 #header-navbar .navbar-form .form-control {
-  background: #131313;
   color: #707070;
   height: 30px;
   line-height: 30px;
   margin-top: 2px;
   font-size: 0.75em;
+}
+#header-navbar .navbar-form .form-control.header-track-no-search {
+  width: 200px;
 }
 #header-navbar .navbar-form .nav-search-icon {
   position: absolute;

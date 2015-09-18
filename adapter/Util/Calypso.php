@@ -352,6 +352,7 @@ class Calypso
                     'Onforwarding_Charges' => ['base_link' => 'billing/onforwarding', 'class' => ''],
                 ],'branch' => [ ServiceConstant::BRANCH_TYPE_HQ]]
             ],'branch' => [ ServiceConstant::BRANCH_TYPE_HQ]],
+            'Parcel History' => ['base' => 'site', 'base_link' => 'site/tracksearch','class' => 'fa fa-gift'],
             'Manifests' => ['base' => 'manifest', 'base_link' => 'manifest/index','class' => 'fa fa-book'],
             'Customer_History' => ['base' => 'shipments', 'base_link' => 'shipments/customerhistory','class' => 'fa fa-user'
                 ,'branch' => [ ServiceConstant::BRANCH_TYPE_EC, ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]] ,
