@@ -36,6 +36,7 @@ class ManifestController extends BaseController
         $filters = [];
 
         $validFilters = ['status' => 'status', 'from' => 'start_created_date', 'to' => 'end_created_date'];
+        $defaultDate = date('Y/m/d');
         foreach($validFilters as $clientFilter => $serverFilter) {
             $value = \Yii::$app->getRequest()->get($clientFilter, null);
             if(!is_null($value) && $value != -1){
@@ -58,11 +59,20 @@ class ManifestController extends BaseController
                     $filters[$serverFilter] = $value;
                 }
             }
+            else {
+                // Checks if filter is a date filter and add time to it
+                if(preg_match('/\bstart\_\w+\_date\b/', $serverFilter)){
+                    $filters[$serverFilter] = $defaultDate . " 00:00:00";
+                }
+                else if(preg_match('/\bend\_\w+\_date\b/', $serverFilter)) {
+                    $filters[$serverFilter] = $defaultDate . " 23:59:59";
+                }
+
+            }
         }
 
         $filter = \Yii::$app->getRequest()->get('status');
 
-        $defaultDate = date('Y/m/d');
         $fromDate = Calypso::getValue($filters, 'start_created_date', $defaultDate);
         $toDate = Calypso::getValue($filters, 'end_created_date', $defaultDate);
 
