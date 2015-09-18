@@ -11,20 +11,15 @@ $this->title = 'Tracking Portal';
 $data = Calypso::getInstance()->getPageData();
 ?>
 
-<header class="navbar" id="header-navbar">
-    <div class="container">
-        <div id="logo" class="navbar-brand navbar-brand-transparent">
-            <?= Html::img('@web/img/tnt-cp-logo-color.png', ['class' => 'normal-logo', 'alt' => 'CourierPlus Logo']) ?>
-        </div>
-        <form action="" class="navbar-right navbar-form">
-            <input type="text" class="form-control header-track-no-search" placeholder="Enter Waybill / Tracking no">
-            <button type="submit" class="btn btn-primary btn-sm">Track</button>
-        </form>
-    </div>
-</header>
 
-<div class="container">
-    <br>
+<?php
+    // some logic to ensure that tracking data is set.
+    // if multiple tracking dataset exists, please use the actionTracksearchdetails function on the site controller
+    $trackingData = true;
+?>
+
+
+<?php if(!empty($trackingData)){ ?>
     <div class="clearfix">
         <h1 class="pull-left">Tracking for #2N0000123934023</h1>
         <h4 class="pull-right text-muted">Status: Out for Delivery</h4>
@@ -44,11 +39,9 @@ $data = Calypso::getInstance()->getPageData();
             <div class="tracking-info-value">2.5Kg</div>
         </div>
     </div>
-    <br><br><br><br> <!-- leave these brs btw info and tracking map  -->
 
     <!-- Uncomment below to see other possible tracking map status -->
-    <!--
-    <div class="tracking-location-wraps">
+    <!-- <div class="tracking-location-wraps">
         <div class="tracking-location arrived-in">
             <div class="fa fa-home tracking-logo"></div>
             <div class="tracking-name">Ikeja EC</div>
@@ -68,7 +61,6 @@ $data = Calypso::getInstance()->getPageData();
             </div>
         </div>
     </div>
-    <br><br><br>
     <div class="tracking-location-wraps">
         <div class="tracking-location arrived-in">
             <div class="fa fa-home tracking-logo"></div>
@@ -98,7 +90,6 @@ $data = Calypso::getInstance()->getPageData();
             </div>
         </div>
     </div>
-    <br><br><br>
     <div class="tracking-location-wraps">
         <div class="tracking-location arrived-in">
             <div class="fa fa-home tracking-logo"></div>
@@ -139,7 +130,6 @@ $data = Calypso::getInstance()->getPageData();
             </div>
         </div>
     </div>
-    <br><br><br>
     <div class="tracking-location-wraps">
         <div class="tracking-location arrived-in">
             <div class="fa fa-home tracking-logo"></div>
@@ -180,9 +170,7 @@ $data = Calypso::getInstance()->getPageData();
             <div class="tracking-status">
             </div>
         </div>
-    </div>
-    <br><br><br>
-    -->
+    </div> -->
     <div class="tracking-location-wraps">
         <div class="tracking-location arrived-in">
             <div class="fa fa-home tracking-logo"></div>
@@ -234,9 +222,11 @@ $data = Calypso::getInstance()->getPageData();
             </div>
         </div>
     </div>
+<?php } else { ?>
+<div class="row empty-tracking-no">
+    <div class="col-xs-6 col-xs-offset-3 text-center">
+        <h1>Waybill / Tracking Number not found</h1>
+        <p class="text-muted">The waybill / tracking number you entered could not be found on our system. Please search with another number.</p>
+    </div>
 </div>
-<br><br><br><br>
-
-<div id="footer-bar" class="footer-transparent">
-    <p id="footer-copyright" class="">&copy; 2015<?php if(date('Y') > 2015): echo " &ndash; ".date('Y'); endif; ?> CourierPlus. All Rights Reserved.</p>
-</div>
+<?php } ?>
