@@ -40,7 +40,7 @@ class BaseController extends Controller {
             if(!array_key_exists($s['role_id'],$this->permissionMap)){
                 \Yii::$app->getUser()->logout();
                 Calypso::getInstance()->setPageData($access_denied_msg);
-               return $this->redirect(['site/logout']);
+               return $this->redirect(['site/accessdenied']);
             }
             $map = $this->permissionMap[$s['role_id']];
             $current = $action->controller->id;
@@ -48,16 +48,25 @@ class BaseController extends Controller {
             if(in_array($current.'/*',$map)){
                 \Yii::$app->getUser()->logout();
                 Calypso::getInstance()->setPageData($access_denied_msg);
-                return $this->redirect(['site/logout']);
+                return $this->redirect(['site/accessdenied']);
             }
 
             if(in_array($current.'/'.$action->id,$map)){
                 \Yii::$app->getUser()->logout();
                 Calypso::getInstance()->setPageData($access_denied_msg);
-                return $this->redirect(['site/logout']);
+                return $this->redirect(['site/accessdenied']);
             }
         }
         $this->enableCsrfValidation = false;
+
+        /**
+         * Set Current Transaction in New Relic
+         * @author Adegoke Obasa <goke@cottacush.com>
+         */
+        if (extension_loaded ('newrelic')) {
+            newrelic_name_transaction ($action->controller->id . '/' . $action->id);
+        }
+
         return parent::beforeAction($action);
     }
 

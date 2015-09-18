@@ -306,6 +306,14 @@ class Calypso
             ServiceConstant::USER_TYPE_OFFICER => ['finance/*', 'billing/*', 'admin/*'],
             ServiceConstant::USER_TYPE_SWEEPER => ['site/*', 'parcels/*', 'shipments/*', 'hubs/*', 'finance/*', 'billing/*', 'admin/*'],
             ServiceConstant::USER_TYPE_DISPATCHER => ['site/*', 'parcels/*', 'shipments/*', 'hubs/*', 'finance/*', 'billing/*', 'admin/*'],
+            ServiceConstant::USER_TYPE_GROUNDSMAN => [
+                'parcels/*',
+                'shipments/forsweep',
+                'shipments/delivered',
+                'hubs/hubarrival',
+                'finance/*',
+                'billing/*',
+                'admin/*'],
         ];
         return $permissionMap;
     }
@@ -325,7 +333,7 @@ class Calypso
             'Sorted_Shipments' => ['base_link' => 'hubs/delivery', 'class' => '','branch' => [ ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
             'Due_for_Delivery' => ['base_link' => 'shipments/fordelivery', 'class' => '','branch' => [ ServiceConstant::BRANCH_TYPE_EC, ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
             'Due_for_Sweep' => ['base_link' => 'shipments/forsweep', 'class' => '', 'branch' => [ ServiceConstant::BRANCH_TYPE_EC, ServiceConstant::BRANCH_TYPE_HQ]],
-            'Dispatched_to_Customers' => ['base_link' => 'shipments/dispatched', 'class' => '','branch' => [ ServiceConstant::BRANCH_TYPE_EC, ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
+            'Direct_Delivery' => ['base_link' => 'shipments/dispatched', 'class' => '','branch' => [ ServiceConstant::BRANCH_TYPE_EC, ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
             'Dispatched_to_Branches' => ['base_link' => 'hubs/hubdispatch', 'class' => '','branch' => [ ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
             'Delivered' => ['base_link' => 'shipments/delivered', 'class' => '','branch' => [ ServiceConstant::BRANCH_TYPE_EC, ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
             'All_Shipments' => ['base_link' => 'shipments/all', 'class' => '','branch' => [ ServiceConstant::BRANCH_TYPE_EC, ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
@@ -344,6 +352,7 @@ class Calypso
                     'Onforwarding_Charges' => ['base_link' => 'billing/onforwarding', 'class' => ''],
                 ],'branch' => [ ServiceConstant::BRANCH_TYPE_HQ]]
             ],'branch' => [ ServiceConstant::BRANCH_TYPE_HQ]],
+            'Manifests' => ['base' => 'manifest', 'base_link' => 'manifest/index','class' => 'fa fa-book'],
             'Customer_History' => ['base' => 'shipments', 'base_link' => 'shipments/customerhistory','class' => 'fa fa-user'
                 ,'branch' => [ ServiceConstant::BRANCH_TYPE_EC, ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]] ,
             'Reconciliations' => ['base' => 'finance', 'class' => 'fa fa-money', 'base_link' =>[
