@@ -130,18 +130,23 @@
     box-shadow: 0px 1px 3px 0 rgba(0,0,0, 0.1);
     position: relative;
     z-index: 99;
-
+	.navbar-brand-transparent {
+		background-color: transparent ;
+	}
 	.navbar-form {
 		.form-group {
 			position: relative;
 		}
 		.form-control {
-			background: #131313;
+			//background: #131313;
 			color: #707070;
 			height: 30px;
 			line-height: 30px;
 			margin-top: 2px;
 			font-size: 0.75em;
+			&.header-track-no-search {
+				width: 200px;
+			}
 		}
 		.nav-search-icon {
 			position: absolute;
