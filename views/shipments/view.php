@@ -174,7 +174,7 @@ $this->params['breadcrumbs'][] = 'Waybill';
 								</div>
 								<?php if(!empty($senderMerchant)):?>
 								<div class="col-xs-6">
-									<label>Merchant Order Number</label>
+									<label>Reference Number</label>
 									<div class="form-control-static">
 										<?= Calypso::getValue($parcelData, 'reference_number', ''); ?>
 									</div>
