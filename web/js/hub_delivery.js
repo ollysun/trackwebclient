@@ -20,7 +20,8 @@ var Parcel_Destination = {
         'allhubs' : '/hubs/allhubs',
         'allecforhubs' : '/hubs/allecforhubs',
         'staffdetails' : '/hubs/staffdetails',
-        'generatemanifest': '/hubs/generatemanifest'
+        'generatemanifest': '/hubs/generatemanifest',
+        'createbag': '/hubs/createbag'
     },
 
     getNewStaffInfo: function() {
@@ -96,6 +97,30 @@ var Parcel_Destination = {
             },
             error: function(err) {
                 alert('An error occurred when generating manifest. Please try again later');
+            },
+            complete: function(jqXHR) {
+
+            }
+        })
+    },
+
+    createBag: function(parcels) {
+
+
+        $.ajax({
+            url: Parcel_Destination.Url.createbag,
+            type: 'POST',
+            dataType: 'JSON',
+            data: JSON.stringify(parcels),
+            success: function(response) {
+                if(response.status == 'success') {
+                    alert('Bag with id ' + response.data.id + ' has been created successfully!');
+                } else {
+                    alert('An error occurred while trying to create bag. #' + response.message);
+                }
+            },
+            error: function(err) {
+                alert('We are unable to process this request. Please try again later.');
             },
             complete: function(jqXHR) {
 
@@ -280,7 +305,7 @@ $(document).ready(function(){
 
     function populateDialog(parcels) {
 
-        $('#dlg_location').val(parcels.to_branch_name);
+        $('#bag_dlg_location').val(parcels.to_branch_name);
         var html = '';
         $.each(parcels.waybills, function(i, waybill){
             html += "<tr>";
@@ -343,5 +368,53 @@ $(document).ready(function(){
 
     $("select#page_width").on('change', function (event) {
         $("form#records_filter").submit();
+    });
+
+    $('#btnCreateBag').on('click', function(event){
+        var chkboxes = $('.chk_next');
+        var selected = false;
+        var same_branch = true;
+        parcels.waybills = [];
+        var old_branch = '';
+        $.each(chkboxes, function(i, chk){
+
+            var checked = $(chk).is(':checked');
+            if(checked) {
+                selected = true;
+                var waybill = {};
+                var tr = $(chk).closest('tr');
+                if(!old_branch) {
+                    old_branch = parcels.to_branch_id = $(tr).attr('data-to-branch-id');
+                }
+                waybill.number = $(tr).attr('data-waybill');
+                waybill.final = TableHelper.getCellData('#next_dest', 5, $(tr).index());
+                parcels.waybills.push(waybill);
+                parcels.to_branch_id = $(tr).attr('data-to-branch-id');
+                parcels.to_branch_name = TableHelper.getCellData('#next_dest', 4, $(tr).index());
+
+                if(old_branch !== parcels.to_branch_id) {
+                    same_branch = false;
+                }
+            }
+        });
+
+        if(!selected) {
+            alert('You must select at least one parcel!');
+            event.preventDefault();
+            return;
+        }
+
+        if(!same_branch) {
+            alert('Manifest can only be generated for same next destination branch!');
+            event.preventDefault();
+            return;
+        }
+        populateDialog(parcels);
+        $('#createBag').modal('show');
+    });
+
+    $('#btnBag').on('click', function(event){
+        event.preventDefault();
+        Parcel_Destination.createBag(parcels);
     });
 });

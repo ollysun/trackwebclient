@@ -165,4 +165,8 @@ class ParcelAdapter extends BaseAdapter{
     public function cancel($postData){
         return $this->request(ServiceConstant::URL_CANCEL_PARCEL, $postData, self::HTTP_POST);
     }
+
+    public function createBag($postData) {
+        return $this->request(ServiceConstant::URL_CREATE_BAG, $postData, self::HTTP_POST);
+    }
 }

@@ -4,7 +4,6 @@ use yii\helpers\Html;
 <?= Html::cssFile('@web/css/libs/datepicker.css') ?>
 <?php
 use Adapter\Globals\ServiceConstant;
-if(!isset($filter)){$filter="-1";}
 ?>
     <form>
         <div class="clearfix">
@@ -26,9 +25,10 @@ if(!isset($filter)){$filter="-1";}
             </div>
             <div class="pull-left form-group form-group-sm<?= (!empty($hideStatusFilter) && $hideStatusFilter)? ' hidden' : '' ?>">
                 <label for="">Filter status</label><br>
-                <select name="date_filter" id="" class="form-control  filter-status">
-                    <option value="-1">NOT APPLICABLE</option>
-                    <option>Treated</option>
+                <select name="status" id="" class="form-control filter-status">
+                    <option value="-1">Select Status</option>
+                    <option value="to_branch_id=<?= $branchId?>" <?= $filter == "to_branch_id=$branchId" ? 'selected' : ''?>>Incoming</option>
+                    <option value="from_branch_id=<?= $branchId?>" <?= $filter == "from_branch_id=$branchId" ? 'selected' : ''?>>Outgoing</option>
                 </select>
             </div>
             <div class="pull-left">
