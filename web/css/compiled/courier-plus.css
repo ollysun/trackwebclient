@@ -2381,13 +2381,16 @@ blockquote.pull-right:before {
 .footable .footable-row-detail .footable-row-detail-cell {
   font-size: 1em;
 }
-.table .btn {
+.table td > .btn {
   margin-top: -5px;
   margin-bottom: -6px;
 }
-.table .btn-sm {
+.table td > .btn.btn-sm {
   margin-top: -3px;
   margin-bottom: -3px;
+}
+.table td > .btn + form {
+  display: inline-block;
 }
 .DTTT_selectable tr td {
   border-top: none !important;
@@ -2440,6 +2443,11 @@ blockquote.pull-right:before {
 label {
   font-size: 0.875em;
   margin-bottom: 0px;
+}
+.required-asterisk:after,
+.required-asterisk::after {
+  content: " *";
+  color: #e84e40;
 }
 .form-control {
   -webkit-border-radius: 4px;
@@ -2581,7 +2589,7 @@ input[type="radio"] {
   border-color: #ffc107;
 }
 .has-error .form-control {
-  border-color: #e84e40;
+  border-color: #e7ebee;
 }
 .has-error .help-block,
 .has-error .control-label {

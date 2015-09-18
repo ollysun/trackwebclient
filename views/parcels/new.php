@@ -2,7 +2,7 @@
 use Adapter\Util\Calypso;
 use Adapter\Globals\ServiceConstant;
 use yii\helpers\Html;
-
+use yii\web\View;
 /* @var $this yii\web\View */
 $this->title = 'Create a New Shipment';
 $this->params['breadcrumbs'] = array(
@@ -21,7 +21,7 @@ $is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
 
 <?php echo Calypso::showFlashMessages(); ?>
 
-<form action="#" method="post" enctype="multipart/form-data" class="validate-form" data-keyboard-submit data-watch-changes>
+<form action="#" method="post" enctype="multipart/form-data" class="validate-form add-required-asterisks" data-keyboard-submit data-watch-changes>
 
     <div id="newParcelForm" class="l-new-parcel-form carousel slide">
         <ol class="carousel-indicators hidden">
@@ -65,7 +65,7 @@ $is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
                             <div class="row">
                                 <div class="col-xs-12 col-sm-6 form-group">
                                     <label><?= ($is_hub) ? "Forward to another branch":"Send parcel to Hub";?>?</label>
-                                    <div>
+                                    <div class="validate">
                                         <div class="radio-inline">
                                             <input id="sendToHubYes" type="radio" name="send_to_hub" value="1"
                                                    checked="checked"> <label for="sendToHubYes" class="">Yes</label>
@@ -193,7 +193,7 @@ $is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
                             <div class="form-group">
                                 <label>Merchant?</label>
 
-                                <div>
+                                <div class="validate">
                                     <div class="radio-inline">
                                         <input id="merchantNew" type="radio" name="merchant" value="new"> <label
                                             for="merchantNew" class="">New</label>
@@ -266,14 +266,15 @@ $is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
 
                             <div class="form-group">
                                 <label>Corporate lead?</label><br>
-
-                                <div class="radio-inline">
-                                    <input id="cLeadYes" type="radio" name="corporate_lead" value="true"> <label
-                                        for="cLeadYes" class="">Yes</label>
-                                </div>
-                                <div class="radio-inline">
-                                    <input id="cLeadNo" type="radio" name="corporate_lead" value="false"
-                                           checked="checked"> <label for="cLeadNo" class="">No</label>
+                                <div class="validate">
+                                    <div class="radio-inline">
+                                        <input id="cLeadYes" type="radio" name="corporate_lead" value="true"> <label
+                                            for="cLeadYes" class="">Yes</label>
+                                    </div>
+                                    <div class="radio-inline">
+                                        <input id="cLeadNo" type="radio" name="corporate_lead" value="false"
+                                               checked="checked"> <label for="cLeadNo" class="">No</label>
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -298,7 +299,7 @@ $is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
                     <div class="col-xs-12 col-sm-6 col-sm-push-3">
                         <div class="main-box">
                             <div class="main-box-header">
-                                <h2>Payment Information</h2>
+                                <h2>Shipping Cost</h2>
                             </div>
                             <div class="main-box-body">
                                 <div class="form-group amount-due-wrap">
@@ -326,7 +327,7 @@ $is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
                                                 POS</label>
                                         </div>
                                         <div class="radio-inline">
-                                            <input id="paymentMethodDeferred" type="radio" name="payment_method" value="4"> <label for="paymentMethodDeferred" class="">Deferred</label>
+                                            <input id="paymentMethodDeferred" type="radio" name="payment_method" value="4"> <label for="paymentMethodDeferred" class="">Deferred (Freight)</label>
                                         </div>
                                     </div>
                                 </div>
@@ -356,7 +357,7 @@ $is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
                                 <a href="#newParcelForm" data-slide="prev" class="btn btn-default pull-left"><i
                                         class="fa fa-arrow-left"></i> Back</a>
                                 <button type="submit" class="btn btn-primary pull-right"><i class="fa fa-check"></i>
-                                    Save &amp; Print
+                                    CREATE
                                 </button>
                             </div>
                         </div>
@@ -372,3 +373,6 @@ $is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
 <?php $this->registerJsFile('@web/js/form-watch-changes.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/validate.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/new_parcel_form.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
+<?php
+$this->registerJs('$(".alert").delay(5000).fadeOut(1500);',View::POS_READY);
+?>

@@ -1,5 +1,5 @@
 @page {
-  margin: 0.15cm;
+  margin: 0.4cm 0.4cm;
 }
 .clearfix:before,
 .clearfix:after,
@@ -72,7 +72,7 @@ body {
   right: 25px;
   font-size: 22px;
   font-weight: bold;
-  text-align: center;
+  text-align: right;
 }
 .waybill-barcode {
   position: absolute;

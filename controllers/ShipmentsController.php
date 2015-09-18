@@ -21,6 +21,7 @@ use Adapter\RequestHelper;
 use Adapter\ResponseHandler;
 use Adapter\Util\Calypso;
 use app\services\HubService;
+use Adapter\TellerAdapter;
 use yii\data\Pagination;
 use Yii;
 use yii\web\Response;
@@ -213,7 +214,7 @@ class ShipmentsController extends BaseController {
         if(!empty(Calypso::getInstance()->get()->search)){  //check if not empty criteria
             $search = Calypso::getInstance()->get()->search;
             $response = $parcel->getSearchParcels('-1',$search,$offset,$page_width, 1, $this->branch_to_view);
-            $search_action = true;
+            $search_action = $search;
         }else{
             $response = $parcel->getParcels(null,null, ServiceConstant::FOR_SWEEPER,$this->branch_to_view,$offset,$page_width, null, 1);
             $search_action = false;
@@ -239,6 +240,40 @@ class ShipmentsController extends BaseController {
             Calypso::getInstance()->cookie('page_width',$page_width);
         }
         $offset = ($page-1)*$page_width;
+
+        if(\Yii::$app->request->isPost) {
+            $records = \Yii::$app->request->post();
+            if($records['task'] == 'cancel_shipment'){
+                $parcel = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+                $response = $parcel->cancel($records);
+                $response = new ResponseHandler($response);
+
+                if($response->getStatus() ==  ResponseHandler::STATUS_OK){
+                    $this->flashSuccess('Shipment successfully marked as CANCELLED');
+                }
+                else{
+                    $this->flashError('An error occurred while trying to cancel shipment. #'.$response->getError());
+                }
+
+            }
+            elseif($records['submit_teller']) {
+                if(!isset($records['bank_id'], $records['account_no'], $records['amount_paid'], $records['teller_no'], $records['waybill_numbers'])) {
+                    $this->flashError("Invalid parameter(s) sent!");
+                } else {
+                    $teller = new TellerAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+                    $teller = $teller->addTeller($records);
+                    $response = new ResponseHandler($teller);
+
+                    if($response->getStatus() ==  ResponseHandler::STATUS_OK){
+                        $this->flashSuccess('Teller successfully added');
+                    }
+                    else{
+                        $this->flashError('An error occurred while trying to add teller. #'.$response->getError());
+                    }
+                }
+            }
+        }
+
         $parcel = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
         if(isset(Calypso::getInstance()->get()->from,Calypso::getInstance()->get()->to)){
             $from_date = Calypso::getInstance()->get()->from;
@@ -263,12 +298,14 @@ class ShipmentsController extends BaseController {
         $data = [];
         $total_count = 0;
         if($response->getStatus() ==  ResponseHandler::STATUS_OK){
-
             $data = $response->getData();
             $total_count = empty($data['total_count']) ? 0 : $data['total_count'];
             $data = empty($data['parcels']) ? 0 : $data['parcels'];
         }
-        return $this->render('processed',array('filter'=>$filter,'parcels'=>$data,'from_date'=>$from_date,'to_date'=>$to_date,'offset'=>$offset,'page_width'=>$this->page_width,'search'=>$search_action, 'total_count'=>$total_count));
+        $refData = new RefAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+        $banks = $refData->getBanks(); // get all the banks
+
+        return $this->render('processed',array('filter'=>$filter,'parcels'=>$data,'from_date'=>$from_date,'to_date'=>$to_date,'offset'=>$offset,'page_width'=>$this->page_width,'search'=>$search_action, 'total_count'=>$total_count, 'banks'=>$banks));
     }
 
     /**
