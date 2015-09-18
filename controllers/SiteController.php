@@ -468,4 +468,8 @@ class SiteController extends BaseController
         $this->layout = 'tracking';
         return $this->render('track');
     }
+    public function actionTracksearch()
+    {
+        return $this->render('track_search');
+    }
 }
