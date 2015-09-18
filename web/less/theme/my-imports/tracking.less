@@ -12,7 +12,11 @@
 .tracking-location-wraps {
 	display: table;
 	width: 100%;
+	margin-top: 80px;
 	table-layout: fixed;
+	& + & {
+		margin-top: 60px;
+	}
 }
 .tracking-location {
 	position: relative;
@@ -30,6 +34,9 @@
 		font-size: 120%;
 		line-height: 1;
 	}
+}
+.empty-tracking-no {
+	margin-top: 80px;
 }
 .tracking {
 	&-logo {
