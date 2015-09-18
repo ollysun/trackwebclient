@@ -31,7 +31,7 @@ class BaseController extends Controller {
     }
     public function beforeAction($action){
         $access_denied_msg = "You are not eligible to access this system, kindly contact your administrator";
-        if(!in_array($action->id,array('logout','login','gerraout','site'))){
+        if(!in_array($action->id,array('logout','login','gerraout','site','track','tracksearchdetails'))){
             $this->setPermissionMap();
             $s = Calypso::getInstance()->session('user_session');
             if(!$s){
