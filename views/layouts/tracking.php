@@ -32,10 +32,28 @@ TrackingAsset::register($this);
 <body class="theme-amethyst fixed-footer">
 
 <?php $this->beginBody() ?>
+    <header class="navbar" id="header-navbar">
+        <div class="container">
+            <div id="logo" class="navbar-brand navbar-brand-transparent">
+                <?= Html::img('@web/img/tnt-cp-logo-color.png', ['class' => 'normal-logo', 'alt' => 'CourierPlus Logo']) ?>
+            </div>
+            <div class="navbar-text text-muted">TRACKING PORTAL</div>
+            <form action="" class="navbar-right navbar-form">
+                <input type="text" class="form-control header-track-no-search" placeholder="Enter Waybill / Tracking no">
+                <button type="submit" class="btn btn-primary btn-sm">Track</button>
+            </form>
+        </div>
+    </header>
+    <br>
+    <div class="container">
+        <?= $content ?>
+    </div>
 
-    <?= $content ?>
+    <br><br><br><br>
 
-
+    <div id="footer-bar" class="footer-transparent">
+        <p id="footer-copyright" class="">&copy; 2015<?php if(date('Y') > 2015): echo " &ndash; ".date('Y'); endif; ?> CourierPlus. All Rights Reserved.</p>
+    </div>
 <?php $this->endBody() ?>
 </body>
 </html>
