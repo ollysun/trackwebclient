@@ -463,4 +463,9 @@ class SiteController extends BaseController
         $this->layout = 'login';
         return $this->render('changepassword');
     }
+    public function actionTrack()
+    {
+        $this->layout = 'tracking';
+        return $this->render('track');
+    }
 }

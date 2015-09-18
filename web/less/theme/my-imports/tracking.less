@@ -1,0 +1,94 @@
+
+@tracking-green: #6aa84f;
+@tracking-grey: #bbbbbb;
+@tracking-text: #333;
+
+
+.container {
+	width: 95%;
+	max-width: 1600px;
+	margin: 0 auto;
+}
+.tracking-location-wraps {
+	display: table;
+	width: 100%;
+	table-layout: fixed;
+}
+.tracking-location {
+	position: relative;
+	display: table-cell;
+	min-width: 1%;
+	color: @tracking-text;
+	text-align: center;
+}
+.tracking-info {
+	&-label {
+		color: #666;
+	}
+	&-value {
+		//margin-top: 5px;
+		font-size: 120%;
+		line-height: 1;
+	}
+}
+.tracking {
+	&-logo {
+		font-size: 54px;
+		color: #666;
+	}
+	&-name {
+		margin-bottom: 20px;
+		font-size: 105%;
+	}
+	&-circle {
+		position: relative;
+		width: 20px;
+		height: 20px;
+		border-radius: 50%;
+		z-index: 5;
+		.in-transit & {
+			margin-left: -10px;
+			background-color: @tracking-grey;
+		}
+		.arrived-in & {
+			margin: 0 auto;
+			background-color: @tracking-green;
+		}
+	}
+	&-bar {
+		height: 10px;
+		margin: -15px 0 0 -50%;
+		width: 0%;
+		.in-transit & {
+			width: 50%;
+			background-color: @tracking-grey;
+		}
+		.arrived-in & {
+			width: 100%;
+			background-color: @tracking-green;
+		}
+		.tracking-location:first-child & {
+			width: 0%;
+			background: transparent;
+		}
+	}
+	&-status {
+		margin-top: 10px;
+		width: 100%;
+		font-size: 95%;
+		color: transparent;
+
+		&-inner {
+			display: block;
+			width: 40%;
+			margin: 0 auto;
+		}
+		.in-transit &,
+		.arrived-in & {
+			color: @tracking-text;
+		}
+		.in-transit & {
+			margin-left: -50%;
+		}
+	}
+}
