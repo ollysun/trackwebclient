@@ -241,6 +241,13 @@ $is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
 
                                 <div class="row">
                                     <div class="col-xs-12 col-sm-6 col-lg-5 form-group">
+                                        <label>Merchant Order Number</label>
+                                        <input name="reference_number" class="form-control" id="reference_number">
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-6 col-lg-5 form-group">
                                         <label>Cash on Delivery?</label><br>
 
                                         <div class="radio-inline">
@@ -302,11 +309,29 @@ $is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
                                 <h2>Shipping Cost</h2>
                             </div>
                             <div class="main-box-body">
-                                <div class="form-group amount-due-wrap">
+                                <div id="auto_billing" class="form-group amount-due-wrap">
                                     <label for="">Amount Due</label>
 
                                     <div class="amount-due currency naira">0.00</div>
                                     <input type="hidden" name="amount" id="amount" />
+                                </div>
+                                <div id="manual_billing" class="form-group amount-due-wrap" style="display: none;">
+                                    <label for="">Amount Due</label>
+                                    <input type="text" class="form-control" name="manual_amount" id="manual_amount" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="">Billing Method</label>
+                                    <div>
+                                        <div class="radio-inline">
+                                            <input id="autoBillingMethod" type="radio" name="billing_method" value="auto"
+                                                   checked="checked"> <label for="autoBillingMethod"
+                                                                             class="">Auto</label>
+                                        </div>
+                                        <div class="radio-inline">
+                                            <input id="manualBillingMethod" type="radio" name="billing_method" value="manual">
+                                            <label for="manualBillingMethod" class="">Manual</label>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="">Payment Method</label>

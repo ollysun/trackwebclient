@@ -63,6 +63,9 @@ class ParcelService {
             $bankData = null;
         }
 
+        // Add Merchant Order Number
+        $parcel['reference_number'] = Calypso::getValue($data, 'reference_number', null);
+
         $parcel['parcel_type'] = Calypso::getValue($data, 'parcel_type');
         $parcel['no_of_package'] = Calypso::getValue($data, 'no_of_packages');
         if(!is_numeric($parcel['no_of_package'])) {
@@ -72,10 +75,16 @@ class ParcelService {
         if(!isset($parcel['weight']) || !is_numeric($parcel['weight'])) {
             $error[] = "Weight cannot be empty and must be numeric";
         }
+
+        $parcel['billing_method'] = Calypso::getValue($data, 'billing_method', 'auto');
         $parcel['package_value'] = Calypso::getValue($data, 'parcel_value',0);
 
+        // Manual Billing Amount
         $parcel['amount_due'] = Calypso::getValue($data, 'amount');
-        if(!$parcel['amount_due']) {
+        $manualAmount = Calypso::getValue($data, 'manual_amount');
+        $parcel['amount_due'] = $parcel['billing_method'] == 'manual' ? $manualAmount : $parcel['amount_due'] ;
+        $parcel['is_billing_overridden'] = $parcel['billing_method'] == 'manual' ? 1 : 0;
+        if(!$parcel['amount_due'] && !$manualAmount) {
             $error[] = "Amount must be calculated. Please ensure all zone billing and mapping are set.";
         }
         $parcel['cash_on_delivery'] = ($data['cash_on_delivery'] === 'true') ? 1 : 0;
