@@ -301,13 +301,14 @@ class HubsController extends BaseController {
         $data = json_decode($rawData, true);
         $paramWaybills = [];
 
+        if(!isset($data['waybills'])) {
+            return $this->sendErrorResponse("Invalid parameter(s) sent!", null);
+        }
+
         foreach ($data['waybills'] as $wb) {
             $paramWaybills[] = $wb['number'];
         }
 
-        if(empty($paramWaybills)) {
-            return $this->sendErrorResponse("Invalid parameter(s) sent!", null);
-        }
         $waybills = implode(",", $paramWaybills);
         $payload = [
             'waybill_numbers'   => $waybills,
