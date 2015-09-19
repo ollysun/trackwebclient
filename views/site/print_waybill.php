@@ -86,8 +86,20 @@ $copies = ["Sender's Copy","Recipient's Copy","Ack. Copy"," EC Copy"];
     </div>
 
     <div class="code">
-        <div class="code__origin"></div>
-        <div class="code__destination"></div>
+        <div class="code__origin">
+            <?php
+                if (!empty($sender_location)) {
+                    echo strtoupper(substr($sender_location['state']['name'], 0, 3));
+                }
+            ?>
+        </div>
+        <div class="code__destination">
+            <?php
+                if (!empty($receiver_location)) {
+                    echo strtoupper(substr($receiver_location['state']['name'], 0, 3));
+                }
+            ?>
+        </div>
     </div>
 
     <div class="shipment">
