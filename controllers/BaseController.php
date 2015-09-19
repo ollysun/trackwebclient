@@ -143,4 +143,13 @@ class BaseController extends Controller {
 
         \Yii::$app->session->setFlash('success', $message);
     }
+
+    /**
+     * @param int $code Error code of the action
+     * @param array $payload Data to send down to the form
+     * @param string $callback existing Javascript function to handle this request
+     */
+    public function sendAsyncFormResponse( $code, array $payload, $callback=""){
+        die("<script type='text/javascript'>window.top.getAsyncResponse(".$code.",".json_encode($payload).",'".$callback."');</script>");
+    }
 }
