@@ -241,13 +241,6 @@ $is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
 
                                 <div class="row">
                                     <div class="col-xs-12 col-sm-6 col-lg-5 form-group">
-                                        <label>Reference Number</label>
-                                        <input name="reference_number" class="form-control" id="reference_number">
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-xs-12 col-sm-6 col-lg-5 form-group">
                                         <label>Cash on Delivery?</label><br>
 
                                         <div class="radio-inline">
@@ -284,6 +277,13 @@ $is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="form-group">
+                                <label>Reference Number(s)</label>
+                                <input name="reference_number" class="form-control" id="reference_number">
+                                <div class="help-block">Please separate multiple reference numbers with commas</div>
+                            </div>
+
                             <div class="form-group">
                                 <label>Parcel Description</label>
                                 <textarea name="other_info" class="form-control validate length" data-validate-length-type='word' data-validate-max-length="50"></textarea>
