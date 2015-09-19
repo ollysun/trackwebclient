@@ -13,9 +13,9 @@ use \yii\web\Controller,
     \yii\web\Response;
 use Adapter\Globals\HttpStatusCodes;
 use Adapter\Util\Calypso;
-use Adapter\Globals\ServiceConstant;
 
-class BaseController extends Controller {
+class BaseController extends Controller
+{
     /*
      * const USER_TYPE_ADMIN = 1;
         const USER_TYPE_OFFICER = 2;
@@ -26,32 +26,36 @@ class BaseController extends Controller {
      * */
     private $permissionMap = [];
     public $page_width = 50;
-    protected function setPermissionMap(){
+
+    protected function setPermissionMap()
+    {
         $this->permissionMap = Calypso::getInstance()->permissionMap();
     }
-    public function beforeAction($action){
+
+    public function beforeAction($action)
+    {
         $access_denied_msg = "You are not eligible to access this system, kindly contact your administrator";
-        if(!in_array($action->id,array('logout','login','gerraout','site','track','tracksearchdetails'))){
+        if (!in_array($action->id, array('logout', 'login', 'gerraout', 'site', 'accessdenied'))) {
             $this->setPermissionMap();
             $s = Calypso::getInstance()->session('user_session');
-            if(!$s){
+            if (!$s) {
                 return $this->redirect(['site/gerraout']);
             }
-            if(!array_key_exists($s['role_id'],$this->permissionMap)){
+            if (!array_key_exists($s['role_id'], $this->permissionMap)) {
                 \Yii::$app->getUser()->logout();
                 Calypso::getInstance()->setPageData($access_denied_msg);
-               return $this->redirect(['site/accessdenied']);
+                return $this->redirect(['site/accessdenied']);
             }
             $map = $this->permissionMap[$s['role_id']];
             $current = $action->controller->id;
             //Wild card
-            if(in_array($current.'/*',$map)){
+            if (in_array($current . '/*', $map)) {
                 \Yii::$app->getUser()->logout();
                 Calypso::getInstance()->setPageData($access_denied_msg);
                 return $this->redirect(['site/accessdenied']);
             }
 
-            if(in_array($current.'/'.$action->id,$map)){
+            if (in_array($current . '/' . $action->id, $map)) {
                 \Yii::$app->getUser()->logout();
                 Calypso::getInstance()->setPageData($access_denied_msg);
                 return $this->redirect(['site/accessdenied']);
@@ -63,8 +67,8 @@ class BaseController extends Controller {
          * Set Current Transaction in New Relic
          * @author Adegoke Obasa <goke@cottacush.com>
          */
-        if (extension_loaded ('newrelic')) {
-            newrelic_name_transaction ($action->controller->id . '/' . $action->id);
+        if (extension_loaded('newrelic')) {
+            newrelic_name_transaction($action->controller->id . '/' . $action->id);
         }
 
         return parent::beforeAction($action);
@@ -73,6 +77,7 @@ class BaseController extends Controller {
     /**
      * Allow sending success response
      * @param $data
+     * @return array
      */
     public function sendSuccessResponse($data)
     {
@@ -91,6 +96,7 @@ class BaseController extends Controller {
      * @param $code
      * @param null $data
      * @param $http_status_code
+     * @return array
      */
     public function sendErrorResponse($message, $code, $data = null, $http_status_code = 200)
     {
@@ -114,6 +120,7 @@ class BaseController extends Controller {
     /**
      * @param $data
      * @param int $http_status_code
+     * @return array
      */
     public function sendFailResponse($data, $http_status_code = 500)
     {
@@ -130,7 +137,8 @@ class BaseController extends Controller {
      * This flashes error message and sends to the view
      * @param $message
      */
-    public function flashError($message) {
+    public function flashError($message)
+    {
 
         \Yii::$app->session->setFlash('danger', $message);
     }
@@ -139,8 +147,18 @@ class BaseController extends Controller {
      * This flashes success message and sends to the view
      * @param $message
      */
-    public function flashSuccess($message) {
+    public function flashSuccess($message)
+    {
 
         \Yii::$app->session->setFlash('success', $message);
+    }
+
+    /**
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     */
+    public function isUserLoggedIn()
+    {
+        $user_session = Calypso::getInstance()->session('user_session');
+        return ($user_session) ? true : false;
     }
 }

@@ -14,7 +14,7 @@ use Adapter\Globals\ServiceConstant;
 class BranchAdapter extends BaseAdapter
 {
     const BRANCH_TYPE_HUB = 2;
-    const BRANCH_TYPE_EC = 1;
+    const BRANCH_TYPE_EC = 4;
 
 
     public function createNewHub($postData)

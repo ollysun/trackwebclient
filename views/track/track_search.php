@@ -28,10 +28,10 @@ $this->params['breadcrumbs'] = array(
 
 		<h2 class="text-muted text-center">Search to find and view parcel history</h2>
 		<br>
-		<form class="row" action="<?= Url::to(['site/track']) ?>">
+		<form class="row">
 			<div class="col-xs-10 col-xs-offset-1 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3 form-group">
 				<div class="input-group input-group-lg">
-					<input type="text" name="search" class="form-control" placeholder="Search by waybill or tracking number">
+					<input type="text" name="query" class="form-control" placeholder="Search by waybill or tracking number">
 					<div class="input-group-btn">
 						<button class="btn btn-primary"><i class="fa fa-search"></i> Search</button>
 					</div>
