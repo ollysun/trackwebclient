@@ -287,7 +287,10 @@ function FlyOutPanel(triggerSelector, evt) {
 }
 
 var Parcel = {
-
+    onFormErrorCallback : function(code, payload){
+        //Handler as sent from the server
+        alert(payload.message);
+    },
     newUserObject: function () {
         return {
             id: '',
