@@ -551,9 +551,9 @@ $(document).ready(function () {
         $(".amount-due-wrap").hide();
         $('#' + $(this).val() + '_billing').show();
         if($(this).val() == 'manual') {
-            $("input[name='manual_amount']").addClass('validate non-zero-integer required');
+            $("input[name='manual_amount']").addClass('validate integer required');
         } else {
-            $("input[name='manual_amount']").removeClass('validate non-zero-integer required');
+            $("input[name='manual_amount']").removeClass('validate integer required');
         }
     });
 
