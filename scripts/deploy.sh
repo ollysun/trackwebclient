@@ -16,13 +16,18 @@ function merge() {
 function deploy() {
     ## Deploys app to server
     # 1 - Environment
-    # 2 - Username
-    # 3 - Host
-    # 4 - App Folder
-    echo "Deploying to $1 $2"
+    echo "Deploying to $1"
+
+    echo "Enter username and press [ENTER]"
+    read username
+
+    echo "Enter host and press [ENTER]"
+    read host
+
     echo "Enter ssh key file and press [ENTER]"
     read ssh_key_file
-    ssh $2@$3 -i $ssh_key_file "cd $4 && git pull"
+
+    ssh $username@$host -i $ssh_key_file "cd /var/www/html/$courierplusng && git pull"
 }
 
 function tagRelease() {
@@ -46,6 +51,7 @@ echo "Enter the development branch and press [ENTER]"
 read dev_branch
 
 envs=(staging production)
+app_folder=courierplusng
 
 if [ -n "$dev_branch" ] ; then
     for env in "${envs[@]}"
@@ -57,7 +63,7 @@ if [ -n "$dev_branch" ] ; then
             read branch
             if [ -n "$branch" ] ; then
                 merge $dev_branch $branch
-                deploy $env $username $host $app_folder
+                deploy $env
                 if [ "$env" = "production" ]; then
                     tagRelease $dev_branch
                 fi
