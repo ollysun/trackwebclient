@@ -122,11 +122,11 @@ function getServerResponse(statusCode, message) {
                 $('input[name="account_name"]').removeClass('name');
             }
             else {
-                $('input[name="account_name"], input[name="account_no"], select[name="bank"]')
+                /*$('input[name="account_name"], input[name="account_no"], select[name="bank"]')
                     .addClass('required validate active-validate')
                     .on('blur.CP.form.validate', validateFxn);
                 $('input[name="account_no"]').addClass('integer length');
-                $('input[name="account_name"]').addClass('name');
+                $('input[name="account_name"]').addClass('name');*/
             }
         }
     };
@@ -287,7 +287,10 @@ function FlyOutPanel(triggerSelector, evt) {
 }
 
 var Parcel = {
-
+    onFormErrorCallback : function(code, payload){
+        //Handler as sent from the server
+        alert(payload.message);
+    },
     newUserObject: function () {
         return {
             id: '',
