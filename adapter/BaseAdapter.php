@@ -9,7 +9,7 @@ abstract class BaseAdapter
 {
     //TODO move to configs
     const ROOT_PATH = 'http://staging-tnt-service.cottacush.com/'; # must always end with a '/'
-//    const ROOT_PATH = 'http://local.courierplus.tntservice.com/'; # must always end with a '/'
+    //const ROOT_PATH = 'http://local.courierplus.tntservice.com/'; # must always end with a '/'
 
     const HTTP_GET = 1;
     const HTTP_POST = 2;
@@ -146,5 +146,24 @@ abstract class BaseAdapter
     public function getHttpStatus()
     {
         return $this->_curlagent->getHttpStatus();
+    }
+
+    /**
+     * Decode response
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     * @param $response
+     * @return bool | mixed
+     */
+    public function decodeResponse($response)
+    {
+        if ($response) {
+            if ($response['status'] === Response::STATUS_OK) {
+                return $response['data'];
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
     }
 } 

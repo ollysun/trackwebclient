@@ -85,9 +85,25 @@ $copies = ["Sender's Copy","Recipient's Copy","Ack. Copy"," EC Copy"];
         <div class="shipped-date__yy"><?= date('y', strtotime($parcelData['created_date'])); ?></div>
     </div>
 
+    <div class="reference-no">
+        <?= !is_null(Calypso::getValue($parcelData, 'reference_number')) ? Calypso::getValue($parcelData, 'reference_number')  : '';?>
+    </div>
+
     <div class="code">
-        <div class="code__origin"></div>
-        <div class="code__destination"></div>
+        <div class="code__origin">
+            <?php
+                if (!empty($sender_location)) {
+                    echo strtoupper(substr($sender_location['state']['name'], 0, 3));
+                }
+            ?>
+        </div>
+        <div class="code__destination">
+            <?php
+                if (!empty($receiver_location)) {
+                    echo strtoupper(substr($receiver_location['state']['name'], 0, 3));
+                }
+            ?>
+        </div>
     </div>
 
     <div class="shipment">
@@ -129,7 +145,7 @@ $copies = ["Sender's Copy","Recipient's Copy","Ack. Copy"," EC Copy"];
     </div>
 
     <div class="other-info">
-        <?= $parcelData['other_info']; ?> <?= !is_null(Calypso::getValue($parcelData, 'reference_number')) ? ' (Reference Number: ' . Calypso::getValue($parcelData, 'reference_number') . ')'  : '';?>
+        <?= $parcelData['other_info']; ?>
     </div>
 </div>
 <?php if (!($i & 1)) { echo '<div class="waybill-divider"></div>'; } } ?>
