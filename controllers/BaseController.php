@@ -13,6 +13,7 @@ use \yii\web\Controller,
     \yii\web\Response;
 use Adapter\Globals\HttpStatusCodes;
 use Adapter\Util\Calypso;
+use Adapter\Globals\ServiceConstant;
 
 class BaseController extends Controller
 {
@@ -160,5 +161,14 @@ class BaseController extends Controller
     {
         $user_session = Calypso::getInstance()->session('user_session');
         return ($user_session) ? true : false;
+    }
+
+    /**
+     * @param int $code Error code of the action
+     * @param array $payload Data to send down to the form
+     * @param string $callback existing Javascript function to handle this request
+     */
+    public function sendAsyncFormResponse( $code, array $payload, $callback=""){
+        die("<script type='text/javascript'>window.top.getAsyncResponse(".$code.",".json_encode($payload).",'".$callback."');</script>");
     }
 }

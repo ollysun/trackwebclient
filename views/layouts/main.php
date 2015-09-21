@@ -31,10 +31,25 @@ $session_data = Calypso::getInstance()->session('user_session');
         <?= Html::jsFile('@web/js/libs/html5shiv.js') ?>
         <?= Html::jsFile('@web/js/libs/respond.min.js') ?>
     <![endif]-->
-
+    <script type="text/javascript">
+        function getAsyncResponse(code, payload, callback) {
+            if(callback.trim().length > 0)
+            {
+                var fxn = callback.split(".");
+                if(fxn.length > 0){
+                    if(typeof window[fxn[0]] != 'undefined'){
+                        var f = window[fxn[0]];
+                        if(typeof f !='undefined' && typeof fxn[1] !='undefined' && typeof f[fxn[1]] == 'function') {
+                            f[fxn[1]](code,payload);
+                        }
+                    }
+                }
+            }
+        }
+    </script>
 </head>
 <body class="theme-amethyst fixed-header fixed-leftmenu fixed-footer">
-
+<iframe id="async_frame" name="async_frame" style="display: none; visibility: hidden; border: 0; position: absolute; top: -99999px; left: -99999px"></iframe>
 <?php $this->beginBody() ?>
     <div id="theme-wrapper">
         <?= $this->render('../elements/header') ?>
