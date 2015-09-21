@@ -6,6 +6,7 @@ use Adapter\ManifestAdapter;
 use Adapter\RequestHelper;
 use Adapter\ResponseHandler;
 use Adapter\Util\Calypso;
+use Adapter\Globals\ServiceConstant;
 
 class ManifestController extends BaseController
 {
@@ -140,12 +141,9 @@ class ManifestController extends BaseController
         } else {
             $this->flashError('An error occurred while trying to fetch manifest details. Please try again.');
         }
-        return $this->render('print', ['manifest' => $manifest, 'id' => $id]);
-    }
 
-    public function actionPrintdelivery()
-    {
-        $this->layout = 'print';
-        return $this->render('print_delivery_run');
+        $template = ($manifest['type_id'] == ServiceConstant::REF_MANIFEST_TYPE_DELIVERY) ? 'print_delivery_run' : 'print';
+
+        return $this->render($template, ['manifest' => $manifest, 'id' => $id]);
     }
 }
