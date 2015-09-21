@@ -24,6 +24,7 @@ class ManifestAdapter extends BaseAdapter
             'with_holder' => '',
             'with_from_branch' => '',
             'with_sender_admin' => '',
+            'with_total_count' => 'true',
             'with_to_branch' => ''));
 
         return $this->request(ServiceConstant::URL_MANIFEST_ALL,
