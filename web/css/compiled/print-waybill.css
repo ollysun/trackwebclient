@@ -86,7 +86,7 @@ body {
 }
 .waybill-no {
   position: absolute;
-  top: 153px;
+  top: 133px;
   left: 441px;
   width: auto;
   height: auto;
@@ -137,6 +137,16 @@ body {
   bottom: 8px;
   right: 0;
 }
+.reference-no {
+  position: absolute;
+  top: 196px;
+  left: 441px;
+  width: 280px;
+  height: 56px;
+  font-size: 18px;
+  overflow: hidden;
+  padding: 0 7px;
+}
 .shipped-date {
   position: absolute;
   top: 558px;
@@ -152,7 +162,7 @@ body {
 }
 .code {
   position: absolute;
-  top: 220px;
+  top: 300px;
   left: 441px;
   width: 280px;
   height: auto;
@@ -166,7 +176,7 @@ body {
 }
 .shipment {
   position: absolute;
-  top: 330px;
+  top: 406px;
   left: 441px;
   width: 280px;
   height: auto;
@@ -179,7 +189,7 @@ body {
 }
 .service-type {
   position: absolute;
-  top: 467px;
+  top: 495px;
   left: 678px;
   width: 25px;
   height: auto;
@@ -212,7 +222,7 @@ body {
 }
 .parcel-type {
   position: absolute;
-  top: 640px;
+  top: 670px;
   left: 441px;
   width: 280px;
   height: 1em;
@@ -287,6 +297,7 @@ body {
   .show-borders .user__inner *,
   .show-borders .shipped-date,
   .show-borders .shipped-date *,
+  .show-borders .reference-no,
   .show-borders .code,
   .show-borders .code *,
   .show-borders .shipment,

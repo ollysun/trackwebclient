@@ -172,20 +172,14 @@ $this->params['breadcrumbs'][] = 'Waybill';
 										<?= (empty($senderMerchant)) ? 'No' : 'Yes'; ?>
 									</div>
 								</div>
-								<?php if(!empty($senderMerchant)):?>
+								<?php if(!empty(Calypso::getValue($parcelData, 'reference_number', ''))): ?>
 								<div class="col-xs-6">
-									<label>Reference Number</label>
+									<label>Reference Number(s)</label>
 									<div class="form-control-static">
 										<?= Calypso::getValue($parcelData, 'reference_number', ''); ?>
 									</div>
 								</div>
 								<?php endif; ?>
-								<div class="col-xs-6 hidden">
-									<label>Sender is a Corporate lead?</label>
-									<div class="class-form-control-static">
-										not available in api
-									</div>
-								</div>
 							</div>
 							<?php if(!empty($senderMerchant)) { ?>
 							<div class="row">

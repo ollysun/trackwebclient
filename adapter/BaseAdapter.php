@@ -147,4 +147,23 @@ abstract class BaseAdapter
     {
         return $this->_curlagent->getHttpStatus();
     }
+
+    /**
+     * Decode response
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     * @param $response
+     * @return bool | mixed
+     */
+    public function decodeResponse($response)
+    {
+        if ($response) {
+            if ($response['status'] === Response::STATUS_OK) {
+                return $response['data'];
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
 } 
