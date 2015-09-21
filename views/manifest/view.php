@@ -13,7 +13,7 @@ $this->params['breadcrumbs'] = array(
     array('label'=> 'View '.$this->title)
 );
 
-$this->params['content_header_button'] = '<a href="'.Url::to(['manifest/print?id='.$id]).'" class="btn btn-primary"><i class="fa fa-print"></i> Print Manifest</a>';
+$this->params['content_header_button'] = '<button onclick="javascript:window.open(\''.Url::to(['manifest/print?id='.$id]).'\', \'_blank\', \'toolbar=yes, scrollbars=yes, resizable=yes, top=10, left=50%, width=1100, height=800\');" class="btn btn-primary"><i class="fa fa-print"></i> Print Manifest</button>';
 
 ?>
 <!-- this page specific styles -->
@@ -69,7 +69,7 @@ $this->params['content_header_button'] = '<a href="'.Url::to(['manifest/print?id
                 $totalNumber = 0;
                 foreach(Calypso::getValue($manifest, 'parcels', array()) as $parcel):
                 $totalNumber += (int) Calypso::getValue($parcel, 'no_of_package');
-                $totalWeight += (int) Calypso::getValue($parcel, 'weight');
+                $totalWeight += (float) Calypso::getValue($parcel, 'weight');
                     ?>
                 <tr>
                     <td><?= Calypso::getValue($parcel, 'waybill_number')?></td>

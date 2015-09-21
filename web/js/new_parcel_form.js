@@ -291,6 +291,10 @@ var Parcel = {
         //Handler as sent from the server
         alert(payload.message);
     },
+    onFormSuccessCallback : function(code, payload){
+        $(window).trigger('success.CP.Form.watchChanges');
+        window.location = "/site/viewwaybill?id=" + payload.id;
+    },
     newUserObject: function () {
         return {
             id: '',
@@ -547,9 +551,9 @@ $(document).ready(function () {
         $(".amount-due-wrap").hide();
         $('#' + $(this).val() + '_billing').show();
         if($(this).val() == 'manual') {
-            $("input[name='manual_amount']").addClass('validate non-zero-integer required');
+            $("input[name='manual_amount']").addClass('validate integer required');
         } else {
-            $("input[name='manual_amount']").removeClass('validate non-zero-integer required');
+            $("input[name='manual_amount']").removeClass('validate integer required');
         }
     });
 

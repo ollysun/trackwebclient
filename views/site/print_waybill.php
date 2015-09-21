@@ -2,7 +2,8 @@
 use Adapter\Util\Calypso;
 use yii\helpers\Html;
 
-$copies = ["Sender's Copy","Recipient's Copy","Ack. Copy"," EC Copy"];
+$copies = ["Sender's Copy", " EC Copy", "Ack. Copy", "Recipient's Copy"];
+$this->title = 'Waybill '.$parcelData['waybill_number'];
 ?>
 <?= Html::cssFile('@web/css/compiled/print-waybill.css') ?>
 
