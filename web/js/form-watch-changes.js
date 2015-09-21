@@ -39,6 +39,7 @@
 		var evt = {
 			bu: 'beforeunload'+nsp,
 			s: 'submit'+nsp,
+			success: 'success'+nsp,
 		};
 
 		switch (action) {
@@ -68,6 +69,13 @@
 			});
 			// hack to disable momentarily on form submit for beforeunload to pass through
 			$window.one(evt.s, function(){
+				disable();
+				window.setTimeout(function(){
+					enable();
+				}, duration);
+			});
+			// hack to disable momentarily on form submit for beforeunload to pass through
+			$window.one(evt.success, function(){
 				disable();
 				window.setTimeout(function(){
 					enable();
