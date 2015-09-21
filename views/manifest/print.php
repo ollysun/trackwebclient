@@ -103,7 +103,7 @@ use yii\helpers\Html;
 			</div>
 			<div class="col-xs-6 clearfix">
 				<div class="pull-left inline-underline-title">Driver's name: </div>
-				<div class="inline-underline"></div>
+				<div class="inline-underline"><?= $manifest['holder']['fullname'].' ('.$manifest['holder']['staff_id'].')'; ?></div>
 			</div>
 			<div class="col-xs-6 clearfix">
 				<div class="pull-left inline-underline-title">Vehicle No: </div>
