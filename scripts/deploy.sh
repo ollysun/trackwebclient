@@ -4,13 +4,11 @@ function merge() {
     echo "Merging $1 to $2"
     git checkout $1
     git pull origin $1
-    if [ $1 != $2 ]; then
-       git checkout $2
-       git pull origin $2
-       git merge $1
-       git push origin $2
-       git checkout $1
-    fi
+    git checkout $2
+    git pull origin $2
+    git merge $1
+    git push origin $2
+    git checkout $1
 }
 
 function deploy() {
