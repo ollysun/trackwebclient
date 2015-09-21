@@ -122,6 +122,9 @@ class SiteController extends BaseController
     public function actionLogout()
     {
         Yii::$app->user->logout();
+        Calypso::getInstance()->session('user_session',null);
+        Yii::$app->user->logout();
+        session_destroy();
         return $this->redirect('login');
     }
 
