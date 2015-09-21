@@ -291,6 +291,10 @@ var Parcel = {
         //Handler as sent from the server
         alert(payload.message);
     },
+    onFormSuccessCallback : function(code, payload){
+        $(window).trigger('success.CP.Form.watchChanges');
+        window.location = "/site/viewwaybill?id=" + payload.id;
+    },
     newUserObject: function () {
         return {
             id: '',
