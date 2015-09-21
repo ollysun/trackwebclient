@@ -60,7 +60,7 @@ class SiteController extends BaseController
         ];
     }
     public function beforeAction($action){
-        if(!in_array($action->id,array('logout','changepassword','login','gerraout','site'))){
+        if(!in_array($action->id,array('logout','changepassword','login','gerraout','site','track','tracksearchdetails'))){
             $s = Calypso::getInstance()->session('user_session');
             if(!$s){
                // Calypso::getInstance()->AppRedirect('site','login');
@@ -122,6 +122,9 @@ class SiteController extends BaseController
     public function actionLogout()
     {
         Yii::$app->user->logout();
+        Calypso::getInstance()->session('user_session',null);
+        Yii::$app->user->logout();
+        session_destroy();
         return $this->redirect('login');
     }
 
@@ -471,5 +474,13 @@ class SiteController extends BaseController
     public function actionTracksearch()
     {
         return $this->render('track_search');
+    }
+    public function actionTracksearchdetails()
+    {
+        $s = Calypso::getInstance()->session('user_session');
+        if(!$s){
+            $this->layout = 'tracking';
+        }
+        return $this->render('track_search_details');
     }
 }

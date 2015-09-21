@@ -7,6 +7,8 @@
  */
 
 namespace app\controllers;
+
+use Adapter\BaseAdapter;
 use Adapter\BranchAdapter;
 use Adapter\Globals\ServiceConstant;
 use Adapter\RefAdapter;
@@ -20,224 +22,227 @@ use Adapter\AdminAdapter;
 use Adapter\UserAdapter;
 
 
-class AdminController extends BaseController {
+class AdminController extends BaseController
+{
 
 
-	public function beforeAction($action) {
-		$this->enableCsrfValidation = false;
-		return parent::beforeAction($action);
-	}
-	public function actionHubmapping()
-	{
-		if (Yii::$app->request->isPost) {
-			$data = \Yii::$app->request->post();
+    public function beforeAction($action)
+    {
+        $this->enableCsrfValidation = false;
+        return parent::beforeAction($action);
+    }
 
-			$from_id = Calypso::getValue($data, 'from_id');
-			$to_ids = Calypso::getValue($data, 'branches');
-			$zone_ids = Calypso::getValue($data, 'zones');
+    public function actionHubmapping()
+    {
+        if (Yii::$app->request->isPost) {
+            $data = \Yii::$app->request->post();
 
-			$matrix_info = [];
-			for ($k = 0; $k < count($to_ids); $k++) {
-				$matrix_info[] = array('to_branch_id' => $to_ids[$k], 'from_branch_id' => $from_id, 'zone_id' => $zone_ids[$k]);
-			}
+            $from_id = Calypso::getValue($data, 'from_id');
+            $to_ids = Calypso::getValue($data, 'branches');
+            $zone_ids = Calypso::getValue($data, 'zones');
 
-			$zone = new ZoneAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-			$response = $zone->saveMatrix(json_encode($matrix_info));
-			if ($response['status'] === Response::STATUS_OK) {
-				$this->redirect('/admin/managebranches');
-			} else {
-				Yii::$app->session->setFlash('danger', 'There was a problem creating the zone.'.$response['message']);
-			}
-		}
+            $matrix_info = [];
+            for ($k = 0; $k < count($to_ids); $k++) {
+                $matrix_info[] = array('to_branch_id' => $to_ids[$k], 'from_branch_id' => $from_id, 'zone_id' => $zone_ids[$k]);
+            }
 
-		$hub_id = \Yii::$app->request->get('hub');
-		$hubAdp = new BranchAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
-		$hub = $hubAdp->getOneHub($hub_id);
-		$hub = new ResponseHandler($hub);
-		$hub = $hub->getStatus()==ResponseHandler::STATUS_OK?$hub->getData(): [];
+            $zone = new ZoneAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+            $response = $zone->saveMatrix(json_encode($matrix_info));
+            if ($response['status'] === Response::STATUS_OK) {
+                $this->redirect('/admin/managebranches');
+            } else {
+                Yii::$app->session->setFlash('danger', 'There was a problem creating the zone.' . $response['message']);
+            }
+        }
 
-		$hubAdp = new BranchAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
-		$hubs = $hubAdp->getAllHubs();
-		$hubs = new ResponseHandler($hubs);
-		$hub_list = $hubs->getStatus()==ResponseHandler::STATUS_OK?$hubs->getData(): [];
+        $hub_id = \Yii::$app->request->get('hub');
+        $hubAdp = new BranchAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $hub = $hubAdp->getOneHub($hub_id);
+        $hub = new ResponseHandler($hub);
+        $hub = $hub->getStatus() == ResponseHandler::STATUS_OK ? $hub->getData() : [];
 
-		$zAdp = new ZoneAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-		$zones = $zAdp->getZones();
-		$zones = new ResponseHandler($zones);
-		$zones_list = $zones->getStatus() == ResponseHandler::STATUS_OK ? $zones->getData() : [];
+        $hubAdp = new BranchAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $hubs = $hubAdp->getAllHubs();
+        $hubs = new ResponseHandler($hubs);
+        $hub_list = $hubs->getStatus() == ResponseHandler::STATUS_OK ? $hubs->getData() : [];
 
-		return $this->render('new_hub_mapping', array('hub'=>$hub, 'hubs'=>$hub_list, 'zones'=> $zones_list));
-	}
+        $zAdp = new ZoneAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $zones = $zAdp->getZones();
+        $zones = new ResponseHandler($zones);
+        $zones_list = $zones->getStatus() == ResponseHandler::STATUS_OK ? $zones->getData() : [];
 
-	public function actionManagebranches()
-	{
-		if(Yii::$app->request->isPost){
-			$entry = Yii::$app->request->post();
-			$error = [];
+        return $this->render('new_hub_mapping', array('hub' => $hub, 'hubs' => $hub_list, 'zones' => $zones_list));
+    }
 
-			$hub_data = [];
-			$hub_data['name'] = Calypso::getValue($entry, 'name', null);
-			$hub_data['address'] = Calypso::getValue($entry, 'address');
-			$hub_data['branch_type'] = ServiceConstant::BRANCH_TYPE_HUB;
-			$hub_data['state_id'] = Calypso::getValue($entry, 'state_id');
-			$hub_data['status'] =  Calypso::getValue($entry, 'status');
-			$hub_data['branch_id'] = Calypso::getValue($entry, 'id', null);
+    public function actionManagebranches()
+    {
+        if (Yii::$app->request->isPost) {
+            $entry = Yii::$app->request->post();
+            $error = [];
 
-			$task =  Calypso::getValue(Yii::$app->request->post(), 'task');
+            $hub_data = [];
+            $hub_data['name'] = Calypso::getValue($entry, 'name', null);
+            $hub_data['address'] = Calypso::getValue($entry, 'address');
+            $hub_data['branch_type'] = ServiceConstant::BRANCH_TYPE_HUB;
+            $hub_data['state_id'] = Calypso::getValue($entry, 'state_id');
+            $hub_data['status'] = Calypso::getValue($entry, 'status');
+            $hub_data['branch_id'] = Calypso::getValue($entry, 'id', null);
 
-			if(($task == 'create' || $task == 'edit') && (empty($hub_data['name']) || empty($hub_data['address']))) {
-				$error[] = "All details are required!";
-			}
-			if(!empty($error)) {
-				$errorMessages = implode('<br />', $error);
-				Yii::$app->session->setFlash('danger', $errorMessages);
-			}
-			else {
-				$hub = new BranchAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-				if($task == 'create'){
-					$response = $hub->createNewHub($hub_data);
-					if ($response['status'] === Response::STATUS_OK) {
-						Yii::$app->session->setFlash('success', 'Hub has been created successfully.');
-						Yii::$app->response->redirect("/admin/hubmapping?hub={$response['data']['id']}");
-					} else {
-						Yii::$app->session->setFlash('danger', 'There was a problem creating the hub. Please try again.');
-					}
-				}
-				elseif($task != 'filter'){
-					$response = $hub->editOneHub($hub_data, $task);
-					if ($response['status'] === Response::STATUS_OK) {
-						Yii::$app->session->setFlash('success', 'Hub has been edited successfully.');
-					} else {
-						Yii::$app->session->setFlash('danger', 'There was a problem editing the hub. Please try again.'.$response['message']);
-					}
-				}
-			}
-		}
+            $task = Calypso::getValue(Yii::$app->request->post(), 'task');
 
-		$refAdp = new RefAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
-		$states = $refAdp->getStates(1); // Hardcoded Nigeria for now
-		$states = new ResponseHandler($states);
+            if (($task == 'create' || $task == 'edit') && (empty($hub_data['name']) || empty($hub_data['address']))) {
+                $error[] = "All details are required!";
+            }
+            if (!empty($error)) {
+                $errorMessages = implode('<br />', $error);
+                Yii::$app->session->setFlash('danger', $errorMessages);
+            } else {
+                $hub = new BranchAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+                if ($task == 'create') {
+                    $response = $hub->createNewHub($hub_data);
+                    if ($response['status'] === Response::STATUS_OK) {
+                        Yii::$app->session->setFlash('success', 'Hub has been created successfully.');
+                        Yii::$app->response->redirect("/admin/hubmapping?hub={$response['data']['id']}");
+                    } else {
+                        Yii::$app->session->setFlash('danger', 'There was a problem creating the hub. Please try again.');
+                    }
+                } elseif ($task != 'filter') {
+                    $response = $hub->editOneHub($hub_data, $task);
+                    if ($response['status'] === Response::STATUS_OK) {
+                        Yii::$app->session->setFlash('success', 'Hub has been edited successfully.');
+                    } else {
+                        Yii::$app->session->setFlash('danger', 'There was a problem editing the hub. Please try again.' . $response['message']);
+                    }
+                }
+            }
+        }
 
-		$filter_state_id = Calypso::getValue(Yii::$app->request->post(), 'filter_state_id',null);
-		$hubAdp = new BranchAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
-		$hubs = $hubAdp->getHubs($filter_state_id);
-		$hubs = new ResponseHandler($hubs);
+        $refAdp = new RefAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $states = $refAdp->getStates(1); // Hardcoded Nigeria for now
+        $states = new ResponseHandler($states);
 
-		$state_list = $states->getStatus()==ResponseHandler::STATUS_OK?$states->getData(): [];
-		$hub_list = $hubs->getStatus()==ResponseHandler::STATUS_OK?$hubs->getData(): [];
-		return $this->render('managehubs',array('States'=>$state_list, 'filter_state_id'=>$filter_state_id, 'hubs'=>$hub_list));
-	}
+        $filter_state_id = Calypso::getValue(Yii::$app->request->post(), 'filter_state_id', null);
+        $hubAdp = new BranchAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $hubs = $hubAdp->getHubs($filter_state_id);
+        $hubs = new ResponseHandler($hubs);
 
-	public function actionManageecs()
-	{
-		if(Yii::$app->request->isPost){
-			$entry = Yii::$app->request->post();
-			$task =  Calypso::getValue($entry, 'task','');
-			$error = [];
+        $state_list = $states->getStatus() == ResponseHandler::STATUS_OK ? $states->getData() : [];
+        $hub_list = $hubs->getStatus() == ResponseHandler::STATUS_OK ? $hubs->getData() : [];
+        return $this->render('managehubs', array('States' => $state_list, 'filter_state_id' => $filter_state_id, 'hubs' => $hub_list));
+    }
 
-			$data = [];
-			$data['name'] = Calypso::getValue($entry, 'name', null);
-			$data['address'] = Calypso::getValue($entry, 'address');
-			$data['branch_type'] = ServiceConstant::BRANCH_TYPE_EC;
-			$data['status'] =  Calypso::getValue($entry, 'status');
-			$data['hub_id'] = Calypso::getValue($entry, 'hub_id', null);
-			$data['branch_id'] = Calypso::getValue($entry, 'id', null);
-			$data['ec_id'] = Calypso::getValue($entry, 'id', null);
-			$data['state_id'] = Calypso::getValue($entry, 'state_id', null);
+    public function actionManageecs()
+    {
+        if (Yii::$app->request->isPost) {
+            $entry = Yii::$app->request->post();
+            $task = Calypso::getValue($entry, 'task', '');
+            $error = [];
 
-			if(($task == 'create' || $task == 'edit') && (empty($data['name']) || empty($data['address']))) {
-				$error[] = "All details are required!";
-			}
-			if(!empty($error)) {
-				$errorMessages = implode('<br />', $error);
-				Yii::$app->session->setFlash('danger', $errorMessages);
-			}
-			else {
-				$center = new BranchAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-				if($task == 'create'){
-					$response = $center->createNewCentre($data);
-					if ($response['status'] === Response::STATUS_OK) {
-						Yii::$app->session->setFlash('success', 'Centre has been created successfully.');
-					} else {
-						Yii::$app->session->setFlash('danger', 'There was a problem creating the centre. Please try again.');
-					}
-				}
-				elseif($task != 'filter'){
-					$response = $center->editOneCentre($data, $task);
-					if ($response['status'] === Response::STATUS_OK) {
-						Yii::$app->session->setFlash('success', 'Centre has been edited successfully.');
-					} else {
-						Yii::$app->session->setFlash('danger', 'There was a problem editing the hub. Please try again.');
-					}
-				}
-			}
-		}
-		$refAdp = new RefAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
-		$states = $refAdp->getStates(1); // Hardcoded Nigeria for now
-		$states = new ResponseHandler($states);
+            $data = [];
+            $data['name'] = Calypso::getValue($entry, 'name', null);
+            $data['address'] = Calypso::getValue($entry, 'address');
+            $data['branch_type'] = ServiceConstant::BRANCH_TYPE_EC;
+            $data['status'] = Calypso::getValue($entry, 'status');
+            $data['hub_id'] = Calypso::getValue($entry, 'hub_id', null);
+            $data['branch_id'] = Calypso::getValue($entry, 'id', null);
+            $data['ec_id'] = Calypso::getValue($entry, 'id', null);
+            $data['state_id'] = Calypso::getValue($entry, 'state_id', null);
 
-		$hubAdp = new BranchAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
-		$hubs = $hubAdp->getHubs();
-		$hubs = new ResponseHandler($hubs);
+            if (($task == 'create' || $task == 'edit') && (empty($data['name']) || empty($data['address']))) {
+                $error[] = "All details are required!";
+            }
+            if (!empty($error)) {
+                $errorMessages = implode('<br />', $error);
+                Yii::$app->session->setFlash('danger', $errorMessages);
+            } else {
+                $center = new BranchAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+                if ($task == 'create') {
+                    $response = $center->createNewCentre($data);
+                    if ($response['status'] === Response::STATUS_OK) {
+                        Yii::$app->session->setFlash('success', 'Centre has been created successfully.');
+                    } else {
+                        Yii::$app->session->setFlash('danger', 'There was a problem creating the centre. Please try again.');
+                    }
+                } elseif ($task != 'filter') {
+                    $response = $center->editOneCentre($data, $task);
+                    if ($response['status'] === Response::STATUS_OK) {
+                        Yii::$app->session->setFlash('success', 'Centre has been edited successfully.');
+                    } else {
+                        Yii::$app->session->setFlash('danger', 'There was a problem editing the hub. Please try again.');
+                    }
+                }
+            }
+        }
+        $refAdp = new RefAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $states = $refAdp->getStates(1); // Hardcoded Nigeria for now
+        $states = new ResponseHandler($states);
 
-		$filter_hub_id = Calypso::getValue(Yii::$app->request->post(), 'filter_hub_id', null);
-		$hubAdp = new BranchAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
-		$centres = $hubAdp->getCentres($filter_hub_id);
-		$centres = new ResponseHandler($centres);
+        $hubAdp = new BranchAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $hubs = $hubAdp->getHubs();
+        $hubs = new ResponseHandler($hubs);
 
-		$state_list = $states->getStatus()==ResponseHandler::STATUS_OK?$states->getData(): [];
-		$hub_list = $hubs->getStatus()==ResponseHandler::STATUS_OK?$hubs->getData(): [];
-		$centres_list = $centres->getStatus()==ResponseHandler::STATUS_OK?$centres->getData(): [];
-		return $this->render('manageecs',array('States'=>$state_list, 'hubs'=>$hub_list, 'centres'=>$centres_list, 'filter_hub_id'=>$filter_hub_id));
-	}
+        $filter_hub_id = Calypso::getValue(Yii::$app->request->post(), 'filter_hub_id', null);
+        $hubAdp = new BranchAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $centres = $hubAdp->getCentres($filter_hub_id);
+        $centres = new ResponseHandler($centres);
 
-	public function actionManagestaff($offset=0,$role='-1')
-	{
-		if(Yii::$app->request->isPost){
-			$data = Yii::$app->request->post();
-			$user = new UserAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
-			$resp = $user->createNewUser(Calypso::getInstance()->getValue($data,'role'),
-				Calypso::getInstance()->getValue($data,'branch'),Calypso::getInstance()->getValue($data,'staff_id'),
-				Calypso::getInstance()->getValue($data,'email'),Calypso::getInstance()->getValue($data,'firstname').' '.Calypso::getInstance()->getValue($data,'lastname'),
-				Calypso::getInstance()->getValue($data,'phone'));
+        $state_list = $states->getStatus() == ResponseHandler::STATUS_OK ? $states->getData() : [];
+        $hub_list = $hubs->getStatus() == ResponseHandler::STATUS_OK ? $hubs->getData() : [];
+        $centres_list = $centres->getStatus() == ResponseHandler::STATUS_OK ? $centres->getData() : [];
+        return $this->render('manageecs', array('States' => $state_list, 'hubs' => $hub_list, 'centres' => $centres_list, 'filter_hub_id' => $filter_hub_id));
+    }
 
-			$creationResponse = new ResponseHandler($resp);
-			if ($creationResponse->getStatus() == ResponseHandler::STATUS_OK) {
-				Yii::$app->session->setFlash('success', 'User has been created successfully.');
-				//Yii::$app->response->redirect('managestaff');
-			} else {
-				Yii::$app->session->setFlash('danger', 'There was a problem creating this User. Please try again.');
-				//Yii::$app->response->redirect('managestaff');
-			}
+    public function actionManagestaff($offset = 0, $role = '-1')
+    {
+        if (Yii::$app->request->isPost) {
+            $data = Yii::$app->request->post();
+            $user = new UserAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+            $resp = $user->createNewUser(Calypso::getInstance()->getValue($data, 'role'),
+                Calypso::getInstance()->getValue($data, 'branch'), Calypso::getInstance()->getValue($data, 'staff_id'),
+                Calypso::getInstance()->getValue($data, 'email'), Calypso::getInstance()->getValue($data, 'firstname') . ' ' . Calypso::getInstance()->getValue($data, 'lastname'),
+                Calypso::getInstance()->getValue($data, 'phone'));
 
-		}
+            $creationResponse = new ResponseHandler($resp);
+            if ($creationResponse->getStatus() == ResponseHandler::STATUS_OK) {
+                Yii::$app->session->setFlash('success', 'User has been created successfully.');
+            } else {
+                if (!is_null($creationResponse->getError()) && $creationResponse->getError() != ResponseHandler::NO_MESSAGE) {
+                    Yii::$app->session->setFlash('danger', "An error occurred while trying to create user. Reason:" . $creationResponse->getError());
+                } else {
+                    Yii::$app->session->setFlash('danger', 'There was a problem creating this User. Please try again.');
+                }
+            }
 
-
-		$refAdp = new RefAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
-		$states = $refAdp->getStates(1);//Nigeria hardcoded for now ... No offense please.
-		$states = new ResponseHandler($states);
-		$rolesAdp = new RefAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
-		$roles = $rolesAdp->getRoles();
-		$roles = new ResponseHandler($roles);
-		$state_list = $states->getStatus()==ResponseHandler::STATUS_OK?$states->getData(): [];
-		$role_list =  $roles->getStatus()==ResponseHandler::STATUS_OK?$roles->getData(): [];
-
-		$staffMembers = [];
-		$staffAdp = new AdminAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
-		if(isset(Calypso::getInstance()->get()->search) && strlen(Calypso::getInstance()->get()->search) > 0){
-			$is_email = !(filter_var(Calypso::getInstance()->get()->search,FILTER_VALIDATE_EMAIL) === false);
-			$staff_data = $staffAdp->searchStaffMembers(Calypso::getInstance()->get()->search,$is_email,$offset,$this->page_width);
-		}else {
-			$staff_data = $staffAdp->getStaffMembers($offset, $this->page_width, $role);
-		}
-		$resp = new ResponseHandler($staff_data);
-		$staffMembers = $resp->getData();
+        }
 
 
-		return $this->render('managestaff',['states' => $state_list,'roles'=> $role_list,'staffMembers' => $staffMembers,'offset'=>$offset,'role'=>$role,'page_width'=>$this->page_width]);
-	}
-	public function actionCompanies() {
-		return $this->render('companies');
-	}
+        $refAdp = new RefAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $states = $refAdp->getStates(1);//Nigeria hardcoded for now ... No offense please.
+        $states = new ResponseHandler($states);
+        $rolesAdp = new RefAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $roles = $rolesAdp->getRoles();
+        $roles = new ResponseHandler($roles);
+        $state_list = $states->getStatus() == ResponseHandler::STATUS_OK ? $states->getData() : [];
+        $role_list = $roles->getStatus() == ResponseHandler::STATUS_OK ? $roles->getData() : [];
+
+        $staffMembers = [];
+        $staffAdp = new AdminAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        if (isset(Calypso::getInstance()->get()->search) && strlen(Calypso::getInstance()->get()->search) > 0) {
+            $is_email = !(filter_var(Calypso::getInstance()->get()->search, FILTER_VALIDATE_EMAIL) === false);
+            $staff_data = $staffAdp->searchStaffMembers(Calypso::getInstance()->get()->search, $is_email, $offset, $this->page_width);
+        } else {
+            $staff_data = $staffAdp->getStaffMembers($offset, $this->page_width, $role);
+        }
+        $resp = new ResponseHandler($staff_data);
+        $staffMembers = $resp->getData();
+
+
+        return $this->render('managestaff', ['states' => $state_list, 'roles' => $role_list, 'staffMembers' => $staffMembers, 'offset' => $offset, 'role' => $role, 'page_width' => $this->page_width]);
+    }
+
+    public function actionCompanies()
+    {
+        return $this->render('companies');
+    }
 
 }
