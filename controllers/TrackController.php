@@ -28,7 +28,6 @@ class TrackController extends BaseController
         if ($this->isUserLoggedIn()) {
             return parent::beforeAction($action);
         } else {
-
             return true;
         }
     }
@@ -51,7 +50,7 @@ class TrackController extends BaseController
                     $trackingInfo = array_values($trackingInfo)[0];
                     $history = Calypso::getValue($trackingInfo, 'history', []);
                     $currentStateInfo = $history[count($history) - 1];
-                    $history = $this->processHistory($history);
+                    $history = TrackAdapter::processHistory($history);
                     $trackingInfo['history'] = $history;
                 } else {
                     return $this->render('track_search_details', ['tracking_infos' => $trackingInfo]);
@@ -60,29 +59,5 @@ class TrackController extends BaseController
             return $this->render('track', ['tracking_number' => $tracking_number, 'tracking_info' => $trackingInfo, 'current_state_info' => $currentStateInfo]);
         }
         return $this->render('track_search', ['tracking_number' => $tracking_number]);
-    }
-
-
-    private function processHistory($history)
-    {
-        $terminalStatuses = [ServiceConstant::FOR_SWEEPER, ServiceConstant::FOR_ARRIVAL, ServiceConstant::FOR_DELIVERY];
-        $transitionalStatuses = [ServiceConstant::IN_TRANSIT, ServiceConstant::BEING_DELIVERED];
-
-        $processedHistory = [];
-
-        foreach ($history as $his) {
-
-            if (in_array($his['status'], $terminalStatuses)) {
-                $his['type'] = 'terminal';
-            }
-
-            if (in_array($his['status'], $transitionalStatuses)) {
-                $his['type'] = 'transitional';
-            }
-
-            $processedHistory[$his['from_branch']['id'] . '-' . $his['to_branch']['id']] = $his;
-        }
-
-        return $processedHistory;
     }
 }
