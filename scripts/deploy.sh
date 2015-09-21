@@ -43,34 +43,37 @@ function tagRelease() {
     git checkout $1
 }
 
-echo "Deployment Starting..."
+function run() {
+    echo "Deployment Starting..."
 
-echo "Enter the development branch and press [ENTER]"
-read dev_branch
+    echo "Enter the development branch and press [ENTER]"
+    read dev_branch
 
-envs=(staging production)
-app_folder=courierplusng
+    envs=(staging production)
+    app_folder=courierplusng
 
-if [ -n "$dev_branch" ] ; then
-    for env in "${envs[@]}"
-    do
-        echo "Do you want to deploy to $env? Y/N"
-        read should_deploy
-        if [ $should_deploy = "Y" -o $should_deploy = "y" ] ; then
-            echo "Enter the $env branch and press [ENTER]"
-            read branch
-            if [ -n "$branch" ] ; then
-                merge $dev_branch $branch
-                deploy $env
-                if [ "$env" = "production" ]; then
-                    tagRelease $dev_branch
+    if [ -n "$dev_branch" ] ; then
+        for env in "${envs[@]}"
+        do
+            echo "Do you want to deploy to $env? Y/N"
+            read should_deploy
+            if [ $should_deploy = "Y" -o $should_deploy = "y" ] ; then
+                echo "Enter the $env branch and press [ENTER]"
+                read branch
+                if [ -n "$branch" ] ; then
+                    merge $dev_branch $branch
+                    deploy $env
+                    if [ "$env" = "production" ]; then
+                        tagRelease $dev_branch
+                    fi
+                else
+                    echo "Invalid branch entered"
                 fi
-            else
-                echo "Invalid branch entered"
             fi
-        fi
-    done
-else
-    echo "You can't proceed without a dev branch"
-fi
+        done
+    else
+        echo "You can't proceed without a dev branch"
+    fi
+}
 
+run
