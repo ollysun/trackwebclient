@@ -13,7 +13,7 @@ $this->params['breadcrumbs'] = array(
     array('label'=> 'View '.$this->title)
 );
 
-$this->params['content_header_button'] = '<a href="'.Url::to(['manifest/print?id='.$id]).'" class="btn btn-primary"><i class="fa fa-print"></i> Print Manifest</a>';
+$this->params['content_header_button'] = '<button onclick="javascript:window.open(\''.Url::to(['manifest/print?id='.$id]).'\', \'_blank\', \'toolbar=yes, scrollbars=yes, resizable=yes, top=10, left=50%, width=1100, height=800\');" class="btn btn-primary"><i class="fa fa-print"></i> Print Manifest</button>';
 
 ?>
 <!-- this page specific styles -->
