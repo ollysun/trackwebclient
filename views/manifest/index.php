@@ -93,7 +93,7 @@ $this->params['breadcrumbs'] = array(
                     ?>
                     </tbody>
                 </table>
-                <?php //= $this->render('../elements/pagination_and_summary', ['first' => $offset, 'last'=>$i, 'total_count'=> $total_count,'page_width'=>$page_width]) ?>
+                <?= $this->render('../elements/pagination_and_summary', ['first' => $offset, 'last'=>$i, 'total_count'=> $total_count,'page_width'=>$page_width]) ?>
             <?php else: ?>
                 There are no manifests matching the specified criteria.
             <?php endif; ?>
