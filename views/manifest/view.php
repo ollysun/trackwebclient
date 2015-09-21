@@ -69,7 +69,7 @@ $this->params['content_header_button'] = '<a href="'.Url::to(['manifest/print?id
                 $totalNumber = 0;
                 foreach(Calypso::getValue($manifest, 'parcels', array()) as $parcel):
                 $totalNumber += (int) Calypso::getValue($parcel, 'no_of_package');
-                $totalWeight += (int) Calypso::getValue($parcel, 'weight');
+                $totalWeight += (float) Calypso::getValue($parcel, 'weight');
                     ?>
                 <tr>
                     <td><?= Calypso::getValue($parcel, 'waybill_number')?></td>
