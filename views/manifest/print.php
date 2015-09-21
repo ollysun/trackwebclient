@@ -2,7 +2,9 @@
 use Adapter\Globals\ServiceConstant;
 use Adapter\Util\Calypso;
 use yii\helpers\Html;
+use yii\web\View;
 
+$this->title = (empty($manifest))? '': 'Manifest'.$manifest['id'];
 ?>
 
 <?= Html::cssFile('@web/css/compiled/print-manifest.css') ?>
@@ -103,7 +105,7 @@ use yii\helpers\Html;
 			</div>
 			<div class="col-xs-6 clearfix">
 				<div class="pull-left inline-underline-title">Driver's name: </div>
-				<div class="inline-underline"></div>
+				<div class="inline-underline"><?= $manifest['holder']['fullname'].' ('.$manifest['holder']['staff_id'].')'; ?></div>
 			</div>
 			<div class="col-xs-6 clearfix">
 				<div class="pull-left inline-underline-title">Vehicle No: </div>
@@ -120,4 +122,5 @@ use yii\helpers\Html;
 		</div>
 	</div>
 </div>
+<?php $this->registerJs("window.print();", View::POS_READY, 'print'); ?>
 <?php endif; ?>
