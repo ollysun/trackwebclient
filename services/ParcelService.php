@@ -84,7 +84,7 @@ class ParcelService {
         $manualAmount = Calypso::getValue($data, 'manual_amount');
         $parcel['amount_due'] = $parcel['billing_method'] == 'manual' ? $manualAmount : $parcel['amount_due'] ;
         $parcel['is_billing_overridden'] = $parcel['billing_method'] == 'manual' ? 1 : 0;
-        if(!$parcel['amount_due'] && !$manualAmount) {
+        if(is_null($parcel['amount_due'])) {
             $error[] = "Amount must be calculated. Please ensure all zone billing and mapping are set.";
         }
         $parcel['cash_on_delivery'] = ($data['cash_on_delivery'] === 'true') ? 1 : 0;
