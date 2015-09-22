@@ -60,7 +60,7 @@ class ParcelService {
                 $bankData = null;
             }
             else{
-                $error[] = "Incomplete Account Details!".$bankData['account_name']."";
+                $error[] = "Incomplete Account Details!";
             }
         }
         else{
