@@ -1,6 +1,11 @@
+<?php use Adapter\Util\Calypso;
+	$prefix_map = [ 'shipper' => 'sender', 'receiver' => 'receiver' ];
+?>
+
 <div class="form-group">
 	<div class="input-group">
-		<input id="<?=$prefix?>SearchBox"  data-target="#<?php echo $prefix;?>SearchFlyOutPanel" type="text" class="form-control phone" placeholder="Search customers by phone number">
+		<input id="<?=$prefix?>SearchBox"  data-target="#<?php echo $prefix;?>SearchFlyOutPanel" type="text" class="form-control phone" placeholder="Search customers by phone number"
+			   value="<?php echo Calypso::getValue($parcel, "info.{$prefix_map[$prefix]}.phone", ''); ?>">
 		<div class="input-group-btn">
 			<button class="btn btn-default <?=$prefix?>" id="btn_Search_<?=$prefix?>" type="button"><i class="fa fa-search"></i></button>
 		</div>
@@ -25,14 +30,16 @@
 	<div class="col-xs-12 col-sm-6">
 		<div class="form-group">
 			<label for="">First Name</label>
-			<input name="firstname[<?=$prefix?>]" id="firstname_<?=$prefix?>" type="text" class="form-control validate required name active-validate">
+			<input name="firstname[<?=$prefix?>]" id="firstname_<?=$prefix?>" type="text" class="form-control validate required name active-validate"
+                   value="<?php echo Calypso::getValue($parcel, "info.{$prefix_map[$prefix]}.firstname", ''); ?>">
 
 		</div>
 	</div>
 	<div class="col-xs-12 col-sm-6">
 		<div class="form-group">
 			<label for="">Last Name</label>
-			<input name="lastname[<?=$prefix?>]" id="lastname_<?=$prefix?>" type="text" class="form-control">
+			<input name="lastname[<?=$prefix?>]" id="lastname_<?=$prefix?>" type="text" class="form-control"
+                   value="<?php echo Calypso::getValue($parcel, "info.{$prefix_map[$prefix]}.lastname", ''); ?>">
 		</div>
 	</div>
 </div>
@@ -40,7 +47,8 @@
 	<div class="col-xs-12 col-sm-6">
 		<div class="form-group">
 			<label for="">Email address</label>
-			<input name="email[<?=$prefix?>]" id="email_<?=$prefix?>" type="text" class="form-control <?php echo $prefix;?>SearchFlyOutPanelTrigger validate active-validate email" data-target="#<?php echo $prefix;?>SearchFlyOutPanel">
+			<input name="email[<?=$prefix?>]" id="email_<?=$prefix?>" type="text" class="form-control <?php echo $prefix;?>SearchFlyOutPanelTrigger validate active-validate email" data-target="#<?php echo $prefix;?>SearchFlyOutPanel"
+                   value="<?php echo Calypso::getValue($parcel, "info.{$prefix_map[$prefix]}.email", ''); ?>">
 			<span class="help-block">Format: xyz@example.com</span>
 		</div>
 	</div>
@@ -48,9 +56,11 @@
 		<div class="form-group">
 			<label for="">Phone number</label>
 			<?php if($prefix == 'receiver') { ?>
-				<input name="phone[<?=$prefix?>]" id="phone_<?=$prefix?>" type="text" class="form-control <?php echo $prefix;?>SearchFlyOutPanelTrigger" data-target="#<?php echo $prefix;?>SearchFlyOutPanel">
+				<input name="phone[<?=$prefix?>]" id="phone_<?=$prefix?>" type="text" class="form-control <?php echo $prefix;?>SearchFlyOutPanelTrigger" data-target="#<?php echo $prefix;?>SearchFlyOutPanel"
+                    value="<?php echo Calypso::getValue($parcel, "info.{$prefix_map[$prefix]}.phone", ''); ?>">
 			<?php } else { ?>
-				<input name="phone[<?=$prefix?>]" id="phone_<?=$prefix?>" type="text" class="form-control <?php echo $prefix;?>SearchFlyOutPanelTrigger validate active-validate required phone" data-target="#<?php echo $prefix;?>SearchFlyOutPanel">
+				<input name="phone[<?=$prefix?>]" id="phone_<?=$prefix?>" type="text" class="form-control <?php echo $prefix;?>SearchFlyOutPanelTrigger validate active-validate required phone" data-target="#<?php echo $prefix;?>SearchFlyOutPanel"
+				value="<?php echo Calypso::getValue($parcel, "info.{$prefix_map[$prefix]}.phone", ''); ?>">
 			<?php } ?>
 			<span class="help-block">Format: 234xxxxxxxxxx</span>
 		</div>
@@ -113,13 +123,16 @@
 		<label for="">Address</label>
 		<a id="<?php echo $prefix;?>AddressFlyOutPanelTrigger" href="#" data-target="#<?php echo $prefix;?>AddressFlyOutPanel" class="pull-right"><small>Manage addresses</small></a>
 	</div>
-	<input name="address[<?=$prefix?>][]" id="address_<?=$prefix?>_1" class="form-control validate required">
-	<input name="address[<?=$prefix?>][]" id="address_<?=$prefix?>_2" class="form-control address-line-1">
+	<input name="address[<?=$prefix?>][]" id="address_<?=$prefix?>_1" class="form-control validate required"
+           value="<?php echo Calypso::getValue($parcel, "info.{$prefix_map[$prefix]}_address.street_address1", ''); ?>">
+	<input name="address[<?=$prefix?>][]" id="address_<?=$prefix?>_2" class="form-control address-line-1"
+           value="<?php echo Calypso::getValue($parcel, "info.{$prefix_map[$prefix]}_address.street_address2", ''); ?>">
 </div>
 
 <div class="form-group">
 	<label for="country_<?=$prefix?>">Country</label>
-	<select name="country[<?=$prefix?>]" class="form-control validate required" id="country_<?=$prefix?>">
+	<select name="country[<?=$prefix?>]" class="form-control validate required" id="country_<?=$prefix?>"
+            data-selected-id="<?php echo Calypso::getValue($parcel, "{$prefix_map[$prefix]}_location.country.id", ''); ?>">
 		<option value='' selected>Select Country...</option>
 <?php
 if (isset($countries) && is_array($countries['data'])) {
@@ -134,10 +147,12 @@ if (isset($countries) && is_array($countries['data'])) {
 
 <div class="form-group">
 	<label for="state_<?=$prefix?>">State</label>
-	<select name="state[<?=$prefix?>]" class="form-control validate required" disabled="disabled" id="state_<?=$prefix?>"></select>
+	<select name="state[<?=$prefix?>]" class="form-control validate required" disabled="disabled" id="state_<?=$prefix?>"
+            data-selected-id="<?php echo Calypso::getValue($parcel, "{$prefix_map[$prefix]}_location.state.id", ''); ?>"></select>
 </div>
 
 <div class="form-group">
 	<label for="city_<?=$prefix?>">City</label>
-	<select name="city[<?=$prefix?>]" class="form-control validate required" disabled="disabled" id="city_<?=$prefix?>"></select>
+	<select name="city[<?=$prefix?>]" class="form-control validate required" disabled="disabled" id="city_<?=$prefix?>"
+            data-selected-id="<?php echo Calypso::getValue($parcel, "{$prefix_map[$prefix]}_location.id", ''); ?>"></select>
 </div>

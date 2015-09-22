@@ -37,7 +37,7 @@ $is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
                             <h2>Sender Information</h2>
                         </div>
                         <div class="main-box-body">
-                            <?= $this->render('../elements/new_parcel_user_information', ['prefix' => 'shipper', 'countries' => $countries]) ?>
+                            <?= $this->render('../elements/new_parcel_user_information', ['prefix' => 'shipper', 'countries' => $countries, 'parcel' => $parcel]) ?>
                         </div>
                     </div>
                     <div class="col-xs-12 col-lg-6">
@@ -45,7 +45,7 @@ $is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
                             <h2>Receiver Information</h2>
                         </div>
                         <div class="main-box-body">
-                            <?= $this->render('../elements/new_parcel_user_information', ['prefix' => 'receiver', 'countries' => $countries]) ?>
+                            <?= $this->render('../elements/new_parcel_user_information', ['prefix' => 'receiver', 'countries' => $countries, 'parcel' => $parcel]) ?>
                         </div>
                     </div>
                 </div>
