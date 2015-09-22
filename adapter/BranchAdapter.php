@@ -87,13 +87,13 @@ class BranchAdapter extends BaseAdapter
      * Get all Hubs
      * @author Adeyemi Olaoye <yemi@cottacush.com>
      * @author Richard Boyewa <boye@cottacush.com>
-     * @param int $branch_type
+     * @author Wale Lawal <wale@cottacush.com>
      * @param bool|true $paginate
      * @return array|mixed|string
      */
-    public function getAllHubs($branch_type = self::BRANCH_TYPE_HUB, $paginate = true)
+    public function getAllHubs($paginate = true)
     {
-        return $this->request(ServiceConstant::URL_GET_ALL_BRANCH, ['branch_type' => $branch_type, 'paginate' => var_export($paginate, true)], self::HTTP_GET);
+        return $this->request(ServiceConstant::URL_BRANCH_GET_ALL_HUB, ['paginate' => var_export($paginate, true)], self::HTTP_GET);
     }
 
     public function getMatrix()
