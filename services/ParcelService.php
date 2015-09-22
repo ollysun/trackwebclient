@@ -48,10 +48,10 @@ class ParcelService {
         $receiverAddress['country_id'] = Calypso::getValue($data, 'country.receiver');
 
         $bankData['id'] = Calypso::getValue($data, 'account_id', null);
-        $bankData['account_name'] = Calypso::getValue($data, 'account_name', 'N/A');
-        $bankData['account_no'] = Calypso::getValue($data, 'account_no','N/A');
+        $bankData['account_name'] = Calypso::getDisplayValue($data, 'account_name', 'N/A');
+        $bankData['account_no'] = Calypso::getDisplayValue($data, 'account_no','N/A');
         $bankData['bank_id'] = Calypso::getValue($data, 'bank');
-        $bankData['sort_code'] = Calypso::getValue($data, 'sort_code','N/A');
+        $bankData['sort_code'] = Calypso::getDisplayValue($data, 'sort_code','N/A');
 
         $oldAccount = Calypso::getValue($data, 'merchant', null);
         if($oldAccount !== 'none') {
