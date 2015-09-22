@@ -48,16 +48,18 @@ class ParcelService {
         $receiverAddress['country_id'] = Calypso::getValue($data, 'country.receiver');
 
         $bankData['id'] = Calypso::getValue($data, 'account_id', null);
-        $bankData['account_name'] = Calypso::getValue($data, 'account_name');
-        $bankData['account_no'] = Calypso::getValue($data, 'account_no');
+        $bankData['account_name'] = Calypso::getValue($data, 'account_name', 'N/A');
+        $bankData['account_no'] = Calypso::getValue($data, 'account_no','N/A');
         $bankData['bank_id'] = Calypso::getValue($data, 'bank');
-        $bankData['sort_code'] = Calypso::getValue($data, 'sort_code');
+        $bankData['sort_code'] = Calypso::getValue($data, 'sort_code','N/A');
 
         $oldAccount = Calypso::getValue($data, 'merchant', null);
         if($oldAccount !== 'none') {
-            if (empty($bankData['account_name']) || empty($bankData['bank_id']) || empty($bankData['account_name'])) {
-                $error[] = "All Account Details are required!";
-            }
+            //if (empty($bankData['account_name']) || empty($bankData['bank_id'])) {
+                //Since they are not using these fields now, I will just comment them out
+                //Till the next customer comes in
+                //$error[] = "All Account Details are required!";
+            //}
         }
         else{
             $bankData = null;
