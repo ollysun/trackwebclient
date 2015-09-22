@@ -32,9 +32,9 @@ class ParcelService {
                 $regionAdp = new RegionAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
                 $sender_location = $regionAdp->getCity($city_id);
                 if($sender_location['status'] === ResponseHandler::STATUS_OK) {
-                    $cloneParcels['shipper_location'] = $sender_location['data'];
+                    $cloneParcels['sender_location'] = $sender_location['data'];
                 } else {
-                    $cloneParcels['shipper_location'] = [];
+                    $cloneParcels['sender_location'] = [];
                 }
             }
             if (isset($data['receiver_address']) && isset($data['receiver_address']['city_id'])) {
