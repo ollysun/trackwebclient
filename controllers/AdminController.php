@@ -62,7 +62,7 @@ class AdminController extends BaseController
         $hub = $hub->getStatus() == ResponseHandler::STATUS_OK ? $hub->getData() : [];
 
         $hubAdp = new BranchAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $hubs = $hubAdp->getAllHubs();
+        $hubs = $hubAdp->getAllHubs(false);
         $hubs = new ResponseHandler($hubs);
         $hub_list = $hubs->getStatus() == ResponseHandler::STATUS_OK ? $hubs->getData() : [];
 
