@@ -42,7 +42,7 @@ class ParcelsController extends BaseController
             if (isset($payload['status'])) {
                 /*$errorMessages = implode('<br />', $payload['messages']);
                 Yii::$app->session->setFlash('danger', $errorMessages);*/
-                $this->sendAsyncFormResponse(1, $payload['messages'], "Parcel.onFormErrorCallback");
+                $this->sendAsyncFormResponse(1, array('message' => implode('<br />', $payload['messages'])), "Parcel.onFormErrorCallback");
 
             } else {
 
