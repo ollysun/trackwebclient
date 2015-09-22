@@ -68,7 +68,7 @@ class ParcelsController extends BaseController
         $countries = $refData->getCountries();
 
         $hubAdp = new BranchAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $centres = $hubAdp->getAllHubs();
+        $centres = $hubAdp->getAllHubs(false);
         $centres = new ResponseHandler($centres);
         $hubs_list = $centres->getStatus() == ResponseHandler::STATUS_OK ? $centres->getData() : [];
 
