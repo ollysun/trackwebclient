@@ -54,7 +54,6 @@ $this->params['breadcrumbs'] = array(
     </div>
     <div class="main-box-body">
         <div class="table-responsive">
-            <?php var_dump($manifests); ?>
             <?php if (!empty($manifests)): ?>
                 <table id="table" class="table table-hover dataTable">
                     <thead>
