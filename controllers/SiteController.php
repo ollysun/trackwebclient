@@ -401,7 +401,7 @@ class SiteController extends BaseController
     public function actionAllhubs() {
 
         $branchAdapter = new BranchAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
-        $allHubs = $branchAdapter->getAllHubs();
+        $allHubs = $branchAdapter->getAllHubs(false);
         if ($allHubs['status'] === ResponseHandler::STATUS_OK) {
             return $this->sendSuccessResponse($allHubs['data']);
         } else {
