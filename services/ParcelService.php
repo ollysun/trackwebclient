@@ -8,9 +8,57 @@
 
 namespace app\services;
 
+use Adapter\BankAdapter;
+use Adapter\ParcelAdapter;
+use Adapter\RegionAdapter;
+use Adapter\RequestHelper;
+use Adapter\ResponseHandler;
 use Adapter\Util\Calypso;
 
 class ParcelService {
+
+    public static function getParcelDetails($id)
+    {
+        $cloneParcels = [];
+        $data = [];
+        $parcel = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+        $response = $parcel->getOneParcel($id);
+        $response = new ResponseHandler($response);
+        if($response->getStatus() == ResponseHandler::STATUS_OK){
+            $data = $response->getData();
+            $cloneParcels['info'] = $data;
+            if (isset($data['sender_address']) && isset($data['sender_address']['city_id'])) {
+                $city_id = $data['sender_address']['city_id'];
+                $regionAdp = new RegionAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+                $sender_location = $regionAdp->getCity($city_id);
+                if($sender_location['status'] === ResponseHandler::STATUS_OK) {
+                    $cloneParcels['shipper_location'] = $sender_location['data'];
+                } else {
+                    $cloneParcels['shipper_location'] = [];
+                }
+            }
+            if (isset($data['receiver_address']) && isset($data['receiver_address']['city_id'])) {
+                $city_id = $data['receiver_address']['city_id'];
+                $regionAdp = new RegionAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+                $receiver_location = $regionAdp->getCity($city_id);
+                if($receiver_location['status'] === ResponseHandler::STATUS_OK) {
+                    $cloneParcels['receiver_location'] = $receiver_location['data'];
+                } else {
+                    $cloneParcels['receiver_location'] = [];
+                }
+            }
+            $bankAdapter = new BankAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+            $bankInfo = $bankAdapter->getSenderBankAccout($data['sender']['id']);
+            if ($bankInfo['status'] === ResponseHandler::STATUS_OK) {
+                if(!empty($bankInfo['data'])) {
+                    $sender_merchant = $bankInfo['data']['0'];
+                    $cloneParcels['sender_merchant'] = $sender_merchant;
+                }
+            }
+        }
+
+        return $cloneParcels;
+    }
 
     public function buildPostData($data) {
 
