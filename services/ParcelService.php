@@ -55,9 +55,11 @@ class ParcelService {
 
         $oldAccount = Calypso::getValue($data, 'merchant', null);
         if($oldAccount !== 'none') {
-            if (empty($bankData['account_name']) || empty($bankData['bank_id'])) {
-                $error[] = "All Account Details are required!";
-            }
+            //if (empty($bankData['account_name']) || empty($bankData['bank_id'])) {
+                //Since they are not using these fields now, I will just comment them out
+                //Till the next customer comes in
+                //$error[] = "All Account Details are required!";
+            //}
         }
         else{
             $bankData = null;
