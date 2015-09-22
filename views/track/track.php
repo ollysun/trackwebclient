@@ -13,7 +13,7 @@ $this->title = 'Tracking Portal';
     <div class="clearfix">
         <h1 class="pull-left">Tracking for #<?= $tracking_number ?></h1>
         <h4 class="pull-right text-muted">
-            Status: <?= Calypso::getDisplayValue($current_state_info, 'description', 'N/A') ?></h4>
+            Status: <strong class="text-danger"><?= Calypso::getDisplayValue($current_state_info, 'description', 'N/A') ?></strong></h4>
     </div>
     <br>
     <div class="row text-center text-uppercase">
