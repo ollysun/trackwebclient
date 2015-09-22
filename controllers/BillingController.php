@@ -106,7 +106,7 @@ class BillingController extends BaseController
     public function actionMatrix()
     {
         $branchAdp = new BranchAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $response = new ResponseHandler($branchAdp->getAllHubs(BranchAdapter::BRANCH_TYPE_HUB, false));
+        $response = new ResponseHandler($branchAdp->getAllHubs(false));
         $branchAdpMatrix = new BranchAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $responseMatrix = new ResponseHandler($branchAdpMatrix->getMatrix());
         $hubs = [];$hubsMatrix = [];
@@ -339,7 +339,7 @@ class BillingController extends BaseController
         $cities_list = $cities->getStatus() == ResponseHandler::STATUS_OK ? $cities->getData() : [];
 
         $hubAdp = new BranchAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
-        $hubs = $hubAdp->getAllHubs();
+        $hubs = $hubAdp->getAllHubs(false);
         $hubs = new ResponseHandler($hubs);
         $hub_list = $hubs->getStatus()==ResponseHandler::STATUS_OK?$hubs->getData(): [];
 
