@@ -131,16 +131,18 @@
 
 <div class="form-group">
 	<label for="country_<?=$prefix?>">Country</label>
-	<select name="country[<?=$prefix?>]" class="form-control validate required" id="country_<?=$prefix?>"
-            data-selected-id="<?php echo Calypso::getValue($parcel, "{$prefix_map[$prefix]}_location.country.id", ''); ?>">
-		<option value='' selected>Select Country...</option>
+	<select name="country[<?=$prefix?>]" class="form-control validate required" id="country_<?=$prefix?>">
+		<option value=''>Select Country...</option>
 <?php
-if (isset($countries) && is_array($countries['data'])) {
-	foreach ($countries['data'] as $item) {
-		?>
-				<option value="<?=$item['id']?>"><?=strtoupper($item['name']);?></option>
+    $country_id = Calypso::getValue($parcel, "{$prefix_map[$prefix]}_location.country.id", '');
+    if (isset($countries) && is_array($countries['data'])) {
+	    foreach ($countries['data'] as $item) {
+            $selected = ($country_id == $item['id']) ? "selected" : '';
+?>
+            <option value="<?=$item['id']?>" <?=$selected?> ><?=strtoupper($item['name']);?></option>
 <?php
-}}
+        }
+    }
 ?>
 	</select>
 </div>
