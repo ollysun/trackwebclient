@@ -152,6 +152,9 @@ class ServiceConstant
     const REF_PAYMENT_METHOD_CASH_POS = 3;
     const REF_PAYMENT_METHOD_DEFERRED = 4;
 
+    const REF_MANIFEST_TYPE_SWEEP = 1;
+    const REF_MANIFEST_TYPE_DELIVERY = 2;
+
     const DELIVERY_DISPATCH = 2;
     const DELIVERY_PICKUP = 1;
 
@@ -258,5 +261,20 @@ class ServiceConstant
     {
         return [ServiceConstant::MANIFEST_PENDING, ServiceConstant::MANIFEST_RESOLVED, ServiceConstant::MANIFEST_HAS_ISSUE,
             ServiceConstant::MANIFEST_IN_TRANSIT, ServiceConstant::MANIFEST_CANCELLED];
+    }
+
+    public static function getManifestType($type)
+    {
+        switch ($type) {
+            case ServiceConstant::REF_MANIFEST_TYPE_SWEEP:
+                return 'Sweep Manifest';
+                break;
+            case ServiceConstant::REF_MANIFEST_TYPE_DELIVERY:
+                return 'Delivery Manifest';
+                break;
+            default:
+               return false;
+                break;
+        }
     }
 }
