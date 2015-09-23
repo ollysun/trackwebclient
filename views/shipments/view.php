@@ -105,7 +105,7 @@ $this->params['breadcrumbs'][] = 'Waybill';
 								<div class="col-xs-6">
 									<label>Parcel type</label>
 									<?php
-										if(isset($parcelType) && is_array($parcelType['data'])) {
+										if(isset($parcelType, $parcelType['data']) && is_array($parcelType['data'])) {
 											foreach ($parcelType['data'] as $item) {
 												if($item['id'] == $parcelData['parcel_type']) {
 													echo '<div class="form-control-static">'.ucwords($item['name']).'</div>';
@@ -149,7 +149,7 @@ $this->params['breadcrumbs'][] = 'Waybill';
 								<div class="col-xs-6">
 									<label>Service type</label>
 									<?php
-										if(isset($serviceType) && is_array($serviceType['data'])) {
+										if(isset($serviceType, $serviceType['data']) && is_array($serviceType['data'])) {
 											foreach ($serviceType['data'] as $item) {
 												if($item['id'] == $parcelData['shipping_type']) {
 													echo '<div class="form-control-static">'.ucwords($item['name']).'</div>';
