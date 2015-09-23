@@ -78,7 +78,6 @@ $(document).ready(function(){
                 branchElement.html("");
                 if(data.status){
                     data.data.forEach(function(v,i){
-                        console.log(branchElement.data('id'));
                         if(branchElement.data('id') == v.id){
                             branchElement.append("<option selected value='"+ v.id +"'>"+ (v.name + " ("+ v.code+")").toUpperCase()+"</option>");
                         } else {
