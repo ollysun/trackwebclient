@@ -106,8 +106,8 @@ class ParcelService {
             if (empty($bankData['account_name']) || empty($bankData['bank_id']) || empty($bankData['account_name'])) {
                 $error[] = "All Account Details are required!";
             }
-        }
-        else{
+
+        } else {
             $bankData = null;
         }
 
