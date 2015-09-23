@@ -262,14 +262,15 @@ $this->params['content_header_button'] = '<button type="button" id="addNewStaffB
                                     <small>(Users can be activated later)</small>
                                 </label>
                                 <select name="status" class="form-control  validate required">
-                                    <option>YES</option>
-                                    <option>NO</option>
+                                    <option value="1">YES</option>
+                                    <option value="2">NO</option>
                                 </select>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
+                    <input name="id" type="hidden"/>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary">Create Staff Account</button>
                 </div>

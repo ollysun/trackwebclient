@@ -21,7 +21,7 @@ $(document).ready(function () {
         }
 
         // load input fields
-        var inputFields = ['email', 'phone', 'staff_id'];
+        var inputFields = ['email', 'phone', 'staff_id', 'id'];
         $(inputFields).each(function (i, v) {
             editStaffForm.find("input[name=" + v + "]").val(data[v]);
         });
@@ -30,22 +30,13 @@ $(document).ready(function () {
         var selectFields = ['state', 'role', 'status', 'branch_type'];
         $(selectFields).each(function (i, select) {
             editStaffForm.find("select[name=" + select + "] option").each(function (i, v) {
-                if (select != 'status') {
-                    if ($(v).val() == data[select]) {
-                        $(v).attr("selected", true);
-                    }
-                } else {
-                    // Exception for status field
-                    if($(v).html() == "YES" && data.status == 1) {
-                        $(v).attr("selected", true);
-                    } else if ($(v).html() == "NO" && data.status == 2){
-                        $(v).attr("selected", true);
-                    }
+                if ($(v).val() == data[select]) {
+                    $(v).attr("selected", true);
                 }
             });
 
             // Exception for branch_type field
-            if(select == 'branch_type') {
+            if (select == 'branch_type') {
                 editStaffForm.find("#branch").data("id", data.branch);
                 editStaffForm.find("#branch_type").trigger('change');
             }

@@ -135,6 +135,7 @@ class ServiceConstant
     const URL_MANIFEST_ONE = 'manifest/getOne';
 
     const URL_CREATE_USER = 'admin/register';
+    const URL_EDIT_USER = 'admin/edit';
     const URL_GET_USERS = '/admin/getAll';
     const URL_GET_USER = '/admin/getone';
     const URL_USER_VALIDATE = '/admin/validate';
