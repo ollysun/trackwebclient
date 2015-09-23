@@ -192,29 +192,62 @@ class AdminController extends BaseController
         return $this->render('manageecs', array('States' => $state_list, 'hubs' => $hub_list, 'centres' => $centres_list, 'filter_hub_id' => $filter_hub_id));
     }
 
+    /**
+     * Manage Staff action
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @author Olawale Lawal <wale@cottacush.com>
+     * @param int $offset
+     * @param string $role
+     * @return string
+     */
     public function actionManagestaff($offset = 0, $role = '-1')
     {
         if (Yii::$app->request->isPost) {
             $data = Yii::$app->request->post();
             $user = new UserAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-            $resp = $user->createNewUser(Calypso::getInstance()->getValue($data, 'role'),
-                Calypso::getInstance()->getValue($data, 'branch'), Calypso::getInstance()->getValue($data, 'staff_id'),
-                Calypso::getInstance()->getValue($data, 'email'), Calypso::getInstance()->getValue($data, 'firstname') . ' ' . Calypso::getInstance()->getValue($data, 'lastname'),
-                Calypso::getInstance()->getValue($data, 'phone'));
+            $id = Calypso::getInstance()->getValue($data, 'id', '');
 
-            $creationResponse = new ResponseHandler($resp);
-            if ($creationResponse->getStatus() == ResponseHandler::STATUS_OK) {
-                Yii::$app->session->setFlash('success', 'User has been created successfully.');
-            } else {
-                if (!is_null($creationResponse->getError()) && $creationResponse->getError() != ResponseHandler::NO_MESSAGE) {
-                    Yii::$app->session->setFlash('danger', "An error occurred while trying to create user. Reason:" . $creationResponse->getError());
+            if($id === ''){
+                // Create
+                $resp = $user->createNewUser(Calypso::getInstance()->getValue($data, 'role'),
+                    Calypso::getInstance()->getValue($data, 'branch'), Calypso::getInstance()->getValue($data, 'staff_id'),
+                    Calypso::getInstance()->getValue($data, 'email'), Calypso::getInstance()->getValue($data, 'firstname') . ' ' . Calypso::getInstance()->getValue($data, 'lastname'),
+                    Calypso::getInstance()->getValue($data, 'phone'));
+
+                $creationResponse = new ResponseHandler($resp);
+                if ($creationResponse->getStatus() == ResponseHandler::STATUS_OK) {
+                    Yii::$app->session->setFlash('success', 'User has been created successfully.');
                 } else {
-                    Yii::$app->session->setFlash('danger', 'There was a problem creating this User. Please try again.');
+                    if (!is_null($creationResponse->getError()) && $creationResponse->getError() != ResponseHandler::NO_MESSAGE) {
+                        Yii::$app->session->setFlash('danger', "An error occurred while trying to create user. Reason:" . $creationResponse->getError());
+                    } else {
+                        Yii::$app->session->setFlash('danger', 'There was a problem creating this User. Please try again.');
+                    }
+                }
+            } else {
+                // Update
+                $resp = $user->updateUser($id,
+                    Calypso::getInstance()->getValue($data, 'role'),
+                    Calypso::getInstance()->getValue($data, 'branch'),
+                    Calypso::getInstance()->getValue($data, 'staff_id'),
+                    Calypso::getInstance()->getValue($data, 'email'),
+                    Calypso::getInstance()->getValue($data, 'firstname') . ' ' . Calypso::getInstance()->getValue($data, 'lastname'),
+                    Calypso::getInstance()->getValue($data, 'phone'),
+                    Calypso::getInstance()->getValue($data, 'status')
+                );
+
+                $updateResponse = new ResponseHandler($resp);
+                if ($updateResponse->getStatus() == ResponseHandler::STATUS_OK) {
+                    Yii::$app->session->setFlash('success', 'User has been updated successfully.');
+                } else {
+                    if (!is_null($updateResponse->getError()) && $updateResponse->getError() != ResponseHandler::NO_MESSAGE) {
+                        Yii::$app->session->setFlash('danger', "An error occurred while trying to update user. Reason:" . $updateResponse->getError());
+                    } else {
+                        Yii::$app->session->setFlash('danger', 'There was a problem updating this User. Please try again.');
+                    }
                 }
             }
-
         }
-
 
         $refAdp = new RefAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $states = $refAdp->getStates(1);//Nigeria hardcoded for now ... No offense please.
@@ -225,7 +258,6 @@ class AdminController extends BaseController
         $state_list = $states->getStatus() == ResponseHandler::STATUS_OK ? $states->getData() : [];
         $role_list = $roles->getStatus() == ResponseHandler::STATUS_OK ? $roles->getData() : [];
 
-        $staffMembers = [];
         $staffAdp = new AdminAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         if (isset(Calypso::getInstance()->get()->search) && strlen(Calypso::getInstance()->get()->search) > 0) {
             $is_email = !(filter_var(Calypso::getInstance()->get()->search, FILTER_VALIDATE_EMAIL) === false);
