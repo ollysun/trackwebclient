@@ -2,6 +2,7 @@
 use Adapter\Util\Calypso;
 use yii\helpers\Html;
 use yii\helpers\Url;
+use yii\web\JqueryAsset;
 
 /* @var $this yii\web\View */
 $this->title = 'Shipment: Generate Manifest for Delivery';
@@ -282,8 +283,8 @@ $this->params['breadcrumbs'] = [['label' => 'Sorted Shipments']];
 
 
 <!-- this page specific scripts -->
-<?php $this->registerJsFile('@web/js/libs/jquery.dataTables.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
-<?php $this->registerJsFile('@web/js/libs/dataTables.fixedHeader.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
-<?php $this->registerJsFile('@web/js/libs/dataTables.tableTools.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
-<?php $this->registerJsFile('@web/js/libs/jquery.dataTables.bootstrap.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
-<?php $this->registerJsFile('@web/js/hub_delivery.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
+<?php $this->registerJsFile('@web/js/libs/jquery.dataTables.js', ['depends' => [JqueryAsset::className()]]); ?>
+<?php $this->registerJsFile('@web/js/libs/dataTables.fixedHeader.js', ['depends' => [JqueryAsset::className()]]); ?>
+<?php $this->registerJsFile('@web/js/libs/dataTables.tableTools.js', ['depends' => [JqueryAsset::className()]]); ?>
+<?php $this->registerJsFile('@web/js/libs/jquery.dataTables.bootstrap.js', ['depends' => [JqueryAsset::className()]]); ?>
+<?php $this->registerJsFile('@web/js/hub_delivery.js', ['depends' => [JqueryAsset::className()]]); ?>
