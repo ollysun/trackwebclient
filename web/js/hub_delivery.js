@@ -1,11 +1,6 @@
 /**
  * Created by RotelandO on 7/25/15.
  */
-
-
-/**
- * Created by RotelandO on 7/20/15.
- */
 var parcels = {
     waybills: [],
     to_branch_id: '',
@@ -105,7 +100,9 @@ var Parcel_Destination = {
     },
 
     createBag: function (parcels) {
-
+        parcels.to_branch_id = $("#to_branch").val();
+        parcels.to_branch_name = $("#to_branch :selected").text();
+        parcels.seal_id = $("#seal_id").val();
 
         $.ajax({
             url: Parcel_Destination.Url.createbag,
@@ -114,7 +111,9 @@ var Parcel_Destination = {
             data: JSON.stringify(parcels),
             success: function (response) {
                 if (response.status == 'success') {
-                    alert('Bag with id ' + response.data.id + ' has been created successfully!');
+                    alert('Bag ' + response.data.bag_number + ' has been created successfully!');
+                    $('#createBag').modal('hide');
+                    location.reload();
                 } else {
                     alert('An error occurred while trying to create bag. #' + response.message);
                 }
@@ -123,7 +122,7 @@ var Parcel_Destination = {
                 alert('We are unable to process this request. Please try again later.');
             },
             complete: function (jqXHR) {
-
+                $("#btnBag").attr('disabled', false);
             }
         })
     }
@@ -235,11 +234,11 @@ $(document).ready(function () {
     $('#staff_info').hide();
     $('#btnGenerate').attr('disabled', true);
 
-    var btype = $('#branch_type').find('option:selected').val();
-    var bid = $('#branch_name').attr('data-bid');
+    var btype = $('.branch_type').find('option:selected').val();
+    var bid = $('.branch_name').attr('data-bid');
     fillBranchesOrHub(btype, bid);
 
-    $('#branch_type').on('change', function () {
+    $('.branch_type').on('change', function () {
         var type = $(this).val();
         fillBranchesOrHub(type);
     });
@@ -248,22 +247,26 @@ $(document).ready(function () {
         var url = '';
         if (type === 'hub') {
             url = Parcel_Destination.Url.allhubs;
-            $('#hub_branch_label').html('Hub Name');
+            $('.hub_branch_label').html('Hub Name');
         } else {
             url = Parcel_Destination.Url.allecforhubs;
-            $('#hub_branch_label').html('Branch Name');
+            $('.hub_branch_label').html('Branch Name');
         }
-        Parcel_Destination.fillSelectOption(url, {}, '#branch_name', bid);
+        Parcel_Destination.fillSelectOption(url, {}, '.branch_name', bid);
     }
 
-    $('#manifest').on('click', function (event) {
+    $('#manifest').on('click', function () {
 
-        validateParcels();
-        populateDialog(parcels, '#genManifest');
+        if (!validateParcels()) {
+            return false;
+        }
+        var genManifest = $('#genManifest');
+        genManifest.find('#dlg_location').val(parcels.to_branch_name);
+        genManifest.find('#tbl_manifest > tbody').html(getParcelTableContent(parcels));
 
         $('#staff_info').hide();
         $('#btnGenerate').attr('disabled', true);
-        $('#genManifest').modal('show');
+        genManifest.modal('show');
     });
 
     function validateParcels() {
@@ -297,19 +300,22 @@ $(document).ready(function () {
         if (!selected) {
             alert('You must select at least one parcel!');
             event.preventDefault();
-            return;
+            return false;
         }
 
         if (!same_branch) {
             alert('Manifest can only be generated for same next destination branch!');
             event.preventDefault();
-            return;
+            return false;
         }
+
+        return true;
     }
 
-    function populateDialog(parcels, targetModal) {
-
-        $(targetModal+' #dlg_location').val(parcels.to_branch_name);
+    /**
+     * @param parcels
+     */
+    function getParcelTableContent(parcels) {
         var html = '';
         $.each(parcels.waybills, function (i, waybill) {
             html += "<tr>";
@@ -318,7 +324,7 @@ $(document).ready(function () {
             html += "<td>" + waybill.final + "</td>";
             html += "</tr>";
         });
-        $(targetModal+' #tbl_manifest > tbody').html(html);
+        return html;
     }
 
     $('#staff').on('keypress', function (event) {
@@ -374,14 +380,27 @@ $(document).ready(function () {
         $("form#records_filter").submit();
     });
 
-    $('#btnCreateBag').on('click', function (event) {
+    /**
+     * Create Bag Button actions
+     */
+    $('#btnCreateBag').on('click', function () {
 
-        validateParcels();
-        populateDialog(parcels,'#createBag');
-        $('#createBag').modal('show');
+        if (!validateParcels()) {
+            return false;
+        }
+        $("#parcels_destination").html(parcels.to_branch_name);
+        var create_bag_modal = $('#createBag');
+        create_bag_modal.find('#bag_parcels_table > tbody').html(getParcelTableContent(parcels));
+        create_bag_modal.modal('show');
     });
 
+
     $('#btnBag').on('click', function (event) {
+        if ($("#to_branch").val() == "") {
+            alert("Please select next destination for bag");
+            return false;
+        }
+        $(this).attr('disabled', true);
         event.preventDefault();
         Parcel_Destination.createBag(parcels);
     });
