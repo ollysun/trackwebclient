@@ -56,17 +56,17 @@ class ShipmentsController extends BaseController {
             $from_date = Calypso::getInstance()->get()->from;
             $to_date = Calypso::getInstance()->get()->to;
             $filter = isset(Calypso::getInstance()->get()->date_filter) ? Calypso::getInstance()->get()->date_filter : '-1';
-            $response = $parcel->getFilterParcelsByDateAndStatus($from_date.'%2000:00:00',$to_date.'%2023:59:59',$filter,$offset,$this->page_width, 1,$this->branch_to_view, 1);
+            $response = $parcel->getFilterParcelsByDateAndStatus($from_date.'%2000:00:00',$to_date.'%2023:59:59',$filter,$offset,$this->page_width, 1,$this->branch_to_view, 1, true);
             $search_action = true;
         }
         elseif(!empty(Calypso::getInstance()->get()->search) ){ //check if not empty criteria
             $search = Calypso::getInstance()->get()->search;
-            $response = $parcel->getSearchParcels('-1',$search,$offset,$this->page_width,1,$this->branch_to_view, 1);
+            $response = $parcel->getSearchParcels('-1',$search,$offset,$this->page_width,1,$this->branch_to_view, 1, true);
             $search_action = true;
             $filter = null;
         }
         else{
-            $response = $parcel->getParcels($from_date.'%2000:00:00',$to_date.'%2023:59:59',null,$this->branch_to_view,$offset,$this->page_width, 1, 1, 1);
+            $response = $parcel->getParcels($from_date.'%2000:00:00',$to_date.'%2023:59:59',null,$this->branch_to_view,$offset,$this->page_width, 1, 1, 1, true);
             //$response = $parcel->getParcels(null,null,$offset,$this->page_width);
             //$response = $parcel->getNewParcelsByDate(date('Y-m-d', strtotime('now')).' 00:00:00',$offset,$this->page_width, 1,$this->userData['branch_id']);
             $search_action = false;
