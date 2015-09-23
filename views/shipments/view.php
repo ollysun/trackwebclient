@@ -46,7 +46,7 @@ $this->params['breadcrumbs'][] = 'Waybill';
 							<?php }?>
 							<br>
 							<?php
-								if (isset($senderLocation) && is_array($senderLocation['data'])) {
+								if (isset($senderLocation, $senderLocation['data']) && is_array($senderLocation['data'])) {
 									$data = $senderLocation['data'];
 									echo ucwords($data['name']).', '.ucwords($data['state']['name']).', '.ucwords($data['country']['name']);
 								}
@@ -84,7 +84,7 @@ $this->params['breadcrumbs'][] = 'Waybill';
 							<?php }?>
 							<br>
 							<?php
-								if (isset($receiverLocation) && is_array($receiverLocation['data'])) {
+								if (isset($receiverLocation, $receiverLocation['data']) && is_array($receiverLocation['data'])) {
 									$data = $receiverLocation['data'];
 									echo ucwords($data['name']).', '.ucwords($data['state']['name']).', '.ucwords($data['country']['name']);
 								}
