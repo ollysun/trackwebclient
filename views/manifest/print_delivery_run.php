@@ -1,5 +1,6 @@
 <?php
 use Adapter\Util\Calypso;
+use Adapter\Util\Util;
 use yii\helpers\Html;
 use Adapter\Globals\ServiceConstant;
 
@@ -8,9 +9,6 @@ use Adapter\Globals\ServiceConstant;
 <?= Html::cssFile('@web/css/compiled/print-manifest.css') ?>
 
 <?php if (!empty($manifest)):
-    for ($i = 0; $i < 50; $i++) {
-        $manifest['parcels'][] = $manifest['parcels'][0];
-    }
 
     $parcelPerSheet = 24;
     // Add 0.5 to round up number of sheets
@@ -100,9 +98,9 @@ use Adapter\Globals\ServiceConstant;
                 <tr>
                     <th width="220px;">CONSIGNEE NAME</th>
                     <th width="170px;">AIRWAY BILL NUMBER</th>
-                    <th width="140px;">ORIGIN CODE</th>
-                    <th width="110px;">NO PCS.</th>
-                    <th width="120px;">TIME</th>
+                    <th width="100px;">ORIGIN CODE</th>
+                    <th width="60px;">NO PCS.</th>
+                    <th width="210px;">TIME</th>
                     <th width="90px;">CD</th>
                     <th width="250px;">NAME OF PERSON <br> RECEIVING SHIPMENT</th>
                     <th width="180px;">SIGNATURE</th>
@@ -132,10 +130,10 @@ use Adapter\Globals\ServiceConstant;
                         <tr>
                             <td class="show-only-right-cell-border"><?= ($i < 10) ? '0' . $i : '' . $i; ?></td>
                             <td><?= Calypso::getValue($parcel, 'shipper_firstname') . " " . Calypso::getValue($parcel, 'shipper_lastname');?></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                            <td><?= Calypso::getValue($parcel, 'waybill_number');?></td>
+                            <td><?= strtoupper(Calypso::getValue($manifest, 'from_branch.code'));?></td>
+                            <td><?= Calypso::getValue($parcel, 'no_of_package');?></td>
+                            <td><?= Util::formatDate("d/m/y H:i", Calypso::getValue($parcel, 'created_date'));?></td>
                             <td></td>
                             <td></td>
                             <td></td>
