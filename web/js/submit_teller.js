@@ -31,7 +31,7 @@ $(document).ready(function(){
 
 
     $('.btnClone').on('click', function (event) {
-        var ans = confirm('Do you want to cancel this shipment before cloing?');
+        var ans = confirm('Do you want to cancel this shipment before cloning?');
         var self = this;
         if(ans) {
             var params = { "waybill_numbers": $(this).closest('tr').data('waybill') };
