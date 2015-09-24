@@ -72,9 +72,9 @@ class ParcelService {
         $payload = [];
 
         $senderInfo['firstname'] = Calypso::getValue($data, 'firstname.shipper');
-        $senderInfo['lastname'] = Calypso::getDisplayValue($data, 'lastname.shipper', 'N/A');
+        $senderInfo['lastname'] = Calypso::getDisplayValue($data, 'lastname.shipper', '');
         $senderInfo['phone'] = Calypso::getValue($data, 'phone.shipper');
-        $senderInfo['email'] = Calypso::getDisplayValue($data, 'email.shipper', 'N/A');
+        $senderInfo['email'] = Calypso::getDisplayValue($data, 'email.shipper', '');
 
         $senderAddress['id'] = Calypso::getValue($data, 'address.shipper.id');
         $senderAddress['street1'] = Calypso::getValue($data, 'address.shipper.0');
@@ -84,9 +84,9 @@ class ParcelService {
         $senderAddress['country_id'] = Calypso::getValue($data, 'country.shipper');
 
         $receiverInfo['firstname'] = Calypso::getValue($data, 'firstname.receiver');
-        $receiverInfo['lastname'] = Calypso::getDisplayValue($data, 'lastname.receiver', 'N/A');
+        $receiverInfo['lastname'] = Calypso::getDisplayValue($data, 'lastname.receiver', '');
         $receiverInfo['phone'] = Calypso::getDisplayValue($data, 'phone.receiver', 'N/A');
-        $receiverInfo['email'] = Calypso::getDisplayValue($data, 'email.receiver', 'N/A');
+        $receiverInfo['email'] = Calypso::getDisplayValue($data, 'email.receiver', '');
 
         $receiverAddress['id'] = Calypso::getValue($data, 'address.receiver.id');
         $receiverAddress['street1'] = Calypso::getValue($data, 'address.receiver.0');
@@ -96,15 +96,18 @@ class ParcelService {
         $receiverAddress['country_id'] = Calypso::getValue($data, 'country.receiver');
 
         $bankData['id'] = Calypso::getValue($data, 'account_id', null);
-        $bankData['account_name'] = Calypso::getValue($data, 'account_name');
-        $bankData['account_no'] = Calypso::getValue($data, 'account_no');
+        $bankData['account_name'] = Calypso::getDisplayValue($data, 'account_name');
+        $bankData['account_no'] = Calypso::getDisplayValue($data, 'account_no');
         $bankData['bank_id'] = Calypso::getValue($data, 'bank');
-        $bankData['sort_code'] = Calypso::getValue($data, 'sort_code');
+        $bankData['sort_code'] = Calypso::getDisplayValue($data, 'sort_code','N/A');
 
         $oldAccount = Calypso::getValue($data, 'merchant', null);
         if($oldAccount !== 'none') {
-            if (empty($bankData['account_name']) || empty($bankData['bank_id']) || empty($bankData['account_name'])) {
-                $error[] = "All Account Details are required!";
+            if (!isset($bankData['account_name']) && !isset($bankData['bank_id']) && !isset($bankData['account_no'])) {
+                $bankData = null;
+            }
+            elseif (!isset($bankData['account_name'], $bankData['bank_id'],$bankData['account_no'])) {
+                $error[] = "Incomplete Account Details!";
             }
 
         } else {
@@ -132,7 +135,7 @@ class ParcelService {
         $manualAmount = Calypso::getValue($data, 'manual_amount');
         $parcel['amount_due'] = $parcel['billing_method'] == 'manual' ? $manualAmount : $parcel['amount_due'] ;
         $parcel['is_billing_overridden'] = $parcel['billing_method'] == 'manual' ? 1 : 0;
-        if(!$parcel['amount_due'] && !$manualAmount) {
+        if(is_null($parcel['amount_due'])) {
             $error[] = "Amount must be calculated. Please ensure all zone billing and mapping are set.";
         }
         $parcel['cash_on_delivery'] = ($data['cash_on_delivery'] === 'true') ? 1 : 0;
@@ -140,7 +143,7 @@ class ParcelService {
         $parcel['delivery_type'] = Calypso::getValue($data, 'delivery_type');
         $parcel['payment_type'] = Calypso::getValue($data, 'payment_method');
         $parcel['shipping_type'] = Calypso::getValue($data, 'shipping_type');
-        $parcel['other_info'] = Calypso::getDisplayValue($data, 'other_info', 'N/A');
+        $parcel['other_info'] = Calypso::getDisplayValue($data, 'other_info', '');
         $parcel['cash_amount'] = Calypso::getValue($data, 'amount_in_cash', null);
         $parcel['pos_amount'] = Calypso::getValue($data, 'amount_in_pos', null);
         $parcel['pos_trans_id'] = Calypso::getValue($data, 'pos_transaction_id', null);

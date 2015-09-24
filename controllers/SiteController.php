@@ -122,6 +122,9 @@ class SiteController extends BaseController
     public function actionLogout()
     {
         Yii::$app->user->logout();
+        Calypso::getInstance()->session('user_session',null);
+        Yii::$app->user->logout();
+        session_destroy();
         return $this->redirect('login');
     }
 
@@ -398,7 +401,7 @@ class SiteController extends BaseController
     public function actionAllhubs() {
 
         $branchAdapter = new BranchAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
-        $allHubs = $branchAdapter->getAllHubs();
+        $allHubs = $branchAdapter->getAllHubs(false);
         if ($allHubs['status'] === ResponseHandler::STATUS_OK) {
             return $this->sendSuccessResponse($allHubs['data']);
         } else {

@@ -54,11 +54,13 @@
   border-color: #333;
 }
 .inline-underline {
-  font-size: 1em;
-  height: 1.4em;
-  border-bottom: 1px solid #111;
-  min-width: 200px;
   margin-bottom: 15px;
+  margin-top: -0.2em;
+  padding: 0 5px;
+  min-width: 200px;
+  height: 1.4em;
+  font-size: 1.2em;
+  border-bottom: 1px solid #111;
 }
 .inline-underline-sm {
   min-width: 130px;

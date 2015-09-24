@@ -6,6 +6,7 @@ use Adapter\ManifestAdapter;
 use Adapter\RequestHelper;
 use Adapter\ResponseHandler;
 use Adapter\Util\Calypso;
+use Adapter\Globals\ServiceConstant;
 
 class ManifestController extends BaseController
 {
@@ -34,6 +35,7 @@ class ManifestController extends BaseController
     public function actionIndex()
     {
         $filters = [];
+        $page = \Yii::$app->getRequest()->get('page', 1);
 
         $validFilters = ['status' => 'status', 'from' => 'start_created_date', 'to' => 'end_created_date'];
         $defaultDate = date('Y/m/d');
@@ -80,7 +82,13 @@ class ManifestController extends BaseController
 
         if(!is_null($query)) {
             $filters = ['id' => $query];
+            $page = 1; // Reset page
         }
+
+        // Add Offset and Count
+        $offset = ($page - 1) * $this->page_width;
+        $filters['offset'] = $offset;
+        $filters['count'] = $this->page_width;
 
         $adapter = new ManifestAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
         $response = new ResponseHandler($adapter->getManifests($filters));
@@ -90,10 +98,11 @@ class ManifestController extends BaseController
 
         $manifests = [];
         if($response->getStatus() == ResponseHandler::STATUS_OK){
-            $manifests = $response->getData();
+            $totalCount = Calypso::getValue($response->getData(), 'total_count', 0);
+            $manifests = Calypso::getValue($response->getData(), 'manifests', array());
         }
 
-        return $this->render('index', ['manifests' => $manifests, 'fromDate' => $fromDate, 'toDate' => $toDate, 'branchId' => $branchId, 'filter' => $filter, 'offset' => 0]);
+        return $this->render('index', ['manifests' => $manifests, 'fromDate' => $fromDate, 'toDate' => $toDate, 'branchId' => $branchId, 'filter' => $filter, 'offset' => $offset, 'total_count' => $totalCount, 'page_width' => $this->page_width]);
     }
 
     /**
@@ -132,12 +141,9 @@ class ManifestController extends BaseController
         } else {
             $this->flashError('An error occurred while trying to fetch manifest details. Please try again.');
         }
-        return $this->render('print', ['manifest' => $manifest, 'id' => $id]);
-    }
 
-    public function actionPrintdelivery()
-    {
-        $this->layout = 'print';
-        return $this->render('print_delivery_run');
+        $template = ($manifest['type_id'] == ServiceConstant::REF_MANIFEST_TYPE_DELIVERY) ? 'print_delivery_run' : 'print';
+
+        return $this->render($template, ['manifest' => $manifest, 'id' => $id]);
     }
 }

@@ -46,7 +46,7 @@ $this->params['breadcrumbs'][] = 'Waybill';
 							<?php }?>
 							<br>
 							<?php
-								if (isset($senderLocation) && is_array($senderLocation['data'])) {
+								if (isset($senderLocation, $senderLocation['data']) && is_array($senderLocation['data'])) {
 									$data = $senderLocation['data'];
 									echo ucwords($data['name']).', '.ucwords($data['state']['name']).', '.ucwords($data['country']['name']);
 								}
@@ -84,7 +84,7 @@ $this->params['breadcrumbs'][] = 'Waybill';
 							<?php }?>
 							<br>
 							<?php
-								if (isset($receiverLocation) && is_array($receiverLocation['data'])) {
+								if (isset($receiverLocation, $receiverLocation['data']) && is_array($receiverLocation['data'])) {
 									$data = $receiverLocation['data'];
 									echo ucwords($data['name']).', '.ucwords($data['state']['name']).', '.ucwords($data['country']['name']);
 								}
@@ -105,7 +105,7 @@ $this->params['breadcrumbs'][] = 'Waybill';
 								<div class="col-xs-6">
 									<label>Parcel type</label>
 									<?php
-										if(isset($parcelType) && is_array($parcelType['data'])) {
+										if(isset($parcelType, $parcelType['data']) && is_array($parcelType['data'])) {
 											foreach ($parcelType['data'] as $item) {
 												if($item['id'] == $parcelData['parcel_type']) {
 													echo '<div class="form-control-static">'.ucwords($item['name']).'</div>';
@@ -149,7 +149,7 @@ $this->params['breadcrumbs'][] = 'Waybill';
 								<div class="col-xs-6">
 									<label>Service type</label>
 									<?php
-										if(isset($serviceType) && is_array($serviceType['data'])) {
+										if(isset($serviceType, $serviceType['data']) && is_array($serviceType['data'])) {
 											foreach ($serviceType['data'] as $item) {
 												if($item['id'] == $parcelData['shipping_type']) {
 													echo '<div class="form-control-static">'.ucwords($item['name']).'</div>';
@@ -172,20 +172,14 @@ $this->params['breadcrumbs'][] = 'Waybill';
 										<?= (empty($senderMerchant)) ? 'No' : 'Yes'; ?>
 									</div>
 								</div>
-								<?php if(!empty($senderMerchant)):?>
+								<?php if(!empty(Calypso::getValue($parcelData, 'reference_number', ''))): ?>
 								<div class="col-xs-6">
-									<label>Reference Number</label>
+									<label>Reference Number(s)</label>
 									<div class="form-control-static">
 										<?= Calypso::getValue($parcelData, 'reference_number', ''); ?>
 									</div>
 								</div>
 								<?php endif; ?>
-								<div class="col-xs-6 hidden">
-									<label>Sender is a Corporate lead?</label>
-									<div class="class-form-control-static">
-										not available in api
-									</div>
-								</div>
 							</div>
 							<?php if(!empty($senderMerchant)) { ?>
 							<div class="row">

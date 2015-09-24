@@ -122,11 +122,11 @@ function getServerResponse(statusCode, message) {
                 $('input[name="account_name"]').removeClass('name');
             }
             else {
-                $('input[name="account_name"], input[name="account_no"], select[name="bank"]')
+                /*$('input[name="account_name"], input[name="account_no"], select[name="bank"]')
                     .addClass('required validate active-validate')
                     .on('blur.CP.form.validate', validateFxn);
                 $('input[name="account_no"]').addClass('integer length');
-                $('input[name="account_name"]').addClass('name');
+                $('input[name="account_name"]').addClass('name');*/
             }
         }
     };
@@ -287,7 +287,14 @@ function FlyOutPanel(triggerSelector, evt) {
 }
 
 var Parcel = {
-
+    onFormErrorCallback : function(code, payload){
+        //Handler as sent from the server
+        alert(payload.message);
+    },
+    onFormSuccessCallback : function(code, payload){
+        $(window).trigger('success.CP.Form.watchChanges');
+        window.location = "/site/viewwaybill?id=" + payload.id;
+    },
     newUserObject: function () {
         return {
             id: '',
@@ -570,9 +577,9 @@ $(document).ready(function () {
         $(".amount-due-wrap").hide();
         $('#' + $(this).val() + '_billing').show();
         if($(this).val() == 'manual') {
-            $("input[name='manual_amount']").addClass('validate non-zero-integer required');
+            $("input[name='manual_amount']").addClass('validate integer required');
         } else {
-            $("input[name='manual_amount']").removeClass('validate non-zero-integer required');
+            $("input[name='manual_amount']").removeClass('validate integer required');
         }
     });
 
