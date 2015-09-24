@@ -356,6 +356,7 @@ class Calypso
             'All_Shipments' => ['base_link' => 'shipments/all', 'class' => '','branch' => [ ServiceConstant::BRANCH_TYPE_EC, ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
             'Administrator' => ['base' => 'admin', 'class' => 'fa fa-user', 'base_link' => [
                 'Manage_branches' => ['base_link' => 'admin/managebranches', 'class' => ''],
+                'Manage_routes' => ['base_link' => 'admin/manageroutes', 'class' => ''],
                 'Manage_staff_accounts' => ['base_link' => 'admin/managestaff', 'class' => ''],
                 'Company_registration' => ['base_link' => 'admin/companies', 'class' => ''],
                 'Billing' => ['base' => 'billing', 'class' => '', 'base_link' => [
@@ -369,7 +370,7 @@ class Calypso
                     'Onforwarding_Charges' => ['base_link' => 'billing/onforwarding', 'class' => ''],
                 ],'branch' => [ ServiceConstant::BRANCH_TYPE_HQ]]
             ],'branch' => [ ServiceConstant::BRANCH_TYPE_HQ]],
-            'Parcel History' => ['base' => 'site', 'base_link' => 'site/tracksearch','class' => 'fa fa-gift'],
+            'Parcel History' => ['base' => 'track', 'base_link' => 'track/','class' => 'fa fa-gift'],
             'Manifests' => ['base' => 'manifest', 'base_link' => 'manifest/index','class' => 'fa fa-book'],
             'Customer_History' => ['base' => 'shipments', 'base_link' => 'shipments/customerhistory','class' => 'fa fa-user'
                 ,'branch' => [ ServiceConstant::BRANCH_TYPE_EC, ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]] ,

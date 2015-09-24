@@ -110,7 +110,7 @@ use Adapter\Util\Calypso;
 						<?php
 					}
 					?>
-					<li class="hidden">
+					<li>
 						<a href="#" class="dropdown-toggle">
 							<i class="fa fa-gift"></i>
 							<span>Corporate</span>

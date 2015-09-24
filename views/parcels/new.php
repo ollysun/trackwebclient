@@ -21,7 +21,7 @@ $is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
 
 <?php echo Calypso::showFlashMessages(); ?>
 
-<form action="#" method="post" enctype="multipart/form-data" class="validate-form add-required-asterisks" data-keyboard-submit data-watch-changes>
+<form action="#" target="async_frame" method="post" enctype="multipart/form-data" class="validate-form add-required-asterisks" data-keyboard-submit data-watch-changes>
 
     <div id="newParcelForm" class="l-new-parcel-form carousel slide">
         <ol class="carousel-indicators hidden">
@@ -307,6 +307,13 @@ $is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="form-group">
+                                <label>Reference Number(s)</label>
+                                <input name="reference_number" class="form-control" id="reference_number">
+                                <div class="help-block">Please separate multiple reference numbers with commas</div>
+                            </div>
+
                             <div class="form-group">
                                 <label>Parcel Description</label>
                                 <textarea name="other_info" class="form-control validate length" data-validate-length-type='word' data-validate-max-length="50"><?= Calypso::getValue($parcel, "info.other_info", ''); ?></textarea>

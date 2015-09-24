@@ -47,6 +47,7 @@ class ServiceConstant
     const URL_MOVE_TO_IN_TRANSIT = '/parcel/moveToInTransit/';
     const URL_MOVE_TO_ARRIVAL = '/parcel/moveToArrival/';
     const URL_MOVE_FOR_DELIVERY = '/parcel/moveToForDelivery/';
+    const URL_PARCEL_HISTORY = '/parcel/history/';
     const URL_CALC_BILLING = 'zone/calcBilling';
     const URL_MOVE_TO_BEING_DELIVERED = '/parcel/moveToBeingDelivered/';
     const URL_MOVE_TO_DELIVERED = '/parcel/moveToDelivered/';
@@ -134,6 +135,7 @@ class ServiceConstant
     const URL_MANIFEST_ONE = 'manifest/getOne';
 
     const URL_CREATE_USER = 'admin/register';
+    const URL_EDIT_USER = 'admin/edit';
     const URL_GET_USERS = '/admin/getAll';
     const URL_GET_USER = '/admin/getone';
     const URL_USER_VALIDATE = '/admin/validate';
@@ -150,6 +152,9 @@ class ServiceConstant
     const REF_PAYMENT_METHOD_POS = 2;
     const REF_PAYMENT_METHOD_CASH_POS = 3;
     const REF_PAYMENT_METHOD_DEFERRED = 4;
+
+    const REF_MANIFEST_TYPE_SWEEP = 1;
+    const REF_MANIFEST_TYPE_DELIVERY = 2;
 
     const DELIVERY_DISPATCH = 2;
     const DELIVERY_PICKUP = 1;
@@ -257,5 +262,20 @@ class ServiceConstant
     {
         return [ServiceConstant::MANIFEST_PENDING, ServiceConstant::MANIFEST_RESOLVED, ServiceConstant::MANIFEST_HAS_ISSUE,
             ServiceConstant::MANIFEST_IN_TRANSIT, ServiceConstant::MANIFEST_CANCELLED];
+    }
+
+    public static function getManifestType($type)
+    {
+        switch ($type) {
+            case ServiceConstant::REF_MANIFEST_TYPE_SWEEP:
+                return 'Sweep Manifest';
+                break;
+            case ServiceConstant::REF_MANIFEST_TYPE_DELIVERY:
+                return 'Delivery Manifest';
+                break;
+            default:
+               return false;
+                break;
+        }
     }
 }
