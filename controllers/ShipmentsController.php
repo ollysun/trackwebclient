@@ -12,6 +12,7 @@ namespace app\controllers;
 use Adapter\AdminAdapter;
 use Adapter\BankAdapter;
 use Adapter\BranchAdapter;
+use Adapter\Globals\HttpStatusCodes;
 use Adapter\Globals\ServiceConstant;
 use Adapter\ParcelAdapter;
 use Adapter\UserAdapter;
@@ -306,6 +307,23 @@ class ShipmentsController extends BaseController {
         $banks = $refData->getBanks(); // get all the banks
 
         return $this->render('processed',array('filter'=>$filter,'parcels'=>$data,'from_date'=>$from_date,'to_date'=>$to_date,'offset'=>$offset,'page_width'=>$this->page_width,'search'=>$search_action, 'total_count'=>$total_count, 'banks'=>$banks));
+    }
+
+    public function actionCancel() {
+
+        $rawBody = \Yii::$app->request->getRawBody();
+        $payload = json_decode($rawBody, true);
+        $parcel = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+        $response = $parcel->cancel($payload);
+        $response = new ResponseHandler($response);
+
+        if($response->getStatus() ==  ResponseHandler::STATUS_OK){
+            $this->sendSuccessResponse('Shipment successfully marked as CANCELLED');
+
+        }  else {
+            $errorMessage = 'An error occurred while trying to cancel shipment. #' . $response->getError();
+            $this->sendErrorResponse($errorMessage, HttpStatusCodes::HTTP_200);
+        }
     }
 
     /**

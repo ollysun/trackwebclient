@@ -411,9 +411,10 @@ var Parcel = {
     getAccountDetails: function (owner_id) {
         var self = this;
         $.get(Parcel.Url.accountdetails, {owner_id: owner_id}, function (response) {
+
+            var accountObj = self.newAccountObject();
             if (response.status === 'success') {
 
-                var accountObj = self.newAccountObject();
                 if (response.data.length !== 0) {
                     accountObj.id = response.data.id;
                     accountObj.name = response.data.account_name;
@@ -423,11 +424,11 @@ var Parcel = {
                 else {
                     alert('No bank records found.');
                 }
-                self.setAccountDetails(accountObj);
             }
             else {
                 alert(response.message);
             }
+            self.setAccountDetails(accountObj);
         });
     },
 
