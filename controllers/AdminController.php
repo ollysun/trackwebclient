@@ -276,5 +276,52 @@ class AdminController extends BaseController
     {
         return $this->render('companies');
     }
-
+    public function actionManageroutes()
+    {
+        $routes = array(
+            '0' => array(
+                'id' => 1,
+                'name' => 'route a',
+                'branch_id' => 1,
+                'branch' => array(
+                    'id' => 1,
+                    'name' => 'lagos hub',
+                    'code' => 'hub001'
+                )
+            ),
+            '1' => array(
+                'id' => 2,
+                'name' => 'route b',
+                'branch_id' => 1,
+                'branch' => array(
+                    'id' => 1,
+                    'name' => 'lagos hub',
+                    'code' => 'hub001'
+                )
+            ),
+            '2' => array(
+                'id' => 3,
+                'name' => 'route c',
+                'branch_id' => 2,
+                'branch' => array(
+                    'id' => 2,
+                    'name' => 'ibadan hub',
+                    'code' => 'hub002'
+                )
+            ),
+        );
+        $hubs = array(
+            '0' => array(
+                'id' => 1,
+                'name' => 'lagos hub',
+                'code' => 'hub001'
+            ),
+            '1' => array(
+                'id' => 2,
+                'name' => 'ibadan hub',
+                'code' => 'hub002'
+            )
+        );
+        return $this->render('manageroutes',['routes' => $routes, 'hubs' => $hubs]);
+    }
 }
