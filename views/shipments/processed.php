@@ -87,7 +87,7 @@ $this->params['content_header_button'] = $this->render('../elements/content_head
                     if (isset($parcels) && is_array($parcels)) {
                         foreach ($parcels as $parcel) {;
                             ?>
-                            <tr>
+                            <tr data-waybill="<?= strtoupper($parcel['waybill_number']); ?>">
                                 <td>
                                     <div class="checkbox-nice">
 
@@ -116,7 +116,7 @@ $this->params['content_header_button'] = $this->render('../elements/content_head
                                         </form>
                                     <?php endif; ?>
                                     <a title="Clone this shipment" href="<?= Url::to(['parcels/new?id=' . $parcel['id']]) ?>"
-                                       class="btn btn-xs btn-info"><i class="fa fa-copy"></i></a>
+                                       class="btn btn-xs btn-info btnClone"><i class="fa fa-copy"></i></a>
                                 </td>
                             </tr>
                             <?php
