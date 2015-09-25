@@ -418,9 +418,10 @@ var Parcel = {
     getAccountDetails: function (owner_id) {
         var self = this;
         $.get(Parcel.Url.accountdetails, {owner_id: owner_id}, function (response) {
+
+            var accountObj = self.newAccountObject();
             if (response.status === 'success') {
 
-                var accountObj = self.newAccountObject();
                 if (response.data.length !== 0) {
                     accountObj.id = response.data.id;
                     accountObj.name = response.data.account_name;
@@ -430,11 +431,11 @@ var Parcel = {
                 else {
                     alert('No bank records found.');
                 }
-                self.setAccountDetails(accountObj);
             }
             else {
                 alert(response.message);
             }
+            self.setAccountDetails(accountObj);
         });
     },
 
@@ -477,6 +478,31 @@ var Parcel = {
     }
 };
 $(document).ready(function () {
+
+    //if initial data is set for cloning, run ajax calls for state and city on page load
+    initializeState('shipper');
+    initializeCity('shipper');
+    //initialize data for receiver
+    initializeState('receiver');
+    initializeCity('receiver');
+
+    function initializeState(prefix) {
+        var selector = '#state_' + prefix;
+        var country_id = $('#country_' + prefix).val();
+        if(country_id) {
+            var state_id = $(selector).attr('data-selected-id');
+            Parcel.getStates(country_id, $(selector), state_id);
+        }
+    }
+
+    function initializeCity(prefix) {
+        var selector = '#city_' + prefix;
+        var state_id = $('#state_' + prefix).attr('data-selected-id');
+        if(state_id) {
+            var city_id = $(selector).attr('data-selected-id');
+            Parcel.getCities(state_id, $(selector), city_id);
+        }
+    }
 
     $('#country_shipper, #country_receiver').on('change', function (evt) {
 
