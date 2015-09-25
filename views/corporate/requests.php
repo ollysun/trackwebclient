@@ -22,10 +22,11 @@ $to_date = '2015/09/09 23:59:59';
 ?>
 
 <?php
-$this->params['content_header_button'] = '<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i> New Request</button>';
+$this->params['content_header_button'] = '<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i> Shipment Request</button>';
 //$this->params['graph_stats'] = $this->render('../elements/corporate/credit_limit',['stats'=>$stats]);
 
 ?>
+<?= Html::cssFile('@web/css/libs/bootstrap-select.min.css') ?>
 
 <div class="main-box">
     <div class="main-box-header table-search-form clearfix">
@@ -103,7 +104,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                    <h4 class="modal-title" id="myModalLabel">Create a new request</h4>
+                    <h4 class="modal-title" id="myModalLabel">Create a new Shipment Request</h4>
                 </div>
                 <div class="modal-body">
                     <div class="row">
@@ -179,37 +180,51 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                             </div>
 
                         </fieldset>
-                        <fieldset class="col-xs-6">
-                            <legend>Shipment Details</legend>
-                            <div class="row">
-                                <div class="form-group col-xs-4">
-                                    <label for="">Weight (kg)</label>
-                                    <input type="text" class="form-control validate required number">
+                        <div class="col-xs-6">
+                            <fieldset>
+                                <legend>Shipment Details</legend>
+                                <div class="row">
+                                    <div class="form-group col-xs-4">
+                                        <label for="">Estimated Wgt (Kg)</label>
+                                        <input type="text" class="form-control validate required non-zero-number">
+                                    </div>
+                                    <div class="form-group col-xs-3">
+                                        <label for="">No of packages</label>
+                                        <input type="text" class="form-control validate required non-zero-integer">
+                                    </div>
+                                    <div class="form-group col-xs-5">
+                                        <label>Shipment Value</label>
+                                        <div class="input-group">
+                                            <div class="input-group-btn">
+                                                <select name="currency" id="currencySelect" class="selectpicker" data-width="70px" data-style="btn-default" title="Please choose a currency">
+                                                    <option title="NGN" value="NGN" selected="selected">Naira</option>
+                                                </select>
+                                            </div>
+                                            <input name="parcel_value" type="text" class="form-control validate non-zero-number" value="">
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="form-group col-xs-4">
-                                    <label for="">Dimension</label>
-                                    <input type="text" class="form-control validate required">
+                                <div class="form-group">
+                                    <label>Parcel Description</label>
+                                    <textarea class="form-control validate"></textarea>
                                 </div>
-                                <div class="form-group col-xs-4">
-                                    <label for="">Quantity</label>
-                                    <input type="text" class="form-control validate required integer">
+                            </fieldset>
+                            <fieldset>
+                                <legend>Ecommerce</legend>
+                                <div class="form-group">
+                                    <label for="">Company name</label>
+                                    <select class="form-control validate"></select>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label>Other Information</label>
-                                <textarea class="form-control validate"></textarea>
-                            </div>
-                            <div class="row">
-                                <div class="col-xs-6 form-group">
-                                    <label for="">Expected Pickup time</label>
-                                    <input type="text" class="form-control validate required">
+                                <div class="form-group">
+                                    <label for="">Cash on Delivery</label>
+                                    <input type="text" class="form-control validate number">
                                 </div>
-                                <div class="col-xs-6 form-group">
-                                    <label for="">Expected Time of Delivery</label>
-                                    <input type="text" class="form-control validate required">
+                                <div class="form-group">
+                                    <label for="">Order no</label>
+                                    <input type="text" class="form-control validate ">
                                 </div>
-                            </div>
-                        </fieldset>
+                            </fieldset>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -221,5 +236,6 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
     </div>
 </div>
 
+<?php $this->registerJsFile('@web/js/libs/bootstrap-select.min.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/keyboardFormSubmit.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/validate.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
