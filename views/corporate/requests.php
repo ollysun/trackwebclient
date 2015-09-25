@@ -25,7 +25,7 @@ $to_date = '2015/09/09 23:59:59';
 <?php
 
 $this->params['content_header_button'] = '<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i> New Request</button>';
-$this->params['graph_stats'] = $this->render('../elements/corporate/credit_limit',['stats'=>$stats]);
+//$this->params['graph_stats'] = $this->render('../elements/corporate/credit_limit',['stats'=>$stats]);
 
 ?>
 
@@ -62,13 +62,14 @@ $this->params['graph_stats'] = $this->render('../elements/corporate/credit_limit
             <table id="table" class="table table-hover dataTable">
                 <thead>
                 <tr>
-                    <!--						<th style="width: 20px"><div class="checkbox-nice"><input id="chbx_w_all" type="checkbox"><label for="chbx_w_all"> </label></div></th>-->
-                    <th style="width: 20px">No.</th>
-                    <th>Waybill No.</th>
+                    <th style="width: 20px">S/N</th>
+                    <th>Request ID</th>
+                    <th>Request Type</th>
+                    <th>Waybill No</th>
+                    <th>Description</th>
                     <th>Receiver</th>
                     <th>Receiver Phone</th>
                     <th>Weight</th>
-                    <th>Amount</th>
                     <th>Status</th>
                     <th>Action</th>
                 </tr>
@@ -76,6 +77,8 @@ $this->params['graph_stats'] = $this->render('../elements/corporate/credit_limit
                 <tbody>
 
                     <tr>
+                        <td></td>
+                        <td></td>
                         <td></td>
                         <td></td>
                         <td></td>
