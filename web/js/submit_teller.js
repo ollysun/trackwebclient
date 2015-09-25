@@ -29,4 +29,35 @@ $(document).ready(function(){
         $("input#waybill_numbers").val(Object.keys(shipments).toString());
     });
 
+
+    $('.btnClone').on('click', function (event) {
+        var ans = confirm('Do you want to cancel this shipment before cloning?');
+        var self = this;
+        if(ans) {
+            var params = { "waybill_numbers": $(this).closest('tr').data('waybill') };
+
+            $.ajax({
+                url: '/shipments/cancel',
+                type: 'POST',
+                dataType: 'JSON',
+                data: JSON.stringify(params),
+                success: function (result) {
+                    if (result.status == 'success') {
+                        alert(params.waybill + ' has been cancelled!');
+                        window.location = $(self).attr('href');
+                    } else {
+                        alert(result.message);
+                    }
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            })
+        } else {
+            window.location = $(this).attr('href');
+        }
+
+
+    });
+
 });
