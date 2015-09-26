@@ -37,7 +37,7 @@ $is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
                             <h2>Sender Information</h2>
                         </div>
                         <div class="main-box-body">
-                            <?= $this->render('../elements/new_parcel_user_information', ['prefix' => 'shipper', 'countries' => $countries]) ?>
+                            <?= $this->render('../elements/new_parcel_user_information', ['prefix' => 'shipper', 'countries' => $countries, 'parcel' => $parcel]) ?>
                         </div>
                     </div>
                     <div class="col-xs-12 col-lg-6">
@@ -45,7 +45,7 @@ $is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
                             <h2>Receiver Information</h2>
                         </div>
                         <div class="main-box-body">
-                            <?= $this->render('../elements/new_parcel_user_information', ['prefix' => 'receiver', 'countries' => $countries]) ?>
+                            <?= $this->render('../elements/new_parcel_user_information', ['prefix' => 'receiver', 'countries' => $countries, 'parcel' => $parcel]) ?>
                         </div>
                     </div>
                 </div>
@@ -67,12 +67,15 @@ $is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
                                     <label><?= ($is_hub) ? "Forward to another branch":"Send parcel to Hub";?>?</label>
                                     <div class="validate">
                                         <div class="radio-inline">
+                                            <!--This was done to allow the default to be send to hub -->
                                             <input id="sendToHubYes" type="radio" name="send_to_hub" value="1"
-                                                   checked="checked"> <label for="sendToHubYes" class="">Yes</label>
+                                                <?= (Calypso::getValue($parcel, "info.to_hub", '') == "2") ? "" : ' checked="checked"'; ?>>
+                                            <label for="sendToHubYes" class="">Yes</label>
                                         </div>
                                         <div class="radio-inline">
-                                            <input id="sendToHubNo" type="radio" name="send_to_hub" value="0"> <label
-                                                for="sendToHubNo" class="">No</label>
+                                            <input id="sendToHubNo" type="radio" name="send_to_hub" value="0"
+                                                <?= (Calypso::getValue($parcel, "info.to_hub", '') == "2") ? "checked='checked'" : ""; ?>>
+                                            <label for="sendToHubNo" class="">No</label>
                                         </div>
                                     </div>
                                 </div>
@@ -106,23 +109,27 @@ $is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
                                 <select name="parcel_type" id="" class="form-control validate required">
                                     <option value="">Please select</option>
                                     <?php if (isset($parcelType) && is_array($parcelType['data'])) {
-                                        foreach ($parcelType['data'] as $item) { ?>
-                                            <option
-                                                value="<?= $item['id'] ?>"><?= strtoupper($item['name']); ?></option>
-                                        <?php }
+                                        $type_id = Calypso::getValue($parcel, "info.parcel_type", '');
+                                        foreach ($parcelType['data'] as $item) {
+
+                                            $selected = ($type_id == $item['id']) ? "selected" : '';
+                                            echo "<option value='{$item["id"]}' {$selected}>" . strtoupper($item['name']) . "</option>";
+                                        }
                                     } ?>
                                 </select>
                             </div>
                             <div class="row">
                                 <div class="col-xs-12 col-sm-3 form-group">
                                     <label>No. of Packages</label>
-                                    <input name="no_of_packages" class="form-control validate required non-zero-integer">
+                                    <input name="no_of_packages" class="form-control validate required non-zero-integer"
+                                           value="<?= Calypso::getValue($parcel, "info.no_of_package", ''); ?>">
                                 </div>
                                 <div class="col-xs-12 col-sm-4 form-group">
                                     <label>Total weight</label>
 
                                     <div class="input-group">
-                                        <input name="parcel_weight" class="form-control validate required non-zero-number" id="weight">
+                                        <input name="parcel_weight" class="form-control validate required non-zero-number" id="weight"
+                                               value="<?= Calypso::getValue($parcel, "info.weight", ''); ?>">
                                         <span class="input-group-addon">Kg</span>
                                     </div>
                                 </div>
@@ -140,7 +147,8 @@ $is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
                                                 <option title="GBP" value="GBP">British Pounds</option> -->
                                             </select>
                                         </div>
-                                        <input name="parcel_value" type="text" class="form-control validate non-zero-number">
+                                        <input name="parcel_value" type="text" class="form-control validate non-zero-number"
+                                               value="<?= Calypso::getValue($parcel, "info.package_value", ''); ?>">
                                     </div>
                                 </div>
                             </div>
@@ -151,12 +159,13 @@ $is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
                                 <div class='validate'>
                                     <div class="radio-inline">
                                         <input id="deliveryAtAddress" type="radio" name="delivery_type" value="2"
-                                            > <label for="deliveryAtAddress"
-                                                                         class="">Dispatch</label>
+                                               <?= (Calypso::getValue($parcel, "info.delivery_type", '') == "2") ? "checked='checked'" : ''; ?>>
+                                        <label for="deliveryAtAddress" class="">Dispatch</label>
                                     </div>
                                     <div class="radio-inline">
-                                        <input id="deliveryAtCentre" type="radio" name="delivery_type" value="1"> <label
-                                            for="deliveryAtCentre" class="">Pickup</label>
+                                        <input id="deliveryAtCentre" type="radio" name="delivery_type" value="1"
+                                            <?= (Calypso::getValue($parcel, "info.delivery_type", '') == "1") ? "checked='checked'" : ''; ?>>
+                                        <label for="deliveryAtCentre" class="">Pickup</label>
                                     </div>
                                 </div>
                             </div>
@@ -165,12 +174,14 @@ $is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
                                 <select name="pickup_centres" id="" class="form-control">
                                     <option value="">Choose One</option>
                                     <?php
-                                    if (isset($centres) && is_array(($centres))):
+                                    if (isset($centres) && is_array(($centres))) {
+                                        $shipment_id = Calypso::getValue($parcel, "info.shipping_type", '');
                                         foreach ($centres as $centre) {
-                                            ?>
-                                            <option value="<?=$centre['id'];?>"><?=ucwords($centre['name']);?></option>
-                                            <?php
-                                        } endif;
+
+                                            $selected = ($shipment_id == $centre['id']) ? "selected" : '';
+                                            echo "<option value='{$centre['id']}' {$selected}>" . ucwords($centre['name']) . "</option>";
+                                        }
+                                    }
                                     ?>
                                 </select>
                             </div>
@@ -179,10 +190,13 @@ $is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
                                 <select name="shipping_type" id="" class="form-control validate required">
                                     <option value="">Please select</option>
                                     <?php if (isset($ShipmentType) && is_array($ShipmentType['data'])) {
-                                        foreach ($ShipmentType['data'] as $item) { ?>
-                                            <option
-                                                value="<?= $item['id'] ?>"><?= strtoupper($item['name']); ?></option>
-                                        <?php }
+
+                                        $shipment_id = Calypso::getValue($parcel, "info.shipping_type", '');
+                                        foreach ($ShipmentType['data'] as $item) {
+
+                                            $selected = ($shipment_id == $item['id']) ? "selected" : '';
+                                            echo "<option value='{$item['id']}' {$selected}>" . strtoupper($item['name']) . "</option>";
+                                        }
                                     } ?>
                                 </select>
                             </div>
@@ -195,43 +209,48 @@ $is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
 
                                 <div class="validate">
                                     <div class="radio-inline">
-                                        <input id="merchantNew" type="radio" name="merchant" value="new"> <label
-                                            for="merchantNew" class="">New</label>
+                                        <input id="merchantNew" type="radio" name="merchant" value="new">
+                                        <label for="merchantNew" class="">New</label>
                                     </div>
                                     <div class="radio-inline">
-                                        <input id="merchantOld" type="radio" name="merchant" value="old">
+                                        <input id="merchantOld" type="radio" name="merchant" value="old"
+                                            <?= (Calypso::getValue($parcel, "sender_merchant.id", null) == null) ? "" : "checked='checked'"; ?>>
                                         <label for="merchantOld" class="">Existing</label>
                                     </div>
                                     <div class="radio-inline">
-                                        <input id="merchantNone" type="radio" name="merchant" checked="checked"
-                                               value="none">
+                                        <input id="merchantNone" type="radio" name="merchant" value="none"
+                                            <?= (Calypso::getValue($parcel, "sender_merchant.id", null) == null) ? "checked='checked'" : ""; ?>>
                                         <label for="merchantNone" class="">Not applicable</label>
                                     </div>
                                 </div>
                             </div>
-                            <div id="bank-account-details" class="hidden">
+                            <div id="bank-account-details" <?= (Calypso::getValue($parcel, "sender_merchant.id", null) == null) ? 'class="hidden"' : ""; ?>>
 
-                                <input type="hidden" name="account_id" class="form-control" id="account_id">
+                                <input type="hidden" name="account_id" class="form-control" id="account_id"
+                                       value="<?= Calypso::getValue($parcel, "sender_merchant.id", ''); ?>">
 
                                 <div class="form-group">
-                                    <label for="">Account Name</label>
-                                    <input name="account_name" class="form-control" id="account_name">
+                                    <label for="account_name">Account Name</label>
+                                    <input name="account_name" class="form-control" id="account_name"
+                                        value="<?= Calypso::getValue($parcel, "sender_merchant.account_name", ''); ?>">
                                 </div>
                                 <div class="row">
                                     <div class="col-xs-12 col-sm-6 col-lg-5 form-group">
                                         <label>Account No</label>
-                                        <input name="account_no" class="form-control" data-validate-length="10" id="account_no">
+                                        <input name="account_no" class="form-control" data-validate-length="10" id="account_no"
+                                               value="<?= Calypso::getValue($parcel, "sender_merchant.account_no", ''); ?>">
                                     </div>
                                     <div class="col-xs-12 col-sm-6 col-lg-7 form-group">
                                         <label>Bank</label>
                                         <select name="bank" class="form-control" id="bank">
                                             <?php
                                             if (isset($Banks) && is_array($Banks['data'])) {
+
+                                                $bank_id = Calypso::getValue($parcel, "sender_merchant.bank_id", '');
                                                 foreach ($Banks['data'] as $item) {
-                                                    ?>
-                                                    <option
-                                                        value="<?= $item['id'] ?>"><?= strtoupper($item['name']); ?></option>
-                                                    <?php
+
+                                                    $selected = ($bank_id == $item['id']) ? "selected" : '';
+                                                    echo "<option value='{$item['id']}' {$selected}>" . strtoupper($item['name']) . "</option>";
                                                 }
                                             }
                                             ?>
@@ -241,15 +260,25 @@ $is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
 
                                 <div class="row">
                                     <div class="col-xs-12 col-sm-6 col-lg-5 form-group">
+                                        <label>Reference Number</label>
+                                        <input name="reference_number" class="form-control" id="reference_number"
+                                            value="<?= Calypso::getValue($parcel, "info.reference_number", ''); ?>">
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-6 col-lg-5 form-group">
                                         <label>Cash on Delivery?</label><br>
 
                                         <div class="radio-inline">
-                                            <input id="cODYes" type="radio" name="cash_on_delivery" value="true"> <label
-                                                for="cODYes" class="">Yes</label>
+                                            <input id="cODYes" type="radio" name="cash_on_delivery" value="true"
+                                                <?= (Calypso::getValue($parcel, "info.cash_on_delivery", '') == '1') ? 'checked="checked"' : ""; ?>>
+                                            <label for="cODYes" class="">Yes</label>
                                         </div>
                                         <div class="radio-inline">
-                                            <input id="cODNo" type="radio" name="cash_on_delivery" checked="checked"
-                                                   value="false">
+                                            <!--Ensure that this is always selected by default-->
+                                            <input id="cODNo" type="radio" name="cash_on_delivery" checked="checked" value="false"
+                                                <?= (Calypso::getValue($parcel, "info.cash_on_delivery", '') != '1') ? 'checked="checked"' : ""; ?>>
                                             <label for="cODNo" class="">No</label>
                                         </div>
                                     </div>
@@ -258,7 +287,8 @@ $is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
 
                                         <div class="input-group">
                                             <span class="input-group-addon currency naira"></span>
-                                            <input name="CODAmount" id="CODAmount" class="form-control">
+                                            <input name="CODAmount" id="CODAmount" class="form-control"
+                                                value="<?= Calypso::getValue($parcel, "info.delivery_amount", ''); ?>">
                                         </div>
                                     </div>
                                 </div>
@@ -286,7 +316,7 @@ $is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
 
                             <div class="form-group">
                                 <label>Parcel Description</label>
-                                <textarea name="other_info" class="form-control validate length" data-validate-length-type='word' data-validate-max-length="50"></textarea>
+                                <textarea name="other_info" class="form-control validate length" data-validate-length-type='word' data-validate-max-length="50"><?= Calypso::getValue($parcel, "info.other_info", ''); ?></textarea>
                             </div>
                         </div>
                     </div>
@@ -338,42 +368,48 @@ $is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
 
                                     <div>
                                         <div class="radio-inline">
-                                            <input id="paymentMethodCash" type="radio" name="payment_method" value="1"
-                                                   checked="checked"> <label for="paymentMethodCash"
-                                                                             class="">Cash</label>
+                                            <input id="paymentMethodCash" type="radio" name="payment_method" value="1" checked="checked"
+                                                <?= (Calypso::getValue($parcel, "info.payment_type", '') == '1') ? 'checked="checked"' : ""; ?>>
+                                            <label for="paymentMethodCash" class="">Cash</label>
                                         </div>
                                         <div class="radio-inline">
-                                            <input id="paymentMethodPOS" type="radio" name="payment_method" value="2">
+                                            <input id="paymentMethodPOS" type="radio" name="payment_method" value="2"
+                                                <?= (Calypso::getValue($parcel, "info.payment_type", '') == '2') ? 'checked="checked"' : ""; ?>>
                                             <label for="paymentMethodPOS" class="">POS</label>
                                         </div>
                                         <div class="radio-inline">
-                                            <input id="paymentMethodCashPOS" type="radio" name="payment_method"
-                                                   value="3"> <label for="paymentMethodCashPOS" class="">Cash &amp;
-                                                POS</label>
+                                            <input id="paymentMethodCashPOS" type="radio" name="payment_method" value="3"
+                                                <?= (Calypso::getValue($parcel, "info.payment_type", '') == '3') ? 'checked="checked"' : ""; ?>>
+                                            <label for="paymentMethodCashPOS" class="">Cash &amp; POS</label>
                                         </div>
                                         <div class="radio-inline">
-                                            <input id="paymentMethodDeferred" type="radio" name="payment_method" value="4"> <label for="paymentMethodDeferred" class="">Deferred (Freight)</label>
+                                            <input id="paymentMethodDeferred" type="radio" name="payment_method" value="4"
+                                                <?= (Calypso::getValue($parcel, "info.payment_type", '') == '4') ? 'checked="checked"' : ""; ?>>
+                                            <label for="paymentMethodDeferred" class="">Deferred (Freight)</label>
                                         </div>
                                     </div>
                                 </div>
-                                <div id="cashPOSAmountWrap" class="row hidden">
+                                <div id="cashPOSAmountWrap" class="row <?= (Calypso::getValue($parcel, "info.payment_type", '') != '3') ? 'hidden' : ''; ?>">
                                     <div class="col-xs-12 col-sm-6">
                                         <div class="form-group">
                                             <label for="">Amount paid in Cash</label>
-                                            <input name="amount_in_cash" class="form-control">
+                                            <input name="amount_in_cash" class="form-control"
+                                                   value="<?= Calypso::getValue($parcel, "info.cash_amount", ''); ?>">
                                         </div>
                                     </div>
                                     <div class="col-xs-12 col-sm-6">
                                         <div class="form-group">
                                             <label for="">Amount via POS</label>
-                                            <input name="amount_in_pos" class="form-control">
+                                            <input name="amount_in_pos" class="form-control"
+                                                   value="<?= Calypso::getValue($parcel, "info.pos_amount", ''); ?>">
                                         </div>
                                     </div>
                                 </div>
-                                <div id="POSIDWrap" class="hidden">
+                                <div id="POSIDWrap" class="<?= (Calypso::getValue($parcel, "info.payment_type", '') != '2') ? 'hidden' : ''; ?>">
                                     <div class="form-group">
                                         <label for="">POS Transaction ID</label>
-                                        <input name="pos_transaction_id" class="form-control">
+                                        <input name="pos_transaction_id" class="form-control"
+                                               value="<?= Calypso::getValue($parcel, "info.pos_trans_id", ''); ?>">
                                     </div>
                                 </div>
                                 <br>
