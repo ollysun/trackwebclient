@@ -40,7 +40,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                         <tr>
                         <td><?= $row++; ?></<td></td>
                         <td class="n<?= ucwords($route['id']); ?>"><?= ucwords($route['name']); ?></td>
-                        <td><?= strtoupper("{$route['branch']['name']} ({$route['branch']['code']})"); ?></td>
+                        <td><?= strtoupper("{$route['branch_name']} ({$route['branch_code']})"); ?></td>
                         <td>
                             <button type="button" class="btn btn-default btn-xs" data-toggle="modal"
                                     data-target="#editModal" data-id="<?= $route['id']; ?>" data-branch-id="<?= $route['branch_id']; ?>"><i class="fa fa-edit"></i> Edit
