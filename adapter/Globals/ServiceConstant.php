@@ -131,6 +131,10 @@ class ServiceConstant
 
     const URL_TELLER_ADD = 'teller/add';
 
+    const URL_ROUTE_ADD = 'route/create';
+    const URL_ROUTE_GET_ALL = 'route/getAll';
+    const URL_ROUTE_EDIT = 'route/edit';
+
     const URL_MANIFEST_ALL = 'manifest/getAll';
     const URL_MANIFEST_ONE = 'manifest/getOne';
 
