@@ -142,6 +142,8 @@ class ServiceConstant
     const URL_USER_CHANGE_PASSWORD = 'admin/changePassword';
     const URL_USER_CHANGE_STATUS = 'admin/changeStatus';
     const URL_USER_FORGOT_PASSWORD = 'auth/forgotPassword';
+    const URL_USER_RESET_PASSWORD = 'auth/resetPassword';
+    const URL_USER_VALIDATE_PASSWORD_RESET_TOKEN = 'auth/validatePasswordResetToken';
 
     const DATE_TIME_FORMAT = 'd M Y H:i';
     const DATE_FORMAT = 'd M Y';
