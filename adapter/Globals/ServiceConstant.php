@@ -141,6 +141,7 @@ class ServiceConstant
     const URL_USER_VALIDATE = '/admin/validate';
     const URL_USER_CHANGE_PASSWORD = 'admin/changePassword';
     const URL_USER_CHANGE_STATUS = 'admin/changeStatus';
+    const URL_USER_FORGOT_PASSWORD = 'auth/forgotPassword';
 
     const DATE_TIME_FORMAT = 'd M Y H:i';
     const DATE_FORMAT = 'd M Y';

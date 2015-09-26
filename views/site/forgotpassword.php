@@ -19,8 +19,8 @@ $this->title = 'Reset Password';
         </div>
         <form action="" method="post" enctype="multipart/form-data">
             <div class="form-group">
-                <label for="old_password">Email Address</label>
-                <input id="old_password" name="old_password" type="password" class="form-control" />
+                <label for="email">Email Address</label>
+                <input id="email" required name="email" type="email" class="form-control" />
             </div>
             <button type="submit" class="btn btn-primary btn-block">Reset Password</button>
         </form>

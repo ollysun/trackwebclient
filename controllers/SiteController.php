@@ -472,6 +472,22 @@ class SiteController extends BaseController
     public function actionForgotpassword()
     {
         $this->layout = 'login';
+
+        if(Yii::$app->request->isPost) {
+            $email = Yii::$app->request->post('email');
+
+            if(is_null($email)) {
+                $this->flashError("Please enter your email");
+            } else {
+                $userAdapter = new UserAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+                $status = $userAdapter->forgotPassword($email);
+                if(is_bool($status)) {
+                    $this->flashSuccess("Your password reset link has been sent to you");
+                } else {
+                    $this->flashError($status);
+                }
+            }
+        }
         return $this->render('forgotpassword');
     }
 

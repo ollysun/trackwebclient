@@ -73,4 +73,22 @@ class UserAdapter extends BaseAdapter
         $filter .= is_null($password) ? '' : '&password=' . $password;
         return $this->request(ServiceConstant::URL_USER_VALIDATE . '?' . $filter, [], self::HTTP_POST);
     }
+
+    /**
+     * Initiates the forgot password process if email exists
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @param $email
+     * @return bool
+     */
+    public function forgotPassword($email)
+    {
+        $response = $this->request(ServiceConstant::URL_USER_FORGOT_PASSWORD, ['identifier' => $email], self::HTTP_POST);
+        $response = new ResponseHandler($response);
+
+        if($response->getStatus() == ResponseHandler::STATUS_OK) {
+            return true;
+        } else {
+            return $response->getError();
+        }
+    }
 }
