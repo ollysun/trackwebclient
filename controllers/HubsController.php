@@ -48,6 +48,7 @@ class HubsController extends BaseController
 
         if (\Yii::$app->request->isPost) {
             $branch = \Yii::$app->request->post('branch');
+            $branch_type = \Yii::$app->request->post('branch_type');
             $waybill_numbers = \Yii::$app->request->post('waybills');
             if (!isset($branch) || empty($waybill_numbers)) {
                 $this->flashError('Please ensure you set destinations at least a (one) for the parcels');
@@ -58,8 +59,14 @@ class HubsController extends BaseController
             if ($branch == $this->userData['branch_id']) {
                 $response = $parcelsAdapter->assignToGroundsMan($postParams);
             } else {
-                $postParams['to_branch_id'] = $branch;
-                $response = $parcelsAdapter->moveToForSweeper($postParams);
+                if($branch_type == 'Route'){
+                    $postParams['route_id'] = $branch;
+                    $response = $parcelsAdapter->moveForDelivery($postParams);
+                }
+                else{
+                    $postParams['to_branch_id'] = $branch;
+                    $response = $parcelsAdapter->moveToForSweeper($postParams);
+                }
             }
 
             if ($response['status'] === ResponseHandler::STATUS_OK) {
@@ -156,6 +163,22 @@ class HubsController extends BaseController
             return $this->sendSuccessResponse($allHubs['data']);
         } else {
             return $this->sendErrorResponse($allHubs['message'], null);
+        }
+    }
+
+    /**
+     * Ajax calls to get all routes in the present hub
+     */
+    public function actionAllroutesforhubs()
+    {
+
+        $branchAdapter = new Route(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $user_session = Calypso::getInstance()->session("user_session");
+        $allEcsInHubs = $branchAdapter->listECForHub($user_session['branch_id']);
+        if ($allEcsInHubs['status'] === ResponseHandler::STATUS_OK) {
+            return $this->sendSuccessResponse($allEcsInHubs['data']);
+        } else {
+            return $this->sendErrorResponse($allEcsInHubs['message'], null);
         }
     }
 

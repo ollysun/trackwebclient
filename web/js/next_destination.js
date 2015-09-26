@@ -5,7 +5,8 @@ var Parcel_Destination = {
 
     Url: {
         'allhubs' : '/hubs/allhubs',
-        'allecforhubs' : '/hubs/allecforhubs'
+        'allecforhubs' : '/hubs/allecforhubs',
+        'allroutesforhub' : '/hubs/allroutesforhub'
     },
 
     fillSelectOption: function(url, param, selectSelector) {
