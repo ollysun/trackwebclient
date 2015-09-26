@@ -10,20 +10,26 @@ use Adapter\Util\Calypso;
 $this->title = 'Reset Password';
 ?>
 <div class="l-sigin-page">
-
     <div class="card card-signin">
-
         <?php echo Calypso::showFlashMessages(); ?>
         <div class="card-header">
             <h3 class="card-title">Reset Password</h3>
         </div>
+
+        <?php if(is_bool($showForm)):?>
         <form action="" method="post">
             <div class="form-group">
-                <label for="email">Email Address</label>
-                <input id="email" required name="email" type="email" class="form-control" />
+                <label for="password">Password</label>
+                <input id="password" required name="password" type="password" class="form-control" />
             </div>
-            <button type="submit" class="btn btn-primary btn-block">Reset Password</button>
+            <div class="form-group">
+                <label for="c_password">Confirm Password</label>
+                <input id="c_password" required name="c_password" type="password" class="form-control" />
+            </div>
+            <p id="errorMsg" style="color: red; display: none;" class="text-center">Passwords don't match</p>
+            <button id="resetPwdBtn" type="submit" class="btn btn-primary btn-block">Change Password</button>
         </form>
+        <?php endif; ?>
     </div>
     <p class="text-center"><a class="forgot-link" href="<?= \yii\helpers\Url::base(true);?>">&larr; Go back</a></p>
 
@@ -31,4 +37,4 @@ $this->title = 'Reset Password';
         <p id="footer-copyright" class="col-xs-12">&copy; 2015<?php if(date('Y') > 2015): echo " &ndash; ".date('Y'); endif; ?> CourierPlus. All Rights Reserved.</p>
     </div>
 </div>
-
+<?php $this->registerJsFile('@web/js/resetpassword.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>

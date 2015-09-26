@@ -75,6 +75,25 @@ class UserAdapter extends BaseAdapter
     }
 
     /**
+     * Changes a user's password
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @param $userAuthId
+     * @param $password
+     * @return bool
+     */
+    public function resetPassword($userAuthId, $password)
+    {
+        $response = $this->request(ServiceConstant::URL_USER_RESET_PASSWORD, ['user_auth_id' => $userAuthId, 'password' => $password], self::HTTP_POST);
+        $response = new ResponseHandler($response);
+
+        if($response->getStatus() == ResponseHandler::STATUS_OK) {
+            return true;
+        } else {
+            return $response->getError();
+        }
+    }
+
+    /**
      * Initiates the forgot password process if email exists
      * @author Adegoke Obasa <goke@cottacush.com>
      * @param $email
@@ -83,6 +102,25 @@ class UserAdapter extends BaseAdapter
     public function forgotPassword($email)
     {
         $response = $this->request(ServiceConstant::URL_USER_FORGOT_PASSWORD, ['identifier' => $email], self::HTTP_POST);
+        $response = new ResponseHandler($response);
+
+        if($response->getStatus() == ResponseHandler::STATUS_OK) {
+            return true;
+        } else {
+            return $response->getError();
+        }
+    }
+
+    /**
+     * Validates the password reset token
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @param $token
+     * @param $key
+     * @return bool
+     */
+    public function validatePasswordResetToken($token, $key)
+    {
+        $response = $this->request(ServiceConstant::URL_USER_VALIDATE_PASSWORD_RESET_TOKEN, ['token' => $token, 'key' => $key], self::HTTP_POST);
         $response = new ResponseHandler($response);
 
         if($response->getStatus() == ResponseHandler::STATUS_OK) {
