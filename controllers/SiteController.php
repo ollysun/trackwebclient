@@ -60,7 +60,7 @@ class SiteController extends BaseController
         ];
     }
     public function beforeAction($action){
-        if(!in_array($action->id,array('logout','changepassword','login','gerraout','site','track','tracksearchdetails'))){
+        if(!in_array($action->id,array('logout','changepassword','login','gerraout','site','track','tracksearchdetails', 'forgotpassword'))){
             $s = Calypso::getInstance()->session('user_session');
             if(!$s){
                // Calypso::getInstance()->AppRedirect('site','login');
@@ -71,8 +71,6 @@ class SiteController extends BaseController
         if(Calypso::getInstance()->cookie('page_width')){
             $this->page_width = Calypso::getInstance()->cookie('page_width');
         }
-//        var_dump($action->id);
-//        exit;
         return parent::beforeAction($action);
     }
     public function actionIndex()
@@ -466,6 +464,17 @@ class SiteController extends BaseController
         $this->layout = 'login';
         return $this->render('changepassword');
     }
+
+    /**
+     * Forgot Password Action
+     * @author Adegoke Obasa <goke@cottacush.com>
+     */
+    public function actionForgotpassword()
+    {
+        $this->layout = 'login';
+        return $this->render('forgotpassword');
+    }
+
     public function actionTrack()
     {
         $this->layout = 'tracking';
