@@ -66,7 +66,7 @@ $this->title = (empty($bag))? '': 'Bag: #'.$waybill_number;
 				</tr>
 			<?php endforeach; ?>
 			<tr class="total-row">
-				<td style="border-left-color: transparent; border-bottom-color: transparent;" colspan="2">TOTAL</td>
+				<td style="border-left-color: transparent; border-bottom-color: transparent;" colspan="1">TOTAL</td>
 				<td><?= $totalNumber?></td>
 				<td><?= $totalWeight?> KG</td>
 			</tr>
