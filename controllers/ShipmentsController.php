@@ -12,6 +12,7 @@ namespace app\controllers;
 use Adapter\AdminAdapter;
 use Adapter\BankAdapter;
 use Adapter\BranchAdapter;
+use Adapter\Globals\HttpStatusCodes;
 use Adapter\Globals\ServiceConstant;
 use Adapter\ParcelAdapter;
 use Adapter\UserAdapter;
@@ -65,15 +66,16 @@ class ShipmentsController extends BaseController
             $from_date = Calypso::getInstance()->get()->from;
             $to_date = Calypso::getInstance()->get()->to;
             $filter = isset(Calypso::getInstance()->get()->date_filter) ? Calypso::getInstance()->get()->date_filter : '-1';
-            $response = $parcel->getFilterParcelsByDateAndStatus($from_date . '%2000:00:00', $to_date . '%2023:59:59', $filter, $offset, $this->page_width, 1, $this->branch_to_view, 1);
+            $response = $parcel->getFilterParcelsByDateAndStatus($from_date.'%2000:00:00',$to_date.'%2023:59:59',$filter,$offset,$this->page_width, 1,$this->branch_to_view, 1, true);
             $search_action = true;
         } elseif (!empty(Calypso::getInstance()->get()->search)) { //check if not empty criteria
             $search = Calypso::getInstance()->get()->search;
-            $response = $parcel->getSearchParcels('-1', $search, $offset, $this->page_width, 1, $this->branch_to_view, 1);
+            $response = $parcel->getSearchParcels('-1',$search,$offset,$this->page_width,1,$this->branch_to_view, 1, true);
             $search_action = true;
             $filter = null;
-        } else {
-            $response = $parcel->getParcels($from_date . '%2000:00:00', $to_date . '%2023:59:59', null, $this->branch_to_view, $offset, $this->page_width, 1, 1, 1);
+        }
+        else{
+            $response = $parcel->getParcels($from_date.'%2000:00:00',$to_date.'%2023:59:59',null,$this->branch_to_view,$offset,$this->page_width, 1, 1, 1, true);
             //$response = $parcel->getParcels(null,null,$offset,$this->page_width);
             //$response = $parcel->getNewParcelsByDate(date('Y-m-d', strtotime('now')).' 00:00:00',$offset,$this->page_width, 1,$this->userData['branch_id']);
             $search_action = false;
@@ -335,9 +337,27 @@ class ShipmentsController extends BaseController
         $refData = new RefAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $banks = $refData->getBanks(); // get all the banks
 
-        return $this->render('processed', array('filter' => $filter, 'parcels' => $data, 'from_date' => $from_date, 'to_date' => $to_date, 'offset' => $offset, 'page_width' => $this->page_width, 'search' => $search_action, 'total_count' => $total_count, 'banks' => $banks));
+        return $this->render('processed',array('filter'=>$filter,'parcels'=>$data,'from_date'=>$from_date,'to_date'=>$to_date,'offset'=>$offset,'page_width'=>$this->page_width,'search'=>$search_action, 'total_count'=>$total_count, 'banks'=>$banks));
     }
 
+    public function actionCancel() {
+
+        $rawBody = \Yii::$app->request->getRawBody();
+        $payload = json_decode($rawBody, true);
+        $parcel = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+        $response = $parcel->cancel($payload);
+        $response = new ResponseHandler($response);
+
+        if($response->getStatus() ==  ResponseHandler::STATUS_OK){
+            $this->sendSuccessResponse('Shipment successfully marked as CANCELLED');
+
+        }  else {
+            $errorMessage = 'An error occurred while trying to cancel shipment. #' . $response->getError();
+            $this->sendErrorResponse($errorMessage, HttpStatusCodes::HTTP_200);
+        }
+    }
+    
+    
     public function actionCustomerhistory()
     {
         return $this->render('customer_history');

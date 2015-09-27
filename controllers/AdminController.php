@@ -20,6 +20,7 @@ use Yii;
 use Adapter\Util\Response;
 use Adapter\AdminAdapter;
 use Adapter\UserAdapter;
+use Adapter\RouteAdapter;
 
 
 class AdminController extends BaseController
@@ -207,7 +208,7 @@ class AdminController extends BaseController
             $user = new UserAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
             $id = Calypso::getInstance()->getValue($data, 'id', '');
 
-            if($id === ''){
+            if ($id === '') {
                 // Create
                 $resp = $user->createNewUser(Calypso::getInstance()->getValue($data, 'role'),
                     Calypso::getInstance()->getValue($data, 'branch'), Calypso::getInstance()->getValue($data, 'staff_id'),
@@ -277,4 +278,44 @@ class AdminController extends BaseController
         return $this->render('companies');
     }
 
+    public function actionManageroutes()
+    {
+        if (Yii::$app->request->isPost) {
+            $entry = Yii::$app->request->post();
+            $task = Calypso::getValue(Yii::$app->request->post(), 'task');
+
+            if (($task == 'create' || $task == 'edit') && !isset($entry['route_name'], $entry['branch_id'])) {
+                $error[] = "All details are required!";
+            }
+            if (!empty($error)) {
+                $errorMessages = implode('<br />', $error);
+                Yii::$app->session->setFlash('danger', $errorMessages);
+            } else {
+                $route = new RouteAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+                if ($task == 'create') {
+                    $data = array('name' => $entry['route_name'], 'branch_id' => $entry['branch_id']);
+                    $response = $route->createRoute($data);
+                    if ($response['status'] === Response::STATUS_OK) {
+                        Yii::$app->session->setFlash('success', 'Route has been created successfully.');
+                    } else {
+                        Yii::$app->session->setFlash('danger', 'There was a problem creating the route. Reason:' . $response['message']);
+                    }
+                } elseif ($task == 'edit') {
+                    $data = array('id' => $entry['id'], 'name' => $entry['route_name'], 'branch_id' => $entry['branch_id']);
+                }
+            }
+        }
+        $hubAdp = new BranchAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $hubs = $hubAdp->getHubs();
+        $hubs = new ResponseHandler($hubs);
+        $hub_list = $hubs->getStatus() == ResponseHandler::STATUS_OK ? $hubs->getData() : [];
+
+        $branch_to_view = null;
+        $routeAdp = new RouteAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $routes = $routeAdp->getRoutes($branch_to_view);
+        $routes = new ResponseHandler($routes);
+        $route_list = $routes->getStatus() == ResponseHandler::STATUS_OK ? $routes->getData() : [];
+
+        return $this->render('manageroutes', ['routes' => $route_list, 'hubs' => $hub_list]);
+    }
 }

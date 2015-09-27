@@ -274,5 +274,22 @@ $this->params['breadcrumbs'][] = 'Waybill';
 			</fieldset>
 			<br><br>
 		</div>
+		<div class="col-xs-12 col-sm-6">
+			<fieldset>
+				<legend>Creation Information</legend>
+				<div class="form-group">
+					<label>Originating Center</label>
+					<div class="form-control-static">
+						<?= ucwords($parcelData['created_branch']['name']); ?><br>
+						<?= $parcelData['created_branch']['address']; ?>
+					</div>
+				</div>
+				<div class="form-group">
+					<label>Date &amp; Time</label>
+					<div class="form-control-static"><?= date(ServiceConstant::DATE_TIME_FORMAT,strtotime($parcelData['created_date'])); ?></div>
+				</div>
+			</fieldset>
+			<br><br>
+		</div>
 	</div>
 </div>

@@ -93,6 +93,7 @@ if($search){
                     <th>Created Date</th>
                     <th>Pieces</th>
                     <th>Status</th>
+                    <th>Originating Centre</th>
                     <th>Action</th>
                 </tr>
                 </thead>

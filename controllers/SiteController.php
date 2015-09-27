@@ -13,6 +13,7 @@ use Yii;
 use Adapter\RequestHelper;
 use Adapter\ResponseHandler;
 use yii\filters\AccessControl;
+use yii\helpers\Url;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
@@ -73,8 +74,6 @@ class SiteController extends BaseController
         if (Calypso::getInstance()->cookie('page_width')) {
             $this->page_width = Calypso::getInstance()->cookie('page_width');
         }
-//        var_dump($action->id);
-//        exit;
         return parent::beforeAction($action);
     }
 
@@ -478,5 +477,112 @@ class SiteController extends BaseController
         }
         $this->layout = 'login';
         return $this->render('changepassword');
+    }
+
+    /**
+     * Forgot Password Action
+     * @author Adegoke Obasa <goke@cottacush.com>
+     */
+    public function actionForgotpassword()
+    {
+        $this->layout = 'login';
+
+        if (Yii::$app->request->isPost) {
+            $email = Yii::$app->request->post('email');
+
+            if (is_null($email)) {
+                $this->flashError("Please enter your email");
+            } else {
+                $userAdapter = new UserAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+                $status = $userAdapter->forgotPassword($email);
+                if (is_bool($status)) {
+                    $this->flashSuccess("Your password reset link has been sent to you");
+                } else {
+                    $this->flashError($status);
+                }
+            }
+        }
+        return $this->render('forgotpassword');
+    }
+
+    /**
+     * Reset Password Action
+     * @author Adegoke Obasa <goke@cottacush.com>
+     */
+    public function actionResetpassword()
+    {
+        $this->layout = 'login';
+
+        $token = Yii::$app->request->get('token');
+        $key = Yii::$app->request->get('_key_');
+
+        if (!isset($token, $key)) {
+            return $this->redirect(Url::toRoute('site/index'));
+        }
+
+        $userAdapter = new UserAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $status = $userAdapter->validatePasswordResetToken($token, $key);
+
+        if (!is_bool($status)) {
+            $this->flashError($status);
+        }
+
+        if (Yii::$app->request->isPost) {
+            $password = Yii::$app->request->post('password');
+            $confirmPassword = Yii::$app->request->post('c_password');
+
+            if (in_array(null, [$password, $confirmPassword])) {
+                $this->flashError("Please enter your new password");
+            } else if ($password != $confirmPassword) {
+                $this->flashError("Passwords don't match");
+            } else {
+                $userAdapter = new UserAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+                $resetStatus = $userAdapter->resetPassword($key, $password);
+                if (is_bool($resetStatus)) {
+                    Yii::$app->session->setFlash('password_reset_success', true);
+                    return $this->redirect(Url::toRoute("site/passwordresetsuccess"));
+                } else {
+                    $this->flashError($resetStatus);
+                }
+            }
+        }
+        return $this->render('resetpassword', ['showForm' => $status]);
+    }
+
+    public function actionTrack()
+    {
+        $this->layout = 'tracking';
+        return $this->render('track');
+    }
+
+    public function actionTracksearch()
+    {
+        return $this->render('track_search');
+    }
+
+    /**
+     * Password Reset Success Action
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @return string
+     */
+    public function actionPasswordresetsuccess()
+    {
+        $this->layout = "login";
+
+        if(!Yii::$app->session->hasFlash('password_reset_success')) {
+            return $this->redirect(Url::toRoute("site"));
+        }
+
+        Yii::$app->session->removeFlash('password_reset_success');
+        return $this->render('resetpassword_success');
+    }
+
+    public function actionTracksearchdetails()
+    {
+        $s = Calypso::getInstance()->session('user_session');
+        if (!$s) {
+            $this->layout = 'tracking';
+        }
+        return $this->render('track_search_details');
     }
 }
