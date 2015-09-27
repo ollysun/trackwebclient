@@ -62,7 +62,7 @@ class ServiceConstant
 
     const URL_GET_BANK_ACCOUNT = 'bankaccount/getAll/';
 
-    const URL_ADMIN_LOGIN = 'admin/login/';
+    const URL_ADMIN_LOGIN = 'auth/login/';
     const URL_REF_BANK = 'ref/banks/';
     const URL_REF_ROLE = 'ref/roles';
     const URL_REF_SHIPMENT = 'ref/shipmentType/';
@@ -142,9 +142,12 @@ class ServiceConstant
     const URL_EDIT_USER = 'admin/edit';
     const URL_GET_USERS = '/admin/getAll';
     const URL_GET_USER = '/admin/getone';
-    const URL_USER_VALIDATE = '/admin/validate';
-    const URL_USER_CHANGE_PASSWORD = 'admin/changePassword';
-    const URL_USER_CHANGE_STATUS = 'admin/changeStatus';
+    const URL_USER_VALIDATE = '/auth/validate';
+    const URL_USER_CHANGE_PASSWORD = 'auth/changePassword';
+    const URL_USER_CHANGE_STATUS = 'auth/changeStatus';
+    const URL_USER_FORGOT_PASSWORD = 'auth/forgotPassword';
+    const URL_USER_RESET_PASSWORD = 'auth/resetPassword';
+    const URL_USER_VALIDATE_PASSWORD_RESET_TOKEN = 'auth/validatePasswordResetToken';
 
     const DATE_TIME_FORMAT = 'd M Y H:i';
     const DATE_FORMAT = 'd M Y';
