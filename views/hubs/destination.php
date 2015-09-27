@@ -43,6 +43,7 @@ $this->params['breadcrumbs'] = array(
                                 <option value="hub">Hub</option>
                             <?php else:  ?>
                                 <option value="" selected>Select...</option>
+                                <option value="route">Route</option>
                             <?php endif;  ?>
                             <option value="exp" <?php echo ($isGroundsman ? '' : 'selected') ?> >Express Centres</option>
                         </select>

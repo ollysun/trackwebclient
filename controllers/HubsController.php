@@ -19,6 +19,7 @@ use Adapter\ResponseHandler;
 use Adapter\Util\Calypso;
 use app\services\HubService;
 use app\services\ParcelService;
+use Adapter\RouteAdapter;
 
 class HubsController extends BaseController
 {
@@ -59,7 +60,7 @@ class HubsController extends BaseController
             if ($branch == $this->userData['branch_id']) {
                 $response = $parcelsAdapter->assignToGroundsMan($postParams);
             } else {
-                if($branch_type == 'Route'){
+                if($branch_type == 'route'){
                     $postParams['route_id'] = $branch;
                     $response = $parcelsAdapter->moveForDelivery($postParams);
                 }
@@ -169,16 +170,16 @@ class HubsController extends BaseController
     /**
      * Ajax calls to get all routes in the present hub
      */
-    public function actionAllroutesforhubs()
+    public function actionAllroutesforhub()
     {
-
-        $branchAdapter = new Route(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $routeAdp = new RouteAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $user_session = Calypso::getInstance()->session("user_session");
-        $allEcsInHubs = $branchAdapter->listECForHub($user_session['branch_id']);
-        if ($allEcsInHubs['status'] === ResponseHandler::STATUS_OK) {
-            return $this->sendSuccessResponse($allEcsInHubs['data']);
+        $routes = $routeAdp->getRoutes($user_session['branch_id']);
+
+        if ($routes['status'] === ResponseHandler::STATUS_OK) {
+            return $this->sendSuccessResponse($routes['data']);
         } else {
-            return $this->sendErrorResponse($allEcsInHubs['message'], null);
+            return $this->sendErrorResponse($routes['message'], null);
         }
     }
 
