@@ -37,7 +37,7 @@ $data = Calypso::getInstance()->getPageData();
             Not yet registered? <a href="#">Sign Up</a>
         </div>-->
     </div>
-    <p class="text-center"><a class="forgot-link" href="#">Forgot password?</a></p>
+    <p class="text-center"><a class="forgot-link" href="<?= \yii\helpers\Url::toRoute("site/forgotpassword");?>">Forgot password?</a></p>
 
     <div id="footer-bar" class="row">
         <p id="footer-copyright" class="col-xs-12">&copy; 2015<?php if(date('Y') > 2015): echo " &ndash; ".date('Y'); endif; ?> CourierPlus. All Rights Reserved.</p>

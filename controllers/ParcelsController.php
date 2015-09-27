@@ -54,6 +54,12 @@ class ParcelsController extends BaseController
             }
         }
 
+        $parcel = [];
+        $id = Yii::$app->request->get('id');
+        if(isset($id)) {
+            $parcel = ParcelService::getParcelDetails($id);
+        }
+
         $refData = new RefAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
 
         $banks = $refData->getBanks();
@@ -84,7 +90,8 @@ class ParcelsController extends BaseController
             'countries' => $countries,
             'paymentMethod' => $paymentMethod,
             'centres' => $centres_list,
-            'branch' => $user['branch']
+            'branch' => $user['branch'],
+            'parcel' => $parcel
         ));
     }
 
