@@ -133,6 +133,9 @@ $(document).ready(function(){
         if(type === 'hub') {
             url = Parcel_Destination.Url.allhubs;
             $('#hub_branch_label').html('Hub Name');
+        } else if(type === 'route') {
+            url = Parcel_Destination.Url.allroutesforhub;
+            $('#hub_branch_label').html('Route Name');
         } else {
             url = Parcel_Destination.Url.allecforhubs;
             $('#hub_branch_label').html('Branch Name');
