@@ -68,9 +68,36 @@ $is_hub = $user['branch']['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
                 </div>
             </form>
             <div class="pull-left">
-                <label>&nbsp;</label><br>
-                <?php if(!empty($parcels)): ?><button type="button" class="btn btn-sm btn-default" data-toggle="modal" data-target="#runModal">Generate Delivery Run</button><?php endif; ?>
-                <?php if(!$is_hub): ?><button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">Receive Shipments from Hub</button><?php endif; ?>
+                <?php if($is_hub): ?>
+                    <form class="pull-left" method="get">
+                        <div class="pull-left form-group">
+                            <label for="route">Route</label><br>
+                            <select id="route" class="form-control input-sm" name="route">
+                                <option value="">All Routes</option>
+                                <?php
+                                if (isset($routes) && is_array(($routes))):
+                                    $row = 1;
+                                    foreach ($routes as $route) {
+                                        ?>
+                                        <option value="<?= ucwords($route['id']); ?>" <?= $route['id']==$route_id ? 'selected':''; ?>><?= ucwords($route['name']); ?></option>
+                                        <?php
+                                    }
+                                endif;
+                                ?>
+                            </select>
+                        </div>
+                        <div class="pull-left">
+                            <label for="">&nbsp;</label><br>
+                            <button class="btn btn-sm btn-default" type="submit">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                    </form>
+                <?php else: ?>
+                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">Receive Shipments from Hub</button>
+                <?php endif; ?>
+                <?php if(!empty($parcels)): ?><div class="pull-left">
+                    <label>&nbsp;</label><br>&nbsp;<button type="button" class="btn btn-sm btn-default" data-toggle="modal" data-target="#runModal">Generate Delivery Run</button></div><?php endif; ?>
             </div>
         </div>
     </div>
@@ -83,11 +110,10 @@ $is_hub = $user['branch']['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
                     <th style="width: 20px" class="datatable-nosort"><div class="checkbox-nice"><input id="chbx_w_all" type="checkbox"><label for="chbx_w_all"> </label></div></th>
                     <th style="width: 20px">S/N</th>
                     <th>Waybill No.</th>
-                    <th>Shipper</th>
-                    <th>Shipper Phone</th>
                     <th>Receiver</th>
                     <th>Receiver Phone</th>
                     <th>Created Date</th>
+                    <th>Delivery Route</th>
                     <th>Status</th>
                     <th>Age analysis</th>
                     <th>Action</th>
@@ -102,11 +128,10 @@ $is_hub = $user['branch']['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
                             <td><div class="checkbox-nice"><input id="chbx_w_<?= ++$i; ?>" class="checkable" data-waybill="<?= strtoupper($parcel['waybill_number']); ?>" type="checkbox"><label for="chbx_w_<?= $i; ?>"> </label></div></td>
                             <td><?= $i ?></td>
                             <td><?= strtoupper($parcel['waybill_number']); ?></td>
-                            <td><?= strtoupper($parcel['sender']['firstname'].' '. $parcel['sender']['lastname']) ?></td>
-                            <td><?= $parcel['sender']['phone'] ?></td>
                             <td><?= strtoupper($parcel['receiver']['firstname'].' '. $parcel['receiver']['lastname']) ?></td>
                             <td><?= $parcel['receiver']['phone'] ?></td>
                             <td><?= date(ServiceConstant::DATE_TIME_FORMAT,strtotime($parcel['created_date'])); ?></td>
+                            <td><?= $parcel['route']['name'];?></td>
                             <td><?= ucwords(ServiceConstant::getDeliveryType($parcel['delivery_type'])); ?></td>
                             <td></td>
                             <td><a href="<?= Url::to(['shipments/view?waybill_number='.$parcel['waybill_number']]) ?>" class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>

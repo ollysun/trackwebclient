@@ -40,6 +40,7 @@ if($offset <= 0){
 //$this->params['content_header_button'] = $this->render('../elements/content_header_new_parcel_button');
 ?>
 
+<?php echo \Adapter\Util\Calypso::showFlashMessages(); ?>
 <div class="main-box">
     <div class="main-box-header table-search-form clearfix">
         <div class="clearfix">
