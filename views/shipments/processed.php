@@ -108,7 +108,7 @@ $this->params['content_header_button'] = $this->render('../elements/content_head
                                 <td><?= $parcel['no_of_package']; ?></td>
                                 <td><?= ServiceConstant::getStatus($parcel['status']); ?></td>
                                 <td>
-                                    <a title="View this shipment" href="<?= Url::to(['site/viewwaybill?id=' . $parcel['id']]) ?>"
+                                    <a title="View this shipment" href="<?= Url::to(['shipments/view?waybill_number=' . $parcel['waybill_number']]) ?>"
                                        class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>
                                     <?php if (in_array($parcel['status'], [ServiceConstant::FOR_DELIVERY, ServiceConstant::FOR_SWEEPER])) : ?>
                                         <form method="post">
