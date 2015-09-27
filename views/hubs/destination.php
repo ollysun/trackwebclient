@@ -93,7 +93,7 @@ $this->params['breadcrumbs'] = array(
                                             </div>
                                           </td>";
                             echo "<td>{$row}</td>";
-                            echo "<td><a href='/site/viewwaybill?id=" . Calypso::getValue($parcels, 'id') . "'>" . Calypso::getValue($parcels, 'waybill_number') . "</a></td>";
+                            echo "<td><a href='/shipments/view?waybill_number=" . Calypso::getValue($parcels, 'waybill_number') . "'>" . Calypso::getValue($parcels, 'waybill_number') . "</a></td>";
                             echo "<td>" . ucwords(Calypso::getValue($parcels, 'sender_address.city.name') . ', ' . Calypso::getValue($parcels, 'sender_address.state.name')) . "</td>";
                             echo "<td></td>";
                             echo "<td>" . ucwords(Calypso::getValue($parcels, 'receiver_address.city.name') . ', ' . Calypso::getValue($parcels, 'receiver_address.state.name')) . "</td>";

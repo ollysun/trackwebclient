@@ -293,7 +293,7 @@ var Parcel = {
     },
     onFormSuccessCallback : function(code, payload){
         $(window).trigger('success.CP.Form.watchChanges');
-        window.location = "/site/viewwaybill?id=" + payload.id;
+        window.location = "/shipments/view?waybill_number=" + payload.waybill_number;
     },
     newUserObject: function () {
         return {

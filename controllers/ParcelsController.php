@@ -40,8 +40,6 @@ class ParcelsController extends BaseController
             $parcelService = new ParcelService();
             $payload = $parcelService->buildPostData($data);
             if (isset($payload['status'])) {
-                /*$errorMessages = implode('<br />', $payload['messages']);
-                Yii::$app->session->setFlash('danger', $errorMessages);*/
                 $this->sendAsyncFormResponse(1, array('message' => implode('<br />', $payload['messages'])), "Parcel.onFormErrorCallback");
 
             } else {
@@ -49,10 +47,8 @@ class ParcelsController extends BaseController
                 $parcel = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
                 $response = $parcel->createNewParcel(json_encode($payload));
                 if ($response['status'] === Response::STATUS_OK) {
-//                    Yii::$app->response->redirect("/site/viewwaybill?id={$response['data']['id']}");
                     $this->sendAsyncFormResponse(1, $response['data'], "Parcel.onFormSuccessCallback");
                 } else {
-                    //$this->flashError('There was a problem creating the value. Please try again. #Reason: <strong>' . $response['message'] . '</strong>');
                     $this->sendAsyncFormResponse(1, $response, "Parcel.onFormErrorCallback");
                 }
             }
