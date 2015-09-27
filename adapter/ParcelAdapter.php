@@ -34,7 +34,7 @@ class ParcelAdapter extends BaseAdapter{
         return $this->request($url,array(),self::HTTP_GET);
     }
 
-    public function getParcelsForDelivery($start_created_date,$end_created_date,$status,$branch_id=null,$offset=0, $count=50, $with_from=null, $with_total=null, $only_parents=null){
+    public function getParcelsForDelivery($start_created_date,$end_created_date,$status,$branch_id=null,$offset=0, $count=50, $with_from=null, $with_total=null, $only_parents=null, $route_id=null, $with_route=null){
         $filter = !is_null($status) ? '&status='.$status : '';
         $filter .= !is_null($with_total) ? '&with_total_count=1' : '';
         $filter .= !is_null($start_created_date) ? '&start_created_date='.$start_created_date : '';
@@ -42,6 +42,8 @@ class ParcelAdapter extends BaseAdapter{
         $filter .= !is_null($branch_id) ? '&to_branch_id='.$branch_id : '';
         $filter .= !is_null($with_from) ? '&with_from_branch=1' : '';
         $filter .= !is_null($only_parents) ? '&show_parents=1' : '';
+        $filter .= !is_null($route_id) ? '&route_id='.$route_id : '';
+        $filter .= !is_null($with_route) ? '&with_route' : '';
         $url = ServiceConstant::URL_GET_ALL_PARCEL.'?with_sender=1&with_receiver=1&with_receiver_address=1&with_to_branch=1&offset='.$offset.'&count='.$count.$filter;
         return $this->request($url,array(),self::HTTP_GET);
     }
