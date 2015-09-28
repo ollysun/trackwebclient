@@ -110,8 +110,8 @@ class SiteController extends BaseController
             $response = new ResponseHandler($response);
             if ($response->getStatus() == ResponseHandler::STATUS_OK) {
                 $data = $response->getData();
-                if ($data != null && isset($data['id'])) {
-                    RequestHelper::setClientID($data['id']);
+                if ($data != null && isset($data['user_auth_id'])) {
+                    RequestHelper::setClientID($data['user_auth_id']);
                 }
                 Calypso::getInstance()->session("user_session", $response->getData());
                 if ($data['created_date'] == $data['modified_date'] && $data['status'] == ServiceConstant::INACTIVE) {
