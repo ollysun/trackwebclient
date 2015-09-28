@@ -123,10 +123,10 @@ function getServerResponse(statusCode, message) {
             }
             else {
                 /*$('input[name="account_name"], input[name="account_no"], select[name="bank"]')
-                    .addClass('required validate active-validate')
-                    .on('blur.CP.form.validate', validateFxn);
-                $('input[name="account_no"]').addClass('integer length');
-                $('input[name="account_name"]').addClass('name');*/
+                 .addClass('required validate active-validate')
+                 .on('blur.CP.form.validate', validateFxn);
+                 $('input[name="account_no"]').addClass('integer length');
+                 $('input[name="account_name"]').addClass('name');*/
             }
         }
     };
@@ -287,13 +287,21 @@ function FlyOutPanel(triggerSelector, evt) {
 }
 
 var Parcel = {
-    onFormErrorCallback : function(code, payload){
+    onFormErrorCallback: function (code, payload) {
         //Handler as sent from the server
         alert(payload.message);
     },
-    onFormSuccessCallback : function(code, payload){
+    onFormSuccessCallback: function (code, payload) {
         $(window).trigger('success.CP.Form.watchChanges');
-        window.location = "/shipments/view?waybill_number=" + payload.waybill_number;
+        var waybill_number;
+        if (payload.waybill_number.length > 1) {
+            var split_waybill_number = payload.waybill_number[0];
+            var waybill_number_parts = split_waybill_number.split('-');
+            waybill_number = waybill_number_parts[0];
+        } else {
+            waybill_number = payload.waybill_number[0];
+        }
+        window.location = "/shipments/view?waybill_number=" + waybill_number;
     },
     newUserObject: function () {
         return {
@@ -489,7 +497,7 @@ $(document).ready(function () {
     function initializeState(prefix) {
         var selector = '#state_' + prefix;
         var country_id = $('#country_' + prefix).val();
-        if(country_id) {
+        if (country_id) {
             var state_id = $(selector).attr('data-selected-id');
             Parcel.getStates(country_id, $(selector), state_id);
         }
@@ -498,7 +506,7 @@ $(document).ready(function () {
     function initializeCity(prefix) {
         var selector = '#city_' + prefix;
         var state_id = $('#state_' + prefix).attr('data-selected-id');
-        if(state_id) {
+        if (state_id) {
             var city_id = $(selector).attr('data-selected-id');
             Parcel.getCities(state_id, $(selector), city_id);
         }
@@ -576,7 +584,7 @@ $(document).ready(function () {
     $("input[name='billing_method']").click(function () {
         $(".amount-due-wrap").hide();
         $('#' + $(this).val() + '_billing').show();
-        if($(this).val() == 'manual') {
+        if ($(this).val() == 'manual') {
             $("input[name='manual_amount']").addClass('validate integer required');
         } else {
             $("input[name='manual_amount']").removeClass('validate integer required');
