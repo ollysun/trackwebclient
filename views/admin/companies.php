@@ -98,40 +98,40 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                         <div class="row">
                             <div class="col-xs-6 form-group">
                                 <label for="">Name</label>
-                                <input type="text" class="form-control validate required name">
+                                <input type="text" name="company[name]" class="form-control validate required name">
                             </div>
                             <div class="col-xs-6 form-group">
                                 <label for="">Registration No</label>
-                                <input type="text" class="form-control validate required">
+                                <input type="text" name="company[reg_no]" class="form-control validate required">
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-xs-6 form-group">
                                 <label for="">Email address</label>
-                                <input type="text" class="form-control validate required email">
+                                <input type="text" name="company[email]" class="form-control validate required email">
                             </div>
                             <div class="col-xs-6 form-group">
                                 <label for="">Phone number</label>
-                                <input type="text" class="form-control validate required phone">
+                                <input type="text" name="company[phone_number]" class="form-control validate required phone">
                             </div>
                         </div>
                         <div class="form-group">
                             <label>Address</label>
-                            <input type="text" class="form-control validate required">
+                            <input type="text" name="company[address]" class="form-control validate required">
                         </div>
                         <div class="row">
                             <div class="col-xs-6 form-group">
                                 <label for="">State</label>
-                                <select name="" id="state" class="form-control validate required">
-                                    <?php foreach($states as $state):?>
+                                <select id="state" class="form-control validate required">
+                                    <?php foreach(Calypso::getValue($locations, 'states', []) as $state):?>
                                         <option value="<?= Calypso::getValue($state, 'id', '')?>"><?= strtoupper(Calypso::getValue($state, 'name', ''));?></option>
                                     <?php endforeach; ?>
                                 </select>
                             </div>
                             <div class="col-xs-6 form-group">
                                 <label for="">City</label>
-                                <select name="" id="city" class="form-control validate required">
-                                    <?php foreach($cities as $city):?>
+                                <select name="company[city_id]" id="city" class="form-control validate required">
+                                    <?php foreach(Calypso::getValue($locations, 'cities', []) as $city):?>
                                         <option value="<?= Calypso::getValue($city, 'id', '')?>"><?= strtoupper(Calypso::getValue($city, 'name', ''));?></option>
                                     <?php endforeach; ?>
                                 </select>
@@ -147,26 +147,18 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                                     <label for="">Staff ID</label>
                                     <input type="text" class="form-control validate required">
                                 </div>
-                                <div class="col-xs-4 form-group">
-                                    <label for="">Name</label>
-                                    <input type="text" readonly="readonly" class="form-control validate required">
-                                </div>
-                                <div class="col-xs-4 form-group">
-                                    <label for="">Email address</label>
-                                    <input type="text" readonly="readonly" class="form-control validate required">
-                                </div>
                             </div>
                         </fieldset>
-                        <fieldset class="col-xs-6">
+                        <fieldset class="col-xs-6 hide">
                             <legend>Business Offers</legend>
                             <div class="row">
                                 <div class="col-xs-6 form-group">
                                     <label for="">Credit Limit <span class="currency naira"></span></label>
-                                    <input type="text" class="form-control validate required number">
+                                    <input type="text" class="form-control">
                                 </div>
                                 <div class="col-xs-6 form-group">
                                     <label for="">Discount (%)</label>
-                                    <input type="text" class="form-control validate number">
+                                    <input type="text" class="form-control">
                                 </div>
                             </div>
                         </fieldset>
@@ -178,21 +170,21 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                             <div class="row">
                                 <div class="col-xs-6 form-group">
                                     <label for="">First name</label>
-                                    <input type="text" class="form-control validate required name">
+                                    <input  name="primary_contact[firstname]" type="text" class="form-control validate required name">
                                 </div>
                                 <div class="col-xs-6 form-group">
                                     <label for="">Last name</label>
-                                    <input type="text" class="form-control validate required name">
+                                    <input name="primary_contact[lastname]" type="text" class="form-control validate required name">
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-xs-12 form-group">
                                     <label for="">Email address</label>
-                                    <input type="text" class="form-control validate required email">
+                                    <input name="primary_contact[email]" type="text" class="form-control validate required email">
                                 </div>
                                 <div class="col-xs-12 form-group">
                                     <label for="">Phone number</label>
-                                    <input type="text" class="form-control validate required phone">
+                                    <input name="primary_contact[phone]" type="text" class="form-control validate required phone">
                                 </div>
                             </div>
                         </fieldset>
@@ -201,21 +193,21 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                             <div class="row">
                                 <div class="col-xs-6 form-group">
                                     <label for="">First name</label>
-                                    <input type="text" class="form-control validate required name">
+                                    <input type="text" class="form-control">
                                 </div>
                                 <div class="col-xs-6 form-group">
                                     <label for="">Last name</label>
-                                    <input type="text" class="form-control validate required name">
+                                    <input type="text" class="form-control">
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-xs-12 form-group">
                                     <label for="">Email address</label>
-                                    <input type="text" class="form-control validate required email">
+                                    <input type="text" class="form-control">
                                 </div>
                                 <div class="col-xs-12 form-group">
                                     <label for="">Phone number</label>
-                                    <input type="text" class="form-control validate required phone">
+                                    <input type="text" class="form-control">
                                 </div>
                             </div>
                         </fieldset>
@@ -297,16 +289,16 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                                 </div>
                             </div>
                         </fieldset>
-                        <fieldset class="col-xs-6">
+                        <fieldset class="col-xs-6 hide">
                             <legend>Business Offers</legend>
                             <div class="row">
                                 <div class="col-xs-6 form-group">
                                     <label for="">Credit Limit <span class="currency naira"></span></label>
-                                    <input type="text" class="form-control validate required number">
+                                    <input type="text" class="form-control number">
                                 </div>
                                 <div class="col-xs-6 form-group">
                                     <label for="">Discount (%)</label>
-                                    <input type="text" class="form-control validate number">
+                                    <input type="text" class="form-control number">
                                 </div>
                             </div>
                         </fieldset>
@@ -341,21 +333,21 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                             <div class="row">
                                 <div class="col-xs-6 form-group">
                                     <label for="">First name</label>
-                                    <input type="text" class="form-control validate required name">
+                                    <input data-secondary_contact="true" type="text" class="form-control validate name">
                                 </div>
                                 <div class="col-xs-6 form-group">
                                     <label for="">Last name</label>
-                                    <input type="text" class="form-control validate required name">
+                                    <input data-secondary_contact="true" type="text" class="form-control validate name">
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-xs-12 form-group">
                                     <label for="">Email address</label>
-                                    <input type="text" class="form-control validate required email">
+                                    <input data-secondary_contact="true" type="text" class="form-control validate email">
                                 </div>
                                 <div class="col-xs-12 form-group">
                                     <label for="">Phone number</label>
-                                    <input type="text" class="form-control validate required phone">
+                                    <input data-secondary_contact="true" type="text" class="form-control validate phone">
                                 </div>
                             </div>
                         </fieldset>
