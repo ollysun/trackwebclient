@@ -276,27 +276,26 @@ class AdminController extends BaseController
     }
 
     /**
+     * Manage Companies Action
      * @author Adegoke Obasa <goke@cottacush.com>
      * @author Olajide Oye <jide@cottacush.com>
      * @return string
      */
     public function actionCompanies()
     {
-        if(Yii::$app->request->isPost) {
-            //
+        if (Yii::$app->request->isPost) {
             $data = Yii::$app->request->post();
+            // Create Company
         }
 
         $refAdapter = new RefAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $states = (new ResponseHandler($refAdapter->getStates(1)))->getData();
 
         $regionAdapter = new RegionAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-
         $stateId = Calypso::getValue($states, '0.id');
-
         $cities = (new ResponseHandler($regionAdapter->getAllCity(0, 0, $stateId, 0, 0)))->getData();
 
-        return $this->render('companies', ['states' => $states, 'cities' => $cities]);
+        return $this->render('companies', ['locations' => ['states' => $states, 'cities' => $cities]]);
     }
 
     /**
@@ -306,13 +305,13 @@ class AdminController extends BaseController
      */
     public function actionCities()
     {
-        if(!Yii::$app->request->isAjax) {
+        if (!Yii::$app->request->isAjax) {
             return $this->redirect(Url::toRoute("admin"));
         }
 
         $stateId = Yii::$app->request->get('state_id');
 
-        if(is_null($stateId)) {
+        if (is_null($stateId)) {
             $this->sendErrorResponse("Invalid Parameters", "E001", null, 400);
         }
 
