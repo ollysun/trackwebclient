@@ -63,7 +63,7 @@ class SiteController extends BaseController
 
     public function beforeAction($action)
     {
-        if (!in_array($action->id, array('logout', 'changepassword', 'login', 'gerraout', 'site', 'track', 'tracksearchdetails', 'forgotpassword', 'resetpassword', 'passwordresetsuccess'))) {
+        if (!in_array($action->id, array('logout', 'changepassword', 'login', 'gerraout', 'site', 'track', 'tracksearchdetails'))) {
             $s = Calypso::getInstance()->session('user_session');
             if (!$s) {
                 // Calypso::getInstance()->AppRedirect('site','login');
@@ -110,8 +110,8 @@ class SiteController extends BaseController
             $response = new ResponseHandler($response);
             if ($response->getStatus() == ResponseHandler::STATUS_OK) {
                 $data = $response->getData();
-                if ($data != null && isset($data['id'])) {
-                    RequestHelper::setClientID($data['id']);
+                if ($data != null && isset($data['user_auth_id'])) {
+                    RequestHelper::setClientID($data['user_auth_id']);
                 }
                 Calypso::getInstance()->session("user_session", $response->getData());
                 if ($data['created_date'] == $data['modified_date'] && $data['status'] == ServiceConstant::INACTIVE) {
@@ -172,11 +172,9 @@ class SiteController extends BaseController
                 $parcel = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
                 $response = $parcel->createNewParcel(json_encode($payload));
                 if ($response['status'] === Response::STATUS_OK) {
-                    // Yii::$app->response->redirect("viewwaybill?id={$response['data']['id']}");
-                    $flash_msg = "viewwaybill?id=" . $response['data']['id'];
+                    $flash_msg = "viewwaybill?waybill_number=" . $response['data']['waybill_number'];
                     $error = 0;
                 } else {
-                    //$this->flashError('There was a problem creating the value. Please try again.');
                     $flash_msg = ('There was a problem creating the value. Please try again. #Reason:' . $response['message']);
                 }
             }
