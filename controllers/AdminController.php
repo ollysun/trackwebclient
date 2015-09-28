@@ -12,6 +12,7 @@ use Adapter\BaseAdapter;
 use Adapter\BranchAdapter;
 use Adapter\Globals\ServiceConstant;
 use Adapter\RefAdapter;
+use Adapter\RegionAdapter;
 use Adapter\ResponseHandler;
 use Adapter\Util\Calypso;
 use Adapter\ZoneAdapter;
@@ -275,7 +276,21 @@ class AdminController extends BaseController
 
     public function actionCompanies()
     {
-        return $this->render('companies');
+        if(Yii::$app->request->isPost) {
+            //
+            $data = Yii::$app->request->post();
+        }
+
+        $refAdapter = new RefAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $states = (new ResponseHandler($refAdapter->getStates(1)))->getData();
+
+        $regionAdapter = new RegionAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+
+        $stateId = Calypso::getValue($states, '0.id');
+
+        $cities = (new ResponseHandler($regionAdapter->getAllCity(0, 0, $stateId, 0, 0)))->getData();
+
+        return $this->render('companies', ['states' => $states, 'cities' => $cities]);
     }
 
     public function actionManageroutes()
