@@ -144,7 +144,16 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                             <div class="row">
                                 <div class="col-xs-4 form-group">
                                     <label for="">Staff ID</label>
-                                    <input type="text" class="form-control validate required">
+                                    <input type="text" id="staff" class="form-control validate required">
+                                    <input id="staffId" type="hidden" name="company[relations_officer_id]" />
+                                </div>
+                                <div class="col-xs-4 form-group">
+                                    </br>
+                                    <button type="button" id="loadStaff" class="btn btn-primary btn-xs">Load</button>
+                                </div>
+                                <div class="col-xs-4 form-group">
+                                    </br>
+                                    <p id="staffName"></p>
                                 </div>
                             </div>
                         </fieldset>
@@ -183,7 +192,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                                 </div>
                                 <div class="col-xs-12 form-group">
                                     <label for="">Phone number</label>
-                                    <input name="primary_contact[phone]" type="text" class="form-control validate required phone">
+                                    <input name="primary_contact[phone_number]" type="text" class="form-control validate required phone">
                                 </div>
                             </div>
                         </fieldset>
