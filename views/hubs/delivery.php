@@ -13,14 +13,7 @@ $this->params['breadcrumbs'] = [['label' => 'Sorted Shipments']];
 <?= Html::cssFile('@web/css/libs/dataTables.fixedHeader.css') ?>
 <?= Html::cssFile('@web/css/libs/dataTables.tableTools.css') ?>
 
-<style>
-    .table.next_dest tbody > tr > td {
-        text-align: center;
-    }
-</style>
-
 <?php echo \Adapter\Util\Calypso::showFlashMessages(); ?>
-
 
 <div class="main-box">
 
@@ -233,32 +226,32 @@ $this->params['breadcrumbs'] = [['label' => 'Sorted Shipments']];
                 <h4 class="modal-title" id="myModalLabel">Create Bag from Items</h4>
             </div>
             <div class="modal-body">
+                <input type="hidden" id="payload" name="payload"/>
                 <div class="row">
-                    <input type="hidden" id="payload" name="payload"/>
-
-                    <div class="col-xs-6">
-                        <div class="form-group">
-                            <div><span>Parcels Destination </span><strong><p id="parcels_destination"></p></strong></div>
-                            <br/>
-                            <p>Set Bag Destination</p>
-                            <div class="pull-left form-group">
-                                <label for="branch_type">Branch type</label><br>
-                                <select id="branch_type" class="form-control input-sm branch_type" name="btype">
-                                    <option value="exp">Express Centres</option>
-                                    <option value="hub">Hub</option>
-                                </select>
-                            </div>
-                            <div class="pull-left form-group">
-                                <label for="to_branch" id="hub_branch_label">Branch Name</label><br>
-                                <select id="to_branch" class="form-control input-sm branch_name" name="bid">
-                                    <option>Select Name...</option>
-                                </select>
-                            </div>
-                            <div class="pull-left form-group">
-                                <label for="seal_id">SEAL ID</label>
-                                <input class="form-control" id="seal_id"/>
-                            </div>
-                        </div>
+                    <div class="col-xs-6 form-group">
+                        <label for="parcels_destination">Parcels Destination</label>
+                        <div class="form-control-static"><strong id="parcels_destination"></strong></div>
+                    </div>
+                    <div class="col-xs-6 form-group">
+                        <label for="seal_id">SEAL ID</label>
+                        <input class="form-control" id="seal_id"/>
+                    </div>
+                </div>
+                <br>
+                <p>Set Bag Destination</p>
+                <div class="row">
+                    <div class="col-xs-6 form-group">
+                        <label for="branch_type">Branch type</label><br>
+                        <select id="branch_type" class="form-control input-sm branch_type" name="btype">
+                            <option value="exp">Express Centres</option>
+                            <option value="hub">Hub</option>
+                        </select>
+                    </div>
+                    <div class="col-xs-6 form-group">
+                        <label for="to_branch" id="hub_branch_label">Branch Name</label><br>
+                        <select id="to_branch" class="form-control input-sm branch_name" name="bid">
+                            <option>Select Name...</option>
+                        </select>
                     </div>
                 </div>
                 <hr/>
