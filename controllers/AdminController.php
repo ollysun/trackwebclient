@@ -22,6 +22,7 @@ use Adapter\Util\Response;
 use Adapter\AdminAdapter;
 use Adapter\UserAdapter;
 use Adapter\RouteAdapter;
+use yii\helpers\Url;
 
 
 class AdminController extends BaseController
@@ -274,6 +275,11 @@ class AdminController extends BaseController
         return $this->render('managestaff', ['states' => $state_list, 'roles' => $role_list, 'staffMembers' => $staffMembers, 'offset' => $offset, 'role' => $role, 'page_width' => $this->page_width]);
     }
 
+    /**
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @author Olajide Oye <jide@cottacush.com>
+     * @return string
+     */
     public function actionCompanies()
     {
         if(Yii::$app->request->isPost) {
@@ -291,6 +297,29 @@ class AdminController extends BaseController
         $cities = (new ResponseHandler($regionAdapter->getAllCity(0, 0, $stateId, 0, 0)))->getData();
 
         return $this->render('companies', ['states' => $states, 'cities' => $cities]);
+    }
+
+    /**
+     * Returns JSON of cities
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @return \yii\web\Response
+     */
+    public function actionCities()
+    {
+        if(!Yii::$app->request->isAjax) {
+            return $this->redirect(Url::toRoute("admin"));
+        }
+
+        $stateId = Yii::$app->request->get('state_id');
+
+        if(is_null($stateId)) {
+            $this->sendErrorResponse("Invalid Parameters", "E001", null, 400);
+        }
+
+        $regionAdapter = new RegionAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $cities = (new ResponseHandler($regionAdapter->getAllCity(0, 0, $stateId, 0, 0)))->getData();
+
+        return $this->sendSuccessResponse($cities);
     }
 
     public function actionManageroutes()
