@@ -28,5 +28,15 @@
                 });
             }
         });
+        
+        $("#enableSecondaryContact").change(function () {
+            $("[data-secondary_contact]").attr("disabled", !($(this).prop("checked")));
+
+            if($(this).prop("checked")) {
+                $("[data-secondary_contact]").addClass("validate").addClass("required");
+            } else {
+                $("[data-secondary_contact]").removeClass("validate").addClass("required");
+            }
+        });
     });
 })();

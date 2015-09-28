@@ -199,23 +199,29 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                         <fieldset class="col-xs-6">
                             <legend>Secondary Contact <small>(optional)</small></legend>
                             <div class="row">
+                                <div class="col-xs-12">
+                                    <label for="enableSecondaryContact">Secondary Contact Available?</label>
+                                    <input type="checkbox" id="enableSecondaryContact"/>
+                                </div>
+                            </div>
+                            <div class="row">
                                 <div class="col-xs-6 form-group">
                                     <label for="">First name</label>
-                                    <input type="text" class="form-control">
+                                    <input  name="secondary_contact[firstname]" data-secondary_contact disabled type="text" class="form-control name">
                                 </div>
                                 <div class="col-xs-6 form-group">
                                     <label for="">Last name</label>
-                                    <input type="text" class="form-control">
+                                    <input name="secondary_contact[lastname]" data-secondary_contact disabled type="text" class="form-control name">
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-xs-12 form-group">
                                     <label for="">Email address</label>
-                                    <input type="text" class="form-control">
+                                    <input name="secondary_contact[email]" data-secondary_contact disabled type="text" class="form-control email">
                                 </div>
                                 <div class="col-xs-12 form-group">
                                     <label for="">Phone number</label>
-                                    <input type="text" class="form-control">
+                                    <input name="secondary_contact[phone_number]" data-secondary_contact disabled type="text" class="form-control phone">
                                 </div>
                             </div>
                         </fieldset>
