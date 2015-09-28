@@ -291,11 +291,7 @@ class AdminController extends BaseController
         $refAdapter = new RefAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $states = (new ResponseHandler($refAdapter->getStates(1)))->getData();
 
-        $regionAdapter = new RegionAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $stateId = Calypso::getValue($states, '0.id');
-        $cities = (new ResponseHandler($regionAdapter->getAllCity(0, 0, $stateId, 0, 0)))->getData();
-
-        return $this->render('companies', ['locations' => ['states' => $states, 'cities' => $cities]]);
+        return $this->render('companies', ['locations' => ['states' => $states]]);
     }
 
     /**
@@ -316,7 +312,7 @@ class AdminController extends BaseController
         }
 
         $regionAdapter = new RegionAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $cities = (new ResponseHandler($regionAdapter->getAllCity(0, 0, $stateId, 0, 0)))->getData();
+        $cities = (new ResponseHandler($regionAdapter->getAllCity(1, 0, $stateId, 0, 0)))->getData();
 
         return $this->sendSuccessResponse($cities);
     }
