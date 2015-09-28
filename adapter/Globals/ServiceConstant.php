@@ -149,6 +149,8 @@ class ServiceConstant
     const URL_USER_RESET_PASSWORD = 'auth/resetPassword';
     const URL_USER_VALIDATE_PASSWORD_RESET_TOKEN = 'auth/validatePasswordResetToken';
 
+    const URL_COMPANY_ADD = 'company/createCompany';
+
     const DATE_TIME_FORMAT = 'd M Y H:i';
     const DATE_FORMAT = 'd M Y';
     const TIME_FORMAT = 'g:i A';

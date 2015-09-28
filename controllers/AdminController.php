@@ -8,8 +8,8 @@
 
 namespace app\controllers;
 
-use Adapter\BaseAdapter;
 use Adapter\BranchAdapter;
+use Adapter\CompanyAdapter;
 use Adapter\Globals\ServiceConstant;
 use Adapter\RefAdapter;
 use Adapter\RegionAdapter;
@@ -285,7 +285,16 @@ class AdminController extends BaseController
     {
         if (Yii::$app->request->isPost) {
             $data = Yii::$app->request->post();
+
             // Create Company
+            $companyAdapter = new CompanyAdapter();
+            $status = $companyAdapter->createCompany($data);
+
+            if ($status) {
+                $this->flashSuccess("Company created successfully");
+            } else {
+                $this->flashError($companyAdapter->getLastErrorMessage());
+            }
         }
 
         $refAdapter = new RefAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
@@ -315,6 +324,27 @@ class AdminController extends BaseController
         $cities = (new ResponseHandler($regionAdapter->getAllCity(1, 0, $stateId, 0, 0)))->getData();
 
         return $this->sendSuccessResponse($cities);
+    }
+
+    /**
+     * Get Staff Details Ajax Action
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @return array|\yii\web\Response
+     */
+    public function actionGetstaff()
+    {
+        if (!Yii::$app->request->isAjax) {
+            return $this->redirect(Url::toRoute("site"));
+        }
+
+        $staffId = Yii::$app->request->get('staff_id');
+
+        if (is_null($staffId)) {
+            return $this->sendErrorResponse("Invalid Parameters", "E002", 500);
+        }
+
+        $staff = (new ResponseHandler((new AdminAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken()))->getStaff($staffId)))->getData();
+        return $this->sendSuccessResponse($staff);
     }
 
     public function actionManageroutes()

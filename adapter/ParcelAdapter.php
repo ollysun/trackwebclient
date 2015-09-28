@@ -110,7 +110,7 @@ class ParcelAdapter extends BaseAdapter{
         return $this->request(ServiceConstant::URL_MOVE_FOR_DELIVERY, $postData, self::HTTP_POST);
     }
     public function moveToBeingDelivered($postData) {
-        return $this->request(ServiceConstant::URL_MOVE_TO_BEING_DELIVERED, $postData, self::HTTP_POST);
+        return $this->request(ServiceConstant::URL_MOVE_TO_BEING_DELIVERED . '?XDEBUG_SESSION_START=PHPSTORM', $postData, self::HTTP_POST);
     }
     public function moveToDelivered($postData) {
         return $this->request(ServiceConstant::URL_MOVE_TO_DELIVERED, $postData, self::HTTP_POST);

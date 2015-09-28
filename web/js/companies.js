@@ -16,5 +16,17 @@
                 });
             }
         });
+        
+        $("#loadStaff").click(function () {
+            var staff = $("#staff").val();
+            if(staff != "") {
+                $.getJSON("/admin/getstaff?staff_id=" + staff, function (data) {
+                    if(data.status == "success" && data.data && data.data.fullname && data.data.id) {
+                        $("#staffName").html(data.data.fullname.toUpperCase());
+                        $("#staffId").val(data.data.id);
+                    }
+                });
+            }
+        });
     });
 })();
