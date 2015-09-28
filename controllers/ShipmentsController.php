@@ -23,9 +23,16 @@ use Adapter\ResponseHandler;
 use Adapter\Util\Calypso;
 use app\services\HubService;
 use Adapter\TellerAdapter;
+use yii\data\Pagination;
 use Yii;
+use yii\helpers\Url;
+use yii\web\Response;
 use Adapter\RouteAdapter;
 
+/**
+ * Class ShipmentsController
+ * @package app\controllers
+ */
 class ShipmentsController extends BaseController
 {
     public $userData = null;
@@ -237,6 +244,36 @@ class ShipmentsController extends BaseController
         return $this->render('forsweep', array('branch' => $branch['data'], 'parcels' => $data, 'offset' => $offset, 'page_width' => $page_width, 'search' => $search_action, 'total_count' => $total_count));
     }
 
+    /**
+     * This is a method to render the view for generating manifest
+     * @param $data
+     * @return string
+     */
+    public function viewManifest($data)
+    {
+
+        $user_session = Calypso::getInstance()->session("user_session");
+        $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $in_transit_parcels = $parcelsAdapter->getParcelsForNextDestination(ServiceConstant::IN_TRANSIT, $user_session['branch_id'], $data['to_branch_id'], $data['held_by_id']);
+        if ($in_transit_parcels['status'] === ResponseHandler::STATUS_OK) {
+            $viewData['parcel_delivery'] = $in_transit_parcels['data'];
+
+            $adminData = new AdminAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+            $staff = $adminData->getStaff($data['staff_code']);
+            if ($staff['status'] === ResponseHandler::STATUS_OK) {
+                $viewData['staff'] = $staff['data'];
+            } else {
+                $viewData['staff'] = [];
+            }
+
+        } else {
+            $this->flashError('An error occured while trying to fetch parcels. Please try again.');
+            $viewData['parcel_delivery'] = [];
+        }
+
+        return $this->render('/hubs/manifest', $viewData);
+    }
+
     public function actionProcessed($page = 1, $search = false, $page_width = null)
     {
         $from_date = date('Y/m/d');
@@ -328,38 +365,8 @@ class ShipmentsController extends BaseController
             $this->sendErrorResponse($errorMessage, HttpStatusCodes::HTTP_200);
         }
     }
-
-    /**
-     * This is a method to render the view for generating manifest
-     * @param $data
-     * @return string
-     */
-    public function viewManifest($data)
-    {
-
-        $user_session = Calypso::getInstance()->session("user_session");
-        $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $in_transit_parcels = $parcelsAdapter->getParcelsForNextDestination(ServiceConstant::IN_TRANSIT, $user_session['branch_id'], $data['to_branch_id'], $data['held_by_id']);
-        if ($in_transit_parcels['status'] === ResponseHandler::STATUS_OK) {
-            $viewData['parcel_delivery'] = $in_transit_parcels['data'];
-
-            $adminData = new AdminAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-            $staff = $adminData->getStaff($data['staff_code']);
-            if ($staff['status'] === ResponseHandler::STATUS_OK) {
-                $viewData['staff'] = $staff['data'];
-            } else {
-                $viewData['staff'] = [];
-            }
-
-        } else {
-            $this->flashError('An error occured while trying to fetch parcels. Please try again.');
-            $viewData['parcel_delivery'] = [];
-        }
-
-        return $this->render('/hubs/manifest', $viewData);
-    }
-
-
+    
+    
     public function actionCustomerhistory()
     {
         return $this->render('customer_history');
@@ -397,24 +404,33 @@ class ShipmentsController extends BaseController
         return $this->render('customer_history_details', array('user' => $user, 'parcels' => $parcels, 'total_count' => $total_count, 'search' => $search, 'offset' => $offset, 'page_width' => $page_width));
     }
 
+    /**
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     * @author Olajide Oye <jide@cottacush.com>
+     * @author Olawale Lawal <wale@cottacush.com>
+     * @return string
+     */
     public function actionView()
     {
         $data = [];
         $sender_location = [];
         $receiver_location = [];
         $sender_merchant = [];
-        $id = "-1";
 
-        $refData = new RefAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        if (isset(Calypso::getInstance()->get()->waybill_number)) {
+            $waybill_number = trim(Calypso::getInstance()->get()->waybill_number);
+            if (ParcelAdapter::isBag($waybill_number)) {
+                return $this->redirect(Url::to('viewbag?waybill_number=' . $waybill_number));
+            }
+            $refData = new RefAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
 
-        $serviceType = $refData->getShipmentType();
-        $parcelType = $refData->getparcelType();
-        $deliveryType = $refData->getdeliveryType();
+            $serviceType = $refData->getShipmentType();
+            $parcelType = $refData->getparcelType();
+            $deliveryType = $refData->getdeliveryType();
 
-        if (isset(Calypso::getInstance()->get()->id)) {
-            $id = Calypso::getInstance()->get()->id;
+
             $parcel = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-            $response = $parcel->getOneParcel($id);
+            $response = $parcel->getParcelByWayBillNumber($waybill_number);
             $response = new ResponseHandler($response);
             if ($response->getStatus() == ResponseHandler::STATUS_OK) {
                 $data = $response->getData();
@@ -448,6 +464,35 @@ class ShipmentsController extends BaseController
             'receiverLocation' => $receiver_location,
             'senderMerchant' => $sender_merchant,
         ));
+    }
+
+    /**
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     * @return string
+     */
+    public function actionViewbag()
+    {
+        $waybill_number = Calypso::getInstance()->get()->waybill_number;
+        $print = Yii::$app->request->getQueryParam('print');
+
+        if (!isset($waybill_number)) {
+            Yii::$app->session->setFlash('danger', 'Could not fetch bag details');
+            return $this->render('view_bag', ['waybill_number' => '']);
+        }
+
+        if (!ParcelAdapter::isBag($waybill_number)) {
+            Yii::$app->session->setFlash('danger', 'Invalid bag number. Please try again');
+            return $this->render('view_bag', ['waybill_number' => $waybill_number]);
+        }
+
+
+        $parcelAdapter = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $bag = $parcelAdapter->getBag($waybill_number);
+        if (is_string($bag)) {
+            Yii::$app->session->setFlash('danger', $bag);
+        }
+        $view = (is_null($print)) ? 'view_bag' : 'print_bag';
+        return $this->render($view, ['waybill_number' => $waybill_number, 'bag' => $bag]);
     }
 
     public function actionDispatched($page = 1, $page_width = null)
