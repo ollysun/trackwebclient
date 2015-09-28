@@ -122,11 +122,19 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                         <div class="row">
                             <div class="col-xs-6 form-group">
                                 <label for="">State</label>
-                                <select name="" id="" class="form-control validate required"></select>
+                                <select name="" id="" class="form-control validate required">
+                                    <?php foreach($states as $state):?>
+                                        <option value="<?= Calypso::getValue($state, 'id', '')?>"><?= strtoupper(Calypso::getValue($state, 'name', ''));?></option>
+                                    <?php endforeach; ?>
+                                </select>
                             </div>
                             <div class="col-xs-6 form-group">
                                 <label for="">City</label>
-                                <select name="" id="" class="form-control validate required"></select>
+                                <select name="" id="" class="form-control validate required">
+                                    <?php foreach($cities as $city):?>
+                                        <option value="<?= Calypso::getValue($city, 'id', '')?>"><?= strtoupper(Calypso::getValue($city, 'name', ''));?></option>
+                                    <?php endforeach; ?>
+                                </select>
                             </div>
                         </div>
                     </fieldset>
