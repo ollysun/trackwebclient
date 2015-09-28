@@ -94,7 +94,10 @@ $is_hub = $user['branch']['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
                         </div>
                     </form>
                 <?php else: ?>
-                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">Receive Shipments from Hub</button>
+                    <div class="pull-left">
+                        <label>&nbsp;</label><br>
+                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">Receive Shipments from Hub</button>
+                    </div>
                 <?php endif; ?>
                 <?php if(!empty($parcels)): ?><div class="pull-left">
                     <label>&nbsp;</label><br>&nbsp;<button type="button" class="btn btn-sm btn-default" data-toggle="modal" data-target="#runModal">Generate Delivery Run</button></div><?php endif; ?>
