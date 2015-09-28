@@ -295,6 +295,7 @@ class AdminController extends BaseController
             } else {
                 $this->flashError($companyAdapter->getLastErrorMessage());
             }
+            return $this->refresh();
         }
 
         $refAdapter = new RefAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
