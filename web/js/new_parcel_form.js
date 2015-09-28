@@ -293,7 +293,6 @@ var Parcel = {
     },
     onFormSuccessCallback: function (code, payload) {
         $(window).trigger('success.CP.Form.watchChanges');
-        debugger;
         var waybill_number;
         if (payload.waybill_number.length > 1) {
             var split_waybill_number = payload.waybill_number[0];
