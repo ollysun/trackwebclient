@@ -7,10 +7,6 @@ use Adapter\Globals\ServiceConstant;
 /* @var $this yii\web\View */
 $this->title = 'Manage Staff Accounts';
 $this->params['breadcrumbs'] = array(
-	/*array(
-	'url' => ['site/managebranches'],
-	'label' => 'Manage Branches'
-	),*/
 	array('label'=> 'Manage Staff Accounts')
 );
 $show_next = false;
@@ -39,7 +35,7 @@ if($offset <= 0){
 <?= Html::cssFile('@web/css/libs/dataTables.tableTools.css') ?>
 
 <?php
-$this->params['content_header_button'] = '<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i> Add New Staff</button>';
+$this->params['content_header_button'] = '<button type="button" id="addNewStaffBtn" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i> Add New Staff</button>';
 ?>
 
 <?=Html::cssFile('@web/css/libs/bootstrap-select.min.css')?>
@@ -120,8 +116,19 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                         <td><?= strtoupper($staffMember['role']['name']) ?></td>
                         <td><?= ServiceConstant::getStatus($staffMember['status']) ?></td>
                         <td>
-                            <button type="button" class="btn btn-default btn-xs" data-toggle="modal"
-                                    data-target="#editModal"><i class="fa fa-edit"></i> Edit
+                            <button
+                                data-id="<?= Calypso::getValue($staffMember, 'id'); ?>"
+                                data-fullname="<?= Calypso::getValue($staffMember, 'fullname'); ?>"
+                                data-email="<?= Calypso::getValue($staffMember, 'email'); ?>"
+                                data-phone="<?= Calypso::getValue($staffMember, 'phone'); ?>"
+                                data-staff_id="<?= Calypso::getValue($staffMember, 'staff_id'); ?>"
+                                data-branch="<?= Calypso::getValue($staffMember, 'branch.id'); ?>"
+                                data-branch_type="<?= Calypso::getValue($staffMember, 'branch.branch_type'); ?>"
+                                data-role="<?= Calypso::getValue($staffMember, 'role_id'); ?>"
+                                data-state="<?= Calypso::getValue($staffMember, 'branch.state_id'); ?>"
+                                data-status="<?= Calypso::getValue($staffMember, 'status'); ?>"
+                                type="button" class="btn btn-default btn-xs editStaff" data-toggle="modal"
+                                    data-target="#myModal"><i class="fa fa-edit"></i> Edit
                             </button>
                         </td>
                     </tr>
@@ -129,8 +136,6 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                         endforeach;
                     }
                 ?>
-
-
                 </tbody>
             </table>
             <div class="pull-right form-group">
@@ -154,7 +159,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
-        <form class="validate-form" method="post">
+        <form class="validate-form" method="post" id="createStaffForm">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
@@ -181,7 +186,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                         <div class="col-xs-6">
                             <div class="form-group">
                                 <label>Email address</label>
-                                <input name="email" class="form-control  validate required email">
+                                <input name="email" class="form-control validate required email">
                             </div>
                         </div>
                         <div class="col-xs-6">
@@ -257,120 +262,17 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                                     <small>(Users can be activated later)</small>
                                 </label>
                                 <select name="status" class="form-control  validate required">
-                                    <option>YES</option>
-                                    <option>NO</option>
+                                    <option value="1">YES</option>
+                                    <option value="2">NO</option>
                                 </select>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
+                    <input name="id" type="hidden"/>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary">Create Staff Account</button>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
-
-
-<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
-        <form class="">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                            aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">Edit a Staff Account</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-xs-6">
-                            <div class="form-group">
-                                <label>First name</label>
-                                <input class="form-control">
-                            </div>
-                        </div>
-                        <div class="col-xs-6">
-                            <div class="form-group">
-                                <label>Last name</label>
-                                <input class="form-control">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-6">
-                            <div class="form-group">
-                                <label>Email address</label>
-                                <input class="form-control">
-                            </div>
-                        </div>
-                        <div class="col-xs-6">
-                            <div class="form-group">
-                                <label>Phone no</label>
-                                <input class="form-control">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label>Staff ID</label>
-                        <input class="form-control">
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-3">
-                            <div class="form-group">
-                                <label>State</label>
-                                <select id="state" name="state" class="form-control">
-                                    <?php
-                                    if (isset($states) && is_array($states) && !empty($states)):
-                                        foreach ($states as $state):
-                                            ?>
-                                            <option
-                                                value="<?= $state['id'] ?>"><?= strtoupper($state['name']); ?></option>
-                                            <?php
-                                        endforeach;
-                                    endif;
-                                    ?>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-xs-4">
-                            <div class="form-group">
-                                <label>Branch type</label>
-                                <select class="form-control">
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-xs-5">
-                            <div class="form-group">
-                                <label>Branch</label>
-                                <select class="form-control">
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-6">
-                            <div class="form-group">
-                                <label>User role</label>
-                                <select class="form-control">
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-xs-6">
-                            <div class="form-group">
-                                <label>Status</label>
-                                <select class="form-control">
-                                    <option>Active</option>
-                                    <option>Inactive</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
                 </div>
             </div>
         </form>
@@ -387,5 +289,6 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
 <?php $this->registerJsFile('@web/js/dataTables.bootstrap.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/table.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/validate.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/staff.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 
 

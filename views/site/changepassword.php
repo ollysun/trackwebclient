@@ -36,7 +36,7 @@ $data = Calypso::getInstance()->getPageData();
             <button type="submit" class="btn btn-primary btn-block">Change Password</button>
         </form>
     </div>
-    <p class="text-center"><a class="forgot-link" href="javascript:window.history.back();">&larr; Go back</a></p>
+    <p class="text-center"><a class="forgot-link" href="<?= \yii\helpers\Url::base(true);?>">&larr; Go back</a></p>
 
     <div id="footer-bar" class="row">
         <p id="footer-copyright" class="col-xs-12">&copy; 2015<?php if(date('Y') > 2015): echo " &ndash; ".date('Y'); endif; ?> CourierPlus. All Rights Reserved.</p>

@@ -62,7 +62,7 @@ class ServiceConstant
 
     const URL_GET_BANK_ACCOUNT = 'bankaccount/getAll/';
 
-    const URL_ADMIN_LOGIN = 'admin/login/';
+    const URL_ADMIN_LOGIN = 'auth/login/';
     const URL_REF_BANK = 'ref/banks/';
     const URL_REF_ROLE = 'ref/roles';
     const URL_REF_SHIPMENT = 'ref/shipmentType/';
@@ -131,15 +131,23 @@ class ServiceConstant
 
     const URL_TELLER_ADD = 'teller/add';
 
+    const URL_ROUTE_ADD = 'route/create';
+    const URL_ROUTE_GET_ALL = 'route/getAll';
+    const URL_ROUTE_EDIT = 'route/edit';
+
     const URL_MANIFEST_ALL = 'manifest/getAll';
     const URL_MANIFEST_ONE = 'manifest/getOne';
 
     const URL_CREATE_USER = 'admin/register';
+    const URL_EDIT_USER = 'admin/edit';
     const URL_GET_USERS = '/admin/getAll';
     const URL_GET_USER = '/admin/getone';
-    const URL_USER_VALIDATE = '/admin/validate';
-    const URL_USER_CHANGE_PASSWORD = 'admin/changePassword';
-    const URL_USER_CHANGE_STATUS = 'admin/changeStatus';
+    const URL_USER_VALIDATE = '/auth/validate';
+    const URL_USER_CHANGE_PASSWORD = 'auth/changePassword';
+    const URL_USER_CHANGE_STATUS = 'auth/changeStatus';
+    const URL_USER_FORGOT_PASSWORD = 'auth/forgotPassword';
+    const URL_USER_RESET_PASSWORD = 'auth/resetPassword';
+    const URL_USER_VALIDATE_PASSWORD_RESET_TOKEN = 'auth/validatePasswordResetToken';
 
     const DATE_TIME_FORMAT = 'd M Y H:i';
     const DATE_FORMAT = 'd M Y';
@@ -151,6 +159,9 @@ class ServiceConstant
     const REF_PAYMENT_METHOD_POS = 2;
     const REF_PAYMENT_METHOD_CASH_POS = 3;
     const REF_PAYMENT_METHOD_DEFERRED = 4;
+
+    const REF_MANIFEST_TYPE_SWEEP = 1;
+    const REF_MANIFEST_TYPE_DELIVERY = 2;
 
     const DELIVERY_DISPATCH = 2;
     const DELIVERY_PICKUP = 1;
@@ -258,5 +269,20 @@ class ServiceConstant
     {
         return [ServiceConstant::MANIFEST_PENDING, ServiceConstant::MANIFEST_RESOLVED, ServiceConstant::MANIFEST_HAS_ISSUE,
             ServiceConstant::MANIFEST_IN_TRANSIT, ServiceConstant::MANIFEST_CANCELLED];
+    }
+
+    public static function getManifestType($type)
+    {
+        switch ($type) {
+            case ServiceConstant::REF_MANIFEST_TYPE_SWEEP:
+                return 'Sweep Manifest';
+                break;
+            case ServiceConstant::REF_MANIFEST_TYPE_DELIVERY:
+                return 'Delivery Manifest';
+                break;
+            default:
+               return false;
+                break;
+        }
     }
 }

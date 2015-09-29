@@ -71,13 +71,19 @@ $(document).ready(function(){
     $("#branch_type,#state").unbind('change').on('change',function(){
         var id = $("#state").val();
         var branch_id = $(this).val();
-        $("#branch").html('<option>Loading...</option>');
+        var branchElement = $("#branch");
+        branchElement.html('<option>Loading...</option>');
         if(id.length > 0 && branch_id.length > 0){
             Hub.getBranches(id,branch_id,function(data){
-                $("#branch").html("");
+                branchElement.html("");
                 if(data.status){
                     data.data.forEach(function(v,i){
-                        $("#branch").append("<option value='"+ v.id +"'>"+ (v.name + " ("+ v.code+")").toUpperCase()+"</option>");
+                        if(branchElement.data('id') == v.id){
+                            branchElement.append("<option selected value='"+ v.id +"'>"+ (v.name + " ("+ v.code+")").toUpperCase()+"</option>");
+                        } else {
+
+                            branchElement.append("<option value='"+ v.id +"'>"+ (v.name + " ("+ v.code+")").toUpperCase()+"</option>");
+                        }
                     });
                 }
             });
