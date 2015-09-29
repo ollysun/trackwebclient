@@ -358,11 +358,11 @@ class ShipmentsController extends BaseController
         $response = new ResponseHandler($response);
 
         if ($response->getStatus() == ResponseHandler::STATUS_OK) {
-            $this->sendSuccessResponse('Shipment successfully marked as CANCELLED');
+            return $this->sendSuccessResponse('Shipment successfully marked as CANCELLED');
 
         } else {
             $errorMessage = 'An error occurred while trying to cancel shipment. #' . $response->getError();
-            $this->sendErrorResponse($errorMessage, HttpStatusCodes::HTTP_200);
+            return $this->sendErrorResponse($errorMessage, HttpStatusCodes::HTTP_200);
         }
     }
     
