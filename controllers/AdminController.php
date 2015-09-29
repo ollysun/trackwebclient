@@ -15,6 +15,8 @@ use Adapter\RefAdapter;
 use Adapter\RegionAdapter;
 use Adapter\ResponseHandler;
 use Adapter\Util\Calypso;
+use Adapter\Util\ResponseCodes;
+use Adapter\Util\ResponseMessages;
 use Adapter\ZoneAdapter;
 use Adapter\RequestHelper;
 use Yii;
@@ -318,7 +320,7 @@ class AdminController extends BaseController
         $stateId = Yii::$app->request->get('state_id');
 
         if (is_null($stateId)) {
-            $this->sendErrorResponse("Invalid Parameters", "E001", null, 400);
+            $this->sendErrorResponse(ResponseMessages::INVALID_PARAMETERS, ResponseCodes::INVALID_PARAMETERS, null, 400);
         }
 
         $regionAdapter = new RegionAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
@@ -341,7 +343,7 @@ class AdminController extends BaseController
         $staffId = Yii::$app->request->get('staff_id');
 
         if (is_null($staffId)) {
-            return $this->sendErrorResponse("Invalid Parameters", "E002", 500);
+            $this->sendErrorResponse(ResponseMessages::INVALID_PARAMETERS, ResponseCodes::INVALID_PARAMETERS, null, 400);
         }
 
         $staff = (new ResponseHandler((new AdminAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken()))->getStaff($staffId)))->getData();
