@@ -94,7 +94,10 @@ $is_hub = $user['branch']['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
                         </div>
                     </form>
                 <?php else: ?>
-                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">Receive Shipments from Hub</button>
+                    <div class="pull-left">
+                        <label>&nbsp;</label><br>
+                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">Receive Shipments from Hub</button>
+                    </div>
                 <?php endif; ?>
                 <?php if(!empty($parcels)): ?><div class="pull-left">
                     <label>&nbsp;</label><br>&nbsp;<button type="button" class="btn btn-sm btn-default" data-toggle="modal" data-target="#runModal">Generate Delivery Run</button></div><?php endif; ?>
@@ -134,7 +137,7 @@ $is_hub = $user['branch']['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
                             <td><?= $parcel['route']['name'];?></td>
                             <td><?= ucwords(ServiceConstant::getDeliveryType($parcel['delivery_type'])); ?></td>
                             <td></td>
-                            <td><a href="<?= Url::to(['site/viewwaybill?id='.$parcel['id']]) ?>" class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
+                            <td><a href="<?= Url::to(['shipments/view?waybill_number='.$parcel['waybill_number']]) ?>" class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
                         </tr>
                     <?php
                     }}
