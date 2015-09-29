@@ -172,11 +172,9 @@ class SiteController extends BaseController
                 $parcel = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
                 $response = $parcel->createNewParcel(json_encode($payload));
                 if ($response['status'] === Response::STATUS_OK) {
-                    // Yii::$app->response->redirect("viewwaybill?id={$response['data']['id']}");
-                    $flash_msg = "viewwaybill?id=" . $response['data']['id'];
+                    $flash_msg = "viewwaybill?waybill_number=" . $response['data']['waybill_number'];
                     $error = 0;
                 } else {
-                    //$this->flashError('There was a problem creating the value. Please try again.');
                     $flash_msg = ('There was a problem creating the value. Please try again. #Reason:' . $response['message']);
                 }
             }

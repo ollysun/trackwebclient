@@ -113,8 +113,7 @@ if($search){
                             <td><?= date(ServiceConstant::DATE_TIME_FORMAT,strtotime($parcel['created_date'])); ?></td>
                             <td><?= $parcel['no_of_package']; ?></td>
                             <td><?= ServiceConstant::getStatus($parcel['status']); ?></td>
-                            <td><?= strtoupper($parcel['created_branch']['name']); ?></td>
-                            <td><a href="<?= Url::to(['site/viewwaybill?id='.$parcel['id']]) ?>" class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
+                            <td><a href="<?= Url::to(['shipments/view?waybill_number='.$parcel['waybill_number']]) ?>" class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
                         </tr>
                     <?php
                     }}
