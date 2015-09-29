@@ -209,7 +209,7 @@ class ShipmentsController extends BaseController
                 $response = $parcelData->generateManifest($payloadData);
                 if ($response['status'] === ResponseHandler::STATUS_OK) {
                     //Forward to manifest page
-                    return $this->viewManifest($payloadData);
+                    return $this->redirect('/manifest/view?id='.Calypso::getValue($response, 'data.manifest.id', ''));
                 } else {
                     //Flash error message
                     $this->flashError($response['message']);
@@ -365,8 +365,7 @@ class ShipmentsController extends BaseController
             return $this->sendErrorResponse($errorMessage, HttpStatusCodes::HTTP_200);
         }
     }
-    
-    
+
     public function actionCustomerhistory()
     {
         return $this->render('customer_history');
