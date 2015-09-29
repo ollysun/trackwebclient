@@ -52,9 +52,9 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                 <tr>
                     <th style="width: 20px">S/N</th>
                     <th>Company name</th>
-                    <th>Primary contact</th>
-                    <th>Primary contact email</th>
-                    <th>Primary contact phone number</th>
+                    <th>Email</th>
+                    <th>Phone number</th>
+                    <th>Address</th>
                     <th>Action</th>
                 </tr>
                 </thead>
