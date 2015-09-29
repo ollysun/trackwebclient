@@ -40,6 +40,7 @@ if($offset <= 0){
 //$this->params['content_header_button'] = $this->render('../elements/content_header_new_parcel_button');
 ?>
 
+<?php echo \Adapter\Util\Calypso::showFlashMessages(); ?>
 <div class="main-box">
     <div class="main-box-header table-search-form clearfix">
         <div class="clearfix">
@@ -106,7 +107,7 @@ if($offset <= 0){
                             </td>
                             <td><?= date(ServiceConstant::DATE_TIME_FORMAT,strtotime($parcel['created_date'])); ?></td>
                             <td></td>
-                            <td><a href="<?= Url::to(['site/viewwaybill?id='.$parcel['id']]) ?>" class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
+                            <td><a href="<?= Url::to(['shipments/view?waybill_number='.$parcel['waybill_number']]) ?>" class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
                         </tr>
                     <?php
                     }}

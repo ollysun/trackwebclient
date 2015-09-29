@@ -7,10 +7,6 @@ use Adapter\Util\Response;
 
 abstract class BaseAdapter
 {
-    //TODO move to configs
-    //must always end with a '/'
-    const ROOT_PATH = 'http://172.31.26.87/'; // tnt-service internal IP
-
     const HTTP_GET = 1;
     const HTTP_POST = 2;
 
@@ -106,7 +102,7 @@ abstract class BaseAdapter
 
         $url = trim($url);
         if ($this->_use_root_path) {
-            $url = BaseAdapter::ROOT_PATH . ltrim($url, '/');
+            $url = \Yii::$app->params['apiUrl'] . ltrim($url, '/');
         }
 
         if ($http_method == BaseAdapter::HTTP_POST) {
