@@ -100,7 +100,7 @@ use Adapter\Globals\ServiceConstant;
                     <th width="170px;">AIRWAY BILL NUMBER</th>
                     <th width="100px;">ORIGIN CODE</th>
                     <th width="60px;">NO PCS.</th>
-                    <th width="210px;">TIME</th>
+                    <th width="210px;">DATE/TIME</th>
                     <th width="90px;">CD</th>
                     <th width="250px;">NAME OF PERSON <br> RECEIVING SHIPMENT</th>
                     <th width="180px;">SIGNATURE</th>
@@ -133,7 +133,7 @@ use Adapter\Globals\ServiceConstant;
                             <td><?= Calypso::getValue($parcel, 'waybill_number');?></td>
                             <td><?= strtoupper(Calypso::getValue($manifest, 'from_branch.code'));?></td>
                             <td><?= Calypso::getValue($parcel, 'no_of_package');?></td>
-                            <td><?= Util::formatDate("d/m/y H:i", Calypso::getValue($parcel, 'created_date'));?></td>
+                            <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
