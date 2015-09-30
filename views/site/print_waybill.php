@@ -94,14 +94,14 @@ $this->title = 'Waybill '.$parcelData['waybill_number'];
         <div class="code__origin">
             <?php
                 if (!empty($sender_location)) {
-                    echo strtoupper(substr($sender_location['state']['name'], 0, 3));
+                    echo strtoupper($sender_location['state']['code']);
                 }
             ?>
         </div>
         <div class="code__destination">
             <?php
                 if (!empty($receiver_location)) {
-                    echo strtoupper(substr($receiver_location['state']['name'], 0, 3));
+                    echo strtoupper($receiver_location['state']['code']);
                 }
             ?>
         </div>
