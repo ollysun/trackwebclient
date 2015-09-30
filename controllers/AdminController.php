@@ -311,6 +311,12 @@ class AdminController extends BaseController
         $filters['offset'] = $offset;
         $filters['count'] = $this->page_width;
 
+        $query = \Yii::$app->getRequest()->get('search');
+        if(!is_null($query)) {
+            $filters = ['name' => $query];
+            $page = 1; // Reset page
+        }
+
         $companiesData = $companyAdapter->getCompanies($filters);
         $companies = Calypso::getValue($companiesData, 'companies', []);
         $totalCount = Calypso::getValue($companiesData, 'total_count', 0);
