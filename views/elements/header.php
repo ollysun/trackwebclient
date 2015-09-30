@@ -7,7 +7,7 @@ $session_data = Calypso::getInstance()->session('user_session');
 ?>
 <header class="navbar" id="header-navbar">
 	<div class="container">
-		<a href="<?= Url::to(['site/index']) ?>" id="logo" class="navbar-brand">
+		<a href="<?= Url::toRoute(['/site/index']) ?>" id="logo" class="navbar-brand">
 			<?= Html::img('@web/img/logo.png', ['class' => 'normal-logo logo-white']) ?>
 			<?= Html::img('@web/img/logo-black.png', ['class' => 'normal-logo logo-black']) ?>
 			<?= Html::img('@web/img/logo-small.png', ['class' => 'small-logo hidden-xs hidden-sm hidden']) ?>
@@ -45,7 +45,7 @@ $session_data = Calypso::getInstance()->session('user_session');
 						</a>
 						<ul class="dropdown-menu dropdown-menu-right">
 							<!-- <li><a href="#"><i class="fa fa-user"></i>Profile</a></li> -->
-							<li><a href="<?= Url::to(['site/gerraout']) ?>" data-method="post"><i class="fa fa-power-off"></i>Logout</a></li>
+							<li><a href="<?= Url::toRoute(['/site/gerraout']) ?>" data-method="post"><i class="fa fa-power-off"></i>Logout</a></li>
 						</ul>
 					</li>
 				</ul>

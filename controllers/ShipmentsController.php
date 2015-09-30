@@ -420,7 +420,7 @@ class ShipmentsController extends BaseController
         if (isset(Calypso::getInstance()->get()->waybill_number)) {
             $waybill_number = trim(Calypso::getInstance()->get()->waybill_number);
             if (ParcelAdapter::isBag($waybill_number)) {
-                return $this->redirect(Url::to('viewbag?waybill_number=' . $waybill_number));
+                return $this->redirect(Url::toRoute('/shipments/viewbag?waybill_number=' . $waybill_number));
             }
             $refData = new RefAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
 

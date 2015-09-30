@@ -32,7 +32,7 @@ $this->params['graph_stats'] = $this->render('../elements/corporate/credit_limit
     <div class="main-box-header table-search-form clearfix">
         <div class=" clearfix">
             <div class="pull-left">
-                <?= $this->render('../elements/parcels_date_filter',['from_date'=>$from_date, 'to_date'=>$to_date]); ?>
+                <?= $this->render('../elements/date_filter',['from_date'=>$from_date, 'to_date'=>$to_date]); ?>
             </div>
             <div class="pull-right clearfix">
                 <form class="form-inline clearfix">
