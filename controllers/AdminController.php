@@ -285,11 +285,11 @@ class AdminController extends BaseController
      */
     public function actionCompanies()
     {
+        $companyAdapter = new CompanyAdapter();
         if (Yii::$app->request->isPost) {
             $data = Yii::$app->request->post();
 
             // Create Company
-            $companyAdapter = new CompanyAdapter();
             $status = $companyAdapter->createCompany($data);
 
             if ($status) {
@@ -303,7 +303,8 @@ class AdminController extends BaseController
         $refAdapter = new RefAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $states = (new ResponseHandler($refAdapter->getStates(1)))->getData();
 
-        return $this->render('companies', ['locations' => ['states' => $states]]);
+        $companies = $companyAdapter->getCompanies([]);
+        return $this->render('companies', ['locations' => ['states' => $states], 'companies' => $companies]);
     }
 
     /**
