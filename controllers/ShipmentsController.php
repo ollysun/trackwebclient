@@ -127,7 +127,8 @@ class ShipmentsController extends BaseController
 
                 if ($responseHandler->getStatus() === ResponseHandler::STATUS_OK) {
                     if (empty($data['bad_parcels']))
-                        $this->flashSuccess('Shipments dispatched');
+                        return $this->redirect('/manifest/view?id='.Calypso::getValue($response, 'data.manifest.id', ''));
+                        //$this->flashSuccess('Shipments dispatched');
                     else {
                         $bad_parcels = $data['bad_parcels'];
                         foreach ($bad_parcels as $key => $bad_parcel) {
