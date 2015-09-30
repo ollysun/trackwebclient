@@ -1,4 +1,5 @@
 <?php
+use Adapter\Util\Util;
 use yii\helpers\Url;
 use yii\helpers\Html;
 use Adapter\Util\Calypso;
@@ -43,13 +44,17 @@ $session_data = Calypso::getInstance()->session('user_session');
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <?= Html::img('@web/img/avatar.png', ['alt' => '']) ?>
                             <div class="profile-details hidden-xs">
-                                <span class="name"><?= $session_data['fullname']; ?></span>
-                                <span class="designation"><?= $session_data['role']['name']; ?></span>
+                                <?php
+                                    $fullname = isset($session_data['fullname'])  ? $session_data['fullname'] :
+                                        Calypso::getValue($session_data, 'firstname') . ' ' . Calypso::getValue($session_data, 'lastname');
+
+                                ?>
+                                <span class="name"><?= $fullname; ?></span>
+                                <span class="designation"><?= Util::formatRoleName(Calypso::getValue($session_data, 'role.name', '')); ?></span>
                             </div>
                             <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-right">
-                            <!-- <li><a href="#"><i class="fa fa-user"></i>Profile</a></li> -->
                             <li><a href="<?= Url::toRoute(['/site/gerraout']) ?>" data-method="post"><i
                                         class="fa fa-power-off"></i>Logout</a></li>
                         </ul>
