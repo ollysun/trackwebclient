@@ -54,7 +54,6 @@ class ResponseHandler
                     RequestHelper::setAccessToken(isset($response[self::P_ACCESS_TOKEN]) ? $response[self::P_ACCESS_TOKEN] : null);
 
                     $this->data = isset($response[self::P_DATA]) ? $response[self::P_DATA] : null;
-
                 } else {
                     $this->error = isset($response[self::P_MESSAGE]) ? $response[self::P_MESSAGE] : self::NO_MESSAGE;
                 }
@@ -117,6 +116,16 @@ class ResponseHandler
     public function getValue($key)
     {
         return (isset($this->data) && isset($this->data[$key])) ? $this->data[$key] : null;
+    }
+
+    /**
+     * Checks if the request was successful
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @return bool
+     */
+    public function isSuccess()
+    {
+        return $this->status == self::STATUS_OK;
     }
 
 }

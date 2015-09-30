@@ -8,12 +8,15 @@
 
 namespace app\controllers;
 
-use Adapter\BaseAdapter;
 use Adapter\BranchAdapter;
+use Adapter\CompanyAdapter;
 use Adapter\Globals\ServiceConstant;
 use Adapter\RefAdapter;
+use Adapter\RegionAdapter;
 use Adapter\ResponseHandler;
 use Adapter\Util\Calypso;
+use Adapter\Util\ResponseCodes;
+use Adapter\Util\ResponseMessages;
 use Adapter\ZoneAdapter;
 use Adapter\RequestHelper;
 use Yii;
@@ -21,6 +24,7 @@ use Adapter\Util\Response;
 use Adapter\AdminAdapter;
 use Adapter\UserAdapter;
 use Adapter\RouteAdapter;
+use yii\helpers\Url;
 
 
 class AdminController extends BaseController
@@ -273,9 +277,100 @@ class AdminController extends BaseController
         return $this->render('managestaff', ['states' => $state_list, 'roles' => $role_list, 'staffMembers' => $staffMembers, 'offset' => $offset, 'role' => $role, 'page_width' => $this->page_width]);
     }
 
+    /**
+     * Manage Companies Action
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @author Olajide Oye <jide@cottacush.com>
+     * @return string
+     */
     public function actionCompanies()
     {
-        return $this->render('companies');
+        $companyAdapter = new CompanyAdapter();
+        if (Yii::$app->request->isPost) {
+            $data = Yii::$app->request->post();
+
+            // Create Company
+            $status = $companyAdapter->createCompany($data);
+
+            if ($status) {
+                $this->flashSuccess("Company created successfully");
+            } else {
+                $this->flashError($companyAdapter->getLastErrorMessage());
+            }
+            return $this->refresh();
+        }
+
+        $refAdapter = new RefAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $states = (new ResponseHandler($refAdapter->getStates(1)))->getData();
+
+        $filters = [];
+
+        // Add Offset and Count
+        $page = \Yii::$app->getRequest()->get('page', 1);
+        $offset = ($page - 1) * $this->page_width;
+        $filters['offset'] = $offset;
+        $filters['count'] = $this->page_width;
+
+        $query = \Yii::$app->getRequest()->get('search');
+        if(!is_null($query)) {
+            $filters = ['name' => $query];
+            $page = 1; // Reset page
+        }
+
+        $companiesData = $companyAdapter->getCompanies($filters);
+        $companies = Calypso::getValue($companiesData, 'companies', []);
+        $totalCount = Calypso::getValue($companiesData, 'total_count', 0);
+
+        return $this->render('companies', [
+            'locations' => ['states' => $states],
+            'companies' => $companies,
+            'offset' => $offset,
+            'total_count' => $totalCount,
+            'page_width' => $this->page_width]);
+    }
+
+    /**
+     * Returns JSON of cities
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @return \yii\web\Response
+     */
+    public function actionCities()
+    {
+        if (!Yii::$app->request->isAjax) {
+            return $this->redirect(Url::toRoute("admin"));
+        }
+
+        $stateId = Yii::$app->request->get('state_id');
+
+        if (is_null($stateId)) {
+            $this->sendErrorResponse(ResponseMessages::INVALID_PARAMETERS, ResponseCodes::INVALID_PARAMETERS, null, 400);
+        }
+
+        $regionAdapter = new RegionAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $cities = (new ResponseHandler($regionAdapter->getAllCity(1, 0, $stateId, 0, 0)))->getData();
+
+        return $this->sendSuccessResponse($cities);
+    }
+
+    /**
+     * Get Staff Details Ajax Action
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @return array|\yii\web\Response
+     */
+    public function actionGetstaff()
+    {
+        if (!Yii::$app->request->isAjax) {
+            return $this->redirect(Url::toRoute("site"));
+        }
+
+        $staffId = Yii::$app->request->get('staff_id');
+
+        if (is_null($staffId)) {
+            $this->sendErrorResponse(ResponseMessages::INVALID_PARAMETERS, ResponseCodes::INVALID_PARAMETERS, null, 400);
+        }
+
+        $staff = (new ResponseHandler((new AdminAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken()))->getStaff($staffId)))->getData();
+        return $this->sendSuccessResponse($staff);
     }
 
     public function actionManageroutes()
