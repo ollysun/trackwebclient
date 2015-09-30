@@ -48,6 +48,11 @@ $config = [
             ]
         ],
     ],
+    'modules' => [
+        'corporate' => [
+            'class' => 'app\modules\corporate\Module',
+        ],
+    ],
     'params' => $params,
 ];
 
