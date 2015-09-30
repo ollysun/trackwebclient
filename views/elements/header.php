@@ -7,7 +7,7 @@ $session_data = Calypso::getInstance()->session('user_session');
 ?>
 <header class="navbar" id="header-navbar">
 	<div class="container">
-		<a href="<?= Url::to(['site/index']) ?>" id="logo" class="navbar-brand">
+		<a href="<?= Url::toRoute(['/site/index']) ?>" id="logo" class="navbar-brand">
 			<?= Html::img('@web/img/logo.png', ['class' => 'normal-logo logo-white']) ?>
 			<?= Html::img('@web/img/logo-black.png', ['class' => 'normal-logo logo-black']) ?>
 			<?= Html::img('@web/img/logo-small.png', ['class' => 'small-logo hidden-xs hidden-sm hidden']) ?>
