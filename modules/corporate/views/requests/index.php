@@ -85,7 +85,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-d
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td><a href="<?= Url::to(['site/viewwaybill?id=1']); ?>" class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
+                        <td><a href="<?= Url::toRoute(['/site/viewwaybill?id=1']); ?>" class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
                     </tr>
 
                 </tbody>
