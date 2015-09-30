@@ -93,7 +93,7 @@ $this->params['breadcrumbs'][] = 'Waybill';
 
                 <div class="form-group">
                     <button
-                        onclick="javascript:window.open('<?= Url::to(['site/printwaybill?id=' . $id]) ?>', '_blank', 'toolbar=yes, scrollbars=yes, resizable=yes, top=10, left=50%, width=1100, height=800');"
+                        onclick="javascript:window.open('<?= Url::toRoute(['/site/printwaybill?id=' . $id]) ?>', '_blank', 'toolbar=yes, scrollbars=yes, resizable=yes, top=10, left=50%, width=1100, height=800');"
                         class="btn btn-primary">Print Waybill
                     </button>
                 </div>

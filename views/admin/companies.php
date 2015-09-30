@@ -71,7 +71,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                                 <td><?= Calypso::getValue($company, 'phone_number'); ?></td>
                                 <td><?= Calypso::getValue($company, 'address'); ?></td>
                                 <td>
-                                    <a href="<?= Url::to(['admin/viewcompany?id=' . Calypso::getValue($company, 'id')]); ?>"
+                                    <a href="<?= Url::toRoute(['/admin/viewcompany?id=' . Calypso::getValue($company, 'id')]); ?>"
                                        class="btn btn-xs btn-default"><i
                                             class="fa fa-eye">&nbsp;</i> View</a>
                                 </td>

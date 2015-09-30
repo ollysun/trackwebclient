@@ -84,7 +84,7 @@ $this->params['breadcrumbs'] = array(
                                 <td><?= Calypso::getValue($manifest, 'no_of_parcels'); ?></td>
                                 <td><?= date(ServiceConstant::DATE_TIME_FORMAT, strtotime(Calypso::getValue($manifest, 'created_date'))); ?></td>
                                 <td><?= ServiceConstant::getStatus(Calypso::getValue($manifest, 'status')); ?></td>
-                                <td><a href="<?= Url::to(['manifest/view?id=' . $manifest['id']]) ?>"
+                                <td><a href="<?= Url::toRoute(['/manifest/view?id=' . $manifest['id']]) ?>"
                                        class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
                             </tr>
                             <?php

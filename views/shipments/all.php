@@ -114,7 +114,7 @@ if($search){
                             <td><?= $parcel['no_of_package']; ?></td>
                             <td><?= ServiceConstant::getStatus($parcel['status']); ?></td>
                             <td><?= strtoupper(Calypso::getValue($parcel, "created_branch.name")) ?></td>
-                            <td><a href="<?= Url::to(['shipments/view?waybill_number='.$parcel['waybill_number']]) ?>" class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
+                            <td><a href="<?= Url::toRoute(['/shipments/view?waybill_number='.$parcel['waybill_number']]) ?>" class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
                         </tr>
                     <?php
                     }}
