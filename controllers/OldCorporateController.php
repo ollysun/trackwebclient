@@ -7,7 +7,7 @@ use Adapter\Util\Calypso;
 use Adapter\Util\Response;
 
 
-class CorporateController extends BaseController {
+class OldCorporateController extends BaseController {
 	public function beforeAction($action) {
 		$this->enableCsrfValidation = false;
 		return parent::beforeAction($action);
