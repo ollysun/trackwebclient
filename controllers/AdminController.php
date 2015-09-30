@@ -303,8 +303,24 @@ class AdminController extends BaseController
         $refAdapter = new RefAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $states = (new ResponseHandler($refAdapter->getStates(1)))->getData();
 
-        $companies = $companyAdapter->getCompanies([]);
-        return $this->render('companies', ['locations' => ['states' => $states], 'companies' => $companies]);
+        $filters = [];
+
+        // Add Offset and Count
+        $page = \Yii::$app->getRequest()->get('page', 1);
+        $offset = ($page - 1) * $this->page_width;
+        $filters['offset'] = $offset;
+        $filters['count'] = $this->page_width;
+
+        $companiesData = $companyAdapter->getCompanies($filters);
+        $companies = Calypso::getValue($companiesData, 'companies', []);
+        $totalCount = Calypso::getValue($companiesData, 'total_count', 0);
+
+        return $this->render('companies', [
+            'locations' => ['states' => $states],
+            'companies' => $companies,
+            'offset' => $offset,
+            'total_count' => $totalCount,
+            'page_width' => $this->page_width]);
     }
 
     /**
