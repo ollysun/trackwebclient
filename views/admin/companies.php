@@ -50,7 +50,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
         </div>
         <div class="main-box-body">
             <div class="table-responsive">
-                <?php if (true) { // count > 0 ?>
+                <?php if (count($companies) > 0) { ?>
                     <table id="table" class="table table-hover ">
                         <thead>
                         <tr>
@@ -63,14 +63,16 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                         </tr>
                         </thead>
                         <tbody>
-                        <?php foreach ($companies as $company): $i = 0; ?>
+                        <?php foreach ($companies as $company): $i = $offset; ?>
                             <tr>
                                 <td><?= ++$i; ?></td>
                                 <td><?= Calypso::getValue($company, 'name'); ?></td>
                                 <td><?= Calypso::getValue($company, 'email'); ?></td>
                                 <td><?= Calypso::getValue($company, 'phone_number'); ?></td>
                                 <td><?= Calypso::getValue($company, 'address'); ?></td>
-                                <td><a href="<?= Url::to(['admin/viewcompany?id=' . Calypso::getValue($company, 'id')]); ?>" class="btn btn-xs btn-default"><i
+                                <td>
+                                    <a href="<?= Url::to(['admin/viewcompany?id=' . Calypso::getValue($company, 'id')]); ?>"
+                                       class="btn btn-xs btn-default"><i
                                             class="fa fa-eye">&nbsp;</i> View</a>
                                 </td>
                                 <td>
@@ -82,6 +84,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                         <?php endforeach; ?>
                         </tbody>
                     </table>
+                    <?= $this->render('../elements/pagination_and_summary', ['first' => $offset, 'last' => $i, 'total_count' => $total_count, 'page_width' => $page_width]) ?>
                 <?php } else { ?>
                     <div class="alert alert-info text-center" role="alert">
                         <p><strong>No Companies created</strong></p>

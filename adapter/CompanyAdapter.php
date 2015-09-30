@@ -3,6 +3,7 @@
 namespace Adapter;
 
 use Adapter\Globals\ServiceConstant;
+use Adapter\Util\Calypso;
 use yii\helpers\Json;
 
 /**
@@ -44,12 +45,8 @@ class CompanyAdapter extends BaseAdapter
     public function getCompanies($filters)
     {
 
-        $filters = array_merge($filters, array());
-//            'with_holder' => '',
-//            'with_from_branch' => '',
-//            'with_sender_admin' => '',
-//            'with_total_count' => 'true',
-//            'with_to_branch' => ''));
+        $filters = array_merge($filters, array(
+            'with_total_count' => 'true'));
 
         $response = $this->request(ServiceConstant::URL_COMPANY_ALL,
             $filters, self::HTTP_GET);
