@@ -19,6 +19,7 @@ abstract class BaseAdapter
     protected $_access_token;
     protected $_response_as_json;
     protected $_use_root_path;
+    protected $lastErrorMessage;
 
     public function __construct($client_id = null, $access_token = null, $response_as_json = false, $use_root_path = true)
     {
@@ -162,4 +163,15 @@ abstract class BaseAdapter
             return false;
         }
     }
-} 
+
+    /**
+     * Gets the last error message
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @return mixed
+     */
+    public function getLastErrorMessage()
+    {
+        return $this->lastErrorMessage;
+    }
+
+}
