@@ -1,3 +1,9 @@
+// Old browser support (IE especially)
+if (!Array.isArray) {
+  Array.isArray = function(arg) {
+    return Object.prototype.toString.call(arg) === '[object Array]';
+  };
+}
 function getServerResponse(statusCode, message) {
     alert(message);
     switch (statusCode) {
@@ -294,12 +300,12 @@ var Parcel = {
     onFormSuccessCallback: function (code, payload) {
         $(window).trigger('success.CP.Form.watchChanges');
         var waybill_number;
-        if (payload.waybill_number.length > 1) {
+        if (Array.isArray(payload.waybill_number)) {
             var split_waybill_number = payload.waybill_number[0];
             var waybill_number_parts = split_waybill_number.split('-');
             waybill_number = waybill_number_parts[0];
         } else {
-            waybill_number = payload.waybill_number[0];
+            waybill_number = payload.waybill_number;
         }
         window.location = "/shipments/view?waybill_number=" + waybill_number;
     },
