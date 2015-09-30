@@ -66,7 +66,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                         <?php foreach ($companies as $company): $i = $offset; ?>
                             <tr>
                                 <td><?= ++$i; ?></td>
-                                <td><?= Calypso::getValue($company, 'name'); ?></td>
+                                <td><?= strtoupper(Calypso::getValue($company, 'name')); ?></td>
                                 <td><?= Calypso::getValue($company, 'email'); ?></td>
                                 <td><?= Calypso::getValue($company, 'phone_number'); ?></td>
                                 <td><?= Calypso::getValue($company, 'address'); ?></td>
