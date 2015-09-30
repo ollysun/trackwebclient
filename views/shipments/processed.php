@@ -117,8 +117,8 @@ $this->params['content_header_button'] = $this->render('../elements/content_head
                                             <input type="hidden" name="task" value="cancel_shipment">
                                         </form>
                                     <?php endif; ?>
-                                    <a title="Clone this shipment" href="<?= Url::to(['parcels/new?id=' . $parcel['id']]) ?>"
-                                       class="btn btn-xs btn-info btnClone"><i class="fa fa-copy"></i></a>
+                                    <button title="Clone this shipment" data-href="<?= Url::to(['parcels/new?id=' . $parcel['id']]) ?>"
+                                       class="btn btn-xs btn-info btnClone"><i class="fa fa-copy"></i></button>
                                 </td>
                             </tr>
                             <?php
@@ -219,4 +219,5 @@ $this->params['content_header_button'] = $this->render('../elements/content_head
 <?php $this->registerJsFile('@web/js/keyboardFormSubmit.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/form-watch-changes.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/validate.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/bootbox.min.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/submit_teller.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>

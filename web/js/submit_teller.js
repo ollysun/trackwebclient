@@ -31,10 +31,35 @@ $(document).ready(function(){
 
 
     $('.btnClone').on('click', function (event) {
-        var ans = confirm('Do you want to cancel this shipment before cloning?');
+
         var self = this;
+        bootbox.dialog({
+            message: "What action do you want to Perform?",
+            title: "Clone Shipments",
+            buttons: {
+                success: {
+                    label: "Clone and cancel",
+                    className: "btn-success",
+                    callback: function() {
+                        cloneShipment($(self), true)
+                    }
+                },
+                info: {
+                    label: "Clone Only",
+                    className: "btn-info",
+                    callback: function() {
+                        cloneShipment($(self), false)
+                    }
+                }
+            }
+        });
+    });
+
+    function cloneShipment(object, ans) {
+
+        var clone_url = $(object).attr('data-href');
         if(ans) {
-            var params = { "waybill_numbers": $(this).closest('tr').data('waybill') };
+            var params = { "waybill_numbers": $(object).closest('tr').data('waybill') };
 
             $.ajax({
                 url: '/shipments/cancel',
@@ -42,9 +67,9 @@ $(document).ready(function(){
                 dataType: 'JSON',
                 data: JSON.stringify(params),
                 success: function (result) {
-                    if (result.status == 'success') {
-                        alert(params.waybill + ' has been cancelled!');
-                        window.location = $(self).attr('href');
+                    if (result.status == 'success' || result.status == 200) {
+                        console.log(params.waybill + ' has been cancelled!');
+                        window.location = clone_url;
                     } else {
                         alert(result.message);
                     }
@@ -54,10 +79,7 @@ $(document).ready(function(){
                 }
             })
         } else {
-            window.location = $(this).attr('href');
+            window.location = clone_url;
         }
-
-
-    });
-
+    }
 });
