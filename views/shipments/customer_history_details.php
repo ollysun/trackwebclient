@@ -106,7 +106,7 @@ $this->params['breadcrumbs'] = array(
 								<td data-receiver-id="<?= $parcel['receiver_id'] ?>"><?= ucwords($parcel['receiver']['firstname'].' '.$parcel['receiver']['lastname']); ?></td>
 								<td><?= date('j M Y h:ma',strtotime($parcel['created_date'])); ?></td>
 								<td><?= ServiceConstant::getStatus($parcel['status']); ?></td>
-								<td><a href="<?= Url::to(['shipments/view?id='.$parcel['id']]) ?>" class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
+								<td><a href="<?= Url::to(['shipments/view?waybill_number='.$parcel['waybill_number']]) ?>" class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
 							</tr>
 						<?php
 								}
