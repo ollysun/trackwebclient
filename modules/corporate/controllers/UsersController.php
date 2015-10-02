@@ -13,8 +13,8 @@ use yii\web\Controller;
 
 class UsersController extends BaseController
 {
-
     /**
+     *
      * @author Adegoke Obasa <goke@cottacush.com>
      * @author Olajide Oye <jide@cottacush.com>
      * @return string
@@ -24,19 +24,38 @@ class UsersController extends BaseController
         $companyAdapter = new CompanyAdapter();
         $companyId = Calypso::getValue(Calypso::getInstance()->session("user_session"), 'company_id');
 
-        $filters = [];
+
+        if(\Yii::$app->request->isPost) {
+            $data = \Yii::$app->request->post();
+
+            $data['company_id'] = $companyId;
+
+            // Create User
+            $status = $companyAdapter->createUser($data);
+            if ($status) {
+                $this->flashSuccess("User created successfully");
+            } else {
+                $this->flashError($companyAdapter->getLastErrorMessage());
+            }
+            return $this->refresh();
+        }
+
+        $filters = [
+            'company_id' => $companyId
+        ];
 
         // Add Offset and Count
         $page = \Yii::$app->getRequest()->get('page', 1);
-        $offset = ($page - 1) * $this->page_width;
-        $filters['offset'] = $offset;
-        $filters['count'] = $this->page_width;
 
         $query = \Yii::$app->getRequest()->get('search');
         if(!is_null($query)) {
-//            $filters = ['name' => $query];
+            $filters['email'] = $query;
             $page = 1; // Reset page
         }
+
+        $offset = ($page - 1) * $this->page_width;
+        $filters['offset'] = $offset;
+        $filters['count'] = $this->page_width;
 
         $usersData = $companyAdapter->getUsers($filters);
         $users = Calypso::getValue($usersData, 'users', []);

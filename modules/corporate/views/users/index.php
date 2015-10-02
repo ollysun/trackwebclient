@@ -1,5 +1,6 @@
 <?php
 use Adapter\Util\Calypso;
+use Adapter\Util\Util;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use Adapter\Globals\ServiceConstant;
@@ -20,6 +21,8 @@ $this->params['breadcrumbs'] = array(
 
 $this->params['content_header_button'] = '<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i> Add User</button>';
 ?>
+
+<?php echo Calypso::showFlashMessages(); ?>
 
     <div class="main-box">
         <div class="main-box-header table-search-form clearfix">
@@ -59,22 +62,22 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                             <th>Phone No.</th>
                             <th>Role</th>
                             <th>Status</th>
-                            <th>Action</th>
+                            <!--                            <th>Action</th>-->
                         </tr>
                         </thead>
                         <tbody>
                         <?php foreach ($users as $user): $i += $offset; ?>
                             <tr>
-                                <td><?= ++$i;?></td>
-                                <td><?= Calypso::getValue($user, 'firstname') . " " . Calypso::getValue($user, 'lastname')?></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td><a href="<?= Url::toRoute(['/site/viewwaybill?id=1']); ?>"
-                                       class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
+                                <td><?= ++$i; ?></td>
+                                <td><?= Calypso::getValue($user, 'firstname') . " " . Calypso::getValue($user, 'lastname') ?></td>
+                                <td><?= Calypso::getValue($user, 'email'); ?></td>
+                                <td><?= Calypso::getValue($user, 'phone_number') ?></td>
+                                <td><?= Util::formatRoleName(Calypso::getValue($user, 'role.name', '')); ?></td>
+                                <td><?= ServiceConstant::getStatus(Calypso::getValue($user, 'status')); ?></td>
+                                <!--                                <td><a href=""-->
+                                <!--                                       class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>-->
                             </tr>
-                            <?php endforeach; ?>
+                        <?php endforeach; ?>
                         </tbody>
                     </table>
                     <?= $this->render('../elements/pagination_and_summary', ['first' => $offset, 'last' => $i, 'total_count' => $total_count, 'page_width' => $page_width]); ?>
@@ -100,7 +103,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                             <div class="col-xs-12 col-sm-6">
                                 <div class="form-group">
                                     <label for="">First Name</label>
-                                    <input name="" type="text"
+                                    <input name="firstname" type="text"
                                            class="form-control validate required name active-validate">
 
                                 </div>
@@ -108,7 +111,8 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                             <div class="col-xs-12 col-sm-6">
                                 <div class="form-group">
                                     <label for="">Last Name</label>
-                                    <input type="text" class="form-control validate required name active-validate">
+                                    <input type="text" name="lastname"
+                                           class="form-control validate required name active-validate">
                                 </div>
                             </div>
                         </div>
@@ -116,13 +120,15 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                             <div class="col-xs-12 col-sm-6">
                                 <div class="form-group">
                                     <label for="">Email address</label>
-                                    <input type="text" class="form-control validate active-validate required email">
+                                    <input type="text" name="email"
+                                           class="form-control validate active-validate required email">
                                 </div>
                             </div>
                             <div class="col-xs-12 col-sm-6">
                                 <div class="form-group">
                                     <label for="">Phone number</label>
-                                    <input type="text" class="form-control validate active-validate required phone">
+                                    <input type="text" name="phone_number"
+                                           class="form-control validate active-validate required phone">
                                     <span class="help-block">Format: 234xxxxxxxxxx</span>
                                 </div>
                             </div>
@@ -130,16 +136,17 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                         <div class="row">
                             <div class="form-group col-xs-6">
                                 <label for="">Role</label>
-                                <select class="form-control">
-                                    <option>admin</option>
-                                    <option>officer</option>
+                                <select name="role_id" class="form-control">
+                                    <option value="<?= ServiceConstant::USER_TYPE_COMPANY_ADMIN ?>">Admin</option>
+                                    <option selected value="<?= ServiceConstant::USER_TYPE_COMPANY_OFFICER ?>">Officer
+                                    </option>
                                 </select>
                             </div>
                             <div class="form-group col-xs-6">
                                 <label for="">Activate user?</label>
-                                <select class="form-control">
-                                    <option>Yes</option>
-                                    <option>No</option>
+                                <select name="status" class="form-control">
+                                    <option value="1">Yes</option>
+                                    <option value="2">No</option>
                                 </select>
                             </div>
                         </div>
