@@ -117,6 +117,12 @@ class SiteController extends BaseController
                 if ($data['created_date'] == $data['modified_date'] && $data['status'] == ServiceConstant::INACTIVE) {
                     return $this->render('changepassword');
                 }
+
+                // Check Corporate User
+                if(!is_null(Calypso::getValue(Calypso::getInstance()->session("user_session"), 'role'))) {
+                    return $this->redirect('/corporate');
+                }
+
                 return $this->redirect('/site');
             } else {
                 Calypso::getInstance()->setPageData("You are not eligible to access this system, kindly contact your administrator");
