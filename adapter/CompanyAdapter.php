@@ -59,4 +59,27 @@ class CompanyAdapter extends BaseAdapter
         return [];
     }
 
+    /**
+     * Get Companies
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @param $filters
+     * @return array|mixed
+     */
+    public function getUsers($filters)
+    {
+
+        $filters = array_merge($filters, array(
+            'with_total_count' => 'true'));
+
+        $response = $this->request(ServiceConstant::URL_COMPANY_USERS,
+            $filters, self::HTTP_GET);
+
+        $response = new ResponseHandler($response);
+
+        if($response->isSuccess()) {
+            return $response->getData();
+        }
+        return [];
+    }
+
 }
