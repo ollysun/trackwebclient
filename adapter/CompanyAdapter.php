@@ -82,4 +82,23 @@ class CompanyAdapter extends BaseAdapter
         return [];
     }
 
+
+    /**
+     * Creates a company user
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @param $data
+     * @return bool
+     */
+    public function createUser($data)
+    {
+        $rawResponse = $this->request(ServiceConstant::URL_USER_ADD, Json::encode($data), self::HTTP_POST);
+        $response = new ResponseHandler($rawResponse);
+
+        if(!$response->isSuccess()) {
+            $this->lastErrorMessage = $response->getError();
+        }
+
+        return $response->isSuccess();
+    }
+
 }
