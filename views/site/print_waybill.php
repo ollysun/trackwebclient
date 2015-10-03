@@ -87,7 +87,7 @@ $this->title = 'Waybill '.$parcelData['waybill_number'];
     </div>
 
     <div class="reference-no">
-        <?= !is_null(Calypso::getValue($parcelData, 'reference_number')) ? Calypso::getValue($parcelData, 'reference_number')  : '';?>
+        <?= !is_null(Calypso::getValue($parcelData, 'reference_number')) ? 'REF:'.Calypso::getValue($parcelData, 'reference_number')  : '';?>
     </div>
 
     <div class="code">
