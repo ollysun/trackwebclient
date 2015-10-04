@@ -176,7 +176,7 @@ $this->params['breadcrumbs'][] = 'Waybill';
 								<div class="col-xs-6">
 									<label>Reference Number(s)</label>
 									<div class="form-control-static">
-										<?= Calypso::getValue($parcelData, 'reference_number', ''); ?>
+										REF:<?= Calypso::getValue($parcelData, 'reference_number', ''); ?>
 									</div>
 								</div>
 								<?php endif; ?>

@@ -12,6 +12,8 @@ class ServiceConstant
     const USER_TYPE_SWEEPER = 3;
     const USER_TYPE_DISPATCHER = 4;
     const USER_TYPE_GROUNDSMAN = 5;
+    const USER_TYPE_COMPANY_ADMIN = 6;
+    const USER_TYPE_COMPANY_OFFICER = 7;
     /*const USER_TYPE_MANAGER = 2;
     const USER_TYPE_CASHIER = 3;
     const USER_TYPE_AGENT = 4;
@@ -151,6 +153,8 @@ class ServiceConstant
 
     const URL_COMPANY_ADD = 'company/createCompany';
     const URL_COMPANY_ALL = 'company/getAllCompany';
+    const URL_COMPANY_USERS = 'company/getAllUsers';
+    const URL_USER_ADD = 'company/createUser';
 
     const DATE_TIME_FORMAT = 'd M Y H:i';
     const DATE_FORMAT = 'd M Y';

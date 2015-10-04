@@ -331,6 +331,9 @@ class Calypso
                 'finance/*',
                 'billing/*',
                 'admin/*'],
+            ServiceConstant::USER_TYPE_COMPANY_ADMIN => [
+                'company/*'
+            ]
         ];
         return $permissionMap;
     }
