@@ -52,8 +52,8 @@ function validateFxn() {
         }
         else if(input.hasClass('non-zero-integer'))
         {
-            var test = /^[1-9]\d*$/;
-            if(!test.test(val))
+            var test = /^[+]?\d+$/;;
+            if(!test.test(val) || parseInt(val) <= 0)
             {
                 msg = 'Invalid entry';
                 isValid = false;
@@ -62,7 +62,7 @@ function validateFxn() {
         else if(input.hasClass('non-zero-number'))
         {
             var test = /^(?=.*[1-9])\d+(\.\d+)?$/;
-            if(!test.test(val) && val !== "")
+            if((!test.test(val) || parseFloat(val) <= 0.0) && val !== "")
             {
                 msg = 'Invalid entry';
                 isValid = false;
