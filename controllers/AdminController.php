@@ -397,7 +397,13 @@ class AdminController extends BaseController
                         Yii::$app->session->setFlash('danger', 'There was a problem creating the route. Reason:' . $response['message']);
                     }
                 } elseif ($task == 'edit') {
-                    $data = array('id' => $entry['id'], 'name' => $entry['route_name'], 'branch_id' => $entry['branch_id']);
+                    $data = array('route_id' => $entry['id'], 'name' => $entry['route_name'], 'branch_id' => $entry['branch_id']);
+                    $response = $route->editRoute($data);
+                    if ($response['status'] === Response::STATUS_OK) {
+                        Yii::$app->session->setFlash('success', 'Route has been edited successfully.');
+                    } else {
+                        Yii::$app->session->setFlash('danger', 'There was a problem editting the route. Reason:' . $response['message']);
+                    }
                 }
             }
         }
