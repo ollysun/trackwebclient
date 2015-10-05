@@ -101,4 +101,45 @@ class CompanyAdapter extends BaseAdapter
         return $response->isSuccess();
     }
 
+    /**
+     * Get shipment requests for company
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @param $filters
+     * @return array|mixed
+     */
+    public function getShipmentRequests($filters)
+    {
+        $filters = array_merge($filters, array(
+            'status' => 'pending',
+            'with_total_count' => 'true'));
+
+        $response = $this->request(ServiceConstant::URL_SHIPMENT_REQUESTS,
+            $filters, self::HTTP_GET);
+
+        $response = new ResponseHandler($response);
+
+        if($response->isSuccess()) {
+            return $response->getData();
+        }
+        return [];
+    }
+
+    /**
+     * Make shipment request
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @param $data
+     * @return bool
+     */
+    public function makeShipmentRequest($data)
+    {
+        $rawResponse = $this->request(ServiceConstant::URL_MAKE_SHIPMENT_REQUEST, Json::encode($data), self::HTTP_POST);
+        $response = new ResponseHandler($rawResponse);
+
+        if(!$response->isSuccess()) {
+            $this->lastErrorMessage = $response->getError();
+        }
+
+        return $response->isSuccess();
+    }
+
 }
