@@ -155,6 +155,7 @@ class ServiceConstant
     const URL_COMPANY_ALL = 'company/getAllCompany';
     const URL_COMPANY_USERS = 'company/getAllUsers';
     const URL_USER_ADD = 'company/createUser';
+    const URL_SHIPMENT_REQUESTS = 'company/getShipmentRequests';
 
     const DATE_TIME_FORMAT = 'd M Y H:i';
     const DATE_FORMAT = 'd M Y';
