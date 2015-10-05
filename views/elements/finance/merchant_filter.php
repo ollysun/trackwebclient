@@ -15,9 +15,9 @@ use yii\helpers\Url;
 	$str = "
 		var select = $('#merchant_type_filter');
 			var Url = {
-				pending: '".Url::to(['finance/merchantspending'])."',
-				due: '".Url::to(['finance/merchantsdue'])."',
-				paid: '".Url::to(['finance/merchantspaid'])."'
+				pending: '".Url::toRoute(['/finance/merchantspending'])."',
+				due: '".Url::toRoute(['/finance/merchantsdue'])."',
+				paid: '".Url::toRoute(['/finance/merchantspaid'])."'
 			};
 			select.on('change', function() {
 				var val = $(this).val();

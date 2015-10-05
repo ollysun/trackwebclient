@@ -127,7 +127,8 @@ class ShipmentsController extends BaseController
 
                 if ($responseHandler->getStatus() === ResponseHandler::STATUS_OK) {
                     if (empty($data['bad_parcels']))
-                        $this->flashSuccess('Shipments dispatched');
+                        return $this->redirect('/manifest/view?id='.Calypso::getValue($response, 'data.manifest.id', ''));
+                        //$this->flashSuccess('Shipments dispatched');
                     else {
                         $bad_parcels = $data['bad_parcels'];
                         foreach ($bad_parcels as $key => $bad_parcel) {
@@ -209,7 +210,7 @@ class ShipmentsController extends BaseController
                 $response = $parcelData->generateManifest($payloadData);
                 if ($response['status'] === ResponseHandler::STATUS_OK) {
                     //Forward to manifest page
-                    return $this->viewManifest($payloadData);
+                    return $this->redirect('/manifest/view?id='.Calypso::getValue($response, 'data.manifest.id', ''));
                 } else {
                     //Flash error message
                     $this->flashError($response['message']);
@@ -365,8 +366,7 @@ class ShipmentsController extends BaseController
             return $this->sendErrorResponse($errorMessage, HttpStatusCodes::HTTP_200);
         }
     }
-    
-    
+
     public function actionCustomerhistory()
     {
         return $this->render('customer_history');
@@ -420,7 +420,7 @@ class ShipmentsController extends BaseController
         if (isset(Calypso::getInstance()->get()->waybill_number)) {
             $waybill_number = trim(Calypso::getInstance()->get()->waybill_number);
             if (ParcelAdapter::isBag($waybill_number)) {
-                return $this->redirect(Url::to('viewbag?waybill_number=' . $waybill_number));
+                return $this->redirect(Url::toRoute('/shipments/viewbag?waybill_number=' . $waybill_number));
             }
             $refData = new RefAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
 

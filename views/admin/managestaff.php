@@ -140,10 +140,10 @@ $this->params['content_header_button'] = '<button type="button" id="addNewStaffB
             </table>
             <div class="pull-right form-group">
                 <?php if($show_prev): ?>
-                    <a href="<?= Url::to(['admin/managestaff?offset='.($offset - $page_width)]).$role_filter ?>" class="btn btn-primary btn-sm">Prev</a>
+                    <a href="<?= Url::toRoute(['/admin/managestaff?offset='.($offset - $page_width)]).$role_filter ?>" class="btn btn-primary btn-sm">Prev</a>
                 <?php endif;  ?>
                 <?php if($show_next): ?>
-                    <a href="<?= Url::to(['admin/managestaff?offset='.($offset + $page_width)]).$role_filter ?>" class="btn btn-primary btn-sm">Next</a>
+                    <a href="<?= Url::toRoute(['/admin/managestaff?offset='.($offset + $page_width)]).$role_filter ?>" class="btn btn-primary btn-sm">Next</a>
                 <?php endif;  ?>
             </div>
             <?php } else {  ?>

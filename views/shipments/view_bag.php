@@ -13,7 +13,7 @@ $this->params['breadcrumbs'] = array(
     array('label'=> 'View '.$this->title)
 );
 
-$this->params['content_header_button'] = '<button onclick="javascript:window.open(\''.Url::to(['viewbag?waybill_number='.$waybill_number.'&print']).'\', \'_blank\', \'toolbar=yes, scrollbars=yes, resizable=yes, top=10, left=50%, width=1100, height=800\');" class="btn btn-primary"><i class="fa fa-print"></i> Print Bag</button>';
+$this->params['content_header_button'] = '<button onclick="javascript:window.open(\''.Url::toRoute(['/viewbag?waybill_number='.$waybill_number.'&print']).'\', \'_blank\', \'toolbar=yes, scrollbars=yes, resizable=yes, top=10, left=50%, width=1100, height=800\');" class="btn btn-primary"><i class="fa fa-print"></i> Print Bag</button>';
 
 ?>
 <!-- this page specific styles -->
