@@ -117,12 +117,13 @@ class ParcelAdapter extends BaseAdapter
         return $this->request(ServiceConstant::URL_GET_ALL_PARCEL . '?with_sender=1&with_receiver=1&with_receiver_address=1&offset=' . $offset . '&count=' . $count . $filter, array(), self::HTTP_GET);
     }
 
-    public function getDispatchedParcels($branch_id, $to_branch = null, $start_created_date = null, $end_created_date = null, $status = '-1')
+    public function getDispatchedParcels($branch_id, $to_branch = null, $start_created_date = null, $end_created_date = null, $status = null)
     {
-        $filter = "branch_id={$branch_id}&with_to_branch=1&with_from_branch=1&with_holder=1";
-        $filter .= ($to_branch == null ? '' : '&to_branch_id=' . $to_branch);
-        $filter .= ($start_created_date == null ? '' : '&start_created_date=' . $start_created_date);
-        $filter .= ($end_created_date == null ? '' : '&end_created_date=' . $end_created_date);
+        $filter = "history_from_branch_id={$branch_id}&with_to_branch=1&with_from_branch=1&with_holder=1";
+        $filter .= ($to_branch == null ? '' : '&history_to_branch_id=' . $to_branch);
+        $filter .= ($start_created_date == null ? '' : '&history_start_created_date=' . $start_created_date);
+        $filter .= ($end_created_date == null ? '' : '&history_end_created_date=' . $end_created_date);
+        $filter .= ($status == null ? '' : '&history_status=' . $status);
 
         return $this->request(ServiceConstant::URL_GET_ALL_PARCEL . '?' . $filter, array(), self::HTTP_POST);
     }
