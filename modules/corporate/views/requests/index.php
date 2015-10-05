@@ -155,7 +155,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-d
 
                                 <div class="form-group">
                                     <label for="">Company</label>
-                                    <input name="receiver_company" id="" class="form-control validate">
+                                    <input name="receiver_company_name" id="" class="form-control validate">
                                 </div>
                                 <div class="form-group">
                                     <label for="">Address</label>
