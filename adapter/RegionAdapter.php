@@ -56,8 +56,8 @@ class RegionAdapter extends BaseAdapter
     public function getAllCity($with_state = 1, $with_region = 1, $state_id = null, $with_charge = 1, $with_branch = 1)
     {
         $filter = '' . ($with_state ? 'with_state' : '');
-        $filter .= ($with_state ? '&with_country' : '');
-        $filter .= ($with_state ? '&with_charge' : '');
+        $filter .= ($with_region ? '&with_country' : '');
+        $filter .= ($with_charge ? '&with_charge' : '');
         $filter .= ($with_branch ? '&with_branch' : '');
         $param = !is_null($state_id) ? ['state_id' => $state_id] : [];
         return $this->request(ServiceConstant::URL_REGION_CITY_GET_ALL . '?' . $filter, $param, self::HTTP_GET);
