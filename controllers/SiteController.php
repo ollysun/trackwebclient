@@ -119,7 +119,7 @@ class SiteController extends BaseController
                 }
 
                 // Check Corporate User
-                if(!is_null(Calypso::getValue(Calypso::getInstance()->session("user_session"), 'role'))) {
+                if(!is_null(Calypso::getValue(Calypso::getInstance()->session("user_session"), 'company'))) {
                     return $this->redirect('/corporate');
                 }
 
