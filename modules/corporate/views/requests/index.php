@@ -237,7 +237,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-d
                                     </div>
                                     <div class="form-group">
                                         <label>Parcel Description</label>
-                                        <textarea class="form-control validate"></textarea>
+                                        <textarea name="description" class="form-control validate"></textarea>
                                     </div>
                                 </fieldset>
                                 <fieldset>
