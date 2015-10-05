@@ -1,4 +1,5 @@
 <?php
+use Adapter\Util\Calypso;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use Adapter\Globals\ServiceConstant;
@@ -57,7 +58,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-d
     </div>
     <div class="main-box-body">
         <div class="table-responsive">
-            <?php if(true): //count($parcels) ?>
+            <?php if(count($shipments) > 0):  ?>
             <table id="table" class="table table-hover dataTable">
                 <thead>
                 <tr>
@@ -74,20 +75,21 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-d
                 </tr>
                 </thead>
                 <tbody>
-
+                <?php foreach($shipments as $shipment): $i = $offset;?>
                     <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td><?= ++$i;?></td>
+                        <td><?= Calypso::getValue($shipment, 'id');?></td>
+                       <!-- TODO Make Dynamic -->
+                        <td>Shipment </td>
+                        <td><?= Calypso::getValue($shipment, 'reference_number');?></td>
+                        <td><?= Calypso::getValue($shipment, 'description');?></td>
+                        <td><?= Calypso::getValue($shipment, 'receiver_firstname') . ' ' . Calypso::getValue($shipment, 'receiver_lastname');?></td>
+                        <td><?= Calypso::getValue($shipment, 'receiver_phone_number');?></td>
+                        <td><?= Calypso::getValue($shipment, 'estimated_weight');?></td>
+                        <td><?= Calypso::getValue($shipment, 'status');?></td>
                         <td><a href="<?= Url::toRoute(['/site/viewwaybill?id=1']); ?>" class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
                     </tr>
-
+                <?php endforeach; ?>
                 </tbody>
             </table>
             <?= ''; //$this->render('../elements/pagination_and_summary', ['first' => $offset, 'last'=>$i, 'total_count'=> $total_count,'page_width'=>$page_width]); ?>
