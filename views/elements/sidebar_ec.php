@@ -17,7 +17,7 @@ use Adapter\Util\Calypso;
 					$permission = Calypso::getInstance()->permissionMap();
 					$menus = Calypso::getInstance()->getMenus();
 					$role = $session_data['role']['id'];
-					$branch = $session_data['branch']['branch_type'];
+					$branch = Calypso::getValue($session_data, 'branch.branch_type');
 					foreach($menus as $k => $v) {
 						if(isset($v['base']) && !Calypso::canAccess($role,$v['base'].'/*'))
 						{

@@ -7,8 +7,16 @@ namespace app\modules\corporate\controllers;
 
 
 use Adapter\CompanyAdapter;
+use Adapter\RefAdapter;
+use Adapter\RegionAdapter;
+use Adapter\RequestHelper;
+use Adapter\ResponseHandler;
 use Adapter\Util\Calypso;
+use Adapter\Util\ResponseCodes;
+use Adapter\Util\ResponseMessages;
 use app\controllers\BaseController;
+use Yii;
+use yii\helpers\Url;
 use yii\web\Controller;
 
 class RequestsController extends BaseController
@@ -25,6 +33,19 @@ class RequestsController extends BaseController
         $companyAdapter = new CompanyAdapter();
         $companyId = Calypso::getValue(Calypso::getInstance()->session("user_session"), 'company_id');
 
+        if(Yii::$app->request->isPost) {
+            $data = Yii::$app->request->post();
+            $data['company_id'] = $companyId;
+
+            $status = $companyAdapter->makeShipmentRequest($data);
+            if($status) {
+                $this->flashSuccess("Shipment request created successfully");
+            } else {
+                $this->flashSuccess($companyAdapter->getLastErrorMessage());
+            }
+            $this->refresh();
+        }
+
         $filters = [
             'company_id' => $companyId
         ];
@@ -34,7 +55,7 @@ class RequestsController extends BaseController
 
         $query = \Yii::$app->getRequest()->get('search');
         if(!is_null($query)) {
-//            $filters['email'] = $query;
+            $filters['waybill_number'] = $query;
             $page = 1; // Reset page
         }
 
@@ -42,14 +63,25 @@ class RequestsController extends BaseController
         $filters['offset'] = $offset;
         $filters['count'] = $this->page_width;
 
-        $shipments = $companyAdapter->getShipmentRequests($filters);
-//        $users = Calypso::getValue($shipmentsData, 'users', []);
-//        $totalCount = Calypso::getValue($shipmentsData, 'total_count', 0);
+        $requestsData = $companyAdapter->getShipmentRequests($filters);
+
+        $countriesResponse = (new RefAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken()))->getCountries();
+        $countries = (new ResponseHandler($countriesResponse))->getData();
+
+        $refAdapter = new RefAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $states = (new ResponseHandler($refAdapter->getStates(1)))->getData();
+
+
+        $requests = Calypso::getValue($requestsData, 'requests', []);
+        $totalCount = Calypso::getValue($requestsData, 'total_count', 0);
 
         return $this->render('index', [
-            'shipments' => $shipments,
+            'requests' => $requests,
             'offset' => $offset,
-            'page_width' => $this->page_width
+            'page_width' => $this->page_width,
+            'countries' => $countries,
+            'states' => $states,
+            'total_count' => $totalCount
         ]);
     }
 }
