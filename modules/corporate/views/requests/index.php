@@ -74,7 +74,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-d
                         </tr>
                         </thead>
                         <tbody>
-                        <?php foreach ($requests as $request): $i = $offset; ?>
+                        <?php $i = $offset; foreach ($requests as $request): ?>
                             <tr>
                                 <td><?= ++$i; ?></td>
                                 <td><?= Calypso::getValue($request, 'id'); ?></td>
