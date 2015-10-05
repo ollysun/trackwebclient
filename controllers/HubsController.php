@@ -127,11 +127,12 @@ class HubsController extends BaseController
 
     public function actionHubdispatch()
     {
-        $from_date = date('Y/m/d');
-        $to_date = date('Y/m/d');
         $user_session = Calypso::getInstance()->session("user_session");
         $from_branch_id = $user_session['branch_id'];
-        $to_branch_id = Calypso::getValue(Yii::$app->request->post(), 'to_branch_id', null);
+        $to_branch_id = Calypso::getValue(Yii::$app->request->post(), 'to_branch_id', date('Y/m/d'));
+
+        $from_date = Calypso::getValue(Yii::$app->request->get(), 'from', date('Y/m/d'));
+        $to_date = Calypso::getValue(Yii::$app->request->get(), 'to', date('Y/m/d'));
 
         $hubAdp = new BranchAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $hubs = $hubAdp->getAll();
@@ -139,13 +140,7 @@ class HubsController extends BaseController
         $hub_list = $hubs->getStatus() == ResponseHandler::STATUS_OK ? $hubs->getData() : [];
 
         $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        if (isset(Calypso::getInstance()->get()->from, Calypso::getInstance()->get()->to)) {
-            $from_date = Calypso::getInstance()->get()->from;
-            $to_date = Calypso::getInstance()->get()->to;
-            $filter = isset(Calypso::getInstance()->get()->date_filter) ? Calypso::getInstance()->get()->date_filter : '-1';
-            $dispatch_parcels = $parcelsAdapter->getDispatchedParcels($user_session['branch_id'], $to_branch_id, $from_date . '%2000:00:00', $to_date . '%2023:59:59', $filter);
-        } else
-            $dispatch_parcels = $parcelsAdapter->getDispatchedParcels($user_session['branch_id'], $to_branch_id);
+        $dispatch_parcels = $parcelsAdapter->getDispatchedParcels($from_branch_id, $to_branch_id, $from_date . '%2000:00:00', $to_date . '%2023:59:59', ServiceConstant::IN_TRANSIT);
         $parcels = new ResponseHandler($dispatch_parcels);
         $parcel_list = $parcels->getStatus() == ResponseHandler::STATUS_OK ? $parcels->getData() : [];
 
