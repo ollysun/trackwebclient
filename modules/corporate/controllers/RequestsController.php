@@ -43,7 +43,7 @@ class RequestsController extends BaseController
             } else {
                 $this->flashSuccess($companyAdapter->getLastErrorMessage());
             }
-            $this->refresh();
+            return $this->refresh();
         }
 
         $filters = [
