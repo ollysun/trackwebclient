@@ -29,7 +29,7 @@ use Adapter\Util\Calypso;
 						}
 						?>
 						<li>
-							<a href="<?= !is_array($v['base_link'])? Url::to([$v['base_link']]):'#' ?>" class="<?php echo is_array($v['base_link'])?'dropdown-toggle':'' ?>">
+							<a href="<?= !is_array($v['base_link'])? Url::toRoute(['/' . $v['base_link']]):'#' ?>" class="<?php echo is_array($v['base_link'])?'dropdown-toggle':'' ?>">
 								<i class="<?= $v['class']; ?>"></i>
 								<span><?= Calypso::getInstance()->normaliseLinkLabel($k); ?></span>
 								<?php
@@ -57,7 +57,7 @@ use Adapter\Util\Calypso;
 									if(isset($value['base_link']) && !is_array($value['base_link'])){
 									?>
 								<li>
-									<a href="<?= Url::to([$value['base_link']]) ?>">
+									<a href="<?= Url::toRoute(["/" . $value['base_link']]) ?>">
 										<i class="<?= $value['class'] ?>"></i>
 										<span><?= Calypso::getInstance()->normaliseLinkLabel($key); ?></span></a>
 								</li>
@@ -91,7 +91,7 @@ use Adapter\Util\Calypso;
 														if (isset($subvalue['base_link']) && !is_array($subvalue['base_link'])) {
 															?>
 															<li>
-																<a href="<?= Url::to([$subvalue['base_link']]) ?>">
+																<a href="<?= Url::toRoute(['/' . $subvalue['base_link']]) ?>">
 																	<i class="<?= $subvalue['class'] ?>"></i>
 																	<span><?= Calypso::getInstance()->normaliseLinkLabel($subkey); ?></span></a>
 															</li>
@@ -118,19 +118,19 @@ use Adapter\Util\Calypso;
 						</a>
 						<ul class="submenu">
 							<li>
-								<a href="<?= Url::to(['corporate/requests']); ?>">
+								<a href="<?= Url::toRoute(['/corporate/requests']); ?>">
 									<i class=""></i>
 									<span>Requests</span>
 								</a>
 							</li>
 							<li>
-								<a href="<?= Url::to(['corporate/pending']); ?>">
+								<a href="<?= Url::toRoute(['/corporate/pending']); ?>">
 									<i class=""></i>
 									<span>Pending</span>
 								</a>
 							</li>
 							<li>
-								<a href="<?= Url::to(['corporate/users']); ?>">
+								<a href="<?= Url::toRoute(['/corporate/users']); ?>">
 									<i class=""></i>
 									<span>Users</span>
 								</a>
