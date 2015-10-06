@@ -44,6 +44,7 @@ $this->params['graph_stats'] = $this->render('../elements/dashboard/choose_branc
 
 </form>
 
+<!-- EC STAFF  -->
 <div class="main-box">
     <div class="clearfix">
         <div class="infographic-box merged merged-top pull-left">
@@ -71,6 +72,45 @@ $this->params['graph_stats'] = $this->render('../elements/dashboard/choose_branc
     </div>
 </div>
 
+<!-- HUB STAFF -->
+<div class="main-box">
+    <div class="clearfix">
+        <div class="infographic-box merged merged-top pull-left">
+            <i class="fa fa-gift purple-bg"></i>
+            <span class="value purple">25</span>
+            <span class="headline">SHIPMENT RECEIVED</span>
+        </div>
+        <div class="infographic-box merged merged-top merged-right pull-left">
+            <i class="fa fa-gift emerald-bg"></i>
+            <span class="value emerald">12</span>
+            <span class="headline">READY FOR SORTING</span>
+        </div>
+    </div>
+    <div class="clearfix">
+        <div class="infographic-box merged pull-left">
+            <i class="fa fa-gift gray-bg"></i>
+            <span class="value gray">13</span>
+            <span class="headline">READY FOR SORTING (GROUNDSMAN)</span>
+        </div>
+        <div class="infographic-box merged merged-right pull-left">
+            <i class="fa fa-gift red-bg"></i>
+            <span class="value red">28</span>
+            <span class="headline">SORTED BUT STILL AT THE HUB</span>
+        </div>
+    </div>
+    <div class="clearfix">
+        <div class="infographic-box merged pull-left">
+            <i class="fa fa-truck yellow-bg"></i>
+            <span class="value yellow">13</span>
+            <span class="headline">IN TRANSIT TO CUSTOMER</span>
+        </div>
+        <div class="infographic-box merged merged-right pull-left">
+            <i class="fa fa-check green-bg"></i>
+            <span class="value green">28</span>
+            <span class="headline">DELIVERED</span>
+        </div>
+    </div>
+</div>
 
 <?php
     $this->registerJsFile('@web/js/libs/bootstrap-datepicker.js', ['depends' => [\yii\web\JqueryAsset::className()]]);
