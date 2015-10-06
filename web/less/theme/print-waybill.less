@@ -145,18 +145,20 @@ body {
 	display: block;
 }
 .copy {
-	.absolute-wrap(@waybill-padding-vertical; auto; 250px);
+	.absolute-wrap(@waybill-padding-vertical);
 	right: 25px;
-	font-size: 22px;
+	max-width: 106px;
+	padding: 0 0 3px 5px;
+	font-size: 16px;
 	font-weight: bold;
-	text-align: right;
+	text-align: center;
+	background: #fff;
+	z-index: 5;
+	font-family: sans-serif;
 	&:extend(.text-uppercase);
 }
 .waybill-barcode {
 	.absolute-wrap(@waybill-padding-vertical; @code-left; 220px; 120px);
-	.barcode {
-		zoom: 0.85;
-	}
 }
 .waybill-no {
 	.absolute-wrap(133px; @code-left);
