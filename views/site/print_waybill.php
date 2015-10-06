@@ -5,7 +5,7 @@ use yii\helpers\Html;
 $copies = ["Sender's Copy", "EC Copy", "Ack. Copy", "Recipient's Copy"];
 $this->title = 'Waybill '.$parcelData['waybill_number'];
 ?>
-<?= Html::cssFile('@web/css/compiled/print-waybill.css') ?>
+<?= Html::cssFile('@web/css/compiled/print-waybill.css?v0.0.1') ?>
 
 <div id="main_holder">
 <?php for ($i=0; $i < count($copies); $i++) { ?>
