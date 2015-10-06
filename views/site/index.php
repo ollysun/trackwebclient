@@ -5,6 +5,9 @@ use yii\helpers\Html;
 $this->title = 'Dashboard';
 $this->params['breadcrumbs'][] = $this->title;
 
+// only show if user is admin
+$this->params['graph_stats'] = $this->render('../elements/dashboard/choose_branch');
+
 ?>
 <?= Html::cssFile('@web/css/libs/datepicker.css') ?>
 
