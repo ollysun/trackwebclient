@@ -67,12 +67,17 @@ body {
   position: absolute;
   top: 27px;
   left: auto;
-  width: 250px;
+  width: auto;
   height: auto;
   right: 25px;
-  font-size: 22px;
+  max-width: 106px;
+  padding: 0 0 3px 5px;
+  font-size: 16px;
   font-weight: bold;
-  text-align: right;
+  text-align: center;
+  background: #fff;
+  z-index: 5;
+  font-family: sans-serif;
 }
 .waybill-barcode {
   position: absolute;
@@ -80,9 +85,6 @@ body {
   left: 441px;
   width: 220px;
   height: 120px;
-}
-.waybill-barcode .barcode {
-  zoom: 0.85;
 }
 .waybill-no {
   position: absolute;
