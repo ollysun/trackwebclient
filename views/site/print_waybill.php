@@ -2,7 +2,7 @@
 use Adapter\Util\Calypso;
 use yii\helpers\Html;
 
-$copies = ["Sender's Copy", " EC Copy", "Ack. Copy", "Recipient's Copy"];
+$copies = ["Sender's Copy", "EC Copy", "Ack. Copy", "Recipient's Copy"];
 $this->title = 'Waybill '.$parcelData['waybill_number'];
 ?>
 <?= Html::cssFile('@web/css/compiled/print-waybill.css') ?>
@@ -155,6 +155,6 @@ $this->title = 'Waybill '.$parcelData['waybill_number'];
     var waybill = "<?= strtoupper($parcelData['waybill_number']); ?>";
 </script>
 <?php $this->registerJsFile('@web/js/libs/jquery-barcode.min.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
-<?php $this->registerJsFile('@web/js/html2canvas.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
-<?php $this->registerJsFile('@web/js/print.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
+<?php //$this->registerJsFile('@web/js/html2canvas.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/print.js?v0.0.1', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
 
