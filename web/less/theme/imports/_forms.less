@@ -591,3 +591,45 @@ input[type="radio"] {
 		margin: 0 ;
 	}
 }
+
+.form-control-transparent {
+	// To be used without form-control-class
+	&, &-static {
+		padding: 0 5px;
+	}
+	background: transparent;
+	border: 1px solid transparent;
+	border-radius: 3px;
+
+	.transition(border-color ease-in-out .4s, background-color ease-in-out .4s);
+
+	&:hover, &:focus {
+		outline: 0;
+		background-color: #fff;
+		background-color: rgba(255,255,255,0.75);
+		border-color: #ccc;
+		border-color: rgba(200,200,200, 0.75);
+	}
+
+	select& {
+		-webkit-appearance: none;
+		-moz-appearance: none;
+		padding-right: 10px;
+
+		&:hover, &:focus {
+			background-image: url('../../img/ddown-transparent.png');
+			background-repeat: no-repeat;
+			background-position: center right;
+		}
+	}
+
+	&.disguise-as-link {
+		color: @purple-color; //link-color
+		text-decoration: underline;
+
+		&:hover, &:focus {
+			color: inherit;
+			text-decoration: none;
+		}
+	}
+}
