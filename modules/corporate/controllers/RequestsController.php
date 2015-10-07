@@ -105,10 +105,8 @@ class RequestsController extends BaseController
             } else {
                 $this->flashSuccess($companyAdapter->getLastErrorMessage());
             }
-            return $this->refresh();
         }
-
-        $this->redirect(Url::to('/corporate/requests'));
+        return $this->redirect(Url::to('/corporate/requests'));
     }
 
     /**
@@ -131,9 +129,7 @@ class RequestsController extends BaseController
             } else {
                 $this->flashSuccess($companyAdapter->getLastErrorMessage());
             }
-            return $this->refresh();
         }
-
-        $this->redirect(Url::to('/corporate/requests'));
+        return $this->redirect(Url::to('/corporate/requests'));
     }
 }
