@@ -136,10 +136,4 @@ class RequestsController extends BaseController
 
         $this->redirect(Url::to('/corporate/requests'));
     }
-
-    public function actionTest()
-    {
-        echo "Hello";
-        exit;
-    }
 }
