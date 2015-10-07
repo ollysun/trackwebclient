@@ -1,6 +1,6 @@
 (function () {
     $(document).ready(function () {
-        $("#receiver_state_id").change(function () {
+        $("#receiver_state_id, #pickup_state_id, #destination_state_id").change(function () {
             if ($(this).val() != "") {
                 var target = $(this).data('city_target');
                 var targetId = "#" + target;
