@@ -84,4 +84,52 @@ class RequestsController extends BaseController
             'total_count' => $totalCount
         ]);
     }
+
+    /**
+     * Make shipment request form action
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @return string
+     */
+    public function actionCreateshipment()
+    {
+        $companyAdapter = new CompanyAdapter();
+        $companyId = Calypso::getValue(Calypso::getInstance()->session("user_session"), 'company_id');
+
+        if(Yii::$app->request->isPost) {
+            $data = Yii::$app->request->post();
+            $data['company_id'] = $companyId;
+
+            $status = $companyAdapter->makeShipmentRequest($data);
+            if($status) {
+                $this->flashSuccess("Shipment request created successfully");
+            } else {
+                $this->flashSuccess($companyAdapter->getLastErrorMessage());
+            }
+        }
+        return $this->redirect(Url::to('/corporate/requests'));
+    }
+
+    /**
+     * Make shipment request form action
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @return string
+     */
+    public function actionCreatepickup()
+    {
+        $companyAdapter = new CompanyAdapter();
+        $companyId = Calypso::getValue(Calypso::getInstance()->session("user_session"), 'company_id');
+
+        if(Yii::$app->request->isPost) {
+            $data = Yii::$app->request->post();
+            $data['company_id'] = $companyId;
+
+            $status = $companyAdapter->makePickupRequest($data);
+            if($status) {
+                $this->flashSuccess("Pickup request created successfully");
+            } else {
+                $this->flashSuccess($companyAdapter->getLastErrorMessage());
+            }
+        }
+        return $this->redirect(Url::to('/corporate/requests'));
+    }
 }

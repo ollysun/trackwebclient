@@ -103,7 +103,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-d
 
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog modal-lg" role="document">
-            <form data-keyboard-submit="disable" class="validate-form" method="post">
+            <form action="<?= Url::to("/corporate/requests/createshipment")?>" data-keyboard-submit="disable" class="validate-form" method="post">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
@@ -231,7 +231,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-d
                                                     </select>
                                                 </div>
                                                 <input name="parcel_value" type="text"
-                                                       class="form-control validate non-zero-number" value="">
+                                                       class="form-control validate non-zero-number required" value="">
                                             </div>
                                         </div>
                                     </div>
@@ -255,7 +255,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-d
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button name="shipment" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary">Initiate Request</button>
                     </div>
                 </div>
@@ -265,7 +265,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-d
 
     <div class="modal fade" id="pickupModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog modal-lg" role="document">
-            <form data-keyboard-submit="disable" class="validate-form" method="post">
+            <form action="<?= Url::to("/corporate/requests/createpickup")?>" data-keyboard-submit="disable" class="validate-form" method="post">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
@@ -278,23 +278,36 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-d
                                 <legend>Pickup Detail</legend>
                                 <div class="form-group">
                                     <label for="">Address</label>
-                                    <input type="text" class="form-control validate required">
+                                    <input name="pickup[address]" type="text" class="form-control validate required">
                                 </div>
                                 <div class="form-group">
                                     <label for="">State</label>
-                                    <select name="" id="" class="form-control validate required"></select>
+                                    <select name="pickup[state_id]" id="pickup_state_id"
+                                            data-city_target="pickup_city_id"
+                                            class="form-control validate required">
+                                        <option value="" selected>Select State</option>
+                                        <?php
+                                        $states = is_null($states) ? [] : $states;
+                                        foreach ($states as $state): ?>
+                                            <option
+                                                value="<?= Calypso::getValue($state, 'id') ?>"><?= strtoupper(Calypso::getValue($state, 'name')); ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
                                 </div>
                                 <div class="form-group">
                                     <label for="">City</label>
-                                    <select name="" id="" class="form-control validate required"></select>
+                                    <select name="pickup[city_id]" id="pickup_city_id" class="form-control validate required">
+                                        <option value="" selected>Select State First</option>
+                                    </select>
+
                                 </div>
                                 <div class="form-group">
                                     <label for="">Contact Name</label>
-                                    <input type="text" class="form-control validate required">
+                                    <input name="pickup[name]" type="text" class="form-control validate required">
                                 </div>
                                 <div class="form-group">
                                     <label for="">Contact Phone number</label>
-                                    <input type="text" class="form-control validate required phone">
+                                    <input name="pickup[phone_number]" type="text" class="form-control validate required phone">
                                     <span class="help-block">Format: 234xxxxxxxxxx</span>
                                 </div>
                             </fieldset>
@@ -302,23 +315,35 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-d
                                 <legend>Destination Detail</legend>
                                 <div class="form-group">
                                     <label for="">Address</label>
-                                    <input type="text" class="form-control validate required">
+                                    <input name="destination[address]" type="text" class="form-control validate required">
                                 </div>
                                 <div class="form-group">
                                     <label for="">State</label>
-                                    <select name="" id="" class="form-control validate required"></select>
+                                    <select name="destination[state_id]" id="destination_state_id"
+                                                                       data-city_target="destination_city_id"
+                                                                       class="form-control validate required">
+                                        <option value="" selected>Select State</option>
+                                        <?php
+                                        $states = is_null($states) ? [] : $states;
+                                        foreach ($states as $state): ?>
+                                            <option
+                                                value="<?= Calypso::getValue($state, 'id') ?>"><?= strtoupper(Calypso::getValue($state, 'name')); ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
                                 </div>
                                 <div class="form-group">
                                     <label for="">City</label>
-                                    <select name="" id="" class="form-control validate required"></select>
+                                    <select name="destination[city_id]" id="destination_city_id" class="form-control validate required">
+                                        <option value="" selected>Select State First</option>
+                                    </select>
                                 </div>
                                 <div class="form-group">
                                     <label for="">Contact Name</label>
-                                    <input type="text" class="form-control validate required">
+                                    <input name="destination[name]" type="text" class="form-control validate required">
                                 </div>
                                 <div class="form-group">
                                     <label for="">Contact Phone number</label>
-                                    <input type="text" class="form-control validate required phone">
+                                    <input name="destination[phone_number]" type="text" class="form-control validate required phone">
                                     <span class="help-block">Format: 234xxxxxxxxxx</span>
                                 </div>
                             </fieldset>
@@ -327,18 +352,18 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-d
                                 <div class="row">
                                     <div class="col-xs-6 form-group">
                                         <label>Shipment Description</label>
-                                        <input type="text" class="form-control">
+                                        <input name="shipment_description" type="text" class="form-control">
                                     </div>
                                     <div class="col-xs-6 form-group">
                                         <label>Request Details</label>
-                                        <textarea class="form-control"></textarea>
+                                        <textarea name="request_detail" class="form-control"></textarea>
                                     </div>
                                 </div>
                             </fieldset>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button name="pickup" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary">Request Pickup</button>
                     </div>
                 </div>
