@@ -278,23 +278,23 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-d
                                 <legend>Pickup Detail</legend>
                                 <div class="form-group">
                                     <label for="">Address</label>
-                                    <input type="text" class="form-control validate required">
+                                    <input name="pickup[address]" type="text" class="form-control validate required">
                                 </div>
                                 <div class="form-group">
                                     <label for="">State</label>
-                                    <select name="" id="" class="form-control validate required"></select>
+                                    <select name="pickup[state_id]" id="" class="form-control validate required"></select>
                                 </div>
                                 <div class="form-group">
                                     <label for="">City</label>
-                                    <select name="" id="" class="form-control validate required"></select>
+                                    <select name="pickup[city_id]" id="" class="form-control validate required"></select>
                                 </div>
                                 <div class="form-group">
                                     <label for="">Contact Name</label>
-                                    <input type="text" class="form-control validate required">
+                                    <input name="pickup[name]" type="text" class="form-control validate required">
                                 </div>
                                 <div class="form-group">
                                     <label for="">Contact Phone number</label>
-                                    <input type="text" class="form-control validate required phone">
+                                    <input name="pickup[phone_number]" type="text" class="form-control validate required phone">
                                     <span class="help-block">Format: 234xxxxxxxxxx</span>
                                 </div>
                             </fieldset>
@@ -302,23 +302,23 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-d
                                 <legend>Destination Detail</legend>
                                 <div class="form-group">
                                     <label for="">Address</label>
-                                    <input type="text" class="form-control validate required">
+                                    <input name="destination[address]" type="text" class="form-control validate required">
                                 </div>
                                 <div class="form-group">
                                     <label for="">State</label>
-                                    <select name="" id="" class="form-control validate required"></select>
+                                    <select name="destination[state_id]" id="" class="form-control validate required"></select>
                                 </div>
                                 <div class="form-group">
                                     <label for="">City</label>
-                                    <select name="" id="" class="form-control validate required"></select>
+                                    <select name="destination[city_id]" id="" class="form-control validate required"></select>
                                 </div>
                                 <div class="form-group">
                                     <label for="">Contact Name</label>
-                                    <input type="text" class="form-control validate required">
+                                    <input name="destination[name]" type="text" class="form-control validate required">
                                 </div>
                                 <div class="form-group">
                                     <label for="">Contact Phone number</label>
-                                    <input type="text" class="form-control validate required phone">
+                                    <input name="destination[phone_number]" type="text" class="form-control validate required phone">
                                     <span class="help-block">Format: 234xxxxxxxxxx</span>
                                 </div>
                             </fieldset>
@@ -327,11 +327,11 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-d
                                 <div class="row">
                                     <div class="col-xs-6 form-group">
                                         <label>Shipment Description</label>
-                                        <input type="text" class="form-control">
+                                        <input name="shipment_description" type="text" class="form-control">
                                     </div>
                                     <div class="col-xs-6 form-group">
                                         <label>Request Details</label>
-                                        <textarea class="form-control"></textarea>
+                                        <textarea name="request_detail" class="form-control"></textarea>
                                     </div>
                                 </div>
                             </fieldset>
