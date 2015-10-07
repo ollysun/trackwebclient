@@ -19,7 +19,7 @@ use Yii;
 use yii\helpers\Url;
 use yii\web\Controller;
 
-class RequestsController extends BaseController
+class RequestController extends BaseController
 {
 
     /**
@@ -28,7 +28,7 @@ class RequestsController extends BaseController
      * @author Olajide Oye <jide@cottacush.com>
      * @return string
      */
-    public function actionIndex()
+    public function actionShipments()
     {
         $companyAdapter = new CompanyAdapter();
         $companyId = Calypso::getValue(Calypso::getInstance()->session("user_session"), 'company_id');
@@ -75,7 +75,7 @@ class RequestsController extends BaseController
         $requests = Calypso::getValue($requestsData, 'requests', []);
         $totalCount = Calypso::getValue($requestsData, 'total_count', 0);
 
-        return $this->render('index', [
+        return $this->render('shipment', [
             'requests' => $requests,
             'offset' => $offset,
             'page_width' => $this->page_width,
@@ -91,7 +91,7 @@ class RequestsController extends BaseController
      * @author Olajide Oye <jide@cottacush.com>
      * @return string
      */
-    public function actionPickup()
+    public function actionPickups()
     {
         $companyAdapter = new CompanyAdapter();
         $companyId = Calypso::getValue(Calypso::getInstance()->session("user_session"), 'company_id');
@@ -156,7 +156,7 @@ class RequestsController extends BaseController
                 $this->flashSuccess($companyAdapter->getLastErrorMessage());
             }
         }
-        return $this->redirect(Url::to('/corporate/requests'));
+        return $this->redirect(Url::to('/corporate/request/shipments'));
     }
 
     /**
@@ -180,6 +180,6 @@ class RequestsController extends BaseController
                 $this->flashSuccess($companyAdapter->getLastErrorMessage());
             }
         }
-        return $this->redirect(Url::to('/corporate/requests/pickup'));
+        return $this->redirect(Url::to('/corporate/request/pickups'));
     }
 }

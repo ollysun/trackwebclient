@@ -118,13 +118,13 @@ use Adapter\Util\Calypso;
 						</a>
 						<ul class="submenu">
 							<li>
-								<a href="<?= Url::toRoute(['/corporate/requests']); ?>">
+								<a href="<?= Url::toRoute(['/corporate/request/shipments']); ?>">
 									<i class=""></i>
 									<span>Shipment Requests</span>
 								</a>
 							</li>
 							<li>
-								<a href="<?= Url::toRoute(['/corporate/requests/pickup']); ?>">
+								<a href="<?= Url::toRoute(['/corporate/request/pickups']); ?>">
 									<i class=""></i>
 									<span>Pickup Requests</span>
 								</a>
