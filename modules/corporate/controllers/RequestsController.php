@@ -86,6 +86,56 @@ class RequestsController extends BaseController
     }
 
     /**
+     * Company pickup requests action
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @author Olajide Oye <jide@cottacush.com>
+     * @return string
+     */
+    public function actionPickup()
+    {
+        $companyAdapter = new CompanyAdapter();
+        $companyId = Calypso::getValue(Calypso::getInstance()->session("user_session"), 'company_id');
+
+        $filters = [
+            'company_id' => $companyId
+        ];
+
+        // Add Offset and Count
+        $page = \Yii::$app->getRequest()->get('page', 1);
+
+        $query = \Yii::$app->getRequest()->get('search');
+        if(!is_null($query)) {
+            $filters['waybill_number'] = $query;
+            $page = 1; // Reset page
+        }
+
+        $offset = ($page - 1) * $this->page_width;
+        $filters['offset'] = $offset;
+        $filters['count'] = $this->page_width;
+
+        $requestsData = $companyAdapter->getPickupRequests($filters);
+
+        $countriesResponse = (new RefAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken()))->getCountries();
+        $countries = (new ResponseHandler($countriesResponse))->getData();
+
+        $refAdapter = new RefAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $states = (new ResponseHandler($refAdapter->getStates(1)))->getData();
+
+
+        $requests = Calypso::getValue($requestsData, 'requests', []);
+        $totalCount = Calypso::getValue($requestsData, 'total_count', 0);
+
+        return $this->render('pickup', [
+            'requests' => $requests,
+            'offset' => $offset,
+            'page_width' => $this->page_width,
+            'countries' => $countries,
+            'states' => $states,
+            'total_count' => $totalCount
+        ]);
+    }
+
+    /**
      * Make shipment request form action
      * @author Adegoke Obasa <goke@cottacush.com>
      * @return string
@@ -130,6 +180,6 @@ class RequestsController extends BaseController
                 $this->flashSuccess($companyAdapter->getLastErrorMessage());
             }
         }
-        return $this->redirect(Url::to('/corporate/requests'));
+        return $this->redirect(Url::to('/corporate/requests/pickup'));
     }
 }
