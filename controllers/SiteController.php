@@ -88,6 +88,16 @@ class SiteController extends BaseController
 
 
         return $this->render('index', array('session_data' => $session_data, 'new_parcels'=>$new_parcels));
+        $from_date = date('Y/m/d');
+        $to_date = date('Y/m/d');
+        $date = '0d';
+        if (isset(Calypso::getInstance()->post()->from, Calypso::getInstance()->post()->to, Calypso::getInstance()->post()->date)) {
+            $from_date = Calypso::getInstance()->post()->from . ' 00:00:00';
+            $to_date = Calypso::getInstance()->post()->to . ' 23:59:59';
+            $date = Calypso::getInstance()->post()->date;
+        }
+
+        return $this->render('index', array('date'=>$date, 'from_date'=>$from_date, 'to_date'=>$to_date));
     }
 
     public function actionGerraout()
