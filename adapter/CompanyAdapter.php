@@ -29,7 +29,7 @@ class CompanyAdapter extends BaseAdapter
         $rawResponse = $this->request(ServiceConstant::URL_COMPANY_ADD, Json::encode($data), self::HTTP_POST);
         $response = new ResponseHandler($rawResponse);
 
-        if(!$response->isSuccess()) {
+        if (!$response->isSuccess()) {
             $this->lastErrorMessage = $response->getError();
         }
 
@@ -53,7 +53,7 @@ class CompanyAdapter extends BaseAdapter
 
         $response = new ResponseHandler($response);
 
-        if($response->isSuccess()) {
+        if ($response->isSuccess()) {
             return $response->getData();
         }
         return [];
@@ -76,7 +76,7 @@ class CompanyAdapter extends BaseAdapter
 
         $response = new ResponseHandler($response);
 
-        if($response->isSuccess()) {
+        if ($response->isSuccess()) {
             return $response->getData();
         }
         return [];
@@ -94,7 +94,7 @@ class CompanyAdapter extends BaseAdapter
         $rawResponse = $this->request(ServiceConstant::URL_USER_ADD, Json::encode($data), self::HTTP_POST);
         $response = new ResponseHandler($rawResponse);
 
-        if(!$response->isSuccess()) {
+        if (!$response->isSuccess()) {
             $this->lastErrorMessage = $response->getError();
         }
 
@@ -110,7 +110,6 @@ class CompanyAdapter extends BaseAdapter
     public function getShipmentRequests($filters)
     {
         $filters = array_merge($filters, array(
-            'status' => 'pending',
             'with_total_count' => 'true'));
 
         $response = $this->request(ServiceConstant::URL_SHIPMENT_REQUESTS,
@@ -118,7 +117,29 @@ class CompanyAdapter extends BaseAdapter
 
         $response = new ResponseHandler($response);
 
-        if($response->isSuccess()) {
+        if ($response->isSuccess()) {
+            return $response->getData();
+        }
+        return [];
+    }
+
+    /**
+     * Get pickup requests for company
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @param $filters
+     * @return array|mixed
+     */
+    public function getPickupRequests($filters)
+    {
+        $filters = array_merge($filters, array(
+            'with_total_count' => 'true'));
+
+        $response = $this->request(ServiceConstant::URL_PICKUP_REQUESTS,
+            $filters, self::HTTP_GET);
+
+        $response = new ResponseHandler($response);
+
+        if ($response->isSuccess()) {
             return $response->getData();
         }
         return [];
@@ -135,7 +156,7 @@ class CompanyAdapter extends BaseAdapter
         $rawResponse = $this->request(ServiceConstant::URL_MAKE_SHIPMENT_REQUEST, Json::encode($data), self::HTTP_POST);
         $response = new ResponseHandler($rawResponse);
 
-        if(!$response->isSuccess()) {
+        if (!$response->isSuccess()) {
             $this->lastErrorMessage = $response->getError();
         }
 
@@ -153,7 +174,7 @@ class CompanyAdapter extends BaseAdapter
         $rawResponse = $this->request(ServiceConstant::URL_MAKE_PICKUP_REQUEST, Json::encode($data), self::HTTP_POST);
         $response = new ResponseHandler($rawResponse);
 
-        if(!$response->isSuccess()) {
+        if (!$response->isSuccess()) {
             $this->lastErrorMessage = $response->getError();
         }
 
