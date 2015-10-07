@@ -12,7 +12,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="main-box infographic-box colored purple-bg">
             <i class="fa fa-gift"></i>
             <span class="headline">NEW PARCELS IN</span>
-            <span class="value">15</span>
+            <span class="value"><?= $new_parcels; ?></span>
         </div>
     </div>
 

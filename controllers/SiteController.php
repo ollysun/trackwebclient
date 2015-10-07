@@ -79,10 +79,15 @@ class SiteController extends BaseController
 
     public function actionIndex()
     {
-
         $session_data = Calypso::getInstance()->session('user_session');
 
-        return $this->render('index', array('session_data' => $session_data));
+        $parcel = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $response = $parcel->getParcelCount(['created_branch_id'=>$session_data['branch_id']]);
+        $response = new ResponseHandler($response);
+        $new_parcels = ($response->getStatus() == ResponseHandler::STATUS_OK) ? $response->getData() : 0;
+
+
+        return $this->render('index', array('session_data' => $session_data, 'new_parcels'=>$new_parcels));
     }
 
     public function actionGerraout()
