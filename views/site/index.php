@@ -11,29 +11,18 @@ $this->params['graph_stats'] = $this->render('../elements/dashboard/choose_branc
 ?>
 <?= Html::cssFile('@web/css/libs/datepicker.css') ?>
 
-<form id="date-filter-form" class="dashboard-stats-title">
-    <strong class="text-muted text-uppercase">STATISTICS: <?= 'TODAY'; ?></strong>
+<form method="post" id="date-filter-form" class="dashboard-stats-title">
+    <strong class="text-muted text-uppercase">STATISTICS: <span id="relative-date-text"></span></strong>
     <div class="dashboard-stats-title-date-wrap">
-        <select name="date" class="form-control-transparent text-muted disguise-as-link">
-            <option value="">Change</option>
-            <option value="0d">Today</option>
-            <option value="-1w">Last week</option>
-            <option value="-2w">Last 2 weeks</option>
-            <option value="-1m">Last month</option>
-            <option value="-2m">Last 2 months</option>
-            <option value="-3m">Last 3 months</option>
-            <option value="-6m">Last 6 months</option>
-            <option value="-1y">Last year</option>
-            <option value="custom">Custom</option>
-        </select>
+        <select name="date" class="form-control-transparent text-muted disguise-as-link"></select>
         <div class="dashboard-stats-title-custom-date-wrap clearfix">
             <div class="pull-left">
                 <label>From:</label>
-                <input type="text" name="from_date" class="form-control input-sm" data-provide="datepicker" data-date-format="yyyy/mm/dd" data-date-end-date="0d">
+                <input type="text" name="from" class="form-control input-sm" value="<?= date('Y/m/d', strtotime($from_date)); ?>" data-provide="datepicker" data-date-format="yyyy/mm/dd" data-date-end-date="0d">
             </div>
             <div class="pull-left">
                 <label>To:</label>
-                <input type="text" name="to_date" class="form-control input-sm" data-provide="datepicker" data-date-format="yyyy/mm/dd" data-date-end-date="0d">
+                <input type="text" name="to" class="form-control input-sm" value="<?= date('Y/m/d', strtotime($to_date)); ?>" data-provide="datepicker" data-date-format="yyyy/mm/dd" data-date-end-date="0d">
             </div>
             <div class="pull-left">
                 <label>&nbsp;</label><br>
@@ -111,6 +100,12 @@ $this->params['graph_stats'] = $this->render('../elements/dashboard/choose_branc
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+    var filter_date = '<?= $date; ?>',
+        filter_from = new Date('<?= $from_date; ?>'),
+        filter_to = new Date('<?= $to_date; ?>');
+</script>
 
 <?php
     $this->registerJsFile('@web/js/libs/bootstrap-datepicker.js', ['depends' => [\yii\web\JqueryAsset::className()]]);
