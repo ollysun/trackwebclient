@@ -26,17 +26,21 @@ $this->params['content_header_button'] = '<button onclick="javascript:window.ope
     <div class="main-box no-header">
         <div class="main-box-body">
             <div class="row">
-                <div class="col-xs-4">
+                <div class="col-xs-3">
                     <label for="">Origin Station</label>
                     <div class="form-control-static"><?= strtoupper(Calypso::getValue($bag, 'from_branch.name'));?> </div>
                 </div>
-                <div class="col-xs-4">
+                <div class="col-xs-3">
                     <label for="">Destination</label>
                     <div class="form-control-static"><?= strtoupper(Calypso::getValue($bag, 'to_branch.name'));?> </div>
                 </div>
-                <div class="col-xs-4">
+                <div class="col-xs-3">
                     <label for="">Created Date</label>
                     <div class="form-control-static"><?= date(ServiceConstant::DATE_TIME_FORMAT, strtotime(Calypso::getValue($bag, 'created_date'))); ?></div>
+                </div>
+                <div class="col-xs-3">
+                    <label for="">SEAL ID</label>
+                    <div class="form-control-static"><?= Calypso::getDisplayValue($bag, 'seal_id', 'N/A'); ?></div>
                 </div>
             </div>
             <br>
