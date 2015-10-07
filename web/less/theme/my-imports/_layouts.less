@@ -24,3 +24,44 @@
 		right: 0;
 	}
 }
+
+.dashboard-stats-title {
+	margin-bottom: 7px;
+}
+.dashboard-stats-title-date-wrap {
+	position: relative;
+	display: inline-block;
+}
+.dashboard-stats-title-custom-date-wrap {
+	position: absolute;
+	left: 105%;
+	width: 400px;
+	top: -23px;
+	display: none;
+	&.open {
+		display: block;
+	}
+	.form-control	{
+		width: 140px;
+		margin-right: 6px;
+	}
+
+}
+.dashboard-choose-branch {
+	margin-top: -20px;
+	@media screen and (max-width: 600px) {
+		margin-top: 0;
+
+	}
+
+	.form-control	{
+		margin-right: 6px;
+
+		&.branch-type {
+			width: 100px;
+		}
+		&.branch-name {
+			width: 200px;
+		}
+	}
+}
