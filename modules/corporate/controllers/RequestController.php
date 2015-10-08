@@ -182,4 +182,15 @@ class RequestController extends BaseController
         }
         return $this->redirect(Url::to('/corporate/request/pickups'));
     }
+
+    /**
+     * Pending Requests Action
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @author Olajide Oye <jide@cottacush.com>
+     * @return string
+     */
+    public function actionPending()
+    {
+        return $this->render('pending');
+    }
 }
