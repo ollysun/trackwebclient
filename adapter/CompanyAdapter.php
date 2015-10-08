@@ -13,6 +13,8 @@ use yii\helpers\Json;
  */
 class CompanyAdapter extends BaseAdapter
 {
+    const TYPE_SHIPMENT = "shipment";
+    const TYPE_PICKUP = "pickup";
     public function __construct()
     {
         parent::__construct(RequestHelper::getClientID(), RequestHelper::getAccessToken());
@@ -110,9 +112,10 @@ class CompanyAdapter extends BaseAdapter
     public function getShipmentRequests($filters)
     {
         $filters = array_merge($filters, array(
+            'type' => self::TYPE_SHIPMENT,
             'with_total_count' => 'true'));
 
-        $response = $this->request(ServiceConstant::URL_SHIPMENT_REQUESTS,
+        $response = $this->request(ServiceConstant::URL_COMPANY_REQUESTS,
             $filters, self::HTTP_GET);
 
         $response = new ResponseHandler($response);
@@ -132,9 +135,10 @@ class CompanyAdapter extends BaseAdapter
     public function getPickupRequests($filters)
     {
         $filters = array_merge($filters, array(
+            'type' => self::TYPE_PICKUP,
             'with_total_count' => 'true'));
 
-        $response = $this->request(ServiceConstant::URL_PICKUP_REQUESTS,
+        $response = $this->request(ServiceConstant::URL_COMPANY_REQUESTS,
             $filters, self::HTTP_GET);
 
         $response = new ResponseHandler($response);
