@@ -61,11 +61,11 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                         <tr>
                             <th style="width: 20px">S/N</th>
                             <th>Request ID</th>
-                            <th>Request Type</th>
                             <th>Waybill No</th>
                             <th>Description</th>
                             <th>Receiver</th>
                             <th>Receiver Phone</th>
+                            <th>Reference Number</th>
                             <th>Weight</th>
                             <th>Status</th>
                             <th>Action</th>
@@ -76,12 +76,11 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                             <tr>
                                 <td><?= ++$i; ?></td>
                                 <td><?= Calypso::getValue($request, 'id'); ?></td>
-                                <!-- TODO Make Dynamic -->
-                                <td>Request</td>
-                                <td><?= Calypso::getValue($request, 'reference_number'); ?></td>
+                                <td></td>
                                 <td><?= Calypso::getValue($request, 'description'); ?></td>
                                 <td><?= Calypso::getValue($request, 'receiver_firstname') . ' ' . Calypso::getValue($request, 'receiver_lastname'); ?></td>
                                 <td><?= Calypso::getValue($request, 'receiver_phone_number'); ?></td>
+                                <td><?= Calypso::getValue($request, 'reference_number'); ?></td>
                                 <td><?php $weight = Calypso::getValue($request, 'estimated_weight');
                                     echo is_null($weight) ? '' : $weight . ' KG';
                                     ?></td>
