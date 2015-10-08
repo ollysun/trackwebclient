@@ -155,8 +155,7 @@ class ServiceConstant
     const URL_COMPANY_ALL = 'company/getAllCompany';
     const URL_COMPANY_USERS = 'company/getAllUsers';
     const URL_USER_ADD = 'company/createUser';
-    const URL_SHIPMENT_REQUESTS = 'company/getShipmentRequests';
-    const URL_PICKUP_REQUESTS = 'company/getPickupRequests';
+    const URL_COMPANY_REQUESTS = 'company/getRequests';
     const URL_MAKE_SHIPMENT_REQUEST = 'company/makeShipmentRequest';
     const URL_MAKE_PICKUP_REQUEST = 'company/makePickupRequest';
 
