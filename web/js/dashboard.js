@@ -52,7 +52,7 @@
 		else if (value !== '') {
 			from.val( getDateString(getRelativeDate(value)) );
 			to.val( getDateString(new Date()) );
-			dateFilterForm.trigger('submit');
+			reloadData();
 		}
 	});
 
@@ -62,7 +62,7 @@
 		var html = '<option value="">Change</option>';
 		for (var i = 0; i < dateArray.length; i++) {
 			var item = dateArray[i];
-			var disabled = (value === item) ? ' disabled="disabled"' : '';
+			var disabled = (value === item) ? ' selected' : '';
 			html += '<option value="'+item+'"'+disabled+'>'+getRelativeDateText(item)+'</option>';
 		}
 		html += '<option value="custom">Custom</option>';
@@ -297,4 +297,49 @@ function getRelativeDateText(string) {
 
 	}
 	return text;
+}
+
+var Branch = {
+
+	Url: {
+		'ecs' : '/hubs/allecforhubs',
+		'hubs' : '/hubs/allhubs',
+	},
+
+	fillSelectOption: function(url, param, selectSelector) {
+		$.get( url, param, function(response){
+			if(response.status === 'success') {
+				var html = '<option value="">Select Name...</option>';
+				$.each(response.data, function(i, item) {
+					html += "<option value='" + item.id + "'>" + item.name.toUpperCase() + "</option>";
+				});
+				$(selectSelector).html(html);
+			}
+		});
+	}
+};
+
+$(document).ready(function() {
+
+	$('#branch_type').on('change', function () {
+		var type = $(this).val();
+		var url = '';
+		if (type === 'Hub') {
+			url = Branch.Url.hubs;
+		} else {
+			url = Branch.Url.ecs;
+		}
+		Branch.fillSelectOption(url, {}, '#branch_name');
+	});
+	$('form').on('submit',function (evt){
+		reloadData();
+		evt.preventDefault();
+	});
+});
+function reloadData()  {
+	branch_id = $('select[name=branch]').val();
+	from = $('input[name=from]').val();
+	to = $('input[name=to]').val();
+	dated = $('select[name=date]').val();
+	window.location.href = '?from='+from+'&to='+to+'&date='+dated+(branch_id==null ? '':'&branch='+branch_id);
 }
