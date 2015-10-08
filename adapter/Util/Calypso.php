@@ -332,10 +332,11 @@ class Calypso
                 'billing/*',
                 'admin/*'],
             ServiceConstant::USER_TYPE_COMPANY_ADMIN => [
-                'company/*',
+                'corporate/request/pending',
             ],
             ServiceConstant::USER_TYPE_COMPANY_OFFICER => [
-                'company/*',
+                'corporate/users',
+                'corporate/request/pending'
             ]
         ];
         return $permissionMap;
