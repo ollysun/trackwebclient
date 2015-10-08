@@ -261,12 +261,18 @@ class ParcelAdapter extends BaseAdapter
     public function getParcelCount($filter_array = null)
     {
         $filter_array = is_null($filter_array) ? [] : $filter_array;
-        $response = $this->request(ServiceConstant::URL_PARCEL_COUNT, $filter_array , self::HTTP_GET);
+        $url_params = [];
+        $filter_array= array_filter($filter_array);
+        foreach ($filter_array as $key => $value) {
+            $url_params[] = $key . '=' . $value;
+        }
+        $filters = '?'.join('&', $url_params);
+        $response = $this->request(ServiceConstant::URL_PARCEL_COUNT.$filters, [] , self::HTTP_GET);
         $response = new ResponseHandler($response);
         if ($response->getStatus() == Response::STATUS_OK) {
             return $response->getData();
         } else {
-            return $response->getError();
+            return 0;
         }
     }
 }
