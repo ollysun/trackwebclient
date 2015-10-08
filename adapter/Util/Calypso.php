@@ -319,18 +319,28 @@ class Calypso
     public static function permissionMap()
     {
         $permissionMap = [
-            ServiceConstant::USER_TYPE_ADMIN => [],
-            ServiceConstant::USER_TYPE_OFFICER => ['finance/*', 'billing/*', 'admin/*'],
-            ServiceConstant::USER_TYPE_SWEEPER => ['site/*', 'parcels/*', 'shipments/*', 'hubs/*', 'finance/*', 'billing/*', 'admin/*'],
-            ServiceConstant::USER_TYPE_DISPATCHER => ['site/*', 'parcels/*', 'shipments/*', 'hubs/*', 'finance/*', 'billing/*', 'admin/*'],
-            ServiceConstant::USER_TYPE_GROUNDSMAN => [
+            ServiceConstant::USER_TYPE_SUPER_ADMIN => self::getCorporateRoutes(),
+            ServiceConstant::USER_TYPE_ADMIN => self::getCorporateRoutes(),
+            ServiceConstant::USER_TYPE_OFFICER => array_merge(
+                ['finance/*', 'billing/*', 'admin/*']
+                , self::getCorporateRoutes()),
+            ServiceConstant::USER_TYPE_SWEEPER => array_merge(
+                ['site/*', 'parcels/*', 'shipments/*', 'hubs/*', 'finance/*', 'billing/*', 'admin/*', 'corporate/request/pending']
+            , self::getCorporateRoutes()),
+            ServiceConstant::USER_TYPE_DISPATCHER => array_merge(
+                ['site/*', 'parcels/*', 'shipments/*', 'hubs/*', 'finance/*', 'billing/*', 'admin/*', 'corporate/request/pending']
+                , self::getCorporateRoutes()
+            ),
+            ServiceConstant::USER_TYPE_GROUNDSMAN => array_merge([
                 'parcels/*',
                 'shipments/forsweep',
                 'shipments/delivered',
                 'hubs/hubarrival',
                 'finance/*',
                 'billing/*',
-                'admin/*'],
+                'admin/*',
+                'corporate/request/pending',
+            ], self::getCorporateRoutes()),
             ServiceConstant::USER_TYPE_COMPANY_ADMIN => [
                 'corporate/request/pending',
             ],
@@ -422,4 +432,18 @@ class Calypso
         }
         return true;
     }
+
+    /**
+     * Returns an array of Corporate only routes
+     * @author Adegoke Obasa <goke@cottacush.com>
+     */
+    public static function getCorporateRoutes()
+    {
+        return [
+            'corporate/request/shipments',
+            'corporate/request/pickups',
+            'corporate/users',
+        ];
+    }
+
 }
