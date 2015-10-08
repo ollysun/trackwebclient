@@ -4,13 +4,13 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 
 
-$this->title = 'Corporate Requests';
+$this->title = 'Shipment Requests';
 $this->params['breadcrumbs'] = array(
     array(
-        'url' => ['corporate/requests'],
+        'url' => ['corporate'],
         'label' => 'Corporate'
     ),
-    array('label' => 'Requests')
+    array('label' => 'Shipment Requests')
 );
 
 $from_date = '1970/01/01 00:00:00';
@@ -18,9 +18,7 @@ $to_date = '2015/09/09 23:59:59';
 ?>
 
 <?php
-$this->params['content_header_button'] = '<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#pickupModal"><i class="fa fa-plus"></i> Pickup Request</button> <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i> Shipment Request</button>';
-//$this->params['graph_stats'] = $this->render('../elements/corporate/credit_limit',['stats'=>$stats]);
-
+$this->params['content_header_button'] = '<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i> Shipment Request</button>';
 ?>
 <?= Html::cssFile('@web/css/libs/bootstrap-select.min.css') ?>
 <?php echo Calypso::showFlashMessages(); ?>
@@ -63,11 +61,11 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-d
                         <tr>
                             <th style="width: 20px">S/N</th>
                             <th>Request ID</th>
-                            <th>Request Type</th>
                             <th>Waybill No</th>
                             <th>Description</th>
                             <th>Receiver</th>
                             <th>Receiver Phone</th>
+                            <th>Reference Number</th>
                             <th>Weight</th>
                             <th>Status</th>
                             <th>Action</th>
@@ -78,12 +76,11 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-d
                             <tr>
                                 <td><?= ++$i; ?></td>
                                 <td><?= Calypso::getValue($request, 'id'); ?></td>
-                                <!-- TODO Make Dynamic -->
-                                <td>Request</td>
-                                <td><?= Calypso::getValue($request, 'reference_number'); ?></td>
+                                <td></td>
                                 <td><?= Calypso::getValue($request, 'description'); ?></td>
                                 <td><?= Calypso::getValue($request, 'receiver_firstname') . ' ' . Calypso::getValue($request, 'receiver_lastname'); ?></td>
                                 <td><?= Calypso::getValue($request, 'receiver_phone_number'); ?></td>
+                                <td><?= Calypso::getValue($request, 'reference_number'); ?></td>
                                 <td><?php $weight = Calypso::getValue($request, 'estimated_weight');
                                     echo is_null($weight) ? '' : $weight . ' KG';
                                     ?></td>
@@ -103,7 +100,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-d
 
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog modal-lg" role="document">
-            <form data-keyboard-submit="disable" class="validate-form" method="post">
+            <form action="<?= Url::to("/corporate/request/createshipment")?>" data-keyboard-submit="disable" class="validate-form" method="post">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
@@ -231,7 +228,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-d
                                                     </select>
                                                 </div>
                                                 <input name="parcel_value" type="text"
-                                                       class="form-control validate non-zero-number" value="">
+                                                       class="form-control validate non-zero-number required" value="">
                                             </div>
                                         </div>
                                     </div>
@@ -255,91 +252,8 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-d
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button name="shipment" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary">Initiate Request</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <div class="modal fade" id="pickupModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog modal-lg" role="document">
-            <form data-keyboard-submit="disable" class="validate-form" method="post">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                aria-hidden="true">×</span></button>
-                        <h4 class="modal-title" id="myModalLabel">Create a new Pickup Request</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <fieldset class="col-xs-6">
-                                <legend>Pickup Detail</legend>
-                                <div class="form-group">
-                                    <label for="">Address</label>
-                                    <input type="text" class="form-control validate required">
-                                </div>
-                                <div class="form-group">
-                                    <label for="">State</label>
-                                    <select name="" id="" class="form-control validate required"></select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="">City</label>
-                                    <select name="" id="" class="form-control validate required"></select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="">Contact Name</label>
-                                    <input type="text" class="form-control validate required">
-                                </div>
-                                <div class="form-group">
-                                    <label for="">Contact Phone number</label>
-                                    <input type="text" class="form-control validate required phone">
-                                    <span class="help-block">Format: 234xxxxxxxxxx</span>
-                                </div>
-                            </fieldset>
-                            <fieldset class="col-xs-6">
-                                <legend>Destination Detail</legend>
-                                <div class="form-group">
-                                    <label for="">Address</label>
-                                    <input type="text" class="form-control validate required">
-                                </div>
-                                <div class="form-group">
-                                    <label for="">State</label>
-                                    <select name="" id="" class="form-control validate required"></select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="">City</label>
-                                    <select name="" id="" class="form-control validate required"></select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="">Contact Name</label>
-                                    <input type="text" class="form-control validate required">
-                                </div>
-                                <div class="form-group">
-                                    <label for="">Contact Phone number</label>
-                                    <input type="text" class="form-control validate required phone">
-                                    <span class="help-block">Format: 234xxxxxxxxxx</span>
-                                </div>
-                            </fieldset>
-                            <fieldset class="col-xs-12">
-                                <legend>Shipment Detail</legend>
-                                <div class="row">
-                                    <div class="col-xs-6 form-group">
-                                        <label>Shipment Description</label>
-                                        <input type="text" class="form-control">
-                                    </div>
-                                    <div class="col-xs-6 form-group">
-                                        <label>Request Details</label>
-                                        <textarea class="form-control"></textarea>
-                                    </div>
-                                </div>
-                            </fieldset>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Request Pickup</button>
                     </div>
                 </div>
             </form>
