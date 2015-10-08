@@ -1,4 +1,5 @@
 <?php
+use Adapter\Globals\ServiceConstant;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use Adapter\Util\Calypso;
@@ -24,6 +25,9 @@ use Adapter\Util\Calypso;
                             continue;
                         }
                         if (isset($v['branch']) && !in_array($branch, $v['branch'])) {
+                            continue;
+                        }
+                        if (in_array($role, [ServiceConstant::USER_TYPE_COMPANY_OFFICER, ServiceConstant::USER_TYPE_COMPANY_ADMIN]) && !(Calypso::getValue($v, 'corporate', false))){
                             continue;
                         }
                         ?>
@@ -109,49 +113,6 @@ use Adapter\Util\Calypso;
                         <?php
                     }
                     ?>
-                    <li>
-                        <a href="#" class="dropdown-toggle">
-                            <i class="fa fa-gift"></i>
-                            <span>Corporate</span>
-                            <i class="fa fa-angle-right drop-icon"></i>
-                        </a>
-                        <ul class="submenu">
-                            <li>
-                                <a href="#" class="dropdown-toggle">
-                                    <i class="fa fa-truck"></i>
-                                    <span>Requests</span>
-                                    <i class="fa fa-angle-right drop-icon"></i>
-                                </a>
-
-                                <ul class="submenu">
-                                    <li>
-                                        <a href="<?= Url::toRoute(['/corporate/request/shipments']); ?>">
-                                            <i class=""></i>
-                                            <span>Shipment Requests</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="<?= Url::toRoute(['/corporate/request/pickups']); ?>">
-                                            <i class=""></i>
-                                            <span>Pickup Requests</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="<?= Url::toRoute(['/corporate/pending']); ?>">
-                                    <i class=""></i>
-                                    <span>Pending</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="<?= Url::toRoute(['/corporate/users']); ?>">
-                                    <i class=""></i>
-                                    <span>Users</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
                 </ul>
             </div>
         </div>
