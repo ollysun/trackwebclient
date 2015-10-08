@@ -33,19 +33,6 @@ class RequestController extends BaseController
         $companyAdapter = new CompanyAdapter();
         $companyId = Calypso::getValue(Calypso::getInstance()->session("user_session"), 'company_id');
 
-        if(Yii::$app->request->isPost) {
-            $data = Yii::$app->request->post();
-            $data['company_id'] = $companyId;
-
-            $status = $companyAdapter->makeShipmentRequest($data);
-            if($status) {
-                $this->flashSuccess("Shipment request created successfully");
-            } else {
-                $this->flashSuccess($companyAdapter->getLastErrorMessage());
-            }
-            return $this->refresh();
-        }
-
         $filters = [
             'company_id' => $companyId
         ];
