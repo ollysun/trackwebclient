@@ -52,7 +52,6 @@ class BaseController extends Controller
             $module = $this->module->getUniqueId();
             $current = $module == '' ? $action->controller->id : $module . '/' . $action->controller->id;
 
-//            if(isset())
             //Wild card
             if (in_array($current . '/*', $map)) {
                 \Yii::$app->getUser()->logout();
