@@ -122,7 +122,7 @@ class Calypso
         return false;
     }
 
-    public function formatCurrency($value,$dp=2)
+    public function formatCurrency($value, $dp = 2)
     {
         if (intval($value) <= 0) return $value;
         $decimal_holder = explode('.', $value);
@@ -299,7 +299,7 @@ class Calypso
     public static function getDisplayValue($array, $key, $default = null)
     {
         $value = self::getValue($array, $key, null);
-        if(empty(trim($value))) {
+        if (empty(trim($value))) {
             return $default;
         }
         return $value;
@@ -319,20 +319,34 @@ class Calypso
     public static function permissionMap()
     {
         $permissionMap = [
-            ServiceConstant::USER_TYPE_ADMIN => [],
-            ServiceConstant::USER_TYPE_OFFICER => ['finance/*', 'billing/*', 'admin/*'],
-            ServiceConstant::USER_TYPE_SWEEPER => ['site/*', 'parcels/*', 'shipments/*', 'hubs/*', 'finance/*', 'billing/*', 'admin/*'],
-            ServiceConstant::USER_TYPE_DISPATCHER => ['site/*', 'parcels/*', 'shipments/*', 'hubs/*', 'finance/*', 'billing/*', 'admin/*'],
-            ServiceConstant::USER_TYPE_GROUNDSMAN => [
+            ServiceConstant::USER_TYPE_SUPER_ADMIN => self::getCorporateRoutes(),
+            ServiceConstant::USER_TYPE_ADMIN => self::getCorporateRoutes(),
+            ServiceConstant::USER_TYPE_OFFICER => array_merge(
+                ['finance/*', 'billing/*', 'admin/*']
+                , self::getCorporateRoutes()),
+            ServiceConstant::USER_TYPE_SWEEPER => array_merge(
+                ['site/*', 'parcels/*', 'shipments/*', 'hubs/*', 'finance/*', 'billing/*', 'admin/*', 'corporate/request/pending']
+            , self::getCorporateRoutes()),
+            ServiceConstant::USER_TYPE_DISPATCHER => array_merge(
+                ['site/*', 'parcels/*', 'shipments/*', 'hubs/*', 'finance/*', 'billing/*', 'admin/*', 'corporate/request/pending']
+                , self::getCorporateRoutes()
+            ),
+            ServiceConstant::USER_TYPE_GROUNDSMAN => array_merge([
                 'parcels/*',
                 'shipments/forsweep',
                 'shipments/delivered',
                 'hubs/hubarrival',
                 'finance/*',
                 'billing/*',
-                'admin/*'],
+                'admin/*',
+                'corporate/request/pending',
+            ], self::getCorporateRoutes()),
             ServiceConstant::USER_TYPE_COMPANY_ADMIN => [
-                'company/*'
+                'corporate/request/pending',
+            ],
+            ServiceConstant::USER_TYPE_COMPANY_OFFICER => [
+                'corporate/users',
+                'corporate/request/pending'
             ]
         ];
         return $permissionMap;
@@ -346,17 +360,17 @@ class Calypso
     public static function getMenus()
     {
         $menus = [
-            'Dashboard' => ['base' => 'site', 'base_link' => 'site/index','class' => 'fa fa-dashboard'],
-            'New_Shipments' => ['base_link' => 'shipments/processed', 'class' => '','branch' => [ ServiceConstant::BRANCH_TYPE_EC, ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
-            'Receive_Shipments' => ['base_link' => 'hubs/hubarrival', 'class' => '','branch' => [ ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
-            'Ready_for_Sorting' => ['base_link' => 'hubs/destination', 'class' => '','branch' => [ ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
-            'Sorted_Shipments' => ['base_link' => 'hubs/delivery', 'class' => '','branch' => [ ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
-            'Due_for_Delivery' => ['base_link' => 'shipments/fordelivery', 'class' => '','branch' => [ ServiceConstant::BRANCH_TYPE_EC, ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
-            'Due_for_Sweep' => ['base_link' => 'shipments/forsweep', 'class' => '', 'branch' => [ ServiceConstant::BRANCH_TYPE_EC, ServiceConstant::BRANCH_TYPE_HQ]],
-            'Direct_Delivery' => ['base_link' => 'shipments/dispatched', 'class' => '','branch' => [ ServiceConstant::BRANCH_TYPE_EC, ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
-            'Dispatched_to_Branches' => ['base_link' => 'hubs/hubdispatch', 'class' => '','branch' => [ ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
-            'Delivered' => ['base_link' => 'shipments/delivered', 'class' => '','branch' => [ ServiceConstant::BRANCH_TYPE_EC, ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
-            'All_Shipments' => ['base_link' => 'shipments/all', 'class' => '','branch' => [ ServiceConstant::BRANCH_TYPE_EC, ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
+            'Dashboard' => ['base' => 'site', 'base_link' => 'site/index', 'class' => 'fa fa-dashboard'],
+            'New_Shipments' => ['base_link' => 'shipments/processed', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_EC, ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
+            'Receive_Shipments' => ['base_link' => 'hubs/hubarrival', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
+            'Ready_for_Sorting' => ['base_link' => 'hubs/destination', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
+            'Sorted_Shipments' => ['base_link' => 'hubs/delivery', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
+            'Due_for_Delivery' => ['base_link' => 'shipments/fordelivery', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_EC, ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
+            'Due_for_Sweep' => ['base_link' => 'shipments/forsweep', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_EC, ServiceConstant::BRANCH_TYPE_HQ]],
+            'Direct_Delivery' => ['base_link' => 'shipments/dispatched', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_EC, ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
+            'Dispatched_to_Branches' => ['base_link' => 'hubs/hubdispatch', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
+            'Delivered' => ['base_link' => 'shipments/delivered', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_EC, ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
+            'All_Shipments' => ['base_link' => 'shipments/all', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_EC, ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
             'Administrator' => ['base' => 'admin', 'class' => 'fa fa-user', 'base_link' => [
                 'Manage_branches' => ['base_link' => 'admin/managebranches', 'class' => ''],
                 'Manage_routes' => ['base_link' => 'admin/manageroutes', 'class' => ''],
@@ -371,36 +385,65 @@ class Calypso
                     'Weight_Ranges' => ['base_link' => 'billing/weightranges', 'class' => ''],
                     'Pricing' => ['base_link' => 'billing/pricing', 'class' => ''],
                     'Onforwarding_Charges' => ['base_link' => 'billing/onforwarding', 'class' => ''],
-                ],'branch' => [ ServiceConstant::BRANCH_TYPE_HQ]]
-            ],'branch' => [ ServiceConstant::BRANCH_TYPE_HQ]],
-            'Parcel History' => ['base' => 'track', 'base_link' => 'track/','class' => 'fa fa-gift'],
-            'Manifests' => ['base' => 'manifest', 'base_link' => 'manifest/index','class' => 'fa fa-book'],
-            'Customer_History' => ['base' => 'shipments', 'base_link' => 'shipments/customerhistory','class' => 'fa fa-user'
-                ,'branch' => [ ServiceConstant::BRANCH_TYPE_EC, ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]] ,
-            'Reconciliations' => ['base' => 'finance', 'class' => 'fa fa-money', 'base_link' =>[
-                'Customers' => ['base_link' => 'finance/customersall', 'class' => ''],
-                'Merchants' => ['base_link' => 'finance/merchantsdue', 'class' => '']
-            ],'branch' => [ ServiceConstant::BRANCH_TYPE_HQ]]
+                ], 'branch' => [ServiceConstant::BRANCH_TYPE_HQ]]
+            ], 'branch' => [ServiceConstant::BRANCH_TYPE_HQ]],
+            'Parcel History' => [
+                'base' => 'track',
+                'base_link' => 'track/',
+                'class' => 'fa fa-gift',
+                'corporate' => true
+            ],
+            'Manifests' => ['base' => 'manifest', 'base_link' => 'manifest/index', 'class' => 'fa fa-book'],
+            'Customer_History' => ['base' => 'shipments', 'base_link' => 'shipments/customerhistory', 'class' => 'fa fa-user'
+                , 'branch' => [ServiceConstant::BRANCH_TYPE_EC, ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
+            'Reconciliations' => [
+                'base' => 'finance', 'class' => 'fa fa-money', 'base_link' => [
+                    'Customers' => ['base_link' => 'finance/customersall', 'class' => ''],
+                    'Merchants' => ['base_link' => 'finance/merchantsdue', 'class' => '']
+                ],
+                'branch' => [ServiceConstant::BRANCH_TYPE_HQ]
+            ],
+            'Corporate' => [
+                'base' => 'request', 'class' => 'fa fa-gift', 'base_link' => [
+                    'Shipment_Requests' => ['base_link' => 'corporate/request/shipments', 'class' => ''],
+                    'Pickup_Requests' => ['base_link' => 'corporate/request/pickups', 'class' => ''],
+                    'Users' => ['base_link' => 'corporate/users', 'class' => ''],
+                    'Pending' => ['base_link' => 'corporate/request/pending', 'class' => '']
+                ],
+                'corporate' => true
+            ]
         ];
         return $menus;
     }
 
-    public static function canAccess($role,$link)
+    public static function canAccess($role, $link)
     {
         $permissions = self::permissionMap();
         if (!array_key_exists($role, $permissions)) return false;
 
         $current_user_permission = $permissions[$role];
-        $link_temp = explode('/',$link);
-        if(in_array($link_temp[0].'/*',$current_user_permission))
-        {
+        $link_temp = explode('/', $link);
+        if (in_array($link_temp[0] . '/*', $current_user_permission)) {
             return false;
         }
 
-        if(in_array($link,$current_user_permission))
-        {
+        if (in_array($link, $current_user_permission)) {
             return false;
         }
         return true;
     }
+
+    /**
+     * Returns an array of Corporate only routes
+     * @author Adegoke Obasa <goke@cottacush.com>
+     */
+    public static function getCorporateRoutes()
+    {
+        return [
+            'corporate/request/shipments',
+            'corporate/request/pickups',
+            'corporate/users',
+        ];
+    }
+
 }

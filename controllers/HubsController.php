@@ -340,6 +340,7 @@ class HubsController extends BaseController
         $payload = [
             'waybill_numbers' => $waybills,
             'to_branch_id' => Calypso::getValue($data, 'to_branch_id', null),
+            'seal_id' => Calypso::getValue($data, 'seal_id', ''),
             'status' => ServiceConstant::FOR_SWEEPER
         ];
 

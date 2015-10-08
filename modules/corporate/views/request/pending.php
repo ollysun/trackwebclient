@@ -7,7 +7,7 @@ use Adapter\Globals\ServiceConstant;
 $this->title = 'Corporate Requests: Pending';
 $this->params['breadcrumbs'] = array(
     array(
-        'url' => ['corporate/requests'],
+        'url' => ['/corporate'],
         'label' => 'Corporate'
     ),
     array('label'=> 'Pending Requests')
@@ -20,14 +20,6 @@ $stats = array(
 $from_date = '1970/01/01 00:00:00';
 $to_date = '2015/09/09 23:59:59';
 ?>
-
-
-<?php
-
-$this->params['graph_stats'] = $this->render('../elements/corporate/credit_limit',['stats'=>$stats]);
-
-?>
-
 <div class="main-box">
     <div class="main-box-header table-search-form clearfix">
         <div class=" clearfix">
