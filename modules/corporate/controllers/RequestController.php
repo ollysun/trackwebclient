@@ -176,7 +176,7 @@ class RequestController extends BaseController
             if ($status) {
                 $this->flashSuccess("Shipment request created successfully");
             } else {
-                $this->flashSuccess($companyAdapter->getLastErrorMessage());
+                $this->flashError($companyAdapter->getLastErrorMessage());
             }
         }
         return $this->redirect(Url::to('/corporate/request/shipments'));
@@ -200,7 +200,7 @@ class RequestController extends BaseController
             if ($status) {
                 $this->flashSuccess("Pickup request created successfully");
             } else {
-                $this->flashSuccess($companyAdapter->getLastErrorMessage());
+                $this->flashError($companyAdapter->getLastErrorMessage());
             }
         }
         return $this->redirect(Url::to('/corporate/request/pickups'));
