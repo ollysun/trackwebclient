@@ -138,6 +138,10 @@ class CompanyAdapter extends BaseAdapter
     {
         $filters = array_merge($filters, array(
             'type' => self::TYPE_PICKUP,
+            'with_pickup_city' => '1',
+            'with_pickup_state' => '1',
+            'with_destination_city' => '1',
+            'with_destination_state' => '1',
             'with_total_count' => 'true'));
 
         $response = $this->request(ServiceConstant::URL_COMPANY_REQUESTS,
