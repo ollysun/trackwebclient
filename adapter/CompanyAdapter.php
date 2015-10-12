@@ -15,6 +15,8 @@ class CompanyAdapter extends BaseAdapter
 {
     const TYPE_SHIPMENT = "shipment";
     const TYPE_PICKUP = "pickup";
+    const STATUS_PENDING = 'pending';
+
     public function __construct()
     {
         parent::__construct(RequestHelper::getClientID(), RequestHelper::getAccessToken());
