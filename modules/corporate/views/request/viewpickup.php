@@ -127,7 +127,7 @@ $this->params['breadcrumbs'][] = 'Shipment Request';
                 <div class="form-group">
                     <label>Date &amp; Time</label>
 
-                    <div class="form-control-static"><?= Calypso::getValue($request, 'created_at');?></div>
+                    <div class="form-control-static"><?= Util::formatDate(ServiceConstant::DATE_TIME_FORMAT, Calypso::getValue($request, 'created_at', ''));?></div>
                 </div>
             </fieldset>
             <br><br>
