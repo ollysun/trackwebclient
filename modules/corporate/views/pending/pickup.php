@@ -80,7 +80,10 @@ $this->params['content_header_button'] = '';
                                 <td><?= Calypso::getValue($request, 'destination_name');?> (<?= Calypso::getValue($request, 'destination_phone_number');?>)</td>
                                 <td><?= Calypso::getValue($request, 'destination_address')  . ', ' . strtoupper(Calypso::getValue($request, 'destination_city.name', '')) . ', ' . strtoupper(Calypso::getValue($request, 'destination_state.name', ''))?></td>
                                 <td><?= strtoupper(Calypso::getValue($request, 'status')); ?></td>
-                                <td></td>
+                                <td>
+                                    <a title="View this request" href="<?= Url::toRoute(['/corporate/request/viewpickup', 'id' => Calypso::getValue($request, 'id')]) ?>"
+                                       class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>
+                                </td>
                             </tr>
                         <?php endforeach; ?>
                         </tbody>

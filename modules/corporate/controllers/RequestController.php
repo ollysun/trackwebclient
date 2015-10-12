@@ -212,6 +212,15 @@ class RequestController extends BaseController
      */
     public function actionViewpickup()
     {
-        return $this->render('');
+        return $this->render('viewpickup');
+    }
+
+    /**
+     * View Shipment Request Action
+     * @author Adegoke Obasa <goke@cottacush.com>
+     */
+    public function actionViewshipment()
+    {
+        return $this->render('viewshipment');
     }
 }
