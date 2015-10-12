@@ -212,7 +212,10 @@ class RequestController extends BaseController
      */
     public function actionViewpickup()
     {
-        return $this->render('viewpickup');
+        $id = Yii::$app->getRequest()->get('id');
+
+        $request = (new CompanyAdapter())->getPickupRequest($id);
+        return $this->render('viewpickup', ['request' => $request]);
     }
 
     /**
@@ -221,6 +224,9 @@ class RequestController extends BaseController
      */
     public function actionViewshipment()
     {
-        return $this->render('viewshipment');
+        $id = Yii::$app->getRequest()->get('id');
+
+        $request = (new CompanyAdapter())->getShipmentRequest($id);
+        return $this->render('viewshipment', ['request' => $request]);
     }
 }
