@@ -83,7 +83,10 @@ $this->params['content_header_button'] = '';
                                     echo is_null($weight) ? '' : $weight . ' KG';
                                     ?></td>
                                 <td><?= strtoupper(Calypso::getValue($request, 'status')); ?></td>
-                                <td></td>
+                                <td>
+                                    <a title="View this request" href="<?= Url::toRoute(['/corporate/request/viewshipment', 'id' => Calypso::getValue($request, 'id')]) ?>"
+                                       class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>
+                                </td>
                             </tr>
                         <?php endforeach; ?>
                         </tbody>
