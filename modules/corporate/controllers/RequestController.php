@@ -14,6 +14,7 @@ use Adapter\ResponseHandler;
 use Adapter\Util\Calypso;
 use Adapter\Util\ResponseCodes;
 use Adapter\Util\ResponseMessages;
+use Adapter\Util\Util;
 use app\controllers\BaseController;
 use Yii;
 use yii\helpers\Url;
@@ -37,11 +38,26 @@ class RequestController extends BaseController
             'company_id' => $companyId
         ];
 
+        $defaultDate = Util::today();
+        $validFilters = ['from' => 'start_created_date', 'to' => 'end_created_date'];
+
+        foreach ($validFilters as $clientFilter => $serverFilter) {
+            $value = \Yii::$app->getRequest()->get($clientFilter, $defaultDate);
+            if (preg_match('/\bstart\_\w+\_date\b/', $serverFilter)) {
+                $filters[$serverFilter] = $value . " 00:00:00";
+            } else if (preg_match('/\bend\_\w+\_date\b/', $serverFilter)) {
+                $filters[$serverFilter] = $value . " 23:59:59";
+            }
+        }
+
+        $fromDate = Calypso::getValue($filters, 'start_created_date', $defaultDate);
+        $toDate = Calypso::getValue($filters, 'end_created_date', $defaultDate);
+
         // Add Offset and Count
         $page = \Yii::$app->getRequest()->get('page', 1);
 
         $query = \Yii::$app->getRequest()->get('search');
-        if(!is_null($query)) {
+        if (!is_null($query)) {
             $filters['waybill_number'] = $query;
             $page = 1; // Reset page
         }
@@ -68,7 +84,9 @@ class RequestController extends BaseController
             'page_width' => $this->page_width,
             'countries' => $countries,
             'states' => $states,
-            'total_count' => $totalCount
+            'total_count' => $totalCount,
+            'from_date' => $fromDate,
+            'to_date' => $toDate
         ]);
     }
 
@@ -83,15 +101,31 @@ class RequestController extends BaseController
         $companyAdapter = new CompanyAdapter();
         $companyId = Calypso::getValue(Calypso::getInstance()->session("user_session"), 'company_id');
 
+        $defaultDate = Util::today();
+
         $filters = [
             'company_id' => $companyId
         ];
+
+        $validFilters = ['from' => 'start_created_date', 'to' => 'end_created_date'];
+
+        foreach ($validFilters as $clientFilter => $serverFilter) {
+            $value = \Yii::$app->getRequest()->get($clientFilter, $defaultDate);
+            if (preg_match('/\bstart\_\w+\_date\b/', $serverFilter)) {
+                $filters[$serverFilter] = $value . " 00:00:00";
+            } else if (preg_match('/\bend\_\w+\_date\b/', $serverFilter)) {
+                $filters[$serverFilter] = $value . " 23:59:59";
+            }
+        }
+
+        $fromDate = Calypso::getValue($filters, 'start_created_date', $defaultDate);
+        $toDate = Calypso::getValue($filters, 'end_created_date', $defaultDate);
 
         // Add Offset and Count
         $page = \Yii::$app->getRequest()->get('page', 1);
 
         $query = \Yii::$app->getRequest()->get('search');
-        if(!is_null($query)) {
+        if (!is_null($query)) {
             $filters['waybill_number'] = $query;
             $page = 1; // Reset page
         }
@@ -118,7 +152,9 @@ class RequestController extends BaseController
             'page_width' => $this->page_width,
             'countries' => $countries,
             'states' => $states,
-            'total_count' => $totalCount
+            'total_count' => $totalCount,
+            'from_date' => $fromDate,
+            'to_date' => $toDate
         ]);
     }
 
@@ -132,12 +168,12 @@ class RequestController extends BaseController
         $companyAdapter = new CompanyAdapter();
         $companyId = Calypso::getValue(Calypso::getInstance()->session("user_session"), 'company_id');
 
-        if(Yii::$app->request->isPost) {
+        if (Yii::$app->request->isPost) {
             $data = Yii::$app->request->post();
             $data['company_id'] = $companyId;
 
             $status = $companyAdapter->makeShipmentRequest($data);
-            if($status) {
+            if ($status) {
                 $this->flashSuccess("Shipment request created successfully");
             } else {
                 $this->flashSuccess($companyAdapter->getLastErrorMessage());
@@ -147,7 +183,7 @@ class RequestController extends BaseController
     }
 
     /**
-     * Make shipment request form action
+     * Make pickup request form action
      * @author Adegoke Obasa <goke@cottacush.com>
      * @return string
      */
@@ -156,12 +192,12 @@ class RequestController extends BaseController
         $companyAdapter = new CompanyAdapter();
         $companyId = Calypso::getValue(Calypso::getInstance()->session("user_session"), 'company_id');
 
-        if(Yii::$app->request->isPost) {
+        if (Yii::$app->request->isPost) {
             $data = Yii::$app->request->post();
             $data['company_id'] = $companyId;
 
             $status = $companyAdapter->makePickupRequest($data);
-            if($status) {
+            if ($status) {
                 $this->flashSuccess("Pickup request created successfully");
             } else {
                 $this->flashSuccess($companyAdapter->getLastErrorMessage());

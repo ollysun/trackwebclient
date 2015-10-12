@@ -12,15 +12,10 @@ $this->params['breadcrumbs'] = array(
     ),
     array('label' => 'Pickup Requests')
 );
-
-$from_date = '1970/01/01 00:00:00';
-$to_date = '2015/09/09 23:59:59';
 ?>
 
 <?php
 $this->params['content_header_button'] = '<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#pickupModal"><i class="fa fa-plus"></i> Pickup Request</button>';
-//$this->params['graph_stats'] = $this->render('../elements/corporate/credit_limit',['stats'=>$stats]);
-
 ?>
 <?= Html::cssFile('@web/css/libs/bootstrap-select.min.css') ?>
 <?php echo Calypso::showFlashMessages(); ?>

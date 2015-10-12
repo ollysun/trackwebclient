@@ -71,4 +71,14 @@ class Util
     {
         return ucwords(self::removeUnderscore($string));
     }
+
+    /**
+     * Gets today's date in Y/m/d format
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @return bool|string
+     */
+    public static function today()
+    {
+        return date('Y/m/d');
+    }
 }
