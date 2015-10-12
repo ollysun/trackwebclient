@@ -120,8 +120,9 @@ class SiteController extends BaseController
                     RequestHelper::setClientID($data['user_auth_id']);
                 }
                 Calypso::getInstance()->session("user_session", $response->getData());
+
                 if ($data['created_date'] == $data['modified_date'] && $data['status'] == ServiceConstant::INACTIVE) {
-                    return $this->render('changepassword');
+                    return $this->redirect('/site/changepassword');
                 }
 
                 // Check Corporate User
@@ -477,7 +478,7 @@ class SiteController extends BaseController
                     $creationResponse = new ResponseHandler($resp);
                     if ($creationResponse->getStatus() == ResponseHandler::STATUS_OK) {
                         $this->flashSuccess('Password successfully changed.');
-                        $this->redirect('logout');
+                        $this->redirect('/logout');
                     } else {
                         $this->flashError('Password not changed.');
                     }

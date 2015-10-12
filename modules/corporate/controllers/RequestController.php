@@ -205,4 +205,13 @@ class RequestController extends BaseController
         }
         return $this->redirect(Url::to('/corporate/request/pickups'));
     }
+
+    /**
+     * View Pickup Request Action
+     * @author Adegoke Obasa <goke@cottacush.com>
+     */
+    public function actionViewpickup()
+    {
+        return $this->render('');
+    }
 }
