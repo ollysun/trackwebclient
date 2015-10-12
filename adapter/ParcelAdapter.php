@@ -263,10 +263,7 @@ class ParcelAdapter extends BaseAdapter
         $filter_array = is_null($filter_array) ? [] : $filter_array;
         $url_params = [];
         $filter_array= array_filter($filter_array);
-        foreach ($filter_array as $key => $value) {
-            $url_params[] = $key . '=' . $value;
-        }
-        $filters = '?'.join('&', $url_params);
+        $filters = '?'.http_build_query($filter_array);
         $response = $this->request(ServiceConstant::URL_PARCEL_COUNT.$filters, [] , self::HTTP_GET);
         $response = new ResponseHandler($response);
         if ($response->getStatus() == Response::STATUS_OK) {

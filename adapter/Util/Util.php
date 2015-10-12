@@ -71,4 +71,15 @@ class Util
     {
         return ucwords(self::removeUnderscore($string));
     }
+
+
+    /**
+     * Returns the current date
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @param $string
+     * @return string
+     */
+    public static function getToday(){
+        return date('Y-m-d');
+    }
 }
