@@ -145,7 +145,7 @@ $this->params['breadcrumbs'][] = 'Shipment Request';
                 <div class="form-group">
                     <label>Created By</label>
 
-                    <div class="form-control-static"><?= ucwords(Calypso::getValue($request, 'created_by.firtname', '') . ' ' . Calypso::getValue($request, 'created_by.lastname'));?></div>
+                    <div class="form-control-static"><?= ucwords(Calypso::getValue($request, 'created_by.firstname', '') . ' ' . Calypso::getValue($request, 'created_by.lastname'));?></div>
                 </div>
                 <div class="form-group">
                     <label>Date &amp; Time</label>
