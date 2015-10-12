@@ -4,13 +4,13 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 
 
-$this->title = 'Pending Shipment Requests';
+$this->title = 'Pickup Requests';
 $this->params['breadcrumbs'] = array(
     array(
         'url' => ['corporate'],
         'label' => 'Corporate'
     ),
-    array('label' => 'Pending Shipment Requests')
+    array('label' => 'Pickup Requests')
 );
 
 $from_date = '1970/01/01 00:00:00';
@@ -63,28 +63,25 @@ $this->params['content_header_button'] = '';
                             <th>Request ID</th>
                             <th>Waybill No</th>
                             <th>Description</th>
-                            <th>Receiver</th>
-                            <th>Receiver Phone</th>
-                            <th>Reference Number</th>
-                            <th>Weight</th>
+                            <th>Pickup</th>
+                            <th>Pickup Address</th>
+                            <th>Destination</th>
+                            <th>Destination Address</th>
                             <th>Status</th>
                             <th>Action</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <?php $i = $offset;
-                        foreach ($requests as $request): ?>
+                        <?php $i = $offset; foreach ($requests as $request): ?>
                             <tr>
                                 <td><?= ++$i; ?></td>
                                 <td><?= Calypso::getValue($request, 'id'); ?></td>
                                 <td></td>
-                                <td><?= Calypso::getValue($request, 'description'); ?></td>
-                                <td><?= Calypso::getValue($request, 'receiver_firstname') . ' ' . Calypso::getValue($request, 'receiver_lastname'); ?></td>
-                                <td><?= Calypso::getValue($request, 'receiver_phone_number'); ?></td>
-                                <td><?= Calypso::getValue($request, 'reference_number'); ?></td>
-                                <td><?php $weight = Calypso::getValue($request, 'estimated_weight');
-                                    echo is_null($weight) ? '' : $weight . ' KG';
-                                    ?></td>
+                                <td><?= Calypso::getValue($request, 'shipment_description'); ?></td>
+                                <td><?= Calypso::getValue($request, 'pickup_name');?> (<?= Calypso::getValue($request, 'pickup_phone_number');?>)</td>
+                                <td><?= Calypso::getValue($request, 'pickup_address');?></td>
+                                <td><?= Calypso::getValue($request, 'destination_name');?> (<?= Calypso::getValue($request, 'destination_phone_number');?>)</td>
+                                <td><?= Calypso::getValue($request, 'destination_address');?></td>
                                 <td><?= strtoupper(Calypso::getValue($request, 'status')); ?></td>
                                 <td></td>
                             </tr>
@@ -98,6 +95,7 @@ $this->params['content_header_button'] = '';
             </div>
         </div>
     </div>
+
 <?php $this->registerJsFile('@web/js/libs/bootstrap-select.min.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/keyboardFormSubmit.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/validate.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
