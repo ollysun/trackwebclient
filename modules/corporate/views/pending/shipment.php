@@ -12,9 +12,6 @@ $this->params['breadcrumbs'] = array(
     ),
     array('label' => 'Pending Shipment Requests')
 );
-
-$from_date = '1970/01/01 00:00:00';
-$to_date = '2015/09/09 23:59:59';
 ?>
 
 <?php
