@@ -25,13 +25,13 @@ class PendingController extends BaseController
             'status' => CompanyAdapter::STATUS_PENDING
         ];
         $defaultDate = Util::today();
-        $validFilters = ['from' => 'start_created_date', 'to' => 'end_created_date'];
+        $validFilters = ['from' => 'start_created_at', 'to' => 'end_created_at'];
 
         foreach ($validFilters as $clientFilter => $serverFilter) {
             $value = \Yii::$app->getRequest()->get($clientFilter, $defaultDate);
-            if (preg_match('/\bstart\_\w+\_date\b/', $serverFilter)) {
+            if (preg_match('/\bstart\_\w+\_at\b/', $serverFilter)) {
                 $filters[$serverFilter] = $value . " 00:00:00";
-            } else if (preg_match('/\bend\_\w+\_date\b/', $serverFilter)) {
+            } else if (preg_match('/\bend\_\w+\_at\b/', $serverFilter)) {
                 $filters[$serverFilter] = $value . " 23:59:59";
             }
         }
@@ -80,19 +80,19 @@ class PendingController extends BaseController
         ];
 
         $defaultDate = Util::today();
-        $validFilters = ['from' => 'start_created_date', 'to' => 'end_created_date'];
+        $validFilters = ['from' => 'start_created_at', 'to' => 'end_created_at'];
 
         foreach ($validFilters as $clientFilter => $serverFilter) {
             $value = \Yii::$app->getRequest()->get($clientFilter, $defaultDate);
-            if (preg_match('/\bstart\_\w+\_date\b/', $serverFilter)) {
+            if (preg_match('/\bstart\_\w+\_at\b/', $serverFilter)) {
                 $filters[$serverFilter] = $value . " 00:00:00";
-            } else if (preg_match('/\bend\_\w+\_date\b/', $serverFilter)) {
+            } else if (preg_match('/\bend\_\w+\_at\b/', $serverFilter)) {
                 $filters[$serverFilter] = $value . " 23:59:59";
             }
         }
 
-        $fromDate = Calypso::getValue($filters, 'start_created_date', $defaultDate);
-        $toDate = Calypso::getValue($filters, 'end_created_date', $defaultDate);
+        $fromDate = Calypso::getValue($filters, 'start_created_at', $defaultDate);
+        $toDate = Calypso::getValue($filters, 'end_created_at', $defaultDate);
 
         // Add Offset and Count
         $page = \Yii::$app->getRequest()->get('page', 1);
