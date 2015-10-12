@@ -165,10 +165,8 @@ class CompanyAdapter extends BaseAdapter
     {
         $filters = [
             'request_id' => $id,
-            'with_pickup_city' => '1',
-            'with_pickup_state' => '1',
-            'with_destination_city' => '1',
-            'with_destination_state' => '1',
+            'with_receiver_city' => '1',
+            'with_receiver_state' => '1',
             'with_company' => '1',
             'with_created_by' => '1'];
 

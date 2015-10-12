@@ -1,5 +1,6 @@
 <?php
 use Adapter\Util\Calypso;
+use Adapter\Util\Util;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use Adapter\Globals\ServiceConstant;
@@ -18,48 +19,48 @@ $this->params['breadcrumbs'][] = 'Shipment Request';
                     <div class="col-xs-6">
                         <label>Firstname</label>
 
-                        <div class="form-control-static">Tinuke</div>
+                        <div class="form-control-static"><?= Calypso::getValue($request, 'receiver_firstname')?></div>
                     </div>
                     <div class="col-xs-6">
                         <label>Lastname</label>
 
-                        <div class="form-control-static">Olotu</div>
+                        <div class="form-control-static"><?= Calypso::getValue($request, 'receiver_lastname')?></div>
                     </div>
                 </div>
                 <div class="row form-group">
                     <div class="col-xs-6">
                         <label for="">Email address</label>
 
-                        <div class="form-control-static">ladapo5704@gmail.com</div>
+                        <div class="form-control-static"><?= Calypso::getValue($request, 'receiver_email')?></div>
                     </div>
                     <div class="col-xs-6">
                         <label>Phone number</label>
 
-                        <div class="form-control-static">0803456788</div>
+                        <div class="form-control-static"><?= Calypso::getValue($request, 'receiver_phone_number')?></div>
                     </div>
                 </div>
                 <div class="row form-group">
                     <div class="col-xs-6">
                         <label for="">Company</label>
 
-                        <div class="form-control-static">Company</div>
+                        <div class="form-control-static"><?= strtoupper(Calypso::getValue($request, 'copmany.name'))?></div>
                     </div>
                     <div class="col-xs-6">
                         <label>Address</label>
 
-                        <div class="form-control-static">No 5b Chris Ali</div>
+                        <div class="form-control-static"><?= Calypso::getValue($request, 'receiver_address')?></div>
                     </div>
                 </div>
                 <div class="row form-group">
                     <div class="col-xs-6">
                         <label>State</label>
 
-                        <div class="form-control-static">Oyo</div>
+                        <div class="form-control-static"><?= strtoupper(Calypso::getValue($request, 'receiver_city.name'))?></div>
                     </div>
                     <div class="col-xs-6">
                         <label>City</label>
 
-                        <div class="form-control-static">Ibadan</div>
+                        <div class="form-control-static"><?= strtoupper(Calypso::getValue($request, 'receiver_state.name'))?></div>
                     </div>
                 </div>
                 <div class="row form-group">
@@ -79,25 +80,25 @@ $this->params['breadcrumbs'][] = 'Shipment Request';
                     <div class="col-xs-6">
                         <label>Estimated Weight (Kg)</label>
 
-                        <div class="form-control-static">10 Kg</div>
+                        <div class="form-control-static"><?= Calypso::getValue($request, 'estimated_weight')?> Kg</div>
                     </div>
                     <div class="col-xs-6">
                         <label for="">No of packages</label>
 
-                        <div class="form-control-static">200</div>
+                        <div class="form-control-static"><?= Calypso::getValue($request, 'no_of_packages')?></div>
                     </div>
                 </div>
                 <div class="row form-group">
                     <div class="col-xs-6">
                         <label>Shipment Value</label>
 
-                        <div class="form-control-static">NGN 5000</div>
+                        <div class="form-control-static">NGN <?= Calypso::getValue($request, 'parcel_value')?></div>
                     </div>
                     <div class="col-xs-6">
                         <label>Parcel Description</label>
 
                         <div class="form-control-static">
-                            Lorem ipsum
+                            <?= Calypso::getValue($request, 'description')?>
                         </div>
 
                     </div>
@@ -114,13 +115,15 @@ $this->params['breadcrumbs'][] = 'Shipment Request';
                             <div class="col-xs-6">
                                 <label>Cash on Delivery</label>
 
-                                <div class="form-control-static">Documents</div>
+                                <div class="form-control-static">
+                                    NGN <?= Calypso::getValue($request, 'cash_on_delivery')?>
+                                </div>
                             </div>
                             <div class="col-xs-6">
                                 <label>Order Number</label>
 
                                 <div class="form-control-static">
-                                    Kg
+                                    <?= Calypso::getValue($request, 'reference_number')?>
                                 </div>
                             </div>
                         </div>
@@ -136,18 +139,18 @@ $this->params['breadcrumbs'][] = 'Shipment Request';
                     <label>Company</label>
 
                     <div class="form-control-static">
-                        Adio and Sons
+                        <?= strtoupper(Calypso::getValue($request, 'company.name'))?>
                     </div>
                 </div>
                 <div class="form-group">
                     <label>Created By</label>
 
-                    <div class="form-control-static">Ajanlekoko Ajala</div>
+                    <div class="form-control-static"><?= ucwords(Calypso::getValue($request, 'created_by.firtname', '') . ' ' . Calypso::getValue($request, 'created_by.lastname'));?></div>
                 </div>
                 <div class="form-group">
                     <label>Date &amp; Time</label>
 
-                    <div class="form-control-static">19 Sep 2015 23:45</div>
+                    <div class="form-control-static"><?= Util::formatDate(ServiceConstant::DATE_TIME_FORMAT, Calypso::getValue($request, 'created_at', ''));?></div>
                 </div>
             </fieldset>
             <br><br>
