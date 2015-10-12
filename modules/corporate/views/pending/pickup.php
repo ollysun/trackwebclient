@@ -58,6 +58,7 @@ $this->params['content_header_button'] = '';
                         <tr>
                             <th style="width: 20px">S/N</th>
                             <th>Request ID</th>
+                            <th>Company</th>
                             <th>Waybill No</th>
                             <th>Description</th>
                             <th>Pickup</th>
@@ -73,6 +74,7 @@ $this->params['content_header_button'] = '';
                             <tr>
                                 <td><?= ++$i; ?></td>
                                 <td><?= Calypso::getValue($request, 'id'); ?></td>
+                                <td><?= strtoupper(Calypso::getValue($request, 'company.name', '')); ?></td>
                                 <td></td>
                                 <td><?= Calypso::getValue($request, 'shipment_description'); ?></td>
                                 <td><?= Calypso::getValue($request, 'pickup_name');?> (<?= Calypso::getValue($request, 'pickup_phone_number');?>)</td>
