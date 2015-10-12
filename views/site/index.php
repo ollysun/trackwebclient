@@ -1,28 +1,32 @@
 <?php
 use yii\helpers\Html;
+use Adapter\Globals\ServiceConstant;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 $this->title = 'Dashboard';
 $this->params['breadcrumbs'][] = $this->title;
 
 // only show if user is admin
-$this->params['graph_stats'] = $this->render('../elements/dashboard/choose_branch');
+if($branch_type != ServiceConstant::BRANCH_TYPE_EC && $user_type == ServiceConstant::USER_TYPE_ADMIN ) {
+    $this->params['graph_stats'] = $this->render('../elements/dashboard/choose_branch', array('branch_type'=>$branch_type, 'user_type'=>$user_type, 'branch'=>$branch));
+}
 
 ?>
 <?= Html::cssFile('@web/css/libs/datepicker.css') ?>
 
-<form method="post" id="date-filter-form" class="dashboard-stats-title">
+<form id="date-filter-form" class="dashboard-stats-title">
     <strong class="text-muted text-uppercase">STATISTICS: <span id="relative-date-text"></span></strong>
     <div class="dashboard-stats-title-date-wrap">
         <select name="date" class="form-control-transparent text-muted disguise-as-link"></select>
         <div class="dashboard-stats-title-custom-date-wrap clearfix">
             <div class="pull-left">
                 <label>From:</label>
-                <input type="text" name="from" class="form-control input-sm" value="<?= date('Y/m/d', strtotime($from_date)); ?>" data-provide="datepicker" data-date-format="yyyy/mm/dd" data-date-end-date="0d">
+                <input type="text" name="from" class="form-control input-sm" value="<?= $from_date; ?>" data-provide="datepicker" data-date-format="yyyy/mm/dd" data-date-end-date="0d">
             </div>
             <div class="pull-left">
                 <label>To:</label>
-                <input type="text" name="to" class="form-control input-sm" value="<?= date('Y/m/d', strtotime($to_date)); ?>" data-provide="datepicker" data-date-format="yyyy/mm/dd" data-date-end-date="0d">
+                <input type="text" name="to" class="form-control input-sm" value="<?= $to_date; ?>" data-provide="datepicker" data-date-format="yyyy/mm/dd" data-date-end-date="0d">
             </div>
             <div class="pull-left">
                 <label>&nbsp;</label><br>
@@ -38,73 +42,75 @@ $this->params['graph_stats'] = $this->render('../elements/dashboard/choose_branc
     <div class="clearfix">
         <div class="infographic-box merged merged-top pull-left">
             <i class="fa fa-gift purple-bg"></i>
-            <span class="value purple">25</span>
+            <span class="value purple"><?= $stats['created'];?></span>
             <span class="headline">NO OF SHIPMENTS</span>
         </div>
         <div class="infographic-box merged merged-top merged-right pull-left">
             <i class="fa fa-gift green-bg"></i>
-            <span class="value green">12</span>
+            <span class="value green"><?= $stats['for_sweep_ecommerce'];?></span>
             <span class="headline">DUE FOR SWEEP (ECOMMERCE)</span>
         </div>
     </div>
     <div class="clearfix">
         <div class="infographic-box merged pull-left">
             <i class="fa fa-gift yellow-bg"></i>
-            <span class="value yellow">13</span>
+            <span class="value yellow"><?= $stats['for_sweep'];?></span>
             <span class="headline">DUE FOR SWEEP (OTHERS)</span>
         </div>
         <div class="infographic-box merged merged-right pull-left">
             <i class="fa fa-truck red-bg"></i>
-            <span class="value red">28</span>
+            <span class="value red"><?= $stats['for_delivery'];?></span>
             <span class="headline">DUE FOR DELIVERY</span>
         </div>
     </div>
 </div>
 
+<?php if($branch_type != ServiceConstant::BRANCH_TYPE_EC) : ?>
 <!-- HUB STAFF -->
 <div class="main-box">
     <div class="clearfix">
         <div class="infographic-box merged merged-top pull-left">
             <i class="fa fa-gift purple-bg"></i>
-            <span class="value purple">25</span>
+            <span class="value purple"><?= $stats['received'];?></span>
             <span class="headline">SHIPMENT RECEIVED</span>
         </div>
         <div class="infographic-box merged merged-top merged-right pull-left">
             <i class="fa fa-gift emerald-bg"></i>
-            <span class="value emerald">12</span>
+            <span class="value emerald"><?= $stats['ready_for_sorting'];?></span>
             <span class="headline">READY FOR SORTING</span>
         </div>
     </div>
     <div class="clearfix">
         <div class="infographic-box merged pull-left">
             <i class="fa fa-gift gray-bg"></i>
-            <span class="value gray">13</span>
+            <span class="value gray"><?= $stats['groundsman'];?></span>
             <span class="headline">READY FOR SORTING (GROUNDSMAN)</span>
         </div>
         <div class="infographic-box merged merged-right pull-left">
             <i class="fa fa-gift red-bg"></i>
-            <span class="value red">28</span>
+            <span class="value red"><?= $stats['sorted'];?></span>
             <span class="headline">SORTED BUT STILL AT THE HUB</span>
         </div>
     </div>
     <div class="clearfix">
         <div class="infographic-box merged pull-left">
             <i class="fa fa-truck yellow-bg"></i>
-            <span class="value yellow">13</span>
+            <span class="value yellow"><?= $stats['transit_to_customer']; ?></span>
             <span class="headline">IN TRANSIT TO CUSTOMER</span>
         </div>
         <div class="infographic-box merged merged-right pull-left">
             <i class="fa fa-check green-bg"></i>
-            <span class="value green">28</span>
+            <span class="value green"><?= $stats['delivered']; ?></span>
             <span class="headline">DELIVERED</span>
         </div>
     </div>
 </div>
-
+<?php endif; ?>
 <script type="text/javascript">
     var filter_date = '<?= $date; ?>',
         filter_from = new Date('<?= $from_date; ?>'),
-        filter_to = new Date('<?= $to_date; ?>');
+        filter_to = new Date('<?= $to_date; ?>'),
+        branch = <?= $branch ? $branch : 0;?>;
 </script>
 
 <?php
