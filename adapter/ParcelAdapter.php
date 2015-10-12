@@ -251,4 +251,25 @@ class ParcelAdapter extends BaseAdapter
             return $response->getError();
         }
     }
+
+    /**
+     * Returns the number of parcels meeting a
+     * @author Olawale Lawal <wale@cottacush.com>
+     * @param $filter_array
+     * @return array|mixed|string
+     */
+    public function getParcelCount($filter_array = null)
+    {
+        $filter_array = is_null($filter_array) ? [] : $filter_array;
+        $url_params = [];
+        $filter_array= array_filter($filter_array);
+        $filters = '?'.http_build_query($filter_array);
+        $response = $this->request(ServiceConstant::URL_PARCEL_COUNT.$filters, [] , self::HTTP_GET);
+        $response = new ResponseHandler($response);
+        if ($response->getStatus() == Response::STATUS_OK) {
+            return $response->getData();
+        } else {
+            return 0;
+        }
+    }
 }
