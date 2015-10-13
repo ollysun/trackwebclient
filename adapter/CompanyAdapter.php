@@ -30,6 +30,9 @@ class CompanyAdapter extends BaseAdapter
      */
     public function createCompany($data)
     {
+        if(Calypso::getValue($data, 'company.reg_no') == '') {
+            $data['company']['reg_no'] = null;
+        }
         $rawResponse = $this->request(ServiceConstant::URL_COMPANY_ADD, Json::encode($data), self::HTTP_POST);
         $response = new ResponseHandler($rawResponse);
 
