@@ -10,6 +10,7 @@ namespace app\controllers;
 
 
 use Adapter\BankAdapter;
+use Adapter\Globals\ServiceConstant;
 use Adapter\ParcelAdapter;
 use Adapter\RefAdapter;
 use Adapter\RegionAdapter;
@@ -68,7 +69,7 @@ class ParcelsController extends BaseController
         $parcelType = $refData->getparcelType();
         $paymentMethod = $refData->getPaymentMethods();
         $countries = $refData->getCountries();
-        $states = (new ResponseHandler($refData->getStates(1)))->getData();
+        $states = (new ResponseHandler($refData->getStates(ServiceConstant::COUNTRY_NIGERIA)))->getData();
 
         $hubAdp = new BranchAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $centres = $hubAdp->getAllHubs(false);
