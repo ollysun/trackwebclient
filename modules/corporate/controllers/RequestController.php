@@ -38,7 +38,7 @@ class RequestController extends BaseController
             'company_id' => $companyId
         ];
 
-        $defaultDate = Util::today();
+        $defaultDate = Util::getToday('/');
         $validFilters = ['from' => 'start_created_date', 'to' => 'end_created_date'];
 
         foreach ($validFilters as $clientFilter => $serverFilter) {
@@ -101,7 +101,7 @@ class RequestController extends BaseController
         $companyAdapter = new CompanyAdapter();
         $companyId = Calypso::getValue(Calypso::getInstance()->session("user_session"), 'company_id');
 
-        $defaultDate = Util::today();
+        $defaultDate = Util::getToday('/');
 
         $filters = [
             'company_id' => $companyId
