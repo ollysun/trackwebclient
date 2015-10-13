@@ -89,7 +89,7 @@ if($search){
                     <th>Shipper</th>
                     <th>Shipper Phone</th>
                     <th>Receiver</th>
-                    <th>Receiver Phone</th>
+                    <th>Request Type</th>
                     <th>Created Date</th>
                     <th>Pieces</th>
                     <th>Status</th>
@@ -109,7 +109,7 @@ if($search){
                             <td><?= strtoupper($parcel['sender']['firstname'].' '. $parcel['sender']['lastname']) ?></td>
                             <td><?= $parcel['sender']['phone'] ?></td>
                             <td><?= strtoupper($parcel['receiver']['firstname'].' '. $parcel['receiver']['lastname']) ?></td>
-                            <td><?= $parcel['receiver']['phone'] ?></td>
+                            <td><?= ServiceConstant::getRequestType($parcel['request_type']) ?></td>
                             <td><?= date(ServiceConstant::DATE_TIME_FORMAT,strtotime($parcel['created_date'])); ?></td>
                             <td><?= $parcel['no_of_package']; ?></td>
                             <td><?= ServiceConstant::getStatus($parcel['status']); ?></td>
