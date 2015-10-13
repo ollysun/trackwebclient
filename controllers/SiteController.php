@@ -101,10 +101,10 @@ class SiteController extends BaseController
         $filters = array('created_branch_id' => $branch_to_view, 'start_created_date' => $from_date . ' 00:00:00', 'end_created_date' => $to_date . ' 23:59:59');
         $stats['created'] = $parcel->getParcelCount($filters);
 
-        $filters = array('history_from_branch_id' => $branch_to_view, 'history_status' => ServiceConstant::FOR_SWEEPER, 'history_start_created_date' => $from_date . ' 00:00:00', 'history_end_created_date' => $to_date . ' 23:59:59');
+        $filters = array('request_type' => ServiceConstant::REQUEST_OTHERS,'history_from_branch_id' => $branch_to_view, 'history_status' => ServiceConstant::FOR_SWEEPER, 'history_start_created_date' => $from_date . ' 00:00:00', 'history_end_created_date' => $to_date . ' 23:59:59');
         $stats['for_sweep'] = $parcel->getParcelCount($filters);
 
-        $filters = array('is_merchant' => true, 'history_from_branch_id' => $branch_to_view, 'history_status' => ServiceConstant::FOR_SWEEPER, 'history_start_created_date' => $from_date . ' 00:00:00', 'history_end_created_date' => $to_date . ' 23:59:59');
+        $filters = array('request_type' => ServiceConstant::REQUEST_ECOMMERCE, 'history_from_branch_id' => $branch_to_view, 'history_status' => ServiceConstant::FOR_SWEEPER, 'history_start_created_date' => $from_date . ' 00:00:00', 'history_end_created_date' => $to_date . ' 23:59:59');
         $stats['for_sweep_ecommerce'] = $parcel->getParcelCount($filters);
 
         $filters = array('from_branch_id' => $branch_to_view, 'status' => ServiceConstant::FOR_DELIVERY);

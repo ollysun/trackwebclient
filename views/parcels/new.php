@@ -209,18 +209,18 @@ $is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
 
                                 <div class="validate">
                                     <div class="radio-inline">
-                                        <input id="merchantNew" type="radio" name="merchant" value="new">
-                                        <label for="merchantNew" class="">New</label>
+                                        <input id="merchantNew" type="radio" name="merchant" value="yes">
+                                        <label for="merchantNew" class="">Yes</label>
                                     </div>
-                                    <div class="radio-inline">
+                                    <div class="radio-inline hidden">
                                         <input id="merchantOld" type="radio" name="merchant" value="old"
                                             <?= (Calypso::getValue($parcel, "sender_merchant.id", null) == null) ? "" : "checked='checked'"; ?>>
                                         <label for="merchantOld" class="">Existing</label>
                                     </div>
                                     <div class="radio-inline">
-                                        <input id="merchantNone" type="radio" name="merchant" value="none"
+                                        <input id="merchantNone" type="radio" name="merchant" value="no"
                                             <?= (Calypso::getValue($parcel, "sender_merchant.id", null) == null) ? "checked='checked'" : ""; ?>>
-                                        <label for="merchantNone" class="">Not applicable</label>
+                                        <label for="merchantNone" class="">No</label>
                                     </div>
                                 </div>
                             </div>
@@ -229,12 +229,12 @@ $is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
                                 <input type="hidden" name="account_id" class="form-control" id="account_id"
                                        value="<?= Calypso::getValue($parcel, "sender_merchant.id", ''); ?>">
 
-                                <div class="form-group">
+                                <div class="form-group hidden">
                                     <label for="account_name">Account Name</label>
                                     <input name="account_name" class="form-control" id="account_name"
                                         value="<?= Calypso::getValue($parcel, "sender_merchant.account_name", ''); ?>">
                                 </div>
-                                <div class="row">
+                                <div class="row hidden">
                                     <div class="col-xs-12 col-sm-6 col-lg-5 form-group">
                                         <label>Account No</label>
                                         <input name="account_no" class="form-control" data-validate-length="10" id="account_no"
@@ -258,7 +258,7 @@ $is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
                                     </div>
                                 </div>
 
-                                <div class="row">
+                                <div class="row hidden">
                                     <div class="col-xs-12 col-sm-6 col-lg-5 form-group">
                                         <label>Reference Number</label>
                                         <input name="reference_number" class="form-control" id="reference_number"
@@ -306,12 +306,6 @@ $is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
                                                checked="checked"> <label for="cLeadNo" class="">No</label>
                                     </div>
                                 </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label>Reference Number(s)</label>
-                                <input name="reference_number" class="form-control" id="reference_number">
-                                <div class="help-block">Please separate multiple reference numbers with commas</div>
                             </div>
 
                             <div class="form-group">
