@@ -73,23 +73,12 @@ class Util
     }
 
     /**
-     * Gets today's date in Y/m/d format
-     * @author Adegoke Obasa <goke@cottacush.com>
-     * @return bool|string
-     */
-    public static function today()
-    {
-        return date('Y/m/d');
-    }
-
-
-    /**
      * Returns the current date
      * @author Adegoke Obasa <goke@cottacush.com>
-     * @param $string
+     * @param string $separator
      * @return string
      */
-    public static function getToday(){
-        return date('Y-m-d');
+    public static function getToday($separator = '-'){
+        return date("Y{$separator}m{$separator}d");
     }
 }

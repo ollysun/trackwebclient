@@ -24,7 +24,7 @@ class PendingController extends BaseController
         $filters = [
             'status' => CompanyAdapter::STATUS_PENDING
         ];
-        $defaultDate = Util::today();
+        $defaultDate = Util::getToday('/');
         $validFilters = ['from' => 'start_created_at', 'to' => 'end_created_at'];
 
         foreach ($validFilters as $clientFilter => $serverFilter) {
@@ -79,7 +79,7 @@ class PendingController extends BaseController
             'status' => CompanyAdapter::STATUS_PENDING
         ];
 
-        $defaultDate = Util::today();
+        $defaultDate = Util::getToday('/');
         $validFilters = ['from' => 'start_created_at', 'to' => 'end_created_at'];
 
         foreach ($validFilters as $clientFilter => $serverFilter) {
