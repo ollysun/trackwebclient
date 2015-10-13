@@ -33,7 +33,7 @@ class CompanyAdapter extends BaseAdapter
         if(Calypso::getValue($data, 'company.reg_no') == '') {
             $data['company']['reg_no'] = null;
         }
-        $rawResponse = $this->request(ServiceConstant::URL_COMPANY_ADD . '?XDEBUG_SESSION_START=PHPSTORM', Json::encode($data), self::HTTP_POST);
+        $rawResponse = $this->request(ServiceConstant::URL_COMPANY_ADD, Json::encode($data), self::HTTP_POST);
         $response = new ResponseHandler($rawResponse);
 
         if (!$response->isSuccess()) {
