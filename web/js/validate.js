@@ -86,9 +86,10 @@ function validateFxn() {
                 isValid = false;
             }
         }
-        else if (input.hasClass('name'))
+        else if (input.hasClass('name') || input.hasClass('text'))
         {
-            var filter = /^([a-zA-Z]+)([a-zA-Z\.\-\' ]*)([a-zA-Z]+)$/;
+            //var filter = /^([a-zA-Z]+)([a-zA-Z\.\-\' ]*)([a-zA-Z]+)$/;
+            var filter = /[a-zA-Z]+/;
             if(!filter.test(val))
             {
                 msg = 'Invalid entry';
