@@ -56,7 +56,7 @@ class ParcelsController extends BaseController
 
         $parcel = [];
         $id = Yii::$app->request->get('id');
-        if(isset($id)) {
+        if (isset($id)) {
             $parcel = ParcelService::getParcelDetails($id);
         }
 
@@ -68,6 +68,7 @@ class ParcelsController extends BaseController
         $parcelType = $refData->getparcelType();
         $paymentMethod = $refData->getPaymentMethods();
         $countries = $refData->getCountries();
+        $states = (new ResponseHandler($refData->getStates(1)))->getData();
 
         $hubAdp = new BranchAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $centres = $hubAdp->getAllHubs(false);
@@ -88,6 +89,7 @@ class ParcelsController extends BaseController
             'deliveryType' => $deliveryType,
             'parcelType' => $parcelType,
             'countries' => $countries,
+            'states' => $states,
             'paymentMethod' => $paymentMethod,
             'centres' => $centres_list,
             'branch' => $user['branch'],
@@ -100,19 +102,27 @@ class ParcelsController extends BaseController
      */
     public function actionGetstates()
     {
-
         $country_id = \Yii::$app->request->get('id');
         if (!isset($country_id)) {
             return $this->sendErrorResponse("Invalid parameter(s) sent!", null);
         }
 
-        $refData = new RefAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $states = $refData->getStates($country_id);
-        if ($states['status'] === ResponseHandler::STATUS_OK) {
-            return $this->sendSuccessResponse($states['data']);
-        } else {
-            return $this->sendErrorResponse($states['message'], null);
+        $cacheKey = Calypso::getValue(Yii::$app->params, 'cacheAppPrefix') . "states_$country_id";
+
+        $states = Yii::$app->cache->get($cacheKey);
+        if (!$states) {
+            $refData = new RefAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+            $response = new ResponseHandler($refData->getStates($country_id));
+
+            if (!$response->isSuccess()) {
+                return $this->sendErrorResponse($response->getError(), null);
+            }
+
+            $states = $response->getData();
+//            Yii::$app->cache->set($cacheKey, $states, 3600);
         }
+
+        return $this->sendSuccessResponse($states);
     }
 
     /**
@@ -126,13 +136,22 @@ class ParcelsController extends BaseController
             return $this->sendErrorResponse("Invalid parameter(s) sent!", null);
         }
 
-        $regData = new RegionAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $cities = $regData->getAllCity(1, 1, $state_id);
-        if ($cities['status'] === ResponseHandler::STATUS_OK) {
-            return $this->sendSuccessResponse($cities['data']);
-        } else {
-            return $this->sendErrorResponse($cities['message'], null);
+        $cacheKey = Calypso::getValue(Yii::$app->params, 'cacheAppPrefix') . "cities_$state_id";
+
+        $cities = Yii::$app->cache->get($cacheKey);
+        if (!$cities) {
+            $refData = new RegionAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+            $response = new ResponseHandler($refData->getAllCity(1, 1, $state_id));
+
+            if (!$response->isSuccess()) {
+                return $this->sendErrorResponse($response->getError(), null);
+            }
+
+            $cities = $response->getData();
+//            Yii::$app->cache->set($cacheKey, $cities, 3600);
         }
+
+        return $this->sendSuccessResponse($cities);
     }
 
     /**

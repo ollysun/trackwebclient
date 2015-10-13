@@ -47,6 +47,9 @@ class RefAdapter extends BaseAdapter
 
     /**
      * This fetches all states from the middleware
+     * @param $id
+     * @param int $with_regions
+     * @return array|mixed|string
      */
     public function getStates($id, $with_regions = 0)
     {
