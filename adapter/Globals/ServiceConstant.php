@@ -177,6 +177,9 @@ class ServiceConstant
     const DELIVERY_DISPATCH = 2;
     const DELIVERY_PICKUP = 1;
 
+    const REQUEST_OTHERS = 1;
+    const REQUEST_ECOMMERCE = 2;
+
     public static function getStatus($status)
     {
         switch ($status) {
@@ -270,6 +273,20 @@ class ServiceConstant
 
             case ServiceConstant::DELIVERY_PICKUP:
                 return 'Pickup';
+
+            default:
+                return false;
+        }
+    }
+
+    public static function getRequestType($type)
+    {
+        switch ($type) {
+            case ServiceConstant::REQUEST_ECOMMERCE:
+                return 'eCommerce';
+
+            case ServiceConstant::REQUEST_OTHERS:
+                return 'Others';
 
             default:
                 return false;
