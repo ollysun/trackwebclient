@@ -9,6 +9,7 @@
 namespace app\services;
 
 use Adapter\BankAdapter;
+use Adapter\Globals\ServiceConstant;
 use Adapter\ParcelAdapter;
 use Adapter\RegionAdapter;
 use Adapter\RequestHelper;
@@ -156,6 +157,7 @@ class ParcelService {
                 $error[] = "POS and cash amount must sum up to the amount due.";
             }
         }
+        $parcel['request_type'] = (Calypso::getValue($data, 'merchant') === 'yes') ? ServiceConstant::REQUEST_ECOMMERCE : ServiceConstant::REQUEST_OTHERS;
 
         $payload['sender'] = $senderInfo;
         $payload['receiver'] = $receiverInfo;
