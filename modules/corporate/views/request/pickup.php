@@ -12,15 +12,10 @@ $this->params['breadcrumbs'] = array(
     ),
     array('label' => 'Pickup Requests')
 );
-
-$from_date = '1970/01/01 00:00:00';
-$to_date = '2015/09/09 23:59:59';
 ?>
 
 <?php
 $this->params['content_header_button'] = '<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#pickupModal"><i class="fa fa-plus"></i> Pickup Request</button>';
-//$this->params['graph_stats'] = $this->render('../elements/corporate/credit_limit',['stats'=>$stats]);
-
 ?>
 <?= Html::cssFile('@web/css/libs/bootstrap-select.min.css') ?>
 <?php echo Calypso::showFlashMessages(); ?>
@@ -66,9 +61,9 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-d
                             <th>Waybill No</th>
                             <th>Description</th>
                             <th>Pickup</th>
-                            <th>Pickup Address</th>
+                            <th>Pickup Add., City, State</th>
                             <th>Destination</th>
-                            <th>Destination Address</th>
+                            <th>Dest. Add., City, State</th>
                             <th>Status</th>
                             <th>Action</th>
                         </tr>
@@ -81,11 +76,14 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-d
                                 <td></td>
                                 <td><?= Calypso::getValue($request, 'shipment_description'); ?></td>
                                 <td><?= Calypso::getValue($request, 'pickup_name');?> (<?= Calypso::getValue($request, 'pickup_phone_number');?>)</td>
-                                <td><?= Calypso::getValue($request, 'pickup_address');?></td>
+                                <td><?= Calypso::getValue($request, 'pickup_address')  . ', ' . strtoupper(Calypso::getValue($request, 'pickup_city.name', '')) . ', ' . strtoupper(Calypso::getValue($request, 'pickup_state.name', ''))?></td>
                                 <td><?= Calypso::getValue($request, 'destination_name');?> (<?= Calypso::getValue($request, 'destination_phone_number');?>)</td>
-                                <td><?= Calypso::getValue($request, 'destination_address');?></td>
+                                <td><?= Calypso::getValue($request, 'destination_address')  . ', ' . strtoupper(Calypso::getValue($request, 'destination_city.name', '')) . ', ' . strtoupper(Calypso::getValue($request, 'destination_state.name', ''))?></td>
                                 <td><?= strtoupper(Calypso::getValue($request, 'status')); ?></td>
-                                <td></td>
+                                <td>
+                                    <a title="View this request" href="<?= Url::toRoute(['/corporate/request/viewpickup', 'id' => Calypso::getValue($request, 'id')]) ?>"
+                                       class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>
+                                </td>
                             </tr>
                         <?php endforeach; ?>
                         </tbody>

@@ -142,7 +142,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                                     </option>
                                 </select>
                             </div>
-                            <div class="form-group col-xs-6">
+                            <div class="form-group col-xs-6 hide">
                                 <label for="">Activate user?</label>
                                 <select name="status" class="form-control">
                                     <option value="2">No</option>
