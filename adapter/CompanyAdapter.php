@@ -15,6 +15,8 @@ class CompanyAdapter extends BaseAdapter
 {
     const TYPE_SHIPMENT = "shipment";
     const TYPE_PICKUP = "pickup";
+    const STATUS_PENDING = 'pending';
+
     public function __construct()
     {
         parent::__construct(RequestHelper::getClientID(), RequestHelper::getAccessToken());
@@ -136,9 +138,67 @@ class CompanyAdapter extends BaseAdapter
     {
         $filters = array_merge($filters, array(
             'type' => self::TYPE_PICKUP,
+            'with_pickup_city' => '1',
+            'with_pickup_state' => '1',
+            'with_destination_city' => '1',
+            'with_destination_state' => '1',
             'with_total_count' => 'true'));
 
         $response = $this->request(ServiceConstant::URL_COMPANY_REQUESTS,
+            $filters, self::HTTP_GET);
+
+        $response = new ResponseHandler($response);
+
+        if ($response->isSuccess()) {
+            return $response->getData();
+        }
+        return [];
+    }
+
+    /**
+     * Get shipment request detail
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @param $id
+     * @return array|mixed
+     */
+    public function getShipmentRequest($id)
+    {
+        $filters = [
+            'request_id' => $id,
+            'with_receiver_city' => '1',
+            'with_receiver_state' => '1',
+            'with_company' => '1',
+            'with_created_by' => '1'];
+
+        $response = $this->request(ServiceConstant::URL_SHIPMENT_REQUEST,
+            $filters, self::HTTP_GET);
+
+        $response = new ResponseHandler($response);
+
+        if ($response->isSuccess()) {
+            return $response->getData();
+        }
+        return [];
+    }
+
+    /**
+     * Get pickup request detail
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @param $id
+     * @return array|mixed
+     */
+    public function getPickupRequest($id)
+    {
+        $filters = [
+            'request_id' => $id,
+            'with_pickup_city' => '1',
+            'with_pickup_state' => '1',
+            'with_destination_city' => '1',
+            'with_destination_state' => '1',
+            'with_company' => '1',
+            'with_created_by' => '1'];
+
+        $response = $this->request(ServiceConstant::URL_PICKUP_REQUEST,
             $filters, self::HTTP_GET);
 
         $response = new ResponseHandler($response);

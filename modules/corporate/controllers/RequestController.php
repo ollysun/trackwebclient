@@ -14,7 +14,9 @@ use Adapter\ResponseHandler;
 use Adapter\Util\Calypso;
 use Adapter\Util\ResponseCodes;
 use Adapter\Util\ResponseMessages;
+use Adapter\Util\Util;
 use app\controllers\BaseController;
+use app\traits\CorporateRequestFilter;
 use Yii;
 use yii\helpers\Url;
 use yii\web\Controller;
@@ -22,6 +24,7 @@ use yii\web\Controller;
 class RequestController extends BaseController
 {
 
+    use CorporateRequestFilter;
     /**
      * Company requests action
      * @author Adegoke Obasa <goke@cottacush.com>
@@ -37,11 +40,13 @@ class RequestController extends BaseController
             'company_id' => $companyId
         ];
 
+        $filters = array_merge($filters, $this->getCreatedAtFilters());
+
         // Add Offset and Count
         $page = \Yii::$app->getRequest()->get('page', 1);
 
         $query = \Yii::$app->getRequest()->get('search');
-        if(!is_null($query)) {
+        if (!is_null($query)) {
             $filters['waybill_number'] = $query;
             $page = 1; // Reset page
         }
@@ -68,7 +73,9 @@ class RequestController extends BaseController
             'page_width' => $this->page_width,
             'countries' => $countries,
             'states' => $states,
-            'total_count' => $totalCount
+            'total_count' => $totalCount,
+            'from_date' => $this->getFromCreatedAtDate($filters),
+            'to_date' => $this->getToCreatedAtDate($filters)
         ]);
     }
 
@@ -87,11 +94,13 @@ class RequestController extends BaseController
             'company_id' => $companyId
         ];
 
+        $filters = array_merge($filters, $this->getCreatedAtFilters());
+
         // Add Offset and Count
         $page = \Yii::$app->getRequest()->get('page', 1);
 
         $query = \Yii::$app->getRequest()->get('search');
-        if(!is_null($query)) {
+        if (!is_null($query)) {
             $filters['waybill_number'] = $query;
             $page = 1; // Reset page
         }
@@ -118,7 +127,9 @@ class RequestController extends BaseController
             'page_width' => $this->page_width,
             'countries' => $countries,
             'states' => $states,
-            'total_count' => $totalCount
+            'total_count' => $totalCount,
+            'from_date' => $this->getFromCreatedAtDate($filters),
+            'to_date' => $this->getToCreatedAtDate($filters)
         ]);
     }
 
@@ -132,22 +143,22 @@ class RequestController extends BaseController
         $companyAdapter = new CompanyAdapter();
         $companyId = Calypso::getValue(Calypso::getInstance()->session("user_session"), 'company_id');
 
-        if(Yii::$app->request->isPost) {
+        if (Yii::$app->request->isPost) {
             $data = Yii::$app->request->post();
             $data['company_id'] = $companyId;
 
             $status = $companyAdapter->makeShipmentRequest($data);
-            if($status) {
+            if ($status) {
                 $this->flashSuccess("Shipment request created successfully");
             } else {
-                $this->flashSuccess($companyAdapter->getLastErrorMessage());
+                $this->flashError($companyAdapter->getLastErrorMessage());
             }
         }
         return $this->redirect(Url::to('/corporate/request/shipments'));
     }
 
     /**
-     * Make shipment request form action
+     * Make pickup request form action
      * @author Adegoke Obasa <goke@cottacush.com>
      * @return string
      */
@@ -156,28 +167,41 @@ class RequestController extends BaseController
         $companyAdapter = new CompanyAdapter();
         $companyId = Calypso::getValue(Calypso::getInstance()->session("user_session"), 'company_id');
 
-        if(Yii::$app->request->isPost) {
+        if (Yii::$app->request->isPost) {
             $data = Yii::$app->request->post();
             $data['company_id'] = $companyId;
 
             $status = $companyAdapter->makePickupRequest($data);
-            if($status) {
+            if ($status) {
                 $this->flashSuccess("Pickup request created successfully");
             } else {
-                $this->flashSuccess($companyAdapter->getLastErrorMessage());
+                $this->flashError($companyAdapter->getLastErrorMessage());
             }
         }
         return $this->redirect(Url::to('/corporate/request/pickups'));
     }
 
     /**
-     * Pending Requests Action
+     * View Pickup Request Action
      * @author Adegoke Obasa <goke@cottacush.com>
-     * @author Olajide Oye <jide@cottacush.com>
-     * @return string
      */
-    public function actionPending()
+    public function actionViewpickup()
     {
-        return $this->render('pending');
+        $id = Yii::$app->getRequest()->get('id');
+
+        $request = (new CompanyAdapter())->getPickupRequest($id);
+        return $this->render('viewpickup', ['request' => $request]);
+    }
+
+    /**
+     * View Shipment Request Action
+     * @author Adegoke Obasa <goke@cottacush.com>
+     */
+    public function actionViewshipment()
+    {
+        $id = Yii::$app->getRequest()->get('id');
+
+        $request = (new CompanyAdapter())->getShipmentRequest($id);
+        return $this->render('viewshipment', ['request' => $request]);
     }
 }
