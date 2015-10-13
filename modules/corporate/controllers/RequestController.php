@@ -16,6 +16,7 @@ use Adapter\Util\ResponseCodes;
 use Adapter\Util\ResponseMessages;
 use Adapter\Util\Util;
 use app\controllers\BaseController;
+use app\traits\CorporateRequestFilter;
 use Yii;
 use yii\helpers\Url;
 use yii\web\Controller;
@@ -23,6 +24,7 @@ use yii\web\Controller;
 class RequestController extends BaseController
 {
 
+    use CorporateRequestFilter;
     /**
      * Company requests action
      * @author Adegoke Obasa <goke@cottacush.com>
@@ -38,20 +40,7 @@ class RequestController extends BaseController
             'company_id' => $companyId
         ];
 
-        $defaultDate = Util::getToday('/');
-        $validFilters = ['from' => 'start_created_date', 'to' => 'end_created_date'];
-
-        foreach ($validFilters as $clientFilter => $serverFilter) {
-            $value = \Yii::$app->getRequest()->get($clientFilter, $defaultDate);
-            if (preg_match('/\bstart\_\w+\_date\b/', $serverFilter)) {
-                $filters[$serverFilter] = $value . " 00:00:00";
-            } else if (preg_match('/\bend\_\w+\_date\b/', $serverFilter)) {
-                $filters[$serverFilter] = $value . " 23:59:59";
-            }
-        }
-
-        $fromDate = Calypso::getValue($filters, 'start_created_date', $defaultDate);
-        $toDate = Calypso::getValue($filters, 'end_created_date', $defaultDate);
+        $filters = array_merge($filters, $this->getCreatedAtFilters());
 
         // Add Offset and Count
         $page = \Yii::$app->getRequest()->get('page', 1);
@@ -85,8 +74,8 @@ class RequestController extends BaseController
             'countries' => $countries,
             'states' => $states,
             'total_count' => $totalCount,
-            'from_date' => $fromDate,
-            'to_date' => $toDate
+            'from_date' => $this->getFromCreatedAtDate($filters),
+            'to_date' => $this->getToCreatedAtDate($filters)
         ]);
     }
 
@@ -101,25 +90,11 @@ class RequestController extends BaseController
         $companyAdapter = new CompanyAdapter();
         $companyId = Calypso::getValue(Calypso::getInstance()->session("user_session"), 'company_id');
 
-        $defaultDate = Util::getToday('/');
-
         $filters = [
             'company_id' => $companyId
         ];
 
-        $validFilters = ['from' => 'start_created_date', 'to' => 'end_created_date'];
-
-        foreach ($validFilters as $clientFilter => $serverFilter) {
-            $value = \Yii::$app->getRequest()->get($clientFilter, $defaultDate);
-            if (preg_match('/\bstart\_\w+\_date\b/', $serverFilter)) {
-                $filters[$serverFilter] = $value . " 00:00:00";
-            } else if (preg_match('/\bend\_\w+\_date\b/', $serverFilter)) {
-                $filters[$serverFilter] = $value . " 23:59:59";
-            }
-        }
-
-        $fromDate = Calypso::getValue($filters, 'start_created_date', $defaultDate);
-        $toDate = Calypso::getValue($filters, 'end_created_date', $defaultDate);
+        $filters = array_merge($filters, $this->getCreatedAtFilters());
 
         // Add Offset and Count
         $page = \Yii::$app->getRequest()->get('page', 1);
@@ -153,8 +128,8 @@ class RequestController extends BaseController
             'countries' => $countries,
             'states' => $states,
             'total_count' => $totalCount,
-            'from_date' => $fromDate,
-            'to_date' => $toDate
+            'from_date' => $this->getFromCreatedAtDate($filters),
+            'to_date' => $this->getToCreatedAtDate($filters)
         ]);
     }
 
