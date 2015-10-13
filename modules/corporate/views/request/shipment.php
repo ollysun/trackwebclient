@@ -12,9 +12,6 @@ $this->params['breadcrumbs'] = array(
     ),
     array('label' => 'Shipment Requests')
 );
-
-$from_date = '1970/01/01 00:00:00';
-$to_date = '2015/09/09 23:59:59';
 ?>
 
 <?php
@@ -85,7 +82,10 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                                     echo is_null($weight) ? '' : $weight . ' KG';
                                     ?></td>
                                 <td><?= strtoupper(Calypso::getValue($request, 'status')); ?></td>
-                                <td></td>
+                                <td>
+                                    <a title="View this request" href="<?= Url::toRoute(['/corporate/request/viewshipment', 'id' => Calypso::getValue($request, 'id')]) ?>"
+                                       class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>
+                                </td>
                             </tr>
                         <?php endforeach; ?>
                         </tbody>
