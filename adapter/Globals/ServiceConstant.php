@@ -178,6 +178,7 @@ class ServiceConstant
 
     const DELIVERY_DISPATCH = 2;
     const DELIVERY_PICKUP = 1;
+    const COUNTRY_NIGERIA = 1;
 
     const REQUEST_OTHERS = 1;
     const REQUEST_ECOMMERCE = 2;

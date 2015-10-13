@@ -137,7 +137,7 @@
     $country_id = Calypso::getValue($parcel, "{$prefix_map[$prefix]}_location.country.id", '');
     if (isset($countries) && is_array($countries['data'])) {
 	    foreach ($countries['data'] as $item) {
-            $selected = ($country_id == $item['id']) ? "selected" : '';
+            $selected = ($country_id == $item['id'] || $item['id'] == 1) ? "selected" : '';
 ?>
             <option value="<?=$item['id']?>" <?=$selected?> ><?=strtoupper($item['name']);?></option>
 <?php
@@ -149,8 +149,13 @@
 
 <div class="form-group">
 	<label for="state_<?=$prefix?>">State</label>
-	<select name="state[<?=$prefix?>]" class="form-control validate required" disabled="disabled" id="state_<?=$prefix?>"
-            data-selected-id="<?php echo Calypso::getValue($parcel, "{$prefix_map[$prefix]}_location.state.id", ''); ?>"></select>
+	<select name="state[<?=$prefix?>]" class="form-control validate required" id="state_<?=$prefix?>"
+            data-selected-id="<?php echo Calypso::getValue($parcel, "{$prefix_map[$prefix]}_location.state.id", ''); ?>">
+		<?php foreach ($states as $state): ?>
+			<option
+				value="<?= Calypso::getValue($state, 'id', '') ?>"><?= strtoupper(Calypso::getValue($state, 'name', '')); ?></option>
+		<?php endforeach; ?>
+	</select>
 </div>
 
 <div class="form-group">
