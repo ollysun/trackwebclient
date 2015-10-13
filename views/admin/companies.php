@@ -115,7 +115,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                                 </div>
                                 <div class="col-xs-6 form-group">
                                     <label for="">Registration No</label>
-                                    <input type="text" name="company[reg_no]" class="form-control validate required">
+                                    <input type="text" name="company[reg_no]" class="form-control">
                                 </div>
                             </div>
                             <div class="row">
