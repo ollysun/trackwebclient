@@ -159,6 +159,8 @@ class ServiceConstant
     const URL_COMPANY_REQUESTS = 'company/getRequests';
     const URL_MAKE_SHIPMENT_REQUEST = 'company/makeShipmentRequest';
     const URL_MAKE_PICKUP_REQUEST = 'company/makePickupRequest';
+    const URL_SHIPMENT_REQUEST = 'company/getShipmentRequest';
+    const URL_PICKUP_REQUEST = 'company/getPickupRequest';
 
     const DATE_TIME_FORMAT = 'd M Y H:i';
     const DATE_FORMAT = 'd M Y';

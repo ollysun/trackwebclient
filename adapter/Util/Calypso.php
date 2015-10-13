@@ -339,14 +339,17 @@ class Calypso
                 'finance/*',
                 'billing/*',
                 'admin/*',
-                'corporate/request/pending',
+                'corporate/pending/shipments',
+                'corporate/pending/pickups'
             ], self::getCorporateRoutes()),
             ServiceConstant::USER_TYPE_COMPANY_ADMIN => [
-                'corporate/request/pending',
+                'corporate/pending/shipments',
+                'corporate/pending/pickups'
             ],
             ServiceConstant::USER_TYPE_COMPANY_OFFICER => [
                 'corporate/users',
-                'corporate/request/pending'
+                'corporate/pending/shipments',
+                'corporate/pending/pickups',
             ]
         ];
         return $permissionMap;
@@ -408,7 +411,8 @@ class Calypso
                     'Shipment_Requests' => ['base_link' => 'corporate/request/shipments', 'class' => ''],
                     'Pickup_Requests' => ['base_link' => 'corporate/request/pickups', 'class' => ''],
                     'Users' => ['base_link' => 'corporate/users', 'class' => ''],
-                    'Pending' => ['base_link' => 'corporate/request/pending', 'class' => '']
+                    'Pending Shipments' => ['base_link' => 'corporate/pending/shipments', 'class' => ''],
+                    'Pending Pickups' => ['base_link' => 'corporate/pending/pickups', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]]
                 ],
                 'corporate' => true
             ]
