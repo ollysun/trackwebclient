@@ -1,19 +1,19 @@
 <?php
 use Adapter\Util\Calypso;
 use yii\helpers\Html;
-use yii\helpers\Url;
+use Adapter\Globals\ServiceConstant;
 
 /* @var $this yii\web\View */
-if(!isset($isGroundsman)) {
+if (!isset($isGroundsman)) {
     $isGroundsman = false;
 }
-$this->title = 'Shipments: Next Destination'. ($isGroundsman ? ' - GroundsMan' : '');
+$this->title = 'Shipments: Next Destination' . ($isGroundsman ? ' - GroundsMan' : '');
 $this->params['breadcrumbs'] = array(
     /*array(
     'url' => ['site/managebranches'],
     'label' => 'Manage Branches'
     ),*/
-    array('label'=> 'Ready for Shipments')
+    array('label' => 'Ready for Sorting')
 );
 ?>
 
@@ -39,13 +39,13 @@ $this->params['breadcrumbs'] = array(
                     <div class="pull-left form-group">
                         <label for="branch_type">Branch type</label><br>
                         <select id="branch_type" class="form-control input-sm" name="branch_type">
-                            <?php if(!$isGroundsman): ?>
+                            <?php if (!$isGroundsman): ?>
                                 <option value="hub">Hub</option>
-                            <?php else:  ?>
+                            <?php else: ?>
                                 <option value="" selected>Select...</option>
                                 <option value="route">Route</option>
-                            <?php endif;  ?>
-                            <option value="exp" <?php echo ($isGroundsman ? '' : 'selected') ?> >Express Centres</option>
+                            <?php endif; ?>
+                            <option value="exp" <?php echo($isGroundsman ? '' : 'selected') ?> >Express Centres</option>
                         </select>
                     </div>
                     <div class="pull-left form-group">
@@ -62,55 +62,59 @@ $this->params['breadcrumbs'] = array(
             </div>
         </div>
         <div class="main-box-body">
-            <?php if(!empty($parcel_next)) { ?>
-            <div class="table-responsive">
-                <table id="next_dest" class="table table-hover next_dest">
-                    <thead>
-                    <tr>
-                        <th style="width: 20px;">
-                            <div class='checkbox-nice'>
-                                <input id='chk_all' type='checkbox' class='chk_all'><label for='chk_all'></label>
-                            </div>
-                        </th>
-                        <th style="width: 20px">S/N</th>
-                        <th>Waybill No</th>
-                        <th>Origin</th>
-                        <th>Next Destination</th>
-                        <th>Final Destination</th>
-                        <th>Weight (Kg)</th>
-                        <th>Age analysis</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <?php
+            <?php if (!empty($parcel_next)) { ?>
+                <div class="table-responsive">
+                    <table id="next_dest" class="table table-hover next_dest">
+                        <thead>
+                        <tr>
+                            <th style="width: 20px;">
+                                <div class='checkbox-nice'>
+                                    <input id='chk_all' type='checkbox' class='chk_all'><label for='chk_all'></label>
+                                </div>
+                            </th>
+                            <th style="width: 20px">S/N</th>
+                            <th>Waybill No</th>
+                            <th>Origin</th>
+                            <th>Next Destination</th>
+                            <th>Final Destination</th>
+                            <th>Request Type</th>
+                            <th>Weight (Kg)</th>
+                            <th>Age analysis</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?php
                         $row = $offset;
                         foreach ($parcel_next as $parcels) {
                             ++$row;
-
-                            echo "<tr data-waybill='{$parcels['waybill_number']}'>";
-                            echo "<td>
-                                            <div class='checkbox-nice'>
-                                                <input name='waybills[]' id='chk_{$row}' type='checkbox' class='chk_next'><label for='chk_{$row}'></label>
-                                            </div>
-                                          </td>";
-                            echo "<td>{$row}</td>";
-                            echo "<td><a href='/shipments/view?waybill_number=" . Calypso::getValue($parcels, 'waybill_number') . "'>" . Calypso::getValue($parcels, 'waybill_number') . "</a></td>";
-                            echo "<td>" . ucwords(Calypso::getValue($parcels, 'sender_address.city.name') . ', ' . Calypso::getValue($parcels, 'sender_address.state.name')) . "</td>";
-                            echo "<td></td>";
-                            echo "<td>" . ucwords(Calypso::getValue($parcels, 'receiver_address.city.name') . ', ' . Calypso::getValue($parcels, 'receiver_address.state.name')) . "</td>";
-                            echo "<td>" . Calypso::getValue($parcels, 'weight') . "</td>";
-                            echo "<td></td>";
-                            echo "</tr>";
-                        }
-                    ?>
-                    </tbody>
-                </table>
-            </div>
-            <?= $this->render('../elements/pagination_and_summary', ['first' => $offset, 'last'=>$row, 'total_count'=> $total_count,'page_width'=>$page_width]) ?>
+                            ?>
+                            <tr data-waybill='<?= $parcels['waybill_number'] ?>'>
+                                <td>
+                                    <div class='checkbox-nice'>
+                                        <input name='waybills[]' id='chk_<?= $row; ?>' type='checkbox' class='chk_next'><label
+                                            for='chk_<?= $row; ?>'></label>
+                                    </div>
+                                </td>
+                                <td><?= $row; ?></td>
+                                <td>
+                                    <a href='/shipments/view?waybill_number=<?= Calypso::getValue($parcels, 'waybill_number'); ?>'><?= Calypso::getValue($parcels, 'waybill_number') ?></a>
+                                </td>
+                                <td><?= ucwords(Calypso::getValue($parcels, 'sender_address.city.name') . ', ' . Calypso::getValue($parcels, 'sender_address.state.name')); ?></td>
+                                <td></td>
+                                <td><?= ucwords(Calypso::getValue($parcels, 'receiver_address.city.name') . ', ' . Calypso::getValue($parcels, 'receiver_address.state.name')); ?></td>
+                                <td><?= ServiceConstant::getRequestType($parcels['request_type']) ?></td>
+                                <td><?= Calypso::getValue($parcels, 'weight') ?></td>
+                                <td></td>
+                            </tr>
+                        <?php } ?>
+                        </tbody>
+                    </table>
+                </div>
+                <?= $this->render('../elements/pagination_and_summary', ['first' => $offset, 'last' => $row, 'total_count' => $total_count, 'page_width' => $page_width]) ?>
 
             <?php } else { ?>
                 <p>No record to display.</p>
-            <?php }  ?>
+            <?php } ?>
         </div>
     </div>
 </form>
@@ -121,7 +125,8 @@ $this->params['breadcrumbs'] = array(
         <form class="">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title" id="myModalLabel">Generate Dispatch Manifest</h4>
                 </div>
                 <div class="modal-body">
