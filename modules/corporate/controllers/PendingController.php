@@ -25,7 +25,8 @@ class PendingController extends BaseController
         $companyAdapter = new CompanyAdapter();
 
         $filters = [
-            'status' => CompanyAdapter::STATUS_PENDING
+            'status' => CompanyAdapter::STATUS_PENDING,
+            'with_company' => '1'
         ];
 
         $filters = array_merge($filters, $this->getCreatedAtFilters());
@@ -67,7 +68,8 @@ class PendingController extends BaseController
         $companyAdapter = new CompanyAdapter();
 
         $filters = [
-            'status' => CompanyAdapter::STATUS_PENDING
+            'status' => CompanyAdapter::STATUS_PENDING,
+            'with_company' => '1'
         ];
 
         $filters = array_merge($filters, $this->getCreatedAtFilters());
