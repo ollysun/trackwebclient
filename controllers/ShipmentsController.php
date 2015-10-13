@@ -106,7 +106,7 @@ class ShipmentsController extends BaseController
         $parcel = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $page_width = is_null($page_width) ? $this->page_width : $page_width;
         $offset = ($page - 1) * $page_width;
-        $route_id = !empty(Calypso::getInstance()->get()->route) ? Calypso::getInstance()->get()->route:null;
+        $route_id = !empty(Calypso::getInstance()->get()->route) ? Calypso::getInstance()->get()->route : null;
 
         if (\Yii::$app->request->isPost) {
             $rawData = \Yii::$app->request->post('waybills');
@@ -127,8 +127,8 @@ class ShipmentsController extends BaseController
 
                 if ($responseHandler->getStatus() === ResponseHandler::STATUS_OK) {
                     if (empty($data['bad_parcels']))
-                        return $this->redirect('/manifest/view?id='.Calypso::getValue($response, 'data.manifest.id', ''));
-                        //$this->flashSuccess('Shipments dispatched');
+                        return $this->redirect('/manifest/view?id=' . Calypso::getValue($response, 'data.manifest.id', ''));
+                    //$this->flashSuccess('Shipments dispatched');
                     else {
                         $bad_parcels = $data['bad_parcels'];
                         foreach ($bad_parcels as $key => $bad_parcel) {
@@ -151,7 +151,7 @@ class ShipmentsController extends BaseController
             $response = $parcel->getSearchParcels('-1', $search, $offset, $page_width, 1, $this->branch_to_view);
             $search_action = true;
         } else {
-            $response = $parcel->getParcelsForDelivery(null, null, ServiceConstant::FOR_DELIVERY, $this->branch_to_view, $offset, $page_width, null, 1, null,$route_id, true);
+            $response = $parcel->getParcelsForDelivery(null, null, ServiceConstant::FOR_DELIVERY, $this->branch_to_view, $offset, $page_width, null, 1, null, $route_id, true);
             $search_action = false;
         }
         $response = new ResponseHandler($response);
@@ -168,7 +168,7 @@ class ShipmentsController extends BaseController
         $routes = new ResponseHandler($routes);
         $route_list = $routes->getStatus() == ResponseHandler::STATUS_OK ? $routes->getData() : [];
 
-        return $this->render('fordelivery', array('parcels' => $data, 'from_date' => $from_date, 'to_date' => $to_date, 'offset' => $offset, 'page_width' => $page_width, 'search' => $search_action, 'total_count' => $total_count, 'routes' => $route_list, 'route_id'=>$route_id));
+        return $this->render('fordelivery', array('parcels' => $data, 'from_date' => $from_date, 'to_date' => $to_date, 'offset' => $offset, 'page_width' => $page_width, 'search' => $search_action, 'total_count' => $total_count, 'routes' => $route_list, 'route_id' => $route_id));
     }
 
     public function actionStaffcheck()
@@ -210,7 +210,7 @@ class ShipmentsController extends BaseController
                 $response = $parcelData->generateManifest($payloadData);
                 if ($response['status'] === ResponseHandler::STATUS_OK) {
                     //Forward to manifest page
-                    return $this->redirect('/manifest/view?id='.Calypso::getValue($response, 'data.manifest.id', ''));
+                    return $this->redirect('/manifest/view?id=' . Calypso::getValue($response, 'data.manifest.id', ''));
                 } else {
                     //Flash error message
                     $this->flashError($response['message']);
@@ -298,8 +298,7 @@ class ShipmentsController extends BaseController
                 } else {
                     $this->flashError('An error occurred while trying to cancel shipment. #' . $response->getError());
                 }
-
-            } elseif ($records['submit_teller']) {
+            } elseif ($records['task'] == 'submit_teller') {
                 if (!isset($records['bank_id'], $records['account_no'], $records['amount_paid'], $records['teller_no'], $records['waybill_numbers'])) {
                     $this->flashError("Invalid parameter(s) sent!");
                 } else {
