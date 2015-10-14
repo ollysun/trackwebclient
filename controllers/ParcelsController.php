@@ -10,6 +10,7 @@ namespace app\controllers;
 
 
 use Adapter\BankAdapter;
+use Adapter\CompanyAdapter;
 use Adapter\Globals\ServiceConstant;
 use Adapter\ParcelAdapter;
 use Adapter\RefAdapter;
@@ -57,8 +58,12 @@ class ParcelsController extends BaseController
 
         $parcel = [];
         $id = Yii::$app->request->get('id');
+        $pickupRequestId = Yii::$app->request->get('pickup_request_id');
         if (isset($id)) {
             $parcel = ParcelService::getParcelDetails($id);
+        } else if (isset($pickupRequestId)) {
+            $pickupRequest = (new CompanyAdapter())->getPickupRequest($pickupRequestId);
+            $parcel = ParcelService::convertPickupRequest($pickupRequest);
         }
 
         $refData = new RefAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
