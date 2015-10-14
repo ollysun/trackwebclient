@@ -87,7 +87,7 @@ $this->params['content_header_button'] = '';
                                        class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>
 
                                     <a title="Create parcel" href="<?= Url::toRoute(['/parcels/new', 'pickup_request_id' => Calypso::getValue($request, 'id')]) ?>"
-                                       class="btn btn-xs btn-primary"><i class="fa fa-copy"></i></a>
+                                       class="btn btn-xs btn-primary">Approve</a>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
