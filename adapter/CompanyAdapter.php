@@ -56,7 +56,9 @@ class CompanyAdapter extends BaseAdapter
             'with_city' => '1',
             'with_state' => '1',
             'with_primary_contact' => '1',
-            'with_relations_officer' => '1'
+            'with_relations_officer' => '1',
+            'with_relations_officer_auth' => '1',
+            'with_primary_contact_auth' => '1',
         ];
 
         $response = $this->request(ServiceConstant::URL_GET_COMPANY,

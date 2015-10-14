@@ -336,7 +336,10 @@ class AdminController extends BaseController
      */
     public function actionViewcompany()
     {
-        return $this->render('viewcompany');
+        $company_id = Yii::$app->request->get('id');
+
+        $company = (new CompanyAdapter())->getCompany($company_id);
+        return $this->render('viewcompany', ['company' => $company]);
     }
 
     /**
