@@ -195,7 +195,7 @@ class ParcelService {
          * Set Pickup Request Id
          */
         if(isset($data['pickup_request_id'])) {
-            $parcel['pickup_request_id'] = Calypso::getValue($data, 'pickup_request_id', null);
+            $payload['pickup_request_id'] = Calypso::getValue($data, 'pickup_request_id', null);
         }
 
         if($parcel['payment_type'] == '3' && (!is_null($parcel['cash_amount']) && !is_null($parcel['pos_amount']))) {
