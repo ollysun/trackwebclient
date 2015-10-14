@@ -61,6 +61,47 @@ class ParcelService {
         return $cloneParcels;
     }
 
+    /**
+     * Convert a pickup request to parcel
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @param $pickupRequest
+     * @return array
+     */
+    public static function convertPickupRequest($pickupRequest)
+    {
+        /**
+         * Pickup Request Mapping*
+        `pickup_name` - Sender Firstname
+        `pickup_address` - Sender Address
+        `pickup_phone_number` - Sender Phone
+        `pickup_state_id`- Sender State
+        `pickup_city_id` - Sender City
+        `destination_name` - Receiver Firstname
+        `destination_address` -  Receiver Address
+        `destination_phone_number` - Receiver Phone Number
+        `destination_state_id` - Receiver State
+        `destination_city_id` - Receiver City
+        `shipment_description` - Parcel Description
+        `request_detail` - ??
+         */
+        $parcel = [];
+        $parcel['info']['sender']['firstname'] = Calypso::getValue($pickupRequest, 'pickup_name');
+        $parcel['info']['sender']['phone'] = Calypso::getValue($pickupRequest, 'pickup_phone_number');
+        $parcel['sender_location']['country']['id'] = ServiceConstant::COUNTRY_NIGERIA;
+        $parcel['sender_location']['state']['id'] = Calypso::getValue($pickupRequest, 'pickup_state_id');
+        $parcel['sender_location']['id'] = Calypso::getValue($pickupRequest, 'pickup_city_id');
+        $parcel['info']['sender_address']['street_address1'] = Calypso::getValue($pickupRequest, 'pickup_address');
+        $parcel['info']['receiver']['firstname'] = Calypso::getValue($pickupRequest, 'destination_name');
+        $parcel['info']['receiver']['phone'] = Calypso::getValue($pickupRequest, 'destination_phone_number');
+        $parcel['receiver_location']['country']['id'] = ServiceConstant::COUNTRY_NIGERIA;
+        $parcel['receiver_location']['state']['id'] = Calypso::getValue($pickupRequest, 'destination_state_id');
+        $parcel['receiver_location']['id'] = Calypso::getValue($pickupRequest, 'destination_city_id');
+        $parcel['info']['receiver_address']['street_address1'] = Calypso::getValue($pickupRequest, 'destination_address');
+        $parcel['info']['other_info'] = Calypso::getValue($pickupRequest, 'shipment_description');
+
+        return $parcel;
+    }
+
     public function buildPostData($data) {
 
         $error = [];
