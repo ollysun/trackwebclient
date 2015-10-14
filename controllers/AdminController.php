@@ -331,6 +331,18 @@ class AdminController extends BaseController
     }
 
     /**
+     * View Company Action
+     * @author Adegoke Obasa <goke@cottacush.com>
+     */
+    public function actionViewcompany()
+    {
+        $company_id = Yii::$app->request->get('id');
+
+        $company = (new CompanyAdapter())->getCompany($company_id);
+        return $this->render('viewcompany', ['company' => $company]);
+    }
+
+    /**
      * Returns JSON of cities
      * @author Adegoke Obasa <goke@cottacush.com>
      * @return \yii\web\Response
