@@ -85,6 +85,9 @@ $this->params['content_header_button'] = '';
                                 <td>
                                     <a title="View this request" href="<?= Url::toRoute(['/corporate/request/viewpickup', 'id' => Calypso::getValue($request, 'id')]) ?>"
                                        class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>
+
+                                    <a title="Create parcel" href="<?= Url::toRoute(['/parcels/new', 'pickup_request_id' => Calypso::getValue($request, 'id')]) ?>"
+                                       class="btn btn-xs btn-primary">Approve</a>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
