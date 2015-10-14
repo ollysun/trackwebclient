@@ -153,6 +153,7 @@ class ServiceConstant
     const URL_USER_VALIDATE_PASSWORD_RESET_TOKEN = 'auth/validatePasswordResetToken';
 
     const URL_COMPANY_ADD = 'company/createCompany';
+    const URL_GET_COMPANY = 'company/getCompany';
     const URL_COMPANY_ALL = 'company/getAllCompany';
     const URL_COMPANY_USERS = 'company/getAllUsers';
     const URL_USER_ADD = 'company/createUser';
