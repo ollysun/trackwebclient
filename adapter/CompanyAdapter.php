@@ -44,6 +44,33 @@ class CompanyAdapter extends BaseAdapter
     }
 
     /**
+     * Get company detail
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @param $id
+     * @return array|mixed
+     */
+    public function getCompany($id)
+    {
+        $filters = [
+            'company_id' => $id,
+            'with_city' => '1',
+            'with_state' => '1',
+            'with_primary_contact' => '1',
+            'with_relations_officer' => '1'
+        ];
+
+        $response = $this->request(ServiceConstant::URL_GET_COMPANY,
+            $filters, self::HTTP_GET);
+
+        $response = new ResponseHandler($response);
+
+        if ($response->isSuccess()) {
+            return $response->getData();
+        }
+        return [];
+    }
+
+    /**
      * Get Companies
      * @author Adegoke Obasa <goke@cottacush.com>
      * @param $filters
