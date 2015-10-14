@@ -85,6 +85,7 @@ class ParcelService {
         `request_detail` - ??
          */
         $parcel = [];
+        $parcel['pickup_request_id'] = Calypso::getValue($pickupRequest, 'id');
         $parcel['info']['sender']['firstname'] = Calypso::getValue($pickupRequest, 'pickup_name');
         $parcel['info']['sender']['phone'] = Calypso::getValue($pickupRequest, 'pickup_phone_number');
         $parcel['sender_location']['country']['id'] = ServiceConstant::COUNTRY_NIGERIA;
@@ -189,6 +190,13 @@ class ParcelService {
         $parcel['cash_amount'] = Calypso::getValue($data, 'amount_in_cash', null);
         $parcel['pos_amount'] = Calypso::getValue($data, 'amount_in_pos', null);
         $parcel['pos_trans_id'] = Calypso::getValue($data, 'pos_transaction_id', null);
+
+        /**
+         * Set Pickup Request Id
+         */
+        if(isset($data['pickup_request_id'])) {
+            $parcel['pickup_request_id'] = Calypso::getValue($data, 'pickup_request_id', null);
+        }
 
         if($parcel['payment_type'] == '3' && (!is_null($parcel['cash_amount']) && !is_null($parcel['pos_amount']))) {
             $cash_amount = (int) $parcel['cash_amount'];
