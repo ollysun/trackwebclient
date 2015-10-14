@@ -408,6 +408,9 @@ $is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
                                 </div>
                                 <br>
                             </div>
+                            <?php if(isset($parcel['pickup_request_id'])):?>
+                                <input type="hidden" name="pickup_request_id" value="<?= $parcel['pickup_request_id'];?>">
+                            <?php endif; ?>
                             <div class="clearfix main-box-body main-box-button-wrap">
                                 <a href="#newParcelForm" data-slide="prev" class="btn btn-default pull-left"><i
                                         class="fa fa-arrow-left"></i> Back</a>
