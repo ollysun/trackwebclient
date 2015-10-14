@@ -331,6 +331,15 @@ class AdminController extends BaseController
     }
 
     /**
+     * View Company Action
+     * @author Adegoke Obasa <goke@cottacush.com>
+     */
+    public function actionViewcompany()
+    {
+        return $this->render('viewcompany');
+    }
+
+    /**
      * Returns JSON of cities
      * @author Adegoke Obasa <goke@cottacush.com>
      * @return \yii\web\Response
