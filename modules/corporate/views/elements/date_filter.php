@@ -23,6 +23,8 @@ use Adapter\Globals\ServiceConstant;
                 </div>
             </div>
 
+            <input value="<?= $companyId;?>" type="hidden" name="company_id">
+
             <div class="pull-left">
                 <label>&nbsp;</label><br>
                 <button class="btn btn-default btn-sm"><i class="fa fa-search"></i></button>

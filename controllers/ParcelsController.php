@@ -10,6 +10,7 @@ namespace app\controllers;
 
 
 use Adapter\BankAdapter;
+use Adapter\CompanyAdapter;
 use Adapter\Globals\ServiceConstant;
 use Adapter\ParcelAdapter;
 use Adapter\RefAdapter;
@@ -57,8 +58,16 @@ class ParcelsController extends BaseController
 
         $parcel = [];
         $id = Yii::$app->request->get('id');
+        $pickupRequestId = Yii::$app->request->get('pickup_request_id');
+        $shipmentRequestId = Yii::$app->request->get('shipment_request_id');
         if (isset($id)) {
             $parcel = ParcelService::getParcelDetails($id);
+        } else if (isset($pickupRequestId)) {
+            $pickupRequest = (new CompanyAdapter())->getPickupRequest($pickupRequestId);
+            $parcel = ParcelService::convertPickupRequest($pickupRequest);
+        } else if (isset($shipmentRequestId)) {
+            $shipmentRequest = (new CompanyAdapter())->getShipmentRequest($shipmentRequestId);
+            $parcel = ParcelService::convertShipmentRequest($shipmentRequest);
         }
 
         $refData = new RefAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
@@ -142,7 +151,7 @@ class ParcelsController extends BaseController
         $cities = Yii::$app->cache->get($cacheKey);
         if (!$cities) {
             $refData = new RegionAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-            $response = new ResponseHandler($refData->getAllCity(1, 1, $state_id));
+            $response = new ResponseHandler($refData->getAllCity(1, 1, $state_id, 1));
 
             if (!$response->isSuccess()) {
                 return $this->sendErrorResponse($response->getError(), null);

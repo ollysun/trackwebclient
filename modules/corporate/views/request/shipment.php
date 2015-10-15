@@ -69,11 +69,19 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                         </tr>
                         </thead>
                         <tbody>
-                        <?php $i = $offset; foreach ($requests as $request): ?>
+                        <?php $i = $offset;
+                        foreach ($requests as $request): ?>
                             <tr>
                                 <td><?= ++$i; ?></td>
                                 <td><?= Calypso::getValue($request, 'id'); ?></td>
-                                <td></td>
+                                <td>
+                                    <?php if (!is_null(Calypso::getValue($request, 'waybill_number', null))): ?>
+                                        <a href="<?= Url::to(['/shipments/view', 'waybill_number' => Calypso::getValue($request, 'waybill_number')]) ?>"
+                                           class=""><?= Calypso::getValue($request, 'waybill_number', ''); ?></a>
+                                    <?php else: ?>
+                                        N/A
+                                    <?php endif; ?>
+                                </td>
                                 <td><?= Calypso::getValue($request, 'description'); ?></td>
                                 <td><?= Calypso::getValue($request, 'receiver_firstname') . ' ' . Calypso::getValue($request, 'receiver_lastname'); ?></td>
                                 <td><?= Calypso::getValue($request, 'receiver_phone_number'); ?></td>
@@ -83,7 +91,8 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                                     ?></td>
                                 <td><?= strtoupper(Calypso::getValue($request, 'status')); ?></td>
                                 <td>
-                                    <a title="View this request" href="<?= Url::toRoute(['/corporate/request/viewshipment', 'id' => Calypso::getValue($request, 'id')]) ?>"
+                                    <a title="View this request"
+                                       href="<?= Url::toRoute(['/corporate/request/viewshipment', 'id' => Calypso::getValue($request, 'id')]) ?>"
                                        class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>
                                 </td>
                             </tr>
@@ -100,7 +109,8 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
 
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog modal-lg" role="document">
-            <form action="<?= Url::to("/corporate/request/createshipment")?>" data-keyboard-submit="disable" class="validate-form" method="post">
+            <form action="<?= Url::to("/corporate/request/createshipment") ?>" data-keyboard-submit="disable"
+                  class="validate-form" method="post">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
@@ -252,7 +262,8 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button name="shipment" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button name="shipment" type="button" class="btn btn-default" data-dismiss="modal">Close
+                        </button>
                         <button type="submit" class="btn btn-primary">Initiate Request</button>
                     </div>
                 </div>
