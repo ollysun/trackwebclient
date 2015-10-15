@@ -69,19 +69,32 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-d
                         </tr>
                         </thead>
                         <tbody>
-                        <?php $i = $offset; foreach ($requests as $request): ?>
+                        <?php $i = $offset;
+                        foreach ($requests as $request): ?>
                             <tr>
                                 <td><?= ++$i; ?></td>
                                 <td><?= Calypso::getValue($request, 'id'); ?></td>
-                                <td></td>
+                                <td>
+                                    <?php if (!is_null(Calypso::getValue($request, 'parcel.waybill_number', null))): ?>
+                                        <a href="<?= Url::to(['/shipments/view', 'waybill_number' => Calypso::getValue($request, 'parcel.waybill_number')]) ?>"
+                                           class=""><?= Calypso::getValue($request, 'parcel.waybill_number', ''); ?></a>
+                                    <?php else: ?>
+                                        N/A
+                                    <?php endif; ?>
+                                </td>
                                 <td><?= Calypso::getValue($request, 'shipment_description'); ?></td>
-                                <td><?= Calypso::getValue($request, 'pickup_name');?> (<?= Calypso::getValue($request, 'pickup_phone_number');?>)</td>
-                                <td><?= Calypso::getValue($request, 'pickup_address')  . ', ' . strtoupper(Calypso::getValue($request, 'pickup_city.name', '')) . ', ' . strtoupper(Calypso::getValue($request, 'pickup_state.name', ''))?></td>
-                                <td><?= Calypso::getValue($request, 'destination_name');?> (<?= Calypso::getValue($request, 'destination_phone_number');?>)</td>
-                                <td><?= Calypso::getValue($request, 'destination_address')  . ', ' . strtoupper(Calypso::getValue($request, 'destination_city.name', '')) . ', ' . strtoupper(Calypso::getValue($request, 'destination_state.name', ''))?></td>
+                                <td><?= Calypso::getValue($request, 'pickup_name'); ?>
+                                    (<?= Calypso::getValue($request, 'pickup_phone_number'); ?>)
+                                </td>
+                                <td><?= Calypso::getValue($request, 'pickup_address') . ', ' . strtoupper(Calypso::getValue($request, 'pickup_city.name', '')) . ', ' . strtoupper(Calypso::getValue($request, 'pickup_state.name', '')) ?></td>
+                                <td><?= Calypso::getValue($request, 'destination_name'); ?>
+                                    (<?= Calypso::getValue($request, 'destination_phone_number'); ?>)
+                                </td>
+                                <td><?= Calypso::getValue($request, 'destination_address') . ', ' . strtoupper(Calypso::getValue($request, 'destination_city.name', '')) . ', ' . strtoupper(Calypso::getValue($request, 'destination_state.name', '')) ?></td>
                                 <td><?= strtoupper(Calypso::getValue($request, 'status')); ?></td>
                                 <td>
-                                    <a title="View this request" href="<?= Url::toRoute(['/corporate/request/viewpickup', 'id' => Calypso::getValue($request, 'id')]) ?>"
+                                    <a title="View this request"
+                                       href="<?= Url::toRoute(['/corporate/request/viewpickup', 'id' => Calypso::getValue($request, 'id')]) ?>"
                                        class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>
                                 </td>
                             </tr>
@@ -98,7 +111,8 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-d
 
     <div class="modal fade" id="pickupModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog modal-lg" role="document">
-            <form action="<?= Url::to("/corporate/request/createpickup")?>" data-keyboard-submit="disable" class="validate-form" method="post">
+            <form action="<?= Url::to("/corporate/request/createpickup") ?>" data-keyboard-submit="disable"
+                  class="validate-form" method="post">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
@@ -129,7 +143,8 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-d
                                 </div>
                                 <div class="form-group">
                                     <label for="">City</label>
-                                    <select name="pickup[city_id]" id="pickup_city_id" class="form-control validate required">
+                                    <select name="pickup[city_id]" id="pickup_city_id"
+                                            class="form-control validate required">
                                         <option value="" selected>Select State First</option>
                                     </select>
 
@@ -140,7 +155,8 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-d
                                 </div>
                                 <div class="form-group">
                                     <label for="">Contact Phone number</label>
-                                    <input name="pickup[phone_number]" type="text" class="form-control validate required phone">
+                                    <input name="pickup[phone_number]" type="text"
+                                           class="form-control validate required phone">
                                     <span class="help-block">Format: 234xxxxxxxxxx</span>
                                 </div>
                             </fieldset>
@@ -148,13 +164,14 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-d
                                 <legend>Destination Detail</legend>
                                 <div class="form-group">
                                     <label for="">Address</label>
-                                    <input name="destination[address]" type="text" class="form-control validate required">
+                                    <input name="destination[address]" type="text"
+                                           class="form-control validate required">
                                 </div>
                                 <div class="form-group">
                                     <label for="">State</label>
                                     <select name="destination[state_id]" id="destination_state_id"
-                                                                       data-city_target="destination_city_id"
-                                                                       class="form-control validate required">
+                                            data-city_target="destination_city_id"
+                                            class="form-control validate required">
                                         <option value="" selected>Select State</option>
                                         <?php
                                         $states = is_null($states) ? [] : $states;
@@ -166,7 +183,8 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-d
                                 </div>
                                 <div class="form-group">
                                     <label for="">City</label>
-                                    <select name="destination[city_id]" id="destination_city_id" class="form-control validate required">
+                                    <select name="destination[city_id]" id="destination_city_id"
+                                            class="form-control validate required">
                                         <option value="" selected>Select State First</option>
                                     </select>
                                 </div>
@@ -176,7 +194,8 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-d
                                 </div>
                                 <div class="form-group">
                                     <label for="">Contact Phone number</label>
-                                    <input name="destination[phone_number]" type="text" class="form-control validate required phone">
+                                    <input name="destination[phone_number]" type="text"
+                                           class="form-control validate required phone">
                                     <span class="help-block">Format: 234xxxxxxxxxx</span>
                                 </div>
                             </fieldset>
