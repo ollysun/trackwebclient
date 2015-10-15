@@ -36,7 +36,7 @@ class PendingController extends BaseController
         $page = \Yii::$app->getRequest()->get('page', 1);
 
         $companyId = \Yii::$app->getRequest()->get('company_id');
-        if(!is_null($companyId)) {
+        if(!empty($companyId) ) {
             $filters['company_id'] = $companyId;
             $page = 1; // Reset page
         }
@@ -83,7 +83,7 @@ class PendingController extends BaseController
         $page = \Yii::$app->getRequest()->get('page', 1);
 
         $companyId = \Yii::$app->getRequest()->get('company_id');
-        if(!is_null($companyId)) {
+        if(!empty($companyId)) {
             $filters['company_id'] = $companyId;
             $page = 1; // Reset page
         }
