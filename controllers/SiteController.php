@@ -353,7 +353,7 @@ class SiteController extends BaseController
             return $this->sendErrorResponse("Invalid parameter(s) sent!", null);
         }
         $parcel = new  ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $response = $parcel->getParcel($staff_no, ServiceConstant::IN_TRANSIT, $branch_id);
+        $response = $parcel->getParcel($staff_no, ServiceConstant::IN_TRANSIT, $branch_id, true);
 
         if ($response['status'] === ResponseHandler::STATUS_OK) {
             return $this->sendSuccessResponse($response['data']);
