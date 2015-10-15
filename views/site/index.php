@@ -40,28 +40,30 @@ if($branch_type != ServiceConstant::BRANCH_TYPE_EC && $user_type == ServiceConst
 <!-- EC STAFF  -->
 <div class="main-box">
     <div class="clearfix">
-        <div class="infographic-box merged merged-top pull-left">
+        <a href="<?= Url::toRoute('shipments/processed');?>" class="infographic-box merged merged-top pull-left">
             <i class="fa fa-gift purple-bg"></i>
             <span class="value purple"><?= $stats['created'];?></span>
             <span class="headline">NO OF SHIPMENTS</span>
-        </div>
-        <div class="infographic-box merged merged-top merged-right pull-left">
+        </a>
+        <?php if($branch_type == ServiceConstant::BRANCH_TYPE_EC) : ?>
+        <a  href="<?= Url::toRoute('shipments/forsweep');?>" class="infographic-box merged merged-top merged-right pull-left">
             <i class="fa fa-gift green-bg"></i>
             <span class="value green"><?= $stats['for_sweep_ecommerce'];?></span>
             <span class="headline">DUE FOR SWEEP (ECOMMERCE)</span>
-        </div>
+        </a>
     </div>
     <div class="clearfix">
-        <div class="infographic-box merged pull-left">
+        <a href="<?= Url::toRoute('shipments/forsweep');?>" class="infographic-box merged pull-left">
             <i class="fa fa-gift yellow-bg"></i>
             <span class="value yellow"><?= $stats['for_sweep'];?></span>
             <span class="headline">DUE FOR SWEEP (OTHERS)</span>
-        </div>
-        <div class="infographic-box merged merged-right pull-left">
+        </a>
+        <?php endif; ?>
+        <a href="<?= Url::toRoute('shipments/fordelivery');?>" class="infographic-box merged merged-right pull-left">
             <i class="fa fa-truck red-bg"></i>
             <span class="value red"><?= $stats['for_delivery'];?></span>
             <span class="headline">DUE FOR DELIVERY</span>
-        </div>
+        </a>
     </div>
 </div>
 
@@ -69,40 +71,40 @@ if($branch_type != ServiceConstant::BRANCH_TYPE_EC && $user_type == ServiceConst
 <!-- HUB STAFF -->
 <div class="main-box">
     <div class="clearfix">
-        <div class="infographic-box merged merged-top pull-left">
+        <a href="<?= Url::toRoute('hubs/hubarrival');?>'?>" class="infographic-box merged merged-top pull-left">
             <i class="fa fa-gift purple-bg"></i>
             <span class="value purple"><?= $stats['received'];?></span>
             <span class="headline">SHIPMENT RECEIVED</span>
-        </div>
-        <div class="infographic-box merged merged-top merged-right pull-left">
+        </a>
+        <a href="<?= Url::toRoute('hubs/destination');?>" class="infographic-box merged merged-top merged-right pull-left">
             <i class="fa fa-gift emerald-bg"></i>
             <span class="value emerald"><?= $stats['ready_for_sorting'];?></span>
             <span class="headline">READY FOR SORTING</span>
-        </div>
+        </a>
     </div>
     <div class="clearfix">
-        <div class="infographic-box merged pull-left">
+        <a href="<?= Url::toRoute('hubs/destination');?>" class="infographic-box merged pull-left">
             <i class="fa fa-gift gray-bg"></i>
             <span class="value gray"><?= $stats['groundsman'];?></span>
             <span class="headline">READY FOR SORTING (GROUNDSMAN)</span>
-        </div>
-        <div class="infographic-box merged merged-right pull-left">
+        </a>
+        <a href="<?= Url::toRoute('hubs/delivery');?>" class="infographic-box merged merged-right pull-left">
             <i class="fa fa-gift red-bg"></i>
             <span class="value red"><?= $stats['sorted'];?></span>
             <span class="headline">SORTED BUT STILL AT THE HUB</span>
-        </div>
+        </a>
     </div>
     <div class="clearfix">
-        <div class="infographic-box merged pull-left">
+        <a href="<?= Url::toRoute('shipments/dispatched');?>" class="infographic-box merged pull-left">
             <i class="fa fa-truck yellow-bg"></i>
             <span class="value yellow"><?= $stats['transit_to_customer']; ?></span>
             <span class="headline">IN TRANSIT TO CUSTOMER</span>
-        </div>
-        <div class="infographic-box merged merged-right pull-left">
+        </a>
+        <a href="<?= Url::toRoute('shipments/delivered');?>" class="infographic-box merged merged-right pull-left">
             <i class="fa fa-check green-bg"></i>
             <span class="value green"><?= $stats['delivered']; ?></span>
             <span class="headline">DELIVERED</span>
-        </div>
+        </a>
     </div>
 </div>
 <?php endif; ?>
