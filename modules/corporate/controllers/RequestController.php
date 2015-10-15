@@ -76,8 +76,7 @@ class RequestController extends BaseController
             'states' => $states,
             'total_count' => $totalCount,
             'from_date' => $this->getFromCreatedAtDate($filters),
-            'to_date' => $this->getToCreatedAtDate($filters),
-            'companyId' => $companyId
+            'to_date' => $this->getToCreatedAtDate($filters)
         ]);
     }
 
@@ -132,8 +131,7 @@ class RequestController extends BaseController
             'states' => $states,
             'total_count' => $totalCount,
             'from_date' => $this->getFromCreatedAtDate($filters),
-            'to_date' => $this->getToCreatedAtDate($filters),
-            'companyId' => $companyId
+            'to_date' => $this->getToCreatedAtDate($filters)
         ]);
     }
 
