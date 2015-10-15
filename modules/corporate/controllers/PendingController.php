@@ -7,6 +7,7 @@ namespace app\modules\corporate\controllers;
 
 
 use Adapter\CompanyAdapter;
+use Adapter\ResponseHandler;
 use Adapter\Util\Calypso;
 use Adapter\Util\Util;
 use app\controllers\BaseController;
@@ -34,9 +35,9 @@ class PendingController extends BaseController
         // Add Offset and Count
         $page = \Yii::$app->getRequest()->get('page', 1);
 
-        $query = \Yii::$app->getRequest()->get('search');
-        if(!is_null($query)) {
-            $filters['waybill_number'] = $query;
+        $companyId = \Yii::$app->getRequest()->get('company_id');
+        if(!is_null($companyId)) {
+            $filters['company_id'] = $companyId;
             $page = 1; // Reset page
         }
 
@@ -46,13 +47,17 @@ class PendingController extends BaseController
 
         $requestsData = $companyAdapter->getShipmentRequests($filters);
 
+        $companies = (new CompanyAdapter())->getAllCompanies([]);
+
         $requests = Calypso::getValue($requestsData, 'requests', []);
         $totalCount = Calypso::getValue($requestsData, 'total_count', 0);
 
         return $this->render('shipment', [
             'requests' => $requests,
+            'companies' => $companies,
             'offset' => $offset,
             'page_width' => $this->page_width,
+            'companyId' => $companyId,
             'total_count' => $totalCount,
             'from_date' => $this->getFromCreatedAtDate($filters),
             'to_date' => $this->getToCreatedAtDate($filters)
@@ -77,9 +82,9 @@ class PendingController extends BaseController
         // Add Offset and Count
         $page = \Yii::$app->getRequest()->get('page', 1);
 
-        $query = \Yii::$app->getRequest()->get('search');
-        if(!is_null($query)) {
-            $filters['waybill_number'] = $query;
+        $companyId = \Yii::$app->getRequest()->get('company_id');
+        if(!is_null($companyId)) {
+            $filters['company_id'] = $companyId;
             $page = 1; // Reset page
         }
 
@@ -89,15 +94,18 @@ class PendingController extends BaseController
 
         $requestsData = $companyAdapter->getPickupRequests($filters);
 
+        $companies = (new CompanyAdapter())->getAllCompanies([]);
 
         $requests = Calypso::getValue($requestsData, 'requests', []);
         $totalCount = Calypso::getValue($requestsData, 'total_count', 0);
 
         return $this->render('pickup', [
             'requests' => $requests,
+            'companies' => $companies,
             'offset' => $offset,
             'page_width' => $this->page_width,
             'total_count' => $totalCount,
+            'companyId' => $companyId,
             'from_date' => $this->getFromCreatedAtDate($filters),
             'to_date' => $this->getToCreatedAtDate($filters)
         ]);

@@ -67,4 +67,6 @@ trait CorporateRequestFilter
     {
         return Calypso::getValue($filters, 'end_created_at', $this->getDefaultDate());
     }
+
+
 }

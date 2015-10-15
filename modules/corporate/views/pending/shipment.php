@@ -23,23 +23,21 @@ $this->params['content_header_button'] = '';
         <div class="main-box-header table-search-form clearfix">
             <div class=" clearfix">
                 <div class="pull-left">
-                    <?= $this->render('../elements/date_filter', ['from_date' => $from_date, 'to_date' => $to_date]); ?>
+                    <?= $this->render('../elements/date_filter', ['from_date' => $from_date, 'to_date' => $to_date, 'companyId' => $companyId]); ?>
                 </div>
                 <div class="pull-right clearfix">
-                    <form class="form-inline clearfix">
+                    <form id="company_filter_form" class="form-inline clearfix">
                         <div class="pull-left form-group">
-                            <label for="searchInput">Search</label><br>
+                            <label for="searchInput">Filter by Company</label><br>
+                            <select name="company_id" id="company_filter" class="form-control text-muted">
+                                <option>Select Company</option>
+                                <?php foreach($companies as $company):?>
+                                    <option value="<?= Calypso::getValue($company, 'id')?>"><?= strtoupper(Calypso::getValue($company, 'name', ''))?></option>
+                                <?php endforeach; ?>
+                            </select>
 
-                            <div class="input-group input-group-sm input-group-search">
-                                <input id="searchInput" type="text" name="search" placeholder="Waybill Number"
-                                       class="search-box form-control">
-
-                                <div class="input-group-btn">
-                                    <button class="btn btn-default" type="submit">
-                                        <i class="fa fa-search"></i>
-                                    </button>
-                                </div>
-                            </div>
+                            <button type="button" id="clearFilters" class="btn btn-sm btn-default"> Clear Filters
+                            </button>
                         </div>
                     </form>
                     <div class="pull-left hidden">
