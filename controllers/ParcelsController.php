@@ -59,11 +59,15 @@ class ParcelsController extends BaseController
         $parcel = [];
         $id = Yii::$app->request->get('id');
         $pickupRequestId = Yii::$app->request->get('pickup_request_id');
+        $shipmentRequestId = Yii::$app->request->get('shipment_request_id');
         if (isset($id)) {
             $parcel = ParcelService::getParcelDetails($id);
         } else if (isset($pickupRequestId)) {
             $pickupRequest = (new CompanyAdapter())->getPickupRequest($pickupRequestId);
             $parcel = ParcelService::convertPickupRequest($pickupRequest);
+        } else if (isset($shipmentRequestId)) {
+            $shipmentRequest = (new CompanyAdapter())->getShipmentRequest($shipmentRequestId);
+            $parcel = ParcelService::convertShipmentRequest($shipmentRequest);
         }
 
         $refData = new RefAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
