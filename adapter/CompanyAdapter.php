@@ -147,6 +147,7 @@ class CompanyAdapter extends BaseAdapter
     {
         $filters = array_merge($filters, array(
             'type' => self::TYPE_SHIPMENT,
+            'with_receiver_state' => '1',
             'with_total_count' => 'true'));
 
         $response = $this->request(ServiceConstant::URL_COMPANY_REQUESTS,
