@@ -75,9 +75,9 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-d
                                 <td><?= ++$i; ?></td>
                                 <td><?= Calypso::getValue($request, 'id'); ?></td>
                                 <td>
-                                    <?php if (!is_null(Calypso::getValue($request, 'parcel.waybill_number', null))): ?>
-                                        <a href="<?= Url::to(['/shipments/view', 'waybill_number' => Calypso::getValue($request, 'parcel.waybill_number')]) ?>"
-                                           class=""><?= Calypso::getValue($request, 'parcel.waybill_number', ''); ?></a>
+                                    <?php if (!is_null(Calypso::getValue($request, 'waybill_number', null))): ?>
+                                        <a href="<?= Url::to(['/shipments/view', 'waybill_number' => Calypso::getValue($request, 'waybill_number')]) ?>"
+                                           class=""><?= Calypso::getValue($request, 'waybill_number', ''); ?></a>
                                     <?php else: ?>
                                         N/A
                                     <?php endif; ?>
