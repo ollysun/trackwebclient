@@ -71,7 +71,7 @@ if($branch_type != ServiceConstant::BRANCH_TYPE_EC && $user_type == ServiceConst
 <!-- HUB STAFF -->
 <div class="main-box">
     <div class="clearfix">
-        <a href="<?= Url::toRoute('hubs/hubarrival');?>'?>" class="infographic-box merged merged-top pull-left">
+        <a href="<?= Url::toRoute('hubs/hubarrival');?>" class="infographic-box merged merged-top pull-left">
             <i class="fa fa-gift purple-bg"></i>
             <span class="value purple"><?= $stats['received'];?></span>
             <span class="headline">SHIPMENT RECEIVED</span>
