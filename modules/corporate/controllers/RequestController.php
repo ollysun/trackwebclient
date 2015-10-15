@@ -36,9 +36,7 @@ class RequestController extends BaseController
         $companyAdapter = new CompanyAdapter();
         $companyId = Calypso::getValue(Calypso::getInstance()->session("user_session"), 'company_id');
 
-        $filters = [
-            'company_id' => $companyId
-        ];
+        $filters = [];
 
         $filters = array_merge($filters, $this->getCreatedAtFilters());
 
@@ -47,9 +45,12 @@ class RequestController extends BaseController
 
         $query = \Yii::$app->getRequest()->get('search');
         if (!is_null($query)) {
+            $filters = [];
             $filters['waybill_number'] = $query;
             $page = 1; // Reset page
         }
+
+        $filters['company_id'] = $companyId;
 
         $offset = ($page - 1) * $this->page_width;
         $filters['offset'] = $offset;
@@ -90,9 +91,7 @@ class RequestController extends BaseController
         $companyAdapter = new CompanyAdapter();
         $companyId = Calypso::getValue(Calypso::getInstance()->session("user_session"), 'company_id');
 
-        $filters = [
-            'company_id' => $companyId
-        ];
+        $filters = [];
 
         $filters = array_merge($filters, $this->getCreatedAtFilters());
 
@@ -101,9 +100,12 @@ class RequestController extends BaseController
 
         $query = \Yii::$app->getRequest()->get('search');
         if (!is_null($query)) {
+            $filters = [];
             $filters['waybill_number'] = $query;
             $page = 1; // Reset page
         }
+
+        $filters['company_id'] = $companyId;
 
         $offset = ($page - 1) * $this->page_width;
         $filters['offset'] = $offset;
