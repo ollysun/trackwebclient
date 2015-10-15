@@ -452,9 +452,11 @@ class ShipmentsController extends BaseController
 
             }
         }
+        $user_session = Calypso::getInstance()->session("user_session");
 
         return $this->render('view', array(
             'parcelData' => $data,
+            'sessionData' => $user_session,
             'serviceType' => $serviceType,
             'parcelType' => $parcelType,
             'deliveryType' => $deliveryType,

@@ -44,6 +44,35 @@ class CompanyAdapter extends BaseAdapter
     }
 
     /**
+     * Get company detail
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @param $id
+     * @return array|mixed
+     */
+    public function getCompany($id)
+    {
+        $filters = [
+            'company_id' => $id,
+            'with_city' => '1',
+            'with_state' => '1',
+            'with_primary_contact' => '1',
+            'with_relations_officer' => '1',
+            'with_relations_officer_auth' => '1',
+            'with_primary_contact_auth' => '1',
+        ];
+
+        $response = $this->request(ServiceConstant::URL_GET_COMPANY,
+            $filters, self::HTTP_GET);
+
+        $response = new ResponseHandler($response);
+
+        if ($response->isSuccess()) {
+            return $response->getData();
+        }
+        return [];
+    }
+
+    /**
      * Get Companies
      * @author Adegoke Obasa <goke@cottacush.com>
      * @param $filters
@@ -54,6 +83,29 @@ class CompanyAdapter extends BaseAdapter
 
         $filters = array_merge($filters, array(
             'with_total_count' => 'true'));
+
+        $response = $this->request(ServiceConstant::URL_COMPANY_ALL,
+            $filters, self::HTTP_GET);
+
+        $response = new ResponseHandler($response);
+
+        if ($response->isSuccess()) {
+            return $response->getData();
+        }
+        return [];
+    }
+
+    /**
+     * Get Companies with no pagination
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @param $filters
+     * @return array|mixed
+     */
+    public function getAllCompanies($filters)
+    {
+
+        $filters = array_merge($filters, array(
+            'no_paginate' => 'true'));
 
         $response = $this->request(ServiceConstant::URL_COMPANY_ALL,
             $filters, self::HTTP_GET);
@@ -118,6 +170,7 @@ class CompanyAdapter extends BaseAdapter
     {
         $filters = array_merge($filters, array(
             'type' => self::TYPE_SHIPMENT,
+            'with_receiver_state' => '1',
             'with_total_count' => 'true'));
 
         $response = $this->request(ServiceConstant::URL_COMPANY_REQUESTS,
@@ -141,6 +194,7 @@ class CompanyAdapter extends BaseAdapter
     {
         $filters = array_merge($filters, array(
             'type' => self::TYPE_PICKUP,
+            'with_company' => '1',
             'with_pickup_city' => '1',
             'with_pickup_state' => '1',
             'with_destination_city' => '1',

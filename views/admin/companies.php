@@ -75,11 +75,11 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                                        class="btn btn-xs btn-default"><i
                                             class="fa fa-eye">&nbsp;</i> View</a>
                                 </td>
-                                <td>
-                                    <button type="button" class="btn btn-default btn-xs hide" data-toggle="modal"
-                                            data-target="#editModal"><i class="fa fa-edit"></i> Edit
-                                    </button>
-                                </td>
+<!--                                <td>-->
+<!--                                    <button type="button" class="btn btn-default btn-xs hide" data-toggle="modal"-->
+<!--                                            data-target="#editModal"><i class="fa fa-edit"></i> Edit-->
+<!--                                    </button>-->
+<!--                                </td>-->
                             </tr>
                         <?php endforeach; ?>
                         </tbody>

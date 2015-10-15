@@ -22,15 +22,11 @@ trait CorporateRequestFilter
     public function getCreatedAtFilters()
     {
         $filters = [];
-        $validFilters = ['from' => 'start_created_at', 'to' => 'end_created_at'];
+        $validFilters = ['from' => 'from_created_at', 'to' => 'to_created_at'];
         
         foreach ($validFilters as $clientFilter => $serverFilter) {
             $value = \Yii::$app->getRequest()->get($clientFilter, $this->getDefaultDate());
-            if (preg_match('/\bstart\_\w+\_at\b/', $serverFilter)) {
-                $filters[$serverFilter] = $value . " 00:00:00";
-            } else if (preg_match('/\bend\_\w+\_at\b/', $serverFilter)) {
-                $filters[$serverFilter] = $value . " 23:59:59";
-            }
+            $filters[$serverFilter] = $value;
         }
 
         return $filters;
@@ -54,7 +50,7 @@ trait CorporateRequestFilter
      */
     public function getFromCreatedAtDate($filters)
     {
-        return Calypso::getValue($filters, 'start_created_at', $this->getDefaultDate());
+        return Calypso::getValue($filters, 'from_created_at', $this->getDefaultDate());
     }
 
     /**
@@ -65,6 +61,8 @@ trait CorporateRequestFilter
      */
     public function getToCreatedAtDate($filters)
     {
-        return Calypso::getValue($filters, 'end_created_at', $this->getDefaultDate());
+        return Calypso::getValue($filters, 'to_created_at', $this->getDefaultDate());
     }
+
+
 }

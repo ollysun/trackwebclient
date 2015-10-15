@@ -23,23 +23,21 @@ $this->params['content_header_button'] = '';
         <div class="main-box-header table-search-form clearfix">
             <div class=" clearfix">
                 <div class="pull-left">
-                    <?= $this->render('../elements/date_filter', ['from_date' => $from_date, 'to_date' => $to_date]); ?>
+                    <?= $this->render('../elements/date_filter', ['from_date' => $from_date, 'to_date' => $to_date, 'companyId' => $companyId]); ?>
                 </div>
                 <div class="pull-right clearfix">
-                    <form class="form-inline clearfix">
+                    <form id="company_filter_form" class="form-inline clearfix">
                         <div class="pull-left form-group">
-                            <label for="searchInput">Search</label><br>
+                            <label for="searchInput">Filter by Company</label><br>
+                            <select name="company_id" id="company_filter" class="form-control text-muted">
+                                <option>Select Company</option>
+                                <?php foreach($companies as $company):?>
+                                    <option value="<?= Calypso::getValue($company, 'id')?>"><?= strtoupper(Calypso::getValue($company, 'name', ''))?></option>
+                                <?php endforeach; ?>
+                            </select>
 
-                            <div class="input-group input-group-sm input-group-search">
-                                <input id="searchInput" type="text" name="search" placeholder="Waybill Number"
-                                       class="search-box form-control">
-
-                                <div class="input-group-btn">
-                                    <button class="btn btn-default" type="submit">
-                                        <i class="fa fa-search"></i>
-                                    </button>
-                                </div>
-                            </div>
+                            <button type="button" id="clearFilters" class="btn btn-sm btn-default"> Clear Filters
+                            </button>
                         </div>
                     </form>
                     <div class="pull-left hidden">
@@ -70,21 +68,31 @@ $this->params['content_header_button'] = '';
                         </tr>
                         </thead>
                         <tbody>
-                        <?php $i = $offset; foreach ($requests as $request): ?>
+                        <?php $i = $offset;
+                        foreach ($requests as $request): ?>
                             <tr>
                                 <td><?= ++$i; ?></td>
                                 <td><?= Calypso::getValue($request, 'id'); ?></td>
                                 <td><?= strtoupper(Calypso::getValue($request, 'company.name', '')); ?></td>
                                 <td></td>
                                 <td><?= Calypso::getValue($request, 'shipment_description'); ?></td>
-                                <td><?= Calypso::getValue($request, 'pickup_name');?> (<?= Calypso::getValue($request, 'pickup_phone_number');?>)</td>
-                                <td><?= Calypso::getValue($request, 'pickup_address')  . ', ' . strtoupper(Calypso::getValue($request, 'pickup_city.name', '')) . ', ' . strtoupper(Calypso::getValue($request, 'pickup_state.name', ''))?></td>
-                                <td><?= Calypso::getValue($request, 'destination_name');?> (<?= Calypso::getValue($request, 'destination_phone_number');?>)</td>
-                                <td><?= Calypso::getValue($request, 'destination_address')  . ', ' . strtoupper(Calypso::getValue($request, 'destination_city.name', '')) . ', ' . strtoupper(Calypso::getValue($request, 'destination_state.name', ''))?></td>
+                                <td><?= Calypso::getValue($request, 'pickup_name'); ?>
+                                    (<?= Calypso::getValue($request, 'pickup_phone_number'); ?>)
+                                </td>
+                                <td><?= Calypso::getValue($request, 'pickup_address') . ', ' . strtoupper(Calypso::getValue($request, 'pickup_city.name', '')) . ', ' . strtoupper(Calypso::getValue($request, 'pickup_state.name', '')) ?></td>
+                                <td><?= Calypso::getValue($request, 'destination_name'); ?>
+                                    (<?= Calypso::getValue($request, 'destination_phone_number'); ?>)
+                                </td>
+                                <td><?= Calypso::getValue($request, 'destination_address') . ', ' . strtoupper(Calypso::getValue($request, 'destination_city.name', '')) . ', ' . strtoupper(Calypso::getValue($request, 'destination_state.name', '')) ?></td>
                                 <td><?= strtoupper(Calypso::getValue($request, 'status')); ?></td>
                                 <td>
-                                    <a title="View this request" href="<?= Url::toRoute(['/corporate/request/viewpickup', 'id' => Calypso::getValue($request, 'id')]) ?>"
+                                    <a title="View this request"
+                                       href="<?= Url::toRoute(['/corporate/request/viewpickup', 'id' => Calypso::getValue($request, 'id')]) ?>"
                                        class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>
+
+                                    <a title="Create parcel"
+                                       href="<?= Url::toRoute(['/parcels/new', 'pickup_request_id' => Calypso::getValue($request, 'id')]) ?>"
+                                       class="btn btn-xs btn-primary">Approve</a>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
