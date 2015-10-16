@@ -21,6 +21,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
     <div class="main-box-header">
     </div>
     <div class="main-box-body">
+        <?php if (count($routes) > 0) : ?>
         <div class="table-responsive">
             <table id="table" class="table table-hover ">
                 <thead>
@@ -33,12 +34,12 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                 </thead>
                 <tbody>
                 <?php
+                $row = $offset;
                 if (isset($routes) && is_array(($routes))):
-                    $row = 1;
                     foreach ($routes as $route) {
                         ?>
                         <tr>
-                        <td><?= $row++; ?></<td></td>
+                        <td><?= ++$row; ?></<td></td>
                         <td class="n<?= ucwords($route['id']); ?>"><?= ucwords($route['name']); ?></td>
                         <td><?= strtoupper("{$route['branch_name']} ({$route['branch_code']})"); ?></td>
                         <td>
@@ -53,6 +54,10 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                 </tbody>
             </table>
         </div>
+        <?= $this->render('../elements/pagination_and_summary', ['first' => $offset, 'last'=>$row, 'total_count'=> $total_count,'page_width'=>$page_width]) ?>
+        <?php else:  ?>
+            There are no parcels matching the specified criteria.
+        <?php endif;  ?>
     </div>
 </div>
 
