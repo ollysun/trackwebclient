@@ -260,6 +260,6 @@ class RequestController extends BaseController
     public function actionTemplatefile()
     {
         BulkShipment::generateTemplateFile();
-        BulkShipment::pushFileToClient(BulkShipment::getTemplateFilePath(), 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'CourierPlus - Bulk Shipment Template.xlsx', true);
+        BulkShipment::pushFileToClient(BulkShipment::getTemplateFilePath(), 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'CourierPlus - Bulk Shipment Request Template.xlsx', true);
     }
 }
