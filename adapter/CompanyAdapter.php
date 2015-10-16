@@ -301,4 +301,40 @@ class CompanyAdapter extends BaseAdapter
 
         return $response->isSuccess();
     }
+
+    /**
+     * Cancel shipment request
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @param $requestId
+     * @return bool
+     */
+    public function cancelShipmentRequest($requestId)
+    {
+        $rawResponse = $this->request(ServiceConstant::URL_CANCEL_SHIPMENT_REQUEST, Json::encode(['request_id' => $requestId]), self::HTTP_POST);
+        $response = new ResponseHandler($rawResponse);
+
+        if (!$response->isSuccess()) {
+            $this->lastErrorMessage = $response->getError();
+        }
+
+        return $response->isSuccess();
+    }
+
+    /**
+     * Cancel pickup request
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @param $requestId
+     * @return bool
+     */
+    public function cancelPickupRequest($requestId)
+    {
+        $rawResponse = $this->request(ServiceConstant::URL_CANCEL_PICKUP_REQUEST, Json::encode(['request_id' => $requestId]), self::HTTP_POST);
+        $response = new ResponseHandler($rawResponse);
+
+        if (!$response->isSuccess()) {
+            $this->lastErrorMessage = $response->getError();
+        }
+
+        return $response->isSuccess();
+    }
 }
