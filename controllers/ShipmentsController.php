@@ -128,7 +128,7 @@ class ShipmentsController extends BaseController
                 if ($responseHandler->getStatus() === ResponseHandler::STATUS_OK) {
                     if (empty($data['bad_parcels']))
                         return $this->redirect('/manifest/view?id=' . Calypso::getValue($response, 'data.manifest.id', ''));
-                   else {
+                    else {
                         $bad_parcels = $data['bad_parcels'];
                         foreach ($bad_parcels as $key => $bad_parcel) {
                             $this->flashError($key . ' - ' . $bad_parcel);
@@ -285,10 +285,10 @@ class ShipmentsController extends BaseController
         }
         $offset = ($page - 1) * $page_width;
 
+        $parcel = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         if (\Yii::$app->request->isPost) {
             $records = \Yii::$app->request->post();
             if ($records['task'] == 'cancel_shipment') {
-                $parcel = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
                 $response = $parcel->cancel($records);
                 $response = new ResponseHandler($response);
 
@@ -311,10 +311,30 @@ class ShipmentsController extends BaseController
                         $this->flashError('An error occurred while trying to add teller. #' . $response->getError());
                     }
                 }
+            } elseif ($records['task'] == 'request_return') {
+                if (!isset($records['waybill_numbers'])) {
+                    $this->flashError("Invalid parameter(s) sent!");
+                } else {
+                    $result = $parcel->sendReturnRequest($records);
+                    $response = new ResponseHandler($result);
+
+                    if ($response->getStatus() == ResponseHandler::STATUS_OK) {
+                        $data = $response->getData();
+                        if (empty($data['bad_parcels']))
+                            $this->flashSuccess('Return request sent');
+                        else {
+                            $bad_parcels = $data['bad_parcels'];
+                            foreach ($bad_parcels as $key => $bad_parcel) {
+                                $this->flashError($key . ' - ' . $bad_parcel);
+                            }
+                        }
+                    } else {
+                        $this->flashError('An error occurred while trying to send request. #' . $response->getError());
+                    }
+                }
             }
         }
 
-        $parcel = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         if (isset(Calypso::getInstance()->get()->from, Calypso::getInstance()->get()->to)) {
             $from_date = Calypso::getInstance()->get()->from;
             $to_date = Calypso::getInstance()->get()->to;
