@@ -103,6 +103,60 @@ class ParcelService {
         return $parcel;
     }
 
+    /**
+     * Converts a shipment request to a parcel
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @param $shipmentRequest
+     * @return array
+     */
+    public static function convertShipmentRequest($shipmentRequest)
+    {
+        /**
+         * Shipment Request Mapping
+        `receiver_firstname` - Receiver Firstname
+        `receiver_lastname` - Receiver Lastname
+        `receiver_phone_number` - Receiver Phone number
+        `receiver_email` - Receiver email
+        `receiver_address` - Receiver address
+        `receiver_state_id` - Receiver State
+        `receiver_city_id` - Receiver City
+        `receiver_company_name` - Add in bracket to parcel description
+        `company.name` - Sender Name
+        `company.email` - Sender Email
+        `company.primary_contact.phone_number` - Sender Phone number
+        `cash_on_delivery` - Cash On Delivery
+        `reference_number` - Reference Number
+        `estimated_weight` - Total Weight
+        `no_of_packages` - No of packages
+        `parcel_value` - Parcel Value
+        `description`  - Parcel Description
+         */
+        $parcel = [];
+        $parcel['shipment_request_id'] = Calypso::getValue($shipmentRequest, 'id');
+        $parcel['info']['sender']['firstname'] = Calypso::getValue($shipmentRequest, 'company.name');
+        $parcel['info']['sender']['phone'] = Calypso::getValue($shipmentRequest, 'company.phone_number');
+        $parcel['sender_location']['country']['id'] = ServiceConstant::COUNTRY_NIGERIA;
+        $parcel['info']['sender_address']['street_address1'] = Calypso::getValue($shipmentRequest, 'company.address');
+
+        $parcel['info']['receiver']['firstname'] = Calypso::getValue($shipmentRequest, 'receiver_firstname');
+        $parcel['info']['receiver']['lastname'] = Calypso::getValue($shipmentRequest, 'receiver_lastname');
+        $parcel['info']['receiver']['phone'] = Calypso::getValue($shipmentRequest, 'receiver_phone_number');
+        $parcel['receiver_location']['country']['id'] = Calypso::getValue($shipmentRequest, 'receiver_state.country_id');
+        $parcel['receiver_location']['state']['id'] = Calypso::getValue($shipmentRequest, 'receiver_state_id');
+        $parcel['receiver_location']['id'] = Calypso::getValue($shipmentRequest, 'receiver_city_id');
+        $parcel['info']['receiver_address']['street_address1'] = Calypso::getValue($shipmentRequest, 'receiver_address');
+
+        $other_info = Calypso::getValue($shipmentRequest, 'description') . ' (' . Calypso::getValue($shipmentRequest, 'receiver_company_name', '') . ')';
+        $parcel['info']['other_info'] = $other_info;
+        $parcel['info']['package_value'] = Calypso::getValue($shipmentRequest, 'parcel_value');
+        $parcel['info']['no_of_package'] = Calypso::getValue($shipmentRequest, 'no_of_packages');
+        $parcel['info']['reference_number'] = Calypso::getValue($shipmentRequest, 'reference_number');
+        $parcel['info']['weight'] = Calypso::getValue($shipmentRequest, 'estimated_weight');
+        $parcel['info']['cash_on_delivery'] = Calypso::getValue($shipmentRequest, 'cash_on_delivery');
+
+        return $parcel;
+    }
+
     public function buildPostData($data) {
 
         $error = [];
@@ -196,6 +250,13 @@ class ParcelService {
          */
         if(isset($data['pickup_request_id'])) {
             $payload['pickup_request_id'] = Calypso::getValue($data, 'pickup_request_id', null);
+        }
+
+        /**
+         * Set Shipment Request Id
+         */
+        if(isset($data['shipment_request_id'])) {
+            $payload['shipment_request_id'] = Calypso::getValue($data, 'shipment_request_id', null);
         }
 
         if($parcel['payment_type'] == '3' && (!is_null($parcel['cash_amount']) && !is_null($parcel['pos_amount']))) {

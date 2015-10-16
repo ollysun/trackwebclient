@@ -42,7 +42,7 @@ class ShipmentsController extends BaseController
     {
         $this->userData = (Calypso::getInstance()->session('user_session'));
         $this->branch_to_view = ($this->userData['role_id'] == ServiceConstant::USER_TYPE_SUPER_ADMIN) ? null :
-            ($this->userData['role_id'] == ServiceConstant::USER_TYPE_ADMIN) ? null : $this->userData['branch_id']; //displays all when null
+            ($this->userData['role_id'] == ServiceConstant::USER_TYPE_ADMIN) ? null : Calypso::getValue($this->userData, 'branch_id'); //displays all when null
         //print_r($this->userData);
         if (empty($this->userData)) {
             return false;
@@ -452,9 +452,11 @@ class ShipmentsController extends BaseController
 
             }
         }
+        $user_session = Calypso::getInstance()->session("user_session");
 
         return $this->render('view', array(
             'parcelData' => $data,
+            'sessionData' => $user_session,
             'serviceType' => $serviceType,
             'parcelType' => $parcelType,
             'deliveryType' => $deliveryType,

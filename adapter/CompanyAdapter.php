@@ -96,6 +96,29 @@ class CompanyAdapter extends BaseAdapter
     }
 
     /**
+     * Get Companies with no pagination
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @param $filters
+     * @return array|mixed
+     */
+    public function getAllCompanies($filters)
+    {
+
+        $filters = array_merge($filters, array(
+            'no_paginate' => 'true'));
+
+        $response = $this->request(ServiceConstant::URL_COMPANY_ALL,
+            $filters, self::HTTP_GET);
+
+        $response = new ResponseHandler($response);
+
+        if ($response->isSuccess()) {
+            return $response->getData();
+        }
+        return [];
+    }
+
+    /**
      * Get Companies
      * @author Adegoke Obasa <goke@cottacush.com>
      * @param $filters
@@ -147,6 +170,7 @@ class CompanyAdapter extends BaseAdapter
     {
         $filters = array_merge($filters, array(
             'type' => self::TYPE_SHIPMENT,
+            'with_receiver_state' => '1',
             'with_total_count' => 'true'));
 
         $response = $this->request(ServiceConstant::URL_COMPANY_REQUESTS,

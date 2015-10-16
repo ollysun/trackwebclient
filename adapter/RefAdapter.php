@@ -79,8 +79,9 @@ class RefAdapter extends BaseAdapter
         return $this->request(ServiceConstant::URL_WEIGHT_FETCH_ALL, [], self::HTTP_GET);
     }
 
-    public function getOnforwadingCharges()
+    public function getOnforwardingCharges($status=null, $offset=null, $count=null, $with_total_count=null, $send_all = null)
     {
-        return $this->request(ServiceConstant::URL_ONFORWARDING_FETCH_ALL, [], self::HTTP_GET);
+        $filter = ['status' => $status, 'send_all' => $send_all, 'offset' => $offset, 'count' => $count,'with_total_count'=>$with_total_count ];
+        return $this->request(ServiceConstant::URL_ONFORWARDING_FETCH_ALL, $filter, self::HTTP_GET);
     }
 }
