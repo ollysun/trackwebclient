@@ -37,13 +37,14 @@ class HubsController extends BaseController
 
     /**
      * This action allows setting next destination for shipments
+     * @author Adegoke Obasa <goke@cottacush.com>
      * @return string
      */
-    public function actionDestination($page = 1, $page_width = null)
+    public function actionDestination($page = 1, $page_width = null, $type = null)
     {
         $viewData['page_width'] = is_null($page_width) ? $this->page_width : $page_width;
         $viewData['offset'] = ($page - 1) * $viewData['page_width'];
-        $isGroundman = $this->userData['role_id'] == ServiceConstant::USER_TYPE_GROUNDSMAN;
+        $isGroundman = $this->userData['role_id'] == ServiceConstant::USER_TYPE_GROUNDSMAN || !is_null($type);
 
         $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
 
