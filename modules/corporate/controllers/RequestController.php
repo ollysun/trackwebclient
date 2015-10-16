@@ -16,6 +16,7 @@ use Adapter\Util\ResponseCodes;
 use Adapter\Util\ResponseMessages;
 use Adapter\Util\Util;
 use app\controllers\BaseController;
+use app\modules\corporate\models\BulkShipment;
 use app\traits\CorporateRequestFilter;
 use Yii;
 use yii\helpers\Url;
@@ -25,6 +26,7 @@ class RequestController extends BaseController
 {
 
     use CorporateRequestFilter;
+
     /**
      * Company requests action
      * @author Adegoke Obasa <goke@cottacush.com>
@@ -205,5 +207,15 @@ class RequestController extends BaseController
 
         $request = (new CompanyAdapter())->getShipmentRequest($id);
         return $this->render('viewshipment', ['request' => $request]);
+    }
+
+    /**
+     * Download bulk shipment request template file
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     */
+    public function actionDownloadtemplatefile()
+    {
+        BulkShipment::generateTemplateFile();
+
     }
 }
