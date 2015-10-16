@@ -8,19 +8,14 @@ namespace app\modules\corporate\controllers;
 
 use Adapter\CompanyAdapter;
 use Adapter\RefAdapter;
-use Adapter\RegionAdapter;
 use Adapter\RequestHelper;
 use Adapter\ResponseHandler;
 use Adapter\Util\Calypso;
-use Adapter\Util\ResponseCodes;
-use Adapter\Util\ResponseMessages;
-use Adapter\Util\Util;
 use app\controllers\BaseController;
 use app\modules\corporate\models\BulkShipment;
 use app\traits\CorporateRequestFilter;
 use Yii;
 use yii\helpers\Url;
-use yii\web\Controller;
 
 class RequestController extends BaseController
 {
