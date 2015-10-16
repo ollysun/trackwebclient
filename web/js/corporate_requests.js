@@ -17,6 +17,15 @@
                 });
             }
         });
-    });
 
+        $("#company_filter").change(function () {
+            $("#company_filter_form").submit();
+        });
+
+        $("#clearFilters").click(function () {
+            var currentUrl = window.location.href;
+            var tempArr = currentUrl.split('?');
+            window.location.href = tempArr[0];
+        });
+    });
 })();
