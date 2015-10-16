@@ -42,12 +42,12 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                 </thead>
                 <tbody>
                 <?php
+                $row = $offset;
                 if (isset($charges) && is_array(($charges))):
-                    $row = 1;
                     foreach ($charges as $charge) {
                         ?>
                         <tr>
-                        <td><?= $row++; ?></td>
+                        <td><?= ++$row; ?></td>
                         <td class="n<?= $charge['id'];?>"><?= ucfirst($charge['name']); ?></td>
                         <td class="c<?= $charge['id'];?>"><?=$charge['code']; ?></td>
                         <td class="d<?= $charge['id'];?>"><?= ucfirst($charge['description']); ?></td>
@@ -66,6 +66,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                 ?>
                 </tbody>
             </table>
+            <?= $this->render('../elements/pagination_and_summary', ['first' => $offset, 'last' => $row, 'total_count' => $total_count, 'page_width' => $page_width]) ?>
         </div>
     </div>
 </div>
