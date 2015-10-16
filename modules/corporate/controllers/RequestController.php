@@ -186,6 +186,50 @@ class RequestController extends BaseController
     }
 
     /**
+     * Cancel shipment request form action
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @return string
+     */
+    public function actionCancelshipment()
+    {
+        $companyAdapter = new CompanyAdapter();
+
+        if (Yii::$app->request->isPost) {
+            $requestId = Yii::$app->request->post('request_id');
+
+            $status = $companyAdapter->cancelShipmentRequest($requestId);
+            if ($status) {
+                $this->flashSuccess("Shipment request cancelled successfully");
+            } else {
+                $this->flashError($companyAdapter->getLastErrorMessage());
+            }
+        }
+        return $this->redirect(Url::to('/corporate/request/shipments'));
+    }
+
+    /**
+     * Cancel pickup request form action
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @return string
+     */
+    public function actionCancelpickup()
+    {
+        $companyAdapter = new CompanyAdapter();
+
+        if (Yii::$app->request->isPost) {
+            $requestId = Yii::$app->request->post('request_id');
+
+            $status = $companyAdapter->cancelPickupRequest($requestId);
+            if ($status) {
+                $this->flashSuccess("Pickup request cancelled successfully");
+            } else {
+                $this->flashError($companyAdapter->getLastErrorMessage());
+            }
+        }
+        return $this->redirect(Url::to('/corporate/pending/pickups'));
+    }
+
+    /**
      * View Pickup Request Action
      * @author Adegoke Obasa <goke@cottacush.com>
      */

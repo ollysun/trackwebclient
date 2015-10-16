@@ -160,6 +160,10 @@ class ServiceConstant
     const URL_COMPANY_REQUESTS = 'company/getRequests';
     const URL_MAKE_SHIPMENT_REQUEST = 'company/makeShipmentRequest';
     const URL_MAKE_PICKUP_REQUEST = 'company/makePickupRequest';
+    const URL_CANCEL_PICKUP_REQUEST = 'company/cancelPickupRequest';
+    const URL_CANCEL_SHIPMENT_REQUEST = 'company/cancelShipmentRequest';
+    const URL_DECLINE_SHIPMENT_REQUEST = 'company/declineShipmentRequest';
+    const URL_DECLINE_PICKUP_REQUEST = 'company/declinePickupRequest';
     const URL_SHIPMENT_REQUEST = 'company/getShipmentRequest';
     const URL_PICKUP_REQUEST = 'company/getPickupRequest';
 
