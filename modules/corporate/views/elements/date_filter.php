@@ -1,5 +1,9 @@
 <?php
 use yii\helpers\Html;
+
+if(!isset($companyId)){
+    $companyId = '';
+}
 ?>
 <?= Html::cssFile('@web/css/libs/datepicker.css') ?>
 <?php
