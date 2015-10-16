@@ -328,9 +328,10 @@ class ServiceConstant
 
     public static function getReturnStatus($parcel)
     {
-        if(isset($parcel['for_return']) && $parcel['for_return']!=0)
+        if (isset($parcel['for_return']) && $parcel['for_return'] != 0) {
             return 'Return to ' . ucwords($parcel['created_branch']['name'] . ', ' . $parcel['created_branch']['state']['name']);
-        else
+        } else {
             return false;
+        }
     }
 }
