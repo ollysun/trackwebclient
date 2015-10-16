@@ -1,13 +1,6 @@
 <?php
-/**
- * Author: Adeyemi Olaoye <yemi@cottacush.com>
- * Date: 16/10/15
- * Time: 8:00 PM
- */
 
 namespace app\modules\corporate\models;
-
-
 use Adapter\Globals\ServiceConstant;
 use Adapter\RefAdapter;
 use Adapter\RequestHelper;
@@ -18,6 +11,11 @@ use PHPExcel_NamedRange;
 use PHPExcel_Worksheet;
 use ZipArchive;
 
+/**
+ * Class BulkShipment
+ * @author Adeyemi Olaoye <yemi@cottacush.com>
+ * @package app\modules\corporate\models
+ */
 class BulkShipment
 {
     /**
