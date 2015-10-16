@@ -257,9 +257,9 @@ class RequestController extends BaseController
      * Download bulk shipment request template file
      * @author Adeyemi Olaoye <yemi@cottacush.com>
      */
-    public function actionDownloadtemplatefile()
+    public function actionTemplatefile()
     {
         BulkShipment::generateTemplateFile();
-
+        BulkShipment::pushFileToClient(BulkShipment::getTemplateFilePath(), 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'CourierPlus - Bulk Shipment Template.xlsx', true);
     }
 }

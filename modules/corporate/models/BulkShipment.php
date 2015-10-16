@@ -10,6 +10,7 @@ namespace app\modules\corporate\models;
 
 use Adapter\Globals\ServiceConstant;
 use Adapter\RefAdapter;
+use Adapter\RequestHelper;
 use PHPExcel;
 use PHPExcel_Cell_DataValidation;
 use PHPExcel_IOFactory;
@@ -27,7 +28,7 @@ class BulkShipment
      */
     public static function generateTemplateFile()
     {
-        $refAdapter = new RefAdapter();
+        $refAdapter = new RefAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $phpExcelObj = $objPHPExcel = new PHPExcel();
         self::generateSheetHeader($phpExcelObj);
 
@@ -48,6 +49,9 @@ class BulkShipment
             self::setValidationForCell('G' . $i, 'INDIRECT($F$' . $i . ')', $shipmentsSheet);
             self::setValidationForCell('N' . $i, 'INDIRECT($M$' . $i . ')', $shipmentsSheet);
         }
+
+        $dataSheet = $phpExcelObj->setActiveSheetIndex(1);
+        $dataSheet->setSheetState(PHPExcel_Worksheet::SHEETSTATE_VERYHIDDEN);
 
 
         $writer = PHPExcel_IOFactory::createWriter($phpExcelObj, 'Excel2007');
@@ -119,13 +123,14 @@ class BulkShipment
     private static function addCitiesData($states, $dataSheet, $phpExcelObj)
     {
         $columnIndex = 2;
-        $all_cities = (new RefAdapter())->getAllCities();
+        $refAdapter = new RefAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $all_cities = $refAdapter->getAllCities();
         for ($i = 0; $i < count($states); $i++) {
             $column = self::getColumnNameFromNumber($columnIndex);
-            $cities = array_filter($all_cities, function ($key) use ($states, $i) {
-                return $all_cities[$key]['state_id'] = $states[$i]['id'];
+            $cities = array_filter($all_cities, function ($value) use ($states, $i) {
+                return $value['state_id'] == $states[$i]['id'];
             });
-
+            $cities = array_values($cities);
             for ($j = 1; $j <= count($cities); $j++) {
                 $city = $cities[$j - 1];
                 $dataSheet->setCellValue($column . $j, ucwords($city['name']));
@@ -197,6 +202,26 @@ class BulkShipment
 
         $zip->addFromString("xl/worksheets/$sheet_name.xml", $sheet->asXML());
         $zip->close();
+    }
+
+    /**
+     * Push File to Client
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     * @param $file_path
+     * @param $mime_type
+     * @param $file_name
+     * @param bool $delete_file
+     */
+    public static function pushFileToClient($file_path, $mime_type, $file_name, $delete_file = false)
+    {
+        header("Content-Type: $mime_type");
+        header("Content-Disposition: attachment;filename='$file_name'");
+        header("Content-Transfer-Encoding: binary");
+        echo file_get_contents($file_path);
+        if ($delete_file) {
+            unlink($file_path);
+        }
+        exit();
     }
 
 }
