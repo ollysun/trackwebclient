@@ -14,9 +14,10 @@ class RouteAdapter extends BaseAdapter
         return $this->request(ServiceConstant::URL_ROUTE_ADD, $data, self::HTTP_POST);
     }
 
-    public function getRoutes($branch_id=null){
-        $filter = is_null($branch_id) ? '':'branch_id='.$branch_id;
-        return $this->request(ServiceConstant::URL_ROUTE_GET_ALL.'?'.$filter, [], self::HTTP_GET);
+    public function getRoutes($branch_id=null, $offset = null, $count = null, $with_total=null){
+        $filter = array('branch_id'=>$branch_id, 'offset'=>$offset, 'count'=>$count, 'with_total_count'=>$with_total);
+        $filter = array_filter($filter);
+        return $this->request(ServiceConstant::URL_ROUTE_GET_ALL, $filter, self::HTTP_GET);
     }
 
     public function editRoute($data) {
