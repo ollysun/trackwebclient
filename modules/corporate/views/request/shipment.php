@@ -94,6 +94,14 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                                     <a title="View this request"
                                        href="<?= Url::toRoute(['/corporate/request/viewshipment', 'id' => Calypso::getValue($request, 'id')]) ?>"
                                        class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>
+
+                                    <?if(Calypso::getValue($request, 'status') == \Adapter\CompanyAdapter::STATUS_PENDING):?>
+                                        <form method="post" action="<?= Url::to('/corporate/request/cancelshipment'); ?>">
+                                            <input type="hidden" name="request_id" value="<?= Calypso::getValue($request, 'id');?>" />
+                                            <button type="submit" title="Cancel this request"
+                                                    class="btn btn-xs btn-default"><i class="fa fa-minus"></i></button>
+                                        </form>
+                                    <?php endif; ?>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
