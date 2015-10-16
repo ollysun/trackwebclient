@@ -48,8 +48,7 @@ class ParcelAdapter extends BaseAdapter
     public function getParcel($staff_id, $status, $branch_id = null, $send_all = null)
     {
         $filter = array('held_by_staff_id'=>$staff_id,'status'=>$status,'to_branch_id' => $branch_id,'send_all'=>1);
-        $filter = http_build_query($filter);
-        return $this->request(ServiceConstant::URL_GET_ALL_PARCEL . '?' . $filter, array(), self::HTTP_GET);
+        return $this->request(ServiceConstant::URL_GET_ALL_PARCEL,$filter, self::HTTP_GET);
     }
     public function getParcels($start_created_date,$end_created_date,$status,$branch_id=null,$offset=0, $count=50, $with_from=null, $with_total=null, $only_parents=null, $with_created_branch=null){
         $filter = !is_null($status) ? '&status='.$status : '';
