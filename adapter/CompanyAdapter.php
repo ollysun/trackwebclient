@@ -321,6 +321,24 @@ class CompanyAdapter extends BaseAdapter
     }
 
     /**
+     * Decline shipment request
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @param $requestId
+     * @return bool
+     */
+    public function declineShipmentRequest($requestId)
+    {
+        $rawResponse = $this->request(ServiceConstant::URL_DECLINE_SHIPMENT_REQUEST, Json::encode(['request_id' => $requestId]), self::HTTP_POST);
+        $response = new ResponseHandler($rawResponse);
+
+        if (!$response->isSuccess()) {
+            $this->lastErrorMessage = $response->getError();
+        }
+
+        return $response->isSuccess();
+    }
+
+    /**
      * Cancel pickup request
      * @author Adegoke Obasa <goke@cottacush.com>
      * @param $requestId
@@ -329,6 +347,24 @@ class CompanyAdapter extends BaseAdapter
     public function cancelPickupRequest($requestId)
     {
         $rawResponse = $this->request(ServiceConstant::URL_CANCEL_PICKUP_REQUEST, Json::encode(['request_id' => $requestId]), self::HTTP_POST);
+        $response = new ResponseHandler($rawResponse);
+
+        if (!$response->isSuccess()) {
+            $this->lastErrorMessage = $response->getError();
+        }
+
+        return $response->isSuccess();
+    }
+
+    /**
+     * Decline pickup request
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @param $requestId
+     * @return bool
+     */
+    public function declinePickupRequest($requestId)
+    {
+        $rawResponse = $this->request(ServiceConstant::URL_DECLINE_PICKUP_REQUEST, Json::encode(['request_id' => $requestId]), self::HTTP_POST);
         $response = new ResponseHandler($rawResponse);
 
         if (!$response->isSuccess()) {
