@@ -8,23 +8,20 @@ namespace app\modules\corporate\controllers;
 
 use Adapter\CompanyAdapter;
 use Adapter\RefAdapter;
-use Adapter\RegionAdapter;
 use Adapter\RequestHelper;
 use Adapter\ResponseHandler;
 use Adapter\Util\Calypso;
-use Adapter\Util\ResponseCodes;
-use Adapter\Util\ResponseMessages;
-use Adapter\Util\Util;
 use app\controllers\BaseController;
+use app\modules\corporate\models\BulkShipment;
 use app\traits\CorporateRequestFilter;
 use Yii;
 use yii\helpers\Url;
-use yii\web\Controller;
 
 class RequestController extends BaseController
 {
 
     use CorporateRequestFilter;
+
     /**
      * Company requests action
      * @author Adegoke Obasa <goke@cottacush.com>
@@ -249,5 +246,15 @@ class RequestController extends BaseController
 
         $request = (new CompanyAdapter())->getShipmentRequest($id);
         return $this->render('viewshipment', ['request' => $request]);
+    }
+
+    /**
+     * Download bulk shipment request template file
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     */
+    public function actionTemplatefile()
+    {
+        BulkShipment::generateTemplateFile();
+        BulkShipment::pushFileToClient(BulkShipment::getTemplateFilePath(), 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'CourierPlus - Bulk Shipment Request Template.xlsx', true);
     }
 }
