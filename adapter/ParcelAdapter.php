@@ -270,4 +270,9 @@ class ParcelAdapter extends BaseAdapter
             return 0;
         }
     }
+
+    public function openBag($postData)
+    {
+        return $this->request(ServiceConstant::URL_OPEN_BAG, $postData, self::HTTP_POST);
+    }
 }

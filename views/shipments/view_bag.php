@@ -13,7 +13,10 @@ $this->params['breadcrumbs'] = array(
     array('label'=> 'View '.$this->title)
 );
 
-$this->params['content_header_button'] = '<button onclick="javascript:window.open(\''.Url::toRoute(['shipments/viewbag?waybill_number='.$waybill_number.'&print']).'\', \'_blank\', \'toolbar=yes, scrollbars=yes, resizable=yes, top=10, left=50%, width=1100, height=800\');" class="btn btn-primary"><i class="fa fa-print"></i> Print Bag</button>';
+$this->params['content_header_button'] = '<button onclick="javascript:window.open(\''.Url::toRoute(['shipments/viewbag?waybill_number='.$waybill_number.'&print']).'\', \'_blank\', \'toolbar=yes, scrollbars=yes, resizable=yes, top=10, left=50%, width=1100, height=800\');" class="btn btn-primary"><i class="fa fa-print"></i> Print Bag</button>' .
+                                    ' <button class="btn btn-info"><i class="fa fa-times"></i> Remove Item(s) </button>' .
+                                    ' <a class="btn btn-danger" href="' . Url::toRoute(['shipments/openbag?waybill_number='.$waybill_number]) . '"><i class="fa fa-expand"></i> Open Bag </a>';
+
 
 ?>
 <!-- this page specific styles -->
@@ -48,10 +51,8 @@ $this->params['content_header_button'] = '<button onclick="javascript:window.ope
                 <thead>
                 <tr>
                     <th width="16%">WAYBILL NO</th>
-<!--                    <th width="16%">DESTINATION</th>-->
                     <th width="8%">PCS</th>
                     <th width="8%">WT</th>
-<!--                    <th width="16%">SHIPPER</th>-->
                     <th width="35%">DESCRIPTION OF SHIPMENT(S)</th>
                 </tr>
                 </thead>
@@ -65,10 +66,8 @@ $this->params['content_header_button'] = '<button onclick="javascript:window.ope
                     ?>
                     <tr>
                         <td><?= Calypso::getValue($parcel, 'waybill_number')?></td>
-<!--                        <td>--><?//= strtoupper(Calypso::getValue($parcel, 'destination_name'))?><!-- (--><?//= strtoupper(Calypso::getValue($parcel, 'destination_code'))?><!--)</td>-->
                         <td><?= Calypso::getValue($parcel, 'no_of_package')?></td>
                         <td><?= Calypso::getValue($parcel, 'weight')?> KG</td>
-<!--                        <td>--><?//= ucwords(Calypso::getValue($parcel, 'shipper_firstname') . ' ' .  Calypso::getValue($parcel, 'shipper_lastname'))?><!--</td>-->
                         <td><?= Calypso::getValue($parcel, 'other_info')?></td>
                     </tr>
                 <?php endforeach; ?>
