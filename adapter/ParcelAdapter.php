@@ -275,4 +275,9 @@ class ParcelAdapter extends BaseAdapter
     {
         return $this->request(ServiceConstant::URL_OPEN_BAG, $postData, self::HTTP_POST);
     }
+
+    public function removeFromBag($postData)
+    {
+        return $this->request(ServiceConstant::URL_REMOVE_FROM_BAG, $postData, self::HTTP_POST);
+    }
 }
