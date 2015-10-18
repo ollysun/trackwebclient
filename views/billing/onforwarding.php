@@ -42,12 +42,12 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                 </thead>
                 <tbody>
                 <?php
+                $row = $offset;
                 if (isset($charges) && is_array(($charges))):
-                    $row = 1;
                     foreach ($charges as $charge) {
                         ?>
                         <tr>
-                        <td><?= $row++; ?></td>
+                        <td><?= ++$row; ?></td>
                         <td class="n<?= $charge['id'];?>"><?= ucfirst($charge['name']); ?></td>
                         <td class="c<?= $charge['id'];?>"><?=$charge['code']; ?></td>
                         <td class="d<?= $charge['id'];?>"><?= ucfirst($charge['description']); ?></td>
@@ -66,6 +66,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                 ?>
                 </tbody>
             </table>
+            <?= $this->render('../elements/pagination_and_summary', ['first' => $offset, 'last' => $row, 'total_count' => $total_count, 'page_width' => $page_width]) ?>
         </div>
     </div>
 </div>
@@ -84,7 +85,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                     <div class="row">
                         <div class="form-group col-xs-6">
                             <label for="">Name</label>
-                            <input type="text" class="form-control validate required " name="onforward_name">
+                            <input type="text" class="form-control validate required" name="onforward_name">
                         </div>
                         <div class="form-group col-xs-6">
                             <label for="">Onforwading Code</label>
@@ -107,7 +108,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                     </div>
                     <div class="form-group">
                         <label>Description</label>
-                        <textarea class="form-control validate required" name="onforward_desc"></textarea>
+                        <textarea class="form-control validate required text" name="onforward_desc"></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">

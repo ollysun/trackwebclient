@@ -57,7 +57,7 @@ $this->params['breadcrumbs'] = array(
 						<td>aderopo.olusegun@gmail.com</td>
 						<td>08050001234</td>
 						<td>51B, Billings Way, Oregun, Ikeja, NG</td>
-						<td><a href="<?= Url::to(['site/customerhistorydetails']) ?>" class="btn btn-sm btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
+						<td><a href="<?= Url::toRoute(['/site/customerhistorydetails']) ?>" class="btn btn-sm btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
 					</tr>
 					<tr>
 						<td>2</td>
@@ -65,7 +65,7 @@ $this->params['breadcrumbs'] = array(
 						<td>aderopo.olusegun@gmail.com</td>
 						<td>08050001234</td>
 						<td>51B, Billings Way, Oregun, Ikeja, NG</td>
-						<td><a href="<?= Url::to(['site/customerhistorydetails']) ?>" class="btn btn-sm btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
+						<td><a href="<?= Url::toRoute(['/site/customerhistorydetails']) ?>" class="btn btn-sm btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
 					</tr>
 					<tr>
 						<td>3</td>
@@ -73,7 +73,7 @@ $this->params['breadcrumbs'] = array(
 						<td>aderopo.olusegun@gmail.com</td>
 						<td>08050001234</td>
 						<td>51B, Billings Way, Oregun, Ikeja, NG</td>
-						<td><a href="<?= Url::to(['site/customerhistorydetails']) ?>" class="btn btn-sm btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
+						<td><a href="<?= Url::toRoute(['/site/customerhistorydetails']) ?>" class="btn btn-sm btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
 					</tr>
 					<tr>
 						<td>4</td>
@@ -81,7 +81,7 @@ $this->params['breadcrumbs'] = array(
 						<td>aderopo.olusegun@gmail.com</td>
 						<td>08050001234</td>
 						<td>51B, Billings Way, Oregun, Ikeja, NG</td>
-						<td><a href="<?= Url::to(['site/customerhistorydetails']) ?>" class="btn btn-sm btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
+						<td><a href="<?= Url::toRoute(['/site/customerhistorydetails']) ?>" class="btn btn-sm btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
 					</tr>
 					<tr>
 						<td>5</td>
@@ -89,7 +89,7 @@ $this->params['breadcrumbs'] = array(
 						<td>aderopo.olusegun@gmail.com</td>
 						<td>08050001234</td>
 						<td>51B, Billings Way, Oregun, Ikeja, NG</td>
-						<td><a href="<?= Url::to(['site/customerhistorydetails']) ?>" class="btn btn-sm btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
+						<td><a href="<?= Url::toRoute(['/site/customerhistorydetails']) ?>" class="btn btn-sm btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
 					</tr>
 				</tbody>
 			</table>

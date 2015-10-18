@@ -103,7 +103,7 @@ $this->params['breadcrumbs'] = array(
                                 <td><?= $parcel['weight']; ?> KG</td>
                                 <td><?= ucwords($parcel['holder']['fullname']); ?></td>
                                 <td></td>
-                                <td><a href="<?= Url::to(['shipments/view?waybill_number=' . $parcel['waybill_number']]) ?>"
+                                <td><a href="<?= Url::toRoute(['/shipments/view?waybill_number=' . $parcel['waybill_number']]) ?>"
                                        class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
                             </tr>
                         <?php }
@@ -111,9 +111,7 @@ $this->params['breadcrumbs'] = array(
                     </tbody>
                 </table>
                 <?php } else {  ?>
-                    <div class="alert alert-info text-center" role="alert">
-                        <p><strong>No dispatched shipments found</strong></p>
-                    </div>
+                    <p>No dispatched shipments found</p>
                 <?php }  ?>
             </div>
         </div>

@@ -48,7 +48,10 @@ class BaseController extends Controller
                 return $this->redirect(['site/accessdenied']);
             }
             $map = $this->permissionMap[$s['role_id']];
-            $current = $action->controller->id;
+
+            $module = $this->module->getUniqueId();
+            $current = $module == '' ? $action->controller->id : $module . '/' . $action->controller->id;
+
             //Wild card
             if (in_array($current . '/*', $map)) {
                 \Yii::$app->getUser()->logout();

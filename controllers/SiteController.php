@@ -22,6 +22,7 @@ use Adapter\AdminAdapter;
 use Adapter\Util\Calypso;
 use Adapter\Globals\ServiceConstant;
 use Adapter\Util\Response;
+use Adapter\Util\Util;
 
 class SiteController extends BaseController
 {
@@ -79,10 +80,60 @@ class SiteController extends BaseController
 
     public function actionIndex()
     {
+        $user_data = Calypso::getInstance()->session('user_session');
 
-        $session_data = Calypso::getInstance()->session('user_session');
+        $branch_type = $user_data['branch']['branch_type'];
+        $alternative = $branch_type == ServiceConstant::BRANCH_TYPE_HQ ? null : $user_data['branch_id'];
+        $branch_to_view = Calypso::getValue(Calypso::getInstance()->get(), 'branch', $alternative);
+        $user_type = $user_data['role_id'];
 
-        return $this->render('index', array('session_data' => $session_data));
+        $from_date = Util::getToday();
+        $to_date = Util::getToday();
+        $date = '0d';
+
+        if (isset(Calypso::getInstance()->get()->from, Calypso::getInstance()->get()->to, Calypso::getInstance()->get()->date)) {
+            $from_date = Calypso::getInstance()->get()->from;
+            $to_date = Calypso::getInstance()->get()->to;
+            $date = Calypso::getInstance()->get()->date;
+        }
+
+        $parcel = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $filters = array('created_branch_id' => $branch_to_view, 'start_created_date' => $from_date . ' 00:00:00', 'end_created_date' => $to_date . ' 23:59:59');
+        $stats['created'] = $parcel->getParcelCount($filters);
+
+        $filters = array('request_type' => ServiceConstant::REQUEST_OTHERS,'history_from_branch_id' => $branch_to_view, 'history_status' => ServiceConstant::FOR_SWEEPER, 'history_start_created_date' => $from_date . ' 00:00:00', 'history_end_created_date' => $to_date . ' 23:59:59');
+        $stats['for_sweep'] = $parcel->getParcelCount($filters);
+
+        $filters = array('request_type' => ServiceConstant::REQUEST_ECOMMERCE, 'history_from_branch_id' => $branch_to_view, 'history_status' => ServiceConstant::FOR_SWEEPER, 'history_start_created_date' => $from_date . ' 00:00:00', 'history_end_created_date' => $to_date . ' 23:59:59');
+        $stats['for_sweep_ecommerce'] = $parcel->getParcelCount($filters);
+
+        $filters = array('from_branch_id' => $branch_to_view, 'status' => ServiceConstant::FOR_DELIVERY);
+        $stats['for_delivery'] = $parcel->getParcelCount($filters);
+
+        if ($branch_type != ServiceConstant::BRANCH_TYPE_EC) {
+            $filters = array('history_to_branch_id' => $branch_to_view, 'history_status' => ServiceConstant::FOR_ARRIVAL, 'history_start_created_date' => $from_date . ' 00:00:00', 'history_end_created_date' => $to_date . ' 23:59:59');
+            $stats['received'] = $parcel->getParcelCount($filters);
+
+            $filters = array('to_branch_id' => $branch_to_view, 'status' => ServiceConstant::FOR_ARRIVAL);
+            $stats['ready_for_sorting'] = $parcel->getParcelCount($filters);
+
+            $filters = array('from_branch_id' => $branch_to_view, 'status' => ServiceConstant::ASSIGNED_TO_GROUNDSMAN);
+            $stats['groundsman'] = $parcel->getParcelCount($filters);
+
+            $filters = array('from_branch_id' => $branch_to_view, 'status' => ServiceConstant::FOR_SWEEPER);
+            $stats['sorted'] = $parcel->getParcelCount($filters);
+
+            $filters = array('from_branch_id' => $branch_to_view, 'status' => ServiceConstant::BEING_DELIVERED);
+            $stats['transit_to_customer'] = $parcel->getParcelCount($filters);
+
+            $filters = array('from_branch_id' => $branch_to_view, 'status' => ServiceConstant::FOR_SWEEPER, 'history_start_created_date' => $from_date . ' 00:00:00', 'history_end_created_date' => $to_date . ' 23:59:59');
+            $stats['sorted_still_at_hub'] = $parcel->getParcelCount($filters);
+
+            $filters = array('history_from_branch_id' => $branch_to_view, 'history_status' => ServiceConstant::DELIVERED, 'history_start_created_date' => $from_date . ' 00:00:00', 'history_end_created_date' => $to_date . ' 23:59:59');
+            $stats['delivered'] = $parcel->getParcelCount($filters);
+        }
+
+        return $this->render('index', array('date' => $date, 'from_date' => $from_date, 'to_date' => $to_date, 'stats' => $stats, 'branch_type' => $branch_type, 'user_type' => $user_type, 'branch' => $branch_to_view));
     }
 
     public function actionGerraout()
@@ -114,9 +165,16 @@ class SiteController extends BaseController
                     RequestHelper::setClientID($data['user_auth_id']);
                 }
                 Calypso::getInstance()->session("user_session", $response->getData());
+
                 if ($data['created_date'] == $data['modified_date'] && $data['status'] == ServiceConstant::INACTIVE) {
-                    return $this->render('changepassword');
+                    return $this->redirect('/site/changepassword');
                 }
+
+                // Check Corporate User
+                if (!is_null(Calypso::getValue(Calypso::getInstance()->session("user_session"), 'company'))) {
+                    return $this->redirect('/corporate/request/shipments');
+                }
+
                 return $this->redirect('/site');
             } else {
                 Calypso::getInstance()->setPageData("You are not eligible to access this system, kindly contact your administrator");
@@ -295,7 +353,7 @@ class SiteController extends BaseController
             return $this->sendErrorResponse("Invalid parameter(s) sent!", null);
         }
         $parcel = new  ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $response = $parcel->getParcel($staff_no, ServiceConstant::IN_TRANSIT, $branch_id);
+        $response = $parcel->getParcel($staff_no, ServiceConstant::IN_TRANSIT, $branch_id, true);
 
         if ($response['status'] === ResponseHandler::STATUS_OK) {
             return $this->sendSuccessResponse($response['data']);
@@ -465,7 +523,7 @@ class SiteController extends BaseController
                     $creationResponse = new ResponseHandler($resp);
                     if ($creationResponse->getStatus() == ResponseHandler::STATUS_OK) {
                         $this->flashSuccess('Password successfully changed.');
-                        $this->redirect('logout');
+                        $this->redirect('/logout');
                     } else {
                         $this->flashError('Password not changed.');
                     }
@@ -569,7 +627,7 @@ class SiteController extends BaseController
     {
         $this->layout = "login";
 
-        if(!Yii::$app->session->hasFlash('password_reset_success')) {
+        if (!Yii::$app->session->hasFlash('password_reset_success')) {
             return $this->redirect(Url::toRoute("site"));
         }
 
