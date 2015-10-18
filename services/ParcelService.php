@@ -194,24 +194,7 @@ class ParcelService {
         $receiverAddress['state_id'] = Calypso::getValue($data, 'state.receiver');
         $receiverAddress['country_id'] = Calypso::getValue($data, 'country.receiver');
 
-        $bankData['id'] = Calypso::getValue($data, 'account_id', null);
-        $bankData['account_name'] = Calypso::getDisplayValue($data, 'account_name');
-        $bankData['account_no'] = Calypso::getDisplayValue($data, 'account_no');
-        $bankData['bank_id'] = Calypso::getValue($data, 'bank');
-        $bankData['sort_code'] = Calypso::getDisplayValue($data, 'sort_code','N/A');
-
-        $oldAccount = Calypso::getValue($data, 'merchant', null);
-        if($oldAccount !== 'none') {
-            if (!isset($bankData['account_name']) && !isset($bankData['bank_id']) && !isset($bankData['account_no'])) {
-                $bankData = null;
-            }
-            elseif (!isset($bankData['account_name'], $bankData['bank_id'],$bankData['account_no'])) {
-                $error[] = "Incomplete Account Details!";
-            }
-
-        } else {
-            $bankData = null;
-        }
+        $bankData = null;
 
         // Add Merchant Order Number
         $parcel['reference_number'] = Calypso::getValue($data, 'reference_number', null);
