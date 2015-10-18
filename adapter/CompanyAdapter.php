@@ -225,6 +225,7 @@ class CompanyAdapter extends BaseAdapter
             'with_receiver_city' => '1',
             'with_receiver_state' => '1',
             'with_company' => '1',
+            'with_company_city' => '1',
             'with_created_by' => '1'];
 
         $response = $this->request(ServiceConstant::URL_SHIPMENT_REQUEST,

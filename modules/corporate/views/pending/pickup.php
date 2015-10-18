@@ -4,13 +4,13 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 
 
-$this->title = 'Pickup Requests';
+$this->title = 'Pending Pickup Requests';
 $this->params['breadcrumbs'] = array(
     array(
         'url' => ['corporate'],
         'label' => 'Corporate'
     ),
-    array('label' => 'Pickup Requests')
+    array('label' => 'Pending Pickup Requests')
 );
 ?>
 
