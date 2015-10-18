@@ -3,6 +3,7 @@ use Adapter\Util\Calypso;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\web\JqueryAsset;
+use Adapter\Globals\ServiceConstant;
 
 /* @var $this yii\web\View */
 $this->title = 'Shipment: Generate Manifest for Delivery';
@@ -97,6 +98,7 @@ $this->params['breadcrumbs'] = [['label' => 'Sorted Shipments']];
                         <th>Origin</th>
                         <th>Next Destination</th>
                         <th>Final Destination</th>
+                        <th>Request Type</th>
                         <th>Weight (Kg)</th>
                         <th>Age analysis</th>
                     </tr>
@@ -106,22 +108,28 @@ $this->params['breadcrumbs'] = [['label' => 'Sorted Shipments']];
                     $row = $offset;
                     foreach ($parcel_delivery as $parcels) {
                         ++$row;
-                        echo "<tr data-waybill='" . Calypso::getValue($parcels, 'waybill_number') . "' ";
-                        echo "data-to-branch-id='" . Calypso::getValue($parcels, 'to_branch.id') . "'>";
-                        echo "<td>
-                                                <div class='checkbox-nice'>
-                                                    <input name='waybills[]' id='chk_{$row}' type='checkbox' class='chk_next'><label for='chk_{$row}'></label>
-                                                </div>
-                                              </td>";
-                        echo "<td>{$row}</td>";
-                        echo "<td><a href='/shipments/view?waybill_number=" . Calypso::getValue($parcels, 'waybill_number') . "'>" . Calypso::getValue($parcels, 'waybill_number') . "</a></td>";
-                        echo "<td>" . ucwords(Calypso::getValue($parcels, 'sender_address.city.name') . ', ' . Calypso::getValue($parcels, 'sender_address.state.name')) . "</td>";
-                        echo "<td>" . strtoupper(Calypso::getValue($parcels, 'to_branch.name')) . "</td>";
-                        echo "<td>" . ucwords(Calypso::getValue($parcels, 'receiver_address.city.name') . ', ' . Calypso::getValue($parcels, 'receiver_address.state.name')) . "</td>";
-                        echo "<td>" . Calypso::getValue($parcels, 'weight') . "</td>";
-                        echo "<td></td>";
-                        echo "</tr>";
-                    }
+                        ?>
+                        <tr data-waybill='<?= Calypso::getValue($parcels, 'waybill_number') ?>'
+                            data-to-branch-id='<?= Calypso::getValue($parcels, 'to_branch.id') ?>'>
+                            <td>
+                                <div class='checkbox-nice'>
+                                    <input name='waybills[]' id='chk_<?= $row ?>' type='checkbox'
+                                           class='chk_next'><label
+                                        for='chk_<?= $row ?>'></label>
+                                </div>
+                            </td>
+                            <td><?= $row ?></td>
+                            <td>
+                                <a href='/shipments/view?waybill_number=<?= Calypso::getValue($parcels, 'waybill_number') ?>'><?= Calypso::getValue($parcels, 'waybill_number') ?></a>
+                            </td>
+                            <td><?= ucwords(Calypso::getValue($parcels, 'sender_address.city.name') . ', ' . Calypso::getValue($parcels, 'sender_address.state.name')) ?></td>
+                            <td><?= strtoupper(Calypso::getValue($parcels, 'to_branch.name')); ?> </td>
+                            <td><?= ucwords(Calypso::getValue($parcels, 'receiver_address.city.name') . ', ' . Calypso::getValue($parcels, 'receiver_address.state.name')) ?></td>
+                            <td><?= ServiceConstant::getRequestType($parcels['request_type']) ?></td>
+                            <td><?= Calypso::getValue($parcels, 'weight') ?></td>
+                            <td></td>
+                        </tr>
+                    <?php }
                     ?>
                     </tbody>
                 </table>
@@ -227,9 +235,11 @@ $this->params['breadcrumbs'] = [['label' => 'Sorted Shipments']];
             </div>
             <div class="modal-body">
                 <input type="hidden" id="payload" name="payload"/>
+
                 <div class="row">
                     <div class="col-xs-6 form-group">
                         <label for="parcels_destination">Parcels Destination</label>
+
                         <div class="form-control-static"><strong id="parcels_destination"></strong></div>
                     </div>
                     <div class="col-xs-6 form-group">
@@ -238,7 +248,9 @@ $this->params['breadcrumbs'] = [['label' => 'Sorted Shipments']];
                     </div>
                 </div>
                 <br>
+
                 <p>Set Bag Destination</p>
+
                 <div class="row">
                     <div class="col-xs-6 form-group">
                         <label for="branch_type">Branch type</label><br>

@@ -56,6 +56,7 @@ class ServiceConstant
     const URL_RECEIVE_RETURN = '/parcel/receiveReturn/';
     const URL_CREATE_BAG = '/parcel/bag';
     const URL_CANCEL_PARCEL = '/parcel/cancel';
+    const URL_PARCEL_COUNT = 'parcel/count/';
 
     const URL_GET_ALL_BANKS = 'bank/getAll/';
 
@@ -152,9 +153,19 @@ class ServiceConstant
     const URL_USER_VALIDATE_PASSWORD_RESET_TOKEN = 'auth/validatePasswordResetToken';
 
     const URL_COMPANY_ADD = 'company/createCompany';
+    const URL_GET_COMPANY = 'company/getCompany';
     const URL_COMPANY_ALL = 'company/getAllCompany';
     const URL_COMPANY_USERS = 'company/getAllUsers';
     const URL_USER_ADD = 'company/createUser';
+    const URL_COMPANY_REQUESTS = 'company/getRequests';
+    const URL_MAKE_SHIPMENT_REQUEST = 'company/makeShipmentRequest';
+    const URL_MAKE_PICKUP_REQUEST = 'company/makePickupRequest';
+    const URL_CANCEL_PICKUP_REQUEST = 'company/cancelPickupRequest';
+    const URL_CANCEL_SHIPMENT_REQUEST = 'company/cancelShipmentRequest';
+    const URL_DECLINE_SHIPMENT_REQUEST = 'company/declineShipmentRequest';
+    const URL_DECLINE_PICKUP_REQUEST = 'company/declinePickupRequest';
+    const URL_SHIPMENT_REQUEST = 'company/getShipmentRequest';
+    const URL_PICKUP_REQUEST = 'company/getPickupRequest';
 
     const DATE_TIME_FORMAT = 'd M Y H:i';
     const DATE_FORMAT = 'd M Y';
@@ -172,6 +183,10 @@ class ServiceConstant
 
     const DELIVERY_DISPATCH = 2;
     const DELIVERY_PICKUP = 1;
+    const COUNTRY_NIGERIA = 1;
+
+    const REQUEST_OTHERS = 1;
+    const REQUEST_ECOMMERCE = 2;
 
     public static function getStatus($status)
     {
@@ -266,6 +281,20 @@ class ServiceConstant
 
             case ServiceConstant::DELIVERY_PICKUP:
                 return 'Pickup';
+
+            default:
+                return false;
+        }
+    }
+
+    public static function getRequestType($type)
+    {
+        switch ($type) {
+            case ServiceConstant::REQUEST_ECOMMERCE:
+                return 'eCommerce';
+
+            case ServiceConstant::REQUEST_OTHERS:
+                return 'Others';
 
             default:
                 return false;

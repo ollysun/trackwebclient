@@ -76,7 +76,7 @@ if($offset <= 0){
                     <th style="width: 20px">No.</th>
                     <th>Waybill No.</th>
                     <th>Shipper</th>
-                    <th>Receiver</th>
+                    <th>Request Type</th>
                     <th>Final Destination</th>
                     <th>Created Date</th>
                     <th>Age analysis</th>
@@ -101,7 +101,7 @@ if($offset <= 0){
                             <td><?= $i ?></td>
                             <td><?= strtoupper($parcel['waybill_number']); ?></td>
                             <td><?= strtoupper($parcel['sender']['firstname'].' '. $parcel['sender']['lastname']) ?></td>
-                            <td><?= strtoupper($parcel['receiver']['firstname'].' '. $parcel['receiver']['lastname']) ?></td>
+                            <td><?= ServiceConstant::getRequestType($parcel['request_type']) ?></td>
                             <td><?= ucwords(Calypso::getValue($parcel, 'receiver_address.city.name')) . ', ' .
                                     ucwords(Calypso::getValue($parcel, 'receiver_address.state.name')); ?>
                             </td>

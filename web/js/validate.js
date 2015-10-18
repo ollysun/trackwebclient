@@ -52,8 +52,8 @@ function validateFxn() {
         }
         else if(input.hasClass('non-zero-integer'))
         {
-            var test = /^[1-9]\d*$/;
-            if(!test.test(val))
+            var test = /^[+]?\d+$/;;
+            if(!test.test(val) || parseInt(val) <= 0)
             {
                 msg = 'Invalid entry';
                 isValid = false;
@@ -62,7 +62,7 @@ function validateFxn() {
         else if(input.hasClass('non-zero-number'))
         {
             var test = /^(?=.*[1-9])\d+(\.\d+)?$/;
-            if(!test.test(val) && val !== "")
+            if((!test.test(val) || parseFloat(val) <= 0.0) && val !== "")
             {
                 msg = 'Invalid entry';
                 isValid = false;
@@ -86,9 +86,10 @@ function validateFxn() {
                 isValid = false;
             }
         }
-        else if (input.hasClass('name'))
+        else if (input.hasClass('name') || input.hasClass('text'))
         {
-            var filter = /^([a-zA-Z]+)([a-zA-Z\.\-\' ]*)([a-zA-Z]+)$/;
+            //var filter = /^([a-zA-Z]+)([a-zA-Z\.\-\' ]*)([a-zA-Z]+)$/;
+            var filter = /[a-zA-Z]+/;
             if(!filter.test(val))
             {
                 msg = 'Invalid entry';
