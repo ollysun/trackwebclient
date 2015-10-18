@@ -13,6 +13,8 @@ use Adapter\Util\Util;
 use app\controllers\BaseController;
 use app\traits\CorporateRequestFilter;
 use app\traits\CreatedAtFilter;
+use Yii;
+use yii\helpers\Url;
 
 class PendingController extends BaseController
 {
@@ -109,5 +111,50 @@ class PendingController extends BaseController
             'from_date' => $this->getFromCreatedAtDate($filters),
             'to_date' => $this->getToCreatedAtDate($filters)
         ]);
+    }
+
+    /**
+     * Decline shipment request form action
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @return string
+     */
+    public function actionDeclineshipment()
+    {
+        $companyAdapter = new CompanyAdapter();
+
+        if (Yii::$app->request->isPost) {
+            $requestId = Yii::$app->request->post('request_id');
+
+            $status = $companyAdapter->declineShipmentRequest($requestId);
+            if ($status) {
+                $this->flashSuccess("Shipment request declined successfully");
+            } else {
+                $this->flashError($companyAdapter->getLastErrorMessage());
+            }
+        }
+        return $this->redirect(Url::to('/corporate/pending/shipments'));
+    }
+
+
+    /**
+     * Decline pickup request form action
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @return string
+     */
+    public function actionDeclinepickup()
+    {
+        $companyAdapter = new CompanyAdapter();
+
+        if (Yii::$app->request->isPost) {
+            $requestId = Yii::$app->request->post('request_id');
+
+            $status = $companyAdapter->declinePickupRequest($requestId);
+            if ($status) {
+                $this->flashSuccess("Pickup request declined successfully");
+            } else {
+                $this->flashError($companyAdapter->getLastErrorMessage());
+            }
+        }
+        return $this->redirect(Url::to('/corporate/pending/pickups'));
     }
 }

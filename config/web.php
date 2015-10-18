@@ -44,7 +44,8 @@ $config = [
             'showScriptName' => false,
             'rules' => [
                 'logout' => 'site/logout',
-                'merchant/<id:\d+>' => 'merchant/detail'
+                'merchant/<id:\d+>' => 'merchant/detail',
+                'hubs/destination-<type:\w+>' => 'hubs/destination'
             ]
         ],
     ],

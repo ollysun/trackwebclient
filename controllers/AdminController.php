@@ -386,8 +386,10 @@ class AdminController extends BaseController
         return $this->sendSuccessResponse($staff);
     }
 
-    public function actionManageroutes()
+    public function actionManageroutes($page=1)
     {
+        $offset = ($page - 1) * $this->page_width;
+
         if (Yii::$app->request->isPost) {
             $entry = Yii::$app->request->post();
             $task = Calypso::getValue(Yii::$app->request->post(), 'task');
@@ -430,10 +432,16 @@ class AdminController extends BaseController
 
         $branch_to_view = null;
         $routeAdp = new RouteAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $routes = $routeAdp->getRoutes($branch_to_view);
+        $routes = $routeAdp->getRoutes($branch_to_view, $offset, $this->page_width, true);
         $routes = new ResponseHandler($routes);
-        $route_list = $routes->getStatus() == ResponseHandler::STATUS_OK ? $routes->getData() : [];
 
-        return $this->render('manageroutes', ['routes' => $route_list, 'hubs' => $hub_list]);
+        $route_list = [];
+        $total_count = 0;
+        if ($routes->getStatus() == ResponseHandler::STATUS_OK) {
+            $data = $routes->getData();
+            $total_count = empty($data['total_count']) ? 0 : $data['total_count'];
+            $route_list = empty($data['routes']) ? 0 : $data['routes'];
+        }
+        return $this->render('manageroutes', ['routes' => $route_list, 'hubs' => $hub_list, 'offset'=>$offset, 'total_count'=>$total_count, 'page_width'=>$this->page_width]);
     }
 }
