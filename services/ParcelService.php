@@ -137,6 +137,8 @@ class ParcelService {
         $parcel['info']['sender']['phone'] = Calypso::getValue($shipmentRequest, 'company.phone_number');
         $parcel['sender_location']['country']['id'] = ServiceConstant::COUNTRY_NIGERIA;
         $parcel['info']['sender_address']['street_address1'] = Calypso::getValue($shipmentRequest, 'company.address');
+        $parcel['sender_location']['id'] = Calypso::getValue($shipmentRequest, 'company.city_id');
+        $parcel['sender_location']['state']['id'] = Calypso::getValue($shipmentRequest, 'company_city.state_id');
 
         $parcel['info']['receiver']['firstname'] = Calypso::getValue($shipmentRequest, 'receiver_firstname');
         $parcel['info']['receiver']['lastname'] = Calypso::getValue($shipmentRequest, 'receiver_lastname');
