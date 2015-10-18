@@ -25,13 +25,8 @@ class BaseController extends Controller
 
     These are the restricted pages for these users. This can be made dynamic
      * */
-    private $permissionMap = [];
     public $page_width = 50;
-
-    protected function setPermissionMap()
-    {
-        $this->permissionMap = Calypso::getInstance()->permissionMap();
-    }
+    private $permissionMap = [];
 
     public function beforeAction($action)
     {
@@ -54,13 +49,13 @@ class BaseController extends Controller
 
             //Wild card
             if (in_array($current . '/*', $map)) {
-                \Yii::$app->getUser()->logout();
+               // \Yii::$app->getUser()->logout();
                 Calypso::getInstance()->setPageData($access_denied_msg);
                 return $this->redirect(['site/accessdenied']);
             }
 
             if (in_array($current . '/' . $action->id, $map)) {
-                \Yii::$app->getUser()->logout();
+               // \Yii::$app->getUser()->logout();
                 Calypso::getInstance()->setPageData($access_denied_msg);
                 return $this->redirect(['site/accessdenied']);
             }
@@ -76,6 +71,11 @@ class BaseController extends Controller
         }
 
         return parent::beforeAction($action);
+    }
+
+    protected function setPermissionMap()
+    {
+        $this->permissionMap = Calypso::getInstance()->permissionMap();
     }
 
     /**

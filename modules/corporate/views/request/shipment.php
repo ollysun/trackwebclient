@@ -2,6 +2,7 @@
 use Adapter\Util\Calypso;
 use yii\helpers\Html;
 use yii\helpers\Url;
+use yii\widgets\ActiveForm;
 
 
 $this->title = 'Shipment Requests';
@@ -15,7 +16,8 @@ $this->params['breadcrumbs'] = array(
 ?>
 
 <?php
-$this->params['content_header_button'] = '<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i> Shipment Request</button>';
+$this->params['content_header_button'] = '<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i> Shipment Request</button>
+<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#bulk_modal"><i class="fa fa-plus"></i> Bulk Shipment Request</button>';
 ?>
 <?= Html::cssFile('@web/css/libs/bootstrap-select.min.css') ?>
 <?php echo Calypso::showFlashMessages(); ?>
@@ -95,9 +97,11 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                                        href="<?= Url::toRoute(['/corporate/request/viewshipment', 'id' => Calypso::getValue($request, 'id')]) ?>"
                                        class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>
 
-                                    <?php if(Calypso::getValue($request, 'status') == \Adapter\CompanyAdapter::STATUS_PENDING):?>
-                                        <form method="post" action="<?= Url::to('/corporate/request/cancelshipment'); ?>">
-                                            <input type="hidden" name="request_id" value="<?= Calypso::getValue($request, 'id');?>" />
+                                    <?php if (Calypso::getValue($request, 'status') == \Adapter\CompanyAdapter::STATUS_PENDING): ?>
+                                        <form method="post"
+                                              action="<?= Url::to('/corporate/request/cancelshipment'); ?>">
+                                            <input type="hidden" name="request_id"
+                                                   value="<?= Calypso::getValue($request, 'id'); ?>"/>
                                             <button type="submit" title="Cancel this request"
                                                     class="btn btn-xs btn-default"><i class="fa fa-minus"></i></button>
                                         </form>
@@ -276,6 +280,32 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                     </div>
                 </div>
             </form>
+        </div>
+    </div>
+
+    <div class="modal fade" id="bulk_modal" tabindex="-1" role="dialog" aria-labelledby="bulk_modal_label">
+        <div class="modal-dialog modal-lg" role="document">
+                  class="validate-form" method="post">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">×</span></button>
+                        <h4 class="modal-title" id="bulk_modal_label">Bulk Shipment Request</h4>
+                    </div>
+                    <?php $form = ActiveForm::begin(['method' => 'post','action' => '/corporate/request/bulkshipment',  'options' => ['enctype' => 'multipart/form-data']]) ?>
+                    <div class="modal-body">
+                        <a class="btn btn-primary btn-sm" target="_blank"
+                           href="<?= Url::to('/corporate/request/templatefile') ?>">Download Template File</a>
+                        <br/><br/>
+                        <?= $form->field($bulk_form, 'dataFile')->fileInput()->label('Upload Shipments Data File (CSV File only)') ?>
+                    </div>
+                    <div class="modal-footer">
+                        <button name="bulk_shipment" type="button" class="btn btn-default" data-dismiss="modal">Close
+                        </button>
+                        <button type="submit" class="btn btn-primary">Initiate Request</button>
+                    </div>
+                    <?php ActiveForm::end() ?>
+                </div>
         </div>
     </div>
 
