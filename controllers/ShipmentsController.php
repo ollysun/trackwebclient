@@ -588,4 +588,32 @@ class ShipmentsController extends BaseController
         }
         return $this->render('delivered', array('parcels' => $parcels, 'total_count' => $total_count, 'offset' => $offset, 'page_width' => $page_width, 'from_date' => $from_date, 'to_date' => $to_date));
     }
+
+    /**
+     * This action opens a parcel of type bag.
+     * @author Akintewe Rotimi <akintewe.rotimi@gmail.com>
+     */
+    public function actionOpenbag() {
+
+        $waybill_number = Calypso::getInstance()->get()->waybill_number;
+        if(!$waybill_number) {
+            $this->flashError('Please ensure that the correct bag item is selected');
+            return $this->redirect('/shipments/view_bag?waybill_number=' . $waybill_number);
+        }
+
+        $unbag_referrer = Calypso::getInstance()->getUnbagReferrer();
+
+        $parcel = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $response = $parcel->openBag( ['waybill_number' => $waybill_number ] );
+        $response = new ResponseHandler($response);
+
+        if ($response->getStatus() == ResponseHandler::STATUS_OK) {
+            $this->flashSuccess("Bag with waybill number [ $waybill_number ] has been successfully opened.");
+            return $this->redirect($unbag_referrer);
+        } else {
+            $errorMessage = 'An error occurred while trying to open bag. #' . $response->getError();
+            $this->flashError($errorMessage);
+            return $this->redirect('/shipments/view_bag?waybill_number=' . $waybill_number);
+        }
+    }
 }

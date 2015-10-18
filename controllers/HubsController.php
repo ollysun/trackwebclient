@@ -252,6 +252,9 @@ class HubsController extends BaseController
     {
         //Move to In Transit (waybill_numbers, to_branch_id.
         //and staff_id (not the code)
+
+        Calypso::getInstance()->makeAnUnbagReferrer();
+
         if (\Yii::$app->request->isPost) {
             $rawData = \Yii::$app->request->post('payload');
             $data = json_decode($rawData, true);
