@@ -59,6 +59,7 @@ class ServiceConstant
     const URL_PARCEL_COUNT = 'parcel/count/';
     const DEFAULT_UNBAG_REFERRER = '/shipments/processed';
     const URL_OPEN_BAG = '/parcel/openbag';
+    const URL_REMOVE_FROM_BAG = '/parcel/removefrombag';
 
     const URL_GET_ALL_BANKS = 'bank/getAll/';
 
@@ -189,6 +190,7 @@ class ServiceConstant
 
     const REQUEST_OTHERS = 1;
     const REQUEST_ECOMMERCE = 2;
+
 
     public static function getStatus($status)
     {
