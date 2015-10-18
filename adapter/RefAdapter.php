@@ -58,12 +58,7 @@ class RefAdapter extends BaseAdapter
     public function getStates($id, $with_regions = 0)
     {
         $response = $this->request(ServiceConstant::URL_REF_STATES, ['country_id' => $id, 'with_region' => $with_regions], self::HTTP_GET);
-        $response = new ResponseHandler($response);
-
-        if ($response->isSuccess()) {
-            return $response->getData();
-        }
-        return [];
+        return $response;
     }
 
     /**

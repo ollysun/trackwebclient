@@ -6,9 +6,9 @@ use yii\helpers\Url;
 use Adapter\Globals\ServiceConstant;
 
 /* @var $this yii\web\View */
-$this->title = 'View Shipment Request';
-$this->params['page_title'] = 'Shipment Request';
-$this->params['breadcrumbs'][] = 'Shipment Request';
+$this->title = 'View Pickup Request';
+$this->params['page_title'] = 'Pickup Request';
+$this->params['breadcrumbs'][] = 'Pickup Request';
 ?>
 <div class="main-box no-header">
     <div class="main-box-body row">

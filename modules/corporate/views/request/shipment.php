@@ -250,7 +250,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                                                     </select>
                                                 </div>
                                                 <input name="parcel_value" type="text"
-                                                       class="form-control validate non-zero-number required" value="">
+                                                       class="form-control validate non-zero-number" value="">
                                             </div>
                                         </div>
                                     </div>

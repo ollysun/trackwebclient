@@ -224,7 +224,7 @@ class RequestController extends BaseController
                 $this->flashError($companyAdapter->getLastErrorMessage());
             }
         }
-        return $this->redirect(Url::to('/corporate/pending/pickups'));
+        return $this->redirect(Url::to('/corporate/request/pickups'));
     }
 
     /**
