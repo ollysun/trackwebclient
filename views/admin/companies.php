@@ -63,7 +63,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                         </tr>
                         </thead>
                         <tbody>
-                        <?php foreach ($companies as $company): $i = $offset; ?>
+                        <?php $i = $offset; foreach ($companies as $company): ?>
                             <tr>
                                 <td><?= ++$i; ?></td>
                                 <td><?= strtoupper(Calypso::getValue($company, 'name')); ?></td>
@@ -75,11 +75,11 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                                        class="btn btn-xs btn-default"><i
                                             class="fa fa-eye">&nbsp;</i> View</a>
                                 </td>
-                                <td>
-                                    <button type="button" class="btn btn-default btn-xs hide" data-toggle="modal"
-                                            data-target="#editModal"><i class="fa fa-edit"></i> Edit
-                                    </button>
-                                </td>
+<!--                                <td>-->
+<!--                                    <button type="button" class="btn btn-default btn-xs hide" data-toggle="modal"-->
+<!--                                            data-target="#editModal"><i class="fa fa-edit"></i> Edit-->
+<!--                                    </button>-->
+<!--                                </td>-->
                             </tr>
                         <?php endforeach; ?>
                         </tbody>
@@ -115,7 +115,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                                 </div>
                                 <div class="col-xs-6 form-group">
                                     <label for="">Registration No</label>
-                                    <input type="text" name="company[reg_no]" class="form-control validate required">
+                                    <input type="text" name="company[reg_no]" class="form-control">
                                 </div>
                             </div>
                             <div class="row">

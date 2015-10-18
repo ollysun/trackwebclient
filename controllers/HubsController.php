@@ -37,13 +37,18 @@ class HubsController extends BaseController
 
     /**
      * This action allows setting next destination for shipments
+     * @author Adegoke Obasa <goke@cottacush.com>
      * @return string
      */
-    public function actionDestination($page = 1, $page_width = null)
+    public function actionDestination($page = 1, $page_width = null, $type = null)
     {
         $viewData['page_width'] = is_null($page_width) ? $this->page_width : $page_width;
         $viewData['offset'] = ($page - 1) * $viewData['page_width'];
-        $isGroundman = $this->userData['role_id'] == ServiceConstant::USER_TYPE_GROUNDSMAN;
+        /**
+         * This is to allow an hub officer perform the function of a groundsman
+         */
+        $allowGroundsManFunctions = !is_null($type) && $type == 'groundsman';
+        $isGroundman = $this->userData['role_id'] == ServiceConstant::USER_TYPE_GROUNDSMAN || $allowGroundsManFunctions;
 
         $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
 
@@ -127,11 +132,12 @@ class HubsController extends BaseController
 
     public function actionHubdispatch()
     {
-        $from_date = date('Y/m/d');
-        $to_date = date('Y/m/d');
         $user_session = Calypso::getInstance()->session("user_session");
         $from_branch_id = $user_session['branch_id'];
-        $to_branch_id = Calypso::getValue(Yii::$app->request->post(), 'to_branch_id', null);
+        $to_branch_id = Calypso::getValue(Yii::$app->request->post(), 'to_branch_id', date('Y/m/d'));
+
+        $from_date = Calypso::getValue(Yii::$app->request->get(), 'from', date('Y/m/d'));
+        $to_date = Calypso::getValue(Yii::$app->request->get(), 'to', date('Y/m/d'));
 
         $hubAdp = new BranchAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $hubs = $hubAdp->getAll();
@@ -139,13 +145,7 @@ class HubsController extends BaseController
         $hub_list = $hubs->getStatus() == ResponseHandler::STATUS_OK ? $hubs->getData() : [];
 
         $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        if (isset(Calypso::getInstance()->get()->from, Calypso::getInstance()->get()->to)) {
-            $from_date = Calypso::getInstance()->get()->from;
-            $to_date = Calypso::getInstance()->get()->to;
-            $filter = isset(Calypso::getInstance()->get()->date_filter) ? Calypso::getInstance()->get()->date_filter : '-1';
-            $dispatch_parcels = $parcelsAdapter->getDispatchedParcels($user_session['branch_id'], $to_branch_id, $from_date . '%2000:00:00', $to_date . '%2023:59:59', $filter);
-        } else
-            $dispatch_parcels = $parcelsAdapter->getDispatchedParcels($user_session['branch_id'], $to_branch_id);
+        $dispatch_parcels = $parcelsAdapter->getDispatchedParcels($from_branch_id, $to_branch_id, $from_date . '%2000:00:00', $to_date . '%2023:59:59', ServiceConstant::IN_TRANSIT);
         $parcels = new ResponseHandler($dispatch_parcels);
         $parcel_list = $parcels->getStatus() == ResponseHandler::STATUS_OK ? $parcels->getData() : [];
 
@@ -345,6 +345,7 @@ class HubsController extends BaseController
         $payload = [
             'waybill_numbers' => $waybills,
             'to_branch_id' => Calypso::getValue($data, 'to_branch_id', null),
+            'seal_id' => Calypso::getValue($data, 'seal_id', ''),
             'status' => ServiceConstant::FOR_SWEEPER
         ];
 

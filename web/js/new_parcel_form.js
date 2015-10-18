@@ -99,11 +99,11 @@ function getServerResponse(statusCode, message) {
         callback: function (ele, val, who) {
             if (val === 'false') {
                 $('#CODAmount').val('');
-                $('input[name="CODAmount"]').removeClass('validate required number').parent().removeClass('has-error');
+                $('input[name="CODAmount"]').removeClass('validate required non-zero-number').parent().removeClass('has-error');
                 ;
             }
             else {
-                $('input[name="CODAmount"]').addClass('validate required number');
+                $('input[name="CODAmount"]').addClass('validate required non-zero-number');
             }
         }
     };
@@ -112,9 +112,8 @@ function getServerResponse(statusCode, message) {
         options: {
             identifier: 'input[name="merchant"]',
             mapping: {
-                'new': true,
-                'old': true,
-                'none': false
+                'yes': true,
+                'no': false
             },
         },
         callback: function (ele, val, who) {

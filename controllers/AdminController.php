@@ -331,6 +331,18 @@ class AdminController extends BaseController
     }
 
     /**
+     * View Company Action
+     * @author Adegoke Obasa <goke@cottacush.com>
+     */
+    public function actionViewcompany()
+    {
+        $company_id = Yii::$app->request->get('id');
+
+        $company = (new CompanyAdapter())->getCompany($company_id);
+        return $this->render('viewcompany', ['company' => $company]);
+    }
+
+    /**
      * Returns JSON of cities
      * @author Adegoke Obasa <goke@cottacush.com>
      * @return \yii\web\Response
@@ -374,8 +386,10 @@ class AdminController extends BaseController
         return $this->sendSuccessResponse($staff);
     }
 
-    public function actionManageroutes()
+    public function actionManageroutes($page=1)
     {
+        $offset = ($page - 1) * $this->page_width;
+
         if (Yii::$app->request->isPost) {
             $entry = Yii::$app->request->post();
             $task = Calypso::getValue(Yii::$app->request->post(), 'task');
@@ -391,13 +405,23 @@ class AdminController extends BaseController
                 if ($task == 'create') {
                     $data = array('name' => $entry['route_name'], 'branch_id' => $entry['branch_id']);
                     $response = $route->createRoute($data);
-                    if ($response['status'] === Response::STATUS_OK) {
+                    $responseHandler = new ResponseHandler($response);
+
+                    if ($responseHandler->getStatus() == ResponseHandler::STATUS_OK) {
                         Yii::$app->session->setFlash('success', 'Route has been created successfully.');
                     } else {
                         Yii::$app->session->setFlash('danger', 'There was a problem creating the route. Reason:' . $response['message']);
                     }
                 } elseif ($task == 'edit') {
-                    $data = array('id' => $entry['id'], 'name' => $entry['route_name'], 'branch_id' => $entry['branch_id']);
+                    $data = array('route_id' => $entry['id'], 'name' => $entry['route_name'], 'branch_id' => $entry['branch_id']);
+                    $response = $route->editRoute($data);
+                    $responseHandler = new ResponseHandler($response);
+
+                    if ($responseHandler->getStatus() == ResponseHandler::STATUS_OK) {
+                        Yii::$app->session->setFlash('success', 'Route has been edited successfully.');
+                    } else {
+                        Yii::$app->session->setFlash('danger', 'There was a problem editing the route. Reason:' . $response['message']);
+                    }
                 }
             }
         }
@@ -408,10 +432,16 @@ class AdminController extends BaseController
 
         $branch_to_view = null;
         $routeAdp = new RouteAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $routes = $routeAdp->getRoutes($branch_to_view);
+        $routes = $routeAdp->getRoutes($branch_to_view, $offset, $this->page_width, true);
         $routes = new ResponseHandler($routes);
-        $route_list = $routes->getStatus() == ResponseHandler::STATUS_OK ? $routes->getData() : [];
 
-        return $this->render('manageroutes', ['routes' => $route_list, 'hubs' => $hub_list]);
+        $route_list = [];
+        $total_count = 0;
+        if ($routes->getStatus() == ResponseHandler::STATUS_OK) {
+            $data = $routes->getData();
+            $total_count = empty($data['total_count']) ? 0 : $data['total_count'];
+            $route_list = empty($data['routes']) ? 0 : $data['routes'];
+        }
+        return $this->render('manageroutes', ['routes' => $route_list, 'hubs' => $hub_list, 'offset'=>$offset, 'total_count'=>$total_count, 'page_width'=>$this->page_width]);
     }
 }

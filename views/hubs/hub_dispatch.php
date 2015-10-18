@@ -111,9 +111,7 @@ $this->params['breadcrumbs'] = array(
                     </tbody>
                 </table>
                 <?php } else {  ?>
-                    <div class="alert alert-info text-center" role="alert">
-                        <p><strong>No dispatched shipments found</strong></p>
-                    </div>
+                    <p>No dispatched shipments found</p>
                 <?php }  ?>
             </div>
         </div>

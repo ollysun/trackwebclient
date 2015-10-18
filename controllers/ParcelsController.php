@@ -10,6 +10,8 @@ namespace app\controllers;
 
 
 use Adapter\BankAdapter;
+use Adapter\CompanyAdapter;
+use Adapter\Globals\ServiceConstant;
 use Adapter\ParcelAdapter;
 use Adapter\RefAdapter;
 use Adapter\RegionAdapter;
@@ -56,8 +58,16 @@ class ParcelsController extends BaseController
 
         $parcel = [];
         $id = Yii::$app->request->get('id');
-        if(isset($id)) {
+        $pickupRequestId = Yii::$app->request->get('pickup_request_id');
+        $shipmentRequestId = Yii::$app->request->get('shipment_request_id');
+        if (isset($id)) {
             $parcel = ParcelService::getParcelDetails($id);
+        } else if (isset($pickupRequestId)) {
+            $pickupRequest = (new CompanyAdapter())->getPickupRequest($pickupRequestId);
+            $parcel = ParcelService::convertPickupRequest($pickupRequest);
+        } else if (isset($shipmentRequestId)) {
+            $shipmentRequest = (new CompanyAdapter())->getShipmentRequest($shipmentRequestId);
+            $parcel = ParcelService::convertShipmentRequest($shipmentRequest);
         }
 
         $refData = new RefAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
@@ -68,6 +78,7 @@ class ParcelsController extends BaseController
         $parcelType = $refData->getparcelType();
         $paymentMethod = $refData->getPaymentMethods();
         $countries = $refData->getCountries();
+        $states = (new ResponseHandler($refData->getStates(ServiceConstant::COUNTRY_NIGERIA)))->getData();
 
         $hubAdp = new BranchAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $centres = $hubAdp->getAllHubs(false);
@@ -88,6 +99,7 @@ class ParcelsController extends BaseController
             'deliveryType' => $deliveryType,
             'parcelType' => $parcelType,
             'countries' => $countries,
+            'states' => $states,
             'paymentMethod' => $paymentMethod,
             'centres' => $centres_list,
             'branch' => $user['branch'],
@@ -100,19 +112,27 @@ class ParcelsController extends BaseController
      */
     public function actionGetstates()
     {
-
         $country_id = \Yii::$app->request->get('id');
         if (!isset($country_id)) {
             return $this->sendErrorResponse("Invalid parameter(s) sent!", null);
         }
 
-        $refData = new RefAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $states = $refData->getStates($country_id);
-        if ($states['status'] === ResponseHandler::STATUS_OK) {
-            return $this->sendSuccessResponse($states['data']);
-        } else {
-            return $this->sendErrorResponse($states['message'], null);
+        $cacheKey = Calypso::getValue(Yii::$app->params, 'cacheAppPrefix') . "states_$country_id";
+
+        $states = Yii::$app->cache->get($cacheKey);
+        if (!$states) {
+            $refData = new RefAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+            $response = new ResponseHandler($refData->getStates($country_id));
+
+            if (!$response->isSuccess()) {
+                return $this->sendErrorResponse($response->getError(), null);
+            }
+
+            $states = $response->getData();
+//            Yii::$app->cache->set($cacheKey, $states, 3600);
         }
+
+        return $this->sendSuccessResponse($states);
     }
 
     /**
@@ -126,13 +146,22 @@ class ParcelsController extends BaseController
             return $this->sendErrorResponse("Invalid parameter(s) sent!", null);
         }
 
-        $regData = new RegionAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $cities = $regData->getAllCity(1, 1, $state_id);
-        if ($cities['status'] === ResponseHandler::STATUS_OK) {
-            return $this->sendSuccessResponse($cities['data']);
-        } else {
-            return $this->sendErrorResponse($cities['message'], null);
+        $cacheKey = Calypso::getValue(Yii::$app->params, 'cacheAppPrefix') . "cities_$state_id";
+
+        $cities = Yii::$app->cache->get($cacheKey);
+        if (!$cities) {
+            $refData = new RegionAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+            $response = new ResponseHandler($refData->getAllCity(1, 1, $state_id, 1));
+
+            if (!$response->isSuccess()) {
+                return $this->sendErrorResponse($response->getError(), null);
+            }
+
+            $cities = $response->getData();
+//            Yii::$app->cache->set($cacheKey, $cities, 3600);
         }
+
+        return $this->sendSuccessResponse($cities);
     }
 
     /**

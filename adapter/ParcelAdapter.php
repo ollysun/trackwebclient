@@ -45,12 +45,10 @@ class ParcelAdapter extends BaseAdapter
         return $this->request(ServiceConstant::URL_GET_ONE_PARCEL, array('waybill_number' => $waybill_number), self::HTTP_GET);
     }
 
-    public function getParcel($staff_id, $status, $branch_id = null)
+    public function getParcel($staff_id, $status, $branch_id = null, $send_all = null)
     {
-        $filter = 'held_by_staff_id=' . $staff_id;
-        $filter .= '&status=' . $status;
-        $filter .= empty($branch_id) ? '' : '&to_branch_id=' . $branch_id;
-        return $this->request(ServiceConstant::URL_GET_ALL_PARCEL . '?' . $filter, array(), self::HTTP_GET);
+        $filter = array('held_by_staff_id'=>$staff_id,'status'=>$status,'to_branch_id' => $branch_id,'send_all'=>1);
+        return $this->request(ServiceConstant::URL_GET_ALL_PARCEL,$filter, self::HTTP_GET);
     }
     public function getParcels($start_created_date,$end_created_date,$status,$branch_id=null,$offset=0, $count=50, $with_from=null, $with_total=null, $only_parents=null, $with_created_branch=null){
         $filter = !is_null($status) ? '&status='.$status : '';
@@ -117,12 +115,13 @@ class ParcelAdapter extends BaseAdapter
         return $this->request(ServiceConstant::URL_GET_ALL_PARCEL . '?with_sender=1&with_receiver=1&with_receiver_address=1&offset=' . $offset . '&count=' . $count . $filter, array(), self::HTTP_GET);
     }
 
-    public function getDispatchedParcels($branch_id, $to_branch = null, $start_created_date = null, $end_created_date = null, $status = '-1')
+    public function getDispatchedParcels($branch_id, $to_branch = null, $start_created_date = null, $end_created_date = null, $status = null)
     {
-        $filter = "branch_id={$branch_id}&with_to_branch=1&with_from_branch=1&with_holder=1";
-        $filter .= ($to_branch == null ? '' : '&to_branch_id=' . $to_branch);
-        $filter .= ($start_created_date == null ? '' : '&start_created_date=' . $start_created_date);
-        $filter .= ($end_created_date == null ? '' : '&end_created_date=' . $end_created_date);
+        $filter = "history_from_branch_id={$branch_id}&with_to_branch=1&with_from_branch=1&with_holder=1";
+        $filter .= ($to_branch == null ? '' : '&history_to_branch_id=' . $to_branch);
+        $filter .= ($start_created_date == null ? '' : '&history_start_created_date=' . $start_created_date);
+        $filter .= ($end_created_date == null ? '' : '&history_end_created_date=' . $end_created_date);
+        $filter .= ($status == null ? '' : '&history_status=' . $status);
 
         return $this->request(ServiceConstant::URL_GET_ALL_PARCEL . '?' . $filter, array(), self::HTTP_POST);
     }
@@ -248,6 +247,27 @@ class ParcelAdapter extends BaseAdapter
             return $response->getData();
         } else {
             return $response->getError();
+        }
+    }
+
+    /**
+     * Returns the number of parcels meeting a
+     * @author Olawale Lawal <wale@cottacush.com>
+     * @param $filter_array
+     * @return array|mixed|string
+     */
+    public function getParcelCount($filter_array = null)
+    {
+        $filter_array = is_null($filter_array) ? [] : $filter_array;
+        $url_params = [];
+        $filter_array= array_filter($filter_array);
+        $filters = '?'.http_build_query($filter_array);
+        $response = $this->request(ServiceConstant::URL_PARCEL_COUNT.$filters, [] , self::HTTP_GET);
+        $response = new ResponseHandler($response);
+        if ($response->getStatus() == Response::STATUS_OK) {
+            return $response->getData();
+        } else {
+            return 0;
         }
     }
 }

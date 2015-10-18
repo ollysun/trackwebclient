@@ -66,7 +66,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                         </tr>
                         </thead>
                         <tbody>
-                        <?php foreach ($users as $user): $i += $offset; ?>
+                        <?php $i = $offset; foreach ($users as $user): ?>
                             <tr>
                                 <td><?= ++$i; ?></td>
                                 <td><?= Calypso::getValue($user, 'firstname') . " " . Calypso::getValue($user, 'lastname') ?></td>
@@ -145,8 +145,8 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                             <div class="form-group col-xs-6">
                                 <label for="">Activate user?</label>
                                 <select name="status" class="form-control">
-                                    <option value="1">Yes</option>
                                     <option value="2">No</option>
+                                    <option value="1">Yes</option>
                                 </select>
                             </div>
                         </div>
