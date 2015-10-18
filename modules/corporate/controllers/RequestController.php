@@ -8,23 +8,20 @@ namespace app\modules\corporate\controllers;
 
 use Adapter\CompanyAdapter;
 use Adapter\RefAdapter;
-use Adapter\RegionAdapter;
 use Adapter\RequestHelper;
 use Adapter\ResponseHandler;
 use Adapter\Util\Calypso;
-use Adapter\Util\ResponseCodes;
-use Adapter\Util\ResponseMessages;
-use Adapter\Util\Util;
 use app\controllers\BaseController;
+use app\modules\corporate\models\BulkShipment;
 use app\traits\CorporateRequestFilter;
 use Yii;
 use yii\helpers\Url;
-use yii\web\Controller;
 
 class RequestController extends BaseController
 {
 
     use CorporateRequestFilter;
+
     /**
      * Company requests action
      * @author Adegoke Obasa <goke@cottacush.com>
@@ -184,6 +181,50 @@ class RequestController extends BaseController
     }
 
     /**
+     * Cancel shipment request form action
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @return string
+     */
+    public function actionCancelshipment()
+    {
+        $companyAdapter = new CompanyAdapter();
+
+        if (Yii::$app->request->isPost) {
+            $requestId = Yii::$app->request->post('request_id');
+
+            $status = $companyAdapter->cancelShipmentRequest($requestId);
+            if ($status) {
+                $this->flashSuccess("Shipment request cancelled successfully");
+            } else {
+                $this->flashError($companyAdapter->getLastErrorMessage());
+            }
+        }
+        return $this->redirect(Url::to('/corporate/request/shipments'));
+    }
+
+    /**
+     * Cancel pickup request form action
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @return string
+     */
+    public function actionCancelpickup()
+    {
+        $companyAdapter = new CompanyAdapter();
+
+        if (Yii::$app->request->isPost) {
+            $requestId = Yii::$app->request->post('request_id');
+
+            $status = $companyAdapter->cancelPickupRequest($requestId);
+            if ($status) {
+                $this->flashSuccess("Pickup request cancelled successfully");
+            } else {
+                $this->flashError($companyAdapter->getLastErrorMessage());
+            }
+        }
+        return $this->redirect(Url::to('/corporate/request/pickups'));
+    }
+
+    /**
      * View Pickup Request Action
      * @author Adegoke Obasa <goke@cottacush.com>
      */
@@ -205,5 +246,15 @@ class RequestController extends BaseController
 
         $request = (new CompanyAdapter())->getShipmentRequest($id);
         return $this->render('viewshipment', ['request' => $request]);
+    }
+
+    /**
+     * Download bulk shipment request template file
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     */
+    public function actionTemplatefile()
+    {
+        BulkShipment::generateTemplateFile();
+        BulkShipment::pushFileToClient(BulkShipment::getTemplateFilePath(), 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'CourierPlus - Bulk Shipment Request Template.xlsx', true);
     }
 }

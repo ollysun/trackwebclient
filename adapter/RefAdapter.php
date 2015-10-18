@@ -1,9 +1,13 @@
 <?php
 namespace Adapter;
 
-use Adapter\BaseAdapter;
 use Adapter\Globals\ServiceConstant;
 
+/**
+ * Class RefAdapter
+ * @author Adeyemi Olaoye <yemi@cottacush.com>
+ * @package Adapter
+ */
 class RefAdapter extends BaseAdapter
 {
 
@@ -53,7 +57,8 @@ class RefAdapter extends BaseAdapter
      */
     public function getStates($id, $with_regions = 0)
     {
-        return $this->request(ServiceConstant::URL_REF_STATES, ['country_id' => $id, 'with_region' => $with_regions], self::HTTP_GET);
+        $response = $this->request(ServiceConstant::URL_REF_STATES, ['country_id' => $id, 'with_region' => $with_regions], self::HTTP_GET);
+        return $response;
     }
 
     /**
@@ -83,5 +88,22 @@ class RefAdapter extends BaseAdapter
     {
         $filter = ['status' => $status, 'send_all' => $send_all, 'offset' => $offset, 'count' => $count,'with_total_count'=>$with_total_count ];
         return $this->request(ServiceConstant::URL_ONFORWARDING_FETCH_ALL, $filter, self::HTTP_GET);
+    }
+
+    /**
+     * Get all cities
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     * @return array|mixed|string
+     */
+    public function getAllCities()
+    {
+        $response = $this->request(ServiceConstant::URL_REGION_CITY_GET_ALL, [], self::HTTP_GET);
+
+        $response = new ResponseHandler($response);
+
+        if ($response->isSuccess()) {
+            return $response->getData();
+        }
+        return [];
     }
 }

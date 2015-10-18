@@ -225,6 +225,7 @@ class CompanyAdapter extends BaseAdapter
             'with_receiver_city' => '1',
             'with_receiver_state' => '1',
             'with_company' => '1',
+            'with_company_city' => '1',
             'with_created_by' => '1'];
 
         $response = $this->request(ServiceConstant::URL_SHIPMENT_REQUEST,
@@ -293,6 +294,78 @@ class CompanyAdapter extends BaseAdapter
     public function makePickupRequest($data)
     {
         $rawResponse = $this->request(ServiceConstant::URL_MAKE_PICKUP_REQUEST, Json::encode($data), self::HTTP_POST);
+        $response = new ResponseHandler($rawResponse);
+
+        if (!$response->isSuccess()) {
+            $this->lastErrorMessage = $response->getError();
+        }
+
+        return $response->isSuccess();
+    }
+
+    /**
+     * Cancel shipment request
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @param $requestId
+     * @return bool
+     */
+    public function cancelShipmentRequest($requestId)
+    {
+        $rawResponse = $this->request(ServiceConstant::URL_CANCEL_SHIPMENT_REQUEST, Json::encode(['request_id' => $requestId]), self::HTTP_POST);
+        $response = new ResponseHandler($rawResponse);
+
+        if (!$response->isSuccess()) {
+            $this->lastErrorMessage = $response->getError();
+        }
+
+        return $response->isSuccess();
+    }
+
+    /**
+     * Decline shipment request
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @param $requestId
+     * @return bool
+     */
+    public function declineShipmentRequest($requestId)
+    {
+        $rawResponse = $this->request(ServiceConstant::URL_DECLINE_SHIPMENT_REQUEST, Json::encode(['request_id' => $requestId]), self::HTTP_POST);
+        $response = new ResponseHandler($rawResponse);
+
+        if (!$response->isSuccess()) {
+            $this->lastErrorMessage = $response->getError();
+        }
+
+        return $response->isSuccess();
+    }
+
+    /**
+     * Cancel pickup request
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @param $requestId
+     * @return bool
+     */
+    public function cancelPickupRequest($requestId)
+    {
+        $rawResponse = $this->request(ServiceConstant::URL_CANCEL_PICKUP_REQUEST, Json::encode(['request_id' => $requestId]), self::HTTP_POST);
+        $response = new ResponseHandler($rawResponse);
+
+        if (!$response->isSuccess()) {
+            $this->lastErrorMessage = $response->getError();
+        }
+
+        return $response->isSuccess();
+    }
+
+    /**
+     * Decline pickup request
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @param $requestId
+     * @return bool
+     */
+    public function declinePickupRequest($requestId)
+    {
+        $rawResponse = $this->request(ServiceConstant::URL_DECLINE_PICKUP_REQUEST, Json::encode(['request_id' => $requestId]), self::HTTP_POST);
         $response = new ResponseHandler($rawResponse);
 
         if (!$response->isSuccess()) {
