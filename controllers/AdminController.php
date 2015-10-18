@@ -8,12 +8,15 @@
 
 namespace app\controllers;
 
-use Adapter\BaseAdapter;
 use Adapter\BranchAdapter;
+use Adapter\CompanyAdapter;
 use Adapter\Globals\ServiceConstant;
 use Adapter\RefAdapter;
+use Adapter\RegionAdapter;
 use Adapter\ResponseHandler;
 use Adapter\Util\Calypso;
+use Adapter\Util\ResponseCodes;
+use Adapter\Util\ResponseMessages;
 use Adapter\ZoneAdapter;
 use Adapter\RequestHelper;
 use Yii;
@@ -21,6 +24,7 @@ use Adapter\Util\Response;
 use Adapter\AdminAdapter;
 use Adapter\UserAdapter;
 use Adapter\RouteAdapter;
+use yii\helpers\Url;
 
 
 class AdminController extends BaseController
@@ -273,13 +277,119 @@ class AdminController extends BaseController
         return $this->render('managestaff', ['states' => $state_list, 'roles' => $role_list, 'staffMembers' => $staffMembers, 'offset' => $offset, 'role' => $role, 'page_width' => $this->page_width]);
     }
 
+    /**
+     * Manage Companies Action
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @author Olajide Oye <jide@cottacush.com>
+     * @return string
+     */
     public function actionCompanies()
     {
-        return $this->render('companies');
+        $companyAdapter = new CompanyAdapter();
+        if (Yii::$app->request->isPost) {
+            $data = Yii::$app->request->post();
+
+            // Create Company
+            $status = $companyAdapter->createCompany($data);
+
+            if ($status) {
+                $this->flashSuccess("Company created successfully");
+            } else {
+                $this->flashError($companyAdapter->getLastErrorMessage());
+            }
+            return $this->refresh();
+        }
+
+        $refAdapter = new RefAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $states = (new ResponseHandler($refAdapter->getStates(1)))->getData();
+
+        $filters = [];
+
+        $page = \Yii::$app->getRequest()->get('page', 1);
+
+        $query = \Yii::$app->getRequest()->get('search');
+        if(!is_null($query)) {
+            $filters = ['name' => $query];
+            $page = 1; // Reset page
+        }
+
+        // Add Offset and Count
+        $offset = ($page - 1) * $this->page_width;
+        $filters['offset'] = $offset;
+        $filters['count'] = $this->page_width;
+
+        $companiesData = $companyAdapter->getCompanies($filters);
+        $companies = Calypso::getValue($companiesData, 'companies', []);
+        $totalCount = Calypso::getValue($companiesData, 'total_count', 0);
+
+        return $this->render('companies', [
+            'locations' => ['states' => $states],
+            'companies' => $companies,
+            'offset' => $offset,
+            'total_count' => $totalCount,
+            'page_width' => $this->page_width]);
     }
 
-    public function actionManageroutes()
+    /**
+     * View Company Action
+     * @author Adegoke Obasa <goke@cottacush.com>
+     */
+    public function actionViewcompany()
     {
+        $company_id = Yii::$app->request->get('id');
+
+        $company = (new CompanyAdapter())->getCompany($company_id);
+        return $this->render('viewcompany', ['company' => $company]);
+    }
+
+    /**
+     * Returns JSON of cities
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @return \yii\web\Response
+     */
+    public function actionCities()
+    {
+        if (!Yii::$app->request->isAjax) {
+            return $this->redirect(Url::toRoute("admin"));
+        }
+
+        $stateId = Yii::$app->request->get('state_id');
+
+        if (is_null($stateId)) {
+            $this->sendErrorResponse(ResponseMessages::INVALID_PARAMETERS, ResponseCodes::INVALID_PARAMETERS, null, 400);
+        }
+
+        $regionAdapter = new RegionAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $cities = (new ResponseHandler($regionAdapter->getAllCity(1, 0, $stateId, 0, 0)))->getData();
+
+        return $this->sendSuccessResponse($cities);
+    }
+
+    /**
+     * Get Staff Details Ajax Action
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @return array|\yii\web\Response
+     */
+    public function actionGetstaff()
+    {
+        if (!Yii::$app->request->isAjax) {
+            return $this->redirect(Url::toRoute("site"));
+        }
+
+        $staffId = Yii::$app->request->get('staff_id');
+
+        if (is_null($staffId)) {
+            $this->sendErrorResponse(ResponseMessages::INVALID_PARAMETERS, ResponseCodes::INVALID_PARAMETERS, null, 400);
+        }
+
+        $staff = (new ResponseHandler((new AdminAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken()))->getStaff($staffId)))->getData();
+        return $this->sendSuccessResponse($staff);
+    }
+
+    public function actionManageroutes($page=1)
+    {
+        $offset = ($page - 1) * $this->page_width;
+
         if (Yii::$app->request->isPost) {
             $entry = Yii::$app->request->post();
             $task = Calypso::getValue(Yii::$app->request->post(), 'task');
@@ -295,13 +405,23 @@ class AdminController extends BaseController
                 if ($task == 'create') {
                     $data = array('name' => $entry['route_name'], 'branch_id' => $entry['branch_id']);
                     $response = $route->createRoute($data);
-                    if ($response['status'] === Response::STATUS_OK) {
+                    $responseHandler = new ResponseHandler($response);
+
+                    if ($responseHandler->getStatus() == ResponseHandler::STATUS_OK) {
                         Yii::$app->session->setFlash('success', 'Route has been created successfully.');
                     } else {
                         Yii::$app->session->setFlash('danger', 'There was a problem creating the route. Reason:' . $response['message']);
                     }
                 } elseif ($task == 'edit') {
-                    $data = array('id' => $entry['id'], 'name' => $entry['route_name'], 'branch_id' => $entry['branch_id']);
+                    $data = array('route_id' => $entry['id'], 'name' => $entry['route_name'], 'branch_id' => $entry['branch_id']);
+                    $response = $route->editRoute($data);
+                    $responseHandler = new ResponseHandler($response);
+
+                    if ($responseHandler->getStatus() == ResponseHandler::STATUS_OK) {
+                        Yii::$app->session->setFlash('success', 'Route has been edited successfully.');
+                    } else {
+                        Yii::$app->session->setFlash('danger', 'There was a problem editing the route. Reason:' . $response['message']);
+                    }
                 }
             }
         }
@@ -312,10 +432,16 @@ class AdminController extends BaseController
 
         $branch_to_view = null;
         $routeAdp = new RouteAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $routes = $routeAdp->getRoutes($branch_to_view);
+        $routes = $routeAdp->getRoutes($branch_to_view, $offset, $this->page_width, true);
         $routes = new ResponseHandler($routes);
-        $route_list = $routes->getStatus() == ResponseHandler::STATUS_OK ? $routes->getData() : [];
 
-        return $this->render('manageroutes', ['routes' => $route_list, 'hubs' => $hub_list]);
+        $route_list = [];
+        $total_count = 0;
+        if ($routes->getStatus() == ResponseHandler::STATUS_OK) {
+            $data = $routes->getData();
+            $total_count = empty($data['total_count']) ? 0 : $data['total_count'];
+            $route_list = empty($data['routes']) ? 0 : $data['routes'];
+        }
+        return $this->render('manageroutes', ['routes' => $route_list, 'hubs' => $hub_list, 'offset'=>$offset, 'total_count'=>$total_count, 'page_width'=>$this->page_width]);
     }
 }

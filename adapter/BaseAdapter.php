@@ -19,10 +19,10 @@ abstract class BaseAdapter
     protected $_access_token;
     protected $_response_as_json;
     protected $_use_root_path;
+    protected $lastErrorMessage;
 
     public function __construct($client_id = null, $access_token = null, $response_as_json = false, $use_root_path = true)
     {
-        $this->_curlagent = new CurlAgent('', true);
         $this->_client_id = $client_id;
         $this->_access_token = $access_token;
         $this->_response_as_json = $response_as_json;
@@ -95,6 +95,7 @@ abstract class BaseAdapter
 
     protected function request($url, $params, $http_method)
     {
+        $this->_curlagent = new CurlAgent('', true);
         if ($this->_access_token != null) {
             $this->_curlagent->setHeader('i', $this->_client_id);
             $this->_curlagent->setHeader('a', $this->_access_token);
@@ -162,4 +163,15 @@ abstract class BaseAdapter
             return false;
         }
     }
-} 
+
+    /**
+     * Gets the last error message
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @return mixed
+     */
+    public function getLastErrorMessage()
+    {
+        return $this->lastErrorMessage;
+    }
+
+}

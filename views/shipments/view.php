@@ -12,8 +12,10 @@ $this->params['breadcrumbs'][] = 'Waybill';
 
 <?php
 	$status = ''.strtoupper(ServiceConstant::getStatus($parcelData['status'])).'';
-	$this->params['content_header_button'] = $status.' <button onclick="javascript:window.open(\'/site/printwaybill?id='.$parcelData['id'].'\', \'_blank\', \'toolbar=yes, scrollbars=yes, resizable=yes, top=10, left=50%, width=1100, height=800\');" class="btn btn-primary">Print Waybill
+	if(!in_array(Calypso::getValue($sessionData, 'role_id'), [ServiceConstant::USER_TYPE_COMPANY_ADMIN, ServiceConstant::USER_TYPE_COMPANY_OFFICER])) {
+		$this->params['content_header_button'] = $status . ' <button onclick="javascript:window.open(\'/site/printwaybill?id=' . $parcelData['id'] . '\', \'_blank\', \'toolbar=yes, scrollbars=yes, resizable=yes, top=10, left=50%, width=1100, height=800\');" class="btn btn-primary">Print Waybill
                     </button>';
+	}
 ?>
 
 <div class="main-box no-header">
@@ -176,7 +178,7 @@ $this->params['breadcrumbs'][] = 'Waybill';
 								<div class="col-xs-6">
 									<label>Reference Number(s)</label>
 									<div class="form-control-static">
-										<?= Calypso::getValue($parcelData, 'reference_number', ''); ?>
+										REF:<?= Calypso::getValue($parcelData, 'reference_number', ''); ?>
 									</div>
 								</div>
 								<?php endif; ?>

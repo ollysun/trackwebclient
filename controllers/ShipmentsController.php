@@ -42,7 +42,7 @@ class ShipmentsController extends BaseController
     {
         $this->userData = (Calypso::getInstance()->session('user_session'));
         $this->branch_to_view = ($this->userData['role_id'] == ServiceConstant::USER_TYPE_SUPER_ADMIN) ? null :
-            ($this->userData['role_id'] == ServiceConstant::USER_TYPE_ADMIN) ? null : $this->userData['branch_id']; //displays all when null
+            ($this->userData['role_id'] == ServiceConstant::USER_TYPE_ADMIN) ? null : Calypso::getValue($this->userData, 'branch_id'); //displays all when null
         //print_r($this->userData);
         if (empty($this->userData)) {
             return false;
@@ -106,7 +106,7 @@ class ShipmentsController extends BaseController
         $parcel = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $page_width = is_null($page_width) ? $this->page_width : $page_width;
         $offset = ($page - 1) * $page_width;
-        $route_id = !empty(Calypso::getInstance()->get()->route) ? Calypso::getInstance()->get()->route:null;
+        $route_id = !empty(Calypso::getInstance()->get()->route) ? Calypso::getInstance()->get()->route : null;
 
         if (\Yii::$app->request->isPost) {
             $rawData = \Yii::$app->request->post('waybills');
@@ -127,8 +127,8 @@ class ShipmentsController extends BaseController
 
                 if ($responseHandler->getStatus() === ResponseHandler::STATUS_OK) {
                     if (empty($data['bad_parcels']))
-                        $this->flashSuccess('Shipments dispatched');
-                    else {
+                        return $this->redirect('/manifest/view?id=' . Calypso::getValue($response, 'data.manifest.id', ''));
+                   else {
                         $bad_parcels = $data['bad_parcels'];
                         foreach ($bad_parcels as $key => $bad_parcel) {
                             $this->flashError($key . ' - ' . $bad_parcel);
@@ -150,7 +150,7 @@ class ShipmentsController extends BaseController
             $response = $parcel->getSearchParcels('-1', $search, $offset, $page_width, 1, $this->branch_to_view);
             $search_action = true;
         } else {
-            $response = $parcel->getParcelsForDelivery(null, null, ServiceConstant::FOR_DELIVERY, $this->branch_to_view, $offset, $page_width, null, 1, null,$route_id, true);
+            $response = $parcel->getParcelsForDelivery(null, null, ServiceConstant::FOR_DELIVERY, $this->branch_to_view, $offset, $page_width, null, 1, null, $route_id, true);
             $search_action = false;
         }
         $response = new ResponseHandler($response);
@@ -167,7 +167,7 @@ class ShipmentsController extends BaseController
         $routes = new ResponseHandler($routes);
         $route_list = $routes->getStatus() == ResponseHandler::STATUS_OK ? $routes->getData() : [];
 
-        return $this->render('fordelivery', array('parcels' => $data, 'from_date' => $from_date, 'to_date' => $to_date, 'offset' => $offset, 'page_width' => $page_width, 'search' => $search_action, 'total_count' => $total_count, 'routes' => $route_list, 'route_id'=>$route_id));
+        return $this->render('fordelivery', array('parcels' => $data, 'from_date' => $from_date, 'to_date' => $to_date, 'offset' => $offset, 'page_width' => $page_width, 'search' => $search_action, 'total_count' => $total_count, 'routes' => $route_list, 'route_id' => $route_id));
     }
 
     public function actionStaffcheck()
@@ -209,7 +209,7 @@ class ShipmentsController extends BaseController
                 $response = $parcelData->generateManifest($payloadData);
                 if ($response['status'] === ResponseHandler::STATUS_OK) {
                     //Forward to manifest page
-                    return $this->viewManifest($payloadData);
+                    return $this->redirect('/manifest/view?id=' . Calypso::getValue($response, 'data.manifest.id', ''));
                 } else {
                     //Flash error message
                     $this->flashError($response['message']);
@@ -297,8 +297,7 @@ class ShipmentsController extends BaseController
                 } else {
                     $this->flashError('An error occurred while trying to cancel shipment. #' . $response->getError());
                 }
-
-            } elseif ($records['submit_teller']) {
+            } elseif ($records['task'] == 'submit_teller') {
                 if (!isset($records['bank_id'], $records['account_no'], $records['amount_paid'], $records['teller_no'], $records['waybill_numbers'])) {
                     $this->flashError("Invalid parameter(s) sent!");
                 } else {
@@ -365,8 +364,7 @@ class ShipmentsController extends BaseController
             return $this->sendErrorResponse($errorMessage, HttpStatusCodes::HTTP_200);
         }
     }
-    
-    
+
     public function actionCustomerhistory()
     {
         return $this->render('customer_history');
@@ -420,7 +418,7 @@ class ShipmentsController extends BaseController
         if (isset(Calypso::getInstance()->get()->waybill_number)) {
             $waybill_number = trim(Calypso::getInstance()->get()->waybill_number);
             if (ParcelAdapter::isBag($waybill_number)) {
-                return $this->redirect(Url::to('viewbag?waybill_number=' . $waybill_number));
+                return $this->redirect(Url::toRoute('/shipments/viewbag?waybill_number=' . $waybill_number));
             }
             $refData = new RefAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
 
@@ -454,9 +452,11 @@ class ShipmentsController extends BaseController
 
             }
         }
+        $user_session = Calypso::getInstance()->session("user_session");
 
         return $this->render('view', array(
             'parcelData' => $data,
+            'sessionData' => $user_session,
             'serviceType' => $serviceType,
             'parcelType' => $parcelType,
             'deliveryType' => $deliveryType,
