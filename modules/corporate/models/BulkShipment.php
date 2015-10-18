@@ -1,9 +1,11 @@
 <?php
 
 namespace app\modules\corporate\models;
+
 use Adapter\Globals\ServiceConstant;
 use Adapter\RefAdapter;
 use Adapter\RequestHelper;
+use Adapter\ResponseHandler;
 use PHPExcel;
 use PHPExcel_Cell_DataValidation;
 use PHPExcel_IOFactory;
@@ -35,7 +37,14 @@ class BulkShipment
         $dataSheet = $phpExcelObj->setActiveSheetIndex(1);
         $dataSheet->setTitle('Data Sheet');
 
-        $states = $refAdapter->getStates(ServiceConstant::COUNTRY_NIGERIA);
+        $response = $refAdapter->getStates(ServiceConstant::COUNTRY_NIGERIA);
+        $response = new ResponseHandler($response);
+        if ($response->isSuccess()) {
+            $states = $response->getData();
+        } else {
+            $states = [];
+        }
+
         self::addStatesData($states, $dataSheet, $phpExcelObj);
         self::addCitiesData($states, $dataSheet, $phpExcelObj);
 
