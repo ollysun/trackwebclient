@@ -90,7 +90,7 @@ $this->params['content_header_button'] = '';
                                     <a title="Create parcel" href="<?= Url::toRoute(['/parcels/new', 'shipment_request_id' => Calypso::getValue($request, 'id')]) ?>"
                                        class="btn btn-xs btn-primary"><i class="fa fa-mail-forward"></i></a>
 
-                                    <?if(Calypso::getValue($request, 'status') == \Adapter\CompanyAdapter::STATUS_PENDING):?>
+                                    <?php if(Calypso::getValue($request, 'status') == \Adapter\CompanyAdapter::STATUS_PENDING):?>
                                         <form method="post" action="<?= Url::to('/corporate/pending/declineshipment'); ?>">
                                             <input type="hidden" name="request_id" value="<?= Calypso::getValue($request, 'id');?>" />
                                             <button type="submit" title="Decline this request"

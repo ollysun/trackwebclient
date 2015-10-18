@@ -4,13 +4,13 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 
 
-$this->title = 'Pickup Requests';
+$this->title = 'Pending Pickup Requests';
 $this->params['breadcrumbs'] = array(
     array(
         'url' => ['corporate'],
         'label' => 'Corporate'
     ),
-    array('label' => 'Pickup Requests')
+    array('label' => 'Pending Pickup Requests')
 );
 ?>
 
@@ -94,7 +94,7 @@ $this->params['content_header_button'] = '';
                                        href="<?= Url::toRoute(['/parcels/new', 'pickup_request_id' => Calypso::getValue($request, 'id')]) ?>"
                                        class="btn btn-xs btn-primary"><i class="fa fa-mail-forward"></i></a>
 
-                                    <?if(Calypso::getValue($request, 'status') == \Adapter\CompanyAdapter::STATUS_PENDING):?>
+                                    <?php if(Calypso::getValue($request, 'status') == \Adapter\CompanyAdapter::STATUS_PENDING):?>
                                         <form method="post" action="<?= Url::to('/corporate/pending/declinepickup'); ?>">
                                             <input type="hidden" name="request_id" value="<?= Calypso::getValue($request, 'id');?>" />
                                             <button type="submit" title="Decline this request"
