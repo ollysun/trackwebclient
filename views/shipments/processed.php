@@ -133,7 +133,7 @@ $this->params['content_header_button'] = $this->render('../elements/content_head
                     </tbody>
                 </table>
             </div>
-            <form method="post" id="request-returns">
+            <form method="post" id="request-returns" action="requestreturn">
                 <input type="hidden" name="waybill_numbers" value>
                 <input type="hidden" name="task" value="request_return">
             </form>
