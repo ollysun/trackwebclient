@@ -88,6 +88,7 @@ class ParcelAdapter extends BaseAdapter
     public function getFilterParcelsByDateAndStatus($start_created_date, $end_created_date, $status, $offset = 0, $count = 50, $with_total = null, $branch_id = null, $only_parents = null, $with_created_branch = null)
     {
         $filters = array('status' => $status, 'with_total_count' => $with_total, 'show_parents' => $only_parents, 'start_created_date' => $start_created_date, 'end_created_date' => $end_created_date, 'from_branch_id' => $branch_id, 'with_sender' => 1, 'with_created_branch' => 1, 'with_receiver' => 1, 'with_receiver_address' => 1, 'with_to_branch' => 1, 'offset' => $offset, 'count' => $count);
+
         return $this->request(ServiceConstant::URL_GET_ALL_PARCEL, $filters, self::HTTP_GET);
     }
 
@@ -106,7 +107,7 @@ class ParcelAdapter extends BaseAdapter
             'offset'=> $offset,
             'count'=>$count);
         $filters = '?' . http_build_query($filter);
-        return $this->request(ServiceConstant::URL_GET_ALL_PARCEL . '?' . $filters, [], self::HTTP_GET);
+        return $this->request(ServiceConstant::URL_GET_ALL_PARCEL . $filters, [], self::HTTP_GET);
     }
 
     public function getDispatchedParcels($branch_id, $to_branch = null, $start_created_date = null, $end_created_date = null, $status = null)
@@ -122,7 +123,7 @@ class ParcelAdapter extends BaseAdapter
             'with_created_branch' => 1,
             'history_status' => $status);
         $filters = '?' . http_build_query($filter);
-        return $this->request(ServiceConstant::URL_GET_ALL_PARCEL . '?' . $filters, [], self::HTTP_GET);
+        return $this->request(ServiceConstant::URL_GET_ALL_PARCEL . $filters, [], self::HTTP_GET);
     }
 
     public function moveToForSweeper($postData)
