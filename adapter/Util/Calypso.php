@@ -451,4 +451,27 @@ class Calypso
         ];
     }
 
+    /**
+     * Make a page that can possibly contain a bagged parcel a referrer page
+     * @author Akintewe Rotimi <akintewe.rotimi@gmail.com>
+     */
+    public static function makeAnUnbagReferrer() {
+        //set unbag referrer
+        $unbag_referrer = \Yii::$app->request->getUrl();
+        Calypso::getInstance()->session('unbag_referrer', $unbag_referrer);
+    }
+
+    /**
+     * Returns the referrer page for a page that an unbag / open bag action was carried out
+     * @author Akintewe Rotimi <akintewe.rotimi@gmail.com>
+     * @return string
+     */
+    public static function getUnbagReferrer() {
+        //get unbag referrer
+        $unbag_referrer = Calypso::getInstance()->session('unbag_referrer');
+        if(empty($unbag_referrer)) {
+            $unbag_referrer = ServiceConstant::DEFAULT_UNBAG_REFERRER;
+        }
+        return $unbag_referrer;
+    }
 }
