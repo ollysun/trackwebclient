@@ -159,6 +159,7 @@ class ServiceConstant
     const URL_USER_ADD = 'company/createUser';
     const URL_COMPANY_REQUESTS = 'company/getRequests';
     const URL_MAKE_SHIPMENT_REQUEST = 'company/makeShipmentRequest';
+    const URL_MAKE_BULK_SHIPMENT_REQUEST = 'company/makeBulkShipmentRequest';
     const URL_MAKE_PICKUP_REQUEST = 'company/makePickupRequest';
     const URL_CANCEL_PICKUP_REQUEST = 'company/cancelPickupRequest';
     const URL_CANCEL_SHIPMENT_REQUEST = 'company/cancelShipmentRequest';
