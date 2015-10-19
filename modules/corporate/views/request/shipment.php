@@ -294,10 +294,18 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                     </div>
                     <?php $form = ActiveForm::begin(['method' => 'post','action' => '/corporate/request/bulkshipment',  'options' => ['enctype' => 'multipart/form-data']]) ?>
                     <div class="modal-body">
-                        <a class="btn btn-primary btn-sm" target="_blank"
-                           href="<?= Url::to('/corporate/request/templatefile') ?>">Download Template File</a>
-                        <br/><br/>
-                        <?= $form->field($bulk_form, 'dataFile')->fileInput()->label('Upload Shipments Data File (CSV File only)') ?>
+                        <br/>
+                        <div class="row">
+                            <div class="col-xs-8">
+                                <?= $form->field($bulk_form, 'dataFile')->fileInput()->label('Upload Shipments Data File (CSV File only)') ?>
+                            </div>
+                            <div class="col-xs-4 text-right">
+                                <label>&nbsp;</label>
+                                <a class="btn btn-primary btn-sm" target="_blank"
+                                   href="<?= Url::to('/corporate/request/templatefile') ?>">Download Template File</a>
+                            </div>
+                        </div>
+                        <br/>
                     </div>
                     <div class="modal-footer">
                         <button name="bulk_shipment" type="button" class="btn btn-default" data-dismiss="modal">Close
