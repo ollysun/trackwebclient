@@ -381,4 +381,4 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
 
     <!-- this page specific scripts -->
 <?php $this->registerJsFile('@web/js/validate.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
-<?php $this->registerJsFile('@web/js/companies.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/companies.js?v=1.0.0', ['depends' => [\app\assets\AppAsset::className()]]) ?>
