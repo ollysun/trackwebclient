@@ -185,6 +185,24 @@ class CompanyAdapter extends BaseAdapter
     }
 
     /**
+     * Edits a company user
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @param $data
+     * @return bool
+     */
+    public function editUser($data)
+    {
+        $rawResponse = $this->request(ServiceConstant::URL_USER_EDIT, Json::encode($data), self::HTTP_POST);
+        $response = new ResponseHandler($rawResponse);
+
+        if (!$response->isSuccess()) {
+            $this->lastErrorMessage = $response->getError();
+        }
+
+        return $response->isSuccess();
+    }
+
+    /**
      * Get shipment requests for company
      * @author Adegoke Obasa <goke@cottacush.com>
      * @param $filters
