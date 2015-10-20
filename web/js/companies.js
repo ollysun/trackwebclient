@@ -104,11 +104,7 @@
             $(fieldsMap).each(function (i, v) {
                 if(v.type == 'select'){
                     editCompanyForm.find(v.type + "[name='" + v.name + "']").data('selected', data[v.field]);
-                    editCompanyForm.find(v.type + "[name='" + v.name + "'] option").each(function (index, option) {
-                        if ($(option).val() == data[v.field]) {
-                            $(option).attr("selected", true);
-                        }
-                    }).trigger('change');
+                    editCompanyForm.find(v.type + "[name='" + v.name + "']").val(data[v.field]).trigger('change');
                 } else {
                     if(data[v.field] != 'NULL') {
                         editCompanyForm.find(v.type + "[name='" + v.name + "']").val(data[v.field]);
