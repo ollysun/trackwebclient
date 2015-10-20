@@ -17,6 +17,16 @@ class Util
 {
 
     /**
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     * @param $datetime
+     * @return bool|string
+     */
+    public static function convertDateTimeToTime($datetime)
+    {
+        return self::formatDate('h:iA', $datetime);
+    }
+
+    /**
      * Format date
      * @author Adeyemi Olaoye <yemi@cottacush.com>
      * @param $format
@@ -32,33 +42,9 @@ class Util
         return date($format, $datetime);
     }
 
-    /**
-     * @author Adeyemi Olaoye <yemi@cottacush.com>
-     * @param $datetime
-     * @return bool|string
-     */
-    public static function convertDateTimeToTime($datetime)
-    {
-        return self::formatDate('h:iA', $datetime);
-    }
-
     public static function convertToTrackingDateFormat($datetime)
     {
         return self::formatDate('d M. Y', $datetime);
-    }
-
-    /**
-     * Removes underscores from string
-     * @author Adegoke Obasa <goke@cottacush.com>
-     * @param $string
-     * @return mixed
-     */
-    public static function removeUnderscore($string)
-    {
-        if(!is_string($string)) {
-            return '';
-        }
-        return preg_replace("/\_+/", " ", $string);
     }
 
     /**
@@ -73,12 +59,43 @@ class Util
     }
 
     /**
+     * Removes underscores from string
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @param $string
+     * @return mixed
+     */
+    public static function removeUnderscore($string)
+    {
+        if (!is_string($string)) {
+            return '';
+        }
+        return preg_replace("/\_+/", " ", $string);
+    }
+
+    /**
      * Returns the current date
      * @author Adegoke Obasa <goke@cottacush.com>
      * @param string $separator
      * @return string
      */
-    public static function getToday($separator = '-'){
+    public static function getToday($separator = '-')
+    {
         return date("Y{$separator}m{$separator}d");
+    }
+
+    /**
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     * @param $array
+     * @param $keys
+     * @return mixed
+     */
+    public static function swapKeys($array, $keys)
+    {
+        $result = [];
+        foreach ($array as $key => $value) {
+            $result[$keys[$key]] = $value;
+        }
+
+        return $result;
     }
 }

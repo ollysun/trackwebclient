@@ -286,6 +286,24 @@ class CompanyAdapter extends BaseAdapter
     }
 
     /**
+     * Make shipment request
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @param $data
+     * @return bool
+     */
+    public function makeBulkShipmentRequest($data)
+    {
+        $rawResponse = $this->request(ServiceConstant::URL_MAKE_BULK_SHIPMENT_REQUEST, Json::encode($data), self::HTTP_POST);
+        $response = new ResponseHandler($rawResponse);
+
+        if (!$response->isSuccess()) {
+            $this->lastErrorMessage = $response->getError();
+        }
+
+        return $response->isSuccess();
+    }
+
+    /**
      * Make pickup request
      * @author Adegoke Obasa <goke@cottacush.com>
      * @param $data
