@@ -389,7 +389,7 @@ class BillingController extends BaseController
 
         $offset = ($page - 1) * $this->page_width;
         $refAdp = new RefAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $charges = $refAdp->getOnforwardingCharges(null, $offset, $this->page_width, 1, null);
+        $charges = $refAdp->getOnforwardingCharges(null, $offset, $this->page_width, 1, 1);
         $response = new ResponseHandler($charges);
         $charges_list = null;
         $total_count = 0;
