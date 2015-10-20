@@ -575,7 +575,6 @@ class ShipmentsController extends BaseController
             $to_date = Calypso::getInstance()->get()->to;
         }
 
-        $user_session = Calypso::getInstance()->session("user_session");
         $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $delivered_parcels = $parcelsAdapter->getDeliveredParcels($this->branch_to_view, $offset, $page_width, $from_date . '%2000:00:00', $to_date . '%2023:59:59');
         $parcelsHandler = new ResponseHandler($delivered_parcels);
