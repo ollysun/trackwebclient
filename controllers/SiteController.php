@@ -8,6 +8,7 @@ use Adapter\ParcelAdapter;
 use Adapter\RegionAdapter;
 use Adapter\RefAdapter;
 use Adapter\UserAdapter;
+use app\models\User;
 use app\services\ParcelService;
 use Yii;
 use Adapter\RequestHelper;
@@ -101,7 +102,7 @@ class SiteController extends BaseController
         $filters = array('created_branch_id' => $branch_to_view, 'start_created_date' => $from_date . ' 00:00:00', 'end_created_date' => $to_date . ' 23:59:59');
         $stats['created'] = $parcel->getParcelCount($filters);
 
-        $filters = array('request_type' => ServiceConstant::REQUEST_OTHERS,'history_from_branch_id' => $branch_to_view, 'history_status' => ServiceConstant::FOR_SWEEPER, 'history_start_created_date' => $from_date . ' 00:00:00', 'history_end_created_date' => $to_date . ' 23:59:59');
+        $filters = array('request_type' => ServiceConstant::REQUEST_OTHERS, 'history_from_branch_id' => $branch_to_view, 'history_status' => ServiceConstant::FOR_SWEEPER, 'history_start_created_date' => $from_date . ' 00:00:00', 'history_end_created_date' => $to_date . ' 23:59:59');
         $stats['for_sweep'] = $parcel->getParcelCount($filters);
 
         $filters = array('request_type' => ServiceConstant::REQUEST_ECOMMERCE, 'history_from_branch_id' => $branch_to_view, 'history_status' => ServiceConstant::FOR_SWEEPER, 'history_start_created_date' => $from_date . ' 00:00:00', 'history_end_created_date' => $to_date . ' 23:59:59');
@@ -154,33 +155,37 @@ class SiteController extends BaseController
     {
         $this->enableCsrfValidation = false;
         $this->layout = 'login';
-        $data = (Yii::$app->request->post());
-        if ($data) {
-            $admin = new AdminAdapter();
-            $response = $admin->login($data['email'], $data['password']);
-            $response = new ResponseHandler($response);
-            if ($response->getStatus() == ResponseHandler::STATUS_OK) {
-                $data = $response->getData();
-                if ($data != null && isset($data['user_auth_id'])) {
-                    RequestHelper::setClientID($data['user_auth_id']);
-                }
-                Calypso::getInstance()->session("user_session", $response->getData());
-
-                if ($data['created_date'] == $data['modified_date'] && $data['status'] == ServiceConstant::INACTIVE) {
-                    return $this->redirect('/site/changepassword');
-                }
-
-                // Check Corporate User
-                if (!is_null(Calypso::getValue(Calypso::getInstance()->session("user_session"), 'company'))) {
-                    return $this->redirect('/corporate/request/shipments');
-                }
-
-                return $this->redirect('/site');
-            } else {
-                Calypso::getInstance()->setPageData("You are not eligible to access this system, kindly contact your administrator");
-            }
+        if (!Yii::$app->request->isPost) {
+            return $this->render('login');
         }
-        return $this->render('login');
+
+        $admin = new AdminAdapter();
+        $response = $admin->login(Yii::$app->request->post('email', null), Yii::$app->request->post('password', null));
+        $response = new ResponseHandler($response);
+
+        if ($response->getStatus() != ResponseHandler::STATUS_OK) {
+            Calypso::getInstance()->setPageData($response->getError());
+            return $this->render('login');
+        }
+
+        $data = $response->getData();
+        $user_status = $data['status'];
+
+        if ($user_status == ServiceConstant::ACTIVE) {
+            User::login($data);
+            // Check Corporate User
+            if (!is_null(Calypso::getValue(Calypso::getInstance()->session("user_session"), 'company'))) {
+                return $this->redirect('/corporate/request/shipments');
+            }
+            return $this->redirect('/site');
+
+        } else if ($data['status'] == ServiceConstant::INACTIVE && $data['last_login_time'] == 0) {
+            User::login($data);
+            return $this->redirect('/site/changepassword');
+        } else {
+            Calypso::getInstance()->setPageData("You are not eligible to access this system, kindly contact your administrator");
+            return $this->render('login');
+        }
     }
 
     public function actionLogout()
