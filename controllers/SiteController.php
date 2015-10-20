@@ -169,7 +169,7 @@ class SiteController extends BaseController
         }
 
         $data = $response->getData();
-        $user_status = $data['status'];
+        $user_status = Calypso::getValue($data, 'status');
 
         if ($user_status == ServiceConstant::ACTIVE) {
             User::login($data);
@@ -179,11 +179,14 @@ class SiteController extends BaseController
             }
             return $this->redirect('/site');
 
-        } else if ($data['status'] == ServiceConstant::INACTIVE && $data['last_login_time'] == 0) {
+        } else if ($user_status == ServiceConstant::INACTIVE && Calypso::getValue($data, 'last_login_time') == 0) {
             User::login($data);
             return $this->redirect('/site/changepassword');
-        } else {
+        } else if ($user_status == ServiceConstant::INACTIVE) {
             Calypso::getInstance()->setPageData("You are not eligible to access this system, kindly contact your administrator");
+            return $this->render('login');
+        } else {
+            Calypso::getInstance()->setPageData("An error occurred during login. Please try again later.");
             return $this->render('login');
         }
     }
