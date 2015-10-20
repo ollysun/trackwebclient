@@ -74,12 +74,21 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                                     <a href="<?= Url::toRoute(['/admin/viewcompany?id=' . Calypso::getValue($company, 'id')]); ?>"
                                        class="btn btn-xs btn-default"><i
                                             class="fa fa-eye">&nbsp;</i> View</a>
+                                    <button
+                                        data-id="<?= Calypso::getValue($company, 'id'); ?>"
+                                        data-email="<?= Calypso::getValue($company, 'email'); ?>"
+                                        data-name="<?= Calypso::getValue($company, 'name'); ?>"
+                                        data-phone_number="<?= Calypso::getValue($company, 'phone_number'); ?>"
+                                        data-address="<?= Calypso::getValue($company, 'address'); ?>"
+                                        data-state_id="<?= Calypso::getValue($company, 'city.state_id'); ?>"
+                                        data-city_id="<?= Calypso::getValue($company, 'city_id'); ?>"
+                                        data-reg_no="<?= Calypso::getValue($company, 'reg_no'); ?>"
+                                        data-relations_officer_staff_id="<?= Calypso::getValue($company, 'relations_officer.staff_id'); ?>"
+                                        data-relations_officer_id="<?= Calypso::getValue($company, 'relations_officer_id'); ?>"
+                                        type="button" class="btn btn-default btn-xs editCompany" data-toggle="modal"
+                                            data-target="#editModal"><i class="fa fa-edit"></i> Edit
+                                    </button>
                                 </td>
-<!--                                <td>-->
-<!--                                    <button type="button" class="btn btn-default btn-xs hide" data-toggle="modal"-->
-<!--                                            data-target="#editModal"><i class="fa fa-edit"></i> Edit-->
-<!--                                    </button>-->
-<!--                                </td>-->
                             </tr>
                         <?php endforeach; ?>
                         </tbody>
@@ -137,7 +146,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                             <div class="row">
                                 <div class="col-xs-6 form-group">
                                     <label for="">State</label>
-                                    <select id="state" class="form-control validate required">
+                                    <select id="state" data-state data-target="city" class="form-control validate required">
                                         <option value="" selected>Select State</option>
                                         <?php foreach (Calypso::getValue($locations, 'states', []) as $state): ?>
                                             <option
@@ -166,7 +175,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                                     </div>
                                     <div class="col-xs-4 form-group">
                                         </br>
-                                        <button type="button" id="loadStaff" class="btn btn-primary btn-xs">Load
+                                        <button type="button" data-staff="staff" data-staff_id="staffId" data-staff_name="staffName" data-load_staff="true" class="btn btn-primary btn-xs">Load
                                         </button>
                                     </div>
                                     <div class="col-xs-4 form-group">
@@ -269,7 +278,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
 
     <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog modal-lg" role="document">
-            <form class="">
+            <form class="" id="editCompanyForm" method="post" action="<?= Url::to("/admin/editcompany")?>">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
@@ -280,37 +289,46 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                         <fieldset>
                             <legend>Company Details</legend>
                             <div class="row">
+                                <input type="hidden" name="company[id]"/>
                                 <div class="col-xs-6 form-group">
                                     <label for="">Name</label>
-                                    <input type="text" class="form-control validate required name">
+                                    <input name="company[name]" type="text" class="form-control validate required name">
                                 </div>
                                 <div class="col-xs-6 form-group">
                                     <label for="">Registration No</label>
-                                    <input type="text" class="form-control validate required">
+                                    <input name="company[reg_no]" type="text" class="form-control validate required">
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-xs-6 form-group">
                                     <label for="">Email address</label>
-                                    <input type="text" class="form-control validate required email">
+                                    <input name="company[email]" type="text" class="form-control validate required email">
                                 </div>
                                 <div class="col-xs-6 form-group">
                                     <label for="">Phone number</label>
-                                    <input type="text" class="form-control validate required phone">
+                                    <input name="company[phone_number]" type="text" class="form-control validate required phone">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label>Address</label>
-                                <input type="text" class="form-control validate required">
+                                <input name="company[address]" type="text" class="form-control validate required">
                             </div>
                             <div class="row">
                                 <div class="col-xs-6 form-group">
                                     <label for="">State</label>
-                                    <select name="" id="" class="form-control validate required"></select>
+                                    <select name="company[state]" data-state data-target="edit_city" class="form-control validate required">
+                                        <option value="" selected>Select State</option>
+                                        <?php foreach (Calypso::getValue($locations, 'states', []) as $state): ?>
+                                            <option
+                                                value="<?= Calypso::getValue($state, 'id', '') ?>"><?= strtoupper(Calypso::getValue($state, 'name', '')); ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
                                 </div>
                                 <div class="col-xs-6 form-group">
                                     <label for="">City</label>
-                                    <select name="" id="" class="form-control validate required"></select>
+                                    <select name="company[city_id]" id="edit_city" class="form-control validate required">
+                                        <option value="" selected>Select a State</option>
+                                    </select>
                                 </div>
                             </div>
                         </fieldset>
@@ -322,15 +340,17 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                                 <div class="row">
                                     <div class="col-xs-4 form-group">
                                         <label for="">Staff ID</label>
-                                        <input type="text" class="form-control validate required">
+                                        <input type="text" name="company[relations_officer_staff_id]" id="editStaff" class="form-control validate required">
+                                        <input id="editStaffId" type="hidden" name="company[relations_officer_id]"/>
                                     </div>
                                     <div class="col-xs-4 form-group">
-                                        <label for="">Name</label>
-                                        <input type="text" readonly="readonly" class="form-control validate required">
+                                        </br>
+                                        <button type="button" data-staff="editStaff" data-staff_id="editStaffId" data-staff_name="editStaffName" data-load_staff="true" class="btn btn-primary btn-xs">Load
+                                        </button>
                                     </div>
                                     <div class="col-xs-4 form-group">
-                                        <label for="">Email address</label>
-                                        <input type="text" readonly="readonly" class="form-control validate required">
+                                        </br>
+                                        <p id="editStaffName"></p>
                                     </div>
                                 </div>
                             </fieldset>
@@ -349,66 +369,10 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                             </fieldset>
                         </div>
                         <br>
-
-                        <div class="row">
-                            <fieldset class="col-xs-6">
-                                <legend>Primary Contact</legend>
-                                <div class="row">
-                                    <div class="col-xs-6 form-group">
-                                        <label for="">First name</label>
-                                        <input type="text" class="form-control validate required name">
-                                    </div>
-                                    <div class="col-xs-6 form-group">
-                                        <label for="">Last name</label>
-                                        <input type="text" class="form-control validate required name">
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-xs-12 form-group">
-                                        <label for="">Email address</label>
-                                        <input type="text" class="form-control validate required email">
-                                    </div>
-                                    <div class="col-xs-12 form-group">
-                                        <label for="">Phone number</label>
-                                        <input type="text" class="form-control validate required phone">
-                                    </div>
-                                </div>
-                            </fieldset>
-                            <fieldset class="col-xs-6">
-                                <legend>Secondary Contact
-                                    <small>(optional)</small>
-                                </legend>
-                                <div class="row">
-                                    <div class="col-xs-6 form-group">
-                                        <label for="">First name</label>
-                                        <input data-secondary_contact="true" type="text"
-                                               class="form-control validate name">
-                                    </div>
-                                    <div class="col-xs-6 form-group">
-                                        <label for="">Last name</label>
-                                        <input data-secondary_contact="true" type="text"
-                                               class="form-control validate name">
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-xs-12 form-group">
-                                        <label for="">Email address</label>
-                                        <input data-secondary_contact="true" type="text"
-                                               class="form-control validate email">
-                                    </div>
-                                    <div class="col-xs-12 form-group">
-                                        <label for="">Phone number</label>
-                                        <input data-secondary_contact="true" type="text"
-                                               class="form-control validate phone">
-                                    </div>
-                                </div>
-                            </fieldset>
-                        </div>
-                        <br>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save changes</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
                     </div>
                 </div>
             </form>
