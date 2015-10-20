@@ -206,7 +206,7 @@ class ParcelAdapter extends BaseAdapter
         $filter .= '&status=' . ServiceConstant::DELIVERED;
         $filter .= !is_null($start_modified_date) ? '&start_modified_date=' . $start_modified_date : '';
         $filter .= !is_null($end_modified_date) ? '&end_modified_date=' . $end_modified_date : '';
-        return $this->request(ServiceConstant::URL_GET_ALL_PARCEL . '?with_receiver=1&with_sender=1&offset=' . $offset . '&count=' . $count . $filter, array(), self::HTTP_GET);
+        return $this->request(ServiceConstant::URL_GET_ALL_PARCEL . '?with_receiver=1&with_sender=1&with_delivery_receipt=1&offset=' . $offset . '&count=' . $count . $filter, array(), self::HTTP_GET);
     }
 
     public function getMerchantParcels($with_bank_account = 1, $payment_status = null, $offset = 0, $count = 50, $with_total = 1, $only_parents = 1)

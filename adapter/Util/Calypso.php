@@ -32,14 +32,6 @@ class Calypso
         }
     }
 
-    public static function getInstance()
-    {
-        if (self::$instance == null) {
-            return self::$instance = new Calypso();
-        }
-        return self::$instance;
-    }
-
     /**
      * Get's a value if it's non empty
      * @author Adegoke Obasa <goke@cottacush.com>
@@ -251,6 +243,38 @@ class Calypso
         ];
     }
 
+    /**
+     * Make a page that can possibly contain a bagged parcel a referrer page
+     * @author Akintewe Rotimi <akintewe.rotimi@gmail.com>
+     */
+    public static function makeAnUnbagReferrer() {
+        //set unbag referrer
+        $unbag_referrer = \Yii::$app->request->getUrl();
+        Calypso::getInstance()->session('unbag_referrer', $unbag_referrer);
+    }
+
+    public static function getInstance()
+    {
+        if (self::$instance == null) {
+            return self::$instance = new Calypso();
+        }
+        return self::$instance;
+    }
+
+    /**
+     * Returns the referrer page for a page that an unbag / open bag action was carried out
+     * @author Akintewe Rotimi <akintewe.rotimi@gmail.com>
+     * @return string
+     */
+    public static function getUnbagReferrer() {
+        //get unbag referrer
+        $unbag_referrer = Calypso::getInstance()->session('unbag_referrer');
+        if(empty($unbag_referrer)) {
+            $unbag_referrer = ServiceConstant::DEFAULT_UNBAG_REFERRER;
+        }
+        return $unbag_referrer;
+    }
+
     public function post()
     {
         try {
@@ -340,18 +364,6 @@ class Calypso
     public function setFlashSuccessMsg($message)
     {
         $this->session('success_msg', $message);
-    }
-
-    public function session($key, $value = NULL)
-    {
-        if (isset($_SESSION)) {
-            if ($key && $value != NULL) {
-                $_SESSION[$key] = $value;
-            } elseif ($key && $value == NULL && isset($_SESSION[$key])) {
-                return $_SESSION[$key];
-            }
-        }
-        return false;
     }
 
     public function formatCurrency($value, $dp = 2)
@@ -463,29 +475,5 @@ class Calypso
             }
         }
         header('location:' . ServiceConstant::BASE_PATH . '/' . $controller . '/' . $action . '/' . $str);
-    }
-
-    /**
-     * Make a page that can possibly contain a bagged parcel a referrer page
-     * @author Akintewe Rotimi <akintewe.rotimi@gmail.com>
-     */
-    public static function makeAnUnbagReferrer() {
-        //set unbag referrer
-        $unbag_referrer = \Yii::$app->request->getUrl();
-        Calypso::getInstance()->session('unbag_referrer', $unbag_referrer);
-    }
-
-    /**
-     * Returns the referrer page for a page that an unbag / open bag action was carried out
-     * @author Akintewe Rotimi <akintewe.rotimi@gmail.com>
-     * @return string
-     */
-    public static function getUnbagReferrer() {
-        //get unbag referrer
-        $unbag_referrer = Calypso::getInstance()->session('unbag_referrer');
-        if(empty($unbag_referrer)) {
-            $unbag_referrer = ServiceConstant::DEFAULT_UNBAG_REFERRER;
-        }
-        return $unbag_referrer;
     }
 }
