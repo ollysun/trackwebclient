@@ -13,7 +13,7 @@ use Adapter\Util\Calypso;
                 <div>&nbsp;</div>
                 <ul class="nav nav-pills nav-stacked">
                     <li class="nav-header nav-header-first hidden-sm hidden-xs">
-                        Navigation
+
                     </li>
                     <?php
                     $permission = Calypso::getInstance()->permissionMap();

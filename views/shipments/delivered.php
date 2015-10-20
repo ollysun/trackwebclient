@@ -11,7 +11,7 @@ $this->params['breadcrumbs'] = array(
         'url' => ['shipments/all'],
         'label' => 'Shipments'
     ),
-    array('label'=> 'Delivered')
+    array('label' => 'Delivered')
 );
 
 ?>
@@ -23,7 +23,7 @@ $this->params['breadcrumbs'] = array(
 <div class="main-box">
     <div class="main-box-header table-search-form clearfix">
         <div class="pull-left">
-            <?= $this->render('../elements/parcels_date_filter', array('from_date'=>$from_date, 'to_date'=>$to_date)); ?>
+            <?= $this->render('../elements/parcels_date_filter', array('from_date' => $from_date, 'to_date' => $to_date)); ?>
         </div>
     </div>
     <div class="main-box-body">
@@ -55,8 +55,8 @@ $this->params['breadcrumbs'] = array(
                             <td><?= $parcel['waybill_number']; ?></td>
                             <td><?= ucwords($parcel['sender']['firstname'].' '. $parcel['sender']['lastname']) ?></td>
                             <td><?= $parcel['sender']['phone'] ?></td>
-                            <td><?= ucwords($parcel['receiver']['firstname'].' '. $parcel['receiver']['lastname']) ?></td>
-                            <td><?= $parcel['receiver']['phone'] ?></td>
+                            <td><?= ucwords(Calypso::getDisplayValue($parcel, 'delivery_receipt.name', '')) ?></td>
+                            <td><?= Calypso::getDisplayValue($parcel, 'delivery_receipt.phone_number', '') ?></td>
                             <td><?= ServiceConstant::getStatus($parcel['status']); ?></td>
                             <td><a href="<?= Url::toRoute(['/shipments/view?waybill_number=' . $parcel['waybill_number']]) ?>"
                                    class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
