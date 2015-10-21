@@ -454,6 +454,8 @@ class AdminController extends BaseController
                     }
                 }
             }
+
+            return $this->refresh();
         }
         $hubAdp = new BranchAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $hubs = $hubAdp->getHubs();
