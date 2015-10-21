@@ -38,28 +38,26 @@ $this->params['breadcrumbs'] = array(
             </div>
         </div>
     <?php } ?>
-    <?php if (!empty($parcels)) { ?>
-        <div class="main-box-body">
-            <div class="table-responsive">
-                <table class="table table-hover">
-                    <thead>
-                    <tr>
-                        <th style="width: 20px">
-                            <div class="checkbox-nice"><input id="chbx_w_all" type="checkbox"><label
-                                    for="chbx_w_all"> </label></div>
-                        </th>
-                        <!-- <th style="width: 20px;"></th> -->
-                        <th style="width: 20px">S/N</th>
-                        <th>Waybill No.</th>
-                        <th>Receiver</th>
-                        <th>Receiver Phone</th>
-                        <th>Dispatcher</th>
-                        <th>Status</th>
-                        <th>Age analysis</th>
-                        <th>Action</th>
-                    </tr>
-                    </thead>
-                    <tbody>
+    <?php if(!empty($parcels)) { ?>
+    <div class="main-box-body">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th style="width: 20px"><div class="checkbox-nice"><input id="chbx_w_all" type="checkbox"><label for="chbx_w_all"> </label></div></th>
+                    <!-- <th style="width: 20px;"></th> -->
+                    <th style="width: 20px">S/N</th>
+                    <th>Waybill No.</th>
+                    <th>Receiver</th>
+                    <th>Receiver Phone</th>
+                    <th>Dispatcher</th>
+                    <th>Status</th>
+                    <th>Return Status</th>
+                    <th>Age analysis</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
                     <?php
                     if (isset($parcels)) {
                         $row = $offset;
@@ -80,6 +78,7 @@ $this->params['breadcrumbs'] = array(
                                 <td><?= $parcel['receiver']['phone'] ?></td>
                                 <td><?= ucwords($parcel['holder']['fullname']); ?></td>
                                 <td><?= ServiceConstant::getStatus($parcel['status']); ?></td>
+                                <td><?= ServiceConstant::getReturnStatus($parcel); ?></td>
                                 <td></td>
                                 <td>
                                     <a href="<?= Url::toRoute(['/shipments/view?waybill_number=' . $parcel['waybill_number']]) ?>"
@@ -110,7 +109,6 @@ $this->params['breadcrumbs'] = array(
                 </div>
                 <div class="modal-body">
                     <p>Please enter your password to authenticate this operation.</p>
-
                     <div class="form-group">
                         <label>Password</label>
                         <input type="password" class="form-control" name="password">

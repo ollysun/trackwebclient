@@ -117,7 +117,8 @@ $is_hub = $user['branch']['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
                     <th>Receiver Phone</th>
                     <th>Created Date</th>
                     <th>Delivery Route</th>
-                    <th>Status</th>
+                    <th>Return Status</th>
+                    <th>Delivery Status</th>
                     <th>Age analysis</th>
                     <th>Action</th>
                 </tr>
@@ -135,6 +136,7 @@ $is_hub = $user['branch']['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
                             <td><?= $parcel['receiver']['phone'] ?></td>
                             <td><?= date(ServiceConstant::DATE_TIME_FORMAT,strtotime($parcel['created_date'])); ?></td>
                             <td><?= $parcel['route']['name'];?></td>
+                            <td><?= ServiceConstant::getReturnStatus($parcel); ?></td>
                             <td><?= ucwords(ServiceConstant::getDeliveryType($parcel['delivery_type'])); ?></td>
                             <td></td>
                             <td><a href="<?= Url::toRoute(['/shipments/view?waybill_number='.$parcel['waybill_number']]) ?>" class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
