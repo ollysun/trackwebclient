@@ -40,6 +40,7 @@ class ServiceConstant
     const MANIFEST_RESOLVED = 20;
     const MANIFEST_CANCELLED = 21;
     const MANIFEST_HAS_ISSUE = 22;
+    const RETURNED = 23;
 
     const URL_ADD_PARCEL = 'parcel/add/';
     const URL_GET_ONE_PARCEL = 'parcel/getone/';
@@ -59,6 +60,7 @@ class ServiceConstant
     const URL_PARCEL_COUNT = 'parcel/count/';
     const DEFAULT_UNBAG_REFERRER = '/shipments/processed';
     const URL_OPEN_BAG = '/parcel/openbag';
+    const URL_MARK_AS_RETURNED = 'parcel/markAsReturned';
     const URL_REMOVE_FROM_BAG = '/parcel/removefrombag';
 
     const URL_GET_ALL_BANKS = 'bank/getAll/';
@@ -194,7 +196,6 @@ class ServiceConstant
     const REQUEST_OTHERS = 1;
     const REQUEST_ECOMMERCE = 2;
 
-
     public static function getStatus($status)
     {
         switch ($status) {
@@ -252,7 +253,7 @@ class ServiceConstant
     public static function getStatusRef()
     {
         return [ServiceConstant::IN_TRANSIT, ServiceConstant::DELIVERED, ServiceConstant::CANCELLED, ServiceConstant::FOR_ARRIVAL
-            , ServiceConstant::FOR_DELIVERY, ServiceConstant::FOR_SWEEPER, ServiceConstant::COLLECTED, ServiceConstant::BEING_DELIVERED];
+            , ServiceConstant::FOR_DELIVERY, ServiceConstant::FOR_SWEEPER, ServiceConstant::COLLECTED, ServiceConstant::BEING_DELIVERED, ServiceConstant::RETURNED];
     }
 
     public static function getPaymentMethod($method)
