@@ -65,11 +65,10 @@ class HubsController extends BaseController
             if ($branch == $this->userData['branch_id']) {
                 $response = $parcelsAdapter->assignToGroundsMan($postParams);
             } else {
-                if($branch_type == 'route'){
+                if ($branch_type == 'route') {
                     $postParams['route_id'] = $branch;
                     $response = $parcelsAdapter->moveForDelivery($postParams);
-                }
-                else{
+                } else {
                     $postParams['to_branch_id'] = $branch;
                     $response = $parcelsAdapter->moveToForSweeper($postParams);
                 }
@@ -95,7 +94,6 @@ class HubsController extends BaseController
         $viewData['isGroundsman'] = $isGroundman;
         return $this->render('destination', $viewData);
     }
-
 
     public function actionHubarrival()
     {
@@ -267,7 +265,7 @@ class HubsController extends BaseController
                 $response = $parcelData->generateManifest($payloadData);
                 if ($response['status'] === ResponseHandler::STATUS_OK) {
                     //Forward to manifest page
-                    return $this->redirect('/manifest/view?id='.Calypso::getValue($response, 'data.manifest.id', ''));
+                    return $this->redirect('/manifest/view?id=' . Calypso::getValue($response, 'data.manifest.id', ''));
                 } else {
                     //Flash error message
                     $this->flashError($response['message']);
@@ -376,5 +374,49 @@ class HubsController extends BaseController
     public function actionViewbag()
     {
         return $this->render('view_bag');
+    }
+
+    /**
+     * Unsort parcels
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     */
+    public function actionUnsort()
+    {
+        if (!Yii::$app->request->isPost) {
+            return $this->redirect(Yii::$app->request->referrer);
+        }
+
+        $waybill_numbers = Yii::$app->request->post('waybill_numbers');
+        if (is_null($waybill_numbers)) {
+            $this->flashError('No Parcels selected');
+            return $this->redirect(Yii::$app->request->referrer);
+        }
+
+        $waybill_numbers = explode(',', $waybill_numbers);
+
+        $parcelAdapter = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $status = $parcelAdapter->unsort($waybill_numbers);
+        if (!$status) {
+            $this->flashError($parcelAdapter->getLastErrorMessage());
+        } else {
+            $responseData = $parcelAdapter->getResponseHandler()->getData();
+            if ($failed_parcels = Calypso::getValue($responseData, 'failed', [])) {
+
+                $successful_parcels = Calypso::getValue($responseData, 'successful', []);
+                $failed_message = ($successful_parcels) ? ('<strong>Unsorted Parcels: ' . implode(', ', $successful_parcels). '</strong><br/></br>') : '';
+                $failed_message.= '<strong>Failed to unsort some parcels:</strong> <br/>';
+
+                foreach ($failed_parcels as $waybill_number => $message) {
+                    $failed_message .= '#<strong>' . $waybill_number . '</strong> - Reason: ' . $message . '<br/>';
+                }
+
+                $flash_type = ($successful_parcels) ? 'warning' : 'danger';
+                Yii::$app->session->setFlash($flash_type, $failed_message);
+            } else {
+                $this->flashSuccess('Parcels successfully unsorted');
+            }
+        }
+
+        return $this->redirect(Yii::$app->request->referrer);
     }
 }
