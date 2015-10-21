@@ -55,7 +55,6 @@ $this->params['breadcrumbs'] = array(
                         <th>Receiver Phone</th>
                         <th>Dispatcher</th>
                         <th>Status</th>
-                        <th>Return Status</th>
                         <th>Age analysis</th>
                         <th>Action</th>
                     </tr>
@@ -81,7 +80,6 @@ $this->params['breadcrumbs'] = array(
                                 <td><?= $parcel['receiver']['phone'] ?></td>
                                 <td><?= ucwords($parcel['holder']['fullname']); ?></td>
                                 <td><?= ServiceConstant::getStatus($parcel['status']); ?></td>
-                                <td><?= ServiceConstant::get($parcel['status']); ?></td>
                                 <td></td>
                                 <td>
                                     <a href="<?= Url::toRoute(['/shipments/view?waybill_number=' . $parcel['waybill_number']]) ?>"
