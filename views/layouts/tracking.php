@@ -55,10 +55,6 @@ TrackingAsset::register($this);
 
 <br><br><br><br>
 
-<div id="footer-bar" class="footer-transparent">
-    <p id="footer-copyright" class="">&copy; 2015<?php if (date('Y') > 2015): echo " &ndash; " . date('Y'); endif; ?>
-        CourierPlus. All Rights Reserved.</p>
-</div>
 <?php $this->endBody() ?>
 </body>
 </html>
