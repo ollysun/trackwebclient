@@ -12,7 +12,7 @@ $this->params['breadcrumbs'] = array(
         'url' => ['shipments/all'],
         'label' => 'Shipments'
     ),
-    array('label'=> 'Dispatched')
+    array('label' => 'Dispatched')
 );
 
 ?>
@@ -23,13 +23,20 @@ $this->params['breadcrumbs'] = array(
 
 <?php echo \Adapter\Util\Calypso::showFlashMessages(); ?>
 <div class="main-box">
-    <?php if(!empty($parcels)) { ?>
-    <div class="main-box-header clearfix">
-        <div class="pull-left">
-            <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#passwordModal" data-action="receive">Receive from Dispatcher</button>
-            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#passwordModal" data-action="deliver"><i class="fa fa-check"></i> Mark as delivered</button>
+    <?php if (!empty($parcels)) { ?>
+        <div class="main-box-header clearfix">
+            <div class="pull-left">
+                <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#passwordModal"
+                        data-action="receive">Receive from Dispatcher
+                </button>
+                <button type="button" class="btn btn-primary btn-sm" data-toggle="moal" data-target="#passwordModal"
+                        data-action="deliver"><i class="fa fa-check"></i> Mark as delivered
+                </button>
+                <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#passwordModal"
+                        data-action="return"><i class="fa fa-check"></i> Mark as Returned
+                </button>
+            </div>
         </div>
-    </div>
     <?php } ?>
     <?php if(!empty($parcels)) { ?>
     <div class="main-box-body">
@@ -58,29 +65,36 @@ $this->params['breadcrumbs'] = array(
                         foreach ($parcels as $parcel) {
                             ?>
                             <tr>
-                                <td><div class="checkbox-nice"><input class="checkable" id="chbx_w_<?= $i; ?>" class="checkable" data-waybill="<?= strtoupper($parcel['waybill_number']); ?>" type="checkbox"><label for="chbx_w_<?= $i++; ?>"> </label></div></td>
+                                <td>
+                                    <div class="checkbox-nice"><input class="checkable" id="chbx_w_<?= $i; ?>"
+                                                                      class="checkable"
+                                                                      data-waybill="<?= strtoupper($parcel['waybill_number']); ?>"
+                                                                      type="checkbox"><label
+                                            for="chbx_w_<?= $i++; ?>"> </label></div>
+                                </td>
                                 <td><?= ++$row; ?></td>
                                 <td><?= $parcel['waybill_number']; ?></td>
-                                <td><?= ucwords($parcel['receiver']['firstname'].' '. $parcel['receiver']['lastname']) ?></td>
+                                <td><?= ucwords($parcel['receiver']['firstname'] . ' ' . $parcel['receiver']['lastname']) ?></td>
                                 <td><?= $parcel['receiver']['phone'] ?></td>
                                 <td><?= ucwords($parcel['holder']['fullname']); ?></td>
                                 <td><?= ServiceConstant::getStatus($parcel['status']); ?></td>
                                 <td><?= ServiceConstant::getReturnStatus($parcel); ?></td>
                                 <td></td>
-                                <td><a href="<?= Url::toRoute(['/shipments/view?waybill_number=' . $parcel['waybill_number']]) ?>"
+                                <td>
+                                    <a href="<?= Url::toRoute(['/shipments/view?waybill_number=' . $parcel['waybill_number']]) ?>"
                                        class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
                             </tr>
                         <?php }
                     } ?>
-                </tbody>
-            </table>
-            <?= $this->render('../elements/pagination_and_summary',['first'=>$offset,'last'=>$row,'page_width'=>$page_width,'total_count'=>$total_count]) ?>
+                    </tbody>
+                </table>
+                <?= $this->render('../elements/pagination_and_summary', ['first' => $offset, 'last' => $row, 'page_width' => $page_width, 'total_count' => $total_count]) ?>
+            </div>
         </div>
-    </div>
     <?php } else { ?>
-    <div class="main-box-body">
-        There are no parcels that are being delivered.
-    </div>
+        <div class="main-box-body">
+            There are no parcels that are being delivered.
+        </div>
     <?php } ?>
 </div>
 
@@ -89,7 +103,8 @@ $this->params['breadcrumbs'] = array(
         <form id="arrived_parcels" class="" method="post">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title" id="myModalLabel">Authenticate</h4>
                 </div>
                 <div class="modal-body">
@@ -109,24 +124,4 @@ $this->params['breadcrumbs'] = array(
         </form>
     </div>
 </div>
-<?php
-$ex='$("#chbx_w_all").change(function () {
-    $("input:checkbox.checkable").prop("checked", $(this).prop("checked"));
-});
-    $("[data-target=#passwordModal]").on("click", function(event) {
-        var chkboxes = $(".checkable:checked");
-
-        if(!chkboxes.length) {
-            alert("You must select at least one parcel!");
-            event.preventDefault();
-            return false;
-        }
-        waybill_numbers = [];
-        $.each(chkboxes, function(i, chk){
-            waybill_numbers.push($(this).attr("data-waybill"));
-        });
-        $("input#task").val($(this).attr("data-action"));
-        $("input#waybills").val(JSON.stringify(waybill_numbers));
-    });';
-$this->registerJs($ex,View::POS_READY);
-?>
+<?= $this->registerJsFile('@web/js/shipment_dispatched.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
