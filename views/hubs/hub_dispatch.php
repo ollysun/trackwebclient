@@ -3,6 +3,7 @@ use Adapter\Util\Calypso;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\web\View;
+use Adapter\Globals\ServiceConstant;
 
 /* @var $this yii\web\View */
 $this->title = 'Shipments: Dispatched';
@@ -85,6 +86,7 @@ $this->params['breadcrumbs'] = array(
                         <th>Destination</th>
                         <th>Weight</th>
                         <th>Sweeper</th>
+                        <th>Return Status</th>
                         <th>Age analysis</th>
                         <th style="width: 30px;">Action</th>
                     </tr>
@@ -102,6 +104,7 @@ $this->params['breadcrumbs'] = array(
                                 <td><?= ucwords($parcel['to_branch']['name']); ?></td>
                                 <td><?= $parcel['weight']; ?> KG</td>
                                 <td><?= ucwords($parcel['holder']['fullname']); ?></td>
+                                <td><?= ServiceConstant::getReturnStatus($parcel); ?></td>
                                 <td></td>
                                 <td><a href="<?= Url::toRoute(['/shipments/view?waybill_number=' . $parcel['waybill_number']]) ?>"
                                        class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>

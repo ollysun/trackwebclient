@@ -102,6 +102,7 @@ $this->params['breadcrumbs'] = [['label' => 'Sorted Shipments']];
                         <th>Next Destination</th>
                         <th>Final Destination</th>
                         <th>Request Type</th>
+                        <th>Return Status</th>
                         <th>Weight (Kg)</th>
                         <th>Age analysis</th>
                     </tr>
@@ -129,6 +130,7 @@ $this->params['breadcrumbs'] = [['label' => 'Sorted Shipments']];
                             <td><?= strtoupper(Calypso::getValue($parcels, 'to_branch.name')); ?> </td>
                             <td><?= ucwords(Calypso::getValue($parcels, 'receiver_address.city.name') . ', ' . Calypso::getValue($parcels, 'receiver_address.state.name')) ?></td>
                             <td><?= ServiceConstant::getRequestType($parcels['request_type']) ?></td>
+                            <td><?= ServiceConstant::getReturnStatus($parcels); ?></td>
                             <td><?= Calypso::getValue($parcels, 'weight') ?></td>
                             <td></td>
                         </tr>
