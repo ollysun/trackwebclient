@@ -4,6 +4,7 @@ namespace Adapter;
 use Adapter\Globals;
 use Adapter\Globals\ServiceConstant;
 use Adapter\Util\Response;
+use yii\helpers\Json;
 
 /**
  * Class ParcelAdapter
@@ -307,5 +308,21 @@ class ParcelAdapter extends BaseAdapter
     public function removeFromBag($postData)
     {
         return $this->request(ServiceConstant::URL_REMOVE_FROM_BAG, $postData, self::HTTP_POST);
+    }
+
+    /**
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     * @param $waybill_numbers
+     * @return array|mixed|string
+     */
+    public function unsort($waybill_numbers)
+    {
+        $rawResponse = $this->request(ServiceConstant::URL_UNSORT_PARCEL, Json::encode(['waybill_numbers' => $waybill_numbers]), self::HTTP_POST);
+        $response = new ResponseHandler($rawResponse);
+        if (!$response->isSuccess()) {
+            $this->lastErrorMessage = $response->getError();
+        }
+        $this->setResponseHandler($response);
+        return $response->isSuccess();
     }
 }

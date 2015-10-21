@@ -20,6 +20,7 @@ abstract class BaseAdapter
     protected $_response_as_json;
     protected $_use_root_path;
     protected $lastErrorMessage;
+    protected $responseHandler;
 
     public function __construct($client_id = null, $access_token = null, $response_as_json = false, $use_root_path = true)
     {
@@ -93,6 +94,58 @@ abstract class BaseAdapter
         $this->_client_id = $client_id;
     }
 
+    /**
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     * @return ResponseHandler
+     */
+    public function getResponseHandler()
+    {
+        return $this->responseHandler;
+    }
+
+    /**
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     * @param $responseHandler ResponseHandler
+     */
+    public function setResponseHandler($responseHandler)
+    {
+        $this->responseHandler = $responseHandler;
+    }
+
+    public function getHttpStatus()
+    {
+        return $this->_curlagent->getHttpStatus();
+    }
+
+    /**
+     * Decode response
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     * @param $response
+     * @return bool | mixed
+     */
+    public function decodeResponse($response)
+    {
+        if ($response) {
+            if ($response['status'] === Response::STATUS_OK) {
+                return $response['data'];
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Gets the last error message
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @return mixed
+     */
+    public function getLastErrorMessage()
+    {
+        return $this->lastErrorMessage;
+    }
+
     protected function request($url, $params, $http_method)
     {
         $this->_curlagent = new CurlAgent('', true);
@@ -138,40 +191,6 @@ abstract class BaseAdapter
         }
 
         $url .= join('&', $url_params);
-    }
-
-    public function getHttpStatus()
-    {
-        return $this->_curlagent->getHttpStatus();
-    }
-
-    /**
-     * Decode response
-     * @author Adeyemi Olaoye <yemi@cottacush.com>
-     * @param $response
-     * @return bool | mixed
-     */
-    public function decodeResponse($response)
-    {
-        if ($response) {
-            if ($response['status'] === Response::STATUS_OK) {
-                return $response['data'];
-            } else {
-                return false;
-            }
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * Gets the last error message
-     * @author Adegoke Obasa <goke@cottacush.com>
-     * @return mixed
-     */
-    public function getLastErrorMessage()
-    {
-        return $this->lastErrorMessage;
     }
 
 }
