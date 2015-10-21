@@ -71,7 +71,7 @@ class ShipmentsController extends BaseController
             $search_action = true;
         } elseif (!empty(Calypso::getInstance()->get()->search)) { //check if not empty criteria
             $search = Calypso::getInstance()->get()->search;
-            $response = $parcel->getSearchParcels('-1', $search, $offset, $this->page_width, 1, $this->branch_to_view, 1, true);
+            $response = $parcel->getSearchParcels(null, $search, $offset, $this->page_width, 1, $this->branch_to_view, 1, true);
             $search_action = true;
             $filter = null;
         } else {
@@ -128,7 +128,7 @@ class ShipmentsController extends BaseController
                 if ($responseHandler->getStatus() === ResponseHandler::STATUS_OK) {
                     if (empty($data['bad_parcels']))
                         return $this->redirect('/manifest/view?id=' . Calypso::getValue($response, 'data.manifest.id', ''));
-                   else {
+                    else {
                         $bad_parcels = $data['bad_parcels'];
                         foreach ($bad_parcels as $key => $bad_parcel) {
                             $this->flashError($key . ' - ' . $bad_parcel);
@@ -147,7 +147,7 @@ class ShipmentsController extends BaseController
             $search_action = true;
         } elseif (!empty(Calypso::getInstance()->get()->search)) {
             $search = Calypso::getInstance()->get()->search;
-            $response = $parcel->getSearchParcels('-1', $search, $offset, $page_width, 1, $this->branch_to_view);
+            $response = $parcel->getSearchParcels(null, $search, $offset, $page_width, 1, $this->branch_to_view);
             $search_action = true;
         } else {
             $response = $parcel->getParcelsForDelivery(null, null, ServiceConstant::FOR_DELIVERY, $this->branch_to_view, $offset, $page_width, null, 1, null, $route_id, true);
@@ -227,7 +227,7 @@ class ShipmentsController extends BaseController
 
         if (!empty(Calypso::getInstance()->get()->search)) {  //check if not empty criteria
             $search = Calypso::getInstance()->get()->search;
-            $response = $parcel->getSearchParcels('-1', $search, $offset, $page_width, 1, $this->branch_to_view);
+            $response = $parcel->getSearchParcels(null, $search, $offset, $page_width, 1, $this->branch_to_view);
             $search_action = $search;
         } else {
             $response = $parcel->getParcels(null, null, ServiceConstant::FOR_SWEEPER, $this->branch_to_view, $offset, $page_width, null, 1);
@@ -276,8 +276,8 @@ class ShipmentsController extends BaseController
 
     public function actionProcessed($page = 1, $search = false, $page_width = null)
     {
-        $from_date = date('Y/m/d');
-        $to_date = date('Y/m/d');
+        $from_date = date('Y-m-d');
+        $to_date = date('Y-m-d');
         $search_action = $search;
         if ($page_width != null) {
             $this->page_width = $page_width;
@@ -285,10 +285,10 @@ class ShipmentsController extends BaseController
         }
         $offset = ($page - 1) * $page_width;
 
+        $parcel = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         if (\Yii::$app->request->isPost) {
             $records = \Yii::$app->request->post();
             if ($records['task'] == 'cancel_shipment') {
-                $parcel = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
                 $response = $parcel->cancel($records);
                 $response = new ResponseHandler($response);
 
@@ -314,22 +314,21 @@ class ShipmentsController extends BaseController
             }
         }
 
-        $parcel = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         if (isset(Calypso::getInstance()->get()->from, Calypso::getInstance()->get()->to)) {
             $from_date = Calypso::getInstance()->get()->from;
             $to_date = Calypso::getInstance()->get()->to;
-            $filter = isset(Calypso::getInstance()->get()->date_filter) ? Calypso::getInstance()->get()->date_filter : '-1';
+            $filter = null;
 
-            $response = $parcel->getFilterParcelsByDateAndStatus($from_date . '%2000:00:00', $to_date . '%2023:59:59', $filter, $offset, $this->page_width, 1, $this->branch_to_view, 1);
+            $response = $parcel->getFilterParcelsByDateAndStatus($from_date . ' 00:00:00', $to_date . ' 23:59:59', $filter, $offset, $this->page_width, 1, $this->branch_to_view, null, null, true);
             $search_action = true;
         } elseif (!empty(Calypso::getInstance()->get()->search)) {  //check if not empty criteria
             $search = Calypso::getInstance()->get()->search;
-            $response = $parcel->getSearchParcels('-1', $search, $offset, $this->page_width, 1, $this->branch_to_view, 1);
+            $response = $parcel->getSearchParcels(null, $search, $offset, $this->page_width, 1, $this->branch_to_view, 1);
             $search_action = true;
             $filter = null;
         } else {
             //$response = $parcel->getNewParcelsByDate(date('Y-m-d'),$offset,$this->page_width, 1, $this->branch_to_view, 1);
-            $response = $parcel->getNewParcelsByDate(date('Y-m-d%2000:00:00', strtotime('now')), $offset, $this->page_width, 1, $this->branch_to_view, 1);
+            $response = $parcel->getNewParcelsByDate(date('Y-m-d 00:00:00', strtotime('now')), $offset, $this->page_width, 1, $this->branch_to_view, 1);
             $search_action = false;
             $filter = null;
         }
@@ -345,6 +344,37 @@ class ShipmentsController extends BaseController
         $banks = $refData->getBanks(); // get all the banks
 
         return $this->render('processed', array('filter' => $filter, 'parcels' => $data, 'from_date' => $from_date, 'to_date' => $to_date, 'offset' => $offset, 'page_width' => $this->page_width, 'search' => $search_action, 'total_count' => $total_count, 'banks' => $banks));
+    }
+
+    public function actionRequestreturn() {
+        $parcel = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        if (\Yii::$app->request->isPost) {
+            $records = \Yii::$app->request->post();
+            if ($records['task'] == 'request_return') {
+                if (!isset($records['waybill_numbers'])) {
+                    $this->flashError("Invalid parameter(s) sent!");
+                } else {
+                    $result = $parcel->sendReturnRequest($records);
+                    $response = new ResponseHandler($result);
+
+                    if ($response->getStatus() == ResponseHandler::STATUS_OK) {
+                        $data = $response->getData();
+                        if (empty($data['bad_parcels']))
+                            $this->flashSuccess('Return request sent');
+                        else {
+                            $bad_parcels = $data['bad_parcels'];
+                            foreach ($bad_parcels as $key => $bad_parcel) {
+                                $this->flashError($key . ' - ' . $bad_parcel);
+                            }
+                        }
+                    } else {
+                        $this->flashError('An error occurred while trying to send request. #' . $response->getError());
+                    }
+                }
+            }
+
+        }
+        return $this->redirect(Url::toRoute('/shipments/processed'));
     }
 
     public function actionCancel()

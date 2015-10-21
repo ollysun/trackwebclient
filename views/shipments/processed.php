@@ -78,8 +78,9 @@ $this->params['content_header_button'] = $this->render('../elements/content_head
                         <th>Created Date</th>
                         <th># of Pcs</th>
                         <th>Request Type</th>
-                        <th>Status</th>
-                        <th width="10%">Action</th>
+                        <th>Return Status</th>
+                        <th>Shipment Status</th>
+                        <th width="14%">Action</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -106,6 +107,7 @@ $this->params['content_header_button'] = $this->render('../elements/content_head
                                 <td><?= date(ServiceConstant::DATE_TIME_FORMAT, strtotime($parcel['created_date'])); ?></td>
                                 <td><?= $parcel['no_of_package']; ?></td>
                                 <td><?= ServiceConstant::getRequestType($parcel['request_type']); ?></td>
+                                <td><?= ServiceConstant::getReturnStatus($parcel); ?></td>
                                 <td><?= ServiceConstant::getStatus($parcel['status']); ?></td>
                                 <td>
                                     <a title="View this shipment" href="<?= Url::toRoute(['/shipments/view?waybill_number=' . $parcel['waybill_number']]) ?>"
@@ -119,6 +121,9 @@ $this->params['content_header_button'] = $this->render('../elements/content_head
                                     <?php endif; ?>
                                     <a title="Clone this shipment" href="<?= Url::toRoute(['/parcels/new?id=' . $parcel['id']]) ?>"
                                        class="btn btn-xs btn-info btnClone"><i class="fa fa-copy"></i></a>
+                                    <?php if (!in_array($parcel['status'], [ServiceConstant::DELIVERED, ServiceConstant::BEING_DELIVERED, ServiceConstant::CANCELLED]) && !$parcel['for_return'] && !in_array($parcel['entity_type'], [ServiceConstant::ENTITY_TYPE_BAG, ServiceConstant::ENTITY_TYPE_PARENT])) : ?>
+                                        <button data-return="<?= $parcel['waybill_number'] ?>"" title="Request shipment return" type="submit" class="btn btn-xs btn-danger" name="parcel_id"><i class="fa fa-refresh"></i></button>
+                                    <?php endif; ?>
                                 </td>
                             </tr>
                             <?php
@@ -128,6 +133,10 @@ $this->params['content_header_button'] = $this->render('../elements/content_head
                     </tbody>
                 </table>
             </div>
+            <form method="post" id="request-returns" action="requestreturn">
+                <input type="hidden" name="waybill_numbers" value>
+                <input type="hidden" name="task" value="request_return">
+            </form>
             <?= $this->render('../elements/pagination_and_summary', ['first' => $offset, 'last' => $i, 'total_count' => $total_count, 'page_width' => $page_width]) ?>
         <?php else: ?>
             There are no parcels matching the specified criteria.
