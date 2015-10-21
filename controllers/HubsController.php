@@ -145,7 +145,7 @@ class HubsController extends BaseController
         $hub_list = $hubs->getStatus() == ResponseHandler::STATUS_OK ? $hubs->getData() : [];
 
         $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $dispatch_parcels = $parcelsAdapter->getDispatchedParcels($from_branch_id, $to_branch_id, $from_date . '%2000:00:00', $to_date . '%2023:59:59', ServiceConstant::IN_TRANSIT);
+        $dispatch_parcels = $parcelsAdapter->getDispatchedParcels($from_branch_id, $to_branch_id, $from_date . ' 000:00:00', $to_date . ' 23:59:59', ServiceConstant::IN_TRANSIT);
         $parcels = new ResponseHandler($dispatch_parcels);
         $parcel_list = $parcels->getStatus() == ResponseHandler::STATUS_OK ? $parcels->getData() : [];
 

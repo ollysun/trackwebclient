@@ -79,6 +79,7 @@ if($offset <= 0){
                     <th>Request Type</th>
                     <th>Final Destination</th>
                     <th>Created Date</th>
+                    <th>Return Status</th>
                     <th>Age analysis</th>
                     <th>Action</th>
                 </tr>
@@ -106,6 +107,7 @@ if($offset <= 0){
                                     ucwords(Calypso::getValue($parcel, 'receiver_address.state.name')); ?>
                             </td>
                             <td><?= date(ServiceConstant::DATE_TIME_FORMAT,strtotime($parcel['created_date'])); ?></td>
+                            <td><?= ServiceConstant::getReturnStatus($parcels); ?></td>
                             <td></td>
                             <td><a href="<?= Url::toRoute(['/shipments/view?waybill_number='.$parcel['waybill_number']]) ?>" class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
                         </tr>
