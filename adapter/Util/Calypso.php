@@ -11,14 +11,6 @@ class Calypso
     private $httpReqGetData = null;
     private $httpReqFileData = null;
 
-    public static function getInstance()
-    {
-        if (self::$instance == null) {
-            return self::$instance = new Calypso();
-        }
-        return self::$instance;
-    }
-
     public function __construct()
     {
         if (isset($_POST) && !empty($_POST)) {
@@ -38,6 +30,249 @@ class Calypso
         } else {
             $this->httpReqFileData = new \stdClass();
         }
+    }
+
+    /**
+     * Get's a value if it's non empty
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @param $array
+     * @param $key
+     * @param null $default
+     * @return null
+     */
+    public static function getDisplayValue($array, $key, $default = null)
+    {
+        $value = self::getValue($array, $key, null);
+        if (empty(trim($value))) {
+            return $default;
+        }
+        return $value;
+    }
+
+    /**
+     * Gets value from array or object
+     * Copied from Yii2 framework
+     * @link http://www.yiiframework.com/
+     * @copyright Copyright (c) 2008 Yii Software LLC
+     * @license http://www.yiiframework.com/license/
+     * @param      $array
+     * @param      $key
+     * @param null $default
+     * @return null
+     * @author Qiang Xue <qiang.xue@gmail.com>
+     * @author Adegoke Obasa <adegoke.obasa@konga.com>
+     * @author Rotimi Akintewe <rotimi.akintewe@konga.com>
+     */
+    public static function getValue($array, $key, $default = null)
+    {
+        if (!isset($array)) {
+            return $default;
+        }
+
+        if ($key instanceof \Closure) {
+            return $key($array, $default);
+        }
+        if (is_array($key)) {
+            $lastKey = array_pop($key);
+            foreach ($key as $keyPart) {
+                $array = static::getValue($array, $keyPart);
+            }
+            $key = $lastKey;
+        }
+        if (is_array($array) && array_key_exists($key, $array)) {
+            return $array[$key];
+        }
+        if (($pos = strrpos($key, '.')) !== false) {
+            $array = static::getValue($array, substr($key, 0, $pos), $default);
+            $key = substr($key, $pos + 1);
+        }
+        if (is_object($array) && property_exists($array, $key)) {
+            return $array->$key;
+        } elseif (is_array($array)) {
+            return array_key_exists($key, $array) ? $array[$key] : $default;
+        } else {
+            return $default;
+        }
+    }
+
+    public static function showFlashMessages()
+    {
+        $flashMessages = '';
+        $allMessages = \Yii::$app->session->getAllFlashes();
+        foreach ($allMessages as $key => $message) {
+            $flashMessages .= '<div class="alert alert-' . $key . '">' . $message . '</div>';
+        }
+        \Yii::$app->session->removeAllFlashes();
+        return $flashMessages;
+    }
+
+    public static function normaliseLinkLabel($label)
+    {
+        return str_replace('_', ' ', $label);
+    }
+
+    public static function getMenus()
+    {
+        $menus = [
+            'Dashboard' => ['base' => 'site', 'base_link' => 'site/index', 'class' => 'fa fa-dashboard'],
+            'New_Shipments' => ['base_link' => 'shipments/processed', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_EC, ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
+            'Receive_Shipments' => ['base_link' => 'hubs/hubarrival', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
+            'Ready_for_Sorting' => ['base_link' => 'hubs/destination', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
+            'Ready_for_Sorting_G-man' => ['base_link' => 'hubs/destination-groundsman', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_HUB]],
+            'Sorted_Shipments' => ['base_link' => 'hubs/delivery', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
+            'Due_for_Delivery' => ['base_link' => 'shipments/fordelivery', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_EC, ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
+            'Due_for_Sweep' => ['base_link' => 'shipments/forsweep', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_EC, ServiceConstant::BRANCH_TYPE_HQ]],
+            'Direct_Delivery' => ['base_link' => 'shipments/dispatched', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_EC, ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
+            'Dispatched_to_Branches' => ['base_link' => 'hubs/hubdispatch', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
+            'Delivered' => ['base_link' => 'shipments/delivered', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_EC, ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
+            'All_Shipments' => ['base_link' => 'shipments/all', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_EC, ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
+            'Administrator' => ['base' => 'admin', 'class' => 'fa fa-user', 'base_link' => [
+                'Manage_branches' => ['base_link' => 'admin/managebranches', 'class' => ''],
+                'Manage_routes' => ['base_link' => 'admin/manageroutes', 'class' => ''],
+                'Manage_staff_accounts' => ['base_link' => 'admin/managestaff', 'class' => ''],
+                'Company_registration' => ['base_link' => 'admin/companies', 'class' => ''],
+                'Billing' => ['base' => 'billing', 'class' => '', 'base_link' => [
+                    'View_Matrix' => ['base_link' => 'billing/matrix', 'class' => ''],
+                    'Zones' => ['base_link' => 'billing/zones', 'class' => ''],
+                    'Regions' => ['base_link' => 'billing/regions', 'class' => ''],
+                    'State_-_Region_Mapping' => ['base_link' => 'billing/statemapping', 'class' => ''],
+                    'City_-_State Mapping' => ['base_link' => 'billing/citymapping', 'class' => ''],
+                    'Weight_Ranges' => ['base_link' => 'billing/weightranges', 'class' => ''],
+                    'Pricing' => ['base_link' => 'billing/pricing', 'class' => ''],
+                    'Onforwarding_Charges' => ['base_link' => 'billing/onforwarding', 'class' => ''],
+                ], 'branch' => [ServiceConstant::BRANCH_TYPE_HQ]]
+            ], 'branch' => [ServiceConstant::BRANCH_TYPE_HQ]],
+            'Parcel History' => [
+                'base' => 'track',
+                'base_link' => 'track/',
+                'class' => 'fa fa-gift',
+                'corporate' => true
+            ],
+            'Manifests' => ['base' => 'manifest', 'base_link' => 'manifest/index', 'class' => 'fa fa-book'],
+            'Customer_History' => ['base' => 'shipments', 'base_link' => 'shipments/customerhistory', 'class' => 'fa fa-user'
+                , 'branch' => [ServiceConstant::BRANCH_TYPE_EC, ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
+            'Reconciliations' => [
+                'base' => 'finance', 'class' => 'fa fa-money', 'base_link' => [
+                    'Customers' => ['base_link' => 'finance/customersall', 'class' => ''],
+                    'Merchants' => ['base_link' => 'finance/merchantsdue', 'class' => '']
+                ],
+                'branch' => [ServiceConstant::BRANCH_TYPE_HQ]
+            ],
+            'Corporate' => [
+                'base' => 'request', 'class' => 'fa fa-gift', 'base_link' => [
+                    'Shipment_Requests' => ['base_link' => 'corporate/request/shipments', 'class' => ''],
+                    'Pickup_Requests' => ['base_link' => 'corporate/request/pickups', 'class' => ''],
+                    'Users' => ['base_link' => 'corporate/users', 'class' => ''],
+                    'Pending Shipments' => ['base_link' => 'corporate/pending/shipments', 'class' => ''],
+                    'Pending Pickups' => ['base_link' => 'corporate/pending/pickups', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]]
+                ],
+                'corporate' => true
+            ]
+        ];
+        return $menus;
+    }
+
+    public static function canAccess($role, $link)
+    {
+        $permissions = self::permissionMap();
+        if (!array_key_exists($role, $permissions)) return false;
+
+        $current_user_permission = $permissions[$role];
+        $link_temp = explode('/', $link);
+        if (in_array($link_temp[0] . '/*', $current_user_permission)) {
+            return false;
+        }
+
+        if (in_array($link, $current_user_permission)) {
+            return false;
+        }
+        return true;
+    }
+
+    public static function permissionMap()
+    {
+        $permissionMap = [
+            ServiceConstant::USER_TYPE_SUPER_ADMIN => self::getCorporateRoutes(),
+            ServiceConstant::USER_TYPE_ADMIN => self::getCorporateRoutes(),
+            ServiceConstant::USER_TYPE_OFFICER => array_merge(
+                ['finance/*', 'billing/*', 'admin/*']
+                , self::getCorporateRoutes()),
+            ServiceConstant::USER_TYPE_SWEEPER => array_merge(
+                ['site/*', 'parcels/*', 'shipments/*', 'hubs/*', 'finance/*', 'billing/*', 'admin/*', 'corporate/request/pending']
+            , self::getCorporateRoutes()),
+            ServiceConstant::USER_TYPE_DISPATCHER => array_merge(
+                ['site/*', 'parcels/*', 'shipments/*', 'hubs/*', 'finance/*', 'billing/*', 'admin/*', 'corporate/request/pending']
+                , self::getCorporateRoutes()
+            ),
+            ServiceConstant::USER_TYPE_GROUNDSMAN => array_merge([
+                'parcels/*',
+                'shipments/forsweep',
+                'shipments/delivered',
+                'hubs/hubarrival',
+                'finance/*',
+                'billing/*',
+                'admin/*',
+                'corporate/pending/shipments',
+                'corporate/pending/pickups'
+            ], self::getCorporateRoutes()),
+            ServiceConstant::USER_TYPE_COMPANY_ADMIN => [
+                'corporate/pending/shipments',
+                'corporate/pending/pickups',
+                'site/*'
+            ],
+            ServiceConstant::USER_TYPE_COMPANY_OFFICER => [
+                'corporate/users',
+                'corporate/pending/shipments',
+                'corporate/pending/pickups',
+                'site/*'
+            ]
+        ];
+        return $permissionMap;
+    }
+
+    /**
+     * Returns an array of Corporate only routes
+     * @author Adegoke Obasa <goke@cottacush.com>
+     */
+    public static function getCorporateRoutes()
+    {
+        return [
+            'corporate/request/shipments',
+            'corporate/request/pickups',
+            'corporate/users',
+        ];
+    }
+
+    /**
+     * Make a page that can possibly contain a bagged parcel a referrer page
+     * @author Akintewe Rotimi <akintewe.rotimi@gmail.com>
+     */
+    public static function makeAnUnbagReferrer() {
+        //set unbag referrer
+        $unbag_referrer = \Yii::$app->request->getUrl();
+        Calypso::getInstance()->session('unbag_referrer', $unbag_referrer);
+    }
+
+    public static function getInstance()
+    {
+        if (self::$instance == null) {
+            return self::$instance = new Calypso();
+        }
+        return self::$instance;
+    }
+
+    /**
+     * Returns the referrer page for a page that an unbag / open bag action was carried out
+     * @author Akintewe Rotimi <akintewe.rotimi@gmail.com>
+     * @return string
+     */
+    public static function getUnbagReferrer() {
+        //get unbag referrer
+        $unbag_referrer = Calypso::getInstance()->session('unbag_referrer');
+        if(empty($unbag_referrer)) {
+            $unbag_referrer = ServiceConstant::DEFAULT_UNBAG_REFERRER;
+        }
+        return $unbag_referrer;
     }
 
     public function post()
@@ -81,6 +316,27 @@ class Calypso
         return $error;
     }
 
+    public function session($key, $value = NULL)
+    {
+        if (isset($_SESSION)) {
+            if ($key && $value != NULL) {
+                $_SESSION[$key] = $value;
+            } elseif ($key && $value == NULL && isset($_SESSION[$key])) {
+                return $_SESSION[$key];
+            }
+        }
+        return false;
+    }
+
+    public function unsetSession($key = null)
+    {
+        if ($key != null) {
+            unset($_SESSION[$key]);
+        } else {
+            session_destroy();
+        }
+    }
+
     public function flashSuccessMsg()
     {
         $error = $this->session('success_msg');
@@ -108,18 +364,6 @@ class Calypso
     public function setFlashSuccessMsg($message)
     {
         $this->session('success_msg', $message);
-    }
-
-    public function session($key, $value = NULL)
-    {
-        if (isset($_SESSION)) {
-            if ($key && $value != NULL) {
-                $_SESSION[$key] = $value;
-            } elseif ($key && $value == NULL && isset($_SESSION[$key])) {
-                return $_SESSION[$key];
-            }
-        }
-        return false;
     }
 
     public function formatCurrency($value, $dp = 2)
@@ -215,15 +459,6 @@ class Calypso
         return $this->session('loggedin', true);
     }
 
-    public function unsetSession($key = null)
-    {
-        if ($key != null) {
-            unset($_SESSION[$key]);
-        } else {
-            session_destroy();
-        }
-    }
-
     public function redirect($path)
     {
         header('location:' . $path);
@@ -240,238 +475,5 @@ class Calypso
             }
         }
         header('location:' . ServiceConstant::BASE_PATH . '/' . $controller . '/' . $action . '/' . $str);
-    }
-
-    /**
-     * Gets value from array or object
-     * Copied from Yii2 framework
-     * @link http://www.yiiframework.com/
-     * @copyright Copyright (c) 2008 Yii Software LLC
-     * @license http://www.yiiframework.com/license/
-     * @param      $array
-     * @param      $key
-     * @param null $default
-     * @return null
-     * @author Qiang Xue <qiang.xue@gmail.com>
-     * @author Adegoke Obasa <adegoke.obasa@konga.com>
-     * @author Rotimi Akintewe <rotimi.akintewe@konga.com>
-     */
-    public static function getValue($array, $key, $default = null)
-    {
-        if (!isset($array)) {
-            return $default;
-        }
-
-        if ($key instanceof \Closure) {
-            return $key($array, $default);
-        }
-        if (is_array($key)) {
-            $lastKey = array_pop($key);
-            foreach ($key as $keyPart) {
-                $array = static::getValue($array, $keyPart);
-            }
-            $key = $lastKey;
-        }
-        if (is_array($array) && array_key_exists($key, $array)) {
-            return $array[$key];
-        }
-        if (($pos = strrpos($key, '.')) !== false) {
-            $array = static::getValue($array, substr($key, 0, $pos), $default);
-            $key = substr($key, $pos + 1);
-        }
-        if (is_object($array) && property_exists($array, $key)) {
-            return $array->$key;
-        } elseif (is_array($array)) {
-            return array_key_exists($key, $array) ? $array[$key] : $default;
-        } else {
-            return $default;
-        }
-    }
-
-    /**
-     * Get's a value if it's non empty
-     * @author Adegoke Obasa <goke@cottacush.com>
-     * @param $array
-     * @param $key
-     * @param null $default
-     * @return null
-     */
-    public static function getDisplayValue($array, $key, $default = null)
-    {
-        $value = self::getValue($array, $key, null);
-        if (empty(trim($value))) {
-            return $default;
-        }
-        return $value;
-    }
-
-    public static function showFlashMessages()
-    {
-        $flashMessages = '';
-        $allMessages = \Yii::$app->session->getAllFlashes();
-        foreach ($allMessages as $key => $message) {
-            $flashMessages .= '<div class="alert alert-' . $key . '">' . $message . '</div>';
-        }
-        \Yii::$app->session->removeAllFlashes();
-        return $flashMessages;
-    }
-
-    public static function permissionMap()
-    {
-        $permissionMap = [
-            ServiceConstant::USER_TYPE_SUPER_ADMIN => self::getCorporateRoutes(),
-            ServiceConstant::USER_TYPE_ADMIN => self::getCorporateRoutes(),
-            ServiceConstant::USER_TYPE_OFFICER => array_merge(
-                ['finance/*', 'billing/*', 'admin/*']
-                , self::getCorporateRoutes()),
-            ServiceConstant::USER_TYPE_SWEEPER => array_merge(
-                ['site/*', 'parcels/*', 'shipments/*', 'hubs/*', 'finance/*', 'billing/*', 'admin/*', 'corporate/request/pending']
-            , self::getCorporateRoutes()),
-            ServiceConstant::USER_TYPE_DISPATCHER => array_merge(
-                ['site/*', 'parcels/*', 'shipments/*', 'hubs/*', 'finance/*', 'billing/*', 'admin/*', 'corporate/request/pending']
-                , self::getCorporateRoutes()
-            ),
-            ServiceConstant::USER_TYPE_GROUNDSMAN => array_merge([
-                'parcels/*',
-                'shipments/forsweep',
-                'shipments/delivered',
-                'hubs/hubarrival',
-                'finance/*',
-                'billing/*',
-                'admin/*',
-                'corporate/pending/shipments',
-                'corporate/pending/pickups'
-            ], self::getCorporateRoutes()),
-            ServiceConstant::USER_TYPE_COMPANY_ADMIN => [
-                'corporate/pending/shipments',
-                'corporate/pending/pickups'
-            ],
-            ServiceConstant::USER_TYPE_COMPANY_OFFICER => [
-                'corporate/users',
-                'corporate/pending/shipments',
-                'corporate/pending/pickups',
-            ]
-        ];
-        return $permissionMap;
-    }
-
-    public static function normaliseLinkLabel($label)
-    {
-        return str_replace('_', ' ', $label);
-    }
-
-    public static function getMenus()
-    {
-        $menus = [
-            'Dashboard' => ['base' => 'site', 'base_link' => 'site/index', 'class' => 'fa fa-dashboard'],
-            'New_Shipments' => ['base_link' => 'shipments/processed', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_EC, ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
-            'Receive_Shipments' => ['base_link' => 'hubs/hubarrival', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
-            'Ready_for_Sorting' => ['base_link' => 'hubs/destination', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
-            'Ready_for_Sorting_G-man' => ['base_link' => 'hubs/destination-groundsman', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_HUB]],
-            'Sorted_Shipments' => ['base_link' => 'hubs/delivery', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
-            'Due_for_Delivery' => ['base_link' => 'shipments/fordelivery', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_EC, ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
-            'Due_for_Sweep' => ['base_link' => 'shipments/forsweep', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_EC, ServiceConstant::BRANCH_TYPE_HQ]],
-            'Direct_Delivery' => ['base_link' => 'shipments/dispatched', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_EC, ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
-            'Dispatched_to_Branches' => ['base_link' => 'hubs/hubdispatch', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
-            'Delivered' => ['base_link' => 'shipments/delivered', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_EC, ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
-            'All_Shipments' => ['base_link' => 'shipments/all', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_EC, ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
-            'Administrator' => ['base' => 'admin', 'class' => 'fa fa-user', 'base_link' => [
-                'Manage_branches' => ['base_link' => 'admin/managebranches', 'class' => ''],
-                'Manage_routes' => ['base_link' => 'admin/manageroutes', 'class' => ''],
-                'Manage_staff_accounts' => ['base_link' => 'admin/managestaff', 'class' => ''],
-                'Company_registration' => ['base_link' => 'admin/companies', 'class' => ''],
-                'Billing' => ['base' => 'billing', 'class' => '', 'base_link' => [
-                    'View_Matrix' => ['base_link' => 'billing/matrix', 'class' => ''],
-                    'Zones' => ['base_link' => 'billing/zones', 'class' => ''],
-                    'Regions' => ['base_link' => 'billing/regions', 'class' => ''],
-                    'State_-_Region_Mapping' => ['base_link' => 'billing/statemapping', 'class' => ''],
-                    'City_-_State Mapping' => ['base_link' => 'billing/citymapping', 'class' => ''],
-                    'Weight_Ranges' => ['base_link' => 'billing/weightranges', 'class' => ''],
-                    'Pricing' => ['base_link' => 'billing/pricing', 'class' => ''],
-                    'Onforwarding_Charges' => ['base_link' => 'billing/onforwarding', 'class' => ''],
-                ], 'branch' => [ServiceConstant::BRANCH_TYPE_HQ]]
-            ], 'branch' => [ServiceConstant::BRANCH_TYPE_HQ]],
-            'Parcel History' => [
-                'base' => 'track',
-                'base_link' => 'track/',
-                'class' => 'fa fa-gift',
-                'corporate' => true
-            ],
-            'Manifests' => ['base' => 'manifest', 'base_link' => 'manifest/index', 'class' => 'fa fa-book'],
-            'Customer_History' => ['base' => 'shipments', 'base_link' => 'shipments/customerhistory', 'class' => 'fa fa-user'
-                , 'branch' => [ServiceConstant::BRANCH_TYPE_EC, ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
-            'Reconciliations' => [
-                'base' => 'finance', 'class' => 'fa fa-money', 'base_link' => [
-                    'Customers' => ['base_link' => 'finance/customersall', 'class' => ''],
-                    'Merchants' => ['base_link' => 'finance/merchantsdue', 'class' => '']
-                ],
-                'branch' => [ServiceConstant::BRANCH_TYPE_HQ]
-            ],
-            'Corporate' => [
-                'base' => 'request', 'class' => 'fa fa-gift', 'base_link' => [
-                    'Shipment_Requests' => ['base_link' => 'corporate/request/shipments', 'class' => ''],
-                    'Pickup_Requests' => ['base_link' => 'corporate/request/pickups', 'class' => ''],
-                    'Users' => ['base_link' => 'corporate/users', 'class' => ''],
-                    'Pending Shipments' => ['base_link' => 'corporate/pending/shipments', 'class' => ''],
-                    'Pending Pickups' => ['base_link' => 'corporate/pending/pickups', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]]
-                ],
-                'corporate' => true
-            ]
-        ];
-        return $menus;
-    }
-
-    public static function canAccess($role, $link)
-    {
-        $permissions = self::permissionMap();
-        if (!array_key_exists($role, $permissions)) return false;
-
-        $current_user_permission = $permissions[$role];
-        $link_temp = explode('/', $link);
-        if (in_array($link_temp[0] . '/*', $current_user_permission)) {
-            return false;
-        }
-
-        if (in_array($link, $current_user_permission)) {
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * Returns an array of Corporate only routes
-     * @author Adegoke Obasa <goke@cottacush.com>
-     */
-    public static function getCorporateRoutes()
-    {
-        return [
-            'corporate/request/shipments',
-            'corporate/request/pickups',
-            'corporate/users',
-        ];
-    }
-
-    /**
-     * Make a page that can possibly contain a bagged parcel a referrer page
-     * @author Akintewe Rotimi <akintewe.rotimi@gmail.com>
-     */
-    public static function makeAnUnbagReferrer() {
-        //set unbag referrer
-        $unbag_referrer = \Yii::$app->request->getUrl();
-        Calypso::getInstance()->session('unbag_referrer', $unbag_referrer);
-    }
-
-    /**
-     * Returns the referrer page for a page that an unbag / open bag action was carried out
-     * @author Akintewe Rotimi <akintewe.rotimi@gmail.com>
-     * @return string
-     */
-    public static function getUnbagReferrer() {
-        //get unbag referrer
-        $unbag_referrer = Calypso::getInstance()->session('unbag_referrer');
-        if(empty($unbag_referrer)) {
-            $unbag_referrer = ServiceConstant::DEFAULT_UNBAG_REFERRER;
-        }
-        return $unbag_referrer;
     }
 }

@@ -3,7 +3,7 @@
 		type: 'disable',
 		formAttribute: 'data-keyboard-submit',
 		eventNamespace: '.CP.form.keyboard-submit',
-		inputSelector: 'input:not("[type="checkbox"]"):not("[type="radio"]"):not("[type="submit"]"):not("[type="button"]"):not("[type="range"]")',
+		inputSelector: 'input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]):not([type="range"])',
 	};
 
 	var formAttr = defaults.formAttribute;
