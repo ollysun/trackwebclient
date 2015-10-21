@@ -21,6 +21,11 @@ class ServiceConstant
     const USER_TYPE_SUPPORT = 6;
     const USER_TYPE_ACCOUNTANT = 7;*/
 
+    const ENTITY_TYPE_NORMAL = 1;
+    const ENTITY_TYPE_BAG = 2;
+    const ENTITY_TYPE_SUB = 3;
+    const ENTITY_TYPE_PARENT = 4;
+
     const ACTIVE = 1;
     const INACTIVE = 2;
     const REMOVED = 3;
@@ -40,6 +45,7 @@ class ServiceConstant
     const MANIFEST_RESOLVED = 20;
     const MANIFEST_CANCELLED = 21;
     const MANIFEST_HAS_ISSUE = 22;
+    const RETURNED = 23;
 
     const URL_ADD_PARCEL = 'parcel/add/';
     const URL_GET_ONE_PARCEL = 'parcel/getone/';
@@ -59,6 +65,8 @@ class ServiceConstant
     const URL_PARCEL_COUNT = 'parcel/count/';
     const DEFAULT_UNBAG_REFERRER = '/shipments/processed';
     const URL_OPEN_BAG = '/parcel/openbag';
+    const URL_MARK_AS_RETURNED = 'parcel/markAsReturned';
+    const URL_SET_RETURN_FLAG = 'parcel/setReturnFlag';
     const URL_REMOVE_FROM_BAG = '/parcel/removefrombag';
 
     const URL_GET_ALL_BANKS = 'bank/getAll/';
@@ -194,6 +202,7 @@ class ServiceConstant
     const REQUEST_OTHERS = 1;
     const REQUEST_ECOMMERCE = 2;
 
+    const RETURN_REQUEST_SENT = 1;
 
     public static function getStatus($status)
     {
@@ -252,7 +261,7 @@ class ServiceConstant
     public static function getStatusRef()
     {
         return [ServiceConstant::IN_TRANSIT, ServiceConstant::DELIVERED, ServiceConstant::CANCELLED, ServiceConstant::FOR_ARRIVAL
-            , ServiceConstant::FOR_DELIVERY, ServiceConstant::FOR_SWEEPER, ServiceConstant::COLLECTED, ServiceConstant::BEING_DELIVERED];
+            , ServiceConstant::FOR_DELIVERY, ServiceConstant::FOR_SWEEPER, ServiceConstant::COLLECTED, ServiceConstant::BEING_DELIVERED, ServiceConstant::RETURNED];
     }
 
     public static function getPaymentMethod($method)
@@ -324,8 +333,17 @@ class ServiceConstant
                 return 'Delivery Manifest';
                 break;
             default:
-               return false;
+                return false;
                 break;
+        }
+    }
+
+    public static function getReturnStatus($parcel)
+    {
+        if (isset($parcel['for_return']) && $parcel['for_return'] != 0) {
+            return 'Return to ' . ucwords($parcel['created_branch']['name'] . ', ' . $parcel['created_branch']['state']['name']);
+        } else {
+            return false;
         }
     }
 }
