@@ -385,11 +385,12 @@ class CompanyAdapter extends BaseAdapter
      * Decline shipment request
      * @author Adegoke Obasa <goke@cottacush.com>
      * @param $requestId
+     * @param $comment
      * @return bool
      */
-    public function declineShipmentRequest($requestId)
+    public function declineShipmentRequest($requestId, $comment)
     {
-        $rawResponse = $this->request(ServiceConstant::URL_DECLINE_SHIPMENT_REQUEST, Json::encode(['request_id' => $requestId]), self::HTTP_POST);
+        $rawResponse = $this->request(ServiceConstant::URL_DECLINE_SHIPMENT_REQUEST, Json::encode(['request_id' => $requestId, 'comment' => $comment]), self::HTTP_POST);
         $response = new ResponseHandler($rawResponse);
 
         if (!$response->isSuccess()) {
@@ -421,11 +422,12 @@ class CompanyAdapter extends BaseAdapter
      * Decline pickup request
      * @author Adegoke Obasa <goke@cottacush.com>
      * @param $requestId
+     * @param $comment
      * @return bool
      */
-    public function declinePickupRequest($requestId)
+    public function declinePickupRequest($requestId, $comment)
     {
-        $rawResponse = $this->request(ServiceConstant::URL_DECLINE_PICKUP_REQUEST, Json::encode(['request_id' => $requestId]), self::HTTP_POST);
+        $rawResponse = $this->request(ServiceConstant::URL_DECLINE_PICKUP_REQUEST, Json::encode(['request_id' => $requestId, 'comment' => $comment]), self::HTTP_POST);
         $response = new ResponseHandler($rawResponse);
 
         if (!$response->isSuccess()) {
