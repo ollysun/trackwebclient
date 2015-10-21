@@ -54,9 +54,10 @@ class AdminController extends BaseController
             $zone = new ZoneAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
             $response = $zone->saveMatrix(json_encode($matrix_info));
             if ($response['status'] === Response::STATUS_OK) {
-                $this->redirect('/admin/managebranches');
+                return $this->redirect('/admin/managebranches');
             } else {
                 Yii::$app->session->setFlash('danger', 'There was a problem creating the zone.' . $response['message']);
+                return $this->refresh();
             }
         }
 
@@ -120,6 +121,7 @@ class AdminController extends BaseController
                     }
                 }
             }
+            return $this->refresh();
         }
 
         $refAdp = new RefAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
@@ -177,6 +179,7 @@ class AdminController extends BaseController
                     }
                 }
             }
+            return $this->refresh();
         }
         $refAdp = new RefAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $states = $refAdp->getStates(1); // Hardcoded Nigeria for now
@@ -252,6 +255,8 @@ class AdminController extends BaseController
                     }
                 }
             }
+
+            return $this->refresh();
         }
 
         $refAdp = new RefAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
@@ -449,6 +454,8 @@ class AdminController extends BaseController
                     }
                 }
             }
+
+            return $this->refresh();
         }
         $hubAdp = new BranchAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $hubs = $hubAdp->getHubs();
