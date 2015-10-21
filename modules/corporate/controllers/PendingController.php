@@ -124,8 +124,9 @@ class PendingController extends BaseController
 
         if (Yii::$app->request->isPost) {
             $requestId = Yii::$app->request->post('request_id');
+            $comment = Yii::$app->request->post('comment');
 
-            $status = $companyAdapter->declineShipmentRequest($requestId);
+            $status = $companyAdapter->declineShipmentRequest($requestId, $comment);
             if ($status) {
                 $this->flashSuccess("Shipment request declined successfully");
             } else {
@@ -147,8 +148,9 @@ class PendingController extends BaseController
 
         if (Yii::$app->request->isPost) {
             $requestId = Yii::$app->request->post('request_id');
+            $comment = Yii::$app->request->post('comment');
 
-            $status = $companyAdapter->declinePickupRequest($requestId);
+            $status = $companyAdapter->declinePickupRequest($requestId, $comment);
             if ($status) {
                 $this->flashSuccess("Pickup request declined successfully");
             } else {
