@@ -71,7 +71,7 @@ class ShipmentsController extends BaseController
             $search_action = true;
         } elseif (!empty(Calypso::getInstance()->get()->search)) { //check if not empty criteria
             $search = Calypso::getInstance()->get()->search;
-            $response = $parcel->getSearchParcels('-1', $search, $offset, $this->page_width, 1, $this->branch_to_view, 1, true);
+            $response = $parcel->getSearchParcels(null, $search, $offset, $this->page_width, 1, $this->branch_to_view, 1, true);
             $search_action = true;
             $filter = null;
         } else {
@@ -147,7 +147,7 @@ class ShipmentsController extends BaseController
             $search_action = true;
         } elseif (!empty(Calypso::getInstance()->get()->search)) {
             $search = Calypso::getInstance()->get()->search;
-            $response = $parcel->getSearchParcels('-1', $search, $offset, $page_width, 1, $this->branch_to_view);
+            $response = $parcel->getSearchParcels(null, $search, $offset, $page_width, 1, $this->branch_to_view);
             $search_action = true;
         } else {
             $response = $parcel->getParcelsForDelivery(null, null, ServiceConstant::FOR_DELIVERY, $this->branch_to_view, $offset, $page_width, null, 1, null, $route_id, true);
@@ -227,7 +227,7 @@ class ShipmentsController extends BaseController
 
         if (!empty(Calypso::getInstance()->get()->search)) {  //check if not empty criteria
             $search = Calypso::getInstance()->get()->search;
-            $response = $parcel->getSearchParcels('-1', $search, $offset, $page_width, 1, $this->branch_to_view);
+            $response = $parcel->getSearchParcels(null, $search, $offset, $page_width, 1, $this->branch_to_view);
             $search_action = $search;
         } else {
             $response = $parcel->getParcels(null, null, ServiceConstant::FOR_SWEEPER, $this->branch_to_view, $offset, $page_width, null, 1);
@@ -323,7 +323,7 @@ class ShipmentsController extends BaseController
             $search_action = true;
         } elseif (!empty(Calypso::getInstance()->get()->search)) {  //check if not empty criteria
             $search = Calypso::getInstance()->get()->search;
-            $response = $parcel->getSearchParcels('-1', $search, $offset, $this->page_width, 1, $this->branch_to_view, 1);
+            $response = $parcel->getSearchParcels(null, $search, $offset, $this->page_width, 1, $this->branch_to_view, 1);
             $search_action = true;
             $filter = null;
         } else {
