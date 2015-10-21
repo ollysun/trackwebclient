@@ -14,7 +14,7 @@ $this->params['breadcrumbs'] = array(
 );
 
 $this->params['content_header_button'] = '<button onclick="javascript:window.open(\''.Url::toRoute(['shipments/viewbag?waybill_number='.$waybill_number.'&print']).'\', \'_blank\', \'toolbar=yes, scrollbars=yes, resizable=yes, top=10, left=50%, width=1100, height=800\');" class="btn btn-primary"><i class="fa fa-print"></i> Print Bag</button>' .
-                                    ' <button class="btn btn-info"><i class="fa fa-times"></i> Remove Item(s) </button>' .
+                                    ' <button class="btn btn-info" id="btnRemoveItem"><i class="fa fa-times"></i> Remove Item(s) </button>' .
                                     ' <button id="btnOpenBag" class="btn btn-danger" data-waybill="' . $waybill_number . '" data-href="' . Url::toRoute(['shipments/openbag?waybill_number='.$waybill_number]) . '"><i class="fa fa-expand"></i> Open Bag </button>';
 
 
@@ -81,6 +81,63 @@ $this->params['content_header_button'] = '<button onclick="javascript:window.ope
         </div>
     </div>
 <?php endif; ?>
+
+<div class="modal fade" id="removeItem" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Remove Item(s) from Bag</h4>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="remove_bag_waybill" name="remove_bag_waybill" value="<?= $waybill_number; ?>"/>
+
+                <p>Please select the items to be remove from the current bag.</p>
+                <table class="table table-hover table-condensed">
+                    <thead>
+                    <tr>
+                        <th width="10%">
+                            <div class='checkbox-nice'>
+                                <input id='chbx_w_all' type='checkbox' class='chk_all'><label for='chbx_w_all'></label>
+                            </div>
+                        </th>
+                        <th>WAYBILL NO</th>
+                        <th width="10%">PCS</th>
+                        <th width="10%">Weight</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php
+                    $row = 0;
+                    foreach(Calypso::getValue($bag, 'parcels', array()) as $parcel):
+                        $row++;
+                        ?>
+                        <tr data-waybill='<?= Calypso::getValue($parcel, 'waybill_number') ?>'>
+
+                            <td>
+                                <div class='checkbox-nice'>
+                                    <input name='waybills[]' id='chk_<?= $row ?>' type='checkbox'
+                                           class='chk_next'><label
+                                        for='chk_<?= $row ?>'></label>
+                                </div>
+                            </td>
+                            <td><?= Calypso::getValue($parcel, 'waybill_number')?></td>
+                            <td><?= Calypso::getValue($parcel, 'no_of_package')?></td>
+                            <td><?= Calypso::getValue($parcel, 'weight')?> KG</td>
+                        </tr>
+                    <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-primary" id="btnDlgRemove">Remove Item(s)</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <?php $this->registerJsFile('@web/js/bootbox.min.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/bag_parcel.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>

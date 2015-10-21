@@ -278,6 +278,31 @@ class AdminController extends BaseController
     }
 
     /**
+     * Edit Company Action
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @author Olajide Oye <jide@cottacush.com>
+     * @return string
+     */
+    public function actionEditcompany()
+    {
+        $companyAdapter = new CompanyAdapter();
+        if (Yii::$app->request->isPost) {
+            $data = Yii::$app->request->post();
+
+            // Edit Company
+            $status = $companyAdapter->editCompany($data);
+
+            if ($status) {
+                $this->flashSuccess("Company edited successfully");
+            } else {
+                $this->flashError($companyAdapter->getLastErrorMessage());
+            }
+        }
+
+        return $this->redirect(Url::to("/admin/companies"));
+    }
+
+    /**
      * Manage Companies Action
      * @author Adegoke Obasa <goke@cottacush.com>
      * @author Olajide Oye <jide@cottacush.com>

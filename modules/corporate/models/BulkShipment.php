@@ -1,9 +1,11 @@
 <?php
 
 namespace app\modules\corporate\models;
+
 use Adapter\Globals\ServiceConstant;
 use Adapter\RefAdapter;
 use Adapter\RequestHelper;
+use Adapter\ResponseHandler;
 use PHPExcel;
 use PHPExcel_Cell_DataValidation;
 use PHPExcel_IOFactory;
@@ -35,17 +37,22 @@ class BulkShipment
         $dataSheet = $phpExcelObj->setActiveSheetIndex(1);
         $dataSheet->setTitle('Data Sheet');
 
-        $states = $refAdapter->getStates(ServiceConstant::COUNTRY_NIGERIA);
+        $response = $refAdapter->getStates(ServiceConstant::COUNTRY_NIGERIA);
+        $response = new ResponseHandler($response);
+        if ($response->isSuccess()) {
+            $states = $response->getData();
+        } else {
+            $states = [];
+        }
+
         self::addStatesData($states, $dataSheet, $phpExcelObj);
         self::addCitiesData($states, $dataSheet, $phpExcelObj);
 
         $shipmentsSheet = $phpExcelObj->setActiveSheetIndex(0);
         self::setValidationForCell('F2', 'states', $shipmentsSheet);
-        self::setValidationForCell('M2', 'states', $shipmentsSheet);
 
         for ($i = 2; $i < 1002; $i++) {
             self::setValidationForCell('G' . $i, 'INDIRECT($F$' . $i . ')', $shipmentsSheet);
-            self::setValidationForCell('N' . $i, 'INDIRECT($M$' . $i . ')', $shipmentsSheet);
         }
 
         $dataSheet = $phpExcelObj->setActiveSheetIndex(1);
@@ -54,7 +61,7 @@ class BulkShipment
 
         $writer = PHPExcel_IOFactory::createWriter($phpExcelObj, 'Excel2007');
         $writer->save(self::getTemplateFilePath());
-        self::extendCellValidationsToWholeColumn(['F', 'M'], self::getTemplateFilePath(), 'sheet1');
+        self::extendCellValidationsToWholeColumn(['F'], self::getTemplateFilePath(), 'sheet1');
     }
 
     /**
@@ -64,8 +71,7 @@ class BulkShipment
      */
     private static function generateSheetHeader($phpExcelObj)
     {
-        $columnHeaders = ['Sender Firstname*', 'Sender Lastname', 'Sender Phone Number*', 'Sender Address', 'Sender Email', 'Sender State*', 'Sender City*',
-            'Receiver Firstname*', 'Receiver LastName', 'Receiver Phone Number', 'Receiver Email', 'Receiver Address', 'Receiver State*', 'Receiver City*',
+        $columnHeaders = ['Receiver Firstname*', 'Receiver LastName', 'Receiver Phone Number', 'Receiver Email', 'Receiver Address', 'Receiver State*', 'Receiver City*',
             'Receiver Company Name', 'Number of Packages', 'Estimated Weight', 'Parcel Value', 'Cash on Delivery', 'Reference Number', 'Parcel Description'];
 
         $sheet = $phpExcelObj->setActiveSheetIndex(0);

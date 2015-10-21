@@ -44,6 +44,27 @@ class CompanyAdapter extends BaseAdapter
     }
 
     /**
+     * Edits a company
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @param $data
+     * @return bool
+     */
+    public function editCompany($data)
+    {
+        if(Calypso::getValue($data, 'company.reg_no') == '') {
+            $data['company']['reg_no'] = null;
+        }
+        $rawResponse = $this->request(ServiceConstant::URL_COMPANY_EDIT, Json::encode($data), self::HTTP_POST);
+        $response = new ResponseHandler($rawResponse);
+
+        if (!$response->isSuccess()) {
+            $this->lastErrorMessage = $response->getError();
+        }
+
+        return $response->isSuccess();
+    }
+
+    /**
      * Get company detail
      * @author Adegoke Obasa <goke@cottacush.com>
      * @param $id
@@ -82,7 +103,10 @@ class CompanyAdapter extends BaseAdapter
     {
 
         $filters = array_merge($filters, array(
-            'with_total_count' => 'true'));
+            'with_total_count' => 'true',
+            'with_city' => 'true',
+            'with_relations_officer' => 'true'
+        ));
 
         $response = $this->request(ServiceConstant::URL_COMPANY_ALL,
             $filters, self::HTTP_GET);
@@ -151,6 +175,24 @@ class CompanyAdapter extends BaseAdapter
     public function createUser($data)
     {
         $rawResponse = $this->request(ServiceConstant::URL_USER_ADD, Json::encode($data), self::HTTP_POST);
+        $response = new ResponseHandler($rawResponse);
+
+        if (!$response->isSuccess()) {
+            $this->lastErrorMessage = $response->getError();
+        }
+
+        return $response->isSuccess();
+    }
+
+    /**
+     * Edits a company user
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @param $data
+     * @return bool
+     */
+    public function editUser($data)
+    {
+        $rawResponse = $this->request(ServiceConstant::URL_USER_EDIT, Json::encode($data), self::HTTP_POST);
         $response = new ResponseHandler($rawResponse);
 
         if (!$response->isSuccess()) {
@@ -276,6 +318,24 @@ class CompanyAdapter extends BaseAdapter
     public function makeShipmentRequest($data)
     {
         $rawResponse = $this->request(ServiceConstant::URL_MAKE_SHIPMENT_REQUEST, Json::encode($data), self::HTTP_POST);
+        $response = new ResponseHandler($rawResponse);
+
+        if (!$response->isSuccess()) {
+            $this->lastErrorMessage = $response->getError();
+        }
+
+        return $response->isSuccess();
+    }
+
+    /**
+     * Make shipment request
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @param $data
+     * @return bool
+     */
+    public function makeBulkShipmentRequest($data)
+    {
+        $rawResponse = $this->request(ServiceConstant::URL_MAKE_BULK_SHIPMENT_REQUEST, Json::encode($data), self::HTTP_POST);
         $response = new ResponseHandler($rawResponse);
 
         if (!$response->isSuccess()) {

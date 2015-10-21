@@ -575,7 +575,6 @@ class ShipmentsController extends BaseController
             $to_date = Calypso::getInstance()->get()->to;
         }
 
-        $user_session = Calypso::getInstance()->session("user_session");
         $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $delivered_parcels = $parcelsAdapter->getDeliveredParcels($this->branch_to_view, $offset, $page_width, $from_date . '%2000:00:00', $to_date . '%2023:59:59');
         $parcelsHandler = new ResponseHandler($delivered_parcels);
@@ -614,6 +613,37 @@ class ShipmentsController extends BaseController
             $errorMessage = 'An error occurred while trying to open bag. #' . $response->getError();
             $this->flashError($errorMessage);
             return $this->redirect('/shipments/view_bag?waybill_number=' . $waybill_number);
+        }
+    }
+
+    /**
+     * This action remove one or more items (parcels) from a bag.
+     * @author Akintewe Rotimi <akintewe.rotimi@gmail.com>
+     */
+    public function actionRemovefrombag() {
+
+        $rawBody = \Yii::$app->request->getRawBody();
+        $payload = json_decode($rawBody, true);
+
+        if(!isset($payload['id'], $payload['linked_waybills'])) {
+            return $this->sendErrorResponse('There is a problem with the data sent. Please try again.', HttpStatusCodes::HTTP_200);
+        }
+        $postData['bag_waybill_number'] = $payload['id'];
+        $postData['parcel_waybill_number_list'] = implode(',', $payload['linked_waybills']);
+
+        $parcel = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $response = $parcel->removeFromBag( $postData );
+        $response = new ResponseHandler($response);
+
+        if ($response->getStatus() == ResponseHandler::STATUS_OK) {
+
+            $message = "Shipment(s) ({$postData['parcel_waybill_number_list']}) has been successfully removed from bag #{$postData['bag_waybill_number']}";
+            $this->flashSuccess($message);
+            return $this->sendSuccessResponse('');
+        } else {
+
+            $errorMessage = 'An error occurred while trying to remove shipment from bag. #' . $response->getError();
+            return $this->sendErrorResponse($errorMessage, HttpStatusCodes::HTTP_200);
         }
     }
 }
