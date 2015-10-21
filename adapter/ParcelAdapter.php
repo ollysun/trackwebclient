@@ -86,6 +86,14 @@ class ParcelAdapter extends BaseAdapter
     {
         $filters = array('status' => $status, 'waybill_number' => $waybill_number, 'with_total_count' => $with_total, 'show_parents' => $only_parents, 'branch_id' => $branch_id, 'with_sender' => 1, 'with_created_branch' => 1, 'with_receiver' => 1, 'with_receiver_address' => 1, 'with_to_branch' => 1, 'offset' => $offset, 'count' => $count);
         return $this->request(ServiceConstant::URL_GET_ALL_PARCEL, $filters, self::HTTP_GET);
+    public function getSearchParcels($status,$waybill_number,$offset=0, $count=50, $with_total=null,$branch_id=null, $only_parents=null, $with_created_branch=null){
+        $parcel_status = $status == '-1'?'': '&status='.$status;
+        $filter = $parcel_status.'&waybill_number='.$waybill_number;
+        $filter .= !is_null($with_total) ? '&with_total_count=1' : '';
+        $filter .= !is_null($branch_id) ? '&branch_id=' . $branch_id : '';
+        $filter .= !is_null($only_parents) ? '&show_parents=1' : '';
+        $filter .= !is_null($with_created_branch) ? '&with_created_branch' : '';
+        return $this->request(ServiceConstant::URL_GET_ALL_PARCEL . '?with_sender=1&with_receiver=1&with_receiver_address=1&with_to_branch=1&offset=' . $offset . '&count=' . $count . $filter, array(), self::HTTP_GET);
     }
 
     public function getFilterParcelsByDateAndStatus($start_created_date, $end_created_date, $status, $offset = 0, $count = 50, $with_total = null, $branch_id = null, $only_parents = null, $with_created_branch = null)
@@ -167,6 +175,11 @@ class ParcelAdapter extends BaseAdapter
     public function receiveFromBeingDelivered($postData)
     {
         return $this->request(ServiceConstant::URL_RECEIVE_RETURN, $postData, self::HTTP_POST);
+    }
+
+    public function markAsReturned($data)
+    {
+        return $this->request(ServiceConstant::URL_MARK_AS_RETURNED, $data, self::HTTP_POST);
     }
 
     public function getParcelsByPayment($waybill_number = null, $payment_type = null, $start_created_date, $end_created_date, $offset = 0, $count = 50, $with_total = null, $branch_id = null, $only_parents = null)
