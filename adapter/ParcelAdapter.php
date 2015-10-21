@@ -93,7 +93,7 @@ class ParcelAdapter extends BaseAdapter
         $filter .= !is_null($branch_id) ? '&branch_id=' . $branch_id : '';
         $filter .= !is_null($only_parents) ? '&show_parents=1' : '';
         $filter .= !is_null($with_created_branch) ? '&with_created_branch' : '';
-        return $this->request(ServiceConstant::URL_GET_ALL_PARCEL.'?with_sender=1&with_receiver=1&with_receiver_address=1&with_to_branch=1&with_route=1&offset='.$offset.'&count='.$count.$filter,array(),self::HTTP_GET);
+        return $this->request(ServiceConstant::URL_GET_ALL_PARCEL . '?with_sender=1&with_receiver=1&with_receiver_address=1&with_to_branch=1&offset=' . $offset . '&count=' . $count . $filter, array(), self::HTTP_GET);
     }
     public function getFilterParcelsByDateAndStatus($start_created_date,$end_created_date,$status,$offset=0, $count=50, $with_total=null,$branch_id=null, $only_parents=null, $with_created_branch=null){
         $parcel_status = $status == '-1'?'': '&status='.$status;
@@ -164,6 +164,11 @@ class ParcelAdapter extends BaseAdapter
     public function receiveFromBeingDelivered($postData)
     {
         return $this->request(ServiceConstant::URL_RECEIVE_RETURN, $postData, self::HTTP_POST);
+    }
+
+    public function markAsReturned($data)
+    {
+        return $this->request(ServiceConstant::URL_MARK_AS_RETURNED, $data, self::HTTP_POST);
     }
 
     public function getParcelsByPayment($waybill_number = null, $payment_type = null, $start_created_date, $end_created_date, $offset = 0, $count = 50, $with_total = null, $branch_id = null, $only_parents = null)
@@ -260,9 +265,9 @@ class ParcelAdapter extends BaseAdapter
     {
         $filter_array = is_null($filter_array) ? [] : $filter_array;
         $url_params = [];
-        $filter_array= array_filter($filter_array);
-        $filters = '?'.http_build_query($filter_array);
-        $response = $this->request(ServiceConstant::URL_PARCEL_COUNT.$filters, [] , self::HTTP_GET);
+        $filter_array = array_filter($filter_array);
+        $filters = '?' . http_build_query($filter_array);
+        $response = $this->request(ServiceConstant::URL_PARCEL_COUNT . $filters, [], self::HTTP_GET);
         $response = new ResponseHandler($response);
         if ($response->getStatus() == Response::STATUS_OK) {
             return $response->getData();
