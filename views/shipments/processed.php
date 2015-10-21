@@ -119,8 +119,8 @@ $this->params['content_header_button'] = $this->render('../elements/content_head
                                             <input type="hidden" name="task" value="cancel_shipment">
                                         </form>
                                     <?php endif; ?>
-                                    <a title="Clone this shipment" href="<?= Url::toRoute(['/parcels/new?id=' . $parcel['id']]) ?>"
-                                       class="btn btn-xs btn-info btnClone"><i class="fa fa-copy"></i></a>
+                                    <button title="Clone this shipment" data-href="<?= Url::toRoute(['/parcels/new?id=' . $parcel['id']]) ?>"
+                                       class="btn btn-xs btn-info btnClone"><i class="fa fa-copy"></i></button>
                                     <?php if (!in_array($parcel['status'], [ServiceConstant::DELIVERED, ServiceConstant::BEING_DELIVERED, ServiceConstant::CANCELLED]) && !$parcel['for_return'] && !in_array($parcel['entity_type'], [ServiceConstant::ENTITY_TYPE_BAG, ServiceConstant::ENTITY_TYPE_PARENT])) : ?>
                                         <button data-return="<?= $parcel['waybill_number'] ?>"" title="Request shipment return" type="submit" class="btn btn-xs btn-danger" name="parcel_id"><i class="fa fa-refresh"></i></button>
                                     <?php endif; ?>
