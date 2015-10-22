@@ -96,6 +96,16 @@ $this->params['breadcrumbs'] = array(
                         <label>Password</label>
                         <input type="password" class="form-control" name="password">
                     </div>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label for="fullname">Full Name</label>
+                            <input type="text" class="form-control" name="fullname" id="fullname">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="phone">Phone Number</label>
+                            <input type="text" class="form-control" name="phone" id="phone">
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <input type="hidden" name="waybills" id="waybills">
