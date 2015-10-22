@@ -181,6 +181,9 @@ class ServiceConstant
     const URL_DECLINE_PICKUP_REQUEST = 'company/declinePickupRequest';
     const URL_SHIPMENT_REQUEST = 'company/getShipmentRequest';
     const URL_PICKUP_REQUEST = 'company/getPickupRequest';
+    const URL_GET_ALL_CORPORATE_ECS = 'company/getAllEcs';
+    const URL_LINK_EC_TO_COMPANY = 'company/linkEc';
+    const URL_RELINK_EC_TO_COMPANY = 'company/relinkEc';
 
     const DATE_TIME_FORMAT = 'd M Y H:i';
     const DATE_FORMAT = 'd M Y';
