@@ -98,4 +98,26 @@ class Util
 
         return $result;
     }
+
+    /**
+     * This function checks for multiple empty just like empty() works.
+     * This function is not in good terms with variables not set being passed to the function
+     * unlike empty and isset() that handles them. Improvement.
+     * @author imkingdavid (stackoverflow)
+     * @return bool
+     */
+    public static function mempty() {
+
+        $arguments = func_get_args();
+
+        foreach ($arguments as $arg) {
+            if(empty($arg)) {
+                return true;
+            } else {
+                continue;
+            }
+        }
+
+        return false;
+    }
 }
