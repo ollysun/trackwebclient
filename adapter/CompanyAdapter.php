@@ -459,13 +459,14 @@ class CompanyAdapter extends BaseAdapter
     /**
      * Edits a links an EC to a company
      * @author Adegoke Obasa <goke@cottacush.com>
+     * @param $id
      * @param $companyId
      * @param $branchId
      * @return bool
      */
-    public function relinkEc($companyId, $branchId)
+    public function relinkEc($id, $companyId, $branchId)
     {
-        $rawResponse = $this->request(ServiceConstant::URL_RELINK_EC_TO_COMPANY, Json::encode(['company_id' => $companyId, 'branch_id' => $branchId]), self::HTTP_POST);
+        $rawResponse = $this->request(ServiceConstant::URL_RELINK_EC_TO_COMPANY, Json::encode(['id' => $id, 'company_id' => $companyId, 'branch_id' => $branchId]), self::HTTP_POST);
         $response = new ResponseHandler($rawResponse);
 
         if (!$response->isSuccess()) {
