@@ -53,6 +53,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                             <th style="width: 20px">S/N</th>
                             <th>EC name</th>
                             <th>Associated Company name</th>
+                            <th>Created By</th>
                             <th>Action</th>
                         </tr>
                         </thead>
@@ -63,6 +64,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                                 <td><?= ++$i; ?></td>
                                 <td><?= strtoupper(Calypso::getValue($companyEc, 'branch.name')); ?></td>
                                 <td><?= strtoupper(Calypso::getValue($companyEc, 'company.name')); ?></td>
+                                <td><?= strtoupper(Calypso::getValue($companyEc, 'created_by.fullname')); ?></td>
                                 <td>
                                     <button
                                         data-id="<?=Calypso::getValue($companyEc, 'id'); ?>"

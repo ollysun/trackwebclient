@@ -487,6 +487,7 @@ class CompanyAdapter extends BaseAdapter
         $filters = array_merge([
             'with_branch' => '1',
             'with_company' => '1',
+            'with_created_by' => '1',
             'with_total_count' => '1'], $filters);
 
         $response = $this->request(ServiceConstant::URL_GET_ALL_CORPORATE_ECS,
