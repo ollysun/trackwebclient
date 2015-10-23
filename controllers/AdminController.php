@@ -539,10 +539,11 @@ class AdminController extends BaseController
     {
         $companyAdapter = new CompanyAdapter();
         if(Yii::$app->request->isPost) {
+            $id = Yii::$app->request->post('id');
             $companyId = Yii::$app->request->post('company_id');
             $branchId = Yii::$app->request->post('branch_id');
 
-            $status = $companyAdapter->relinkEc($companyId, $branchId);
+            $status = $companyAdapter->relinkEc($id, $companyId, $branchId);
 
             if ($status) {
                 $this->flashSuccess("Express Centre re-linked to company successfully");
