@@ -1,6 +1,5 @@
 <?php
 session_start();
-// comment out the following two lines when deployed to production
 
 if (!in_array(getenv("APPLICATION_ENV"), ["production", "staging"])) {
     defined('YII_DEBUG') or define('YII_DEBUG', true);

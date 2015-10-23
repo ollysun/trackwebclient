@@ -351,10 +351,10 @@ class ShipmentsController extends BaseController
         if (\Yii::$app->request->isPost) {
             $records = \Yii::$app->request->post();
             if ($records['task'] == 'request_return') {
-                if (!isset($records['waybill_numbers'])) {
+                if (!isset($records['waybill_numbers']) && !isset($records['comment'])) {
                     $this->flashError("Invalid parameter(s) sent!");
                 } else {
-                    $result = $parcel->sendReturnRequest($records);
+                    $result = $parcel->sendReturnRequest($records['waybill_numbers'], $records['comment']);
                     $response = new ResponseHandler($result);
 
                     if ($response->getStatus() == ResponseHandler::STATUS_OK) {
@@ -374,7 +374,7 @@ class ShipmentsController extends BaseController
             }
 
         }
-        return $this->redirect(Url::toRoute('/shipments/processed'));
+        return $this->redirect(Yii::$app->request->referrer);
     }
 
     public function actionCancel()
