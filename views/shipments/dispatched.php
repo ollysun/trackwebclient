@@ -26,10 +26,10 @@ $this->params['breadcrumbs'] = array(
     <?php if (!empty($parcels)) { ?>
         <div class="main-box-header clearfix">
             <div class="pull-left">
-                <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#passwordModal"
+                <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#opmodal"
                         data-action="receive">Receive from Dispatcher
                 </button>
-                <button type="button" class="btn btn-primary btn-sm" data-toggle="moal" data-target="#passwordModal"
+                <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#passwordModal"
                         data-action="deliver"><i class="fa fa-check"></i> Mark as delivered
                 </button>
                 <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#passwordModal"
@@ -124,4 +124,69 @@ $this->params['breadcrumbs'] = array(
         </form>
     </div>
 </div>
+
+<div class="modal fade" id="opmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <form id="held_parcels" class="">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Receive Shipments</h4>
+                </div>
+                <div class="modal-body">
+
+                    <form class="">
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <div class="form-group">
+                                    <label>Staff ID</label>
+                                    <div class="input-group">
+                                        <input id="staff_no" value="RONNY-001" class="form-control">
+                                        <div class="input-group-btn">
+                                            <button type="button" id="get_arrival" class="btn btn-default">Load</button>
+                                        </div>
+                                    </div>
+                                    <div class="input-group">
+                                        <label id="loading_label"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-6">
+                                <label>Staff Name</label>
+                                <div id="sweeper_name" class="form-control-static"><em>Not Available</em></div>
+                                <label>Department</label><br>
+                                <div id="role" class="form-control-static"><em>Not Available</em></div>
+                                <label>Branch of Operation</label><br>
+                                <div id="branch" class="form-control-static"><em>Not Available</em></div>
+                                <input id="staff_user_id" name="staff_user_id" type="hidden">
+                            </div>
+                        </div>
+                    </form>
+
+                    <br>
+                    <table class="table table-bordered table-condensed">
+                        <thead>
+                        <tr>
+                            <th>S/N</th>
+                            <th>Waybill No.</th>
+                            <th>Status</th>
+                        </tr>
+                        </thead>
+                        <tbody id="parcel_arrival">
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button id="receive_parcels_btn" type="button" class="btn btn-primary disabled">Accept</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- this page specific scripts -->
+<script type="text/javascript">
+    var beingdelivered = <?= ServiceConstant::BEING_DELIVERED ?>;
+</script>
+<?= $this->registerJsFile('@web/js/requests.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
 <?= $this->registerJsFile('@web/js/shipment_dispatched.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>

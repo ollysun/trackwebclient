@@ -59,7 +59,7 @@ class ServiceConstant
     const URL_CALC_BILLING = 'zone/calcBilling';
     const URL_MOVE_TO_BEING_DELIVERED = '/parcel/moveToBeingDelivered/';
     const URL_MOVE_TO_DELIVERED = '/parcel/moveToDelivered/';
-    const URL_RECEIVE_RETURN = '/parcel/receiveReturn/';
+    const URL_RECEIVE_RETURN = '/parcel/receiveFromDispatcher/';
     const URL_CREATE_BAG = '/parcel/bag';
     const URL_CANCEL_PARCEL = '/parcel/cancel';
     const URL_PARCEL_COUNT = 'parcel/count/';
