@@ -130,7 +130,8 @@ class Calypso
                 'Manage_branches' => ['base_link' => 'admin/managebranches', 'class' => ''],
                 'Manage_routes' => ['base_link' => 'admin/manageroutes', 'class' => ''],
                 'Manage_staff_accounts' => ['base_link' => 'admin/managestaff', 'class' => ''],
-                'Company_registration' => ['base_link' => 'admin/companies', 'class' => ''],
+                'Company_Registration' => ['base_link' => 'admin/companies', 'class' => ''],
+                'Company_Express_Centre' => ['base_link' => 'admin/companyecs', 'class' => ''],
                 'Billing' => ['base' => 'billing', 'class' => '', 'base_link' => [
                     'View_Matrix' => ['base_link' => 'billing/matrix', 'class' => ''],
                     'Zones' => ['base_link' => 'billing/zones', 'class' => ''],

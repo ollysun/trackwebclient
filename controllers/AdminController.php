@@ -476,4 +476,81 @@ class AdminController extends BaseController
         }
         return $this->render('manageroutes', ['routes' => $route_list, 'hubs' => $hub_list, 'offset'=>$offset, 'total_count'=>$total_count, 'page_width'=>$this->page_width]);
     }
+
+    /**
+     * Company ECs mapping view
+     * @author Adegoke Obasa <goke@cottacush.com>
+     */
+    public function actionCompanyecs()
+    {
+        $page = \Yii::$app->getRequest()->get('page', 1);
+        $companyAdapter = new CompanyAdapter();
+        $branchAdapter = new BranchAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+
+        // Add Offset and Count
+        $offset = ($page - 1) * $this->page_width;
+        $filters['offset'] = $offset;
+        $filters['count'] = $this->page_width;
+
+        $companies = $companyAdapter->getAllCompanies([]);
+        $ecs = $branchAdapter->getAllEcs();
+        $companyEcsResponse = $companyAdapter->getAllEcs($filters);
+
+        $totalCount = Calypso::getValue($companyEcsResponse, 'total_count');
+        $companyEcs = Calypso::getValue($companyEcsResponse, 'ecs');
+
+        return $this->render("companyecs", [
+            'companyEcs' => $companyEcs,
+            'companies' => $companies,
+            'ecs' => $ecs,
+            'offset' => $offset,
+            'total_count' => $totalCount,
+            'page_width' => $this->page_width
+        ]);
+    }
+
+    /**
+     * Links an EC to a company
+     * @author Adegoke Obasa <goke@cottacush.com>
+     */
+    public function actionLinkectocompany()
+    {
+        $companyAdapter = new CompanyAdapter();
+        if(Yii::$app->request->isPost) {
+            $companyId = Yii::$app->request->post('company_id');
+            $branchId = Yii::$app->request->post('branch_id');
+
+            $status = $companyAdapter->linkEc($companyId, $branchId);
+
+            if ($status) {
+                $this->flashSuccess("Express Centre linked to company successfully");
+            } else {
+                $this->flashError($companyAdapter->getLastErrorMessage());
+            }
+        }
+        return $this->redirect("/admin/companyecs");
+    }
+
+    /**
+     * Relinks an EC to a company
+     * @author Adegoke Obasa <goke@cottacush.com>
+     */
+    public function actionRelinkectocompany()
+    {
+        $companyAdapter = new CompanyAdapter();
+        if(Yii::$app->request->isPost) {
+            $id = Yii::$app->request->post('id');
+            $companyId = Yii::$app->request->post('company_id');
+            $branchId = Yii::$app->request->post('branch_id');
+
+            $status = $companyAdapter->relinkEc($id, $companyId, $branchId);
+
+            if ($status) {
+                $this->flashSuccess("Express Centre re-linked to company successfully");
+            } else {
+                $this->flashError($companyAdapter->getLastErrorMessage());
+            }
+        }
+        return $this->redirect("/admin/companyecs");
+    }
 }

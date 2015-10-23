@@ -436,4 +436,68 @@ class CompanyAdapter extends BaseAdapter
 
         return $response->isSuccess();
     }
+
+    /**
+     * Links an EC to a company
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @param $companyId
+     * @param $branchId
+     * @return bool
+     */
+    public function linkEc($companyId, $branchId)
+    {
+        $rawResponse = $this->request(ServiceConstant::URL_LINK_EC_TO_COMPANY, Json::encode(['company_id' => $companyId, 'branch_id' => $branchId]), self::HTTP_POST);
+        $response = new ResponseHandler($rawResponse);
+
+        if (!$response->isSuccess()) {
+            $this->lastErrorMessage = $response->getError();
+        }
+
+        return $response->isSuccess();
+    }
+
+    /**
+     * Edits a links an EC to a company
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @param $id
+     * @param $companyId
+     * @param $branchId
+     * @return bool
+     */
+    public function relinkEc($id, $companyId, $branchId)
+    {
+        $rawResponse = $this->request(ServiceConstant::URL_RELINK_EC_TO_COMPANY, Json::encode(['id' => $id, 'company_id' => $companyId, 'branch_id' => $branchId]), self::HTTP_POST);
+        $response = new ResponseHandler($rawResponse);
+
+        if (!$response->isSuccess()) {
+            $this->lastErrorMessage = $response->getError();
+        }
+
+        return $response->isSuccess();
+    }
+
+    /**
+     * Gets all ecs
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @param array $filters
+     * @return array|mixed
+     */
+    public function getAllEcs($filters = [])
+    {
+        $filters = array_merge([
+            'with_branch' => '1',
+            'with_company' => '1',
+            'with_created_by' => '1',
+            'with_total_count' => '1'], $filters);
+
+        $response = $this->request(ServiceConstant::URL_GET_ALL_CORPORATE_ECS,
+            $filters, self::HTTP_GET);
+
+        $response = new ResponseHandler($response);
+
+        if ($response->isSuccess()) {
+            return $response->getData();
+        }
+        return [];
+    }
 }
