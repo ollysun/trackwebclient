@@ -505,11 +505,12 @@ class ShipmentsController extends BaseController
             $records = \Yii::$app->request->post();
             $password = $records['password'];
             $fullName = $records['fullname'];
+            $email = $records['email'];
             $phoneNumber = $records['phone'];
             $rawData = $records['waybills'];
             $task = $records['task'];
 
-            if (Util::mempty($rawData, $password, $task, $fullName, $phoneNumber)) {
+            if (Util::mempty($rawData, $password, $task)) {
                 $this->flashError("Invalid parameter(s) sent!");
             } else {
                 $admin = new AdminAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
@@ -530,8 +531,9 @@ class ShipmentsController extends BaseController
                         $response = $parcelData->receiveFromBeingDelivered($record);
                         $success_msg = 'Shipments successfully received';
                     } elseif ($task == 'deliver') {
-                        $record['fullname'] = $fullName;
-                        $record['phone'] = $phoneNumber;
+                        $record['receiver_name'] = $fullName;
+                        $record['receiver_phone_number'] = $phoneNumber;
+                        $record['receiver_email '] = $email;
                         $response = $parcelData->moveToDelivered($record);
                         $success_msg = 'Shipments successfully delivered';
                     }
