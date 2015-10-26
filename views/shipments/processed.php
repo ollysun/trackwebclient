@@ -135,6 +135,7 @@ $this->params['content_header_button'] = $this->render('../elements/content_head
             </div>
             <form method="post" id="request-returns" action="requestreturn">
                 <input type="hidden" name="waybill_numbers" value>
+                <input type="hidden" name="comment" value>
                 <input type="hidden" name="task" value="request_return">
             </form>
             <?= $this->render('../elements/pagination_and_summary', ['first' => $offset, 'last' => $i, 'total_count' => $total_count, 'page_width' => $page_width]) ?>

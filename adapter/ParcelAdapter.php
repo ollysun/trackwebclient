@@ -292,12 +292,13 @@ class ParcelAdapter extends BaseAdapter
     /**
      * Send the return request
      * @author Olawale Lawal <wale@cottacush.com>
-     * @param $postData
+     * @param $waybill_numbers
+     * @param $comment
      * @return array|mixed|string
      */
-    public function sendReturnRequest($postData)
+    public function sendReturnRequest($waybill_numbers, $comment)
     {
-        return $this->request(ServiceConstant::URL_SET_RETURN_FLAG, $postData, self::HTTP_POST);
+        return $this->request(ServiceConstant::URL_SET_RETURN_FLAG, ['waybill_numbers' => $waybill_numbers, 'comment' => $comment], self::HTTP_POST);
     }
 
     public function openBag($postData)
@@ -318,6 +319,25 @@ class ParcelAdapter extends BaseAdapter
     public function unsort($waybill_numbers)
     {
         $rawResponse = $this->request(ServiceConstant::URL_UNSORT_PARCEL, Json::encode(['waybill_numbers' => $waybill_numbers]), self::HTTP_POST);
+        $response = new ResponseHandler($rawResponse);
+        if (!$response->isSuccess()) {
+            $this->lastErrorMessage = $response->getError();
+        }
+        $this->setResponseHandler($response);
+        return $response->isSuccess();
+    }
+
+    /**
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     * @param $comment
+     * @param $type
+     * @param $waybill_number
+     * @return bool
+     */
+    public function comment($comment, $type, $waybill_number)
+    {
+        $data = ['comment' => $comment, 'type' => $type, 'waybill_number' => $waybill_number];
+        $rawResponse = $this->request(ServiceConstant::URL_UNSORT_PARCEL, Json::encode($data), self::HTTP_POST);
         $response = new ResponseHandler($rawResponse);
         if (!$response->isSuccess()) {
             $this->lastErrorMessage = $response->getError();
