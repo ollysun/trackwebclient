@@ -21,6 +21,7 @@ use Adapter\RegionAdapter;
 use Adapter\RequestHelper;
 use Adapter\ResponseHandler;
 use Adapter\Util\Calypso;
+use Adapter\Util\Util;
 use app\services\HubService;
 use Adapter\TellerAdapter;
 use yii\data\Pagination;
@@ -533,10 +534,13 @@ class ShipmentsController extends BaseController
         if (\Yii::$app->request->isPost) {
             $records = \Yii::$app->request->post();
             $password = $records['password'];
+            $fullName = $records['fullname'];
+            $email = $records['email'];
+            $phoneNumber = $records['phone'];
             $rawData = $records['waybills'];
             $task = $records['task'];
 
-            if (empty($rawData) || empty($password) || empty($task)) {
+            if (Util::mempty($rawData, $password, $task)) {
                 $this->flashError("Invalid parameter(s) sent!");
             } else {
                 $admin = new AdminAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
@@ -557,6 +561,9 @@ class ShipmentsController extends BaseController
                         $response = $parcelData->receiveFromBeingDelivered($record);
                         $success_msg = 'Shipments successfully received';
                     } elseif ($task == 'deliver') {
+                        $record['receiver_name'] = $fullName;
+                        $record['receiver_phone_number'] = $phoneNumber;
+                        $record['receiver_email '] = $email;
                         $response = $parcelData->moveToDelivered($record);
                         $success_msg = 'Shipments successfully delivered';
                     }
