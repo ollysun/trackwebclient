@@ -683,4 +683,42 @@ class ShipmentsController extends BaseController
             return $this->sendErrorResponse($errorMessage, HttpStatusCodes::HTTP_200);
         }
     }
+
+    public function actionReceivefromdispatcher() {
+        if (isset(Calypso::getInstance()->post()->waybill_numbers)) {
+            $parcel = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+            $response = $parcel->receiveFromBeingDelivered([
+                'held_by_id' => Calypso::getInstance()->post()->held_by_id,
+                'waybill_numbers' => (Calypso::getInstance()->post()->waybill_numbers)
+            ]);
+            $response = new ResponseHandler($response);
+            if ($response->getStatus() == ResponseHandler::STATUS_OK) {
+                return $this->sendSuccessResponse($response->getData());
+            } else {
+                return $this->sendErrorResponse($response->getError(), null);
+            }
+        } else {
+            return $this->sendErrorResponse("Invalid data", null);
+        }
+    }
+
+    public function actionGetparcels()
+    {
+        $staff_no = \Yii::$app->request->get('staff_no');
+        $session_data = Calypso::getInstance()->session('user_session');
+        $branch_id = $session_data['branch']['id'];
+        $status = \Yii::$app->request->get('status', ServiceConstant::IN_TRANSIT);
+
+        if (!isset($staff_no)) {
+            return $this->sendErrorResponse("Invalid parameter(s) sent!", null);
+        }
+        $parcel = new  ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $response = $parcel->getParcel($staff_no,$status , $branch_id, true);
+
+        if ($response['status'] === ResponseHandler::STATUS_OK) {
+            return $this->sendSuccessResponse($response['data']);
+        } else {
+            return $this->sendErrorResponse($response['message'], null);
+        }
+    }
 }
