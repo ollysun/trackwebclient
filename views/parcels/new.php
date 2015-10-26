@@ -262,8 +262,8 @@ $is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
                                     </div>
                                 </div>
 
-                                <div class="row hidden">
-                                    <div class="col-xs-12 col-sm-6 col-lg-5 form-group">
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-12 col-lg-12 form-group">
                                         <label>Reference Number</label>
                                         <input name="reference_number" class="form-control" id="reference_number"
                                             value="<?= Calypso::getValue($parcel, "info.reference_number", ''); ?>">
