@@ -21,6 +21,11 @@ class ServiceConstant
     const USER_TYPE_SUPPORT = 6;
     const USER_TYPE_ACCOUNTANT = 7;*/
 
+    const ENTITY_TYPE_NORMAL = 1;
+    const ENTITY_TYPE_BAG = 2;
+    const ENTITY_TYPE_SUB = 3;
+    const ENTITY_TYPE_PARENT = 4;
+
     const ACTIVE = 1;
     const INACTIVE = 2;
     const REMOVED = 3;
@@ -40,6 +45,7 @@ class ServiceConstant
     const MANIFEST_RESOLVED = 20;
     const MANIFEST_CANCELLED = 21;
     const MANIFEST_HAS_ISSUE = 22;
+    const RETURNED = 23;
 
     const URL_ADD_PARCEL = 'parcel/add/';
     const URL_GET_ONE_PARCEL = 'parcel/getone/';
@@ -53,10 +59,16 @@ class ServiceConstant
     const URL_CALC_BILLING = 'zone/calcBilling';
     const URL_MOVE_TO_BEING_DELIVERED = '/parcel/moveToBeingDelivered/';
     const URL_MOVE_TO_DELIVERED = '/parcel/moveToDelivered/';
-    const URL_RECEIVE_RETURN = '/parcel/receiveReturn/';
+    const URL_RECEIVE_RETURN = '/parcel/receiveFromDispatcher/';
     const URL_CREATE_BAG = '/parcel/bag';
     const URL_CANCEL_PARCEL = '/parcel/cancel';
     const URL_PARCEL_COUNT = 'parcel/count/';
+    const DEFAULT_UNBAG_REFERRER = '/shipments/processed';
+    const URL_OPEN_BAG = '/parcel/openbag';
+    const URL_MARK_AS_RETURNED = 'parcel/markAsReturned';
+    const URL_SET_RETURN_FLAG = 'parcel/setReturnFlag';
+    const URL_REMOVE_FROM_BAG = '/parcel/removefrombag';
+    const URL_UNSORT_PARCEL = '/parcel/unsort';
 
     const URL_GET_ALL_BANKS = 'bank/getAll/';
 
@@ -153,12 +165,15 @@ class ServiceConstant
     const URL_USER_VALIDATE_PASSWORD_RESET_TOKEN = 'auth/validatePasswordResetToken';
 
     const URL_COMPANY_ADD = 'company/createCompany';
+    const URL_COMPANY_EDIT = 'company/editCompany';
     const URL_GET_COMPANY = 'company/getCompany';
     const URL_COMPANY_ALL = 'company/getAllCompany';
     const URL_COMPANY_USERS = 'company/getAllUsers';
     const URL_USER_ADD = 'company/createUser';
+    const URL_USER_EDIT = 'company/editUser';
     const URL_COMPANY_REQUESTS = 'company/getRequests';
     const URL_MAKE_SHIPMENT_REQUEST = 'company/makeShipmentRequest';
+    const URL_MAKE_BULK_SHIPMENT_REQUEST = 'company/makeBulkShipmentRequest';
     const URL_MAKE_PICKUP_REQUEST = 'company/makePickupRequest';
     const URL_CANCEL_PICKUP_REQUEST = 'company/cancelPickupRequest';
     const URL_CANCEL_SHIPMENT_REQUEST = 'company/cancelShipmentRequest';
@@ -166,6 +181,9 @@ class ServiceConstant
     const URL_DECLINE_PICKUP_REQUEST = 'company/declinePickupRequest';
     const URL_SHIPMENT_REQUEST = 'company/getShipmentRequest';
     const URL_PICKUP_REQUEST = 'company/getPickupRequest';
+    const URL_GET_ALL_CORPORATE_ECS = 'company/getAllEcs';
+    const URL_LINK_EC_TO_COMPANY = 'company/linkEc';
+    const URL_RELINK_EC_TO_COMPANY = 'company/relinkEc';
 
     const DATE_TIME_FORMAT = 'd M Y H:i';
     const DATE_FORMAT = 'd M Y';
@@ -187,6 +205,8 @@ class ServiceConstant
 
     const REQUEST_OTHERS = 1;
     const REQUEST_ECOMMERCE = 2;
+
+    const RETURN_REQUEST_SENT = 1;
 
     public static function getStatus($status)
     {
@@ -245,7 +265,7 @@ class ServiceConstant
     public static function getStatusRef()
     {
         return [ServiceConstant::IN_TRANSIT, ServiceConstant::DELIVERED, ServiceConstant::CANCELLED, ServiceConstant::FOR_ARRIVAL
-            , ServiceConstant::FOR_DELIVERY, ServiceConstant::FOR_SWEEPER, ServiceConstant::COLLECTED, ServiceConstant::BEING_DELIVERED];
+            , ServiceConstant::FOR_DELIVERY, ServiceConstant::FOR_SWEEPER, ServiceConstant::COLLECTED, ServiceConstant::BEING_DELIVERED, ServiceConstant::RETURNED];
     }
 
     public static function getPaymentMethod($method)
@@ -317,8 +337,17 @@ class ServiceConstant
                 return 'Delivery Manifest';
                 break;
             default:
-               return false;
+                return false;
                 break;
+        }
+    }
+
+    public static function getReturnStatus($parcel)
+    {
+        if (isset($parcel['for_return']) && $parcel['for_return'] != 0) {
+            return 'Return to ' . ucwords($parcel['created_branch']['name'] . ', ' . $parcel['created_branch']['state']['name']);
+        } else {
+            return false;
         }
     }
 }

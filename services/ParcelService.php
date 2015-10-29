@@ -154,7 +154,13 @@ class ParcelService {
         $parcel['info']['no_of_package'] = Calypso::getValue($shipmentRequest, 'no_of_packages');
         $parcel['info']['reference_number'] = Calypso::getValue($shipmentRequest, 'reference_number');
         $parcel['info']['weight'] = Calypso::getValue($shipmentRequest, 'estimated_weight');
-        $parcel['info']['cash_on_delivery'] = Calypso::getValue($shipmentRequest, 'cash_on_delivery');
+        $cashOnDelivery = Calypso::getValue($shipmentRequest, 'cash_on_delivery');
+
+        if(!empty($cashOnDelivery)) {
+            $parcel['info']['delivery_amount'] = Calypso::getValue($shipmentRequest, 'cash_on_delivery');
+            $parcel['info']['cash_on_delivery'] = 1;
+        }
+        $parcel['is_merchant'] = 1;
 
         return $parcel;
     }

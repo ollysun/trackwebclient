@@ -84,6 +84,22 @@ class BranchAdapter extends BaseAdapter
     }
 
     /**
+     * List all ecs
+     * @author Rotimi Akintewe
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @return array|mixed|string
+     */
+    public function getAllEcs()
+    {
+        $response = $this->request(ServiceConstant::URL_GET_ALL_EC_IN_HUB, [], self::HTTP_GET);
+        $response = new ResponseHandler($response);
+        if($response->isSuccess()) {
+            return $response->getData();
+        }
+        return [];
+    }
+
+    /**
      * Get all Hubs
      * @author Adeyemi Olaoye <yemi@cottacush.com>
      * @author Richard Boyewa <boye@cottacush.com>

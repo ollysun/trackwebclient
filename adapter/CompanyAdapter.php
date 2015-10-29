@@ -44,6 +44,27 @@ class CompanyAdapter extends BaseAdapter
     }
 
     /**
+     * Edits a company
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @param $data
+     * @return bool
+     */
+    public function editCompany($data)
+    {
+        if(Calypso::getValue($data, 'company.reg_no') == '') {
+            $data['company']['reg_no'] = null;
+        }
+        $rawResponse = $this->request(ServiceConstant::URL_COMPANY_EDIT, Json::encode($data), self::HTTP_POST);
+        $response = new ResponseHandler($rawResponse);
+
+        if (!$response->isSuccess()) {
+            $this->lastErrorMessage = $response->getError();
+        }
+
+        return $response->isSuccess();
+    }
+
+    /**
      * Get company detail
      * @author Adegoke Obasa <goke@cottacush.com>
      * @param $id
@@ -82,7 +103,10 @@ class CompanyAdapter extends BaseAdapter
     {
 
         $filters = array_merge($filters, array(
-            'with_total_count' => 'true'));
+            'with_total_count' => 'true',
+            'with_city' => 'true',
+            'with_relations_officer' => 'true'
+        ));
 
         $response = $this->request(ServiceConstant::URL_COMPANY_ALL,
             $filters, self::HTTP_GET);
@@ -151,6 +175,24 @@ class CompanyAdapter extends BaseAdapter
     public function createUser($data)
     {
         $rawResponse = $this->request(ServiceConstant::URL_USER_ADD, Json::encode($data), self::HTTP_POST);
+        $response = new ResponseHandler($rawResponse);
+
+        if (!$response->isSuccess()) {
+            $this->lastErrorMessage = $response->getError();
+        }
+
+        return $response->isSuccess();
+    }
+
+    /**
+     * Edits a company user
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @param $data
+     * @return bool
+     */
+    public function editUser($data)
+    {
+        $rawResponse = $this->request(ServiceConstant::URL_USER_EDIT, Json::encode($data), self::HTTP_POST);
         $response = new ResponseHandler($rawResponse);
 
         if (!$response->isSuccess()) {
@@ -286,6 +328,24 @@ class CompanyAdapter extends BaseAdapter
     }
 
     /**
+     * Make shipment request
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @param $data
+     * @return bool
+     */
+    public function makeBulkShipmentRequest($data)
+    {
+        $rawResponse = $this->request(ServiceConstant::URL_MAKE_BULK_SHIPMENT_REQUEST, Json::encode($data), self::HTTP_POST);
+        $response = new ResponseHandler($rawResponse);
+
+        if (!$response->isSuccess()) {
+            $this->lastErrorMessage = $response->getError();
+        }
+
+        return $response->isSuccess();
+    }
+
+    /**
      * Make pickup request
      * @author Adegoke Obasa <goke@cottacush.com>
      * @param $data
@@ -325,11 +385,12 @@ class CompanyAdapter extends BaseAdapter
      * Decline shipment request
      * @author Adegoke Obasa <goke@cottacush.com>
      * @param $requestId
+     * @param $comment
      * @return bool
      */
-    public function declineShipmentRequest($requestId)
+    public function declineShipmentRequest($requestId, $comment)
     {
-        $rawResponse = $this->request(ServiceConstant::URL_DECLINE_SHIPMENT_REQUEST, Json::encode(['request_id' => $requestId]), self::HTTP_POST);
+        $rawResponse = $this->request(ServiceConstant::URL_DECLINE_SHIPMENT_REQUEST, Json::encode(['request_id' => $requestId, 'comment' => $comment]), self::HTTP_POST);
         $response = new ResponseHandler($rawResponse);
 
         if (!$response->isSuccess()) {
@@ -361,11 +422,12 @@ class CompanyAdapter extends BaseAdapter
      * Decline pickup request
      * @author Adegoke Obasa <goke@cottacush.com>
      * @param $requestId
+     * @param $comment
      * @return bool
      */
-    public function declinePickupRequest($requestId)
+    public function declinePickupRequest($requestId, $comment)
     {
-        $rawResponse = $this->request(ServiceConstant::URL_DECLINE_PICKUP_REQUEST, Json::encode(['request_id' => $requestId]), self::HTTP_POST);
+        $rawResponse = $this->request(ServiceConstant::URL_DECLINE_PICKUP_REQUEST, Json::encode(['request_id' => $requestId, 'comment' => $comment]), self::HTTP_POST);
         $response = new ResponseHandler($rawResponse);
 
         if (!$response->isSuccess()) {
@@ -373,5 +435,69 @@ class CompanyAdapter extends BaseAdapter
         }
 
         return $response->isSuccess();
+    }
+
+    /**
+     * Links an EC to a company
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @param $companyId
+     * @param $branchId
+     * @return bool
+     */
+    public function linkEc($companyId, $branchId)
+    {
+        $rawResponse = $this->request(ServiceConstant::URL_LINK_EC_TO_COMPANY, Json::encode(['company_id' => $companyId, 'branch_id' => $branchId]), self::HTTP_POST);
+        $response = new ResponseHandler($rawResponse);
+
+        if (!$response->isSuccess()) {
+            $this->lastErrorMessage = $response->getError();
+        }
+
+        return $response->isSuccess();
+    }
+
+    /**
+     * Edits a links an EC to a company
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @param $id
+     * @param $companyId
+     * @param $branchId
+     * @return bool
+     */
+    public function relinkEc($id, $companyId, $branchId)
+    {
+        $rawResponse = $this->request(ServiceConstant::URL_RELINK_EC_TO_COMPANY, Json::encode(['id' => $id, 'company_id' => $companyId, 'branch_id' => $branchId]), self::HTTP_POST);
+        $response = new ResponseHandler($rawResponse);
+
+        if (!$response->isSuccess()) {
+            $this->lastErrorMessage = $response->getError();
+        }
+
+        return $response->isSuccess();
+    }
+
+    /**
+     * Gets all ecs
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @param array $filters
+     * @return array|mixed
+     */
+    public function getAllEcs($filters = [])
+    {
+        $filters = array_merge([
+            'with_branch' => '1',
+            'with_company' => '1',
+            'with_created_by' => '1',
+            'with_total_count' => '1'], $filters);
+
+        $response = $this->request(ServiceConstant::URL_GET_ALL_CORPORATE_ECS,
+            $filters, self::HTTP_GET);
+
+        $response = new ResponseHandler($response);
+
+        if ($response->isSuccess()) {
+            return $response->getData();
+        }
+        return [];
     }
 }

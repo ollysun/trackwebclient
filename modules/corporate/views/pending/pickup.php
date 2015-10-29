@@ -97,8 +97,9 @@ $this->params['content_header_button'] = '';
                                     <?php if(Calypso::getValue($request, 'status') == \Adapter\CompanyAdapter::STATUS_PENDING):?>
                                         <form method="post" action="<?= Url::to('/corporate/pending/declinepickup'); ?>">
                                             <input type="hidden" name="request_id" value="<?= Calypso::getValue($request, 'id');?>" />
-                                            <button type="submit" title="Decline this request"
-                                                    class="btn btn-xs btn-default"><i class="fa fa-trash-o"></i></button>
+                                            <input type="hidden" name="comment" value="" />
+                                            <button type="submit" data-decline="true" title="Decline this request"
+                                                    class="btn btn-xs btn-danger"><i class="fa fa-times"></i></button>
                                         </form>
                                     <?php endif; ?>
                                 </td>
@@ -117,4 +118,5 @@ $this->params['content_header_button'] = '';
 <?php $this->registerJsFile('@web/js/libs/bootstrap-select.min.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/keyboardFormSubmit.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/validate.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/bootbox.min.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/corporate_requests.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
