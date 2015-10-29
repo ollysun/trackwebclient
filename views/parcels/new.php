@@ -209,7 +209,9 @@ $is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
 
                                 <div class="validate">
                                     <div class="radio-inline">
-                                        <input id="merchantNew" type="radio" name="merchant" value="yes">
+                                        <input id="merchantNew"  type="radio" name="merchant" value="yes"
+                                            <?= (Calypso::getValue($parcel, "is_merchant", null) == null) ? "" : "checked='checked'"; ?>
+                                            >
                                         <label for="merchantNew" class="">Yes</label>
                                     </div>
                                     <div class="radio-inline hidden">
@@ -219,12 +221,14 @@ $is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
                                     </div>
                                     <div class="radio-inline">
                                         <input id="merchantNone" type="radio" name="merchant" value="no"
-                                            <?= (Calypso::getValue($parcel, "sender_merchant.id", null) == null) ? "checked='checked'" : ""; ?>>
+                                            <?= (Calypso::getValue($parcel, "sender_merchant.id", null) == null && Calypso::getValue($parcel, "is_merchant", null) == null) ? "checked='checked'" : ""; ?>>
                                         <label for="merchantNone" class="">No</label>
                                     </div>
                                 </div>
                             </div>
-                            <div id="bank-account-details" <?= (Calypso::getValue($parcel, "sender_merchant.id", null) == null) ? 'class="hidden"' : ""; ?>>
+                            <div id="bank-account-details"
+                                <?= (Calypso::getValue($parcel, "sender_merchant.id", null) == null && Calypso::getValue($parcel, "is_merchant", null) == null) ? 'class="hidden"' : ""; ?>
+                                >
 
                                 <input type="hidden" name="account_id" class="form-control" id="account_id"
                                        value="<?= Calypso::getValue($parcel, "sender_merchant.id", ''); ?>">
@@ -277,12 +281,12 @@ $is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
                                         </div>
                                         <div class="radio-inline">
                                             <!--Ensure that this is always selected by default-->
-                                            <input id="cODNo" type="radio" name="cash_on_delivery" checked="checked" value="false"
+                                            <input id="cODNo" type="radio" name="cash_on_delivery" value="false"
                                                 <?= (Calypso::getValue($parcel, "info.cash_on_delivery", '') != '1') ? 'checked="checked"' : ""; ?>>
                                             <label for="cODNo" class="">No</label>
                                         </div>
                                     </div>
-                                    <div id="CODAmountWrap" class="col-xs-12 col-sm-6 col-lg-7 form-group hidden">
+                                    <div id="CODAmountWrap" class="col-xs-12 col-sm-6 col-lg-7 form-group <?= (Calypso::getValue($parcel, "info.cash_on_delivery", '') == '1') ? '' : "hidden"; ?>">
                                         <label>Amount to be collected</label>
 
                                         <div class="input-group">

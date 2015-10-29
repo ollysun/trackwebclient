@@ -1,24 +1,24 @@
-$(document).ready(function(){
+$(document).ready(function () {
 
     $("#chbx_w_all").change(function () {
         $("input:checkbox").prop("checked", $(this).prop("checked"));
     });
 
-    $("[data-target=#teller-modal]").on("click", function(event) {
+    $("[data-target=#teller-modal]").on("click", function (event) {
         var chkboxes = $(".checkable:checked");
 
-        if(!chkboxes.length) {
+        if (!chkboxes.length) {
             alert("You must select at least one parcel!");
             event.preventDefault();
             return false;
         }
         var shipments = {};
-        $.each(chkboxes, function(i, chk){
-            shipments[$(this).data("waybill")]=$(this).data("sender");
+        $.each(chkboxes, function (i, chk) {
+            shipments[$(this).data("waybill")] = $(this).data("sender");
         });
         var html = "";
-        var i=1;
-        $.each(shipments, function(waybill, sender){
+        var i = 1;
+        $.each(shipments, function (waybill, sender) {
             html += "<tr>";
             html += "<td>" + (i++) + "</td>";
             html += "<td>" + waybill + "</td>";
@@ -28,7 +28,6 @@ $(document).ready(function(){
         $("#teller-modal-table>tbody").html(html);
         $("input#waybill_numbers").val(Object.keys(shipments).toString());
     });
-
 
     $('.btnClone').on('click', function (event) {
 
@@ -40,14 +39,14 @@ $(document).ready(function(){
                 success: {
                     label: "Clone and cancel",
                     className: "btn-success",
-                    callback: function() {
+                    callback: function () {
                         cloneShipment($(self), true)
                     }
                 },
                 info: {
                     label: "Clone Only",
                     className: "btn-info",
-                    callback: function() {
+                    callback: function () {
                         cloneShipment($(self), false)
                     }
                 }
@@ -58,8 +57,8 @@ $(document).ready(function(){
     function cloneShipment(object, ans) {
 
         var clone_url = $(object).attr('data-href');
-        if(ans) {
-            var params = { "waybill_numbers": $(object).closest('tr').data('waybill') };
+        if (ans) {
+            var params = {"waybill_numbers": $(object).closest('tr').data('waybill')};
 
             $.ajax({
                 url: '/shipments/cancel',
@@ -82,4 +81,37 @@ $(document).ready(function(){
             window.location = clone_url;
         }
     }
+
+    $("[data-return]").on('click', function (event) {
+        var self = this;
+        bootbox.dialog({
+            message: "<div class='form-group'><label for='comment_text'>Reason</label><input class='form-control' type='text' id='comment_text' /></div>",
+            title: "Please state a reason for returning this parcel",
+            buttons: {
+                danger: {
+                    label: 'Return',
+                    className: 'btn btn-danger',
+                    callback: function () {
+                        var comment = $("#comment_text").val();
+                        if ($.trim(comment).length > 0) {
+                            $("#request-returns [name=waybill_numbers]").val($(self).data('return'));
+                            $("#request-returns [name=comment]").val(comment);
+                            $("#request-returns").trigger('submit');
+                        } else {
+                            alert('Please enter a reason for returning parcel');
+                            return false;
+                        }
+                    }
+                },
+
+                main: {
+                    label: 'Cancel',
+                    className: 'btn btn-primary',
+                    callback: function(){
+
+                    }
+                }
+            }
+        });
+    });
 });

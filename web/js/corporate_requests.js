@@ -27,5 +27,20 @@
             var tempArr = currentUrl.split('?');
             window.location.href = tempArr[0];
         });
+        
+        $("[data-decline]").unbind("click").click(function (e) {
+            var _this = $(this);
+            bootbox.confirm("Are you sure you want to decline this request?", function(result) {
+               if(result) {
+                   bootbox.prompt("Reason for decline?", function (result) {
+                       if(result) {
+                           _this.parent().find("input[name=comment]").val(result.trim());
+                           _this.parent().submit();
+                       }
+                   });
+               }
+            });
+            e.preventDefault();
+        });
     });
 })();
