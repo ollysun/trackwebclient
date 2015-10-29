@@ -342,7 +342,8 @@ h3 .small {
 .l-sigin-page a.forgot-link {
   color: #777777;
 }
-.l-sigin-page #footer-bar {
+.l-sigin-page #footer-bar,
+#footer-bar.footer-transparent {
   margin: 0;
   text-align: center;
   color: #777777;
@@ -359,6 +360,44 @@ h3 .small {
   bottom: 0;
   left: 0;
   right: 0;
+}
+.dashboard-stats-title {
+  margin-bottom: 7px;
+}
+.dashboard-stats-title-date-wrap {
+  position: relative;
+  display: inline-block;
+}
+.dashboard-stats-title-custom-date-wrap {
+  position: absolute;
+  left: 105%;
+  width: 400px;
+  top: -23px;
+  display: none;
+}
+.dashboard-stats-title-custom-date-wrap.open {
+  display: block;
+}
+.dashboard-stats-title-custom-date-wrap .form-control {
+  width: 140px;
+  margin-right: 6px;
+}
+.dashboard-choose-branch {
+  margin-top: -20px;
+}
+@media screen and (max-width: 600px) {
+  .dashboard-choose-branch {
+    margin-top: 0;
+  }
+}
+.dashboard-choose-branch .form-control {
+  margin-right: 6px;
+}
+.dashboard-choose-branch .form-control.branch-type {
+  width: 100px;
+}
+.dashboard-choose-branch .form-control.branch-name {
+  width: 200px;
 }
 .navbar-toggle {
   border: medium none;
@@ -520,16 +559,21 @@ h3 .small {
   position: relative;
   z-index: 99;
 }
+#header-navbar .navbar-brand-transparent {
+  background-color: transparent ;
+}
 #header-navbar .navbar-form .form-group {
   position: relative;
 }
 #header-navbar .navbar-form .form-control {
-  background: #131313;
   color: #707070;
   height: 30px;
   line-height: 30px;
   margin-top: 2px;
   font-size: 0.75em;
+}
+#header-navbar .navbar-form .form-control.header-track-no-search {
+  width: 200px;
 }
 #header-navbar .navbar-form .nav-search-icon {
   position: absolute;
@@ -3131,6 +3175,47 @@ input[type="radio"] {
 .add-billing-pricing-wrap h5 {
   margin: 0 ;
 }
+.form-control-transparent {
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  -webkit-transition: border-color ease-in-out 0.4s background-color ease-in-out 0.4s;
+  -moz-transition: border-color ease-in-out 0.4s background-color ease-in-out 0.4s;
+  -ms-transition: border-color ease-in-out 0.4s background-color ease-in-out 0.4s;
+  -o-transition: border-color ease-in-out 0.4s background-color ease-in-out 0.4s;
+}
+.form-control-transparent,
+.form-control-transparent-static {
+  padding: 0 5px;
+}
+.form-control-transparent:hover,
+.form-control-transparent:focus {
+  outline: 0;
+  background-color: #fff;
+  background-color: rgba(255, 255, 255, 0.75);
+  border-color: #ccc;
+  border-color: rgba(200, 200, 200, 0.75);
+}
+select.form-control-transparent {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  padding-right: 10px;
+}
+select.form-control-transparent:hover,
+select.form-control-transparent:focus {
+  background-image: url('../../img/ddown-transparent.png');
+  background-repeat: no-repeat;
+  background-position: center right;
+}
+.form-control-transparent.disguise-as-link {
+  color: #9c27b0;
+  text-decoration: underline;
+}
+.form-control-transparent.disguise-as-link:hover,
+.form-control-transparent.disguise-as-link:focus {
+  color: inherit;
+  text-decoration: none;
+}
 /* GALLERY */
 #gallery-photos-wrapper {
   position: relative;
@@ -4429,6 +4514,11 @@ input[type="radio"] {
 .infographic-box {
   padding: 20px;
 }
+a.infographic-box:hover {
+  text-decoration: none;
+  cursor: pointer;
+  background-color: #f5f5f5;
+}
 .infographic-box i {
   font-size: 2.4em;
   display: block;
@@ -4451,6 +4541,9 @@ input[type="radio"] {
   font-size: 1.2em;
   font-weight: 300;
   text-align: right;
+}
+a.infographic-box .headline {
+  color: #333333;
 }
 .infographic-box .value {
   font-size: 2.1em;

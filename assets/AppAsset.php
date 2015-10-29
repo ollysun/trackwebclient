@@ -24,7 +24,7 @@ class AppAsset extends AssetBundle
         'css/libs/font-awesome.min.css',
         'css/libs/nanoscroller.css',
         //theme
-        'css/compiled/courier-plus.css',
+        'css/compiled/courier-plus.css'
     ];
     public $js = [
         //globals

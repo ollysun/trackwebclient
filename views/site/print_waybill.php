@@ -2,9 +2,10 @@
 use Adapter\Util\Calypso;
 use yii\helpers\Html;
 
-$copies = ["Sender's Copy","Recipient's Copy","Ack. Copy"," EC Copy"];
+$copies = ["Sender's Copy", "EC Copy", "Ack. Copy", "Recipient's Copy"];
+$this->title = 'Waybill '.$parcelData['waybill_number'];
 ?>
-<?= Html::cssFile('@web/css/compiled/print-waybill.css') ?>
+<?= Html::cssFile('@web/css/compiled/print-waybill.css?v0.0.1') ?>
 
 <div id="main_holder">
 <?php for ($i=0; $i < count($copies); $i++) { ?>
@@ -85,9 +86,25 @@ $copies = ["Sender's Copy","Recipient's Copy","Ack. Copy"," EC Copy"];
         <div class="shipped-date__yy"><?= date('y', strtotime($parcelData['created_date'])); ?></div>
     </div>
 
+    <div class="reference-no">
+        <?= !is_null(Calypso::getValue($parcelData, 'reference_number')) ? 'REF:'.Calypso::getValue($parcelData, 'reference_number')  : '';?>
+    </div>
+
     <div class="code">
-        <div class="code__origin"></div>
-        <div class="code__destination"></div>
+        <div class="code__origin">
+            <?php
+                if (!empty($sender_location)) {
+                    echo strtoupper($sender_location['state']['code']);
+                }
+            ?>
+        </div>
+        <div class="code__destination">
+            <?php
+                if (!empty($receiver_location)) {
+                    echo strtoupper($receiver_location['state']['code']);
+                }
+            ?>
+        </div>
     </div>
 
     <div class="shipment">
@@ -138,6 +155,6 @@ $copies = ["Sender's Copy","Recipient's Copy","Ack. Copy"," EC Copy"];
     var waybill = "<?= strtoupper($parcelData['waybill_number']); ?>";
 </script>
 <?php $this->registerJsFile('@web/js/libs/jquery-barcode.min.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
-<?php $this->registerJsFile('@web/js/html2canvas.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
-<?php $this->registerJsFile('@web/js/print.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
+<?php //$this->registerJsFile('@web/js/html2canvas.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/print.js?v0.0.1', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
 

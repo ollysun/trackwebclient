@@ -14,7 +14,14 @@ use Adapter\RequestHelper;
 use Adapter\ResponseHandler;
 use Adapter\Util\Response;
 
-
+/**
+ * Class BillingController
+ * @author Adeyemi Olaoye <yemi@cottacush.com>
+ * @author Richard Boyewa <boye@cottacush.com>
+ * @author Wale Lawal <wale@cottacush.com>
+ * @author Rotimi Akintewe <akintewe.rotimi@gmail.com>
+ * @package app\controllers
+ */
 class BillingController extends BaseController
 {
     public function beforeAction($action)
@@ -55,7 +62,7 @@ class BillingController extends BaseController
             $data['min_weight'] = Calypso::getValue($entry, 'min_weight', null);
             $data['increment_weight'] = Calypso::getValue($entry, 'increment_weight', null);
             $data['max_weight'] = Calypso::getValue($entry, 'max_weight', null);
-            $data['weight_range_id'] = Calypso::getValue($entry, 'id',null);
+            $data['weight_range_id'] = Calypso::getValue($entry, 'id', null);
 
             if (($task == 'create' || $task == 'edit') && (empty($data['min_weight']) || empty($data['max_weight']) || empty($data['increment_weight']))) {
                 $error[] = "All details are required!";
@@ -70,14 +77,14 @@ class BillingController extends BaseController
                     if ($response['status'] === Response::STATUS_OK) {
                         Yii::$app->session->setFlash('success', 'Weight range has been created successfully.');
                     } else {
-                        Yii::$app->session->setFlash('danger', 'There was a problem creating the weight range. '.$response['message']);
+                        Yii::$app->session->setFlash('danger', 'There was a problem creating the weight range. ' . $response['message']);
                     }
                 } else {
                     $response = $adp->editRange($data, $task);
                     if ($response['status'] === Response::STATUS_OK) {
                         Yii::$app->session->setFlash('success', 'Weight range has been edited successfully.');
                     } else {
-                        Yii::$app->session->setFlash('danger', 'There was a problem editing the weight range. '.$response['message']);
+                        Yii::$app->session->setFlash('danger', 'There was a problem editing the weight range. ' . $response['message']);
                     }
                 }
             }
@@ -87,31 +94,38 @@ class BillingController extends BaseController
         $ranges = new ResponseHandler($ranges);
         $ranges_list = $ranges->getStatus() == ResponseHandler::STATUS_OK ? $ranges->getData() : [];
 
-        return $this->render('weight_ranges', array('ranges'=>$ranges_list));
+        return $this->render('weight_ranges', array('ranges' => $ranges_list));
     }
 
+    /**
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     * @author Richard Boyewa <boye@cottacush.com>
+     * @author Wale Lawal <wale@cottacush.com>
+     * @return string
+     */
     public function actionMatrix()
     {
         $branchAdp = new BranchAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $response = new ResponseHandler($branchAdp->getAllHubs());
+        $response = new ResponseHandler($branchAdp->getAllHubs(false));
         $branchAdpMatrix = new BranchAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $responseMatrix = new ResponseHandler($branchAdpMatrix->getMatrix());
-        $hubs = [];$hubsMatrix = [];
-        if($response->getStatus() == ResponseHandler::STATUS_OK){
+        $hubs = [];
+        $hubsMatrix = [];
+        if ($response->getStatus() == ResponseHandler::STATUS_OK) {
             $hubs = $response->getData();
         }
-        if($responseMatrix->getStatus() == ResponseHandler::STATUS_OK){
+        if ($responseMatrix->getStatus() == ResponseHandler::STATUS_OK) {
             $hubsMatrix = $responseMatrix->getData();
         }
-        $mapList=[];
-        foreach($hubsMatrix as $mapping){
-            $mapList[$mapping['from_branch_id'].'_'.$mapping['to_branch_id']] = $mapping;
+        $mapList = [];
+        foreach ($hubsMatrix as $mapping) {
+            $mapList[$mapping['from_branch_id'] . '_' . $mapping['to_branch_id']] = $mapping;
         }
         $zAdp = new ZoneAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $zones = $zAdp->getZones();
         $zones = new ResponseHandler($zones);
         $zones_list = $zones->getStatus() == ResponseHandler::STATUS_OK ? $zones->getData() : [];
-        return $this->render('matrix',["hubs"=>$hubs,"hubsMatrix"=>$hubsMatrix,"matrixMap"=>$mapList,"zones_list" => $zones_list]);
+        return $this->render('matrix', ["hubs" => $hubs, "hubsMatrix" => $hubsMatrix, "matrixMap" => $mapList, "zones_list" => $zones_list]);
     }
 
     public function actionZones()
@@ -126,7 +140,7 @@ class BillingController extends BaseController
             $data['description'] = Calypso::getValue($entry, 'zone_desc');
             $data['code'] = Calypso::getValue($entry, 'zone_code');
             $data['type'] = Calypso::getValue($entry, 'zone_type');
-            $data['zone_id'] = Calypso::getValue($entry, 'id',null);
+            $data['zone_id'] = Calypso::getValue($entry, 'id', null);
 
             if (($task == 'create' || $task == 'edit') && (empty($data['name']) || empty($data['description']) || empty($data['code']))) {
                 $error[] = "All details are required!";
@@ -141,14 +155,14 @@ class BillingController extends BaseController
                     if ($response['status'] === Response::STATUS_OK) {
                         Yii::$app->session->setFlash('success', 'Zone has been created successfully.');
                     } else {
-                        Yii::$app->session->setFlash('danger', 'There was a problem creating the zone.'.$response['message']);
+                        Yii::$app->session->setFlash('danger', 'There was a problem creating the zone.' . $response['message']);
                     }
                 } else {
                     $response = $zone->editZone($data);
                     if ($response['status'] === Response::STATUS_OK) {
                         Yii::$app->session->setFlash('success', 'Zone has been edited successfully.');
                     } else {
-                        Yii::$app->session->setFlash('danger', 'There was a problem editing the zone'.$response['message']);
+                        Yii::$app->session->setFlash('danger', 'There was a problem editing the zone' . $response['message']);
                     }
                 }
             }
@@ -158,7 +172,7 @@ class BillingController extends BaseController
         $zones = new ResponseHandler($zones);
         $zones_list = $zones->getStatus() == ResponseHandler::STATUS_OK ? $zones->getData() : [];
 
-        return $this->render('zones', array('zones'=>$zones_list));
+        return $this->render('zones', array('zones' => $zones_list));
     }
 
     public function actionRegions()
@@ -189,14 +203,14 @@ class BillingController extends BaseController
                     if ($response['status'] === Response::STATUS_OK) {
                         Yii::$app->session->setFlash('success', 'Region has been created successfully.');
                     } else {
-                        Yii::$app->session->setFlash('danger', 'There was a problem creating the region.'.$response['message']);
+                        Yii::$app->session->setFlash('danger', 'There was a problem creating the region.' . $response['message']);
                     }
                 } else {
                     $response = $region->editRegion($data, $task);
                     if ($response['status'] === Response::STATUS_OK) {
                         Yii::$app->session->setFlash('success', 'Region has been edited successfully.');
                     } else {
-                        Yii::$app->session->setFlash('danger', 'There was a problem editing the region.'.$response['message']);
+                        Yii::$app->session->setFlash('danger', 'There was a problem editing the region.' . $response['message']);
                     }
                 }
             }
@@ -239,7 +253,7 @@ class BillingController extends BaseController
                 if ($response['status'] === Response::STATUS_OK) {
                     Yii::$app->session->setFlash('success', 'State to Region has been edited successfully.');
                 } else {
-                    Yii::$app->session->setFlash('danger', 'There was a problem mapping state to Region.'.$response['message']);
+                    Yii::$app->session->setFlash('danger', 'There was a problem mapping state to Region.' . $response['message']);
                 }
             }
         }
@@ -250,23 +264,21 @@ class BillingController extends BaseController
         $region_list = $regions->getStatus() == ResponseHandler::STATUS_OK ? $regions->getData() : [];
 
         $refAdp = new RefAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $states = $refAdp->getStates(1,1); // Hardcoded Nigeria for now
+        $states = $refAdp->getStates(1, 1); // Hardcoded Nigeria for now
         $states = new ResponseHandler($states);
         $state_list = $states->getStatus() == ResponseHandler::STATUS_OK ? $states->getData() : [];
 
         $tmp = array();
-        foreach($state_list as $arg)
-        {
+        foreach ($state_list as $arg) {
             $tmp[$arg['region']['name']][] = $arg;
         }
 
         $output = array();
-        foreach($tmp as $type => $states)
-        {
-            $output[] = array('region' => $type,'states' => $states);
+        foreach ($tmp as $type => $states) {
+            $output[] = array('region' => $type, 'states' => $states);
         }
-		return $this->render('state_mapping', array('states' => $state_list, 'regions' => $region_list, 'output' => $output,));
-	}
+        return $this->render('state_mapping', array('states' => $state_list, 'regions' => $region_list, 'output' => $output,));
+    }
 
     public function actionCitymapping()
     {
@@ -282,7 +294,7 @@ class BillingController extends BaseController
             $data['transit_time'] = Calypso::getValue($entry, 'transit_time');
             $data['status'] = Calypso::getValue($entry, 'status');
             $data['branch_id'] = Calypso::getValue($entry, 'branch_id');
-            $data['city_id'] = Calypso::getValue($entry, 'id',null);
+            $data['city_id'] = Calypso::getValue($entry, 'id', null);
 
             if (($task == 'create' || $task == 'edit') && (empty($data['name']) || !isset($data['transit_time']))) {
                 $error[] = "All details are required!";
@@ -297,43 +309,43 @@ class BillingController extends BaseController
                     if ($response['status'] === Response::STATUS_OK) {
                         Yii::$app->session->setFlash('success', 'City has been created successfully.');
                     } else {
-                        Yii::$app->session->setFlash('danger', 'There was a problem editing the city. '.$response['messsage']);
+                        Yii::$app->session->setFlash('danger', 'There was a problem editing the city. ' . $response['messsage']);
                     }
                 } else {
                     $response = $city->editCity($data);
                     if ($response['status'] === Response::STATUS_OK) {
                         Yii::$app->session->setFlash('success', 'City has been edited successfully.');
                     } else {
-                        Yii::$app->session->setFlash('danger', 'There was a problem editing the city. '.$response['messsage']);
+                        Yii::$app->session->setFlash('danger', 'There was a problem editing the city. ' . $response['messsage']);
                     }
                 }
             }
         }
 
-        $refAdp = new RefAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+        $refAdp = new RefAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $states = $refAdp->getStates(1); // Hardcoded Nigeria for now
         $states = new ResponseHandler($states);
-        $states_list = $states->getStatus()==ResponseHandler::STATUS_OK?$states->getData(): [];
+        $states_list = $states->getStatus() == ResponseHandler::STATUS_OK ? $states->getData() : [];
 
-        $refAdp = new RefAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
-        $charges = $refAdp->getOnforwadingCharges();
+        $refAdp = new RefAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $charges = $refAdp->getOnforwardingCharges();
         $charges = new ResponseHandler($charges);
-        $charges_list = $charges->getStatus()==ResponseHandler::STATUS_OK?$charges->getData(): [];
+        $charges_list = $charges->getStatus() == ResponseHandler::STATUS_OK ? $charges->getData() : [];
 
         $cAdp = new RegionAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $cities = $cAdp->getAllCity(1,1);
+        $cities = $cAdp->getAllCity(1, 1);
         $cities = new ResponseHandler($cities);
         $cities_list = $cities->getStatus() == ResponseHandler::STATUS_OK ? $cities->getData() : [];
 
-        $hubAdp = new BranchAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
-        $hubs = $hubAdp->getAllHubs();
+        $hubAdp = new BranchAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $hubs = $hubAdp->getAllHubs(false);
         $hubs = new ResponseHandler($hubs);
-        $hub_list = $hubs->getStatus()==ResponseHandler::STATUS_OK?$hubs->getData(): [];
+        $hub_list = $hubs->getStatus() == ResponseHandler::STATUS_OK ? $hubs->getData() : [];
 
-        return $this->render('city_mapping', array('cities'=>$cities_list,'states'=>$states_list,'hubs'=>$hub_list,'charges'=>$charges_list));
+        return $this->render('city_mapping', array('cities' => $cities_list, 'states' => $states_list, 'hubs' => $hub_list, 'charges' => $charges_list));
     }
 
-    public function actionOnforwarding()
+    public function actionOnforwarding($page = 1)
     {
         if (Yii::$app->request->isPost) {
             $entry = Yii::$app->request->post();
@@ -345,11 +357,11 @@ class BillingController extends BaseController
             $data['code'] = Calypso::getValue($entry, 'onforward_code');
             $data['description'] = Calypso::getValue($entry, 'onforward_desc');
             $data['amount'] = Calypso::getValue($entry, 'onforward_amount', 0);
-            $data['percentage'] = Calypso::getValue($entry, 'onforward_percentage',0)/100;
+            $data['percentage'] = Calypso::getValue($entry, 'onforward_percentage', 0) / 100;
             $data['status'] = Calypso::getValue($entry, 'status');
-            $data['charge_id'] = Calypso::getValue($entry, 'id',null);
+            $data['charge_id'] = Calypso::getValue($entry, 'id', null);
 
-            if (($task == 'create' || $task == 'edit') && in_array(null, [$data['name'],$data['code'], $data['amount']])) {
+            if (($task == 'create' || $task == 'edit') && in_array(null, [$data['name'], $data['code'], $data['amount']])) {
                 $error[] = "All details are required!";
             }
             if (!empty($error)) {
@@ -362,47 +374,54 @@ class BillingController extends BaseController
                     if ($response['status'] === Response::STATUS_OK) {
                         Yii::$app->session->setFlash('success', 'Charge has been created successfully.');
                     } else {
-                        Yii::$app->session->setFlash('danger', 'There was a problem creating the charge.'.$response['message']);
+                        Yii::$app->session->setFlash('danger', 'There was a problem creating the charge.' . $response['message']);
                     }
                 } else {
                     $response = $bill->editOnforwardingCharge($data);
                     if ($response['status'] === Response::STATUS_OK) {
                         Yii::$app->session->setFlash('success', 'Charge has been edited successfully.');
                     } else {
-                        Yii::$app->session->setFlash('danger', 'There was a problem editing the charge.'.$response['message']);
+                        Yii::$app->session->setFlash('danger', 'There was a problem editing the charge.' . $response['message']);
                     }
                 }
             }
         }
 
-        $refAdp = new RefAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
-        $charges = $refAdp->getOnforwadingCharges();
-        $charges = new ResponseHandler($charges);
-        $charges_list = $charges->getStatus()==ResponseHandler::STATUS_OK?$charges->getData(): [];
+        $offset = ($page - 1) * $this->page_width;
+        $refAdp = new RefAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $charges = $refAdp->getOnforwardingCharges(null, $offset, $this->page_width, 1, null);
+        $response = new ResponseHandler($charges);
+        $charges_list = null;
+        $total_count = 0;
+        if ($response->getStatus() == ResponseHandler::STATUS_OK) {
+            $data = $response->getData();
+            $total_count = empty($data['total_count']) ? 0 : $data['total_count'];
+            $charges_list = empty($data['charges']) ? 0 : $data['charges'];
+        }
 
-        return $this->render('onforwarding', array('charges'=>$charges_list));
+        return $this->render('onforwarding', array('charges' => $charges_list, 'total_count' => $total_count, 'offset' => $offset, 'page_width' => $this->page_width));
     }
 
     public function actionPricing()
     {
         $viewBag = [
-            'billings'      => [],
-            'zones'         => [],
-            'weightRanges'  => []
+            'billings' => [],
+            'zones' => [],
+            'weightRanges' => []
         ];
-        $billingAdp = new BillingAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+        $billingAdp = new BillingAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $billings = $billingAdp->fetchAllBilling();
-        if($billings['status'] == ResponseHandler::STATUS_OK) {
+        if ($billings['status'] == ResponseHandler::STATUS_OK) {
             $viewBag['billings'] = $billings['data'];
         }
-        $zoneAdp = new ZoneAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+        $zoneAdp = new ZoneAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $zones = $zoneAdp->getZones();
-        if($zones['status'] == ResponseHandler::STATUS_OK) {
+        if ($zones['status'] == ResponseHandler::STATUS_OK) {
             $viewBag['zones'] = $zones['data'];
         }
-        $weightAdp = new WeightRangeAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+        $weightAdp = new WeightRangeAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $weightRanges = $weightAdp->getRange();
-        if($weightRanges['status'] == ResponseHandler::STATUS_OK) {
+        if ($weightRanges['status'] == ResponseHandler::STATUS_OK) {
             $viewBag['weightRanges'] = $weightRanges['data'];
         }
 
@@ -416,7 +435,8 @@ class BillingController extends BaseController
             ]);
     }
 
-    private function buildPricingTable($pricingData) {
+    private function buildPricingTable($pricingData)
+    {
         $matrix = [];
         $zones = [];
         foreach ($pricingData['zones'] as $zone) {
@@ -436,25 +456,26 @@ class BillingController extends BaseController
         return $matrix;
     }
 
-    public function actionSave() {
+    public function actionSave()
+    {
 
         $rawData = \Yii::$app->request->getRawBody();
         $postParams = json_decode($rawData, true);
         $billingSrv = new BillingService();
         $data = $billingSrv->buildPostData($postParams);
 
-        if(!empty($data['error'])) {
+        if (!empty($data['error'])) {
             return $this->sendErrorResponse(implode($data['error']), null);
         }
 
-        $billingAdp = new BillingAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
-        if(isset($data['payload']['weight_billing_id'])) {
+        $billingAdp = new BillingAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        if (isset($data['payload']['weight_billing_id'])) {
             $response = $billingAdp->editBilling($data['payload']);
         } else {
             $response = $billingAdp->addBilling($data['payload']);
         }
         if ($response['status'] === ResponseHandler::STATUS_OK) {
-            if(isset($response['data']['id'])) {
+            if (isset($response['data']['id'])) {
                 $data['payload']['id'] = $response['data']['id'];
             }
             return $this->sendSuccessResponse($data['payload']);
@@ -463,15 +484,16 @@ class BillingController extends BaseController
         }
     }
 
-    public function actionDelete() {
+    public function actionDelete()
+    {
 
         $id = \Yii::$app->request->get('id');
-        if(empty($id)) {
+        if (empty($id)) {
             return $this->sendErrorResponse('Invalid ', null);
         }
 
-        $billingAdp = new BillingAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
-        $response = $billingAdp->deleteBilling([ 'weight_billing_id' => $id ]);
+        $billingAdp = new BillingAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $response = $billingAdp->deleteBilling(['weight_billing_id' => $id]);
         if ($response['status'] === ResponseHandler::STATUS_OK) {
             return $this->sendSuccessResponse($response['data']);
         } else {
@@ -479,58 +501,63 @@ class BillingController extends BaseController
         }
     }
 
-    public function actionFetchbyid() {
+    public function actionFetchbyid()
+    {
 
         $id = \Yii::$app->request->get('id');
-        if(empty($id)) {
+        if (empty($id)) {
             return $this->sendErrorResponse('Invalid ', null);
         }
 
-        $billingAdp = new BillingAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
-        $response = $billingAdp->fetchBillingById([ 'weight_billing_id' => $id ]);
+        $billingAdp = new BillingAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $response = $billingAdp->fetchBillingById(['weight_billing_id' => $id]);
         if ($response['status'] === ResponseHandler::STATUS_OK) {
             return $this->sendSuccessResponse($response['data']);
         } else {
             return $this->sendErrorResponse($response['message'], null);
         }
     }
-    public function actionUpdatemapping(){
+
+    public function actionUpdatemapping()
+    {
         $entry = Yii::$app->request->post();
-        if(!empty($entry)){
+        if (!empty($entry)) {
             $zAdp = new ZoneAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
             $zones = $zAdp->saveMatrix(json_encode([$entry]));
             $zones = new ResponseHandler($zones);
-            if($zones->getStatus() == ResponseHandler::STATUS_OK){
+            if ($zones->getStatus() == ResponseHandler::STATUS_OK) {
                 $d = $zones->getData();
-                if(empty($d['bad_matrix_info'])){
+                if (empty($d['bad_matrix_info'])) {
                     Yii::$app->session->setFlash('success', 'Zone has been edited successfully.');
-                }else{
+                } else {
                     Yii::$app->session->setFlash('danger', 'There was a problem editing the zone mapping. Please ensure these hubs have been mapped');
                 }
-            }else{
+            } else {
                 Yii::$app->session->setFlash('danger', 'There was a problem editing the zone mapping. #Reason: Service refused request');
             }
-            return $zones->getStatus() == ResponseHandler::STATUS_OK ? 1:0;
+            return $zones->getStatus() == ResponseHandler::STATUS_OK ? 1 : 0;
         }
         return 0;
     }
-    public function actionRemovemapping(){
+
+    public function actionRemovemapping()
+    {
         $entry = Yii::$app->request->post();
-        if(!empty($entry)){
+        if (!empty($entry)) {
             $zAdp = new ZoneAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
             $zones = $zAdp->removeMatrix($entry);
             $zones = new ResponseHandler($zones);
-            if($zones->getStatus() == ResponseHandler::STATUS_OK){
+            if ($zones->getStatus() == ResponseHandler::STATUS_OK) {
                 $d = $zones->getData();
-                if(empty($d['bad_matrix_info'])){
+                if (empty($d['bad_matrix_info'])) {
                     Yii::$app->session->setFlash('success', 'Zone mapping removed successfully.');
-                }else{
+                } else {
                     Yii::$app->session->setFlash('danger', 'There was a problem removing the zone mapping. Please ensure these hubs have been mapped');
                 }
-            }else{
+            } else {
                 Yii::$app->session->setFlash('danger', 'There was a problem removing the zone mapping. #Reason: Service refused request');
             }
-            return $zones->getStatus() == ResponseHandler::STATUS_OK ? 1:0;
+            return $zones->getStatus() == ResponseHandler::STATUS_OK ? 1 : 0;
         }
         return 0;
     }

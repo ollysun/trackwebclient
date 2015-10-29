@@ -89,9 +89,11 @@ if($search){
                     <th>Shipper</th>
                     <th>Shipper Phone</th>
                     <th>Receiver</th>
-                    <th>Receiver Phone</th>
+                    <th>Request Type</th>
                     <th>Created Date</th>
                     <th>Pieces</th>
+                    <th>Status</th>
+                    <th>Originating Centre</th>
                     <th>Action</th>
                 </tr>
                 </thead>
@@ -107,10 +109,12 @@ if($search){
                             <td><?= strtoupper($parcel['sender']['firstname'].' '. $parcel['sender']['lastname']) ?></td>
                             <td><?= $parcel['sender']['phone'] ?></td>
                             <td><?= strtoupper($parcel['receiver']['firstname'].' '. $parcel['receiver']['lastname']) ?></td>
-                            <td><?= $parcel['receiver']['phone'] ?></td>
+                            <td><?= ServiceConstant::getRequestType($parcel['request_type']) ?></td>
                             <td><?= date(ServiceConstant::DATE_TIME_FORMAT,strtotime($parcel['created_date'])); ?></td>
                             <td><?= $parcel['no_of_package']; ?></td>
-                            <td><a href="<?= Url::to(['site/viewwaybill?id='.$parcel['id']]) ?>" class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
+                            <td><?= ServiceConstant::getStatus($parcel['status']); ?></td>
+                            <td><?= strtoupper(Calypso::getValue($parcel, "created_branch.name")) ?></td>
+                            <td><a href="<?= Url::toRoute(['/shipments/view?waybill_number='.$parcel['waybill_number']]) ?>" class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
                         </tr>
                     <?php
                     }}

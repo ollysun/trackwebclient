@@ -1,4 +1,5 @@
 <?php
+use Adapter\Util\Calypso;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use Adapter\Globals\ServiceConstant;
@@ -11,8 +12,10 @@ $this->params['breadcrumbs'][] = 'Waybill';
 
 <?php
 	$status = ''.strtoupper(ServiceConstant::getStatus($parcelData['status'])).'';
-	$this->params['content_header_button'] = $status.' <button onclick="javascript:window.open(\'/site/printwaybill?id='.$parcelData['id'].'\', \'_blank\', \'toolbar=yes, scrollbars=yes, resizable=yes, top=10, left=50%, width=1100, height=800\');" class="btn btn-primary">Print Waybill
+	if(!in_array(Calypso::getValue($sessionData, 'role_id'), [ServiceConstant::USER_TYPE_COMPANY_ADMIN, ServiceConstant::USER_TYPE_COMPANY_OFFICER])) {
+		$this->params['content_header_button'] = $status . ' <button onclick="javascript:window.open(\'/site/printwaybill?id=' . $parcelData['id'] . '\', \'_blank\', \'toolbar=yes, scrollbars=yes, resizable=yes, top=10, left=50%, width=1100, height=800\');" class="btn btn-primary">Print Waybill
                     </button>';
+	}
 ?>
 
 <div class="main-box no-header">
@@ -45,7 +48,7 @@ $this->params['breadcrumbs'][] = 'Waybill';
 							<?php }?>
 							<br>
 							<?php
-								if (isset($senderLocation) && is_array($senderLocation['data'])) {
+								if (isset($senderLocation, $senderLocation['data']) && is_array($senderLocation['data'])) {
 									$data = $senderLocation['data'];
 									echo ucwords($data['name']).', '.ucwords($data['state']['name']).', '.ucwords($data['country']['name']);
 								}
@@ -83,7 +86,7 @@ $this->params['breadcrumbs'][] = 'Waybill';
 							<?php }?>
 							<br>
 							<?php
-								if (isset($receiverLocation) && is_array($receiverLocation['data'])) {
+								if (isset($receiverLocation, $receiverLocation['data']) && is_array($receiverLocation['data'])) {
 									$data = $receiverLocation['data'];
 									echo ucwords($data['name']).', '.ucwords($data['state']['name']).', '.ucwords($data['country']['name']);
 								}
@@ -104,7 +107,7 @@ $this->params['breadcrumbs'][] = 'Waybill';
 								<div class="col-xs-6">
 									<label>Parcel type</label>
 									<?php
-										if(isset($parcelType) && is_array($parcelType['data'])) {
+										if(isset($parcelType, $parcelType['data']) && is_array($parcelType['data'])) {
 											foreach ($parcelType['data'] as $item) {
 												if($item['id'] == $parcelData['parcel_type']) {
 													echo '<div class="form-control-static">'.ucwords($item['name']).'</div>';
@@ -148,7 +151,7 @@ $this->params['breadcrumbs'][] = 'Waybill';
 								<div class="col-xs-6">
 									<label>Service type</label>
 									<?php
-										if(isset($serviceType) && is_array($serviceType['data'])) {
+										if(isset($serviceType, $serviceType['data']) && is_array($serviceType['data'])) {
 											foreach ($serviceType['data'] as $item) {
 												if($item['id'] == $parcelData['shipping_type']) {
 													echo '<div class="form-control-static">'.ucwords($item['name']).'</div>';
@@ -171,12 +174,14 @@ $this->params['breadcrumbs'][] = 'Waybill';
 										<?= (empty($senderMerchant)) ? 'No' : 'Yes'; ?>
 									</div>
 								</div>
-								<div class="col-xs-6 hidden">
-									<label>Sender is a Corporate lead?</label>
-									<div class="class-form-control-static">
-										not available in api
+								<?php if(!empty(Calypso::getValue($parcelData, 'reference_number', ''))): ?>
+								<div class="col-xs-6">
+									<label>Reference Number(s)</label>
+									<div class="form-control-static">
+										REF:<?= Calypso::getValue($parcelData, 'reference_number', ''); ?>
 									</div>
 								</div>
+								<?php endif; ?>
 							</div>
 							<?php if(!empty($senderMerchant)) { ?>
 							<div class="row">
@@ -216,12 +221,18 @@ $this->params['breadcrumbs'][] = 'Waybill';
 		<div class="col-xs-12 col-sm-6">
 			<fieldset>
 				<legend>Billing Information</legend>
-				<div class="form-group">
-					<label>Billed Amount</label>
-					<div class="form-control-static">
-						<span class="currency naira"></span><?= $parcelData['amount_due']; ?>
-					</div>
-				</div>
+                <div class="form-group">
+                    <label>Billed Amount</label>
+                    <div class="form-control-static">
+                        <span class="currency naira"></span><?= $parcelData['amount_due']; ?>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Manual Billing</label>
+                    <div class="form-control-static">
+                        <span class=""></span><?= Calypso::getValue($parcelData, 'is_billing_overridden', 0) == 1 ? 'Yes' : 'No'?>
+                    </div>
+                </div>
 				<div class="form-group">
 					<label>Payment Method</label>
 					<div class="form-control-static"><?= ServiceConstant::getPaymentMethod($parcelData['payment_type']); ?></div>
@@ -261,6 +272,23 @@ $this->params['breadcrumbs'][] = 'Waybill';
 						<div class="form-control-static"><?= $parcelData['pos_trans_id']; ?></div>
 					</div>
 				<?php } ?>
+				</div>
+			</fieldset>
+			<br><br>
+		</div>
+		<div class="col-xs-12 col-sm-6">
+			<fieldset>
+				<legend>Creation Information</legend>
+				<div class="form-group">
+					<label>Originating Center</label>
+					<div class="form-control-static">
+						<?= ucwords($parcelData['created_branch']['name']); ?><br>
+						<?= $parcelData['created_branch']['address']; ?>
+					</div>
+				</div>
+				<div class="form-group">
+					<label>Date &amp; Time</label>
+					<div class="form-control-static"><?= date(ServiceConstant::DATE_TIME_FORMAT,strtotime($parcelData['created_date'])); ?></div>
 				</div>
 			</fieldset>
 			<br><br>

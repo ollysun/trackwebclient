@@ -31,27 +31,32 @@
 @shipped-date-left: @waybill-padding-horizontal;
 @shipped-date-font-size: 24px;
 
+@reference-no-top: 196px;
+@reference-no-left: @code-left;
+@reference-no-width: @code-width;
+@reference-no-height: 56px;
+@reference-no-font-size: 18px;
 
-@code-top: 220px;
+@code-top: 300px;
 @code-left: 441px;
 @code-width: 280px;
 @code-font-size: 24px;
 
 
-@shipment-top: 330px;
+@shipment-top: 406px;
 @shipment-left: @code-left;
 @shipment-width: @code-width;
 @shipment-font-size: 18px;
 
 
-@service-type-top: 467px;
+@service-type-top: 495px;
 @service-type-left: 678px;
 @service-type-width: 25px;
 @service-type-inner-height: 18px;
 @service-typer-inner-margin-bottom: 14.5px;
 
 
-@parcel-type-top: 640px;
+@parcel-type-top: 670px;
 @parcel-type-left: @code-left;
 @parcel-type-width: @code-width;
 @parcel-type-height: 1em;
@@ -140,21 +145,23 @@ body {
 	display: block;
 }
 .copy {
-	.absolute-wrap(@waybill-padding-vertical; auto; 250px);
+	.absolute-wrap(@waybill-padding-vertical);
 	right: 25px;
-	font-size: 22px;
+	max-width: 106px;
+	padding: 0 0 3px 5px;
+	font-size: 16px;
 	font-weight: bold;
-	text-align: right;
+	text-align: center;
+	background: #fff;
+	z-index: 5;
+	font-family: sans-serif;
 	&:extend(.text-uppercase);
 }
 .waybill-barcode {
 	.absolute-wrap(@waybill-padding-vertical; @code-left; 220px; 120px);
-	.barcode {
-		zoom: 0.85;
-	}
 }
 .waybill-no {
-	.absolute-wrap(153px; @code-left);
+	.absolute-wrap(133px; @code-left);
 	font-size: 24px;
 }
 .user {
@@ -202,7 +209,12 @@ body {
 		&:extend(.text-uppercase);
 	}
 }
-
+.reference-no {
+	.absolute-wrap(@reference-no-top,@reference-no-left,@reference-no-width,@reference-no-height);
+	font-size: @reference-no-font-size;
+	overflow: hidden;
+	padding: 0 7px;
+}
 .shipped-date {
 	.absolute-wrap(@shipped-date-top; @shipped-date-left; @shipped-date-width);
 	font-size: @shipped-date-font-size;
@@ -321,6 +333,7 @@ body {
 		.copy,
 		.user, .user__inner *,
 		.shipped-date, .shipped-date *,
+		.reference-no,
 		.code, .code *,
 		.shipment, .shipment *,
 		.service-type, .service-type > *,

@@ -73,12 +73,13 @@ $this->params['content_header_button'] = $this->render('../elements/content_head
                         <th style="width: 20px">No.</th>
                         <th>Waybill No.</th>
                         <th>Shipper</th>
-                        <th>Shipper Phone</th>
                         <th>Receiver</th>
                         <th>Receiver Phone</th>
                         <th>Created Date</th>
                         <th># of Pcs</th>
-                        <th>Action</th>
+                        <th>Request Type</th>
+                        <th>Status</th>
+                        <th width="10%">Action</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -87,7 +88,7 @@ $this->params['content_header_button'] = $this->render('../elements/content_head
                     if (isset($parcels) && is_array($parcels)) {
                         foreach ($parcels as $parcel) {;
                             ?>
-                            <tr>
+                            <tr data-waybill="<?= strtoupper($parcel['waybill_number']); ?>">
                                 <td>
                                     <div class="checkbox-nice">
 
@@ -100,13 +101,14 @@ $this->params['content_header_button'] = $this->render('../elements/content_head
                                 <td><?= $i ?></td>
                                 <td><?= strtoupper($parcel['waybill_number']); ?></td>
                                 <td><?= strtoupper($parcel['sender']['firstname'] . ' ' . $parcel['sender']['lastname']) ?></td>
-                                <td><?= $parcel['sender']['phone'] ?></td>
                                 <td><?= strtoupper($parcel['receiver']['firstname'] . ' ' . $parcel['receiver']['lastname']) ?></td>
                                 <td><?= $parcel['receiver']['phone'] ?></td>
                                 <td><?= date(ServiceConstant::DATE_TIME_FORMAT, strtotime($parcel['created_date'])); ?></td>
                                 <td><?= $parcel['no_of_package']; ?></td>
+                                <td><?= ServiceConstant::getRequestType($parcel['request_type']); ?></td>
+                                <td><?= ServiceConstant::getStatus($parcel['status']); ?></td>
                                 <td>
-                                    <a title="View this shipment" href="<?= Url::to(['site/viewwaybill?id=' . $parcel['id']]) ?>"
+                                    <a title="View this shipment" href="<?= Url::toRoute(['/shipments/view?waybill_number=' . $parcel['waybill_number']]) ?>"
                                        class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>
                                     <?php if (in_array($parcel['status'], [ServiceConstant::FOR_DELIVERY, ServiceConstant::FOR_SWEEPER])) : ?>
                                         <form method="post">
@@ -115,6 +117,8 @@ $this->params['content_header_button'] = $this->render('../elements/content_head
                                             <input type="hidden" name="task" value="cancel_shipment">
                                         </form>
                                     <?php endif; ?>
+                                    <a title="Clone this shipment" href="<?= Url::toRoute(['/parcels/new?id=' . $parcel['id']]) ?>"
+                                       class="btn btn-xs btn-info btnClone"><i class="fa fa-copy"></i></a>
                                 </td>
                             </tr>
                             <?php
@@ -215,4 +219,5 @@ $this->params['content_header_button'] = $this->render('../elements/content_head
 <?php $this->registerJsFile('@web/js/keyboardFormSubmit.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/form-watch-changes.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/validate.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/bootbox.min.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/submit_teller.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>

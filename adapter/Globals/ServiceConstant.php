@@ -1,7 +1,8 @@
 <?php
 namespace Adapter\Globals;
 
-class ServiceConstant {
+class ServiceConstant
+{
 
     const BASE_PATH = "http://local.courierplus.com";
 
@@ -11,6 +12,8 @@ class ServiceConstant {
     const USER_TYPE_SWEEPER = 3;
     const USER_TYPE_DISPATCHER = 4;
     const USER_TYPE_GROUNDSMAN = 5;
+    const USER_TYPE_COMPANY_ADMIN = 6;
+    const USER_TYPE_COMPANY_OFFICER = 7;
     /*const USER_TYPE_MANAGER = 2;
     const USER_TYPE_CASHIER = 3;
     const USER_TYPE_AGENT = 4;
@@ -32,6 +35,11 @@ class ServiceConstant {
     const CLEARED = 12;
     const BEING_DELIVERED = 13;
     const ASSIGNED_TO_GROUNDSMAN = 17;
+    const MANIFEST_PENDING = 18;
+    const MANIFEST_IN_TRANSIT = 19;
+    const MANIFEST_RESOLVED = 20;
+    const MANIFEST_CANCELLED = 21;
+    const MANIFEST_HAS_ISSUE = 22;
 
     const URL_ADD_PARCEL = 'parcel/add/';
     const URL_GET_ONE_PARCEL = 'parcel/getone/';
@@ -41,11 +49,14 @@ class ServiceConstant {
     const URL_MOVE_TO_IN_TRANSIT = '/parcel/moveToInTransit/';
     const URL_MOVE_TO_ARRIVAL = '/parcel/moveToArrival/';
     const URL_MOVE_FOR_DELIVERY = '/parcel/moveToForDelivery/';
+    const URL_PARCEL_HISTORY = '/parcel/history/';
     const URL_CALC_BILLING = 'zone/calcBilling';
     const URL_MOVE_TO_BEING_DELIVERED = '/parcel/moveToBeingDelivered/';
     const URL_MOVE_TO_DELIVERED = '/parcel/moveToDelivered/';
     const URL_RECEIVE_RETURN = '/parcel/receiveReturn/';
+    const URL_CREATE_BAG = '/parcel/bag';
     const URL_CANCEL_PARCEL = '/parcel/cancel';
+    const URL_PARCEL_COUNT = 'parcel/count/';
 
     const URL_GET_ALL_BANKS = 'bank/getAll/';
 
@@ -54,7 +65,7 @@ class ServiceConstant {
 
     const URL_GET_BANK_ACCOUNT = 'bankaccount/getAll/';
 
-    const URL_ADMIN_LOGIN = 'admin/login/';
+    const URL_ADMIN_LOGIN = 'auth/login/';
     const URL_REF_BANK = 'ref/banks/';
     const URL_REF_ROLE = 'ref/roles';
     const URL_REF_SHIPMENT = 'ref/shipmentType/';
@@ -116,20 +127,45 @@ class ServiceConstant {
     const URL_ONFORWARDING_FETCH_ALL = 'onforwardingcharge/fetchAll';
 
     const URL_BILLING_FETCH_ALL = 'zone/fetchbilling';
-    const URL_BILLING_ADD= 'zone/addbilling';
+    const URL_BILLING_ADD = 'zone/addbilling';
     const URL_BILLING_EDIT = 'zone/editbilling';
     const URL_BILLING_DELETE = 'zone/removebilling';
     const URL_BILLING_FETCH_BY_ID = 'zone/fetchBillingById';
 
     const URL_TELLER_ADD = 'teller/add';
 
+    const URL_ROUTE_ADD = 'route/create';
+    const URL_ROUTE_GET_ALL = 'route/getAll';
+    const URL_ROUTE_EDIT = 'route/edit';
+
+    const URL_MANIFEST_ALL = 'manifest/getAll';
+    const URL_MANIFEST_ONE = 'manifest/getOne';
 
     const URL_CREATE_USER = 'admin/register';
+    const URL_EDIT_USER = 'admin/edit';
     const URL_GET_USERS = '/admin/getAll';
     const URL_GET_USER = '/admin/getone';
-    const URL_USER_VALIDATE = '/admin/validate';
-    const URL_USER_CHANGE_PASSWORD = 'admin/changePassword';
-    const URL_USER_CHANGE_STATUS = 'admin/changeStatus';
+    const URL_USER_VALIDATE = '/auth/validate';
+    const URL_USER_CHANGE_PASSWORD = 'auth/changePassword';
+    const URL_USER_CHANGE_STATUS = 'auth/changeStatus';
+    const URL_USER_FORGOT_PASSWORD = 'auth/forgotPassword';
+    const URL_USER_RESET_PASSWORD = 'auth/resetPassword';
+    const URL_USER_VALIDATE_PASSWORD_RESET_TOKEN = 'auth/validatePasswordResetToken';
+
+    const URL_COMPANY_ADD = 'company/createCompany';
+    const URL_GET_COMPANY = 'company/getCompany';
+    const URL_COMPANY_ALL = 'company/getAllCompany';
+    const URL_COMPANY_USERS = 'company/getAllUsers';
+    const URL_USER_ADD = 'company/createUser';
+    const URL_COMPANY_REQUESTS = 'company/getRequests';
+    const URL_MAKE_SHIPMENT_REQUEST = 'company/makeShipmentRequest';
+    const URL_MAKE_PICKUP_REQUEST = 'company/makePickupRequest';
+    const URL_CANCEL_PICKUP_REQUEST = 'company/cancelPickupRequest';
+    const URL_CANCEL_SHIPMENT_REQUEST = 'company/cancelShipmentRequest';
+    const URL_DECLINE_SHIPMENT_REQUEST = 'company/declineShipmentRequest';
+    const URL_DECLINE_PICKUP_REQUEST = 'company/declinePickupRequest';
+    const URL_SHIPMENT_REQUEST = 'company/getShipmentRequest';
+    const URL_PICKUP_REQUEST = 'company/getPickupRequest';
 
     const DATE_TIME_FORMAT = 'd M Y H:i';
     const DATE_FORMAT = 'd M Y';
@@ -142,11 +178,19 @@ class ServiceConstant {
     const REF_PAYMENT_METHOD_CASH_POS = 3;
     const REF_PAYMENT_METHOD_DEFERRED = 4;
 
+    const REF_MANIFEST_TYPE_SWEEP = 1;
+    const REF_MANIFEST_TYPE_DELIVERY = 2;
+
     const DELIVERY_DISPATCH = 2;
     const DELIVERY_PICKUP = 1;
+    const COUNTRY_NIGERIA = 1;
 
-    public static function getStatus($status){
-        switch($status){
+    const REQUEST_OTHERS = 1;
+    const REQUEST_ECOMMERCE = 2;
+
+    public static function getStatus($status)
+    {
+        switch ($status) {
             case ServiceConstant::ACTIVE:
                 return '<span class="label label-success">Active</span>';
                 break;
@@ -180,14 +224,32 @@ class ServiceConstant {
             case ServiceConstant::BEING_DELIVERED:
                 return 'In Transit to Customer';
                 break;
-
+            case ServiceConstant::MANIFEST_PENDING:
+                return 'Pending';
+                break;
+            case ServiceConstant::MANIFEST_IN_TRANSIT:
+                return 'In Transit';
+                break;
+            case ServiceConstant::MANIFEST_HAS_ISSUE:
+                return 'Has Issue';
+                break;
+            case ServiceConstant::MANIFEST_RESOLVED:
+                return 'Resolved';
+                break;
+            case ServiceConstant::MANIFEST_CANCELLED:
+                return 'Cancelled';
+                break;
         }
     }
-    public static function getStatusRef(){
-        return [ServiceConstant::IN_TRANSIT,ServiceConstant::DELIVERED,ServiceConstant::CANCELLED,ServiceConstant::FOR_ARRIVAL
-        ,ServiceConstant::FOR_DELIVERY,ServiceConstant::FOR_SWEEPER,ServiceConstant::COLLECTED, ServiceConstant::BEING_DELIVERED];
+
+    public static function getStatusRef()
+    {
+        return [ServiceConstant::IN_TRANSIT, ServiceConstant::DELIVERED, ServiceConstant::CANCELLED, ServiceConstant::FOR_ARRIVAL
+            , ServiceConstant::FOR_DELIVERY, ServiceConstant::FOR_SWEEPER, ServiceConstant::COLLECTED, ServiceConstant::BEING_DELIVERED];
     }
-    public static function getPaymentMethod($method){
+
+    public static function getPaymentMethod($method)
+    {
         switch ($method) {
             case ServiceConstant::REF_PAYMENT_METHOD_CASH:
                 return 'Cash';
@@ -210,7 +272,9 @@ class ServiceConstant {
                 break;
         }
     }
-    public static function getDeliveryType($type){
+
+    public static function getDeliveryType($type)
+    {
         switch ($type) {
             case ServiceConstant::DELIVERY_DISPATCH:
                 return 'Dispatch';
@@ -220,6 +284,41 @@ class ServiceConstant {
 
             default:
                 return false;
+        }
+    }
+
+    public static function getRequestType($type)
+    {
+        switch ($type) {
+            case ServiceConstant::REQUEST_ECOMMERCE:
+                return 'eCommerce';
+
+            case ServiceConstant::REQUEST_OTHERS:
+                return 'Others';
+
+            default:
+                return false;
+        }
+    }
+
+    public static function getManifestStatuses()
+    {
+        return [ServiceConstant::MANIFEST_PENDING, ServiceConstant::MANIFEST_RESOLVED, ServiceConstant::MANIFEST_HAS_ISSUE,
+            ServiceConstant::MANIFEST_IN_TRANSIT, ServiceConstant::MANIFEST_CANCELLED];
+    }
+
+    public static function getManifestType($type)
+    {
+        switch ($type) {
+            case ServiceConstant::REF_MANIFEST_TYPE_SWEEP:
+                return 'Sweep Manifest';
+                break;
+            case ServiceConstant::REF_MANIFEST_TYPE_DELIVERY:
+                return 'Delivery Manifest';
+                break;
+            default:
+               return false;
+                break;
         }
     }
 }

@@ -123,7 +123,7 @@ $this->params['breadcrumbs'] = array(
                                 <td><?= ucwords($parcel['from_branch']['name']); ?></td>
                                 <td>N/A</td>
                                 <td>
-                                    <a href="<?= Url::to(['site/viewwaybill?id=' . $parcel['id']]) ?>"
+                                    <a href="<?= Url::toRoute(['/site/viewwaybill?waybill_number=' . $parcel['waybill_number']]) ?>"
                                        class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i> View</a>
                                 </td>
                             </tr>
