@@ -263,14 +263,6 @@ $is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
                                 </div>
 
                                 <div class="row">
-                                    <div class="col-xs-12 col-sm-12 col-lg-12 form-group">
-                                        <label>Reference Number</label>
-                                        <input name="reference_number" class="form-control" id="reference_number"
-                                            value="<?= Calypso::getValue($parcel, "info.reference_number", ''); ?>">
-                                    </div>
-                                </div>
-
-                                <div class="row">
                                     <div class="col-xs-12 col-sm-6 col-lg-5 form-group">
                                         <label>Cash on Delivery?</label><br>
 
@@ -295,6 +287,14 @@ $is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
                                                 value="<?= Calypso::getValue($parcel, "info.delivery_amount", ''); ?>">
                                         </div>
                                     </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-12 col-lg-12 form-group">
+                                    <label>Reference Number</label>
+                                    <input name="reference_number" class="form-control" id="reference_number"
+                                        value="<?= Calypso::getValue($parcel, "info.reference_number", ''); ?>">
                                 </div>
                             </div>
 
