@@ -285,7 +285,6 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
 
     <div class="modal fade" id="bulk_modal" tabindex="-1" role="dialog" aria-labelledby="bulk_modal_label">
         <div class="modal-dialog modal-lg" role="document">
-                  class="validate-form" method="post">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
