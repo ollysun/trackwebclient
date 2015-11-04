@@ -75,16 +75,17 @@ class HubsController extends BaseController
 
             if ($response['status'] === ResponseHandler::STATUS_OK) {
 
-                $postParams['to_branch_id'] = $branch;
-                if($this->userData['branch_id'] == $postParams['to_branch_id'])
-                {
-                    $this->flashSuccess('Parcels have been successfully moved to the next destination.');
-                }
-                else
-                {
-                    $this->flashSuccess('Parcels have been successfully moved to the next destination. <a href="delivery">Generate Manifest</a>');
-                }
+                if ($branch_type == 'branch') {
+                    $postParams['to_branch_id'] = $branch;
 
+                    if ($this->userData['branch_id'] == $postParams['to_branch_id']) {
+                        $this->flashSuccess('Parcels have been successfully moved to the next destination.');
+                    } else {
+                        $this->flashSuccess('Parcels have been successfully moved to the next destination. <a href="delivery">Generate Manifest</a>');
+                    }
+                } else {
+                    $this->flashError('An error occurred while trying to move parcels to next destination. Please try again.');
+                }
             } else {
                 $this->flashError('An error occurred while trying to move parcels to next destination. Please try again.');
             }
