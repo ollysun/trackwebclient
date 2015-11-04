@@ -8,7 +8,6 @@
 
 namespace app\controllers;
 
-use Yii;
 use Adapter\AdminAdapter;
 use Adapter\BranchAdapter;
 use Adapter\Globals\ServiceConstant;
@@ -16,10 +15,10 @@ use Adapter\ParcelAdapter;
 use Adapter\RefAdapter;
 use Adapter\RequestHelper;
 use Adapter\ResponseHandler;
+use Adapter\RouteAdapter;
 use Adapter\Util\Calypso;
 use app\services\HubService;
-use app\services\ParcelService;
-use Adapter\RouteAdapter;
+use Yii;
 
 class HubsController extends BaseController
 {
@@ -75,7 +74,17 @@ class HubsController extends BaseController
             }
 
             if ($response['status'] === ResponseHandler::STATUS_OK) {
-                $this->flashSuccess('Parcels have been successfully moved to the next destination. <a href="delivery">Generate Manifest</a>');
+
+                $postParams['to_branch_id'] = $branch;
+                if($this->userData['branch_id'] == $postParams['to_branch_id'])
+                {
+                    $this->flashSuccess('Parcels have been successfully moved to the next destination.');
+                }
+                else
+                {
+                    $this->flashSuccess('Parcels have been successfully moved to the next destination. <a href="delivery">Generate Manifest</a>');
+                }
+
             } else {
                 $this->flashError('An error occurred while trying to move parcels to next destination. Please try again.');
             }
