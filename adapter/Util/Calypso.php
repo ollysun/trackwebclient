@@ -219,14 +219,12 @@ class Calypso
             ServiceConstant::USER_TYPE_COMPANY_ADMIN => [
                 'corporate/pending/shipments',
                 'corporate/pending/pickups',
-                '/corporate/request/templatefile',
                 'site/*'
             ],
             ServiceConstant::USER_TYPE_COMPANY_OFFICER => [
                 'corporate/users',
                 'corporate/pending/shipments',
                 'corporate/pending/pickups',
-                '/corporate/request/templatefile',
                 'site/*'
             ]
         ];
