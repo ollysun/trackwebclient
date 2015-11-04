@@ -75,20 +75,13 @@ class HubsController extends BaseController
 
             if ($response['status'] === ResponseHandler::STATUS_OK) {
 
-                if ($branch_type == 'branch') {
-                    $postParams['to_branch_id'] = $branch;
-
-                    if ($this->userData['branch_id'] == $postParams['to_branch_id']) {
-                        $this->flashSuccess('Parcels have been successfully moved to the next destination.');
-                    } else {
-                        $this->flashSuccess('Parcels have been successfully moved to the next destination. <a href="delivery">Generate Manifest</a>');
-                    }
+                if ($branch_type != 'route' && ($this->userData['branch_id'] == $branch)) {
+                    $this->flashSuccess('Parcels have been successfully moved to the next destination.');
                 } else {
-                    $this->flashError('An error occurred while trying to move parcels to next destination. Please try again.');
+                    $this->flashSuccess('Parcels have been successfully moved to the next destination. <a href="delivery">Generate Manifest</a>');
                 }
             } else {
-                $this->flashError('An error occurred while trying to move parcels to next destination. Please try again.');
-            }
+                $this->flashError('An error occurred while trying to move parcels to next destination. Please try again.');}
         }
         $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $arrival_parcels = $parcelsAdapter->getParcelsForNextDestination($isGroundman ? ServiceConstant::ASSIGNED_TO_GROUNDSMAN : ServiceConstant::FOR_ARRIVAL, null, $isGroundman ? $this->userData['branch_id'] : $this->branch_to_view, null, $viewData['offset'], 50, 1);
