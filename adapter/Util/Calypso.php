@@ -218,14 +218,12 @@ class Calypso
             ], self::getCorporateRoutes()),
             ServiceConstant::USER_TYPE_COMPANY_ADMIN => [
                 'corporate/pending/shipments',
-                'corporate/pending/pickups',
-                'site/*'
+                'corporate/pending/pickups'
             ],
             ServiceConstant::USER_TYPE_COMPANY_OFFICER => [
                 'corporate/users',
                 'corporate/pending/shipments',
-                'corporate/pending/pickups',
-                'site/*'
+                'corporate/pending/pickups'
             ]
         ];
         return $permissionMap;
