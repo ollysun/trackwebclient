@@ -286,6 +286,7 @@ class BillingController extends BaseController
 
     public function actionCitymapping()
     {
+        $billingPlanId = Yii::$app->request->get('billing_plan_id', BillingPlanAdapter::DEFAULT_ON_FORWARDING_PLAN);
         if (Yii::$app->request->isPost) {
             $entry = Yii::$app->request->post();
             $task = Calypso::getValue(Yii::$app->request->post(), 'task', '');
@@ -332,12 +333,12 @@ class BillingController extends BaseController
         $states_list = $states->getStatus() == ResponseHandler::STATUS_OK ? $states->getData() : [];
 
         $refAdp = new RefAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $charges = $refAdp->getOnforwardingCharges();
+        $charges = $refAdp->getOnforwardingCharges($billingPlanId);
         $charges = new ResponseHandler($charges);
         $charges_list = $charges->getStatus() == ResponseHandler::STATUS_OK ? $charges->getData() : [];
 
         $billingPlanAdapter = new BillingPlanAdapter();
-        $cities = $billingPlanAdapter->getCitiesWithCharges(BillingPlanAdapter::DEFAULT_ON_FORWARDING_PLAN);
+        $cities = $billingPlanAdapter->getCitiesWithCharges($billingPlanId);
 
         $hubAdp = new BranchAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $hubs = $hubAdp->getAllHubs(false);
@@ -349,6 +350,7 @@ class BillingController extends BaseController
 
     public function actionOnforwarding($page = 1)
     {
+        $billingPlanId = Yii::$app->request->get('billing_plan_id', BillingPlanAdapter::DEFAULT_ON_FORWARDING_PLAN);
         if (Yii::$app->request->isPost) {
             $entry = Yii::$app->request->post();
             $task = Calypso::getValue(Yii::$app->request->post(), 'task', '');
@@ -392,7 +394,7 @@ class BillingController extends BaseController
 
         $offset = ($page - 1) * $this->page_width;
         $refAdp = new RefAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $charges = $refAdp->getOnforwardingCharges(null, $offset, $this->page_width, 1, 1);
+        $charges = $refAdp->getOnforwardingCharges($billingPlanId, null, $offset, $this->page_width, 1, 1);
         $response = new ResponseHandler($charges);
         $charges_list = null;
         $total_count = 0;
