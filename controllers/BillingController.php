@@ -2,6 +2,7 @@
 namespace app\controllers;
 
 use Adapter\BillingAdapter;
+use Adapter\BillingPlanAdapter;
 use Adapter\Util\Calypso;
 use Adapter\WeightRangeAdapter;
 use Adapter\BranchAdapter;
@@ -63,6 +64,7 @@ class BillingController extends BaseController
             $data['increment_weight'] = Calypso::getValue($entry, 'increment_weight', null);
             $data['max_weight'] = Calypso::getValue($entry, 'max_weight', null);
             $data['weight_range_id'] = Calypso::getValue($entry, 'id', null);
+            $data['billing_plan_id'] = Calypso::getValue($entry, 'billing_plan_id', BillingPlanAdapter::DEFAULT_WEIGHT_RANGE_PLAN);
 
             if (($task == 'create' || $task == 'edit') && (empty($data['min_weight']) || empty($data['max_weight']) || empty($data['increment_weight']))) {
                 $error[] = "All details are required!";
@@ -88,9 +90,11 @@ class BillingController extends BaseController
                     }
                 }
             }
+
+            return $this->refresh();
         }
         $data_source = new RefAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $ranges = $data_source->getWeightRanges();
+        $ranges = $data_source->getWeightRanges(BillingPlanAdapter::DEFAULT_WEIGHT_RANGE_PLAN);
         $ranges = new ResponseHandler($ranges);
         $ranges_list = $ranges->getStatus() == ResponseHandler::STATUS_OK ? $ranges->getData() : [];
 
@@ -332,17 +336,15 @@ class BillingController extends BaseController
         $charges = new ResponseHandler($charges);
         $charges_list = $charges->getStatus() == ResponseHandler::STATUS_OK ? $charges->getData() : [];
 
-        $cAdp = new RegionAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $cities = $cAdp->getAllCity(1, 1);
-        $cities = new ResponseHandler($cities);
-        $cities_list = $cities->getStatus() == ResponseHandler::STATUS_OK ? $cities->getData() : [];
+        $billingPlanAdapter = new BillingPlanAdapter();
+        $cities = $billingPlanAdapter->getCitiesWithCharges(BillingPlanAdapter::DEFAULT_ON_FORWARDING_PLAN);
 
         $hubAdp = new BranchAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $hubs = $hubAdp->getAllHubs(false);
         $hubs = new ResponseHandler($hubs);
         $hub_list = $hubs->getStatus() == ResponseHandler::STATUS_OK ? $hubs->getData() : [];
 
-        return $this->render('city_mapping', array('cities' => $cities_list, 'states' => $states_list, 'hubs' => $hub_list, 'charges' => $charges_list));
+        return $this->render('city_mapping', array('cities' => $cities, 'states' => $states_list, 'hubs' => $hub_list, 'charges' => $charges_list));
     }
 
     public function actionOnforwarding($page = 1)

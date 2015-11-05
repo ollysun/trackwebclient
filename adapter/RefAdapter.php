@@ -79,9 +79,16 @@ class RefAdapter extends BaseAdapter
         return $this->request(ServiceConstant::URL_REF_REGIONS, ['country_id' => $country_id], self::HTTP_GET);
     }
 
-    public function getWeightRanges()
+    /**
+     * Get Weight Ranges
+     * @author Olawale Lawal <wale@cottacush.com>
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @param $billingPlanId
+     * @return array|mixed|string
+     */
+    public function getWeightRanges($billingPlanId)
     {
-        return $this->request(ServiceConstant::URL_WEIGHT_FETCH_ALL, [], self::HTTP_GET);
+        return $this->request(ServiceConstant::URL_WEIGHT_FETCH_ALL, ['billing_plan_id' => $billingPlanId], self::HTTP_GET);
     }
 
     public function getOnforwardingCharges($status = null, $offset = null, $count = null, $with_total_count = null, $send_all = null)
