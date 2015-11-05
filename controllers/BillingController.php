@@ -412,8 +412,10 @@ class BillingController extends BaseController
             'zones' => [],
             'weightRanges' => []
         ];
+
+        $billingPlanId = Yii::$app->request->get('billing_plan_id', BillingPlanAdapter::DEFAULT_WEIGHT_RANGE_PLAN);
         $billingAdp = new BillingAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $billings = $billingAdp->fetchAllBilling();
+        $billings = $billingAdp->fetchAllBilling($billingPlanId);
         if ($billings['status'] == ResponseHandler::STATUS_OK) {
             $viewBag['billings'] = $billings['data'];
         }
@@ -423,7 +425,7 @@ class BillingController extends BaseController
             $viewBag['zones'] = $zones['data'];
         }
         $weightAdp = new WeightRangeAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $weightRanges = $weightAdp->getRange();
+        $weightRanges = $weightAdp->getRange($billingPlanId);
         if ($weightRanges['status'] == ResponseHandler::STATUS_OK) {
             $viewBag['weightRanges'] = $weightRanges['data'];
         }

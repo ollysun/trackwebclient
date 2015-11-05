@@ -24,8 +24,12 @@ class WeightRangeAdapter extends BaseAdapter
         elseif($task == 'status')
             return $this->request(ServiceConstant::URL_WEIGHT_CHANGE_STATUS, $data, self::HTTP_POST);
     }
-    public function getRange()
+    public function getRange($billingPlan = null)
     {
-        return $this->request(ServiceConstant::URL_WEIGHT_FETCH_ALL, [], self::HTTP_GET);
+        $filters = [
+            'billing_plan_id' => $billingPlan
+        ];
+        $filters = array_filter($filters);
+        return $this->request(ServiceConstant::URL_WEIGHT_FETCH_ALL, $filters, self::HTTP_GET);
     }
 }

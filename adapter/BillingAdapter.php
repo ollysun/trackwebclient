@@ -25,10 +25,12 @@ class BillingAdapter extends BaseAdapter
 
     /**
      * This fetches all existing billing/pricing
+     * @param $billingPlanId
      * @return array|mixed|string
      */
-    public function fetchAllBilling() {
-        return $this->request(ServiceConstant::URL_BILLING_FETCH_ALL, [], self::HTTP_GET);
+    public function fetchAllBilling($billingPlanId = null) {
+        $filters = array_filter(['billing_plan_id' => $billingPlanId]);
+        return $this->request(ServiceConstant::URL_BILLING_FETCH_ALL, $filters, self::HTTP_GET);
     }
 
     /**
