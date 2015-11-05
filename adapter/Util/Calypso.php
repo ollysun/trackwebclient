@@ -141,6 +141,7 @@ class Calypso
                     'Weight_Ranges' => ['base_link' => 'billing/weightranges', 'class' => ''],
                     'Pricing' => ['base_link' => 'billing/pricing', 'class' => ''],
                     'Onforwarding_Charges' => ['base_link' => 'billing/onforwarding', 'class' => ''],
+                    'Corporate_Billing' => ['base_link' => 'billing/corporate', 'class' => '']
                 ], 'branch' => [ServiceConstant::BRANCH_TYPE_HQ]]
             ], 'branch' => [ServiceConstant::BRANCH_TYPE_HQ]],
             'Parcel History' => [
