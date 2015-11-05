@@ -177,7 +177,7 @@ class BulkShipment
      */
     public static function getTemplateFilePath()
     {
-        return dirname(__FILE__) . '/../data/template.xlsx';
+        return dirname(__FILE__) . '/../../../runtime/template.xlsx';
     }
 
     /**
