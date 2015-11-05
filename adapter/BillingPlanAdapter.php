@@ -43,4 +43,26 @@ class BillingPlanAdapter extends BaseAdapter
         }
         return [];
     }
+
+    /**
+     * Get's all billing plans
+     * @author Adegoke Obasa <goke@cottacush.com>
+     */
+    public function getBillingPlans()
+    {
+        $filters = [
+            'with_company' => '1',
+            'with_total_count' => '1'
+        ];
+
+        $response = $this->request(ServiceConstant::URL_BILLING_PLAN_GET_ALL,
+            $filters, self::HTTP_GET);
+
+        $response = new ResponseHandler($response);
+
+        if ($response->isSuccess()) {
+            return $response->getData();
+        }
+        return [];
+    }
 }
