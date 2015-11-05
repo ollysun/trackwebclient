@@ -421,6 +421,12 @@ class BillingController extends BaseController
         return $this->render('onforwarding', array('charges' => $charges_list, 'total_count' => $total_count, 'offset' => $offset, 'page_width' => $this->page_width));
     }
 
+    /**
+     * Pricing View
+     * @author Rotimi Akintewe <akintewe.rotimi@gmail.com>
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @return string
+     */
     public function actionPricing()
     {
         $viewBag = [
