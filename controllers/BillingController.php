@@ -52,8 +52,15 @@ class BillingController extends BaseController
         }
     }
 
+    /**
+     * Weight Ranges View
+     * @author Olawale Lawal <wale@cottacush.com>
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @return string|\yii\web\Response
+     */
     public function actionWeightranges()
     {
+        $billingPlanId = Yii::$app->request->get('billing_plan_id', BillingPlanAdapter::DEFAULT_WEIGHT_RANGE_PLAN);
         if (Yii::$app->request->isPost) {
             $entry = Yii::$app->request->post();
             $task = Calypso::getValue(Yii::$app->request->post(), 'task', '');
@@ -94,7 +101,7 @@ class BillingController extends BaseController
             return $this->refresh();
         }
         $data_source = new RefAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $ranges = $data_source->getWeightRanges(BillingPlanAdapter::DEFAULT_WEIGHT_RANGE_PLAN);
+        $ranges = $data_source->getWeightRanges($billingPlanId);
         $ranges = new ResponseHandler($ranges);
         $ranges_list = $ranges->getStatus() == ResponseHandler::STATUS_OK ? $ranges->getData() : [];
 
