@@ -348,6 +348,13 @@ class BillingController extends BaseController
         return $this->render('city_mapping', array('cities' => $cities, 'states' => $states_list, 'hubs' => $hub_list, 'charges' => $charges_list));
     }
 
+    /**
+     * On Forwarding Charges View
+     * @author Wale Lawal <wale@cottacush.com>
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @param int $page
+     * @return string
+     */
     public function actionOnforwarding($page = 1)
     {
         $billingPlanId = Yii::$app->request->get('billing_plan_id', BillingPlanAdapter::DEFAULT_ON_FORWARDING_PLAN);
