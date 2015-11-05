@@ -588,4 +588,13 @@ class BillingController extends BaseController
         }
         return 0;
     }
+
+    /**
+     * Corporate Billing View
+     * @author Adegoke Obasa <goke@cottacush.com>
+     */
+    public function actionCorporate()
+    {
+        return $this->render("corporate");
+    }
 }
