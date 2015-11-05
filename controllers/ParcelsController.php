@@ -151,7 +151,7 @@ class ParcelsController extends BaseController
         $cities = Yii::$app->cache->get($cacheKey);
         if (!$cities) {
             $refData = new RegionAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-            $response = new ResponseHandler($refData->getAllCity(1, 1, $state_id, 1));
+            $response = new ResponseHandler($refData->getAllCity(1, 1, $state_id));
 
             if (!$response->isSuccess()) {
                 return $this->sendErrorResponse($response->getError(), null);
