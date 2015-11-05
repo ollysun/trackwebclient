@@ -313,7 +313,7 @@ class ShipmentsController extends BaseController
                     if ($response->getStatus() == ResponseHandler::STATUS_OK) {
                         $this->flashSuccess('Teller successfully added');
                     } else {
-                        $this->flashError('An error occurred while trying to add teller. #' . $response->getError());
+                        $this->flashError($response->getError());
                     }
                 }
             }
