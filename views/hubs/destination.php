@@ -81,6 +81,7 @@ $this->params['breadcrumbs'] = array(
                             <th>Return Status</th>
                             <th>Weight (Kg)</th>
                             <th>Age analysis</th>
+                            <th>Action</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -107,6 +108,7 @@ $this->params['breadcrumbs'] = array(
                                 <td><?= ServiceConstant::getReturnStatus($parcels); ?></td>
                                 <td><?= Calypso::getValue($parcels, 'weight') ?></td>
                                 <td></td>
+                                <td><?= $this->render('../elements/parcel/partial_return_button', ['parcel' => $parcels]) ?></td>
                             </tr>
                         <?php } ?>
                         </tbody>
@@ -183,6 +185,7 @@ $this->params['breadcrumbs'] = array(
     </div>
 </div>
 
+<?= $this->render('../elements/parcel/partial_return_form') ?>
 
 <!-- this page specific scripts -->
 <?php $this->registerJsFile('@web/js/libs/jquery.dataTables.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
@@ -190,3 +193,4 @@ $this->params['breadcrumbs'] = array(
 <?php $this->registerJsFile('@web/js/libs/dataTables.tableTools.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/libs/jquery.dataTables.bootstrap.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/next_destination.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
+<?php $this->registerJsFile('@web/js/return.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
