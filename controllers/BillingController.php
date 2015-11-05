@@ -321,7 +321,7 @@ class BillingController extends BaseController
                     if ($response['status'] === Response::STATUS_OK) {
                         Yii::$app->session->setFlash('success', 'City has been created successfully.');
                     } else {
-                        Yii::$app->session->setFlash('danger', 'There was a problem editing the city. ' . $response['messsage']);
+                        Yii::$app->session->setFlash('danger', 'There was a problem creating the city. ' . $response['messsage']);
                     }
                 } else {
                     $response = $city->editCity($data);
