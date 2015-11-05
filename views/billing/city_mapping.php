@@ -1,4 +1,5 @@
 <?php
+use Adapter\Util\Calypso;
 use yii\helpers\Html;
 use yii\helpers\Url;
 
@@ -43,19 +44,19 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                 <?php
                 if (isset($cities) && is_array(($cities))):
                     $row = 1;
-                    foreach ($cities as $city) {
+                    foreach ($cities as $onforwardingCity) {
                         ?>
                         <tr>
                         <td><?= $row++; ?></td>
-                        <td class="n<?= ucwords($city['id']); ?>"><?= ucwords($city['name']); ?></td>
-                        <td><?= ucwords($city['state']['name']); ?></td>
-                        <td><?= strtoupper("{$city['branch']['name']} ({$city['branch']['code']})"); ?></td>
-                        <td class="t<?=$city['id'];?>"><?= ucwords($city['transit_time']); ?></td>
-                        <td><?= number_format($city['onforwarding_charge']['amount']); ?></td>
+                        <td class="n<?= ucwords(Calypso::getValue($onforwardingCity, 'city.id')); ?>"><?= ucwords(Calypso::getValue($onforwardingCity, 'city.name')); ?></td>
+                        <td><?= ucwords(Calypso::getValue($onforwardingCity, 'state.name')); ?></td>
+                        <td><?= strtoupper("{$onforwardingCity['branch']['name']} ({$onforwardingCity['branch']['code']})"); ?></td>
+                        <td class="t<?=$onforwardingCity['id'];?>"><?= ucwords(Calypso::getValue($onforwardingCity, 'city.transit_time')); ?></td>
+                        <td><?= number_format(Calypso::getValue($onforwardingCity, 'onforwarding_charge.amount')); ?></td>
                         <td>
                             <button type="button" class="btn btn-default btn-xs" data-toggle="modal"
-                                    data-target="#editModal" data-id="<?= $city['id']; ?>" data-charge-id="<?= $city['onforwarding_charge']['id']; ?>"
-                                    data-state-id="<?= $city['state']['id']; ?>" data-branch-id="<?= $city['branch_id']; ?>"><i class="fa fa-edit"></i> Edit
+                                    data-target="#editModal" data-id="<?= Calypso::getValue($onforwardingCity, 'city.id'); ?>" data-charge-id="<?= Calypso::getValue($onforwardingCity, 'onforwarding_charge.id'); ?>"
+                                    data-state-id="<?= Calypso::getValue($onforwardingCity, 'state.id'); ?>" data-branch-id="<?= Calypso::getValue($onforwardingCity, 'city.branch_id'); ?>"><i class="fa fa-edit"></i> Edit
                             </button>
                         </td>
                         </tr><?php
