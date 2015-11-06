@@ -71,7 +71,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
-        <form class="" method="post">
+        <form class="" method="post" action="<?= Url::to("/admin/savecity")?>">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
@@ -122,20 +122,6 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                                 <input type="text" class="form-control" name="transit_time">
                             </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label>Onforwarding charge</label>
-                        <select class="form-control" name="charge">
-                            <?php
-                            if (isset($charges) && is_array(($charges))):
-                                foreach ($charges as $charge) {
-                                    ?>
-                                    <option value="<?= $charge['id'] ?>"><?= strtoupper($charge['name']); ?></option>
-                                    <?php
-                                }
-                            endif;
-                            ?>
-                        </select>
                     </div>
                 </div>
                 <div class="modal-footer">
