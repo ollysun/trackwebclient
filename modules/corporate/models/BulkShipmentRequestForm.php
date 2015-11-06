@@ -31,7 +31,7 @@ class BulkShipmentRequestForm extends Model
     public function rules()
     {
         return [
-            ['dataFile', 'file', 'skipOnEmpty' => false, 'extensions' => 'csv', 'maxSize' => 1000000, 'mimeTypes' => ['text/plain', 'text/csv'], 'checkExtensionByMimeType' => false],
+            ['dataFile', 'file', 'skipOnEmpty' => false, 'extensions' => 'csv', 'maxSize' => 1000000, 'checkExtensionByMimeType' => false],
             ['dataFile', 'validateRows']
 
         ];
