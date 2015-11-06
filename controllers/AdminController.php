@@ -553,4 +553,26 @@ class AdminController extends BaseController
         }
         return $this->redirect("/admin/companyecs");
     }
+
+    /**
+     * Manage Cities View
+     * @author Adegoke Obasa <goke@cottacush.com>
+     */
+    public function actionManagecities()
+    {
+        $refAdp = new RefAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $states = new ResponseHandler($refAdp->getStates(1)); // Hardcoded Nigeria for now
+        $states_list = $states->getStatus() == ResponseHandler::STATUS_OK ? $states->getData() : [];
+
+        $zoneAdapter = new RegionAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $cities = new ResponseHandler($zoneAdapter->getAllCity(1, 1));
+        $cities = $cities->getStatus() == ResponseHandler::STATUS_OK ? $cities->getData() : [];
+
+
+        $hubAdp = new BranchAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $hubs = new ResponseHandler($hubAdp->getAllHubs(false));
+        $hub_list = $hubs->getStatus() == ResponseHandler::STATUS_OK ? $hubs->getData() : [];
+
+        return $this->render('managecities', array('cities' => $cities, 'states' => $states_list, 'hubs' => $hub_list));
+    }
 }
