@@ -3,6 +3,7 @@ namespace app\controllers;
 
 use Adapter\BillingAdapter;
 use Adapter\BillingPlanAdapter;
+use Adapter\CompanyAdapter;
 use Adapter\Util\Calypso;
 use Adapter\WeightRangeAdapter;
 use Adapter\BranchAdapter;
@@ -14,6 +15,7 @@ use Adapter\RefAdapter;
 use Adapter\RequestHelper;
 use Adapter\ResponseHandler;
 use Adapter\Util\Response;
+use yii\helpers\Url;
 
 /**
  * Class BillingController
@@ -595,6 +597,42 @@ class BillingController extends BaseController
      */
     public function actionCorporate()
     {
-        return $this->render("corporate");
+        $page = \Yii::$app->getRequest()->get('page', 1);
+
+        // Add Offset and Count
+        $offset = ($page - 1) * $this->page_width;
+        $filters['offset'] = $offset;
+        $filters['count'] = $this->page_width;
+
+        $companyAdapter = new CompanyAdapter();
+        $companies = $companyAdapter->getAllCompanies([]);
+
+        $billingPlanAdapter = new BillingPlanAdapter();
+        $response = $billingPlanAdapter->getBillingPlans($filters);
+        $totalCount = Calypso::getValue($response, 'total_count');
+        $billingPlans = Calypso::getValue($response, 'plans');
+
+        $billingPlanTypes = BillingPlanAdapter::getTypes();
+        return $this->render("corporate", [
+            'companies' => $companies,
+            'billingPlans' => $billingPlans,
+            'billingPlanTypes' => $billingPlanTypes,
+            'offset' => $offset,
+            'total_count' => $totalCount,
+            'page_width' => $this->page_width
+        ]);
     }
+
+    /**
+     * Saves corporate billing plan
+     * @author Adegoke Obasa <goke@cottacush.com>
+     */
+    public function actionSavecorporate()
+    {
+        if(Yii::$app->request->isPost) {
+
+        }
+        return $this->redirect(Url::to("/billing/corporate"));
+    }
+
 }

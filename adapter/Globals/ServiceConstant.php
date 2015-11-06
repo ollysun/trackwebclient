@@ -186,6 +186,7 @@ class ServiceConstant
     const URL_RELINK_EC_TO_COMPANY = 'company/relinkEc';
 
     const URL_BILLING_PLAN_GET_CITIES_WITH_CHARGE = 'billingPlan/getCitiesWithCharge';
+    const URL_BILLING_PLAN_ADD = 'billingPlan/add';
     const URL_BILLING_PLAN_GET_ALL = 'billingPlan/getAll';
 
     const DATE_TIME_FORMAT = 'd M Y H:i';
