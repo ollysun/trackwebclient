@@ -584,13 +584,11 @@ class AdminController extends BaseController
     {
         if (Yii::$app->request->isPost) {
             $entry = Yii::$app->request->post();
-            $task = Calypso::getValue(Yii::$app->request->post(), 'task', '');
             $error = [];
-
             $data = [];
+
             $data['name'] = Calypso::getValue($entry, 'city_name', null);
             $data['state_id'] = Calypso::getValue($entry, 'state');
-            $data['onforwarding_charge_id'] = Calypso::getValue($entry, 'charge');
             $data['transit_time'] = Calypso::getValue($entry, 'transit_time');
             $data['status'] = Calypso::getValue($entry, 'status');
             $data['branch_id'] = Calypso::getValue($entry, 'branch_id');
@@ -604,20 +602,11 @@ class AdminController extends BaseController
                 Yii::$app->session->setFlash('danger', $errorMessages);
             } else {
                 $city = new RegionAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-                if ($task == 'create') {
-                    $response = $city->addCity($data);
-                    if ($response['status'] === Response::STATUS_OK) {
-                        Yii::$app->session->setFlash('success', 'City has been created successfully.');
-                    } else {
-                        Yii::$app->session->setFlash('danger', 'There was a problem editing the city. ' . $response['messsage']);
-                    }
+                $response = $city->editCity($data);
+                if ($response['status'] === Response::STATUS_OK) {
+                    Yii::$app->session->setFlash('success', 'City has been edited successfully.');
                 } else {
-                    $response = $city->editCity($data);
-                    if ($response['status'] === Response::STATUS_OK) {
-                        Yii::$app->session->setFlash('success', 'City has been edited successfully.');
-                    } else {
-                        Yii::$app->session->setFlash('danger', 'There was a problem editing the city. ' . $response['messsage']);
-                    }
+                    Yii::$app->session->setFlash('danger', 'There was a problem editing the city. ' . $response['messsage']);
                 }
             }
         }

@@ -137,7 +137,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
 
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
-        <form class="validate" method="post">
+        <form class="validate" method="post" action="<?= Url::to("/admin/editcity")?>">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
