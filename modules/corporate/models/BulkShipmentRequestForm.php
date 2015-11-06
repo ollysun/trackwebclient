@@ -55,6 +55,9 @@ class BulkShipmentRequestForm extends Model
                 $row = Util::swapKeys($row, $keys);
                 $row = $this->substituteStateAndCityWithIds($row);
                 $row['company_id'] = Calypso::getValue(Calypso::getInstance()->session("user_session"), 'company_id');
+                if (strlen(trim($row['parcel_value'])) == 0) {
+                    $row['parcel_value'] = null;
+                }
                 $row = (object)$row;
                 $batchData[] = $row;
             }
@@ -162,7 +165,7 @@ class BulkShipmentRequestForm extends Model
             return false;
         }
 
-        if (count($contents) < 1) {
+        if (count($contents) < 2) {
             $this->addError($attribute, 'No requests in data file. Please add shipment requests');
             return false;
         }
