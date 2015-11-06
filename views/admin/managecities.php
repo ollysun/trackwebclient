@@ -203,20 +203,6 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                             </div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label>Onforwarding charge</label>
-                        <select class="form-control" name="charge">
-                            <?php
-                            if (isset($charges) && is_array(($charges))):
-                                foreach ($charges as $charge) {
-                                    ?>
-                                    <option value="<?= $charge['id'] ?>"><?= strtoupper($charge['name']); ?></option>
-                                    <?php
-                                }
-                            endif;
-                            ?>
-                        </select>
-                    </div>
                 </div>
                 <div class="modal-footer">
                     <input type="hidden" name="task" value="edit">
