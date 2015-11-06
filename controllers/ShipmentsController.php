@@ -76,9 +76,10 @@ class ShipmentsController extends BaseController
 
         } elseif (!empty(Calypso::getInstance()->get()->search)) { //check if not empty criteria
             $search = Calypso::getInstance()->get()->search;
-            $response = $parcel->getSearchParcels(null, $search, $offset, $this->page_width, 1, $this->branch_to_view, 1, true);
+            $response = $parcel->getSearchParcels(null, $search, $offset, $this->page_width, 1, $this->branch_to_view, null, null);
             $search_action = true;
             $filter = null;
+
         } else {
             $response = $parcel->getParcels($from_date . '%2000:00:00', $to_date . '%2023:59:59', null, $this->branch_to_view, $offset, $this->page_width, 1, 1, 1, true);
             //$response = $parcel->getParcels(null,null,$offset,$this->page_width);
