@@ -1,6 +1,8 @@
 <?php
 namespace Adapter\Globals;
 
+use Adapter\Util\Calypso;
+
 class ServiceConstant
 {
 
@@ -347,7 +349,12 @@ class ServiceConstant
     public static function getReturnStatus($parcel)
     {
         if (isset($parcel['for_return']) && $parcel['for_return'] != 0) {
-            return 'Return to ' . ucwords($parcel['created_branch']['name'] . ', ' . $parcel['created_branch']['state']['name']);
+            $created_branch = Calypso::getDisplayValue($parcel, 'created_branch.name', null);
+            if (!is_null($created_branch)) {
+                return 'Return to ' . ucwords(Calypso::getDisplayValue($parcel, 'created_branch.name') . ', ' . Calypso::getDisplayValue($parcel, 'created_branch.state.name'));
+            } else {
+                return 'Return to originating branch';
+            }
         } else {
             return false;
         }

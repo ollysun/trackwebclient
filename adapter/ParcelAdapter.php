@@ -95,7 +95,7 @@ class ParcelAdapter extends BaseAdapter
     public function getSearchParcels($status, $waybill_number, $offset = 0, $count = 50, $with_total = null, $branch_id = null, $only_parents = null, $with_created_branch = null)
     {
         $filters = array('status' => $status, 'waybill_number' => $waybill_number, 'with_total_count' => $with_total, 'show_parents' => $only_parents, 'branch_id' => $branch_id, 'with_sender' => 1, 'with_created_branch' => 1, 'with_receiver' => 1, 'with_receiver_address' => 1, 'with_to_branch' => 1, 'offset' => $offset, 'count' => $count);
-        return $this->request(ServiceConstant::URL_GET_ALL_PARCEL, $filters, self::HTTP_GET);
+        return $this->request(ServiceConstant::URL_GET_ALL_PARCEL, array_filter($filters), self::HTTP_GET);
     }
 
     public function getFilterParcelsByDateAndStatus($start_created_date, $end_created_date, $status, $offset = 0, $count = 50, $with_total = null, $branch_id = null, $only_parents = null, $with_created_branch = null)
@@ -261,7 +261,7 @@ class ParcelAdapter extends BaseAdapter
     {
         $response = $this->request(ServiceConstant::URL_GET_ONE_PARCEL, array('waybill_number' => $waybill_number, 'with_linked' => var_export(true, true)), self::HTTP_GET);
         $response = new ResponseHandler($response);
-        if ($response->getStatus() == Response::STATUS_OK) {
+        if ($response->getStatus() == Response::STATUS_OK){
             return $response->getData();
         } else {
             return $response->getError();

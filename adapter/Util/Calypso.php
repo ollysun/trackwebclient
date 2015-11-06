@@ -254,6 +254,18 @@ class Calypso
         Calypso::getInstance()->session('unbag_referrer', $unbag_referrer);
     }
 
+    public function session($key, $value = NULL)
+    {
+        if (isset($_SESSION)) {
+            if ($key && $value != NULL) {
+                $_SESSION[$key] = $value;
+            } elseif ($key && $value == NULL && isset($_SESSION[$key])) {
+                return $_SESSION[$key];
+            }
+        }
+        return false;
+    }
+
     public static function getInstance()
     {
         if (self::$instance == null) {
@@ -315,18 +327,6 @@ class Calypso
         $error = $this->session('error_msg');
         $this->unsetSession('error_msg');
         return $error;
-    }
-
-    public function session($key, $value = NULL)
-    {
-        if (isset($_SESSION)) {
-            if ($key && $value != NULL) {
-                $_SESSION[$key] = $value;
-            } elseif ($key && $value == NULL && isset($_SESSION[$key])) {
-                return $_SESSION[$key];
-            }
-        }
-        return false;
     }
 
     public function unsetSession($key = null)
