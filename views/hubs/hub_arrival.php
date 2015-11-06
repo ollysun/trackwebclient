@@ -86,7 +86,7 @@ $this->params['breadcrumbs'] = array(
                 <?php
 
                 if (isset($parcel_next)) {
-                    $row = 1;
+                    $row = $offset;
                     foreach ($parcel_next as $parcels) {
                         ++$row;
                         ?>
@@ -115,7 +115,7 @@ $this->params['breadcrumbs'] = array(
                 ?>
                 </tbody>
             </table>
-
+            <?= $this->render('../elements/pagination_and_summary', ['first' => $offset, 'last' => $row, 'total_count' => $total_count, 'page_width' => $page_width]) ?>
         </div>
         <?php } else { ?>
             <div class="alert alert-info text-center" role="alert">
