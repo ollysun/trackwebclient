@@ -300,16 +300,39 @@ class BillingController extends BaseController
     public function actionLinkcitytocharge()
     {
         if (Yii::$app->request->isPost) {
-            $biillingAdapter = new BillingAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+            $billingAdapter = new BillingAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
             $cityId = Yii::$app->request->post('city');
             $chargeId = Yii::$app->request->post('charge');
 
-            $status = $biillingAdapter->linkCityToOnForwardingCharge($cityId, $chargeId);
+            $status = $billingAdapter->linkCityToOnForwardingCharge($cityId, $chargeId);
 
             if ($status) {
                 $this->flashSuccess("City mapped to onforwarding charge successfully");
             } else {
-                $this->flashError($biillingAdapter->getLastErrorMessage());
+                $this->flashError($billingAdapter->getLastErrorMessage());
+            }
+        }
+        return $this->redirect(Url::to("/billing/citymapping"));
+    }
+
+    /**
+     * Unlinks a city to an on forwarding charge
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @return \yii\web\Response
+     */
+    public function actionUnlinkcityfromcharge()
+    {
+        if (Yii::$app->request->isPost) {
+            $billingAdapter = new BillingAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+            $cityId = Yii::$app->request->post('city');
+            $chargeId = Yii::$app->request->post('charge');
+
+            $status = $billingAdapter->unlinkCityToOnForwardingCharge($cityId, $chargeId);
+
+            if ($status) {
+                $this->flashSuccess("City unmapped from onforwarding charge successfully");
+            } else {
+                $this->flashError($billingAdapter->getLastErrorMessage());
             }
         }
         return $this->redirect(Url::to("/billing/citymapping"));
