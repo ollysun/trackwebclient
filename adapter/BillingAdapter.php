@@ -43,6 +43,25 @@ class BillingAdapter extends BaseAdapter
     }
 
     /**
+     * Unlinks a city to an on forwarding charge
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @param $cityId
+     * @param $onForwardingChargeId
+     * @return bool
+     */
+    public function unlinkCityToOnForwardingCharge($cityId, $onForwardingChargeId)
+    {
+        $rawResponse = $this->request(ServiceConstant::URL_ON_FORWARDING_UNLINK, ['city_id' => $cityId, 'charge_id' => $onForwardingChargeId], self::HTTP_POST);
+        $response = new ResponseHandler($rawResponse);
+
+        if (!$response->isSuccess()) {
+            $this->lastErrorMessage = $response->getError();
+        }
+
+        return $response->isSuccess();
+    }
+
+    /**
      * This fetches all existing billing/pricing
      * @param $billingPlanId
      * @return array|mixed|string
