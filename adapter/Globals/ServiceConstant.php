@@ -139,6 +139,7 @@ class ServiceConstant
     const URL_ONFORWARDING_CHANGE_STATUS = 'onforwardingcharge/changeStatus';
     const URL_ONFORWARDING_FETCH_ID = 'onforwardingcharge/fetchById';
     const URL_ONFORWARDING_FETCH_ALL = 'onforwardingcharge/fetchAll';
+    const URL_ON_FORWARDING_LINK = 'onforwardingcharge/linkCity';
 
     const URL_BILLING_FETCH_ALL = 'zone/fetchbilling';
     const URL_BILLING_ADD = 'zone/addbilling';
