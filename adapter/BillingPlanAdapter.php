@@ -78,6 +78,7 @@ class BillingPlanAdapter extends BaseAdapter
     public function getBillingPlans($filters = [])
     {
         $filters = array_merge([
+            'company_only' => '1',
             'with_company' => '1',
             'with_total_count' => '1'
         ], $filters);
