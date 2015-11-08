@@ -9,6 +9,7 @@
 namespace app\services;
 
 use Adapter\BankAdapter;
+use Adapter\BillingPlanAdapter;
 use Adapter\Globals\ServiceConstant;
 use Adapter\ParcelAdapter;
 use Adapter\RegionAdapter;
@@ -278,11 +279,12 @@ class ParcelService {
     }
 
     public function buildBillingCalculationData($data) {
-
         $response['payload']['from_branch_id'] = $data['from_branch_id'];
         $response['payload']['to_branch_id'] = $data['to_branch_id'];
-        $response['payload']['onforwarding_charge_id'] = $data['charge_id'];
+        $response['payload']['city_id'] = $data['city_id'];
         $response['payload']['weight'] = $data['weight'];
+        $response['payload']['weight_billing_plan_id'] = Calypso::getValue($data, 'weight_billing_plan_id', BillingPlanAdapter::DEFAULT_WEIGHT_RANGE_PLAN);
+        $response['payload']['onforwarding_billing_plan_id'] = Calypso::getValue($data, 'onforwarding_billing_plan_id', BillingPlanAdapter::DEFAULT_ON_FORWARDING_PLAN);
         return $response;
     }
 }
