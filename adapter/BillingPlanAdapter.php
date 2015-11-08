@@ -26,12 +26,14 @@ class BillingPlanAdapter extends BaseAdapter
     /**
      * Creates a billing plan
      * @author Adegoke Obasa <goke@cottacush.com>
-     * @param $data
+     * @param $name
+     * @param $type
+     * @param $companyId
      * @return bool
      */
-    public function createBillingPlan($data)
+    public function createBillingPlan($name, $type, $companyId)
     {
-        $rawResponse = $this->request(ServiceConstant::URL_BILLING_PLAN_ADD, Json::encode($data), self::HTTP_POST);
+        $rawResponse = $this->request(ServiceConstant::URL_BILLING_PLAN_ADD, ['name' => $name, 'type' => $type, 'company_id' => $companyId], self::HTTP_POST);
         $response = new ResponseHandler($rawResponse);
 
         if (!$response->isSuccess()) {

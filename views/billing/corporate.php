@@ -2,6 +2,7 @@
 /* @var $this yii\web\View */
 use Adapter\BillingPlanAdapter;
 use Adapter\Util\Calypso;
+use yii\helpers\Url;
 
 $this->title = 'Billing: Corporate';
 $this->params['breadcrumbs'] = array(
@@ -54,7 +55,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
 
 <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
-        <form class="validate-form" method="post" action="">
+        <form class="validate-form" method="post" action="<?= Url::to("/billing/savecorporate")?>">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
@@ -68,7 +69,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                     </div>
                     <div class="form-group">
                         <label for="">Associated Company</label>
-                        <select  name="company_id" class="form-control validate required">
+                        <select  name="company" class="form-control validate required">
                             <option value="">Select Company</option>
                             <?php foreach ($companies as $company): ?>
                                 <option
