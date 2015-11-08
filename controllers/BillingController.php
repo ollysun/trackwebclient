@@ -107,7 +107,7 @@ class BillingController extends BaseController
         $ranges = new ResponseHandler($ranges);
         $ranges_list = $ranges->getStatus() == ResponseHandler::STATUS_OK ? $ranges->getData() : [];
 
-        return $this->render('weight_ranges', array('ranges' => $ranges_list));
+        return $this->render('weight_ranges', array('ranges' => $ranges_list, 'billingPlanId' => $billingPlanId));
     }
 
     /**
