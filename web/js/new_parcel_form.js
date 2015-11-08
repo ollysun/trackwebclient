@@ -68,25 +68,6 @@ function getServerResponse(statusCode, message) {
         Parcel.calculateAmount(params);
     }
 
-
-    /*var deliveryShowHide = {
-     who: '#pickUpWrap',
-     options: {
-     identifier: 'input[name="delivery_type"]',
-     mapping: {
-     '1': true,
-     '2': false
-     }
-     },
-     callback: function(ele, val, who) {
-     if (val === '2') {
-     $('select[name="pickup_centres"]').removeClass('validate required').removeClass('has-error');
-     }
-     else {
-     $('select[name="pickup_centres"]').addClass('validate required');
-     }
-     }
-     };*/
     var CODShowHide = {
         who: '#CODAmountWrap',
         options: {
