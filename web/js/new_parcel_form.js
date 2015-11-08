@@ -46,8 +46,8 @@ function getServerResponse(statusCode, message) {
             return false;
         }
 
-        var charge_id = $('#city_receiver').find('option:selected').attr('data-charges-id');
-        if (!charge_id) {
+        var city_id = $('#city_receiver').find('option:selected').attr('data-city_id');
+        if (!city_id) {
             return false;
         }
 
@@ -63,7 +63,7 @@ function getServerResponse(statusCode, message) {
         var params = {};
         params.from_branch_id = $('#city_shipper').find('option:selected').attr('data-branch-id');
         params.to_branch_id = $('#city_receiver').find('option:selected').attr('data-branch-id');
-        params.charge_id = $('#city_receiver').find('option:selected').attr('data-charges-id');
+        params.city_id = $('#city_receiver').find('option:selected').attr('data-city_id');
         params.weight = $('#weight').val();
         Parcel.calculateAmount(params);
     }
@@ -370,7 +370,7 @@ var Parcel = {
                 $.each(response.data, function (i, item) {
 
                     selected = (selectedValue == item.id) ? 'selected="selected"' : '';
-                    html += "<option value='" + item.id + "' data-branch-id='" + item.branch_id + "' data-charges-id='" + item.onforwarding_charge_id + "' " + selected + ">" + item.name.toUpperCase() + "</option>";
+                    html += "<option value='" + item.id + "' data-branch-id='" + item.branch_id + "' data-city_id='" + item.id + "' " + selected + ">" + item.name.toUpperCase() + "</option>";
                 });
                 $(selectSelector).attr('disabled', false);
                 $(selectSelector).html(html);
