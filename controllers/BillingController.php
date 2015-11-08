@@ -293,6 +293,52 @@ class BillingController extends BaseController
         return $this->render('state_mapping', array('states' => $state_list, 'regions' => $region_list, 'output' => $output,));
     }
 
+    /**
+     * Links a city to an on forwarding charge
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @return \yii\web\Response
+     */
+    public function actionLinkcitytocharge()
+    {
+        if (Yii::$app->request->isPost) {
+            $billingAdapter = new BillingAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+            $cityId = Yii::$app->request->post('city');
+            $chargeId = Yii::$app->request->post('charge');
+
+            $status = $billingAdapter->linkCityToOnForwardingCharge($cityId, $chargeId);
+
+            if ($status) {
+                $this->flashSuccess("City mapped to onforwarding charge successfully");
+            } else {
+                $this->flashError($billingAdapter->getLastErrorMessage());
+            }
+        }
+        return $this->redirect(Url::to("/billing/citymapping"));
+    }
+
+    /**
+     * Unlinks a city to an on forwarding charge
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @return \yii\web\Response
+     */
+    public function actionUnlinkcityfromcharge()
+    {
+        if (Yii::$app->request->isPost) {
+            $billingAdapter = new BillingAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+            $cityId = Yii::$app->request->post('city');
+            $chargeId = Yii::$app->request->post('charge');
+
+            $status = $billingAdapter->unlinkCityToOnForwardingCharge($cityId, $chargeId);
+
+            if ($status) {
+                $this->flashSuccess("City unmapped from onforwarding charge successfully");
+            } else {
+                $this->flashError($billingAdapter->getLastErrorMessage());
+            }
+        }
+        return $this->redirect(Url::to("/billing/citymapping"));
+    }
+
     public function actionCitymapping()
     {
         $billingPlanId = Yii::$app->request->get('billing_plan_id', BillingPlanAdapter::DEFAULT_ON_FORWARDING_PLAN);
@@ -337,24 +383,18 @@ class BillingController extends BaseController
         }
 
         $refAdp = new RefAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $states = $refAdp->getStates(1); // Hardcoded Nigeria for now
-        $states = new ResponseHandler($states);
-        $states_list = $states->getStatus() == ResponseHandler::STATUS_OK ? $states->getData() : [];
-
-        $refAdp = new RefAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $charges = $refAdp->getOnforwardingCharges($billingPlanId);
         $charges = new ResponseHandler($charges);
         $charges_list = $charges->getStatus() == ResponseHandler::STATUS_OK ? $charges->getData() : [];
 
+        $zoneAdapter = new RegionAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $cities = new ResponseHandler($zoneAdapter->getAllCity(1, 1));
+        $cities = $cities->getStatus() == ResponseHandler::STATUS_OK ? $cities->getData() : [];
+
         $billingPlanAdapter = new BillingPlanAdapter();
-        $cities = $billingPlanAdapter->getCitiesWithCharges($billingPlanId);
+        $onForwardingCities = $billingPlanAdapter->getCitiesWithCharges($billingPlanId);
 
-        $hubAdp = new BranchAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $hubs = $hubAdp->getAllHubs(false);
-        $hubs = new ResponseHandler($hubs);
-        $hub_list = $hubs->getStatus() == ResponseHandler::STATUS_OK ? $hubs->getData() : [];
-
-        return $this->render('city_mapping', array('cities' => $cities, 'states' => $states_list, 'hubs' => $hub_list, 'charges' => $charges_list));
+        return $this->render('city_mapping', array('onForwardingCities' => $onForwardingCities, 'cities' => $cities, 'charges' => $charges_list));
     }
 
     /**

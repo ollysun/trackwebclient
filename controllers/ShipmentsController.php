@@ -64,12 +64,16 @@ class ShipmentsController extends BaseController
         $page_width = is_null($page_width) ? $this->page_width : $page_width;
         $offset = ($page - 1) * $page_width;
         $parcel = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+
+
         if (isset(Calypso::getInstance()->get()->from, Calypso::getInstance()->get()->to)) {
             $from_date = Calypso::getInstance()->get()->from;
             $to_date = Calypso::getInstance()->get()->to;
-            $filter = isset(Calypso::getInstance()->get()->date_filter) ? Calypso::getInstance()->get()->date_filter : '-1';
-            $response = $parcel->getFilterParcelsByDateAndStatus($from_date . '%2000:00:00', $to_date . '%2023:59:59', $filter, $offset, $this->page_width, 1, $this->branch_to_view, 1, true);
+            $filter = null;
+            //  $filter = isset(Calypso::getInstance()->get()->date_filter) ? Calypso::getInstance()->get()->date_filter : '-1';
+            $response = $parcel->getFilterParcelsByDateAndStatus($from_date . ' 00:00:00', $to_date . ' 23:59:59', $filter, $offset, $this->page_width, 1, null,null, true);
             $search_action = true;
+
         } elseif (!empty(Calypso::getInstance()->get()->search)) { //check if not empty criteria
             $search = Calypso::getInstance()->get()->search;
             $response = $parcel->getSearchParcels(null, $search, $offset, $this->page_width, 1, $this->branch_to_view, 1, true);
@@ -309,7 +313,7 @@ class ShipmentsController extends BaseController
                     if ($response->getStatus() == ResponseHandler::STATUS_OK) {
                         $this->flashSuccess('Teller successfully added');
                     } else {
-                        $this->flashError('An error occurred while trying to add teller. #' . $response->getError());
+                        $this->flashError($response->getError());
                     }
                 }
             }
@@ -324,9 +328,10 @@ class ShipmentsController extends BaseController
             $search_action = true;
         } elseif (!empty(Calypso::getInstance()->get()->search)) {  //check if not empty criteria
             $search = Calypso::getInstance()->get()->search;
-            $response = $parcel->getSearchParcels(null, $search, $offset, $this->page_width, 1, $this->branch_to_view, 1);
+            $response = $parcel->getSearchParcels(null, $search, $offset, $this->page_width, 1, $this->branch_to_view, null, null);
             $search_action = true;
             $filter = null;
+
         } else {
             //$response = $parcel->getNewParcelsByDate(date('Y-m-d'),$offset,$this->page_width, 1, $this->branch_to_view, 1);
             $response = $parcel->getNewParcelsByDate(date('Y-m-d 00:00:00', strtotime('now')), $offset, $this->page_width, 1, $this->branch_to_view, 1);
@@ -347,7 +352,8 @@ class ShipmentsController extends BaseController
         return $this->render('processed', array('filter' => $filter, 'parcels' => $data, 'from_date' => $from_date, 'to_date' => $to_date, 'offset' => $offset, 'page_width' => $this->page_width, 'search' => $search_action, 'total_count' => $total_count, 'banks' => $banks));
     }
 
-    public function actionRequestreturn() {
+    public function actionRequestreturn()
+    {
         $parcel = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         if (\Yii::$app->request->isPost) {
             $records = \Yii::$app->request->post();
@@ -629,10 +635,11 @@ class ShipmentsController extends BaseController
      * This action opens a parcel of type bag.
      * @author Akintewe Rotimi <akintewe.rotimi@gmail.com>
      */
-    public function actionOpenbag() {
+    public function actionOpenbag()
+    {
 
         $waybill_number = Calypso::getInstance()->get()->waybill_number;
-        if(!$waybill_number) {
+        if (!$waybill_number) {
             $this->flashError('Please ensure that the correct bag item is selected');
             return $this->redirect('/shipments/view_bag?waybill_number=' . $waybill_number);
         }
@@ -640,7 +647,7 @@ class ShipmentsController extends BaseController
         $unbag_referrer = Calypso::getInstance()->getUnbagReferrer();
 
         $parcel = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $response = $parcel->openBag( ['waybill_number' => $waybill_number ] );
+        $response = $parcel->openBag(['waybill_number' => $waybill_number]);
         $response = new ResponseHandler($response);
 
         if ($response->getStatus() == ResponseHandler::STATUS_OK) {
@@ -657,19 +664,20 @@ class ShipmentsController extends BaseController
      * This action remove one or more items (parcels) from a bag.
      * @author Akintewe Rotimi <akintewe.rotimi@gmail.com>
      */
-    public function actionRemovefrombag() {
+    public function actionRemovefrombag()
+    {
 
         $rawBody = \Yii::$app->request->getRawBody();
         $payload = json_decode($rawBody, true);
 
-        if(!isset($payload['id'], $payload['linked_waybills'])) {
+        if (!isset($payload['id'], $payload['linked_waybills'])) {
             return $this->sendErrorResponse('There is a problem with the data sent. Please try again.', HttpStatusCodes::HTTP_200);
         }
         $postData['bag_waybill_number'] = $payload['id'];
         $postData['parcel_waybill_number_list'] = implode(',', $payload['linked_waybills']);
 
         $parcel = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $response = $parcel->removeFromBag( $postData );
+        $response = $parcel->removeFromBag($postData);
         $response = new ResponseHandler($response);
 
         if ($response->getStatus() == ResponseHandler::STATUS_OK) {
@@ -684,7 +692,8 @@ class ShipmentsController extends BaseController
         }
     }
 
-    public function actionReceivefromdispatcher() {
+    public function actionReceivefromdispatcher()
+    {
         if (isset(Calypso::getInstance()->post()->waybill_numbers)) {
             $parcel = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
             $response = $parcel->receiveFromBeingDelivered([
@@ -713,7 +722,7 @@ class ShipmentsController extends BaseController
             return $this->sendErrorResponse("Invalid parameter(s) sent!", null);
         }
         $parcel = new  ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $response = $parcel->getParcel($staff_no,$status , $branch_id, true);
+        $response = $parcel->getParcel($staff_no, $status, $branch_id, true);
 
         if ($response['status'] === ResponseHandler::STATUS_OK) {
             return $this->sendSuccessResponse($response['data']);

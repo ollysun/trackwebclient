@@ -1,6 +1,8 @@
 <?php
 namespace Adapter\Globals;
 
+use Adapter\Util\Calypso;
+
 class ServiceConstant
 {
 
@@ -137,6 +139,8 @@ class ServiceConstant
     const URL_ONFORWARDING_CHANGE_STATUS = 'onforwardingcharge/changeStatus';
     const URL_ONFORWARDING_FETCH_ID = 'onforwardingcharge/fetchById';
     const URL_ONFORWARDING_FETCH_ALL = 'onforwardingcharge/fetchAll';
+    const URL_ON_FORWARDING_LINK = 'onforwardingcharge/linkCity';
+    const URL_ON_FORWARDING_UNLINK = 'onforwardingcharge/unlinkCity';
 
     const URL_BILLING_FETCH_ALL = 'zone/fetchbilling';
     const URL_BILLING_ADD = 'zone/addbilling';
@@ -349,7 +353,12 @@ class ServiceConstant
     public static function getReturnStatus($parcel)
     {
         if (isset($parcel['for_return']) && $parcel['for_return'] != 0) {
-            return 'Return to ' . ucwords($parcel['created_branch']['name'] . ', ' . $parcel['created_branch']['state']['name']);
+            $created_branch = Calypso::getDisplayValue($parcel, 'created_branch.name', null);
+            if (!is_null($created_branch)) {
+                return 'Return to ' . ucwords(Calypso::getDisplayValue($parcel, 'created_branch.name') . ', ' . Calypso::getDisplayValue($parcel, 'created_branch.state.name'));
+            } else {
+                return 'Return to originating branch';
+            }
         } else {
             return false;
         }
