@@ -112,6 +112,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                     </div>
                 </div>
                 <div class="modal-footer">
+                    <input type="hidden" name="billing_plan_id" value="<?= $billingPlanId?>">
                     <input type="hidden" name="task" value="create">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary">Add Onforwarding Charge</button>
