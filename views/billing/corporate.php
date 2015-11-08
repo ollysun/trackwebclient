@@ -42,7 +42,8 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                             <td><?= strtoupper(Calypso::getValue(BillingPlanAdapter::getTypes(), Calypso::getValue($billingPlan, 'type'))); ?></td>
                             <td>
                                 <?php if (Calypso::getValue($billingPlan, 'type') == BillingPlanAdapter::TYPE_ON_FORWARDING): ?>
-
+                                    <a href="<?= Url::to(["/billing/onforwarding", 'billing_plan_id' => Calypso::getValue($billingPlan, 'id')])?>" class="btn btn-xs btn-default">Onforwarding Charges</a>
+                                    <a href="<?= Url::to(["/billing/citymapping", 'billing_plan_id' => Calypso::getValue($billingPlan, 'id')])?>" class="btn btn-xs btn-primary">City Mapping</a>
                                 <?php elseif (Calypso::getValue($billingPlan, 'type') == BillingPlanAdapter::TYPE_WEIGHT): ?>
                                     <a href="<?= Url::to(["/billing/weightranges", 'billing_plan_id' => Calypso::getValue($billingPlan, 'id')])?>" class="btn btn-xs btn-default">Weight Ranges</a>
                                     <a href="<?= Url::to(["/billing/pricing", 'billing_plan_id' => Calypso::getValue($billingPlan, 'id')])?>" class="btn btn-xs btn-primary">Billing</a>

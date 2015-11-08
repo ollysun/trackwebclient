@@ -313,7 +313,7 @@ class BillingController extends BaseController
                 $this->flashError($billingAdapter->getLastErrorMessage());
             }
         }
-        return $this->redirect(Url::to("/billing/citymapping"));
+        return $this->redirect(Yii::$app->request->referrer);
     }
 
     /**
@@ -336,7 +336,7 @@ class BillingController extends BaseController
                 $this->flashError($billingAdapter->getLastErrorMessage());
             }
         }
-        return $this->redirect(Url::to("/billing/citymapping"));
+        return $this->redirect(Yii::$app->request->referrer);
     }
 
     public function actionCitymapping()
@@ -446,6 +446,7 @@ class BillingController extends BaseController
                     }
                 }
             }
+            return $this->refresh();
         }
 
         $offset = ($page - 1) * $this->page_width;
@@ -460,7 +461,7 @@ class BillingController extends BaseController
             $charges_list = empty($data['charges']) ? 0 : $data['charges'];
         }
 
-        return $this->render('onforwarding', array('charges' => $charges_list, 'total_count' => $total_count, 'offset' => $offset, 'page_width' => $this->page_width));
+        return $this->render('onforwarding', array('charges' => $charges_list, 'total_count' => $total_count, 'offset' => $offset, 'page_width' => $this->page_width, 'billingPlanId' => $billingPlanId));
     }
 
     /**
