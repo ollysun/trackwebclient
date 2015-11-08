@@ -121,9 +121,7 @@ $this->params['content_header_button'] = $this->render('../elements/content_head
                                     <?php endif; ?>
                                     <button title="Clone this shipment" data-href="<?= Url::toRoute(['/parcels/new?id=' . $parcel['id']]) ?>"
                                        class="btn btn-xs btn-info btnClone"><i class="fa fa-copy"></i></button>
-                                    <?php if (!in_array($parcel['status'], [ServiceConstant::DELIVERED, ServiceConstant::BEING_DELIVERED, ServiceConstant::CANCELLED]) && !$parcel['for_return'] && !in_array($parcel['entity_type'], [ServiceConstant::ENTITY_TYPE_BAG, ServiceConstant::ENTITY_TYPE_PARENT])) : ?>
-                                        <button data-return="<?= $parcel['waybill_number'] ?>"" title="Request shipment return" type="submit" class="btn btn-xs btn-danger" name="parcel_id"><i class="fa fa-refresh"></i></button>
-                                    <?php endif; ?>
+                                    <?= $this->render('../elements/parcel/partial_return_button',['parcel'=>$parcel]) ?>
                                 </td>
                             </tr>
                             <?php
@@ -133,11 +131,6 @@ $this->params['content_header_button'] = $this->render('../elements/content_head
                     </tbody>
                 </table>
             </div>
-            <form method="post" id="request-returns" action="requestreturn">
-                <input type="hidden" name="waybill_numbers" value>
-                <input type="hidden" name="comment" value>
-                <input type="hidden" name="task" value="request_return">
-            </form>
             <?= $this->render('../elements/pagination_and_summary', ['first' => $offset, 'last' => $i, 'total_count' => $total_count, 'page_width' => $page_width]) ?>
         <?php else: ?>
             There are no parcels matching the specified criteria.
@@ -216,6 +209,8 @@ $this->params['content_header_button'] = $this->render('../elements/content_head
         </form>
     </div>
 </div>
+
+<?= $this->render('../elements/parcel/partial_return_form') ?>
 
 <!-- this page specific scripts -->
 <?= $this->registerJsFile('@web/js/libs/jquery.dataTables.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>

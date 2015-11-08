@@ -96,13 +96,13 @@ use Adapter\Globals\ServiceConstant;
                     <th></th>
                 </tr>
                 <tr>
-                    <th width="220px;">CONSIGNEE NAME</th>
-                    <th width="170px;">AIRWAY BILL NUMBER</th>
+                    <th width="400px;">CONSIGNEE NAME</th>
+                    <th width="350px;">AIRWAY BILL NUMBER</th>
                     <th width="100px;">ORIGIN CODE</th>
                     <th width="60px;">NO PCS.</th>
                     <th width="210px;">DATE/TIME</th>
                     <th width="90px;">CD</th>
-                    <th width="250px;">NAME OF PERSON <br> RECEIVING SHIPMENT</th>
+                    <th width="400px;">NAME OF PERSON <br> RECEIVING SHIPMENT</th>
                     <th width="180px;">SIGNATURE</th>
                 </tr>
                 </thead>
