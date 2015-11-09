@@ -642,6 +642,7 @@ class BillingController extends BaseController
 
         // Add Offset and Count
         $offset = ($page - 1) * $this->page_width;
+        $filters['with_total_count'] = '1';
         $filters['offset'] = $offset;
         $filters['count'] = $this->page_width;
 
