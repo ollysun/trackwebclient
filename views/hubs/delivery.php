@@ -20,7 +20,7 @@ $this->params['breadcrumbs'] = [['label' => 'Sorted Shipments']];
 
     <div class="clearfix">
         <div class="main-box-header table-search-form">
-            <form class="clearfix" method="get">
+            <form method="get">
                 <div class="pull-left">
                     <div class="pull-left form-group">
                         <label for="branch_type">Branch type</label><br>
@@ -43,44 +43,39 @@ $this->params['breadcrumbs'] = [['label' => 'Sorted Shipments']];
                                 class="fa fa-search"></i></button>
                     </div>
                 </div>
+            </form>
 
-                <div class="pull-right clearfix">
-                    <div class="table-search-form form-inline clearfix">
-                        <div class="pull-left form-group">
-                            <label for="">&nbsp;</label><br>
-                            <button type="button" class="btn btn-default btn-sm" data-toggle="modal" id="btnCreateBag">
-                                Create bag
-                            </button>
-                            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" id="manifest">
-                                Generate Manifest
-                            </button>
-                            <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" id="unsort_btn">
-                                Unsort
-                            </button>
-                        </div>
+            <div class="pull-right">
+                <div class="table-search-form form-inline clearfix">
+                    <div class="pull-left form-group">
+                        <label for="">&nbsp;</label><br>
+                        <button type="button" class="btn btn-default btn-sm" data-toggle="modal" id="btnCreateBag">
+                            Create bag
+                        </button>
+                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" id="manifest">
+                            Generate Manifest
+                        </button>
+                        <?= $this->render('../elements/parcel/parcel_unsort_button') ?>
+                        <form class="pull-right" method="get" id="records_filter">
+                            <div class="form-group form-group-sm form-inline">
+                                <br/>
+                                <label for="page_width">Records</label>
+                                <select name="page_width" id="page_width" class="form-control ">
+                                    <?php
+                                    $page_width = isset($page_width) ? $page_width : 50;
+                                    for ($i = 50; $i <= 500; $i += 50) {
+                                        ?>
+                                        <option <?= $page_width == $i ? 'selected' : '' ?>
+                                            value="<?= $i ?>"><?= $i ?></option>
+                                        <?php
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                        </form>
                     </div>
                 </div>
-            </form>
-
-            <form class="clearfix" method="get" id="records_filter">
-                <div class="pull-left hidden">
-                    <p class="form-control-static input-sm">Showing 1 to 49 of 49 shipments</p>
-                </div>
-                <div class="pull-right form-group form-group-sm form-inline">
-                    <label for="page_width">Records</label>
-                    <select name="page_width" id="page_width" class="form-control ">
-                        <?php
-                        $page_width = isset($page_width) ? $page_width : 50;
-                        for ($i = 50; $i <= 500; $i += 50) {
-                            ?>
-                            <option <?= $page_width == $i ? 'selected' : '' ?> value="<?= $i ?>"><?= $i ?></option>
-                            <?php
-                        }
-                        ?>
-                    </select>
-                </div>
-            </form>
-
+            </div>
         </div>
     </div>
 
@@ -291,15 +286,9 @@ $this->params['breadcrumbs'] = [['label' => 'Sorted Shipments']];
     </div>
 </div>
 
-<form id="unsort_form" action="<?= Url::to('/hubs/unsort') ?>" method="post">
-    <input id="unsort_waybill_numbers" type="hidden" name="waybill_numbers"/>
-</form>
-
-
 <!-- this page specific scripts -->
 <?php $this->registerJsFile('@web/js/libs/jquery.dataTables.js', ['depends' => [JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/libs/dataTables.fixedHeader.js', ['depends' => [JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/libs/dataTables.tableTools.js', ['depends' => [JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/libs/jquery.dataTables.bootstrap.js', ['depends' => [JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/hub_delivery.js', ['depends' => [JqueryAsset::className()]]); ?>
-<?php $this->registerJsFile('@web/js/bootbox.min.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
