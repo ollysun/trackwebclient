@@ -21,6 +21,7 @@ class BulkShipmentRequestForm extends Model
 {
 
     const MAX_ROWS = 1000;
+    const MIN_ROWS = 2;
     /** @var  UploadedFile */
     public $dataFile;
 
@@ -165,7 +166,7 @@ class BulkShipmentRequestForm extends Model
             return false;
         }
 
-        if (count($contents) < 2) {
+        if (count($contents) < self::MIN_ROWS) {
             $this->addError($attribute, 'No requests in data file. Please add shipment requests');
             return false;
         }
