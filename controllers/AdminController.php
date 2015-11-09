@@ -561,7 +561,7 @@ class AdminController extends BaseController
     public function actionManagecities()
     {
         $refAdp = new RefAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $states = new ResponseHandler($refAdp->getStates(1)); // Hardcoded Nigeria for now
+        $states = new ResponseHandler($refAdp->getStates(ServiceConstant::COUNTRY_NIGERIA)); // Hardcoded Nigeria for now
         $states_list = $states->getStatus() == ResponseHandler::STATUS_OK ? $states->getData() : [];
 
         $zoneAdapter = new RegionAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
