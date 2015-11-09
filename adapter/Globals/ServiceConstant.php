@@ -139,6 +139,8 @@ class ServiceConstant
     const URL_ONFORWARDING_CHANGE_STATUS = 'onforwardingcharge/changeStatus';
     const URL_ONFORWARDING_FETCH_ID = 'onforwardingcharge/fetchById';
     const URL_ONFORWARDING_FETCH_ALL = 'onforwardingcharge/fetchAll';
+    const URL_ON_FORWARDING_LINK = 'onforwardingcharge/linkCity';
+    const URL_ON_FORWARDING_UNLINK = 'onforwardingcharge/unlinkCity';
 
     const URL_BILLING_FETCH_ALL = 'zone/fetchbilling';
     const URL_BILLING_ADD = 'zone/addbilling';
@@ -186,6 +188,10 @@ class ServiceConstant
     const URL_GET_ALL_CORPORATE_ECS = 'company/getAllEcs';
     const URL_LINK_EC_TO_COMPANY = 'company/linkEc';
     const URL_RELINK_EC_TO_COMPANY = 'company/relinkEc';
+
+    const URL_BILLING_PLAN_GET_CITIES_WITH_CHARGE = 'billingPlan/getCitiesWithCharge';
+    const URL_BILLING_PLAN_ADD = 'billingPlan/add';
+    const URL_BILLING_PLAN_GET_ALL = 'billingPlan/getAll';
 
     const DATE_TIME_FORMAT = 'd M Y H:i';
     const DATE_FORMAT = 'd M Y';

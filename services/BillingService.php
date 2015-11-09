@@ -11,8 +11,21 @@ namespace app\services;
 
 use Adapter\Util\Calypso;
 
+/**
+ * Class BillingService
+ * @package app\services
+ * @author Adegoke Obasa <goke@cottacush.com>
+ * @author Rotimi Akintewe <akintewe.rotimi@gmail.com>
+ */
 class BillingService {
 
+    /**
+     * Builds post data for creating and updating billing
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @author Rotimi Akintewe <akintewe.rotimi@gmail.com>
+     * @param $data
+     * @return array
+     */
     public function buildPostData($data) {
 
         $response = [];

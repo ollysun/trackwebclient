@@ -128,6 +128,7 @@ class Calypso
             'All_Shipments' => ['base_link' => 'shipments/all', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_EC, ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
             'Administrator' => ['base' => 'admin', 'class' => 'fa fa-user', 'base_link' => [
                 'Manage_branches' => ['base_link' => 'admin/managebranches', 'class' => ''],
+                'Manage_cities' => ['base_link' => 'admin/managecities', 'class' => ''],
                 'Manage_routes' => ['base_link' => 'admin/manageroutes', 'class' => ''],
                 'Manage_staff_accounts' => ['base_link' => 'admin/managestaff', 'class' => ''],
                 'Company_Registration' => ['base_link' => 'admin/companies', 'class' => ''],
@@ -141,6 +142,7 @@ class Calypso
                     'Weight_Ranges' => ['base_link' => 'billing/weightranges', 'class' => ''],
                     'Pricing' => ['base_link' => 'billing/pricing', 'class' => ''],
                     'Onforwarding_Charges' => ['base_link' => 'billing/onforwarding', 'class' => ''],
+                    'Corporate_Billing' => ['base_link' => 'billing/corporate', 'class' => '']
                 ], 'branch' => [ServiceConstant::BRANCH_TYPE_HQ]]
             ], 'branch' => [ServiceConstant::BRANCH_TYPE_HQ]],
             'Parcel History' => [
