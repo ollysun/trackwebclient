@@ -353,7 +353,7 @@ $is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
                                             <label>Onforwarding Billing Plan</label>
                                             <select id="onforwarding_billing_plan" class="form-control billing_plan">
                                                 <?php foreach($onforwardingBillingPlans as $onforwardingBillingPlan):?>
-                                                    <option value="<?= Calypso::getValue($onforwardingBillingPlan, 'id')?>"><?= strtoupper(Calypso::getValue($onforwardingBillingPlan, 'name'))?></option>
+                                                    <option value="<?= Calypso::getValue($onforwardingBillingPlan, 'id')?>" <?= Calypso::getValue($parcel, 'company_id') == Calypso::getValue($onforwardingBillingPlan, 'company_id') ? 'selected' : '';?>><?= strtoupper(Calypso::getValue($onforwardingBillingPlan, 'name'))?></option>
                                                 <?php endforeach;?>
                                             </select>
                                         </div>
@@ -361,7 +361,7 @@ $is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
                                             <label>Weight Billing Plan</label>
                                             <select id="weight_billing_plan" class="form-control billing_plan">
                                                 <?php foreach($weightBillingPlans as $weightBillingPlan):?>
-                                                    <option value="<?= Calypso::getValue($weightBillingPlan, 'id')?>"><?= strtoupper(Calypso::getValue($weightBillingPlan, 'name'))?></option>
+                                                    <option value="<?= Calypso::getValue($weightBillingPlan, 'id')?>" <?= Calypso::getValue($parcel, 'company_id') == Calypso::getValue($onforwardingBillingPlan, 'company_id') ? 'selected' : '';?>><?= strtoupper(Calypso::getValue($weightBillingPlan, 'name'))?></option>
                                                 <?php endforeach;?>
                                             </select>
                                         </div>

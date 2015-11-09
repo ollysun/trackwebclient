@@ -100,6 +100,7 @@ class ParcelService {
         $parcel['receiver_location']['id'] = Calypso::getValue($pickupRequest, 'destination_city_id');
         $parcel['info']['receiver_address']['street_address1'] = Calypso::getValue($pickupRequest, 'destination_address');
         $parcel['info']['other_info'] = Calypso::getValue($pickupRequest, 'shipment_description');
+        $parcel['company_id'] = Calypso::getValue($pickupRequest, 'company.id');;
 
         return $parcel;
     }
@@ -162,6 +163,7 @@ class ParcelService {
             $parcel['info']['cash_on_delivery'] = 1;
         }
         $parcel['is_merchant'] = 1;
+        $parcel['company_id'] = Calypso::getValue($shipmentRequest, 'company.id');
 
         return $parcel;
     }
