@@ -1,8 +1,8 @@
 // Old browser support (IE especially)
 if (!Array.isArray) {
-  Array.isArray = function(arg) {
-    return Object.prototype.toString.call(arg) === '[object Array]';
-  };
+    Array.isArray = function (arg) {
+        return Object.prototype.toString.call(arg) === '[object Array]';
+    };
 }
 function getServerResponse(statusCode, message) {
     alert(message);
@@ -46,8 +46,8 @@ function getServerResponse(statusCode, message) {
             return false;
         }
 
-        var charge_id = $('#city_receiver').find('option:selected').attr('data-charges-id');
-        if (!charge_id) {
+        var city_id = $('#city_receiver').find('option:selected').attr('data-city_id');
+        if (!city_id) {
             return false;
         }
 
@@ -63,30 +63,17 @@ function getServerResponse(statusCode, message) {
         var params = {};
         params.from_branch_id = $('#city_shipper').find('option:selected').attr('data-branch-id');
         params.to_branch_id = $('#city_receiver').find('option:selected').attr('data-branch-id');
-        params.charge_id = $('#city_receiver').find('option:selected').attr('data-charges-id');
+        params.city_id = $('#city_receiver').find('option:selected').attr('data-city_id');
         params.weight = $('#weight').val();
+        var onforwardingBillingField = $("#onforwarding_billing_plan");
+        var weightBillingField = $("#onforwarding_billing_plan");
+        if (weightBillingField.is(":visible") && onforwardingBillingField.is(":visible")) {
+            params.weight_billing_plan_id = weightBillingField.val();
+            params.onforwarding_billing_plan_id = onforwardingBillingField.val();
+        }
         Parcel.calculateAmount(params);
     }
 
-
-    /*var deliveryShowHide = {
-     who: '#pickUpWrap',
-     options: {
-     identifier: 'input[name="delivery_type"]',
-     mapping: {
-     '1': true,
-     '2': false
-     }
-     },
-     callback: function(ele, val, who) {
-     if (val === '2') {
-     $('select[name="pickup_centres"]').removeClass('validate required').removeClass('has-error');
-     }
-     else {
-     $('select[name="pickup_centres"]').addClass('validate required');
-     }
-     }
-     };*/
     var CODShowHide = {
         who: '#CODAmountWrap',
         options: {
@@ -370,7 +357,7 @@ var Parcel = {
                 $.each(response.data, function (i, item) {
 
                     selected = (selectedValue == item.id) ? 'selected="selected"' : '';
-                    html += "<option value='" + item.id + "' data-branch-id='" + item.branch_id + "' data-charges-id='" + item.onforwarding_charge_id + "' " + selected + ">" + item.name.toUpperCase() + "</option>";
+                    html += "<option value='" + item.id + "' data-branch-id='" + item.branch_id + "' data-city_id='" + item.id + "' " + selected + ">" + item.name.toUpperCase() + "</option>";
                 });
                 $(selectSelector).attr('disabled', false);
                 $(selectSelector).html(html);
@@ -475,6 +462,7 @@ var Parcel = {
                     amount = result.data;
                     $('.amount-due').text(amount);
                     $('input#amount').val(amount);
+                    $('input#corporate_amount').val(amount);
                 } else {
                     alert(result.message);
                 }
@@ -582,16 +570,34 @@ $(document).ready(function () {
         }
     });
 
+    var calculateBilling = function () {
+        var params = {};
+        params.from_branch_id = $('#city_shipper').find('option:selected').attr('data-branch-id');
+        params.to_branch_id = $('#city_receiver').find('option:selected').attr('data-branch-id');
+        params.city_id = $('#city_receiver').find('option:selected').attr('data-city_id');
+        params.weight = $('#weight').val();
+        var onforwardingBillingField = $("#onforwarding_billing_plan");
+        var weightBillingField = $("#weight_billing_plan");
+        if (weightBillingField.is(":visible") && onforwardingBillingField.is(":visible")) {
+            params.weight_billing_plan_id = weightBillingField.val();
+            params.onforwarding_billing_plan_id = onforwardingBillingField.val();
+        }
+        Parcel.calculateAmount(params);
+    };
+
     /**
      * Hides and shows billing input box
      * Depends on billing method
      */
     $("input[name='billing_method']").click(function () {
+
         $(".amount-due-wrap").hide();
-        $('#' + $(this).val() + '_billing').show();
-        if ($(this).val() == 'manual') {
+        var val = $(this).val();
+        $('#' + val + '_billing').show();
+        if (val == 'manual') {
             $("input[name='manual_amount']").addClass('validate integer required');
         } else {
+            calculateBilling();
             $("input[name='manual_amount']").removeClass('validate integer required');
         }
     });
@@ -599,5 +605,9 @@ $(document).ready(function () {
     $("input[name='manual_amount']").keyup(function () {
         var _this = $(this);
         _this.val(_this.val().replace(/[^\d]/g, ''));
+    });
+
+    $("#weight_billing_plan, #onforwarding_billing_plan").change(function () {
+        calculateBilling();
     });
 });
