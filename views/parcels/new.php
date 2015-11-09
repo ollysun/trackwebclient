@@ -343,6 +343,31 @@ $is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
                                     <div class="amount-due currency naira">0.00</div>
                                     <input type="hidden" name="amount" id="amount" />
                                 </div>
+                                <div id="corporate_billing" class="form-group amount-due-wrap" style="display: none;">
+                                    <label for="">Amount Due</label>
+
+                                    <div class="amount-due currency naira">0.00</div>
+
+                                    <div class="row">
+                                        <div class="col-md-6 col-xs-12">
+                                            <label>Onforwarding Billing Plan</label>
+                                            <select id="onforwarding_billing_plan" class="form-control billing_plan">
+                                                <?php foreach($onforwardingBillingPlans as $onforwardingBillingPlan):?>
+                                                    <option value="<?= Calypso::getValue($onforwardingBillingPlan, 'id')?>"><?= strtoupper(Calypso::getValue($onforwardingBillingPlan, 'name'))?></option>
+                                                <?php endforeach;?>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6 col-xs-12">
+                                            <label>Weight Billing Plan</label>
+                                            <select id="weight_billing_plan" class="form-control billing_plan">
+                                                <?php foreach($weightBillingPlans as $weightBillingPlan):?>
+                                                    <option value="<?= Calypso::getValue($weightBillingPlan, 'id')?>"><?= strtoupper(Calypso::getValue($weightBillingPlan, 'name'))?></option>
+                                                <?php endforeach;?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <input type="hidden" name="corporate_amount" id="corporate_amount" />
+                                </div>
                                 <div id="manual_billing" class="form-group amount-due-wrap" style="display: none;">
                                     <label for="">Amount Due</label>
                                     <input type="text" class="form-control" name="manual_amount" id="manual_amount" />
@@ -358,6 +383,10 @@ $is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
                                         <div class="radio-inline">
                                             <input id="manualBillingMethod" type="radio" name="billing_method" value="manual">
                                             <label for="manualBillingMethod" class="">Manual</label>
+                                        </div>
+                                        <div class="radio-inline">
+                                            <input id="corporateBillingMethod" type="radio" name="billing_method" value="corporate">
+                                            <label for="corporateBillingMethod" class="">Corporate</label>
                                         </div>
                                     </div>
                                 </div>

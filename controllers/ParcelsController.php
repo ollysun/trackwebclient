@@ -10,6 +10,7 @@ namespace app\controllers;
 
 
 use Adapter\BankAdapter;
+use Adapter\BillingPlanAdapter;
 use Adapter\CompanyAdapter;
 use Adapter\Globals\ServiceConstant;
 use Adapter\ParcelAdapter;
@@ -93,6 +94,10 @@ class ParcelsController extends BaseController
 
         $centres_list = array_merge($centres_list, $hubs_list);
 
+        $bilingPlanAdapter = new BillingPlanAdapter();
+        $onforwardingBillingPlans = $bilingPlanAdapter->getBillingPlans(['no_paginate' => '1', 'type' => BillingPlanAdapter::TYPE_ON_FORWARDING]);
+        $weightBillingPlans = $bilingPlanAdapter->getBillingPlans(['no_paginate' => '1', 'type' => BillingPlanAdapter::TYPE_WEIGHT]);
+
         return $this->render('new', array(
             'Banks' => $banks,
             'ShipmentType' => $shipmentType,
@@ -103,7 +108,9 @@ class ParcelsController extends BaseController
             'paymentMethod' => $paymentMethod,
             'centres' => $centres_list,
             'branch' => $user['branch'],
-            'parcel' => $parcel
+            'parcel' => $parcel,
+            'onforwardingBillingPlans' => $onforwardingBillingPlans,
+            'weightBillingPlans' => $weightBillingPlans
         ));
     }
 
