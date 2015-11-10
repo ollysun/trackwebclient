@@ -615,6 +615,8 @@ $(document).ready(function () {
 
     $("#company").change(function () {
         var companyId = $(this).val();
+        $("#onforwarding_billing_plan").html("<option selected>Select Company</option>");
+        $("#weight_billing_plan").html("<option selected>Select Company</option>");
         if (typeof weightBillingPlans != "undefined" && typeof onforwardingBillingPlans != "undefined" && companyId != "") {
             if (!weightBillingPlans.hasOwnProperty(companyId)) {
                 alert("This company does not have a weight billing plan");
