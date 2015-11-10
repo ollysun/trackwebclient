@@ -24,6 +24,7 @@ use Adapter\BranchAdapter;
 use app\services\ParcelService;
 use Adapter\Util\Calypso;
 use Yii;
+use yii\helpers\ArrayHelper;
 
 class ParcelsController extends BaseController
 {
@@ -97,6 +98,9 @@ class ParcelsController extends BaseController
         $bilingPlanAdapter = new BillingPlanAdapter();
         $onforwardingBillingPlans = $bilingPlanAdapter->getBillingPlans(['no_paginate' => '1', 'type' => BillingPlanAdapter::TYPE_ON_FORWARDING]);
         $weightBillingPlans = $bilingPlanAdapter->getBillingPlans(['no_paginate' => '1', 'type' => BillingPlanAdapter::TYPE_WEIGHT]);
+
+        $onforwardingBillingPlans = ArrayHelper::map($onforwardingBillingPlans, 'id', 'name', 'company_id');
+        $weightBillingPlans = ArrayHelper::map($weightBillingPlans, 'id', 'name', 'company_id');
 
         $companyAdapter = new CompanyAdapter();
         $companies = $companyAdapter->getAllCompanies([]);
