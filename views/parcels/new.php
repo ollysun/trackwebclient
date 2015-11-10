@@ -2,6 +2,7 @@
 use Adapter\Util\Calypso;
 use Adapter\Globals\ServiceConstant;
 use yii\helpers\Html;
+use yii\helpers\Json;
 use yii\web\View;
 /* @var $this yii\web\View */
 $this->title = 'Create a New Shipment';
@@ -349,20 +350,25 @@ $is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
                                     <div class="amount-due currency naira">0.00</div>
 
                                     <div class="row">
-                                        <div class="col-md-6 col-xs-12">
-                                            <label>Onforwarding Billing Plan</label>
-                                            <select id="onforwarding_billing_plan" class="form-control billing_plan">
-                                                <?php foreach($onforwardingBillingPlans as $onforwardingBillingPlan):?>
-                                                    <option value="<?= Calypso::getValue($onforwardingBillingPlan, 'id')?>" <?= Calypso::getValue($parcel, 'company_id') == Calypso::getValue($onforwardingBillingPlan, 'company_id') ? 'selected' : '';?>><?= strtoupper(Calypso::getValue($onforwardingBillingPlan, 'name'))?></option>
+                                        <div class="col-md-4 col-xs-12">
+                                            <label>Companies</label>
+                                            <select id="company" class="form-control billing_plan">
+                                                <option value="" selected>Select Company</option>
+                                                <?php foreach($companies as $company):?>
+                                                    <option value="<?= Calypso::getValue($company, 'id')?>" <?= Calypso::getValue($parcel, 'company_id') == Calypso::getValue($company, 'id') ? 'selected' : '';?>><?= strtoupper(Calypso::getValue($company, 'name'))?></option>
                                                 <?php endforeach;?>
                                             </select>
                                         </div>
-                                        <div class="col-md-6 col-xs-12">
+                                        <div class="col-md-4 col-xs-12">
+                                            <label>Onforwarding Billing Plan</label>
+                                            <select id="onforwarding_billing_plan" class="form-control billing_plan">
+                                                <option value="">Select Company</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4 col-xs-12">
                                             <label>Weight Billing Plan</label>
                                             <select id="weight_billing_plan" class="form-control billing_plan">
-                                                <?php foreach($weightBillingPlans as $weightBillingPlan):?>
-                                                    <option value="<?= Calypso::getValue($weightBillingPlan, 'id')?>" <?= Calypso::getValue($parcel, 'company_id') == Calypso::getValue($onforwardingBillingPlan, 'company_id') ? 'selected' : '';?>><?= strtoupper(Calypso::getValue($weightBillingPlan, 'name'))?></option>
-                                                <?php endforeach;?>
+                                                <option value="">Select Company</option>
                                             </select>
                                         </div>
                                     </div>
@@ -466,7 +472,11 @@ $is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
 <?php $this->registerJsFile('@web/js/keyboardFormSubmit.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/form-watch-changes.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/validate.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
-<?php $this->registerJsFile('@web/js/new_parcel_form.js?2.0.0', ['depends' => [\app\assets\AppAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/new_parcel_form.js?2.1.0', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php
 $this->registerJs('$(".alert").delay(5000).fadeOut(1500);',View::POS_READY);
 ?>
+<script type="text/javascript">
+<?= "var onforwardingBillingPlans = " . Json::encode($onforwardingBillingPlans) . ";";?>
+<?= "var weightBillingPlans = " . Json::encode($weightBillingPlans) . ";";?>
+</script>
