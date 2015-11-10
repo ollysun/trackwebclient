@@ -5,6 +5,7 @@ use Adapter\BillingAdapter;
 use Adapter\BillingPlanAdapter;
 use Adapter\CompanyAdapter;
 use Adapter\Util\Calypso;
+use Adapter\Util\Util;
 use Adapter\WeightRangeAdapter;
 use Adapter\BranchAdapter;
 use Adapter\ZoneAdapter;
@@ -75,7 +76,7 @@ class BillingController extends BaseController
             $data['weight_range_id'] = Calypso::getValue($entry, 'id', null);
             $data['billing_plan_id'] = Calypso::getValue($entry, 'billing_plan_id', BillingPlanAdapter::DEFAULT_WEIGHT_RANGE_PLAN);
 
-            if (($task == 'create' || $task == 'edit') && (empty($data['min_weight']) || empty($data['max_weight']) || empty($data['increment_weight']))) {
+            if (($task == 'create' || $task == 'edit') && (Util::checkEmpty($data['min_weight']) || Util::checkEmpty($data['max_weight']) || Util::checkEmpty($data['increment_weight']))) {
                 $error[] = "All details are required!";
             }
             if (!empty($error)) {
