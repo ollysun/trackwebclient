@@ -120,4 +120,19 @@ class Util
 
         return false;
     }
+
+    /**
+     * Checks if a value is empty
+     * Special check for number 0
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @param $value
+     * @return bool
+     */
+    public static function checkEmpty($value)
+    {
+        if($value === 0 || $value === '0') {
+            return false;
+        }
+        return empty($value);
+    }
 }
