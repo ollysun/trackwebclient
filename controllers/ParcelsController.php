@@ -98,6 +98,9 @@ class ParcelsController extends BaseController
         $onforwardingBillingPlans = $bilingPlanAdapter->getBillingPlans(['no_paginate' => '1', 'type' => BillingPlanAdapter::TYPE_ON_FORWARDING]);
         $weightBillingPlans = $bilingPlanAdapter->getBillingPlans(['no_paginate' => '1', 'type' => BillingPlanAdapter::TYPE_WEIGHT]);
 
+        $companyAdapter = new CompanyAdapter();
+        $companies = $companyAdapter->getAllCompanies([]);
+
         return $this->render('new', array(
             'Banks' => $banks,
             'ShipmentType' => $shipmentType,
@@ -109,6 +112,7 @@ class ParcelsController extends BaseController
             'centres' => $centres_list,
             'branch' => $user['branch'],
             'parcel' => $parcel,
+            'companies' => $companies,
             'onforwardingBillingPlans' => $onforwardingBillingPlans,
             'weightBillingPlans' => $weightBillingPlans
         ));
