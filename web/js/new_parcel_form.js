@@ -596,8 +596,10 @@ $(document).ready(function () {
         $('#' + val + '_billing').show();
         if (val == 'manual') {
             $("input[name='manual_amount']").addClass('validate integer required');
+        } else if (val == 'corporate') {
+            $(".amount-due").html("");
+            $("#company").trigger("change");
         } else {
-            calculateBilling();
             $("input[name='manual_amount']").removeClass('validate integer required');
         }
     });
@@ -609,5 +611,35 @@ $(document).ready(function () {
 
     $("#weight_billing_plan, #onforwarding_billing_plan").change(function () {
         calculateBilling();
+    });
+
+    $("#company").change(function () {
+        var companyId = $(this).val();
+        if (typeof weightBillingPlans != "undefined" && typeof onforwardingBillingPlans != "undefined" && companyId != "") {
+            if (!weightBillingPlans.hasOwnProperty(companyId)) {
+                alert("This company does not have a weight billing plan");
+                return false;
+            }
+
+            if (!onforwardingBillingPlans.hasOwnProperty(companyId)) {
+                alert("This company does not have an onforwarding billing plan");
+                return false;
+            }
+
+            var selectedWeightBillingPlans = weightBillingPlans[companyId];
+            var html = "";
+            for (var planId in selectedWeightBillingPlans) {
+                html += new Option(selectedWeightBillingPlans[planId].toUpperCase(), planId).outerHTML;
+            }
+            $("#weight_billing_plan").html(html);
+
+            var selectedOnforwardingBillingPlans = onforwardingBillingPlans[companyId];
+            var html = "";
+            for (var planId in selectedOnforwardingBillingPlans) {
+                html += new Option(selectedOnforwardingBillingPlans[planId].toUpperCase(), planId).outerHTML;
+            }
+            $("#onforwarding_billing_plan").html(html);
+            $("#onforwarding_billing_plan").trigger("change");
+        }
     });
 });
