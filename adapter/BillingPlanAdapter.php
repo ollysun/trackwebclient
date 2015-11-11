@@ -17,6 +17,7 @@ class BillingPlanAdapter extends BaseAdapter
     const TYPE_WEIGHT = 1;
     const TYPE_ON_FORWARDING = 2;
     const TYPE_NUMBER = 3;
+    const TYPE_WEIGHT_AND_ON_FORWARDING = 4;
 
     public function __construct()
     {
@@ -103,6 +104,7 @@ class BillingPlanAdapter extends BaseAdapter
             self::TYPE_WEIGHT => 'Weight',
             self::TYPE_ON_FORWARDING => 'OnForwarding',
             self::TYPE_NUMBER => 'Price',
+            self::TYPE_WEIGHT_AND_ON_FORWARDING => 'Weight and Onforwarding',
         ];
     }
 }
