@@ -41,13 +41,14 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                             <td><?= strtoupper(Calypso::getValue($billingPlan, 'company.name', 'N/A')) ?></td>
                             <td><?= strtoupper(Calypso::getValue(BillingPlanAdapter::getTypes(), Calypso::getValue($billingPlan, 'type'))); ?></td>
                             <td>
-                                <?php if (Calypso::getValue($billingPlan, 'type') == BillingPlanAdapter::TYPE_ON_FORWARDING): ?>
-                                    <a href="<?= Url::to(["/billing/onforwarding", 'billing_plan_id' => Calypso::getValue($billingPlan, 'id')])?>" class="btn btn-xs btn-default">Onforwarding Charges</a>
-                                    <a href="<?= Url::to(["/billing/citymapping", 'billing_plan_id' => Calypso::getValue($billingPlan, 'id')])?>" class="btn btn-xs btn-primary">City Mapping</a>
-                                <?php elseif (Calypso::getValue($billingPlan, 'type') == BillingPlanAdapter::TYPE_WEIGHT): ?>
-                                    <a href="<?= Url::to(["/billing/weightranges", 'billing_plan_id' => Calypso::getValue($billingPlan, 'id')])?>" class="btn btn-xs btn-default">Weight Ranges</a>
-                                    <a href="<?= Url::to(["/billing/pricing", 'billing_plan_id' => Calypso::getValue($billingPlan, 'id')])?>" class="btn btn-xs btn-primary">Billing</a>
-                                <?php endif; ?>
+                                <a href="<?= Url::to(["/billing/onforwarding", 'billing_plan_id' => Calypso::getValue($billingPlan, 'id')]) ?>"
+                                   class="btn btn-xs btn-default">Onforwarding Charges</a>
+                                <a href="<?= Url::to(["/billing/citymapping", 'billing_plan_id' => Calypso::getValue($billingPlan, 'id')]) ?>"
+                                   class="btn btn-xs btn-primary">City Mapping</a>
+                                <a href="<?= Url::to(["/billing/weightranges", 'billing_plan_id' => Calypso::getValue($billingPlan, 'id')]) ?>"
+                                   class="btn btn-xs btn-default">Weight Ranges</a>
+                                <a href="<?= Url::to(["/billing/pricing", 'billing_plan_id' => Calypso::getValue($billingPlan, 'id')]) ?>"
+                                   class="btn btn-xs btn-primary">Billing</a>
                             </td>
                         </tr>
                     <?php endforeach; ?>
@@ -85,19 +86,10 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                                 <?php endforeach; ?>
                             </select>
                         </div>
-                        <div class="form-group">
-                            <label for="">Type</label>
-                            <select name="type" class="form-control validate required">
-                                <option value="">Select Type</option>
-                                <?php foreach ($billingPlanTypes as $id => $name): ?>
-                                    <option
-                                        value="<?= $id ?>"><?= strtoupper($name) ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
                     </div>
                     <div class="modal-footer">
                         <input type="hidden" name="id">
+                        <input type="hidden" name="type" value="<?= BillingPlanAdapter::TYPE_WEIGHT_AND_ON_FORWARDING;?>">
                         <input type="hidden" name="task" value="status">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary">Save changes</button>

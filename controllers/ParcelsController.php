@@ -96,11 +96,9 @@ class ParcelsController extends BaseController
         $centres_list = array_merge($centres_list, $hubs_list);
 
         $bilingPlanAdapter = new BillingPlanAdapter();
-        $onforwardingBillingPlans = $bilingPlanAdapter->getBillingPlans(['no_paginate' => '1', 'type' => BillingPlanAdapter::TYPE_ON_FORWARDING]);
-        $weightBillingPlans = $bilingPlanAdapter->getBillingPlans(['no_paginate' => '1', 'type' => BillingPlanAdapter::TYPE_WEIGHT]);
+        $billingPlans = $bilingPlanAdapter->getBillingPlans(['no_paginate' => '1', 'type' => BillingPlanAdapter::TYPE_WEIGHT_AND_ON_FORWARDING]);
 
-        $onforwardingBillingPlans = ArrayHelper::map($onforwardingBillingPlans, 'id', 'name', 'company_id');
-        $weightBillingPlans = ArrayHelper::map($weightBillingPlans, 'id', 'name', 'company_id');
+        $billingPlans = ArrayHelper::map($billingPlans, 'id', 'name', 'company_id');
 
         $companyAdapter = new CompanyAdapter();
         $companies = $companyAdapter->getAllCompanies([]);
@@ -117,8 +115,7 @@ class ParcelsController extends BaseController
             'branch' => $user['branch'],
             'parcel' => $parcel,
             'companies' => $companies,
-            'onforwardingBillingPlans' => $onforwardingBillingPlans,
-            'weightBillingPlans' => $weightBillingPlans
+            'billingPlans' => $billingPlans
         ));
     }
 

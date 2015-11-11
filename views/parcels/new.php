@@ -350,8 +350,8 @@ $is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
                                     <div class="amount-due currency naira">0.00</div>
 
                                     <div class="row">
-                                        <div class="col-md-4 col-xs-12">
-                                            <label>Companies</label>
+                                        <div class="col-md-6 col-xs-12">
+                                            <label>Company</label>
                                             <select id="company" class="form-control billing_plan">
                                                 <option value="" selected>Select Company</option>
                                                 <?php foreach($companies as $company):?>
@@ -359,15 +359,9 @@ $is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
                                                 <?php endforeach;?>
                                             </select>
                                         </div>
-                                        <div class="col-md-4 col-xs-12">
-                                            <label>Onforwarding Billing Plan</label>
-                                            <select id="onforwarding_billing_plan" class="form-control billing_plan">
-                                                <option value="">Select Company</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-4 col-xs-12">
-                                            <label>Weight Billing Plan</label>
-                                            <select id="weight_billing_plan" class="form-control billing_plan">
+                                        <div class="col-md-6 col-xs-12">
+                                            <label>Billing Plan</label>
+                                            <select id="billing_plan" class="form-control billing_plan">
                                                 <option value="">Select Company</option>
                                             </select>
                                         </div>
@@ -472,11 +466,10 @@ $is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
 <?php $this->registerJsFile('@web/js/keyboardFormSubmit.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/form-watch-changes.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/validate.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
-<?php $this->registerJsFile('@web/js/new_parcel_form.js?2.1.1', ['depends' => [\app\assets\AppAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/new_parcel_form.js?2.2.1', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php
 $this->registerJs('$(".alert").delay(5000).fadeOut(1500);',View::POS_READY);
 ?>
 <script type="text/javascript">
-<?= "var onforwardingBillingPlans = " . Json::encode($onforwardingBillingPlans) . ";";?>
-<?= "var weightBillingPlans = " . Json::encode($weightBillingPlans) . ";";?>
+<?= "var billingPlans = " . Json::encode($billingPlans) . ";";?>
 </script>
