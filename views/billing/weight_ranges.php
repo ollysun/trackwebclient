@@ -45,7 +45,13 @@ $this->params['breadcrumbs'] = array(
 							<td class="l<?=$range['id'];?>"><?= $range['min_weight']; ?></td>
 							<td class="i<?=$range['id'];?>"><?= $range['increment_weight']; ?></td>
 							<td class="m<?=$range['id'];?>"><?= $range['max_weight']; ?></td>
-							<td><button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#editModal" data-id="<?= $range['id']; ?>"><i class="fa fa-edit"></i> Edit</button></td>
+							<td>
+								<button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#editModal" data-id="<?= $range['id']; ?>"><i class="fa fa-edit"></i> Edit</button>
+								<form method="post" action="<?= Url::to("/billing/deleteweightrange");?>">
+									<input type="hidden" value="<?= $range['id']; ?>" name="weight_range_id" />
+									<button type="button" class="btn btn-danger btn-xs deleteWeightRange"><i class="fa fa-trash-o"></i> Delete</button>
+								</form>
+							</td>
 						</tr>
 					<?php }
 				} ?>
