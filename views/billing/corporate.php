@@ -48,7 +48,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                                 <a href="<?= Url::to(["/billing/weightranges", 'billing_plan_id' => Calypso::getValue($billingPlan, 'id')]) ?>"
                                    class="btn btn-xs btn-default">Weight Ranges</a>
                                 <a href="<?= Url::to(["/billing/pricing", 'billing_plan_id' => Calypso::getValue($billingPlan, 'id')]) ?>"
-                                   class="btn btn-xs btn-primary">Billing</a>
+                                   class="btn btn-xs btn-primary">Pricing</a>
                             </td>
                         </tr>
                     <?php endforeach; ?>
