@@ -576,11 +576,10 @@ $(document).ready(function () {
         params.to_branch_id = $('#city_receiver').find('option:selected').attr('data-branch-id');
         params.city_id = $('#city_receiver').find('option:selected').attr('data-city_id');
         params.weight = $('#weight').val();
-        var onforwardingBillingField = $("#onforwarding_billing_plan");
-        var weightBillingField = $("#weight_billing_plan");
-        if (weightBillingField.is(":visible") && onforwardingBillingField.is(":visible")) {
-            params.weight_billing_plan_id = weightBillingField.val();
-            params.onforwarding_billing_plan_id = onforwardingBillingField.val();
+        var billingField = $("#billing_plan");
+        if (billingField.is(":visible")) {
+            params.weight_billing_plan_id = billingField.val();
+            params.onforwarding_billing_plan_id = billingField.val();
         }
         Parcel.calculateAmount(params);
     };
@@ -609,39 +608,26 @@ $(document).ready(function () {
         _this.val(_this.val().replace(/[^\d]/g, ''));
     });
 
-    $("#weight_billing_plan, #onforwarding_billing_plan").change(function () {
+    $("#billing_plan").change(function () {
         calculateBilling();
     });
 
     $("#company").change(function () {
         var companyId = $(this).val();
-        $("#onforwarding_billing_plan").html("<option selected>Select Company</option>");
-        $("#weight_billing_plan").html("<option selected>Select Company</option>");
-        if (typeof weightBillingPlans != "undefined" && typeof onforwardingBillingPlans != "undefined" && companyId != "") {
-            if (!weightBillingPlans.hasOwnProperty(companyId)) {
-                alert("This company does not have a weight billing plan");
+        $("#billing_plan").html("<option selected>Select Company</option>");
+        if (typeof billingPlans != "undefined"&& companyId != "") {
+            if (!billingPlans.hasOwnProperty(companyId)) {
+                alert("This company does not have a billing plan");
                 return false;
             }
 
-            if (!onforwardingBillingPlans.hasOwnProperty(companyId)) {
-                alert("This company does not have an onforwarding billing plan");
-                return false;
-            }
-
-            var selectedWeightBillingPlans = weightBillingPlans[companyId];
+            var selectedBillingPlans = billingPlans[companyId];
             var html = "";
-            for (var planId in selectedWeightBillingPlans) {
-                html += new Option(selectedWeightBillingPlans[planId].toUpperCase(), planId).outerHTML;
+            for (var planId in selectedBillingPlans) {
+                html += new Option(selectedBillingPlans[planId].toUpperCase(), planId).outerHTML;
             }
-            $("#weight_billing_plan").html(html);
-
-            var selectedOnforwardingBillingPlans = onforwardingBillingPlans[companyId];
-            var html = "";
-            for (var planId in selectedOnforwardingBillingPlans) {
-                html += new Option(selectedOnforwardingBillingPlans[planId].toUpperCase(), planId).outerHTML;
-            }
-            $("#onforwarding_billing_plan").html(html);
-            $("#onforwarding_billing_plan").trigger("change");
+            $("#billing_plan").html(html);
+            $("#billing_plan").trigger("change");
         }
     });
 });
