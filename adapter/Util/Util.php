@@ -135,4 +135,28 @@ class Util
         }
         return empty($value);
     }
+
+    /**
+     * Generates a CSV for download
+     * @author Olawale Lawal <wale@cottacush.com>
+     * @param $name
+     * @param $header
+     * @param $data
+     */
+    public static function exportToCSV($name, array $header, array $data)
+    {
+        header('Content-Type: text/csv');
+        header('Content-Disposition: attachment; filename=' . $name);
+        header('Pragma: no-cache');
+        header("Expires: 0");
+
+        $stream = fopen("php://output", "w");
+
+        fputcsv($stream, $header);
+        foreach ($data as $row) {
+            fputcsv($stream, $row);
+        }
+        fclose($stream);
+    }
+
 }

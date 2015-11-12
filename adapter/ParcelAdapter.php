@@ -345,4 +345,16 @@ class ParcelAdapter extends BaseAdapter
         $this->setResponseHandler($response);
         return $response->isSuccess();
     }
+
+    /**
+     * Returns parcels based on the filters
+     * @author Olawale Lawal <wale@cottacush.com>
+     * @param $filters
+     * @return array|mixed|string
+     */
+    public function getParcelsByFilters($filters)
+    {
+        $params = http_build_query($filters);
+        return $this->request(ServiceConstant::URL_GET_ALL_PARCEL . '?' . $params, [], self::HTTP_GET);
+    }
 }
