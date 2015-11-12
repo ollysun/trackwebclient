@@ -12,10 +12,11 @@ $this->title = 'Reports';
 $this->params['breadcrumbs'] = array(
     array('label' => 'Shipments')
 );
+$downloadURL = Url::to().((parse_url(Url::to(), PHP_URL_QUERY) == NULL) ? '?' : '&').'download=1';
 ?>
 
 <?php
-$this->params['content_header_button'] = "<a href='".Url::to()."&download=1' class='btn btn-primary'><i class='fa fa-download'></i> Download as CSV</a>";
+$this->params['content_header_button'] = "<a href='".$downloadURL."' class='btn btn-primary'><i class='fa fa-download'></i> Download as CSV</a>";
 ?>
 
 <div class="main-box">
