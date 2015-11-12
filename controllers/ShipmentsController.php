@@ -104,6 +104,7 @@ class ShipmentsController extends BaseController
         return $this->render('all', array('filter' => $filter, 'parcels' => $data, 'from_date' => $from_date, 'to_date' => $to_date, 'offset' => $offset, 'page_width' => $this->page_width, 'search' => $search_action, 'total_count' => $total_count));
     }
 
+
     public function actionFordelivery($page = 1, $search = false, $page_width = null)
     {
         $from_date = date('Y/m/d');
@@ -177,8 +178,6 @@ class ShipmentsController extends BaseController
         $admin = $adminAdp->getReturnReasons();
         $admin = new ResponseHandler($admin);
         $reasons_list = $admin->getStatus() == ResponseHandler::STATUS_OK ? $admin->getData() : [];
-
-
 
         return $this->render('fordelivery', array('parcels' => $data, 'from_date' => $from_date, 'to_date' => $to_date, 'offset' => $offset, 'page_width' => $page_width, 'search' => $search_action, 'total_count' => $total_count, 'routes' => $route_list,'reasons_list' => $reasons_list, 'route_id' => $route_id));
     }
