@@ -79,17 +79,33 @@ class RefAdapter extends BaseAdapter
         return $this->request(ServiceConstant::URL_REF_REGIONS, ['country_id' => $country_id], self::HTTP_GET);
     }
 
-    public function getWeightRanges()
+    /**
+     * Get Weight Ranges
+     * @author Olawale Lawal <wale@cottacush.com>
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @param $billingPlanId
+     * @return array|mixed|string
+     */
+    public function getWeightRanges($billingPlanId)
     {
-        return $this->request(ServiceConstant::URL_WEIGHT_FETCH_ALL, [], self::HTTP_GET);
+        return $this->request(ServiceConstant::URL_WEIGHT_FETCH_ALL, ['billing_plan_id' => $billingPlanId], self::HTTP_GET);
     }
 
-    public function getOnforwardingCharges($status = null, $offset = null, $count = null, $with_total_count = null, $send_all = null)
+    public function getOnforwardingCharges($billingPlanId = null, $status = null, $offset = null, $count = null, $with_total_count = null, $send_all = null)
     {
-        $filter = ['send_all' => $send_all, 'offset' => $offset, 'count' => $count, 'with_total_count' => $with_total_count];
+        $filter = [
+            'send_all' => $send_all,
+            'offset' => $offset,
+            'count' => $count,
+            'with_total_count' => $with_total_count
+        ];
 
         if (!is_null($status)) {
             $filter['status'] = $status;
+        }
+
+        if (!is_null($billingPlanId)) {
+            $filter['billing_plan_id'] = $billingPlanId;
         }
         return $this->request(ServiceConstant::URL_ONFORWARDING_FETCH_ALL, $filter, self::HTTP_GET);
     }
