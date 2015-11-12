@@ -7,4 +7,15 @@ $(document).ready(function () {
         $(target+" input[name='increment_weight']").val($("td[class='i"+_id+"']").text());
         $(target+" input[name='id']").val(_id);
     });
+
+    $(".deleteWeightRange").click(function (e) {
+        var prompt = confirm("Are you sure you want to delete this weight range?");
+        if(prompt) {
+            $(this).parent().submit();
+            return;
+        }
+
+        e.preventDefault();
+        e.stopPropagation();
+    });
 });

@@ -133,6 +133,7 @@ class ServiceConstant
     const URL_WEIGHT_CHANGE_STATUS = 'weightrange/changeStatus';
     const URL_WEIGHT_FETCH_ID = 'weightrange/fetchById';
     const URL_WEIGHT_FETCH_ALL = 'weightrange/fetchAll';
+    const URL_WEIGHT_DELETE = 'weightrange/delete';
 
     const URL_ONFORWARDING_ADD = 'onforwardingcharge/add';
     const URL_ONFORWARDING_EDIT = 'onforwardingcharge/edit';
