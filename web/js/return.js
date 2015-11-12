@@ -1,7 +1,7 @@
 $("[data-return]").on('click', function (event) {
     var self = this;
     var reasons = $(self).data().reasons;
-    console.log(reasons);
+    //console.log(reasons);
     //console.log($(self).data());
 
       bootbox.dialog({
