@@ -130,7 +130,6 @@ class CurlAgent {
 
         $this->_status = curl_getinfo($s,CURLINFO_HTTP_CODE);
         curl_close($s);
-
     }
 
     public function getHttpStatus()

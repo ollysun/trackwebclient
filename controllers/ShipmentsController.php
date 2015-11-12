@@ -173,7 +173,14 @@ class ShipmentsController extends BaseController
         $routes = new ResponseHandler($routes);
         $route_list = $routes->getStatus() == ResponseHandler::STATUS_OK ? $routes->getData() : [];
 
-        return $this->render('fordelivery', array('parcels' => $data, 'from_date' => $from_date, 'to_date' => $to_date, 'offset' => $offset, 'page_width' => $page_width, 'search' => $search_action, 'total_count' => $total_count, 'routes' => $route_list, 'route_id' => $route_id));
+        $adminAdp = new AdminAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+        $admin = $adminAdp->getReturnReasons();
+        $admin = new ResponseHandler($admin);
+        $reasons_list = $admin->getStatus() == ResponseHandler::STATUS_OK ? $admin->getData() : [];
+
+
+
+        return $this->render('fordelivery', array('parcels' => $data, 'from_date' => $from_date, 'to_date' => $to_date, 'offset' => $offset, 'page_width' => $page_width, 'search' => $search_action, 'total_count' => $total_count, 'routes' => $route_list,'reasons_list' => $reasons_list, 'route_id' => $route_id));
     }
 
     public function actionStaffcheck()
@@ -324,9 +331,9 @@ class ShipmentsController extends BaseController
             $from_date = Calypso::getInstance()->get()->from;
             $to_date = Calypso::getInstance()->get()->to;
             $filter = null;
-
             $response = $parcel->getFilterParcelsByDateAndStatus($from_date . ' 00:00:00', $to_date . ' 23:59:59', $filter, $offset, $this->page_width, 1, $this->branch_to_view, null, null, true);
             $search_action = true;
+
         } elseif (!empty(Calypso::getInstance()->get()->search)) {  //check if not empty criteria
             $search = Calypso::getInstance()->get()->search;
             $response = $parcel->getSearchParcels(null, $search, $offset, $this->page_width, 1, $this->branch_to_view, null, null);

@@ -1,8 +1,15 @@
 $("[data-return]").on('click', function (event) {
     var self = this;
-    console.log($(self).data());
-    bootbox.dialog({
-        message: "<div class='form-group'><label for='comment_text'>Reason</label><input class='form-control' type='text' id='comment_text' /></div>",
+    var reasons = $(self).data().reasons;
+    console.log(reasons);
+    //console.log($(self).data());
+
+      bootbox.dialog({
+        message: "<div class='form-group'>" +
+        "<label for='comment_text'>Reason</label>" +
+        "<select class='form-control' type='text' id='comment_text' >" +
+
+        "</div>",
         title: "Please state a reason for returning this parcel",
         buttons: {
             danger: {
@@ -30,6 +37,18 @@ $("[data-return]").on('click', function (event) {
             }
         }
     });
+
+        var select = document.getElementById("comment_text");
+        var options = reasons;
+        for (var i = 0; i < options.length; i++) {
+            var opt = options[i].meaning_of_status;
+            var el = document.createElement("option");
+            el.textContent = opt;
+            el.value = opt;
+            select.appendChild(el);
+        }
+
+
 });
 
 
