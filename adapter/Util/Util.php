@@ -138,6 +138,7 @@ class Util
 
     /**
      * Generates a CSV for download
+     * @author Olawale Lawal <wale@cottacush.com>
      * @param $name
      * @param $header
      * @param $data
