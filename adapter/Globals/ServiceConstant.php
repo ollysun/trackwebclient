@@ -221,8 +221,8 @@ class ServiceConstant
     const SHIPPING_TYPE_BULK_MAIL = 4;
 
     const PARCEL_DOCUMENTS = 1;
-	const PARCEL_NON_DOCUMENTS = 2;
-	const PARCEL_HIGH_VALUE = 3;
+    const PARCEL_NON_DOCUMENTS = 2;
+    const PARCEL_HIGH_VALUE = 3;
 
     const RETURN_REQUEST_SENT = 1;
 

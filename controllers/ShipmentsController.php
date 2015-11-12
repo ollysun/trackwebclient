@@ -773,17 +773,11 @@ class ShipmentsController extends BaseController
             $response = new ResponseHandler($filtered_parcels);
 
             $name = 'report_' . date(ServiceConstant::DATE_TIME_FORMAT) . '.csv';
+            $data = array();
 
-            header('Content-Type: text/csv');
-            header('Content-Disposition: attachment; filename=' . $name);
-            header('Pragma: no-cache');
-            header("Expires: 0");
-
-            $stream = fopen("php://output", "w");
-
-            fputcsv($stream, array('SN', 'Waybill Number', 'Sender', 'Sender Email', 'Sender Phone', 'Sender Address', 'Receiver', 'Receiver Email', 'Receiver Phone', 'Receiver Address', 'Weight', 'Payment Method', 'Amount Due', 'Cash Amount', 'POS Amount', 'POS Transaction ID', 'Parcel Type', 'Cash on Delivery', 'Delivery Type', 'Package Value', '# of Package', 'Shipping Type', 'Created Date', 'Status', 'Reference Number', 'Originating Branch', 'Route', 'Request Type', 'For Return', 'Other Info',));
+            $headers = array('SN', 'Waybill Number', 'Sender', 'Sender Email', 'Sender Phone', 'Sender Address', 'Receiver', 'Receiver Email', 'Receiver Phone', 'Receiver Address', 'Weight', 'Payment Method', 'Amount Due', 'Cash Amount', 'POS Amount', 'POS Transaction ID', 'Parcel Type', 'Cash on Delivery', 'Delivery Type', 'Package Value', '# of Package', 'Shipping Type', 'Created Date', 'Status', 'Reference Number', 'Originating Branch', 'Route', 'Request Type', 'For Return', 'Other Info');
             foreach ($response->getData() as $key => $result) {
-                $row = [
+                $data[] = [
                     $key + 1,
                     $result['waybill_number'],
                     $result['sender']['firstname'].' '.$result['sender']['lastname'],
@@ -807,7 +801,7 @@ class ShipmentsController extends BaseController
                     $result['no_of_package'],
                     ServiceConstant::getShippingType($result['shipping_type']),
                     Util::convertToTrackingDateFormat($result['created_date']),
-                    ServiceConstant::getStatus($result['status']),
+                    strip_tags(ServiceConstant::getStatus($result['status'])),
                     $result['reference_number'],
                     isset($result['created_branch']) ? $result['created_branch']['name'] : '',
                     isset($result['route']) ? $result['route']['name'] : '',
@@ -815,9 +809,8 @@ class ShipmentsController extends BaseController
                     $result['for_return'] ? 'Yes' : 'No',
                     $result['other_info'],
                 ];
-                fputcsv($stream, $row);
             }
-            fclose($stream);
+            Util::exportToCSV($name, $headers, $data);
             exit;
         }
 
