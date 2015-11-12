@@ -141,7 +141,7 @@ $is_hub = $user['branch']['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
                             <td></td>
                             <td>
                                 <a href="<?= Url::toRoute(['/shipments/view?waybill_number='.$parcel['waybill_number']]) ?>" class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i> View</a>
-                                <?= $this->render('../elements/parcel/partial_return_button',['parcel'=>$parcel]) ?>
+                                <?= $this->render('../elements/parcel/partial_return_button',['parcel'=>$parcel , 'reasons_list' => $reasons_list]) ?>
                             </td>
                         </tr>
                     <?php

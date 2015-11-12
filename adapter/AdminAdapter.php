@@ -31,8 +31,11 @@ class AdminAdapter extends BaseAdapter{
 
     public function revalidate($staff=null, $password){
         $filter = is_null($staff) ? '':'identifier='.$staff;
-        $filter .= is_null($password) ? '':'&password='.$password;
-        return  $this->request(ServiceConstant::URL_USER_VALIDATE.'?'.$filter, [], self::HTTP_POST);
+        $filter .= is_null($password) ? '':'&password='.$password;return  $this->request(ServiceConstant::URL_USER_VALIDATE.'?'.$filter, [], self::HTTP_POST);
+    }
+
+    public function getReturnReasons(){
+        return $this->request(ServiceConstant::URL_RETURN_REASONS,[],self::HTTP_GET);
     }
 
 }
