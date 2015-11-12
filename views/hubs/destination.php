@@ -15,6 +15,7 @@ $this->params['breadcrumbs'] = array(
     ),*/
     array('label' => 'Ready for Sorting')
 );
+
 ?>
 
 <!-- this page specific styles -->
@@ -130,7 +131,7 @@ $this->params['breadcrumbs'] = array(
                             <td><?= ServiceConstant::getReturnStatus($parcels); ?></td>
                             <td><?= Calypso::getValue($parcels, 'weight') ?></td>
                             <td></td>
-                            <td><?= $this->render('../elements/parcel/partial_return_button', ['parcel' => $parcels]) ?></td>
+                            <td><?= $this->render('../elements/parcel/partial_return_button', ['parcel' => $parcels, 'reasons_list' => $reasons_list]) ?></td>
                         </tr>
                     <?php } ?>
                     </tbody>
