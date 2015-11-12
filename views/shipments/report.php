@@ -12,14 +12,7 @@ $this->title = 'Reports';
 $this->params['breadcrumbs'] = array(
     array('label' => 'Shipments')
 );
-$provider = new ArrayDataProvider([
-    'allModels' => $parcels,
-    'pagination' => [
-        'pageSize' => 10,
-    ],
-]);
 ?>
-
 
 <?php
 $this->params['content_header_button'] = "<a href='".Url::to()."&download=1' class='btn btn-primary'><i class='fa fa-download'></i> Download as CSV</a>";
