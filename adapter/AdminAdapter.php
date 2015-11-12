@@ -37,7 +37,7 @@ class AdminAdapter extends BaseAdapter{
 
     /**
      * Reasons for returning a parcel
-     *@author Babatunde Otaru <tunde@cottacush.com>
+     * @author Babatunde Otaru <tunde@cottacush.com>
      * @return HttpResponse
     */
     public function getReturnReasons(){
