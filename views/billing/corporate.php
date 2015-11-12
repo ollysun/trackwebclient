@@ -54,6 +54,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                     <?php endforeach; ?>
                     </tbody>
                 </table>
+                <?= $this->render('../elements/pagination_and_summary', ['first' => $offset, 'last' => $row, 'total_count' => $total_count, 'page_width' => $page_width]) ?>
             <?php else: ?>
                 <div class="alert alert-info text-center" role="alert">
                     <p><strong>No billing plans have been created</strong></p>
