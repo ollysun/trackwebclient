@@ -51,7 +51,7 @@ class ServiceConstant
 
     const URL_ADD_PARCEL = 'parcel/add/';
     const URL_GET_ONE_PARCEL = 'parcel/getone/';
-    const URL_GET_ALL_PARCEL = 'parcel/getAll/';
+    const URL_GET_ALL_PARCEL = 'parcel/getAll';
     const URL_MOVE_TO_FOR_SWEEPER = '/parcel/moveToForSweeper/';
     const URL_ASSIGN_TO_GROUNDSMAN = '/parcel/assignToGroundsMan/';
     const URL_MOVE_TO_IN_TRANSIT = '/parcel/moveToInTransit/';
@@ -134,12 +134,15 @@ class ServiceConstant
     const URL_WEIGHT_CHANGE_STATUS = 'weightrange/changeStatus';
     const URL_WEIGHT_FETCH_ID = 'weightrange/fetchById';
     const URL_WEIGHT_FETCH_ALL = 'weightrange/fetchAll';
+    const URL_WEIGHT_DELETE = 'weightrange/delete';
 
     const URL_ONFORWARDING_ADD = 'onforwardingcharge/add';
     const URL_ONFORWARDING_EDIT = 'onforwardingcharge/edit';
     const URL_ONFORWARDING_CHANGE_STATUS = 'onforwardingcharge/changeStatus';
     const URL_ONFORWARDING_FETCH_ID = 'onforwardingcharge/fetchById';
     const URL_ONFORWARDING_FETCH_ALL = 'onforwardingcharge/fetchAll';
+    const URL_ON_FORWARDING_LINK = 'onforwardingcharge/linkCity';
+    const URL_ON_FORWARDING_UNLINK = 'onforwardingcharge/unlinkCity';
 
     const URL_BILLING_FETCH_ALL = 'zone/fetchbilling';
     const URL_BILLING_ADD = 'zone/addbilling';
@@ -188,6 +191,10 @@ class ServiceConstant
     const URL_LINK_EC_TO_COMPANY = 'company/linkEc';
     const URL_RELINK_EC_TO_COMPANY = 'company/relinkEc';
 
+    const URL_BILLING_PLAN_GET_CITIES_WITH_CHARGE = 'billingPlan/getCitiesWithCharge';
+    const URL_BILLING_PLAN_ADD = 'billingPlan/add';
+    const URL_BILLING_PLAN_GET_ALL = 'billingPlan/getAll';
+
     const DATE_TIME_FORMAT = 'd M Y H:i';
     const DATE_FORMAT = 'd M Y';
     const TIME_FORMAT = 'g:i A';
@@ -209,8 +216,19 @@ class ServiceConstant
     const REQUEST_OTHERS = 1;
     const REQUEST_ECOMMERCE = 2;
 
+    const SHIPPING_TYPE_EXPRESS = 1;
+    const SHIPPING_TYPE_SPECIAL_PROJECTS = 2;
+    const SHIPPING_TYPE_LOGISTICS = 3;
+    const SHIPPING_TYPE_BULK_MAIL = 4;
+
+    const PARCEL_DOCUMENTS = 1;
+    const PARCEL_NON_DOCUMENTS = 2;
+    const PARCEL_HIGH_VALUE = 3;
+
     const RETURN_REQUEST_SENT = 1;
 
+    const TRUE = 1;
+    const FALSE = 0;
 
     public static function getStatus($status)
     {
@@ -263,6 +281,9 @@ class ServiceConstant
             case ServiceConstant::MANIFEST_CANCELLED:
                 return 'Cancelled';
                 break;
+            case ServiceConstant::RETURNED:
+                return 'Returned';
+                break;
         }
     }
 
@@ -270,6 +291,16 @@ class ServiceConstant
     {
         return [ServiceConstant::IN_TRANSIT, ServiceConstant::DELIVERED, ServiceConstant::CANCELLED, ServiceConstant::FOR_ARRIVAL
             , ServiceConstant::FOR_DELIVERY, ServiceConstant::FOR_SWEEPER, ServiceConstant::COLLECTED, ServiceConstant::BEING_DELIVERED, ServiceConstant::RETURNED];
+    }
+
+    /**
+     * Returns the payment methods
+     * @author Olawale Lawal <wale@cottacush.com>
+     * @return array
+     */
+    public static function getPaymentMethods()
+    {
+        return [ServiceConstant::REF_PAYMENT_METHOD_CASH, ServiceConstant::REF_PAYMENT_METHOD_POS, ServiceConstant::REF_PAYMENT_METHOD_CASH_POS, ServiceConstant::REF_PAYMENT_METHOD_DEFERRED];
     }
 
     public static function getPaymentMethod($method)
@@ -297,6 +328,16 @@ class ServiceConstant
         }
     }
 
+    /**
+     * Returns the delivery types
+     * @author Olawale Lawal <wale@cottacush.com>
+     * @return array
+     */
+    public static function getDeliveryTypes()
+    {
+        return [ServiceConstant::DELIVERY_DISPATCH, ServiceConstant::DELIVERY_PICKUP];
+    }
+
     public static function getDeliveryType($type)
     {
         switch ($type) {
@@ -309,6 +350,16 @@ class ServiceConstant
             default:
                 return false;
         }
+    }
+
+    /**
+     * Returns the shipment request types
+     * @author Olawale Lawal <wale@cottacush.com>
+     * @return array
+     */
+    public static function getRequestTypes()
+    {
+        return [ServiceConstant::REQUEST_ECOMMERCE, ServiceConstant::REQUEST_OTHERS];
     }
 
     public static function getRequestType($type)
@@ -359,4 +410,69 @@ class ServiceConstant
             return false;
         }
     }
+
+    /**
+     * Returns the shipment request types
+     * @author Olawale Lawal <wale@cottacush.com>
+     * @return array
+     */
+    public static function getShippingTypes()
+    {
+        return [ServiceConstant::SHIPPING_TYPE_EXPRESS, ServiceConstant::SHIPPING_TYPE_SPECIAL_PROJECTS, ServiceConstant::SHIPPING_TYPE_LOGISTICS, ServiceConstant::SHIPPING_TYPE_BULK_MAIL];
+    }
+
+    /**
+     * Returns the shipping type in text
+     * @author Olawale Lawal <wale@cottacush.com>
+     * @param $type
+     * @return string
+     */
+    public static function getShippingType($type)
+    {
+        switch ($type) {
+            case ServiceConstant::SHIPPING_TYPE_EXPRESS:
+                return 'Express';
+
+            case ServiceConstant::SHIPPING_TYPE_SPECIAL_PROJECTS:
+                return 'Special Projects';
+
+            case ServiceConstant::SHIPPING_TYPE_LOGISTICS:
+                return 'Logistics';
+
+            case ServiceConstant::SHIPPING_TYPE_BULK_MAIL:
+                return 'Bulk Mail';
+
+            default:
+                return false;
+                break;
+
+        }
+    }
+
+    /**
+     * Returns the parcel type
+     * @author Olawale Lawal <wale@cottacush.com>
+     * @param $type
+     * @return string
+     */
+    public static function getParcelType($type)
+    {
+        switch ($type) {
+            case ServiceConstant::PARCEL_DOCUMENTS:
+                return 'Documents';
+
+            case ServiceConstant::PARCEL_HIGH_VALUE:
+                return 'High Value';
+
+            case ServiceConstant::PARCEL_NON_DOCUMENTS:
+                return 'Non Documents';
+
+            default:
+                return false;
+                break;
+
+        }
+    }
+
+
 }

@@ -338,7 +338,7 @@ class AdminController extends BaseController
         $page = \Yii::$app->getRequest()->get('page', 1);
 
         $query = \Yii::$app->getRequest()->get('search');
-        if(!is_null($query)) {
+        if (!is_null($query)) {
             $filters = ['name' => $query];
             $page = 1; // Reset page
         }
@@ -390,7 +390,7 @@ class AdminController extends BaseController
         }
 
         $regionAdapter = new RegionAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $cities = (new ResponseHandler($regionAdapter->getAllCity(1, 0, $stateId, 0, 0)))->getData();
+        $cities = (new ResponseHandler($regionAdapter->getAllCity(1, 0, $stateId, 0)))->getData();
 
         return $this->sendSuccessResponse($cities);
     }
@@ -416,7 +416,7 @@ class AdminController extends BaseController
         return $this->sendSuccessResponse($staff);
     }
 
-    public function actionManageroutes($page=1)
+    public function actionManageroutes($page = 1)
     {
         $offset = ($page - 1) * $this->page_width;
 
@@ -474,7 +474,7 @@ class AdminController extends BaseController
             $total_count = empty($data['total_count']) ? 0 : $data['total_count'];
             $route_list = empty($data['routes']) ? 0 : $data['routes'];
         }
-        return $this->render('manageroutes', ['routes' => $route_list, 'hubs' => $hub_list, 'offset'=>$offset, 'total_count'=>$total_count, 'page_width'=>$this->page_width]);
+        return $this->render('manageroutes', ['routes' => $route_list, 'hubs' => $hub_list, 'offset' => $offset, 'total_count' => $total_count, 'page_width' => $this->page_width]);
     }
 
     /**
@@ -516,7 +516,7 @@ class AdminController extends BaseController
     public function actionLinkectocompany()
     {
         $companyAdapter = new CompanyAdapter();
-        if(Yii::$app->request->isPost) {
+        if (Yii::$app->request->isPost) {
             $companyId = Yii::$app->request->post('company_id');
             $branchId = Yii::$app->request->post('branch_id');
 
@@ -538,7 +538,7 @@ class AdminController extends BaseController
     public function actionRelinkectocompany()
     {
         $companyAdapter = new CompanyAdapter();
-        if(Yii::$app->request->isPost) {
+        if (Yii::$app->request->isPost) {
             $id = Yii::$app->request->post('id');
             $companyId = Yii::$app->request->post('company_id');
             $branchId = Yii::$app->request->post('branch_id');
@@ -552,5 +552,100 @@ class AdminController extends BaseController
             }
         }
         return $this->redirect("/admin/companyecs");
+    }
+
+    /**
+     * Manage Cities View
+     * @author Adegoke Obasa <goke@cottacush.com>
+     */
+    public function actionManagecities()
+    {
+        $refAdp = new RefAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $states = new ResponseHandler($refAdp->getStates(ServiceConstant::COUNTRY_NIGERIA)); // Hardcoded Nigeria for now
+        $states_list = $states->getStatus() == ResponseHandler::STATUS_OK ? $states->getData() : [];
+
+        $zoneAdapter = new RegionAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $cities = new ResponseHandler($zoneAdapter->getAllCity(1, 1));
+        $cities = $cities->getStatus() == ResponseHandler::STATUS_OK ? $cities->getData() : [];
+
+
+        $hubAdp = new BranchAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $hubs = new ResponseHandler($hubAdp->getAllHubs(false));
+        $hub_list = $hubs->getStatus() == ResponseHandler::STATUS_OK ? $hubs->getData() : [];
+
+        return $this->render('managecities', array('cities' => $cities, 'states' => $states_list, 'hubs' => $hub_list));
+    }
+
+    /**
+     * Edit City
+     * @author Adegoke Obasa <goke@cottacush.com>
+     */
+    public function actionEditcity()
+    {
+        if (Yii::$app->request->isPost) {
+            $entry = Yii::$app->request->post();
+            $error = [];
+            $data = [];
+
+            $data['name'] = Calypso::getValue($entry, 'city_name', null);
+            $data['state_id'] = Calypso::getValue($entry, 'state');
+            $data['transit_time'] = Calypso::getValue($entry, 'transit_time');
+            $data['status'] = Calypso::getValue($entry, 'status');
+            $data['branch_id'] = Calypso::getValue($entry, 'branch_id');
+            $data['city_id'] = Calypso::getValue($entry, 'id', null);
+
+            if (empty($data['name']) || !isset($data['transit_time'])) {
+                $error[] = "All details are required!";
+            }
+            if (!empty($error)) {
+                $errorMessages = implode('<br />', $error);
+                Yii::$app->session->setFlash('danger', $errorMessages);
+            } else {
+                $city = new RegionAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+                $response = $city->editCity($data);
+                if ($response['status'] === Response::STATUS_OK) {
+                    Yii::$app->session->setFlash('success', 'City has been edited successfully.');
+                } else {
+                    Yii::$app->session->setFlash('danger', 'There was a problem editing the city. ' . $response['messsage']);
+                }
+            }
+        }
+        return $this->redirect(Url::to("/admin/managecities"));
+    }
+
+    /**
+     * Save City
+     * @author Adegoke Obasa <goke@cottacush.com>
+     */
+    public function actionSavecity()
+    {
+        if (Yii::$app->request->isPost) {
+            $entry = Yii::$app->request->post();
+            $error = [];
+            $data = [];
+            $data['name'] = Calypso::getValue($entry, 'city_name', null);
+            $data['state_id'] = Calypso::getValue($entry, 'state');
+            $data['transit_time'] = Calypso::getValue($entry, 'transit_time');
+            $data['status'] = Calypso::getValue($entry, 'status');
+            $data['branch_id'] = Calypso::getValue($entry, 'branch_id');
+            $data['city_id'] = Calypso::getValue($entry, 'id', null);
+
+            if (empty($data['name']) || !isset($data['transit_time'])) {
+                $error[] = "All details are required!";
+            }
+            if (!empty($error)) {
+                $errorMessages = implode('<br />', $error);
+                Yii::$app->session->setFlash('danger', $errorMessages);
+            } else {
+                $city = new RegionAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+                $response = $city->addCity($data);
+                if ($response['status'] === Response::STATUS_OK) {
+                    $this->flashSuccess('City has been created successfully.');
+                } else {
+                    $this->flashError('There was a problem editing the city. ' . $response['messsage']);
+                }
+            }
+        }
+        return $this->redirect(Url::to("/admin/managecities"));
     }
 }

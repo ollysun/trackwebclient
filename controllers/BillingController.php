@@ -2,7 +2,10 @@
 namespace app\controllers;
 
 use Adapter\BillingAdapter;
+use Adapter\BillingPlanAdapter;
+use Adapter\CompanyAdapter;
 use Adapter\Util\Calypso;
+use Adapter\Util\Util;
 use Adapter\WeightRangeAdapter;
 use Adapter\BranchAdapter;
 use Adapter\ZoneAdapter;
@@ -13,6 +16,7 @@ use Adapter\RefAdapter;
 use Adapter\RequestHelper;
 use Adapter\ResponseHandler;
 use Adapter\Util\Response;
+use yii\helpers\Url;
 
 /**
  * Class BillingController
@@ -51,8 +55,15 @@ class BillingController extends BaseController
         }
     }
 
+    /**
+     * Weight Ranges View
+     * @author Olawale Lawal <wale@cottacush.com>
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @return string|\yii\web\Response
+     */
     public function actionWeightranges()
     {
+        $billingPlanId = Yii::$app->request->get('billing_plan_id', BillingPlanAdapter::DEFAULT_WEIGHT_RANGE_PLAN);
         if (Yii::$app->request->isPost) {
             $entry = Yii::$app->request->post();
             $task = Calypso::getValue(Yii::$app->request->post(), 'task', '');
@@ -63,8 +74,9 @@ class BillingController extends BaseController
             $data['increment_weight'] = Calypso::getValue($entry, 'increment_weight', null);
             $data['max_weight'] = Calypso::getValue($entry, 'max_weight', null);
             $data['weight_range_id'] = Calypso::getValue($entry, 'id', null);
+            $data['billing_plan_id'] = Calypso::getValue($entry, 'billing_plan_id', BillingPlanAdapter::DEFAULT_WEIGHT_RANGE_PLAN);
 
-            if (($task == 'create' || $task == 'edit') && (empty($data['min_weight']) || empty($data['max_weight']) || empty($data['increment_weight']))) {
+            if (($task == 'create' || $task == 'edit') && (Util::checkEmpty($data['min_weight']) || Util::checkEmpty($data['max_weight']) || Util::checkEmpty($data['increment_weight']))) {
                 $error[] = "All details are required!";
             }
             if (!empty($error)) {
@@ -88,13 +100,15 @@ class BillingController extends BaseController
                     }
                 }
             }
+
+            return $this->refresh();
         }
         $data_source = new RefAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $ranges = $data_source->getWeightRanges();
+        $ranges = $data_source->getWeightRanges($billingPlanId);
         $ranges = new ResponseHandler($ranges);
         $ranges_list = $ranges->getStatus() == ResponseHandler::STATUS_OK ? $ranges->getData() : [];
 
-        return $this->render('weight_ranges', array('ranges' => $ranges_list));
+        return $this->render('weight_ranges', array('ranges' => $ranges_list, 'billingPlanId' => $billingPlanId));
     }
 
     /**
@@ -280,8 +294,55 @@ class BillingController extends BaseController
         return $this->render('state_mapping', array('states' => $state_list, 'regions' => $region_list, 'output' => $output,));
     }
 
+    /**
+     * Links a city to an on forwarding charge
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @return \yii\web\Response
+     */
+    public function actionLinkcitytocharge()
+    {
+        if (Yii::$app->request->isPost) {
+            $billingAdapter = new BillingAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+            $cityId = Yii::$app->request->post('city');
+            $chargeId = Yii::$app->request->post('charge');
+
+            $status = $billingAdapter->linkCityToOnForwardingCharge($cityId, $chargeId);
+
+            if ($status) {
+                $this->flashSuccess("City mapped to onforwarding charge successfully");
+            } else {
+                $this->flashError($billingAdapter->getLastErrorMessage());
+            }
+        }
+        return $this->redirect(Yii::$app->request->referrer);
+    }
+
+    /**
+     * Unlinks a city to an on forwarding charge
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @return \yii\web\Response
+     */
+    public function actionUnlinkcityfromcharge()
+    {
+        if (Yii::$app->request->isPost) {
+            $billingAdapter = new BillingAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+            $cityId = Yii::$app->request->post('city');
+            $chargeId = Yii::$app->request->post('charge');
+
+            $status = $billingAdapter->unlinkCityToOnForwardingCharge($cityId, $chargeId);
+
+            if ($status) {
+                $this->flashSuccess("City unmapped from onforwarding charge successfully");
+            } else {
+                $this->flashError($billingAdapter->getLastErrorMessage());
+            }
+        }
+        return $this->redirect(Yii::$app->request->referrer);
+    }
+
     public function actionCitymapping()
     {
+        $billingPlanId = Yii::$app->request->get('billing_plan_id', BillingPlanAdapter::DEFAULT_ON_FORWARDING_PLAN);
         if (Yii::$app->request->isPost) {
             $entry = Yii::$app->request->post();
             $task = Calypso::getValue(Yii::$app->request->post(), 'task', '');
@@ -309,7 +370,7 @@ class BillingController extends BaseController
                     if ($response['status'] === Response::STATUS_OK) {
                         Yii::$app->session->setFlash('success', 'City has been created successfully.');
                     } else {
-                        Yii::$app->session->setFlash('danger', 'There was a problem editing the city. ' . $response['messsage']);
+                        Yii::$app->session->setFlash('danger', 'There was a problem creating the city. ' . $response['messsage']);
                     }
                 } else {
                     $response = $city->editCity($data);
@@ -323,30 +384,30 @@ class BillingController extends BaseController
         }
 
         $refAdp = new RefAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $states = $refAdp->getStates(1); // Hardcoded Nigeria for now
-        $states = new ResponseHandler($states);
-        $states_list = $states->getStatus() == ResponseHandler::STATUS_OK ? $states->getData() : [];
-
-        $refAdp = new RefAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $charges = $refAdp->getOnforwardingCharges();
+        $charges = $refAdp->getOnforwardingCharges($billingPlanId);
         $charges = new ResponseHandler($charges);
         $charges_list = $charges->getStatus() == ResponseHandler::STATUS_OK ? $charges->getData() : [];
 
-        $cAdp = new RegionAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $cities = $cAdp->getAllCity(1, 1);
-        $cities = new ResponseHandler($cities);
-        $cities_list = $cities->getStatus() == ResponseHandler::STATUS_OK ? $cities->getData() : [];
+        $zoneAdapter = new RegionAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $cities = new ResponseHandler($zoneAdapter->getAllCity(1, 1));
+        $cities = $cities->getStatus() == ResponseHandler::STATUS_OK ? $cities->getData() : [];
 
-        $hubAdp = new BranchAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $hubs = $hubAdp->getAllHubs(false);
-        $hubs = new ResponseHandler($hubs);
-        $hub_list = $hubs->getStatus() == ResponseHandler::STATUS_OK ? $hubs->getData() : [];
+        $billingPlanAdapter = new BillingPlanAdapter();
+        $onForwardingCities = $billingPlanAdapter->getCitiesWithCharges($billingPlanId);
 
-        return $this->render('city_mapping', array('cities' => $cities_list, 'states' => $states_list, 'hubs' => $hub_list, 'charges' => $charges_list));
+        return $this->render('city_mapping', array('onForwardingCities' => $onForwardingCities, 'cities' => $cities, 'charges' => $charges_list));
     }
 
+    /**
+     * On Forwarding Charges View
+     * @author Wale Lawal <wale@cottacush.com>
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @param int $page
+     * @return string
+     */
     public function actionOnforwarding($page = 1)
     {
+        $billingPlanId = Yii::$app->request->get('billing_plan_id', BillingPlanAdapter::DEFAULT_ON_FORWARDING_PLAN);
         if (Yii::$app->request->isPost) {
             $entry = Yii::$app->request->post();
             $task = Calypso::getValue(Yii::$app->request->post(), 'task', '');
@@ -360,6 +421,7 @@ class BillingController extends BaseController
             $data['percentage'] = Calypso::getValue($entry, 'onforward_percentage', 0) / 100;
             $data['status'] = Calypso::getValue($entry, 'status');
             $data['charge_id'] = Calypso::getValue($entry, 'id', null);
+            $data['billing_plan_id'] = Calypso::getValue($entry, 'billing_plan_id', BillingPlanAdapter::DEFAULT_ON_FORWARDING_PLAN);
 
             if (($task == 'create' || $task == 'edit') && in_array(null, [$data['name'], $data['code'], $data['amount']])) {
                 $error[] = "All details are required!";
@@ -385,11 +447,12 @@ class BillingController extends BaseController
                     }
                 }
             }
+            return $this->refresh();
         }
 
         $offset = ($page - 1) * $this->page_width;
         $refAdp = new RefAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $charges = $refAdp->getOnforwardingCharges(null, $offset, $this->page_width, 1, 1);
+        $charges = $refAdp->getOnforwardingCharges($billingPlanId, null, $offset, $this->page_width, 1, 1);
         $response = new ResponseHandler($charges);
         $charges_list = null;
         $total_count = 0;
@@ -399,9 +462,15 @@ class BillingController extends BaseController
             $charges_list = empty($data['charges']) ? 0 : $data['charges'];
         }
 
-        return $this->render('onforwarding', array('charges' => $charges_list, 'total_count' => $total_count, 'offset' => $offset, 'page_width' => $this->page_width));
+        return $this->render('onforwarding', array('charges' => $charges_list, 'total_count' => $total_count, 'offset' => $offset, 'page_width' => $this->page_width, 'billingPlanId' => $billingPlanId));
     }
 
+    /**
+     * Pricing View
+     * @author Rotimi Akintewe <akintewe.rotimi@gmail.com>
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @return string
+     */
     public function actionPricing()
     {
         $viewBag = [
@@ -409,8 +478,10 @@ class BillingController extends BaseController
             'zones' => [],
             'weightRanges' => []
         ];
+
+        $billingPlanId = Yii::$app->request->get('billing_plan_id', BillingPlanAdapter::DEFAULT_WEIGHT_RANGE_PLAN);
         $billingAdp = new BillingAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $billings = $billingAdp->fetchAllBilling();
+        $billings = $billingAdp->fetchAllBilling($billingPlanId);
         if ($billings['status'] == ResponseHandler::STATUS_OK) {
             $viewBag['billings'] = $billings['data'];
         }
@@ -420,7 +491,7 @@ class BillingController extends BaseController
             $viewBag['zones'] = $zones['data'];
         }
         $weightAdp = new WeightRangeAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $weightRanges = $weightAdp->getRange();
+        $weightRanges = $weightAdp->getRange($billingPlanId);
         if ($weightRanges['status'] == ResponseHandler::STATUS_OK) {
             $viewBag['weightRanges'] = $weightRanges['data'];
         }
@@ -561,4 +632,82 @@ class BillingController extends BaseController
         }
         return 0;
     }
+
+    /**
+     * Corporate Billing View
+     * @author Adegoke Obasa <goke@cottacush.com>
+     */
+    public function actionCorporate()
+    {
+        $page = \Yii::$app->getRequest()->get('page', 1);
+
+        // Add Offset and Count
+        $offset = ($page - 1) * $this->page_width;
+        $filters['with_total_count'] = '1';
+        $filters['offset'] = $offset;
+        $filters['count'] = $this->page_width;
+
+        $companyAdapter = new CompanyAdapter();
+        $companies = $companyAdapter->getAllCompanies([]);
+
+        $billingPlanAdapter = new BillingPlanAdapter();
+        $response = $billingPlanAdapter->getBillingPlans($filters);
+        $totalCount = Calypso::getValue($response, 'total_count');
+        $billingPlans = Calypso::getValue($response, 'plans');
+
+        $billingPlanTypes = BillingPlanAdapter::getTypes();
+        return $this->render("corporate", [
+            'companies' => $companies,
+            'billingPlans' => $billingPlans,
+            'billingPlanTypes' => $billingPlanTypes,
+            'offset' => $offset,
+            'total_count' => $totalCount,
+            'page_width' => $this->page_width
+        ]);
+    }
+
+    /**
+     * Saves corporate billing plan
+     * @author Adegoke Obasa <goke@cottacush.com>
+     */
+    public function actionSavecorporate()
+    {
+        $billingAdapter = new BillingPlanAdapter();
+        if(Yii::$app->request->isPost) {
+            $name = Yii::$app->request->post('name');
+            $type = Yii::$app->request->post('type');
+            $companyId = Yii::$app->request->post('company');
+
+            $status = $billingAdapter->createBillingPlan($name, $type, $companyId);
+
+            if ($status) {
+                $this->flashSuccess("Billing plan created successfully");
+            } else {
+                $this->flashError($billingAdapter->getLastErrorMessage());
+            }
+        }
+        return $this->redirect(Url::to("/billing/corporate"));
+    }
+
+    /**
+     * Delete Weight Range Action
+     * @author Adegoke Obasa <goke@cottacush.com>
+     */
+    public function actionDeleteweightrange()
+    {
+        if(Yii::$app->request->isPost) {
+            $weightRangeAId = Yii::$app->request->post('range_id');
+
+            $weightRangeAdapter = new WeightRangeAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+            $status = $weightRangeAdapter->deleteRange($weightRangeAId);
+
+            if ($status) {
+                $this->flashSuccess("Weight range was deleted successfully");
+            } else {
+                $this->flashError($weightRangeAdapter->getLastErrorMessage());
+            }
+        }
+        return $this->redirect(Yii::$app->request->getReferrer());
+    }
+
 }

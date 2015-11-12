@@ -35,7 +35,7 @@ class LocationsController extends BaseController
         }
 
         $regionAdapter = new RegionAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $cities = (new ResponseHandler($regionAdapter->getAllCity(1, 0, $stateId, 0, 0)))->getData();
+        $cities = (new ResponseHandler($regionAdapter->getAllCity(1, 0, $stateId, 0)))->getData();
 
         return $this->sendSuccessResponse($cities);
     }
