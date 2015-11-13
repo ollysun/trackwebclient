@@ -121,7 +121,7 @@ $this->params['content_header_button'] = $this->render('../elements/content_head
                                     <?php endif; ?>
                                     <button title="Clone this shipment" data-href="<?= Url::toRoute(['/parcels/new?id=' . $parcel['id']]) ?>"
                                        class="btn btn-xs btn-info btnClone"><i class="fa fa-copy"></i></button>
-                                    <?= $this->render('../elements/parcel/partial_return_button',['parcel'=>$parcel]) ?>
+                                    <?= $this->render('../elements/parcel/partial_return_button',['parcel'=>$parcel ,'reasons_list' => $reasons_list]) ?>
                                 </td>
                             </tr>
                             <?php

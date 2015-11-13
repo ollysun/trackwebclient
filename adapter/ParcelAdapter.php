@@ -15,6 +15,18 @@ use yii\helpers\Json;
  */
 class ParcelAdapter extends BaseAdapter
 {
+    /**
+     * @author Babatunde Otaru <tunde@cottacush.com>
+     * @return Reasons[]
+    */
+    public function getParcelReturnReasons()
+    {
+        $adminAdp = new AdminAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+        $admin = $adminAdp->getReturnReasons();
+        $admin = new ResponseHandler($admin);
+         return  $reasons_list = $admin->getStatus() == ResponseHandler::STATUS_OK ? $admin->getData() : [];
+
+    }
 
     /**
      * @author Adeyemi Olaoye <yemi@cottacush.com>
