@@ -34,7 +34,6 @@ $this->params['breadcrumbs'] = array(
     <div class="main-box-header table-search-form">
         <div class="clearfix">
             <div class="pull-left">
-                <form class="clearfix" method="post">
                     <div class="pull-left form-group">
                         <label for="branch_type">Branch type</label><br>
                         <select id="branch_type" class="form-control input-sm" name="branch_type">
@@ -57,7 +56,6 @@ $this->params['breadcrumbs'] = array(
                         <label for="">&nbsp;</label><br>
                         <button type="submit" class="btn btn-sm btn-default" id="btn_apply_dest">Apply</button>
                     </div>
-                </form>
             </div>
 
             <?php if ($isGroundsman): ?>
@@ -71,6 +69,9 @@ $this->params['breadcrumbs'] = array(
     <div class="main-box-body">
         <?php if (!empty($parcel_next)) { ?>
             <div class="table-responsive">
+                <form method="post" id="table_form">
+                    <input type="hidden" id="form_branch_type" name="branch_type"/>
+                    <input type="hidden" id="form_branch_name" name="branch"/>
                 <table id="next_dest" class="table table-hover next_dest">
                     <thead>
                     <tr>
@@ -136,6 +137,7 @@ $this->params['breadcrumbs'] = array(
                     <?php } ?>
                     </tbody>
                 </table>
+                    </form>
             </div>
             <?= $this->render('../elements/pagination_and_summary', ['first' => $offset, 'last' => $row, 'total_count' => $total_count, 'page_width' => $page_width]) ?>
 
