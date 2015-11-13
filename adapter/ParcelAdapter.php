@@ -21,11 +21,9 @@ class ParcelAdapter extends BaseAdapter
     */
     public function getParcelReturnReasons()
     {
-        $adminAdp = new AdminAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
-        $admin = $adminAdp->getReturnReasons();
-        $admin = new ResponseHandler($admin);
-         return  $reasons_list = $admin->getStatus() == ResponseHandler::STATUS_OK ? $admin->getData() : [];
-
+        $request = $this->request(ServiceConstant::URL_RETURN_REASONS,[],self::HTTP_GET);
+        $response = new ResponseHandler($request);
+        return  $reasons_list = $response->getStatus() == ResponseHandler::STATUS_OK ? $response->getData() : [];
     }
 
     /**
