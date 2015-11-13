@@ -35,13 +35,4 @@ class AdminAdapter extends BaseAdapter{
         return  $this->request(ServiceConstant::URL_USER_VALIDATE.'?'.$filter, [], self::HTTP_POST);
     }
 
-    /**
-     * Reasons for returning a parcel
-     * @author Babatunde Otaru <tunde@cottacush.com>
-     * @return HttpResponse
-    */
-    public function getReturnReasons(){
-        return $this->request(ServiceConstant::URL_RETURN_REASONS,[],self::HTTP_GET);
-    }
-
 }
