@@ -71,6 +71,7 @@ class ServiceConstant
     const URL_SET_RETURN_FLAG = 'parcel/setReturnFlag';
     const URL_REMOVE_FROM_BAG = '/parcel/removefrombag';
     const URL_UNSORT_PARCEL = '/parcel/unsort';
+    const URL_RETURN_REASONS = '/parcel/getreturnreasons';
 
     const URL_GET_ALL_BANKS = 'bank/getAll/';
 
