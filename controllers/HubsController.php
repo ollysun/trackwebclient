@@ -95,6 +95,7 @@ class HubsController extends BaseController
             $viewData['parcel_next'] = [];
         }
         $viewData['isGroundsman'] = $isGroundman;
+        $viewData['reasons_list'] = $parcelsAdapter->getParcelReturnReasons();
         return $this->render('destination', $viewData);
     }
 
@@ -134,7 +135,6 @@ class HubsController extends BaseController
             $viewData['parcel_next'] = [];
             $viewData['total_count'] = 0;
         }
-
         return $this->render('hub_arrival', $viewData);
     }
 
@@ -305,7 +305,9 @@ class HubsController extends BaseController
             $viewData['parcel_delivery'] = [];
             $viewData['total_count'] = 0;
         }
-        return $this->render('delivery', $viewData);
+
+
+        return $this->render('delivery',  $viewData);
     }
 
     /**
