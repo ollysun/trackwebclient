@@ -282,7 +282,7 @@ class ServiceConstant
                 return 'Cancelled';
                 break;
             case ServiceConstant::RETURNED:
-                return 'Returned';
+                return 'Returned to Shipper';
                 break;
         }
     }
