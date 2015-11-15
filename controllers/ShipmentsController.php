@@ -571,7 +571,7 @@ class ShipmentsController extends BaseController
                     } elseif ($task == 'deliver') {
                         $record['receiver_name'] = $fullName;
                         $record['receiver_phone_number'] = $phoneNumber;
-                        $record['receiver_email '] = $email;
+                        $record['receiver_email'] = $email;
                         $response = $parcelData->moveToDelivered($record);
                         $success_msg = 'Shipments successfully delivered';
                     } elseif ($task == 'return') {
