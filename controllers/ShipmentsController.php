@@ -174,7 +174,7 @@ class ShipmentsController extends BaseController
         $routes = new ResponseHandler($routes);
         $route_list = $routes->getStatus() == ResponseHandler::STATUS_OK ? $routes->getData() : [];
         $reasons_list = $parcel->getParcelReturnReasons();
-        return $this->render('fordelivery', array('parcels' => $data, 'from_date' => $from_date, 'to_date' => $to_date, 'offset' => $offset, 'page_width' => $page_width, 'search' => $search_action, 'total_count' => $total_count, 'routes' => $route_list,'reasons_list' => $reasons_list, 'route_id' => $route_id));
+        return $this->render('fordelivery', array('parcels' => $data, 'from_date' => $from_date, 'to_date' => $to_date, 'offset' => $offset, 'page_width' => $page_width, 'search' => $search_action, 'total_count' => $total_count, 'routes' => $route_list, 'reasons_list' => $reasons_list, 'route_id' => $route_id));
     }
 
     public function actionStaffcheck()
@@ -351,7 +351,7 @@ class ShipmentsController extends BaseController
         $refData = new RefAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $banks = $refData->getBanks(); // get all the banks
         $reasons_list = $parcel->getParcelReturnReasons(); // get all reason
-        return $this->render('processed', array('reasons_list' => $reasons_list,'filter' => $filter, 'parcels' => $data, 'from_date' => $from_date, 'to_date' => $to_date, 'offset' => $offset, 'page_width' => $this->page_width, 'search' => $search_action, 'total_count' => $total_count, 'banks' => $banks));
+        return $this->render('processed', array('reasons_list' => $reasons_list, 'filter' => $filter, 'parcels' => $data, 'from_date' => $from_date, 'to_date' => $to_date, 'offset' => $offset, 'page_width' => $this->page_width, 'search' => $search_action, 'total_count' => $total_count, 'banks' => $banks));
     }
 
     public function actionRequestreturn()
@@ -574,6 +574,9 @@ class ShipmentsController extends BaseController
                         $record['receiver_email '] = $email;
                         $response = $parcelData->moveToDelivered($record);
                         $success_msg = 'Shipments successfully delivered';
+                    } elseif ($task == 'return') {
+                        $response = $parcelData->markAsReturned($record);
+                        $success_msg = 'Shipments successfully returned';
                     }
                     $responseHandler = new ResponseHandler($response);
                     $data = $responseHandler->getData();
@@ -593,6 +596,7 @@ class ShipmentsController extends BaseController
                     $this->flashError($temp->getError());
                 }
             }
+            return $this->redirect('/shipments/dispatched?page=' . $page);
         }
         $user_session = Calypso::getInstance()->session("user_session");
         $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
@@ -781,14 +785,14 @@ class ShipmentsController extends BaseController
                 $data[] = [
                     $key + 1,
                     $result['waybill_number'],
-                    $result['sender']['firstname'].' '.$result['sender']['lastname'],
+                    $result['sender']['firstname'] . ' ' . $result['sender']['lastname'],
                     $result['sender']['email'],
                     $result['sender']['phone'],
-                    $result['sender_address']['street_address1'].' '.$result['sender_address']['street_address2'].', '.$result['sender_address']['city']['name'].', '.$result['sender_address']['state']['name'],
-                    $result['receiver']['firstname'].' '.$result['receiver']['lastname'],
+                    $result['sender_address']['street_address1'] . ' ' . $result['sender_address']['street_address2'] . ', ' . $result['sender_address']['city']['name'] . ', ' . $result['sender_address']['state']['name'],
+                    $result['receiver']['firstname'] . ' ' . $result['receiver']['lastname'],
                     $result['receiver']['email'],
                     $result['receiver']['phone'],
-                    $result['receiver_address']['street_address1'].' '.$result['receiver_address']['street_address2'].', '.$result['receiver_address']['city']['name'].', '.$result['receiver_address']['state']['name'],
+                    $result['receiver_address']['street_address1'] . ' ' . $result['receiver_address']['street_address2'] . ', ' . $result['receiver_address']['city']['name'] . ', ' . $result['receiver_address']['state']['name'],
                     $result['weight'],
                     ServiceConstant::getPaymentMethod($result['payment_type']),
                     $result['amount_due'],
