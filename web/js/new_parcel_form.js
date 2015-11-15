@@ -595,6 +595,8 @@ $(document).ready(function () {
         $('#' + val + '_billing').show();
         if (val == 'manual') {
             $("input[name='manual_amount']").addClass('validate integer required');
+        } else if (val == 'auto') {
+            calculateBilling();
         } else if (val == 'corporate') {
             $(".amount-due").html("");
             $("#company").trigger("change");
@@ -615,6 +617,7 @@ $(document).ready(function () {
     $("#company").change(function () {
         var companyId = $(this).val();
         $("#billing_plan").html("<option selected>Select Company</option>");
+        $(".amount-due").html("");
         if (typeof billingPlans != "undefined"&& companyId != "") {
             if (!billingPlans.hasOwnProperty(companyId)) {
                 alert("This company does not have a billing plan");
