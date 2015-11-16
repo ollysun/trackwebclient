@@ -46,8 +46,6 @@ $this->params['breadcrumbs'] = array(
                         <th>Waybill No.</th>
                         <th>Sender</th>
                         <th>Sender Phone</th>
-                        <th>Receiver</th>
-                        <th>Receiver Phone</th>
                         <th>Action</th>
                     </tr>
                     </thead>
@@ -55,7 +53,6 @@ $this->params['breadcrumbs'] = array(
                     <?php
                     if (isset($parcels)) {
                         $row = $offset;
-                        $i = 1;
                         foreach ($parcels as $parcel) {
                             ?>
                             <tr>
@@ -74,7 +71,7 @@ $this->params['breadcrumbs'] = array(
                 <?= $this->render('../elements/pagination_and_summary', ['first' => $offset, 'last' => $row, 'page_width' => $page_width, 'total_count' => $total_count]) ?>
             </div>
         <?php } else { ?>
-            There are no shipments that were delivered.
+            There are no shipments that were returned.
         <?php } ?>
     </div>
 </div>
