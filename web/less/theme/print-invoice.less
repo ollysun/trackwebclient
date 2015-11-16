@@ -1,0 +1,120 @@
+.invoice-page {
+	width: 960px;
+	height: 1358px;
+	margin: 20px auto;
+	padding: 21px 30px;
+	border: 1px solid #ccc;
+
+	@media print {
+		padding: 0;
+		border: 0;
+	}
+	h1, h2, h3, h4, h5, h6 {
+		margin: 0 0 10px;
+	}
+}
+.invoice-heading {
+		margin: 0 0 20px;
+}
+.invoice-logo {
+	height: 60px;
+}
+.invoice-middle-separator {
+	height: 70px;
+	@media print {
+		height: 150px;
+	}
+}
+.table {
+	&, & td,& th {
+		border-color: #000 !important;
+	}
+	td, th {
+		padding: 4px 8px !important;
+	}
+	th {
+		border-width: 1px !important;
+	}
+	margin: 0 0 5px;
+
+	.invoice-amt-cell,
+	.invoice-total-amt-cell {
+		width: 150px !important;
+		text-align: right;
+	}
+}
+.text-center {
+	th, td {
+		text-align: center;
+	}
+}
+@media screen, print {
+
+	.double-border	{
+		tr& {
+			border: 2px solid #000;
+
+			.invoice-total-amt-cell {
+				border-left: 2px solid #000;
+			}
+		}
+		td, th {
+			border-width: 2px !important;
+		}
+	}
+}
+.vat-rate-col {
+	width: 90px;
+}
+.is-bordered {
+	border: 1px solid #000;
+}
+.small {
+	font-size: 85%;
+}
+
+.fill-in {
+	padding: 8px 0 10px;
+	height: 38px;
+
+	&:before, &:after {
+		content: "";
+		display: table;
+	}
+	&:after {
+		clear: both;
+	}
+
+	&-label,
+	&-answer {
+		display: block;
+		height: 20px;
+	}
+
+	&-label {
+		padding-right: 14px;
+		float: left;
+		background: #fff;
+		font-weight: bold;
+		border-bottom: 1px solid #fff;
+	}
+	&-answer {
+		border-bottom: 1px solid #000;
+	}
+}
+.text-normal {
+	&, & th {
+		font-weight: normal;
+	}
+}
+.no-border {
+	.table th& {
+		border-color: tran !important;
+	}
+}
+.dashed-line {
+	display: block;
+	margin: 5px 0 10px;
+	border: 0;
+	border-bottom: 1px dashed #000;
+}

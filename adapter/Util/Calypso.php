@@ -155,7 +155,7 @@ class Calypso
             'Manifests' => ['base' => 'manifest', 'base_link' => 'manifest/index', 'class' => 'fa fa-book'],
             'Customer_History' => ['base' => 'shipments', 'base_link' => 'shipments/customerhistory', 'class' => 'fa fa-user'
                 , 'branch' => [ServiceConstant::BRANCH_TYPE_EC, ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
-            'Reconciliations' => [
+            'Finance' => [
                 'base' => 'finance', 'class' => 'fa fa-money', 'base_link' => [
                     'Customers' => ['base_link' => 'finance/customersall', 'class' => ''],
                     'Merchants' => ['base_link' => 'finance/merchantsdue', 'class' => '']
