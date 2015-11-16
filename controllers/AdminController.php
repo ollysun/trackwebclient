@@ -140,7 +140,15 @@ class AdminController extends BaseController
 
     public function actionManageecs()
     {
-        if (Yii::$app->request->isPost) {
+        if(isset(Yii::$app->request->post()['filter_hub_id'])){
+            $page = 1;
+        }else {
+            $page = \Yii::$app->getRequest()->get('page', 1);
+        }
+         $page_width = 80;
+         $offset = ($page - 1) * $page_width;
+
+        if (Yii::$app->request->isPost &&  !isset(Yii::$app->request->post()['filter_hub_id'])) {
             $entry = Yii::$app->request->post();
             $task = Calypso::getValue($entry, 'task', '');
             $error = [];
@@ -188,16 +196,24 @@ class AdminController extends BaseController
         $hubAdp = new BranchAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $hubs = $hubAdp->getHubs();
         $hubs = new ResponseHandler($hubs);
+        $filter_hub_id = Calypso::getValue(Yii::$app->request->post(),'filter_hub_id', null);
+        if($filter_hub_id=="")
+        {
+            $filter_hub_id = null;
+        }
 
-        $filter_hub_id = Calypso::getValue(Yii::$app->request->post(), 'filter_hub_id', null);
         $hubAdp = new BranchAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $centres = $hubAdp->getCentres($filter_hub_id);
+        $centres = $hubAdp->getCentres($filter_hub_id,$offset,$page_width);
         $centres = new ResponseHandler($centres);
+        $centre_count = $hubAdp->getCentres($filter_hub_id,null,null,false);
+        $centre_count = new ResponseHandler($centre_count);
+        $centre_count= $centre_count->getStatus() == ResponseHandler::STATUS_OK ? $centre_count->getData() : [];
+        $total_count = sizeof($centre_count);
 
         $state_list = $states->getStatus() == ResponseHandler::STATUS_OK ? $states->getData() : [];
         $hub_list = $hubs->getStatus() == ResponseHandler::STATUS_OK ? $hubs->getData() : [];
         $centres_list = $centres->getStatus() == ResponseHandler::STATUS_OK ? $centres->getData() : [];
-        return $this->render('manageecs', array('States' => $state_list, 'hubs' => $hub_list, 'centres' => $centres_list, 'filter_hub_id' => $filter_hub_id));
+        return $this->render('manageecs', array('total_count'=>$total_count, 'page_width' => $page_width,'offset' => $offset ,'States' => $state_list, 'hubs' => $hub_list, 'centres' => $centres_list, 'filter_hub_id' => $filter_hub_id));
     }
 
     /**
