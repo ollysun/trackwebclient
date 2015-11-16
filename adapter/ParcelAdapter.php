@@ -16,17 +16,6 @@ use yii\helpers\Json;
 class ParcelAdapter extends BaseAdapter
 {
     /**
-     * @author Babatunde Otaru <tunde@cottacush.com>
-     * @return Reasons[]
-    */
-    public function getParcelReturnReasons()
-    {
-        $request = $this->request(ServiceConstant::URL_RETURN_REASONS,[],self::HTTP_GET);
-        $response = new ResponseHandler($request);
-        return  $reasons_list = $response->getStatus() == ResponseHandler::STATUS_OK ? $response->getData() : [];
-    }
-
-    /**
      * @author Adeyemi Olaoye <yemi@cottacush.com>
      * @param $waybill_number
      * @return int
@@ -34,6 +23,17 @@ class ParcelAdapter extends BaseAdapter
     public static function isBag($waybill_number)
     {
         return (preg_match('/^B[\w]+/i', $waybill_number));
+    }
+
+    /**
+     * @author Babatunde Otaru <tunde@cottacush.com>
+     * @return Reasons[]
+     */
+    public function getParcelReturnReasons()
+    {
+        $request = $this->request(ServiceConstant::URL_RETURN_REASONS, [], self::HTTP_GET);
+        $response = new ResponseHandler($request);
+        return $reasons_list = $response->getStatus() == ResponseHandler::STATUS_OK ? $response->getData() : [];
     }
 
     public function createNewParcel($postData)
@@ -104,7 +104,7 @@ class ParcelAdapter extends BaseAdapter
 
     public function getSearchParcels($status, $waybill_number, $offset = 0, $count = 50, $with_total = null, $branch_id = null, $only_parents = null, $with_created_branch = null)
     {
-        $filters = array('status' => $status, 'waybill_number' => $waybill_number, 'with_total_count' => $with_total, 'show_parents' => $only_parents, 'branch_id' => $branch_id, 'with_sender' => 1, 'with_created_branch' => 1, 'with_receiver' => 1, 'with_receiver_address' => 1, 'with_to_branch' => 1, 'offset' => $offset, 'count' => $count);
+        $filters = array('status' => $status, 'waybill_number' => $waybill_number, 'with_total_count' => $with_total, 'show_parents' => $only_parents, 'branch_id' => $branch_id, 'with_sender' => 1, 'with_created_branch' => 1, 'with_receiver' => 1, 'with_receiver_address' => 1, 'with_to_branch' => 1, 'with_route' => 1, 'offset' => $offset, 'count' => $count);
         return $this->request(ServiceConstant::URL_GET_ALL_PARCEL, array_filter($filters), self::HTTP_GET);
     }
 
@@ -271,7 +271,7 @@ class ParcelAdapter extends BaseAdapter
     {
         $response = $this->request(ServiceConstant::URL_GET_ONE_PARCEL, array('waybill_number' => $waybill_number, 'with_linked' => var_export(true, true)), self::HTTP_GET);
         $response = new ResponseHandler($response);
-        if ($response->getStatus() == Response::STATUS_OK){
+        if ($response->getStatus() == Response::STATUS_OK) {
             return $response->getData();
         } else {
             return $response->getError();
