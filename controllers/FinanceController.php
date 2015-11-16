@@ -87,4 +87,13 @@ class FinanceController extends BaseController
         $this->layout = 'print';
         return $this->render('print_invoice');
     }
+
+    /**
+     * Print Credit Note page
+     * @author Olajide Oye <jide@cottacush.com>
+     */
+    public function actionPrintcreditnote() {
+        $this->layout = 'print';
+        return $this->render('print_credit_note');
+    }
 }
