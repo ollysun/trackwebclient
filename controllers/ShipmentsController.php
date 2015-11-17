@@ -638,6 +638,43 @@ class ShipmentsController extends BaseController
     }
 
     /**
+     * @author Olawale Lawal <wale@cottacush.com>
+     * @param int $page
+     * @param null $page_width
+     * @return string
+     */
+    public function actionReturned($page = 1, $page_width = null)
+    {
+        $page_width = is_null($page_width) ? $this->page_width : $page_width;
+        $offset = ($page - 1) * $page_width;
+
+        $from_date = Yii::$app->request->get('from', date('Y/m/d'));
+        $to_date = Yii::$app->request->get('to', date('Y/m/d'));
+
+        $filter_params = ['for_return' => 1, 'status' => ServiceConstant::RETURNED, 'start_modified_date' => $from_date . ' 00:00:00', 'end_modified_date' => $to_date . ' 23:59:59', 'to_branch_id' => $this->branch_to_view, 'offset' => $offset, 'count' => $page_width, 'with_total_count' => true, 'with_sender'=>true, 'with_receiver'=>true];
+
+        if (isset(Calypso::getInstance()->get()->search)) {
+            $filter_params['waybill_number'] = Calypso::getInstance()->get()->search;
+            $filter_params['start_modified_date'] = null;
+            $filter_params['end_modified_date'] = null;
+        }
+
+        $filter_params = array_filter($filter_params, 'strlen');
+
+        $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $delivered_parcels = $parcelsAdapter->getParcelsByFilters($filter_params);
+        $parcelsHandler = new ResponseHandler($delivered_parcels);
+        $total_count = 0;
+        $parcels = [];
+        if ($parcelsHandler->getStatus() == ResponseHandler::STATUS_OK) {
+            $data = $parcelsHandler->getData();
+            $parcels = $data['parcels'];
+            $total_count = $data['total_count'];
+        }
+        return $this->render('returned', array('parcels' => $parcels, 'total_count' => $total_count, 'offset' => $offset, 'page_width' => $page_width, 'from_date' => $from_date, 'to_date' => $to_date));
+    }
+
+    /**
      * This action opens a parcel of type bag.
      * @author Akintewe Rotimi <akintewe.rotimi@gmail.com>
      */

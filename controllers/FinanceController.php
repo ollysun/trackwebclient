@@ -78,4 +78,22 @@ class FinanceController extends BaseController
     {
         return $this->render('merchants_paid');
     }
+
+    /**
+     * Print Invoice page
+     * @author Olajide Oye <jide@cottacush.com>
+     */
+    public function actionPrintinvoice() {
+        $this->layout = 'print';
+        return $this->render('print_invoice');
+    }
+
+    /**
+     * Print Credit Note page
+     * @author Olajide Oye <jide@cottacush.com>
+     */
+    public function actionPrintcreditnote() {
+        $this->layout = 'print';
+        return $this->render('print_credit_note');
+    }
 }
