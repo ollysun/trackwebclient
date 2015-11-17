@@ -24,8 +24,30 @@ class WeightRangeAdapter extends BaseAdapter
         elseif($task == 'status')
             return $this->request(ServiceConstant::URL_WEIGHT_CHANGE_STATUS, $data, self::HTTP_POST);
     }
-    public function getRange()
+    public function getRange($billingPlan = null)
     {
-        return $this->request(ServiceConstant::URL_WEIGHT_FETCH_ALL, [], self::HTTP_GET);
+        $filters = [
+            'billing_plan_id' => $billingPlan
+        ];
+        $filters = array_filter($filters);
+        return $this->request(ServiceConstant::URL_WEIGHT_FETCH_ALL, $filters, self::HTTP_GET);
+    }
+
+    /**
+     * Delete's a weight range
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @param $weightRangeId
+     * @return bool
+     */
+    public function deleteRange($weightRangeId)
+    {
+        $rawResponse = $this->request(ServiceConstant::URL_WEIGHT_DELETE, ['weight_range_id' => $weightRangeId], self::HTTP_POST);
+        $response = new ResponseHandler($rawResponse);
+
+        if (!$response->isSuccess()) {
+            $this->lastErrorMessage = $response->getError();
+        }
+
+        return $response->isSuccess();
     }
 }

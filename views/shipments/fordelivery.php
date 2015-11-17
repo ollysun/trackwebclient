@@ -139,7 +139,10 @@ $is_hub = $user['branch']['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
                             <td><?= ServiceConstant::getReturnStatus($parcel); ?></td>
                             <td><?= ucwords(ServiceConstant::getDeliveryType($parcel['delivery_type'])); ?></td>
                             <td></td>
-                            <td><a href="<?= Url::toRoute(['/shipments/view?waybill_number='.$parcel['waybill_number']]) ?>" class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
+                            <td>
+                                <a href="<?= Url::toRoute(['/shipments/view?waybill_number='.$parcel['waybill_number']]) ?>" class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i> View</a>
+                                <?= $this->render('../elements/parcel/partial_return_button',['parcel'=>$parcel , 'reasons_list' => $reasons_list]) ?>
+                            </td>
                         </tr>
                     <?php
                     }}
@@ -275,6 +278,8 @@ $is_hub = $user['branch']['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
         </form>
     </div>
 </div>
+
+<?= $this->render('../elements/parcel/partial_return_form') ?>
 
 <!-- this page specific scripts -->
 <?= $this->registerJsFile('@web/js/libs/jquery.dataTables.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>

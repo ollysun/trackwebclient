@@ -69,7 +69,7 @@ $this->params['breadcrumbs'] = array(
                                     <div class="checkbox-nice"><input class="checkable" id="chbx_w_<?= $i; ?>"
                                                                       class="checkable"
                                                                       data-waybill="<?= strtoupper($parcel['waybill_number']); ?>"
-                                                                      type="checkbox"><label
+                                                                      type="checkbox" <?= $parcel['for_return'] ? 'data-is-return':'';?>><label
                                             for="chbx_w_<?= $i++; ?>"> </label></div>
                                 </td>
                                 <td><?= ++$row; ?></td>

@@ -9,6 +9,7 @@
 namespace app\services;
 
 use Adapter\BankAdapter;
+use Adapter\BillingPlanAdapter;
 use Adapter\Globals\ServiceConstant;
 use Adapter\ParcelAdapter;
 use Adapter\RegionAdapter;
@@ -99,6 +100,7 @@ class ParcelService {
         $parcel['receiver_location']['id'] = Calypso::getValue($pickupRequest, 'destination_city_id');
         $parcel['info']['receiver_address']['street_address1'] = Calypso::getValue($pickupRequest, 'destination_address');
         $parcel['info']['other_info'] = Calypso::getValue($pickupRequest, 'shipment_description');
+        $parcel['company_id'] = Calypso::getValue($pickupRequest, 'company.id');;
 
         return $parcel;
     }
@@ -161,6 +163,7 @@ class ParcelService {
             $parcel['info']['cash_on_delivery'] = 1;
         }
         $parcel['is_merchant'] = 1;
+        $parcel['company_id'] = Calypso::getValue($shipmentRequest, 'company.id');
 
         return $parcel;
     }
@@ -221,7 +224,13 @@ class ParcelService {
         // Manual Billing Amount
         $parcel['amount_due'] = Calypso::getValue($data, 'amount');
         $manualAmount = Calypso::getValue($data, 'manual_amount');
-        $parcel['amount_due'] = $parcel['billing_method'] == 'manual' ? $manualAmount : $parcel['amount_due'] ;
+        $corporateAmount = Calypso::getValue($data, 'corporate_amount');
+        if($parcel['billing_method'] == 'manual') {
+            $parcel['amount_due'] = $manualAmount;
+        } else if($parcel['billing_method'] == 'manual') {
+            $parcel['amount_due'] = $corporateAmount;
+        }
+
         $parcel['is_billing_overridden'] = $parcel['billing_method'] == 'manual' ? 1 : 0;
         if(is_null($parcel['amount_due'])) {
             $error[] = "Amount must be calculated. Please ensure all zone billing and mapping are set.";
@@ -278,11 +287,12 @@ class ParcelService {
     }
 
     public function buildBillingCalculationData($data) {
-
         $response['payload']['from_branch_id'] = $data['from_branch_id'];
         $response['payload']['to_branch_id'] = $data['to_branch_id'];
-        $response['payload']['onforwarding_charge_id'] = $data['charge_id'];
+        $response['payload']['city_id'] = $data['city_id'];
         $response['payload']['weight'] = $data['weight'];
+        $response['payload']['weight_billing_plan_id'] = Calypso::getValue($data, 'weight_billing_plan_id', BillingPlanAdapter::DEFAULT_WEIGHT_RANGE_PLAN);
+        $response['payload']['onforwarding_billing_plan_id'] = Calypso::getValue($data, 'onforwarding_billing_plan_id', BillingPlanAdapter::DEFAULT_ON_FORWARDING_PLAN);
         return $response;
     }
 }

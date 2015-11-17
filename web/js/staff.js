@@ -20,13 +20,13 @@ $(document).ready(function () {
             editStaffForm.find("input[name=lastname]").val(temp[1]);
         }
 
-        // load input fields
+        //  load input fields
         var inputFields = ['email', 'phone', 'staff_id', 'id'];
         $(inputFields).each(function (i, v) {
             editStaffForm.find("input[name=" + v + "]").val(data[v]);
         });
 
-        // Load select fields
+       //  Load select fields
         var selectFields = ['state', 'role', 'status', 'branch_type'];
         $(selectFields).each(function (i, select) {
             editStaffForm.find("select[name=" + select + "] option").each(function (i, v) {
@@ -42,4 +42,8 @@ $(document).ready(function () {
             }
         });
     });
+
+    $("#state").on('change', function(){
+        $("#branch_type").trigger('change');
+    })
 });

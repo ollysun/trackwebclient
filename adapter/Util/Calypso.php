@@ -125,9 +125,12 @@ class Calypso
             'Direct_Delivery' => ['base_link' => 'shipments/dispatched', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_EC, ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
             'Dispatched_to_Branches' => ['base_link' => 'hubs/hubdispatch', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
             'Delivered' => ['base_link' => 'shipments/delivered', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_EC, ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
+            'Returned' => ['base_link' => 'shipments/returned', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_EC, ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
             'All_Shipments' => ['base_link' => 'shipments/all', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_EC, ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
+            'Report' => ['base' => 'report', 'base_link' => 'shipments/report', 'class' => 'fa fa-book', 'branch' => [ServiceConstant::BRANCH_TYPE_HQ]],
             'Administrator' => ['base' => 'admin', 'class' => 'fa fa-user', 'base_link' => [
                 'Manage_branches' => ['base_link' => 'admin/managebranches', 'class' => ''],
+                'Manage_cities' => ['base_link' => 'admin/managecities', 'class' => ''],
                 'Manage_routes' => ['base_link' => 'admin/manageroutes', 'class' => ''],
                 'Manage_staff_accounts' => ['base_link' => 'admin/managestaff', 'class' => ''],
                 'Company_Registration' => ['base_link' => 'admin/companies', 'class' => ''],
@@ -141,6 +144,7 @@ class Calypso
                     'Weight_Ranges' => ['base_link' => 'billing/weightranges', 'class' => ''],
                     'Pricing' => ['base_link' => 'billing/pricing', 'class' => ''],
                     'Onforwarding_Charges' => ['base_link' => 'billing/onforwarding', 'class' => ''],
+                    'Corporate_Billing' => ['base_link' => 'billing/corporate', 'class' => '']
                 ], 'branch' => [ServiceConstant::BRANCH_TYPE_HQ]]
             ], 'branch' => [ServiceConstant::BRANCH_TYPE_HQ]],
             'Parcel History' => [
@@ -152,7 +156,7 @@ class Calypso
             'Manifests' => ['base' => 'manifest', 'base_link' => 'manifest/index', 'class' => 'fa fa-book'],
             'Customer_History' => ['base' => 'shipments', 'base_link' => 'shipments/customerhistory', 'class' => 'fa fa-user'
                 , 'branch' => [ServiceConstant::BRANCH_TYPE_EC, ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
-            'Reconciliations' => [
+            'Finance' => [
                 'base' => 'finance', 'class' => 'fa fa-money', 'base_link' => [
                     'Customers' => ['base_link' => 'finance/customersall', 'class' => ''],
                     'Merchants' => ['base_link' => 'finance/merchantsdue', 'class' => '']
@@ -254,6 +258,18 @@ class Calypso
         Calypso::getInstance()->session('unbag_referrer', $unbag_referrer);
     }
 
+    public function session($key, $value = NULL)
+    {
+        if (isset($_SESSION)) {
+            if ($key && $value != NULL) {
+                $_SESSION[$key] = $value;
+            } elseif ($key && $value == NULL && isset($_SESSION[$key])) {
+                return $_SESSION[$key];
+            }
+        }
+        return false;
+    }
+
     public static function getInstance()
     {
         if (self::$instance == null) {
@@ -315,18 +331,6 @@ class Calypso
         $error = $this->session('error_msg');
         $this->unsetSession('error_msg');
         return $error;
-    }
-
-    public function session($key, $value = NULL)
-    {
-        if (isset($_SESSION)) {
-            if ($key && $value != NULL) {
-                $_SESSION[$key] = $value;
-            } elseif ($key && $value == NULL && isset($_SESSION[$key])) {
-                return $_SESSION[$key];
-            }
-        }
-        return false;
     }
 
     public function unsetSession($key = null)
