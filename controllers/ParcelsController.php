@@ -10,6 +10,7 @@ namespace app\controllers;
 
 
 use Adapter\BankAdapter;
+use Adapter\BillingPlanAdapter;
 use Adapter\CompanyAdapter;
 use Adapter\Globals\ServiceConstant;
 use Adapter\ParcelAdapter;
@@ -23,6 +24,7 @@ use Adapter\BranchAdapter;
 use app\services\ParcelService;
 use Adapter\Util\Calypso;
 use Yii;
+use yii\helpers\ArrayHelper;
 
 class ParcelsController extends BaseController
 {
@@ -93,6 +95,14 @@ class ParcelsController extends BaseController
 
         $centres_list = array_merge($centres_list, $hubs_list);
 
+        $bilingPlanAdapter = new BillingPlanAdapter();
+        $billingPlans = $bilingPlanAdapter->getBillingPlans(['no_paginate' => '1', 'type' => BillingPlanAdapter::TYPE_WEIGHT_AND_ON_FORWARDING]);
+
+        $billingPlans = ArrayHelper::map($billingPlans, 'id', 'name', 'company_id');
+
+        $companyAdapter = new CompanyAdapter();
+        $companies = $companyAdapter->getAllCompanies([]);
+
         return $this->render('new', array(
             'Banks' => $banks,
             'ShipmentType' => $shipmentType,
@@ -103,7 +113,9 @@ class ParcelsController extends BaseController
             'paymentMethod' => $paymentMethod,
             'centres' => $centres_list,
             'branch' => $user['branch'],
-            'parcel' => $parcel
+            'parcel' => $parcel,
+            'companies' => $companies,
+            'billingPlans' => $billingPlans
         ));
     }
 
@@ -151,7 +163,7 @@ class ParcelsController extends BaseController
         $cities = Yii::$app->cache->get($cacheKey);
         if (!$cities) {
             $refData = new RegionAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-            $response = new ResponseHandler($refData->getAllCity(1, 1, $state_id, 1));
+            $response = new ResponseHandler($refData->getAllCity(1, 1, $state_id));
 
             if (!$response->isSuccess()) {
                 return $this->sendErrorResponse($response->getError(), null);

@@ -211,11 +211,14 @@ $(document).ready(function(){
 
         var dest_value = $('#branch_name').val();
         if(dest_value == '') {
-
             alert('Please select a ' + $('#hub_branch_label').html() + ' to proceed.');
             event.preventDefault();
             return;
         }
+
+        $('#form_branch_type').val($("#branch_type").val());
+        $('#form_branch_name').val(dest_value);
+        $('#table_form').submit();
     });
 
     $('#branch_name').on('change', function(){

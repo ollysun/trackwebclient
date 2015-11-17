@@ -285,35 +285,38 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
 
     <div class="modal fade" id="bulk_modal" tabindex="-1" role="dialog" aria-labelledby="bulk_modal_label">
         <div class="modal-dialog modal-lg" role="document">
-                  class="validate-form" method="post">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                aria-hidden="true">×</span></button>
-                        <h4 class="modal-title" id="bulk_modal_label">Bulk Shipment Request</h4>
-                    </div>
-                    <?php $form = ActiveForm::begin(['method' => 'post','action' => '/corporate/request/bulkshipment',  'options' => ['enctype' => 'multipart/form-data']]) ?>
-                    <div class="modal-body">
-                        <br/>
-                        <div class="row">
-                            <div class="col-xs-8">
-                                <?= $form->field($bulk_form, 'dataFile')->fileInput()->label('Upload Shipments Data File (CSV File only)') ?>
-                            </div>
-                            <div class="col-xs-4 text-right">
-                                <label>&nbsp;</label>
-                                <a class="btn btn-primary btn-sm" target="_blank"
-                                   href="<?= Url::to('/corporate/request/templatefile') ?>">Download Template File</a>
-                            </div>
-                        </div>
-                        <br/>
-                    </div>
-                    <div class="modal-footer">
-                        <button name="bulk_shipment" type="button" class="btn btn-default" data-dismiss="modal">Close
-                        </button>
-                        <button type="submit" class="btn btn-primary">Initiate Request</button>
-                    </div>
-                    <?php ActiveForm::end() ?>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">×</span></button>
+                    <h4 class="modal-title" id="bulk_modal_label">Bulk Shipment Request</h4>
                 </div>
+                <?php $form = ActiveForm::begin(['method' => 'post', 'action' => '/corporate/request/bulkshipment', 'options' => ['enctype' => 'multipart/form-data']]) ?>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h5>Download the Excel template file, fill in your bulk shipment details, save as CSV and upload
+                                file</h5>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-8">
+                            <?= $form->field($bulk_form, 'dataFile')->fileInput()->label('Upload Shipments Data File (CSV File only)') ?>
+                        </div>
+                        <div class="col-xs-4 text-right">
+                            <label>&nbsp;</label>
+                            <a class="btn btn-primary btn-sm" target="_blank"
+                               href="<?= Url::to('/corporate/request/templatefile') ?>">Download Template File</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button name="bulk_shipment" type="button" class="btn btn-default" data-dismiss="modal">Close
+                    </button>
+                    <button type="submit" class="btn btn-primary">Initiate Request</button>
+                </div>
+                <?php ActiveForm::end() ?>
+            </div>
         </div>
     </div>
 

@@ -99,7 +99,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                         </div>
                         <div class="form-group col-xs-4">
                             <label for="">Percentage (%)</label>
-                            <input type="text" class="form-control validate active-validate required number" name="onforward_percentage">
+                            <input type="text" class="form-control validate active-validate required integer" name="onforward_percentage">
                         </div>
                         <div class="form-group col-xs-4">
                             <label for="">Amount (<span class="currency naira"></span>)</label>
@@ -112,6 +112,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                     </div>
                 </div>
                 <div class="modal-footer">
+                    <input type="hidden" name="billing_plan_id" value="<?= $billingPlanId?>">
                     <input type="hidden" name="task" value="create">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary">Add Onforwarding Charge</button>
@@ -149,7 +150,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                             </div>
                             <div class="form-group col-xs-4">
                                 <label for="">Percentage (%)</label>
-                                <input type="text" class="form-control validate active-validate required number" name="onforward_percentage">
+                                <input type="text" class="form-control validate active-validate required integer" name="onforward_percentage">
                             </div>
                             <div class="form-group col-xs-4">
                                 <label for="">Amount (<span class="currency naira"></span>)</label>

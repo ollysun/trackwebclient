@@ -15,7 +15,6 @@ use yii\helpers\Json;
  */
 class ParcelAdapter extends BaseAdapter
 {
-
     /**
      * @author Adeyemi Olaoye <yemi@cottacush.com>
      * @param $waybill_number
@@ -24,6 +23,17 @@ class ParcelAdapter extends BaseAdapter
     public static function isBag($waybill_number)
     {
         return (preg_match('/^B[\w]+/i', $waybill_number));
+    }
+
+    /**
+     * @author Babatunde Otaru <tunde@cottacush.com>
+     * @return Reasons[]
+     */
+    public function getParcelReturnReasons()
+    {
+        $request = $this->request(ServiceConstant::URL_RETURN_REASONS, [], self::HTTP_GET);
+        $response = new ResponseHandler($request);
+        return $reasons_list = $response->getStatus() == ResponseHandler::STATUS_OK ? $response->getData() : [];
     }
 
     public function createNewParcel($postData)
@@ -94,8 +104,8 @@ class ParcelAdapter extends BaseAdapter
 
     public function getSearchParcels($status, $waybill_number, $offset = 0, $count = 50, $with_total = null, $branch_id = null, $only_parents = null, $with_created_branch = null)
     {
-        $filters = array('status' => $status, 'waybill_number' => $waybill_number, 'with_total_count' => $with_total, 'show_parents' => $only_parents, 'branch_id' => $branch_id, 'with_sender' => 1, 'with_created_branch' => 1, 'with_receiver' => 1, 'with_receiver_address' => 1, 'with_to_branch' => 1, 'offset' => $offset, 'count' => $count);
-        return $this->request(ServiceConstant::URL_GET_ALL_PARCEL, $filters, self::HTTP_GET);
+        $filters = array('status' => $status, 'waybill_number' => $waybill_number, 'with_total_count' => $with_total, 'show_parents' => $only_parents, 'branch_id' => $branch_id, 'with_sender' => 1, 'with_created_branch' => 1, 'with_receiver' => 1, 'with_receiver_address' => 1, 'with_to_branch' => 1, 'with_route' => 1, 'offset' => $offset, 'count' => $count);
+        return $this->request(ServiceConstant::URL_GET_ALL_PARCEL, array_filter($filters), self::HTTP_GET);
     }
 
     public function getFilterParcelsByDateAndStatus($start_created_date, $end_created_date, $status, $offset = 0, $count = 50, $with_total = null, $branch_id = null, $only_parents = null, $with_created_branch = null)
@@ -344,5 +354,17 @@ class ParcelAdapter extends BaseAdapter
         }
         $this->setResponseHandler($response);
         return $response->isSuccess();
+    }
+
+    /**
+     * Returns parcels based on the filters
+     * @author Olawale Lawal <wale@cottacush.com>
+     * @param $filters
+     * @return array|mixed|string
+     */
+    public function getParcelsByFilters($filters)
+    {
+        $params = http_build_query($filters);
+        return $this->request(ServiceConstant::URL_GET_ALL_PARCEL . '?' . $params, [], self::HTTP_GET);
     }
 }
