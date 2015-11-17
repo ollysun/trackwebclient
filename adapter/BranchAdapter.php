@@ -78,6 +78,7 @@ class BranchAdapter extends BaseAdapter
         return $this->request($url . '?' . $filter . '&with_parent=1', array(), self::HTTP_GET);
     }
 
+
     public function listECForHub($hub_id)
     {
         return $this->request(ServiceConstant::URL_GET_ALL_EC_IN_HUB, ['hub_id' => $hub_id], self::HTTP_GET);
