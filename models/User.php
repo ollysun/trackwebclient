@@ -2,14 +2,11 @@
 
 namespace app\models;
 
+use Adapter\RequestHelper;
+use Adapter\Util\Calypso;
+
 class User extends \yii\base\Object implements \yii\web\IdentityInterface
 {
-    public $id;
-    public $username;
-    public $password;
-    public $authKey;
-    public $accessToken;
-
     private static $users = [
         '100' => [
             'id' => '100',
@@ -26,6 +23,11 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface
             'accessToken' => '101-token',
         ],
     ];
+    public $id;
+    public $username;
+    public $password;
+    public $authKey;
+    public $accessToken;
 
     /**
      * @inheritdoc
@@ -52,7 +54,7 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface
     /**
      * Finds user by username
      *
-     * @param  string      $username
+     * @param  string $username
      * @return static|null
      */
     public static function findByUsername($username)
@@ -64,6 +66,19 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface
         }
 
         return null;
+    }
+
+    /**
+     * Login User
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     * @param $user_data
+     */
+    public static function login($user_data)
+    {
+        if ($user_data != null && isset($user_data['user_auth_id'])) {
+            RequestHelper::setClientID($user_data['user_auth_id']);
+        }
+        Calypso::getInstance()->session("user_session", $user_data);
     }
 
     /**
@@ -93,7 +108,7 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface
     /**
      * Validates password
      *
-     * @param  string  $password password to validate
+     * @param  string $password password to validate
      * @return boolean if password provided is valid for current user
      */
     public function validatePassword($password)

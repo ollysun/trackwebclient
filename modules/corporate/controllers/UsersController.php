@@ -9,6 +9,7 @@ namespace app\modules\corporate\controllers;
 use Adapter\CompanyAdapter;
 use Adapter\Util\Calypso;
 use app\controllers\BaseController;
+use yii\helpers\Url;
 use yii\web\Controller;
 
 class UsersController extends BaseController
@@ -67,5 +68,32 @@ class UsersController extends BaseController
             'total_count' => $totalCount,
             'page_width' => $this->page_width
         ]);
+    }
+
+    /**
+     * Edit User Action
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @return \yii\web\Response
+     */
+    public function actionEdituser()
+    {
+        $companyAdapter = new CompanyAdapter();
+        $companyId = Calypso::getValue(Calypso::getInstance()->session("user_session"), 'company_id');
+
+
+        if (\Yii::$app->request->isPost) {
+            $data = \Yii::$app->request->post();;
+
+            $data['company_id'] = $companyId;
+
+            // Create User
+            $status = $companyAdapter->editUser(['company_user' => $data]);
+            if ($status) {
+                $this->flashSuccess("User edited successfully");
+            } else {
+                $this->flashError($companyAdapter->getLastErrorMessage());
+            }
+        }
+        return $this->redirect(Url::to("/corporate/users"));
     }
 }

@@ -13,9 +13,11 @@ use Adapter\ResponseHandler;
 use Adapter\Util\Calypso;
 use app\controllers\BaseController;
 use app\modules\corporate\models\BulkShipment;
+use app\modules\corporate\models\BulkShipmentRequestForm;
 use app\traits\CorporateRequestFilter;
 use Yii;
 use yii\helpers\Url;
+use yii\web\UploadedFile;
 
 class RequestController extends BaseController
 {
@@ -73,7 +75,8 @@ class RequestController extends BaseController
             'states' => $states,
             'total_count' => $totalCount,
             'from_date' => $this->getFromCreatedAtDate($filters),
-            'to_date' => $this->getToCreatedAtDate($filters)
+            'to_date' => $this->getToCreatedAtDate($filters),
+            'bulk_form' => new BulkShipmentRequestForm()
         ]);
     }
 
@@ -257,4 +260,28 @@ class RequestController extends BaseController
         BulkShipment::generateTemplateFile();
         BulkShipment::pushFileToClient(BulkShipment::getTemplateFilePath(), 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'CourierPlus - Bulk Shipment Request Template.xlsx', true);
     }
+
+    /**
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     * @return bool|\yii\web\Response
+     */
+    public function actionBulkshipment()
+    {
+        $bulkRequestForm = new BulkShipmentRequestForm();
+
+        if (Yii::$app->request->isPost) {
+            $bulkRequestForm->dataFile = UploadedFile::getInstance($bulkRequestForm, 'dataFile');
+            $bulkRequestForm->process();
+            if (!$bulkRequestForm->process()) {
+                Yii::$app->session->setFlash('danger', implode($bulkRequestForm->getErrors('dataFile'), '<br/>'));
+            } else {
+                Yii::$app->session->setFlash('success', 'Bulk Shipment Request Processed Successfully');
+            }
+
+            return $this->redirect(Yii::$app->request->referrer);
+        } else {
+            return false;
+        }
+    }
+
 }

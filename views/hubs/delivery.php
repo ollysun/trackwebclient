@@ -54,6 +54,9 @@ $this->params['breadcrumbs'] = [['label' => 'Sorted Shipments']];
                             <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" id="manifest">
                                 Generate Manifest
                             </button>
+                            <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" id="unsort_btn">
+                                Unsort
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -99,6 +102,7 @@ $this->params['breadcrumbs'] = [['label' => 'Sorted Shipments']];
                         <th>Next Destination</th>
                         <th>Final Destination</th>
                         <th>Request Type</th>
+                        <th>Return Status</th>
                         <th>Weight (Kg)</th>
                         <th>Age analysis</th>
                     </tr>
@@ -126,6 +130,7 @@ $this->params['breadcrumbs'] = [['label' => 'Sorted Shipments']];
                             <td><?= strtoupper(Calypso::getValue($parcels, 'to_branch.name')); ?> </td>
                             <td><?= ucwords(Calypso::getValue($parcels, 'receiver_address.city.name') . ', ' . Calypso::getValue($parcels, 'receiver_address.state.name')) ?></td>
                             <td><?= ServiceConstant::getRequestType($parcels['request_type']) ?></td>
+                            <td><?= ServiceConstant::getReturnStatus($parcels); ?></td>
                             <td><?= Calypso::getValue($parcels, 'weight') ?></td>
                             <td></td>
                         </tr>
@@ -286,6 +291,10 @@ $this->params['breadcrumbs'] = [['label' => 'Sorted Shipments']];
     </div>
 </div>
 
+<form id="unsort_form" action="<?= Url::to('/hubs/unsort') ?>" method="post">
+    <input id="unsort_waybill_numbers" type="hidden" name="waybill_numbers"/>
+</form>
+
 
 <!-- this page specific scripts -->
 <?php $this->registerJsFile('@web/js/libs/jquery.dataTables.js', ['depends' => [JqueryAsset::className()]]); ?>
@@ -293,3 +302,4 @@ $this->params['breadcrumbs'] = [['label' => 'Sorted Shipments']];
 <?php $this->registerJsFile('@web/js/libs/dataTables.tableTools.js', ['depends' => [JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/libs/jquery.dataTables.bootstrap.js', ['depends' => [JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/hub_delivery.js', ['depends' => [JqueryAsset::className()]]); ?>
+<?php $this->registerJsFile('@web/js/bootbox.min.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>

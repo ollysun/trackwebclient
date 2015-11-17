@@ -92,7 +92,8 @@ if($search){
                     <th>Request Type</th>
                     <th>Created Date</th>
                     <th>Pieces</th>
-                    <th>Status</th>
+                    <th>Return Status</th>
+                    <th>Shipment Status</th>
                     <th>Originating Centre</th>
                     <th>Action</th>
                 </tr>
@@ -112,6 +113,7 @@ if($search){
                             <td><?= ServiceConstant::getRequestType($parcel['request_type']) ?></td>
                             <td><?= date(ServiceConstant::DATE_TIME_FORMAT,strtotime($parcel['created_date'])); ?></td>
                             <td><?= $parcel['no_of_package']; ?></td>
+                            <td><?= ServiceConstant::getReturnStatus($parcel); ?></td>
                             <td><?= ServiceConstant::getStatus($parcel['status']); ?></td>
                             <td><?= strtoupper(Calypso::getValue($parcel, "created_branch.name")) ?></td>
                             <td><a href="<?= Url::toRoute(['/shipments/view?waybill_number='.$parcel['waybill_number']]) ?>" class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
