@@ -99,7 +99,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                         </div>
                         <div class="form-group col-xs-4">
                             <label for="">Percentage (%)</label>
-                            <input type="text" class="form-control validate active-validate required number" name="onforward_percentage">
+                            <input type="text" class="form-control validate active-validate required integer" name="onforward_percentage">
                         </div>
                         <div class="form-group col-xs-4">
                             <label for="">Amount (<span class="currency naira"></span>)</label>
@@ -150,7 +150,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                             </div>
                             <div class="form-group col-xs-4">
                                 <label for="">Percentage (%)</label>
-                                <input type="text" class="form-control validate active-validate required number" name="onforward_percentage">
+                                <input type="text" class="form-control validate active-validate required integer" name="onforward_percentage">
                             </div>
                             <div class="form-group col-xs-4">
                                 <label for="">Amount (<span class="currency naira"></span>)</label>
