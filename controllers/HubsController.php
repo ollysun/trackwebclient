@@ -8,7 +8,6 @@
 
 namespace app\controllers;
 
-use Yii;
 use Adapter\AdminAdapter;
 use Adapter\BranchAdapter;
 use Adapter\Globals\ServiceConstant;
@@ -16,10 +15,10 @@ use Adapter\ParcelAdapter;
 use Adapter\RefAdapter;
 use Adapter\RequestHelper;
 use Adapter\ResponseHandler;
+use Adapter\RouteAdapter;
 use Adapter\Util\Calypso;
 use app\services\HubService;
-use app\services\ParcelService;
-use Adapter\RouteAdapter;
+use Yii;
 
 class HubsController extends BaseController
 {
@@ -75,10 +74,14 @@ class HubsController extends BaseController
             }
 
             if ($response['status'] === ResponseHandler::STATUS_OK) {
-                $this->flashSuccess('Parcels have been successfully moved to the next destination. <a href="delivery">Generate Manifest</a>');
+
+                if ($branch_type != 'route' && ($this->userData['branch_id'] == $branch)) {
+                    $this->flashSuccess('Parcels have been successfully moved to the next destination.');
+                } else {
+                    $this->flashSuccess('Parcels have been successfully moved to the next destination. <a href="delivery">Generate Manifest</a>');
+                }
             } else {
-                $this->flashError('An error occurred while trying to move parcels to next destination. Please try again.');
-            }
+                $this->flashError('An error occurred while trying to move parcels to next destination. Please try again.');}
         }
         $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $arrival_parcels = $parcelsAdapter->getParcelsForNextDestination($isGroundman ? ServiceConstant::ASSIGNED_TO_GROUNDSMAN : ServiceConstant::FOR_ARRIVAL, null, $isGroundman ? $this->userData['branch_id'] : $this->branch_to_view, null, $viewData['offset'], 50, 1);
@@ -92,10 +95,11 @@ class HubsController extends BaseController
             $viewData['parcel_next'] = [];
         }
         $viewData['isGroundsman'] = $isGroundman;
+        $viewData['reasons_list'] = $parcelsAdapter->getParcelReturnReasons();
         return $this->render('destination', $viewData);
     }
 
-    public function actionHubarrival()
+    public function actionHubarrival($page = 1, $page_width = null)
     {
         $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
 
@@ -115,16 +119,22 @@ class HubsController extends BaseController
                 $this->flashError('An error occurred while trying to move parcels to next destination. Please try again.');
             }
         }
+
+        $viewData = [];
+        $viewData['page_width'] = is_null($page_width) ? $this->page_width : $page_width;
+        $viewData['offset'] = ($page - 1) * $viewData['page_width'];
+
         $user_session = Calypso::getInstance()->session("user_session");
         $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $arrival_parcels = $parcelsAdapter->getParcelsForNextDestination(ServiceConstant::FOR_ARRIVAL, null, $user_session['branch_id']);
+        $arrival_parcels = $parcelsAdapter->getParcelsForNextDestination(ServiceConstant::FOR_ARRIVAL, null, $user_session['branch_id'], null, $viewData['offset'], $viewData['page_width'], 1);
         if ($arrival_parcels['status'] === ResponseHandler::STATUS_OK) {
-            $viewData['parcel_next'] = $arrival_parcels['data'];
+            $viewData['parcel_next'] = $arrival_parcels['data']['parcels'];
+            $viewData['total_count'] = $arrival_parcels['data']['total_count'];
         } else {
             $this->flashError('An error occurred while trying to fetch parcels. Please try again.');
             $viewData['parcel_next'] = [];
+            $viewData['total_count'] = 0;
         }
-
         return $this->render('hub_arrival', $viewData);
     }
 
@@ -295,7 +305,9 @@ class HubsController extends BaseController
             $viewData['parcel_delivery'] = [];
             $viewData['total_count'] = 0;
         }
-        return $this->render('delivery', $viewData);
+
+
+        return $this->render('delivery',  $viewData);
     }
 
     /**
@@ -403,8 +415,8 @@ class HubsController extends BaseController
             if ($failed_parcels = Calypso::getValue($responseData, 'failed', [])) {
 
                 $successful_parcels = Calypso::getValue($responseData, 'successful', []);
-                $failed_message = ($successful_parcels) ? ('<strong>Unsorted Parcels: ' . implode(', ', $successful_parcels). '</strong><br/></br>') : '';
-                $failed_message.= '<strong>Failed to unsort some parcels:</strong> <br/>';
+                $failed_message = ($successful_parcels) ? ('<strong>Unsorted Parcels: ' . implode(', ', $successful_parcels) . '</strong><br/></br>') : '';
+                $failed_message .= '<strong>Failed to unsort some parcels:</strong> <br/>';
 
                 foreach ($failed_parcels as $waybill_number => $message) {
                     $failed_message .= '#<strong>' . $waybill_number . '</strong> - Reason: ' . $message . '<br/>';

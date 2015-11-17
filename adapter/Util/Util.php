@@ -120,4 +120,43 @@ class Util
 
         return false;
     }
+
+    /**
+     * Checks if a value is empty
+     * Special check for number 0
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @param $value
+     * @return bool
+     */
+    public static function checkEmpty($value)
+    {
+        if($value === 0 || $value === '0') {
+            return false;
+        }
+        return empty($value);
+    }
+
+    /**
+     * Generates a CSV for download
+     * @author Olawale Lawal <wale@cottacush.com>
+     * @param $name
+     * @param $header
+     * @param $data
+     */
+    public static function exportToCSV($name, array $header, array $data)
+    {
+        header('Content-Type: text/csv');
+        header('Content-Disposition: attachment; filename=' . $name);
+        header('Pragma: no-cache');
+        header("Expires: 0");
+
+        $stream = fopen("php://output", "w");
+
+        fputcsv($stream, $header);
+        foreach ($data as $row) {
+            fputcsv($stream, $row);
+        }
+        fclose($stream);
+    }
+
 }

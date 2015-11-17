@@ -2,6 +2,7 @@
 use Adapter\Util\Calypso;
 use Adapter\Globals\ServiceConstant;
 use yii\helpers\Html;
+use yii\helpers\Json;
 use yii\web\View;
 /* @var $this yii\web\View */
 $this->title = 'Create a New Shipment';
@@ -263,14 +264,6 @@ $is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
                                 </div>
 
                                 <div class="row">
-                                    <div class="col-xs-12 col-sm-12 col-lg-12 form-group">
-                                        <label>Reference Number</label>
-                                        <input name="reference_number" class="form-control" id="reference_number"
-                                            value="<?= Calypso::getValue($parcel, "info.reference_number", ''); ?>">
-                                    </div>
-                                </div>
-
-                                <div class="row">
                                     <div class="col-xs-12 col-sm-6 col-lg-5 form-group">
                                         <label>Cash on Delivery?</label><br>
 
@@ -295,6 +288,14 @@ $is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
                                                 value="<?= Calypso::getValue($parcel, "info.delivery_amount", ''); ?>">
                                         </div>
                                     </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-12 col-lg-12 form-group">
+                                    <label>Reference Number</label>
+                                    <input name="reference_number" class="form-control" id="reference_number"
+                                        value="<?= Calypso::getValue($parcel, "info.reference_number", ''); ?>">
                                 </div>
                             </div>
 
@@ -343,6 +344,30 @@ $is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
                                     <div class="amount-due currency naira">0.00</div>
                                     <input type="hidden" name="amount" id="amount" />
                                 </div>
+                                <div id="corporate_billing" class="form-group amount-due-wrap" style="display: none;">
+                                    <label for="">Amount Due</label>
+
+                                    <div class="amount-due currency naira">0.00</div>
+
+                                    <div class="row">
+                                        <div class="col-md-6 col-xs-12">
+                                            <label>Company</label>
+                                            <select id="company" class="form-control billing_plan">
+                                                <option value="" selected>Select Company</option>
+                                                <?php foreach($companies as $company):?>
+                                                    <option value="<?= Calypso::getValue($company, 'id')?>" <?= Calypso::getValue($parcel, 'company_id') == Calypso::getValue($company, 'id') ? 'selected' : '';?>><?= strtoupper(Calypso::getValue($company, 'name'))?></option>
+                                                <?php endforeach;?>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6 col-xs-12">
+                                            <label>Billing Plan</label>
+                                            <select id="billing_plan" class="form-control billing_plan">
+                                                <option value="">Select Company</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <input type="hidden" name="corporate_amount" id="corporate_amount" />
+                                </div>
                                 <div id="manual_billing" class="form-group amount-due-wrap" style="display: none;">
                                     <label for="">Amount Due</label>
                                     <input type="text" class="form-control" name="manual_amount" id="manual_amount" />
@@ -358,6 +383,10 @@ $is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
                                         <div class="radio-inline">
                                             <input id="manualBillingMethod" type="radio" name="billing_method" value="manual">
                                             <label for="manualBillingMethod" class="">Manual</label>
+                                        </div>
+                                        <div class="radio-inline">
+                                            <input id="corporateBillingMethod" type="radio" name="billing_method" value="corporate">
+                                            <label for="corporateBillingMethod" class="">Corporate</label>
                                         </div>
                                     </div>
                                 </div>
@@ -437,7 +466,10 @@ $is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
 <?php $this->registerJsFile('@web/js/keyboardFormSubmit.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/form-watch-changes.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/validate.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
-<?php $this->registerJsFile('@web/js/new_parcel_form.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/new_parcel_form.js?2.2.1', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php
 $this->registerJs('$(".alert").delay(5000).fadeOut(1500);',View::POS_READY);
 ?>
+<script type="text/javascript">
+<?= "var billingPlans = " . Json::encode($billingPlans) . ";";?>
+</script>

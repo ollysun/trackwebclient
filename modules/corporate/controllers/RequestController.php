@@ -271,7 +271,6 @@ class RequestController extends BaseController
 
         if (Yii::$app->request->isPost) {
             $bulkRequestForm->dataFile = UploadedFile::getInstance($bulkRequestForm, 'dataFile');
-            $bulkRequestForm->process();
             if (!$bulkRequestForm->process()) {
                 Yii::$app->session->setFlash('danger', implode($bulkRequestForm->getErrors('dataFile'), '<br/>'));
             } else {
