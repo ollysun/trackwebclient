@@ -54,9 +54,10 @@ class AdminController extends BaseController
             $zone = new ZoneAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
             $response = $zone->saveMatrix(json_encode($matrix_info));
             if ($response['status'] === Response::STATUS_OK) {
-                $this->redirect('/admin/managebranches');
+                return $this->redirect('/admin/managebranches');
             } else {
                 Yii::$app->session->setFlash('danger', 'There was a problem creating the zone.' . $response['message']);
+                return $this->refresh();
             }
         }
 
@@ -120,6 +121,7 @@ class AdminController extends BaseController
                     }
                 }
             }
+            return $this->refresh();
         }
 
         $refAdp = new RefAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
@@ -177,6 +179,7 @@ class AdminController extends BaseController
                     }
                 }
             }
+            return $this->refresh();
         }
         $refAdp = new RefAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $states = $refAdp->getStates(1); // Hardcoded Nigeria for now
@@ -252,6 +255,8 @@ class AdminController extends BaseController
                     }
                 }
             }
+
+            return $this->refresh();
         }
 
         $refAdp = new RefAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
@@ -275,6 +280,31 @@ class AdminController extends BaseController
 
 
         return $this->render('managestaff', ['states' => $state_list, 'roles' => $role_list, 'staffMembers' => $staffMembers, 'offset' => $offset, 'role' => $role, 'page_width' => $this->page_width]);
+    }
+
+    /**
+     * Edit Company Action
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @author Olajide Oye <jide@cottacush.com>
+     * @return string
+     */
+    public function actionEditcompany()
+    {
+        $companyAdapter = new CompanyAdapter();
+        if (Yii::$app->request->isPost) {
+            $data = Yii::$app->request->post();
+
+            // Edit Company
+            $status = $companyAdapter->editCompany($data);
+
+            if ($status) {
+                $this->flashSuccess("Company edited successfully");
+            } else {
+                $this->flashError($companyAdapter->getLastErrorMessage());
+            }
+        }
+
+        return $this->redirect(Url::to("/admin/companies"));
     }
 
     /**
@@ -424,6 +454,8 @@ class AdminController extends BaseController
                     }
                 }
             }
+
+            return $this->refresh();
         }
         $hubAdp = new BranchAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $hubs = $hubAdp->getHubs();
@@ -443,5 +475,82 @@ class AdminController extends BaseController
             $route_list = empty($data['routes']) ? 0 : $data['routes'];
         }
         return $this->render('manageroutes', ['routes' => $route_list, 'hubs' => $hub_list, 'offset'=>$offset, 'total_count'=>$total_count, 'page_width'=>$this->page_width]);
+    }
+
+    /**
+     * Company ECs mapping view
+     * @author Adegoke Obasa <goke@cottacush.com>
+     */
+    public function actionCompanyecs()
+    {
+        $page = \Yii::$app->getRequest()->get('page', 1);
+        $companyAdapter = new CompanyAdapter();
+        $branchAdapter = new BranchAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+
+        // Add Offset and Count
+        $offset = ($page - 1) * $this->page_width;
+        $filters['offset'] = $offset;
+        $filters['count'] = $this->page_width;
+
+        $companies = $companyAdapter->getAllCompanies([]);
+        $ecs = $branchAdapter->getAllEcs();
+        $companyEcsResponse = $companyAdapter->getAllEcs($filters);
+
+        $totalCount = Calypso::getValue($companyEcsResponse, 'total_count');
+        $companyEcs = Calypso::getValue($companyEcsResponse, 'ecs');
+
+        return $this->render("companyecs", [
+            'companyEcs' => $companyEcs,
+            'companies' => $companies,
+            'ecs' => $ecs,
+            'offset' => $offset,
+            'total_count' => $totalCount,
+            'page_width' => $this->page_width
+        ]);
+    }
+
+    /**
+     * Links an EC to a company
+     * @author Adegoke Obasa <goke@cottacush.com>
+     */
+    public function actionLinkectocompany()
+    {
+        $companyAdapter = new CompanyAdapter();
+        if(Yii::$app->request->isPost) {
+            $companyId = Yii::$app->request->post('company_id');
+            $branchId = Yii::$app->request->post('branch_id');
+
+            $status = $companyAdapter->linkEc($companyId, $branchId);
+
+            if ($status) {
+                $this->flashSuccess("Express Centre linked to company successfully");
+            } else {
+                $this->flashError($companyAdapter->getLastErrorMessage());
+            }
+        }
+        return $this->redirect("/admin/companyecs");
+    }
+
+    /**
+     * Relinks an EC to a company
+     * @author Adegoke Obasa <goke@cottacush.com>
+     */
+    public function actionRelinkectocompany()
+    {
+        $companyAdapter = new CompanyAdapter();
+        if(Yii::$app->request->isPost) {
+            $id = Yii::$app->request->post('id');
+            $companyId = Yii::$app->request->post('company_id');
+            $branchId = Yii::$app->request->post('branch_id');
+
+            $status = $companyAdapter->relinkEc($id, $companyId, $branchId);
+
+            if ($status) {
+                $this->flashSuccess("Express Centre re-linked to company successfully");
+            } else {
+                $this->flashError($companyAdapter->getLastErrorMessage());
+            }
+        }
+        return $this->redirect("/admin/companyecs");
     }
 }
