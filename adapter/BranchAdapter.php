@@ -41,7 +41,7 @@ class BranchAdapter extends BaseAdapter
     {
         $filter = 'branch_type=' . ServiceConstant::BRANCH_TYPE_HUB;
         $filter .= ($state != null ? '&state_id=' . $state : '');
-        $filter .= ($offset > -1) ? '&offset=' . $offset . '&count=' . $count : '';
+        $filter .=  '&offset=' . $offset . '&count=' . $count;
         return $this->request(ServiceConstant::URL_BRANCH_GET_ALL . '?' . $filter, array(), self::HTTP_GET);
     }
 
