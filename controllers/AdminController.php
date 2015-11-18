@@ -145,7 +145,8 @@ class AdminController extends BaseController
         }else {
             $page = \Yii::$app->getRequest()->get('page', 1);
         }
-         $this->page_width = 80;
+         $this->page_width =\Yii::$app->getRequest()->get('page_width',80);
+
          $offset = ($page - 1) * $this->page_width;
 
         if (Yii::$app->request->isPost &&  !isset(Yii::$app->request->post()['filter_hub_id'])) {
