@@ -78,11 +78,11 @@ $this->params['breadcrumbs'] = array(
                 <tbody>
                 <?php
                 if (isset($centres) && is_array(($centres))):
-                    $count = 1;
+                    $count = $offset;
                     foreach ($centres as $centre) {
                         ?>
                         <tr class="text-center">
-                            <td><?= $count++; ?></td>
+                            <td><?= ++$count; ?></td>
                             <td><?= strtoupper($centre['code']); ?></td>
                             <td class="n<?=$centre['id'];?>"><?= $centre['name']; ?></td>
                             <?php if (empty($filter_hub_id)) { ?>
@@ -111,6 +111,7 @@ $this->params['breadcrumbs'] = array(
                 ?>
                 </tbody>
             </table>
+                <?= $this->render('../elements/pagination_and_summary', ['first' => $offset, 'last' => $count, 'total_count' => $total_count, 'page_width' => $page_width]) ?>
             <?php } else {  ?>
                 <div class="alert alert-info text-center" role="alert">
                     <p><strong>No Express Centre found</strong></p>

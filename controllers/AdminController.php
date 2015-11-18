@@ -140,7 +140,16 @@ class AdminController extends BaseController
 
     public function actionManageecs()
     {
-        if (Yii::$app->request->isPost) {
+        if(isset(Yii::$app->request->post()['filter_hub_id'])){
+            $page = 1;
+        }else {
+            $page = \Yii::$app->getRequest()->get('page', 1);
+        }
+         $this->page_width =\Yii::$app->getRequest()->get('page_width',80);
+
+         $offset = ($page - 1) * $this->page_width;
+
+        if (Yii::$app->request->isPost &&  !isset(Yii::$app->request->post()['filter_hub_id'])) {
             $entry = Yii::$app->request->post();
             $task = Calypso::getValue($entry, 'task', '');
             $error = [];
@@ -188,16 +197,19 @@ class AdminController extends BaseController
         $hubAdp = new BranchAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $hubs = $hubAdp->getHubs();
         $hubs = new ResponseHandler($hubs);
+        $filter_hub_id = Calypso::getDisplayValue(Yii::$app->request->post(),'filter_hub_id', null);
 
-        $filter_hub_id = Calypso::getValue(Yii::$app->request->post(), 'filter_hub_id', null);
         $hubAdp = new BranchAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $centres = $hubAdp->getCentres($filter_hub_id);
+        $centres = $hubAdp->getCentres($filter_hub_id,$offset,$this->page_width);
         $centres = new ResponseHandler($centres);
 
+
         $state_list = $states->getStatus() == ResponseHandler::STATUS_OK ? $states->getData() : [];
-        $hub_list = $hubs->getStatus() == ResponseHandler::STATUS_OK ? $hubs->getData() : [];
-        $centres_list = $centres->getStatus() == ResponseHandler::STATUS_OK ? $centres->getData() : [];
-        return $this->render('manageecs', array('States' => $state_list, 'hubs' => $hub_list, 'centres' => $centres_list, 'filter_hub_id' => $filter_hub_id));
+        $hub_list = $hubs->getStatus() == ResponseHandler::STATUS_OK ? $hubs->getData()['branch_data'] : [];
+        $centres_list_and_total_count = $centres->getStatus() == ResponseHandler::STATUS_OK ? $centres->getData() : [];
+        $centres_list = $centres_list_and_total_count['branch_data'];
+        $total_count = $centres_list_and_total_count['total_count'];
+        return $this->render('manageecs', array('total_count'=>$total_count, 'page_width' => $this->page_width,'offset' => $offset ,'States' => $state_list, 'hubs' => $hub_list, 'centres' => $centres_list, 'filter_hub_id' => $filter_hub_id));
     }
 
     /**
