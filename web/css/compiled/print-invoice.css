@@ -75,6 +75,9 @@
 .is-bordered {
   border: 1px solid #000;
 }
+.is-double-bordered {
+  border: 2px solid #000 !important;
+}
 .small {
   font-size: 85%;
 }
@@ -117,4 +120,23 @@
   margin: 5px 0 10px;
   border: 0;
   border-bottom: 1px dashed #000;
+}
+.rotate-wrap {
+  height: 1150px;
+}
+.rotate {
+  position: relative;
+  margin-top: 20px;
+  -webkit-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
+  transform: rotate(90deg);
+}
+@media print {
+  .rotate {
+    margin-top: 70px;
+  }
+}
+.rotate .table {
+  width: 1200px;
+  font-size: 95%;
 }
