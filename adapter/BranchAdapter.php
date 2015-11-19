@@ -74,7 +74,10 @@ class BranchAdapter extends BaseAdapter
             $url = ServiceConstant::URL_BRANCH_GET_ALL_EC;
             $filter = ($hub_id != null ? 'hub_id=' . $hub_id : '');
         }
-        $filter .= '&offset=' . $offset . '&count=' . $count . '&paginate=' . $paginate;
+        $filter .= '&offset=' . $offset . '&count=' . $count;
+        if($paginate === false) {
+            $filter .= '&paginate=false';
+        }
         return $this->request($url . '?' . $filter . '&with_parent=1', array(), self::HTTP_GET);
     }
 
