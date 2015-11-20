@@ -3,6 +3,7 @@
  */
 $(document).ready(function () {
 
+
     $("#chbx_w_all").change(function () {
         $("input:checkbox.checkable").prop("checked", $(this).prop("checked"));
     });

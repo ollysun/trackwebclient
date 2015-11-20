@@ -536,71 +536,88 @@ class ShipmentsController extends BaseController
 
     public function actionDispatched($page = 1, $page_width = null)
     {
+        $set_date = date('Y-m-d');
         $page_width = is_null($page_width) ? $this->page_width : $page_width;
         $offset = ($page - 1) * $page_width;
+        $search = null;
 
-        if (\Yii::$app->request->isPost) {
+        if (isset(\Yii::$app->request->post()['password'])||!empty(\Yii::$app->request->post()['search'])) {
+
             $records = \Yii::$app->request->post();
+
+            if(!empty($records['search'])){
+                $search = $records['search'];
+                $offset = 0;
+            }
+            else{
             $password = $records['password'];
             $fullName = $records['fullname'];
-            $email = $records['email'];
+            $email =  $records['email'];
+            $date = $records['date'];
+            $time = $records['time'];
+            $date_and_time = $date . " " . $time;
+            list($year, $month, $day, $hour, $minute, $dayType) = preg_split('/[\/\s:]+/', $date_and_time);
+            $date_and_time_timestamp= $year . '-' . $month. '-' .  $day . ' ' . ($dayType == "PM"?$hour+12: $hour) . ":" . $minute . ":00";
             $phoneNumber = $records['phone'];
             $rawData = $records['waybills'];
             $task = $records['task'];
 
-            if (Util::mempty($rawData, $password, $task)) {
-                $this->flashError("Invalid parameter(s) sent!");
-            } else {
-                $admin = new AdminAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-                $temp = $admin->revalidate(null, $password);
-                $temp = new ResponseHandler($temp);
-                if ($temp->getStatus() == ResponseHandler::STATUS_OK) {
-                    $data = json_decode($rawData, true);
-                    $waybills = [];
-                    foreach ($data as $wb) {
-                        $waybills[] = $wb;
-                    }
-                    $record = [];
-                    $record['waybill_numbers'] = implode(",", $waybills);
 
-                    $parcelData = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-                    $success_msg = '';
-                    if ($task == 'receive') {
-                        $response = $parcelData->receiveFromBeingDelivered($record);
-                        $success_msg = 'Shipments successfully received';
-                    } elseif ($task == 'deliver') {
-                        $record['receiver_name'] = $fullName;
-                        $record['receiver_phone_number'] = $phoneNumber;
-                        $record['receiver_email'] = $email;
-                        $response = $parcelData->moveToDelivered($record);
-                        $success_msg = 'Shipments successfully delivered';
-                    } elseif ($task == 'return') {
-                        $response = $parcelData->markAsReturned($record);
-                        $success_msg = 'Shipments successfully returned';
-                    }
-                    $responseHandler = new ResponseHandler($response);
-                    $data = $responseHandler->getData();
-                    if ($responseHandler->getStatus() === ResponseHandler::STATUS_OK) {
-                        if (empty($data['bad_parcels']))
-                            $this->flashSuccess($success_msg);
-                        else {
-                            $bad_parcels = $data['bad_parcels'];
-                            foreach ($bad_parcels as $key => $bad_parcel) {
-                                $this->flashError($key . ' - ' . $bad_parcel);
+                if (Util::mempty($rawData, $password, $task)) {
+                    $this->flashError("Invalid parameter(s) sent!");
+                } else {
+                    $admin = new AdminAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+                    $temp = $admin->revalidate(null, $password);
+                    $temp = new ResponseHandler($temp);
+                    if ($temp->getStatus() == ResponseHandler::STATUS_OK) {
+                        $data = json_decode($rawData, true);
+                        $waybills = [];
+                        foreach ($data as $wb) {
+                            $waybills[] = $wb;
+                        }
+                        $record = [];
+                        $record['waybill_numbers'] = implode(",", $waybills);
+
+                        $parcelData = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+                        $success_msg = '';
+                        if ($task == 'receive') {
+                            $response = $parcelData->receiveFromBeingDelivered($record);
+                            $success_msg = 'Shipments successfully received';
+                        } elseif ($task == 'deliver') {
+                            $record['receiver_name'] = $fullName;
+                            $record['receiver_phone_number'] = $phoneNumber;
+                            $record['receiver_email'] = $email;
+                            $record['date_and_time_of_delivery'] = $date_and_time_timestamp;
+                            $response = $parcelData->moveToDelivered($record);
+                            $success_msg = 'Shipments successfully delivered';
+                        } elseif ($task == 'return') {
+                            $response = $parcelData->markAsReturned($record);
+                            $success_msg = 'Shipments successfully returned';
+                        }
+                        $responseHandler = new ResponseHandler($response);
+                        $data = $responseHandler->getData();
+                        if ($responseHandler->getStatus() === ResponseHandler::STATUS_OK) {
+                            if (empty($data['bad_parcels']))
+                                $this->flashSuccess($success_msg);
+                            else {
+                                $bad_parcels = $data['bad_parcels'];
+                                foreach ($bad_parcels as $key => $bad_parcel) {
+                                    $this->flashError($key . ' - ' . $bad_parcel);
+                                }
                             }
+                        } else {
+                            $this->flashError($responseHandler->getError());
                         }
                     } else {
-                        $this->flashError($responseHandler->getError());
+                        $this->flashError($temp->getError());
                     }
-                } else {
-                    $this->flashError($temp->getError());
                 }
-            }
-            return $this->redirect('/shipments/dispatched?page=' . $page);
+                return $this->redirect('/shipments/dispatched?page=' . $page);
+                }
         }
         $user_session = Calypso::getInstance()->session("user_session");
         $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $dispatch_parcels = $parcelsAdapter->getECDispatchedParcels($user_session['branch_id'], $offset, $page_width);
+        $dispatch_parcels = $parcelsAdapter->getECDispatchedParcels($user_session['branch_id'], $offset, $page_width,$search);
         $parcels = new ResponseHandler($dispatch_parcels);
         $total_count = 0;
         if ($parcels->getStatus() == ResponseHandler::STATUS_OK) {
@@ -608,7 +625,8 @@ class ShipmentsController extends BaseController
             $parcels = $data['parcels'];
             $total_count = $data['total_count'];
         }
-        return $this->render('dispatched', array('parcels' => $parcels, 'total_count' => $total_count, 'offset' => $offset, 'page_width' => $page_width));
+
+        return $this->render('dispatched', array('set_date' =>$set_date,'parcels' => $parcels, 'total_count' => $total_count, 'offset' => $offset, 'page_width' => $page_width));
     }
 
     public function actionDelivered($page = 1, $page_width = null)
