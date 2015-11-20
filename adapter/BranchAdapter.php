@@ -16,7 +16,6 @@ class BranchAdapter extends BaseAdapter
     const BRANCH_TYPE_HUB = 2;
     const BRANCH_TYPE_EC = 4;
 
-
     public function createNewHub($postData)
     {
         return $this->request(ServiceConstant::URL_BRANCH_ADD, $postData, self::HTTP_POST);
