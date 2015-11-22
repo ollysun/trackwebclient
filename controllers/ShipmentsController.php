@@ -536,7 +536,7 @@ class ShipmentsController extends BaseController
 
     public function actionDispatched($page = 1, $page_width = null)
     {
-        $set_date = date('Y-m-d');
+        $todays_date = Util::getTodaysDateinYMDFormat();
         $page_width = is_null($page_width) ? $this->page_width : $page_width;
         $offset = ($page - 1) * $page_width;
         $search = null;
@@ -626,7 +626,7 @@ class ShipmentsController extends BaseController
             $total_count = $data['total_count'];
         }
 
-        return $this->render('dispatched', array('set_date' =>$set_date,'parcels' => $parcels, 'total_count' => $total_count, 'offset' => $offset, 'page_width' => $page_width));
+        return $this->render('dispatched', array('todays_date' =>$todays_date,'parcels' => $parcels, 'total_count' => $total_count, 'offset' => $offset, 'page_width' => $page_width));
     }
 
     public function actionDelivered($page = 1, $page_width = null)

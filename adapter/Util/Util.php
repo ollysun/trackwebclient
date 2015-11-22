@@ -159,4 +159,12 @@ class Util
         fclose($stream);
     }
 
+    /**
+     * @author Otaru Babatunde <tundeotaru@cottacush.com>
+     */
+    public static function getTodaysDateinYMDFormat()
+    {
+        return date('Y-m-d');
+    }
+
 }
