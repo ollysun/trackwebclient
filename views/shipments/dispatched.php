@@ -150,7 +150,7 @@ $this->params['breadcrumbs'] = array(
                                     <label for="">Date of delivery:</label><br>
                                     <div class="input-group input-group-date-range">
                                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                        <input name="date" id="" class="form-control date-range" value="<?= date('Y/m/d', strtotime($set_date)); ?>" data-provide="datepicker" data-date-format="yyyy/mm/dd" data-date-end-date="0d" required>
+                                        <input name="date" id="" class="form-control date-range" value="<?= date('Y/m/d', strtotime($todays_date)); ?>" data-provide="datepicker" data-date-format="yyyy/mm/dd" data-date-end-date="0d" required>
                                     </div>
                                 </div>
                             </div>
