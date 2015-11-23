@@ -223,7 +223,7 @@ class ParcelAdapter extends BaseAdapter
         $filter = '&from_branch_id=' . $branch_id;
         $filter .= '&with_total_count=1';
         $filter .= '&status=' . ServiceConstant::BEING_DELIVERED;
-        $filter .= '&waybill_number=' . $search;
+        if(isset($search)){$filter .= '&waybill_number=' . $search;}
         $url = ServiceConstant::URL_GET_ALL_PARCEL . '?with_receiver=1&with_holder=1&offset=' . $offset . '&count=' . $count . $filter;
         return $this->request($url, array(), self::HTTP_GET);
     }
