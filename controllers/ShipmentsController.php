@@ -536,7 +536,7 @@ class ShipmentsController extends BaseController
 
     public function actionDispatched($page = 1, $page_width = null)
     {
-        $todays_date = Util::getTodaysDateinYMDFormat();
+        $todays_date = Util::getToday();
         $page_width = is_null($page_width) ? $this->page_width : $page_width;
         $offset = ($page - 1) * $page_width;
         $search = null;
@@ -557,7 +557,16 @@ class ShipmentsController extends BaseController
             $time = $records['time'];
             $date_and_time = $date . " " . $time;
             list($year, $month, $day, $hour, $minute, $dayType) = preg_split('/[\/\s:]+/', $date_and_time);
+            if($hour == 12) {
+                    if($dayType == 'AM'){
+                        $hour = 00;
+                    }else{
+                        $hour = 12;
+                    }
+              $date_and_time_timestamp=  $year . '-' . $month. '-' .  $day . ' ' . $hour . ":" . $minute . ":00";
+            } else{
             $date_and_time_timestamp= $year . '-' . $month. '-' .  $day . ' ' . ($dayType == "PM"?$hour+12: $hour) . ":" . $minute . ":00";
+            }
             $phoneNumber = $records['phone'];
             $rawData = $records['waybills'];
             $task = $records['task'];
