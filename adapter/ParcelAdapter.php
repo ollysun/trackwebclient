@@ -218,11 +218,12 @@ class ParcelAdapter extends BaseAdapter
         return $this->request(ServiceConstant::URL_GET_ALL_PARCEL . '?with_sender=1&with_receiver=1&offset=' . $offset . '&count=' . $count . $filter, array(), self::HTTP_GET);
     }
 
-    public function getECDispatchedParcels($branch_id, $offset = 0, $count = 50)
+    public function getECDispatchedParcels($branch_id, $offset = 0, $count = 50, $search = null)
     {
         $filter = '&from_branch_id=' . $branch_id;
         $filter .= '&with_total_count=1';
         $filter .= '&status=' . ServiceConstant::BEING_DELIVERED;
+        if(isset($search)){$filter .= '&waybill_number=' . $search;}
         $url = ServiceConstant::URL_GET_ALL_PARCEL . '?with_receiver=1&with_holder=1&offset=' . $offset . '&count=' . $count . $filter;
         return $this->request($url, array(), self::HTTP_GET);
     }
