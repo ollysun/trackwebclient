@@ -173,12 +173,11 @@ $this->params['content_header_button'] = "<a href='".$downloadURL."' class='btn 
                                 <td><?= strtoupper($parcel['waybill_number']); ?></td>
                                 <td><?= strtoupper($parcel['receiver']['firstname'].' '. $parcel['receiver']['lastname']) ?></td>
                                 <td><?= $parcel['receiver']['phone'] ?></td>
-                                <td><?= date(ServiceConstant::DATE_TIME_FORMAT,strtotime($parcel['created_date'])); ?></td>
                                 <td><?= Util::formatDate(ServiceConstant::DATE_TIME_FORMAT,$parcel['created_date']); ?></td>
                                 <td><?= $parcel['route']['name'];?></td>
                                 <td><?= ServiceConstant::getReturnStatus($parcel); ?></td>
                                 <td><?= ServiceConstant::getStatus($parcel['status']); ?></td>
-                                <td><?= Util::formatDate(ServiceConstant::DATE_TIME_FORMAT,$parcel['modified_date']); ?> (<?= Util::ago(strtotime($parcel['modified_date'])); ?>)</td>
+                                <td><?= Util::formatDate(ServiceConstant::DATE_TIME_FORMAT,$parcel['modified_date']); ?> (<?= Util::ago($parcel['modified_date']); ?>)</td>
                                 <td><?= ucwords(ServiceConstant::getDeliveryType($parcel['delivery_type'])); ?></td>
                                 <td>
                                     <a href="<?= Url::toRoute(['/shipments/view?waybill_number='.$parcel['waybill_number']]) ?>" class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i></a>
