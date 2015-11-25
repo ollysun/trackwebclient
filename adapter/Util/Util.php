@@ -106,12 +106,13 @@ class Util
      * @author imkingdavid (stackoverflow)
      * @return bool
      */
-    public static function mempty() {
+    public static function mempty()
+    {
 
         $arguments = func_get_args();
 
         foreach ($arguments as $arg) {
-            if(empty($arg)) {
+            if (empty($arg)) {
                 return true;
             } else {
                 continue;
@@ -130,7 +131,7 @@ class Util
      */
     public static function checkEmpty($value)
     {
-        if($value === 0 || $value === '0') {
+        if ($value === 0 || $value === '0') {
             return false;
         }
         return empty($value);
@@ -162,21 +163,50 @@ class Util
     /**
      * @author Otaru Babatunde<tunde@cottacush.com>
      */
-    public static function getDateTimeFormatFromDateTimeFields($date,$time)
+    public static function getDateTimeFormatFromDateTimeFields($date, $time)
     {
         $date_and_time = $date . " " . $time;
         list($year, $month, $day, $hour, $minute, $dayType) = preg_split('/[\/\s:]+/', $date_and_time);
 
-        if($hour == 12) {
-            if($dayType == 'AM'){
+        if ($hour == 12) {
+            if ($dayType == 'AM') {
                 $hour = 00;
-            }else{
+            } else {
                 $hour = 12;
             }
-            return  $year . '-' . $month. '-' .  $day . ' ' . $hour . ":" . $minute . ":00";
-        } else{
-            return  $year . '-' . $month. '-' .  $day . ' ' . ($dayType == "PM"?$hour+12: $hour) . ":" . $minute . ":00";
+            return $year . '-' . $month . '-' . $day . ' ' . $hour . ":" . $minute . ":00";
+        } else {
+            return $year . '-' . $month . '-' . $day . ' ' . ($dayType == "PM" ? $hour + 12 : $hour) . ":" . $minute . ":00";
         }
+    }
+
+    /**
+     * Return an english representation of the time difference
+     * @author Olawale Lawal <wale@cottacush.com>
+     * @param $past_time
+     * @param int $reference
+     * @return string
+    */
+    public static function ago($past_time, $reference = null)
+    {
+        $periods = array("second", "minute", "hour", "day", "week", "month", "year", "decade");
+        $lengths = array("60", "60", "24", "7", "4.35", "12", "10");
+
+        $base = !is_null($reference) ? $reference : time();
+
+        $difference = $base - $past_time;
+
+        for ($j = 0; $difference >= $lengths[$j] && $j < count($lengths) - 1; $j++) {
+            $difference /= $lengths[$j];
+        }
+
+        $difference = round($difference);
+
+        if ($difference != 1) {
+            $periods[$j] .= "s";
+        }
+
+        return sprintf("%d %s ago", $difference, $periods[$j]);
     }
 
 }
