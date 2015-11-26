@@ -640,14 +640,17 @@ class BillingController extends BaseController
     public function actionCorporate()
     {
         $page = \Yii::$app->getRequest()->get('page', 1);
+        $search = \Yii::$app->getRequest()->get('search', null);
 
         // Add Offset and Count
         $offset = ($page - 1) * $this->page_width;
         $filters['with_total_count'] = '1';
         $filters['offset'] = $offset;
+        $filters['company_name'] = $search;
         $filters['count'] = $this->page_width;
 
         $companyAdapter = new CompanyAdapter();
+
         $companies = $companyAdapter->getAllCompanies([]);
 
         $billingPlanAdapter = new BillingPlanAdapter();
@@ -662,7 +665,8 @@ class BillingController extends BaseController
             'billingPlanTypes' => $billingPlanTypes,
             'offset' => $offset,
             'total_count' => $totalCount,
-            'page_width' => $this->page_width
+            'page_width' => $this->page_width,
+            'search' => $search
         ]);
     }
 
