@@ -220,15 +220,22 @@ class ParcelAdapter extends BaseAdapter
 
     public function getECDispatchedParcels($branch_id, $offset = 0, $count = 50, $search = null)
     {
-        $filter = '&from_branch_id=' . $branch_id;
-        $filter .= '&with_total_count=1';
-        $filter .= '&status=' . ServiceConstant::BEING_DELIVERED;
-        if(isset($search)){$filter .= '&waybill_number=' . $search;}
-        $url = ServiceConstant::URL_GET_ALL_PARCEL . '?with_receiver=1&with_holder=1&offset=' . $offset . '&count=' . $count . $filter;
-        return $this->request($url, array(), self::HTTP_GET);
+        $filter = array(
+            'branch_id' => $branch_id,
+            'with_total_count' => 1,
+            'status' => ServiceConstant::BEING_DELIVERED,
+            'waybill_number' => $search,
+            'with_receiver' => 1,
+            'with_holder' => 1,
+            'with_created_branch' => 1,
+            'offset' => $offset,
+            'count' => $count
+        );
+        return $this->request(ServiceConstant::URL_GET_ALL_PARCEL, $filter, self::HTTP_GET);
     }
 
-    public function getDeliveredParcels($branch_id, $offset = 0, $count = 50, $start_modified_date = null, $end_modified_date = null)
+    public
+    function getDeliveredParcels($branch_id, $offset = 0, $count = 50, $start_modified_date = null, $end_modified_date = null)
     {
         $filter = !is_null($branch_id) ? '&branch_id=' . $branch_id : '';
         $filter .= '&with_total_count=1';
@@ -238,7 +245,8 @@ class ParcelAdapter extends BaseAdapter
         return $this->request(ServiceConstant::URL_GET_ALL_PARCEL . '?with_receiver=1&with_sender=1&with_delivery_receipt=1&offset=' . $offset . '&count=' . $count . $filter, array(), self::HTTP_GET);
     }
 
-    public function getMerchantParcels($with_bank_account = 1, $payment_status = null, $offset = 0, $count = 50, $with_total = 1, $only_parents = 1)
+    public
+    function getMerchantParcels($with_bank_account = 1, $payment_status = null, $offset = 0, $count = 50, $with_total = 1, $only_parents = 1)
     {
         $filter = !is_null($with_bank_account) ? '&with_bank_account=1' : '';
         $filter .= !is_null($with_total) ? '&with_total_count=1' : '';
@@ -247,17 +255,20 @@ class ParcelAdapter extends BaseAdapter
         return $this->request($url, array(), self::HTTP_GET);
     }
 
-    public function calcBilling($postData)
+    public
+    function calcBilling($postData)
     {
         return $this->request(ServiceConstant::URL_CALC_BILLING, $postData, self::HTTP_POST);
     }
 
-    public function cancel($postData)
+    public
+    function cancel($postData)
     {
         return $this->request(ServiceConstant::URL_CANCEL_PARCEL, $postData, self::HTTP_POST);
     }
 
-    public function createBag($postData)
+    public
+    function createBag($postData)
     {
         return $this->request(ServiceConstant::URL_CREATE_BAG, $postData, self::HTTP_POST);
     }
@@ -268,7 +279,8 @@ class ParcelAdapter extends BaseAdapter
      * @param $waybill_number
      * @return array|mixed|string
      */
-    public function getBag($waybill_number)
+    public
+    function getBag($waybill_number)
     {
         $response = $this->request(ServiceConstant::URL_GET_ONE_PARCEL, array('waybill_number' => $waybill_number, 'with_linked' => var_export(true, true)), self::HTTP_GET);
         $response = new ResponseHandler($response);
@@ -285,7 +297,8 @@ class ParcelAdapter extends BaseAdapter
      * @param $filter_array
      * @return array|mixed|string
      */
-    public function getParcelCount($filter_array = null)
+    public
+    function getParcelCount($filter_array = null)
     {
         $filter_array = is_null($filter_array) ? [] : $filter_array;
 
@@ -307,17 +320,20 @@ class ParcelAdapter extends BaseAdapter
      * @param $comment
      * @return array|mixed|string
      */
-    public function sendReturnRequest($waybill_numbers, $comment)
+    public
+    function sendReturnRequest($waybill_numbers, $comment)
     {
         return $this->request(ServiceConstant::URL_SET_RETURN_FLAG, ['waybill_numbers' => $waybill_numbers, 'comment' => $comment], self::HTTP_POST);
     }
 
-    public function openBag($postData)
+    public
+    function openBag($postData)
     {
         return $this->request(ServiceConstant::URL_OPEN_BAG, $postData, self::HTTP_POST);
     }
 
-    public function removeFromBag($postData)
+    public
+    function removeFromBag($postData)
     {
         return $this->request(ServiceConstant::URL_REMOVE_FROM_BAG, $postData, self::HTTP_POST);
     }
@@ -327,7 +343,8 @@ class ParcelAdapter extends BaseAdapter
      * @param $waybill_numbers
      * @return array|mixed|string
      */
-    public function unsort($waybill_numbers)
+    public
+    function unsort($waybill_numbers)
     {
         $rawResponse = $this->request(ServiceConstant::URL_UNSORT_PARCEL, Json::encode(['waybill_numbers' => $waybill_numbers]), self::HTTP_POST);
         $response = new ResponseHandler($rawResponse);
@@ -345,7 +362,8 @@ class ParcelAdapter extends BaseAdapter
      * @param $waybill_number
      * @return bool
      */
-    public function comment($comment, $type, $waybill_number)
+    public
+    function comment($comment, $type, $waybill_number)
     {
         $data = ['comment' => $comment, 'type' => $type, 'waybill_number' => $waybill_number];
         $rawResponse = $this->request(ServiceConstant::URL_UNSORT_PARCEL, Json::encode($data), self::HTTP_POST);
@@ -363,7 +381,8 @@ class ParcelAdapter extends BaseAdapter
      * @param $filters
      * @return array|mixed|string
      */
-    public function getParcelsByFilters($filters)
+    public
+    function getParcelsByFilters($filters)
     {
         $params = http_build_query($filters);
         return $this->request(ServiceConstant::URL_GET_ALL_PARCEL . '?' . $params, [], self::HTTP_GET);
