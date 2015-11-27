@@ -137,6 +137,34 @@ $this->title = 'Tracking Portal';
                         class="tracking-status-inner date"><?= Util::convertToTrackingDateFormat(Calypso::getValue($current_state_info, 'created_date', '')) ?></span>
                     <span
                         class="tracking-status-inner time"><?= Util::convertDateTimeToTime(Calypso::getValue($current_state_info, 'created_date', '')) ?></span>
+                        <br><a class="btn btn-sm btn-success" tabindex="0" role="button" data-toggle="popover" data-placement="left" title="Proof of Delivery Information">Proof of Delivery</a>
+                        <div id="pod" style="display:none;">
+                            <div class="form-group">
+                                <label>Received by</label>
+                                <div class="form-control-static"><!-- Babatunde Otaru --></div>
+                            </div>
+                            <div class="form-group">
+                                <label>Date</label>
+                                <div class="form-control-static"><!-- 25th Nov 2015 --></div>
+                            </div>
+                            <div class="form-group">
+                                <label>Signature</label>
+                                <img class="signature" src="">
+                            </div>
+                        </div>
+                        <?php
+                            $this->registerJsFile('@web/js/libs/bootstrap.min.js', ['depends' => [\app\assets\TrackingAsset::className()]]);
+                            $this->registerJs("$('[data-toggle=\"popover\"]').popover({
+                                trigger: 'manual',
+                                html: true,
+                                content: $('#pod').html(),
+                                template: \"<div class='popover tracking-popover' role='tooltip'><div class='arrow'></div><h3 class='popover-title'></h3><div class='popover-content'></div></div>\"
+                            }).on('click', function() {
+                                $(this).popover('toggle');
+                            }).on('blur', function() {
+                                $(this).popover('hide');
+                            });");
+                        ?>
                 <?php endif; ?>
             </div>
         </div>
