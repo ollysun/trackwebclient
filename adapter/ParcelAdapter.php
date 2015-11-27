@@ -231,6 +231,7 @@ class ParcelAdapter extends BaseAdapter
             'offset' => $offset,
             'count' => $count
         );
+        $filter = array_filter($filter, 'strlen');
         return $this->request(ServiceConstant::URL_GET_ALL_PARCEL, $filter, self::HTTP_GET);
     }
 
