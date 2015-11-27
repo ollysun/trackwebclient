@@ -53,6 +53,7 @@ $this->title = 'Tracking Portal';
                     <div
                         class="tracking-name"><?= ucwords(Calypso::getDisplayValue($info, 'from_branch.name', '')) ?></div>
                     <div class="tracking-circle"></div>
+                    <div class="tracking-bar-full"></div>
                     <div class="tracking-bar"></div>
                     <div class="tracking-status">
                     <span
@@ -76,6 +77,7 @@ $this->title = 'Tracking Portal';
                         <div
                             class="tracking-name"><?= ucwords(Calypso::getDisplayValue($info, 'to_branch.name', '')) ?></div>
                         <div class="tracking-circle"></div>
+                        <div class="tracking-bar-full"></div>
                         <div class="tracking-bar"></div>
                         <div class="tracking-status">
                         <span
@@ -96,6 +98,7 @@ $this->title = 'Tracking Portal';
                         <div
                             class="tracking-name"><?= ucwords(Calypso::getDisplayValue($info, 'to_branch.name', '')) ?></div>
                         <div class="tracking-circle"></div>
+                        <div class="tracking-bar-full"></div>
                         <div class="tracking-bar"></div>
                         <div class="tracking-status">
                     <span
@@ -126,6 +129,7 @@ $this->title = 'Tracking Portal';
 
             <div class="tracking-name">You</div>
             <div class="tracking-circle"></div>
+            <div class="tracking-bar-full"></div>
             <div class="tracking-bar"></div>
             <div class="tracking-status">
                 <span><?= (Calypso::getValue($current_state_info, 'status') == ServiceConstant::BEING_DELIVERED) ? "On it's way to you" : '' ?></span>
