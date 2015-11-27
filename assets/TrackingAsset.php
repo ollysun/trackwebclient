@@ -17,10 +17,10 @@ class TrackingAsset extends AssetBundle
     ];
     public $js = [
         //globals
-        'js/libs/jquery.js',
         'js/libs/pace.min.js',
     ];
     public $depends = [
+        'yii\web\jQueryAsset',
         'yii\bootstrap\BootstrapAsset',
     ];
 }
