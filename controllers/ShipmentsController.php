@@ -615,7 +615,7 @@ class ShipmentsController extends BaseController
         }
         $user_session = Calypso::getInstance()->session("user_session");
         $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $dispatch_parcels = $parcelsAdapter->getECDispatchedParcels($user_session['branch_id'], $offset, $page_width,$search);
+        $dispatch_parcels = $parcelsAdapter->getECDispatchedParcels($this->branch_to_view, $offset, $page_width,$search);
         $parcels = new ResponseHandler($dispatch_parcels);
         $total_count = 0;
         if ($parcels->getStatus() == ResponseHandler::STATUS_OK) {
