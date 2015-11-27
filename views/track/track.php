@@ -18,8 +18,7 @@ $this->title = 'Tracking Portal';
     <br>
     <div class="row text-center text-uppercase">
         <div class="col-xs-4">
-            <label class="tracking-info-label">Receiver's name</label>
-
+            <label class="tracking-info-label">Consignee's name</label>
             <div
                 class="tracking-info-value"><?= ucfirst(Calypso::getDisplayValue($tracking_info, 'receiver.firstname', '')) . " " . ucfirst(Calypso::getDisplayValue($tracking_info, 'receiver.lastname', '')) ?></div>
         </div>
