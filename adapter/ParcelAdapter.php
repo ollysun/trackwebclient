@@ -5,6 +5,7 @@ use Adapter\Globals;
 use Adapter\Globals\ServiceConstant;
 use Adapter\Util\Response;
 use yii\helpers\Json;
+use Adapter\Util\Util;
 
 /**
  * Class ParcelAdapter
@@ -387,5 +388,19 @@ class ParcelAdapter extends BaseAdapter
     {
         $params = http_build_query($filters);
         return $this->request(ServiceConstant::URL_GET_ALL_PARCEL . '?' . $params, [], self::HTTP_GET);
+    }
+
+    /**
+     * Returns the age analysis for the based on the status of the
+     * @param $parcel
+     * @return mixed
+     */
+    public static function getAgeAnalysis($parcel)
+    {
+        if (in_array($parcel['status'], [ServiceConstant::DELIVERED, ServiceConstant::CANCELLED, ServiceConstant::RETURNED])) {
+            return Util::ago($parcel['created_date'],$parcel['modified_date'] );
+        } else {
+            return Util::ago($parcel['created_date']);
+        }
     }
 }
