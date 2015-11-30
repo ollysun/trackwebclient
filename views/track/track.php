@@ -3,6 +3,7 @@ use Adapter\BranchAdapter;
 use Adapter\Globals\ServiceConstant;
 use Adapter\Util\Calypso;
 use Adapter\Util\Util;
+use app\assets\TrackingAsset;
 
 /* @var $this yii\web\View */
 
@@ -161,8 +162,8 @@ $this->title = 'Tracking Portal';
                         </div>
                     </div>
                     <?php
-                    $this->registerJsFile('@web/js/libs/bootstrap.min.js', ['depends' => [\app\assets\TrackingAsset::className()]]);
-                    $this->registerJsFile('@web/js/tracking-proof-of-delivery.js', ['depends' => [\app\assets\TrackingAsset::className()]]);
+                    $this->registerJsFile('@web/js/libs/bootstrap.min.js', ['depends' => [TrackingAsset::className()]]);
+                    $this->registerJsFile('@web/js/tracking-proof-of-delivery.js', ['depends' => [TrackingAsset::className()]]);
                     ?>
                 <?php endif; ?>
             </div>
