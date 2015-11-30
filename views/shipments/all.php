@@ -3,26 +3,13 @@ use Adapter\Util\Calypso;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use Adapter\Globals\ServiceConstant;
-use yii\web\View;
+use Adapter\ParcelAdapter;
+
 
 /* @var $this yii\web\View */
 $this->title = 'All Shipments';
 $this->params['breadcrumbs'][] = 'Shipments';
-$show_next = false;
-$show_prev = false;
 
-if(count($parcels) >= $page_width ){
-    $show_next = true;
-}else{
-    $show_next = false;
-}
-
-
-if($offset <= 0){
-    $show_prev = false;
-}elseif (($offset - $page_width) >= 0){
-    $show_prev = true;
-}
 
 $link = "";
 if($search){
@@ -95,6 +82,7 @@ if($search){
                     <th>Return Status</th>
                     <th>Shipment Status</th>
                     <th>Originating Centre</th>
+                    <th>Shipment Age</th>
                     <th>Action</th>
                 </tr>
                 </thead>
@@ -116,6 +104,7 @@ if($search){
                             <td><?= ServiceConstant::getReturnStatus($parcel); ?></td>
                             <td><?= ServiceConstant::getStatus($parcel['status']); ?></td>
                             <td><?= strtoupper(Calypso::getValue($parcel, "created_branch.name")) ?></td>
+                            <td><?= ParcelAdapter::getAgeAnalysis($parcel); ?></td>
                             <td><a href="<?= Url::toRoute(['/shipments/view?waybill_number='.$parcel['waybill_number']]) ?>" class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
                         </tr>
                     <?php
