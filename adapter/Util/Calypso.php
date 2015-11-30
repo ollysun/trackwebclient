@@ -158,8 +158,11 @@ class Calypso
                 , 'branch' => [ServiceConstant::BRANCH_TYPE_EC, ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
             'Finance' => [
                 'base' => 'finance', 'class' => 'fa fa-money', 'base_link' => [
+                    'Corporate Shipments' => ['base_link' => 'finance/corporateshipment', 'class' => ''],
+                    'Credit Note' => ['base_link' => 'finance/creditnote', 'class' => ''],
                     'Customers' => ['base_link' => 'finance/customersall', 'class' => ''],
-                    'Merchants' => ['base_link' => 'finance/merchantsdue', 'class' => '']
+                    'Invoice' => ['base_link' => 'finance/invoice', 'class' => ''],
+                    'Merchants' => ['base_link' => 'finance/merchantsdue', 'class' => ''],
                 ],
                 'branch' => [ServiceConstant::BRANCH_TYPE_HQ]
             ],
