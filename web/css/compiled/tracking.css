@@ -3019,6 +3019,18 @@ svg {
 .in-transit .tracking-status {
   margin-left: -50%;
 }
+.tracking-popover {
+  min-width: 300px;
+}
+.tracking-popover .signature,
+.tracking-popover .signature img {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 200px;
+  margin: auto;
+}
 .bootstrap-select.btn-group .dropdown-menu li.selected a span.check-mark {
   display: inline-block;
   position: absolute;
