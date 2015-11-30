@@ -154,16 +154,7 @@ $this->title = 'Tracking Portal';
                         </div>
                         <?php
                             $this->registerJsFile('@web/js/libs/bootstrap.min.js', ['depends' => [\app\assets\TrackingAsset::className()]]);
-                            $this->registerJs("$('[data-toggle=\"popover\"]').popover({
-                                trigger: 'manual',
-                                html: true,
-                                content: $('#pod').html(),
-                                template: \"<div class='popover tracking-popover' role='tooltip'><div class='arrow'></div><h3 class='popover-title'></h3><div class='popover-content'></div></div>\"
-                            }).on('click', function() {
-                                $(this).popover('toggle');
-                            }).on('blur', function() {
-                                $(this).popover('hide');
-                            });");
+                            $this->registerJsFile('@web/js/tracking-proof-of-delivery.js', ['depends' => [\app\assets\TrackingAsset::className()]]);
                         ?>
                 <?php endif; ?>
             </div>
