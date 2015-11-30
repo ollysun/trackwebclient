@@ -7,6 +7,7 @@
 
 namespace Adapter\Util;
 
+use Moment\Moment;
 
 /**
  * Class Util
@@ -189,7 +190,7 @@ class Util
     */
     public static function ago($past_time)
     {
-        $m = new \Moment\Moment($past_time);
+        $m = new Moment($past_time);
         return $m->fromNow()->getRelative();
     }
 
