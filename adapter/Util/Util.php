@@ -188,10 +188,11 @@ class Util
      * @param int $reference
      * @return string
     */
-    public static function ago($past_time)
+    public static function ago($past_time, $base_time = 'now')
     {
-        $m = new Moment($past_time);
-        return $m->fromNow()->getRelative();
+        $old_time = new Moment($base_time);
+        $new_time = new Moment($past_time);
+        return $new_time->from($old_time)->getRelative();
     }
 
 }
