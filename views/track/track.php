@@ -13,12 +13,15 @@ $this->title = 'Tracking Portal';
     <div class="clearfix">
         <h1 class="pull-left">Tracking for #<?= $tracking_number ?></h1>
         <h4 class="pull-right text-muted">
-            Status: <strong class="text-danger"><?= Calypso::getDisplayValue($current_state_info, 'description', 'N/A') ?></strong></h4>
+            Status: <strong
+                class="text-danger"><?= Calypso::getDisplayValue($current_state_info, 'description', 'N/A') ?></strong>
+        </h4>
     </div>
     <br>
     <div class="row text-center text-uppercase">
         <div class="col-xs-4">
             <label class="tracking-info-label">Consignee's name</label>
+
             <div
                 class="tracking-info-value"><?= ucfirst(Calypso::getDisplayValue($tracking_info, 'receiver.firstname', '')) . " " . ucfirst(Calypso::getDisplayValue($tracking_info, 'receiver.lastname', '')) ?></div>
         </div>
@@ -132,30 +135,35 @@ $this->title = 'Tracking Portal';
             <div class="tracking-bar"></div>
             <div class="tracking-status">
                 <span><?= (Calypso::getValue($current_state_info, 'status') == ServiceConstant::BEING_DELIVERED) ? "On it's way to you" : '' ?></span>
-                <?php if (Calypso::getValue($current_state_info, 'status') == ServiceConstant::DELIVERED): ?>
+                <?php if (Calypso::getValue($current_state_info, 'status') == ServiceConstant::DELIVERED && Calypso::getValue($tracking_info, 'delivery_receipt', false)): ?>
                     <span
                         class="tracking-status-inner date"><?= Util::convertToTrackingDateFormat(Calypso::getValue($current_state_info, 'created_date', '')) ?></span>
                     <span
                         class="tracking-status-inner time"><?= Util::convertDateTimeToTime(Calypso::getValue($current_state_info, 'created_date', '')) ?></span>
-                        <br><a class="btn btn-sm btn-success" tabindex="0" role="button" data-toggle="popover" data-placement="left" title="Proof of Delivery Information">Proof of Delivery</a>
-                        <div id="pod" style="display:none;">
-                            <div class="form-group">
-                                <label>Received by</label>
-                                <div class="form-control-static"><!-- Babatunde Otaru --></div>
-                            </div>
-                            <div class="form-group">
-                                <label>Date</label>
-                                <div class="form-control-static"><!-- 25th Nov 2015 --></div>
-                            </div>
-                            <div class="form-group">
-                                <label>Signature</label>
-                                <img class="signature" src="">
-                            </div>
+                    <br><a class="btn btn-sm btn-success" tabindex="0" role="button" data-toggle="popover"
+                           data-placement="left" title="Proof of Delivery Information">Proof of Delivery</a>
+                    <div id="pod" style="display:none;">
+                        <div class="form-group">
+                            <label>Received by</label>
+
+                            <div
+                                class="form-control-static"><?= Calypso::getDisplayValue($tracking_info, 'delivery_receipt.name', 'N/A') ?></div>
                         </div>
-                        <?php
-                            $this->registerJsFile('@web/js/libs/bootstrap.min.js', ['depends' => [\app\assets\TrackingAsset::className()]]);
-                            $this->registerJsFile('@web/js/tracking-proof-of-delivery.js', ['depends' => [\app\assets\TrackingAsset::className()]]);
-                        ?>
+                        <div class="form-group">
+                            <label>Date</label>
+
+                            <div
+                                class="form-control-static"><?= Util::convertToTrackingDateFormat(Calypso::getValue($tracking_info, 'delivery_receipt.created_at', '')) ?></div>
+                        </div>
+                        <div class="form-group">
+                            <label>Signature</label>
+                            <img class="signature" src="<?=Calypso::getDisplayValue($tracking_info, 'delivery_receipt.receipt_path', '')?>">
+                        </div>
+                    </div>
+                    <?php
+                    $this->registerJsFile('@web/js/libs/bootstrap.min.js', ['depends' => [\app\assets\TrackingAsset::className()]]);
+                    $this->registerJsFile('@web/js/tracking-proof-of-delivery.js', ['depends' => [\app\assets\TrackingAsset::className()]]);
+                    ?>
                 <?php endif; ?>
             </div>
         </div>
