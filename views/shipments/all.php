@@ -3,7 +3,7 @@ use Adapter\Util\Calypso;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use Adapter\Globals\ServiceConstant;
-use Adapter\Util\Util;
+use Adapter\ParcelAdapter;
 
 
 /* @var $this yii\web\View */
@@ -104,7 +104,7 @@ if($search){
                             <td><?= ServiceConstant::getReturnStatus($parcel); ?></td>
                             <td><?= ServiceConstant::getStatus($parcel['status']); ?></td>
                             <td><?= strtoupper(Calypso::getValue($parcel, "created_branch.name")) ?></td>
-                            <td><?= in_array($parcel['status'], [ServiceConstant::DELIVERED, ServiceConstant::RETURNED]) ? Util::ago($parcel['modified_date']) : Util::ago($parcel['created_date']); ?></td>
+                            <td><?= ParcelAdapter::getAgeAnalysis($parcel); ?></td>
                             <td><a href="<?= Url::toRoute(['/shipments/view?waybill_number='.$parcel['waybill_number']]) ?>" class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
                         </tr>
                     <?php
