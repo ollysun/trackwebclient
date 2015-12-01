@@ -156,10 +156,13 @@ $this->title = 'Tracking Portal';
                             <div
                                 class="form-control-static"><?= Util::convertToTrackingDateFormat(Calypso::getValue($tracking_info, 'delivery_receipt.created_at', '')) ?></div>
                         </div>
-                        <div class="form-group">
-                            <label>Signature</label>
-                            <img class="signature" src="<?=Calypso::getDisplayValue($tracking_info, 'delivery_receipt.receipt_path', '')?>">
-                        </div>
+                        <?php if (Calypso::getDisplayValue($tracking_info, 'delivery_receipt.receipt_path', false)): ?>
+                            <div class="form-group">
+                                <label>Signature</label>
+                                <img class="signature"
+                                     src="<?= Calypso::getDisplayValue($tracking_info, 'delivery_receipt.receipt_path', '') ?>">
+                            </div>
+                        <?php endif; ?>
                     </div>
                     <?php
                     $this->registerJsFile('@web/js/libs/bootstrap.min.js', ['depends' => [TrackingAsset::className()]]);
