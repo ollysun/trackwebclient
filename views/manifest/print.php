@@ -80,7 +80,7 @@ $this->title = (empty($manifest))? '': 'Manifest'.$manifest['id'];
 					<td><?= strtoupper(Calypso::getValue($parcel, 'destination_name'))?> (<?= strtoupper(Calypso::getValue($parcel, 'destination_code'))?>)</td>
 					<td><?= Calypso::getValue($parcel, 'no_of_package')?></td>
 					<td><?= Calypso::getValue($parcel, 'weight')?> KG</td>
-					<td><?= ucwords(Calypso::getValue($parcel, 'shipper_firstname') . ' ' .  Calypso::getValue($parcel, 'shipper_lastname'))?></td>
+					<td><?= ucwords(Calypso::getValue($parcel, 'receiver_firstname') . ' ' .  Calypso::getValue($parcel, 'receiver_lastname'))?></td>
 					<td><?= Calypso::getValue($parcel, 'other_info')?></td>
 				</tr>
 			<?php endforeach; ?>
