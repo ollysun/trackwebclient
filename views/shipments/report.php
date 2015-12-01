@@ -1,11 +1,7 @@
 <?php
-use yii\helpers\Html;
-use yii\helpers\Url;
-use Adapter\Util\Calypso;
 use Adapter\Globals\ServiceConstant;
-use yii\widgets\LinkPager;
-use yii\grid\GridView;
-use yii\data\ArrayDataProvider;
+use Adapter\Util\Util;
+use yii\helpers\Url;
 
 
 $this->title = 'Reports';
@@ -28,14 +24,20 @@ $this->params['content_header_button'] = "<a href='".$downloadURL."' class='btn 
                     <div class="clearfix">
                         <div class="pull-left form-group form-group-sm">
                             <label for="">Creation Date</label><br>
-                            <input name="start_created_date" class="form-control date-range" data-provide="datepicker"
-                                   data-date-format="yyyy/mm/dd" data-date-end-date="0d" value="<?= $from_date;?>">
+                            <input name="start_created_date" class="form-control date-range" data-provide="datepicker" data-date-format="yyyy/mm/dd" data-date-end-date="0d" value="<?= $from_date;?>">
                         </div>
                         <div class="pull-left form-group form-group-sm">
                             <label for=""></label><br>
-                            <input name="end_created_date" class="form-control date-range" data-provide="datepicker"
-                                   data-date-format="yyyy/mm/dd" data-date-end-date="0d" value="<?= $end_date;?>">
+                            <input name="end_created_date" class="form-control date-range" data-provide="datepicker" data-date-format="yyyy/mm/dd" data-date-end-date="0d" value="<?= $end_date;?>">
                         </div>
+                        <div class="pull-left form-group form-group-sm">
+                            <label for="">Modified Date</label><br>
+                            <input name="start_modified_date" class="form-control date-range" data-provide="datepicker" data-date-format="yyyy/mm/dd" data-date-end-date="0d" value="<?= $start_modified_date;?>">
+                        </div>
+                        <div class="pull-left form-group form-group-sm">
+                            <label for=""></label><br>
+                            <input name="end_modified_date" class="form-control date-range" data-provide="datepicker" data-date-format="yyyy/mm/dd" data-date-end-date="0d" value="<?= $end_modified_date;?>">
+                         </div>
                         <div class="pull-left form-group form-group-sm">
                             <label for="">Min. Weight (KG)</label><br>
                             <input name="min_weight" class="form-control date-range" value="<?= $filters['min_weight'];?>">
@@ -155,7 +157,9 @@ $this->params['content_header_button'] = "<a href='".$downloadURL."' class='btn 
                             <th>Created Date</th>
                             <th>Delivery Route</th>
                             <th>Return Status</th>
-                            <th>Delivery Status</th>
+                            <th>Current Status</th>
+                            <th>Last Modified</th>
+                            <th>Delivery Type</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -169,9 +173,11 @@ $this->params['content_header_button'] = "<a href='".$downloadURL."' class='btn 
                                 <td><?= strtoupper($parcel['waybill_number']); ?></td>
                                 <td><?= strtoupper($parcel['receiver']['firstname'].' '. $parcel['receiver']['lastname']) ?></td>
                                 <td><?= $parcel['receiver']['phone'] ?></td>
-                                <td><?= date(ServiceConstant::DATE_TIME_FORMAT,strtotime($parcel['created_date'])); ?></td>
+                                <td><?= Util::formatDate(ServiceConstant::DATE_TIME_FORMAT,$parcel['created_date']); ?></td>
                                 <td><?= $parcel['route']['name'];?></td>
                                 <td><?= ServiceConstant::getReturnStatus($parcel); ?></td>
+                                <td><?= ServiceConstant::getStatus($parcel['status']); ?></td>
+                                <td><?= Util::formatDate(ServiceConstant::DATE_TIME_FORMAT,$parcel['modified_date']); ?> (<?= Util::ago($parcel['modified_date']); ?>)</td>
                                 <td><?= ucwords(ServiceConstant::getDeliveryType($parcel['delivery_type'])); ?></td>
                                 <td>
                                     <a href="<?= Url::toRoute(['/shipments/view?waybill_number='.$parcel['waybill_number']]) ?>" class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i></a>
