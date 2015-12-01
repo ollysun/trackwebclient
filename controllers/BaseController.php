@@ -9,11 +9,10 @@
 namespace app\controllers;
 
 
-use \yii\web\Controller,
-    \yii\web\Response;
 use Adapter\Globals\HttpStatusCodes;
 use Adapter\Util\Calypso;
-use Adapter\Globals\ServiceConstant;
+use yii\web\Controller;
+use yii\web\Response;
 
 class BaseController extends Controller
 {
