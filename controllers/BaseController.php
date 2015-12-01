@@ -9,11 +9,10 @@
 namespace app\controllers;
 
 
-use \yii\web\Controller,
-    \yii\web\Response;
 use Adapter\Globals\HttpStatusCodes;
 use Adapter\Util\Calypso;
-use Adapter\Globals\ServiceConstant;
+use yii\web\Controller;
+use yii\web\Response;
 
 class BaseController extends Controller
 {
@@ -31,7 +30,7 @@ class BaseController extends Controller
     public function beforeAction($action)
     {
         $access_denied_msg = "You are not eligible to access this system, kindly contact your administrator";
-        if (!in_array($action->id, array('logout', 'login', 'gerraout', 'site', 'accessdenied', 'forgotpassword', 'resetpassword', 'passwordresetsuccess'))) {
+        if (!in_array($action->id, array('logout', 'login', 'gerraout', 'site', 'accessdenied', 'forgotpassword', 'resetpassword', 'passwordresetsuccess','changepassword'))) {
             $this->setPermissionMap();
             $s = Calypso::getInstance()->session('user_session');
             if (!$s) {
