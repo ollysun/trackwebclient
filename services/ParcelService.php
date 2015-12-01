@@ -225,11 +225,15 @@ class ParcelService {
         $parcel['amount_due'] = Calypso::getValue($data, 'amount');
         $manualAmount = Calypso::getValue($data, 'manual_amount');
         $corporateAmount = Calypso::getValue($data, 'corporate_amount');
+
         if($parcel['billing_method'] == 'manual') {
             $parcel['amount_due'] = $manualAmount;
-        } else if($parcel['billing_method'] == 'manual') {
+        } else if($parcel['billing_method'] == 'corporate') {
             $parcel['amount_due'] = $corporateAmount;
         }
+        $parcel['billing_type'] = Calypso::getValue($data, 'billing_method', 'auto');
+        $parcel['weight_billing_plan'] = Calypso::getValue($data, 'billing_plan', null);
+        $parcel['onforwarding_billing_plan'] = Calypso::getValue($data, 'billing_plan', null);
 
         $parcel['is_billing_overridden'] = $parcel['billing_method'] == 'manual' ? 1 : 0;
         if(is_null($parcel['amount_due'])) {
