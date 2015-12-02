@@ -17,7 +17,25 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
 
 <?= Calypso::showFlashMessages(); ?>
     <div class="main-box">
-        <div class="main-box-header">
+        <div class="main-box-header table-search-form ">
+            <div class="clearfix">
+                <div class="pull-right clearfix">
+
+                    <form class="table-search-form form-inline clearfix">
+                        <div class="pull-left">
+                            <label for="searchInput">Search</label><br>
+                            <div class="input-group input-group-sm input-group-search">
+                                <input id="searchInput" type="text" name="search" placeholder="Company name" class="search-box form-control" value="<?= $search; ?>">
+                                <div class="input-group-btn">
+                                    <button class="btn btn-default" type="submit">
+                                        <i class="fa fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
         <div class="main-box-body">
             <?php if (count($billingPlans) > 0): ?>
