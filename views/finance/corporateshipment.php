@@ -154,7 +154,11 @@ $this->params['breadcrumbs'] = array(
                         </div>
                         <div class="pull-left form-group form-group-sm">
                             <label>Company</label> <br>
-                            <select class="form-control" style="width: 150px"></select>
+                            <select class="form-control" style="width: 150px">
+                                <?php foreach($companies as $company):?>
+                                    <option value="<?= Calypso::getValue($company, 'id')?>"><?= strtoupper(Calypso::getValue($company, 'name', ''));?></option>
+                                <?php endforeach; ?>
+                            </select>
                         </div>
                         <div class="pull-left form-group form-group-sm">
                             <label>Status</label> <br>
