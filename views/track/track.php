@@ -3,6 +3,7 @@ use Adapter\BranchAdapter;
 use Adapter\Globals\ServiceConstant;
 use Adapter\Util\Calypso;
 use Adapter\Util\Util;
+use app\assets\TrackingAsset;
 
 /* @var $this yii\web\View */
 
@@ -13,12 +14,22 @@ $this->title = 'Tracking Portal';
     <div class="clearfix">
         <h1 class="pull-left">Tracking for #<?= $tracking_number ?></h1>
         <h4 class="pull-right text-muted">
-            Status: <strong class="text-danger"><?= Calypso::getDisplayValue($current_state_info, 'description', 'N/A') ?></strong></h4>
+            Status:
+            <?php if(Calypso::getDisplayValue($current_state_info, 'status') == ServiceConstant::RETURNED): ?>
+                <strong id="status" title="Reason for return" data-content="Reason for return details" data-placement="bottom"
+                class="text-danger"><?= Calypso::getDisplayValue($current_state_info, 'description', 'N/A') ?></strong>
+                <?php $this->registerJsFile('@web/js/libs/bootstrap.min.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
+                <?php $this->registerJs('$("#status").popover("show")'); ?>
+            <?php else: ?>
+             <strong
+                class="text-danger"><?= Calypso::getDisplayValue($current_state_info, 'description', 'N/A') ?></strong>
+            <?php endif; ?>
+        </h4>
     </div>
     <br>
     <div class="row text-center text-uppercase">
         <div class="col-xs-4">
-            <label class="tracking-info-label">Receiver's name</label>
+            <label class="tracking-info-label">Consignee's name</label>
 
             <div
                 class="tracking-info-value"><?= ucfirst(Calypso::getDisplayValue($tracking_info, 'receiver.firstname', '')) . " " . ucfirst(Calypso::getDisplayValue($tracking_info, 'receiver.lastname', '')) ?></div>
@@ -53,6 +64,7 @@ $this->title = 'Tracking Portal';
                     <div
                         class="tracking-name"><?= ucwords(Calypso::getDisplayValue($info, 'from_branch.name', '')) ?></div>
                     <div class="tracking-circle"></div>
+                    <div class="tracking-bar-full"></div>
                     <div class="tracking-bar"></div>
                     <div class="tracking-status">
                     <span
@@ -76,6 +88,7 @@ $this->title = 'Tracking Portal';
                         <div
                             class="tracking-name"><?= ucwords(Calypso::getDisplayValue($info, 'to_branch.name', '')) ?></div>
                         <div class="tracking-circle"></div>
+                        <div class="tracking-bar-full"></div>
                         <div class="tracking-bar"></div>
                         <div class="tracking-status">
                         <span
@@ -96,6 +109,7 @@ $this->title = 'Tracking Portal';
                         <div
                             class="tracking-name"><?= ucwords(Calypso::getDisplayValue($info, 'to_branch.name', '')) ?></div>
                         <div class="tracking-circle"></div>
+                        <div class="tracking-bar-full"></div>
                         <div class="tracking-bar"></div>
                         <div class="tracking-status">
                     <span
@@ -126,14 +140,42 @@ $this->title = 'Tracking Portal';
 
             <div class="tracking-name">You</div>
             <div class="tracking-circle"></div>
+            <div class="tracking-bar-full"></div>
             <div class="tracking-bar"></div>
             <div class="tracking-status">
                 <span><?= (Calypso::getValue($current_state_info, 'status') == ServiceConstant::BEING_DELIVERED) ? "On it's way to you" : '' ?></span>
-                <?php if (Calypso::getValue($current_state_info, 'status') == ServiceConstant::DELIVERED): ?>
+                <?php if (Calypso::getValue($current_state_info, 'status') == ServiceConstant::DELIVERED && Calypso::getValue($tracking_info, 'delivery_receipt', false)): ?>
                     <span
                         class="tracking-status-inner date"><?= Util::convertToTrackingDateFormat(Calypso::getValue($current_state_info, 'created_date', '')) ?></span>
                     <span
                         class="tracking-status-inner time"><?= Util::convertDateTimeToTime(Calypso::getValue($current_state_info, 'created_date', '')) ?></span>
+                    <br><a class="btn btn-sm btn-success" tabindex="0" role="button" data-toggle="popover"
+                           data-placement="left" title="Proof of Delivery Information">Proof of Delivery</a>
+                    <div id="pod" style="display:none;">
+                        <div class="form-group">
+                            <label>Received by</label>
+
+                            <div
+                                class="form-control-static"><?= Calypso::getDisplayValue($tracking_info, 'delivery_receipt.name', 'N/A') ?></div>
+                        </div>
+                        <div class="form-group">
+                            <label>Date</label>
+
+                            <div
+                                class="form-control-static"><?= Util::convertToTrackingDateFormat(Calypso::getValue($tracking_info, 'delivery_receipt.created_at', '')) ?></div>
+                        </div>
+                        <?php if (Calypso::getDisplayValue($tracking_info, 'delivery_receipt.receipt_path', false)): ?>
+                            <div class="form-group">
+                                <label>Signature</label>
+                                <img class="signature"
+                                     src="<?= Calypso::getDisplayValue($tracking_info, 'delivery_receipt.receipt_path', '') ?>">
+                            </div>
+                        <?php endif; ?>
+                    </div>
+                    <?php
+                    $this->registerJsFile('@web/js/libs/bootstrap.min.js', ['depends' => [TrackingAsset::className()]]);
+                    $this->registerJsFile('@web/js/tracking-proof-of-delivery.js', ['depends' => [TrackingAsset::className()]]);
+                    ?>
                 <?php endif; ?>
             </div>
         </div>

@@ -36,7 +36,22 @@ $this->params['breadcrumbs'] = array(
                         data-action="return"><i class="fa fa-check"></i> Mark as Returned
                 </button>
             </div>
+
+            <form class="table-search-form form-inline pull-right clearfix">
+                <div class="pull-left form-group">
+                    <div class="input-group input-group-sm input-group-search">
+                        <input id="searchInput" type="text" name="search" placeholder="Search by Waybill number" class="search-box form-control">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" type="submit" formmethod="post">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
         </div>
+
+
     <?php } ?>
     <?php if(!empty($parcels)) { ?>
     <div class="main-box-body">
@@ -111,23 +126,49 @@ $this->params['breadcrumbs'] = array(
                     <p>Please enter your password to authenticate this operation.</p>
                     <div class="form-group">
                         <label>Password</label>
-                        <input type="password" class="form-control" name="password">
+                        <input type="password" class="form-control" name="password" required>
                     </div>
                     <div class="form-group">
                         <label>Receiver's Name</label>
-                        <input type="text" class="form-control" name="fullname" id="fullname">
+                        <input type="text" class="form-control" name="fullname" id="fullname" required>
                     </div>
                     <div class="row">
                         <div class="form-group col-md-6">
                             <label for="email">Receiver's Email</label>
-                            <input type="text" class="form-control" name="email" id="email">
+                            <input type="text" class="form-control" name="email" id="email" placeholder="--Optional--">
                         </div>
                         <div class="form-group col-md-6">
                             <label for="phone">Receiver's Phone Number</label>
-                            <input type="text" class="form-control" name="phone" id="phone">
+                            <input type="text" class="form-control" name="phone" id="phone" required>
                         </div>
                     </div>
+
+                    <div class="row">
+
+                            <div class='col-sm-6'>
+                                <div class="form-group">
+                                    <label for="">Date of delivery:</label><br>
+                                    <div class="input-group input-group-date-range">
+                                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                        <input name="date" id="" class="form-control date-range" value="<?= date('Y/m/d', strtotime($todays_date)); ?>" data-provide="datepicker" data-date-format="yyyy/mm/dd" data-date-end-date="0d" required>
+                                    </div>
+                                </div>
+                            </div>
+
+                             <div class='col-sm-6'>
+                                <div class="form-group">
+                                    <label for="">Time of delivery:</label><br>
+                                    <div class='input-group timepicker-orient-top'>
+                                             <span class="input-group-addon" >
+                                                <span class="glyphicon glyphicon-time" ></span>
+                                            </span>
+                                            <input name='time' id="" class="form-control time-range" data-provide="timepicker" required>
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
                 </div>
+
                 <div class="modal-footer">
                     <input type="hidden" name="waybills" id="waybills">
                     <input type="hidden" name="task" id="task">
@@ -202,5 +243,7 @@ $this->params['breadcrumbs'] = array(
 <script type="text/javascript">
     var beingdelivered = <?= ServiceConstant::BEING_DELIVERED ?>;
 </script>
+<?= $this->registerJsFile('@web/js/libs/bootstrap-timepicker.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
+<?= $this->registerJsFile('@web/js/libs/bootstrap-datepicker.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
 <?= $this->registerJsFile('@web/js/requests.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
 <?= $this->registerJsFile('@web/js/shipment_dispatched.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
