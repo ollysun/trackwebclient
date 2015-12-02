@@ -46,6 +46,7 @@ class BulkShipmentRequestForm extends Model
     {
         if ($this->validate()) {
             $rows = $this->getFileContents();
+
             $batchData = [];
             $keys = ['receiver_firstname', 'receiver_lastname', 'receiver_phone_number', 'receiver_email',
                 'receiver_address', 'receiver_state_id', 'receiver_city_id', 'receiver_company_name', 'no_of_packages',
