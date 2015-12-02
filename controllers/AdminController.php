@@ -294,6 +294,29 @@ class AdminController extends BaseController
         return $this->render('managestaff', ['states' => $state_list, 'roles' => $role_list, 'staffMembers' => $staffMembers, 'offset' => $offset, 'role' => $role, 'page_width' => $this->page_width]);
     }
 
+    public function actionResetpassword()
+    {
+        if(!Yii::$app->getRequest()->isPost){
+            return $this->redirect('managestaff');
+        }
+        $auth_id = Yii::$app->getRequest()->post('user_auth_id');
+        $password = Yii::$app->getRequest()->post('password');
+
+        if(!isset($auth_id, $password)) {
+            $this->flashError('Required field(s) missing');
+        }
+
+        $user = new UserAdapter();
+        $outcome = $user->resetPassword($auth_id,$password);
+        if($outcome === true) {
+            $this->flashSuccess('Password has been changed');
+        }
+        else{
+            $this->flashError($outcome);
+        }
+        return $this->redirect('managestaff');
+    }
+
     /**
      * Edit Company Action
      * @author Adegoke Obasa <goke@cottacush.com>
