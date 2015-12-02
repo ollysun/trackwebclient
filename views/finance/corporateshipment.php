@@ -154,17 +154,19 @@ $this->params['breadcrumbs'] = array(
                         </div>
                         <div class="pull-left form-group form-group-sm">
                             <label>Company</label> <br>
-                            <select class="form-control" style="width: 150px">
+                            <select name="company" class="form-control" style="width: 150px">
+                                <option value="">Select Company</option>
                                 <?php foreach($companies as $company):?>
-                                    <option value="<?= Calypso::getValue($company, 'id')?>"><?= strtoupper(Calypso::getValue($company, 'name', ''));?></option>
+                                    <option <?= $selectedCompany == Calypso::getValue($company, 'id') ? 'selected' : ''?> value="<?= Calypso::getValue($company, 'id')?>"><?= strtoupper(Calypso::getValue($company, 'name', ''));?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
                         <div class="pull-left form-group form-group-sm">
                             <label>Status</label> <br>
-                            <select class="form-control" style="width: 150px">
+                            <select name="status" class="form-control" style="width: 150px">
+                                <option value="">Select Status</option>
                                 <?php foreach($statuses as $status):?>
-                                    <option value="<?= $status?>"><?= ServiceConstant::getStatus($status);?></option>
+                                    <option <?= $selectedStatus == $status ? 'selected' : ''?> value="<?= $status?>"><?= ServiceConstant::getStatus($status);?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
