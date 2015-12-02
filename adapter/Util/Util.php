@@ -7,6 +7,7 @@
 
 namespace Adapter\Util;
 
+use Moment\Moment;
 
 /**
  * Class Util
@@ -106,12 +107,13 @@ class Util
      * @author imkingdavid (stackoverflow)
      * @return bool
      */
-    public static function mempty() {
+    public static function mempty()
+    {
 
         $arguments = func_get_args();
 
         foreach ($arguments as $arg) {
-            if(empty($arg)) {
+            if (empty($arg)) {
                 return true;
             } else {
                 continue;
@@ -130,7 +132,7 @@ class Util
      */
     public static function checkEmpty($value)
     {
-        if($value === 0 || $value === '0') {
+        if ($value === 0 || $value === '0') {
             return false;
         }
         return empty($value);
@@ -157,6 +159,40 @@ class Util
             fputcsv($stream, $row);
         }
         fclose($stream);
+    }
+
+    /**
+     * @author Otaru Babatunde<tunde@cottacush.com>
+     */
+    public static function getDateTimeFormatFromDateTimeFields($date, $time)
+    {
+        $date_and_time = $date . " " . $time;
+        list($year, $month, $day, $hour, $minute, $dayType) = preg_split('/[\/\s:]+/', $date_and_time);
+
+        if ($hour == 12) {
+            if ($dayType == 'AM') {
+                $hour = 00;
+            } else {
+                $hour = 12;
+            }
+            return $year . '-' . $month . '-' . $day . ' ' . $hour . ":" . $minute . ":00";
+        } else {
+            return $year . '-' . $month . '-' . $day . ' ' . ($dayType == "PM" ? $hour + 12 : $hour) . ":" . $minute . ":00";
+        }
+    }
+
+    /**
+     * Return an english representation of the time difference
+     * @author Olawale Lawal <wale@cottacush.com>
+     * @param $past_time
+     * @param int $reference
+     * @return string
+    */
+    public static function ago($past_time, $base_time = 'now')
+    {
+        $old_time = new Moment($base_time);
+        $new_time = new Moment($past_time);
+        return $new_time->from($old_time)->getRelative();
     }
 
 }
