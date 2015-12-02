@@ -46,7 +46,6 @@ class BulkShipmentRequestForm extends Model
     {
         if ($this->validate()) {
             $rows = $this->getFileContents();
-
             $batchData = [];
             $keys = ['receiver_firstname', 'receiver_lastname', 'receiver_phone_number', 'receiver_email',
                 'receiver_address', 'receiver_state_id', 'receiver_city_id', 'receiver_company_name', 'no_of_packages',
@@ -88,9 +87,27 @@ class BulkShipmentRequestForm extends Model
             if (++$count == 1) {
                 continue;
             }
-            $result[] = str_getcsv($content);
+            $rowData = str_getcsv($content);
+            if (!$this->isRowEmpty($rowData)) {
+                $result[] = $rowData;
+            }
         }
         return $result;
+    }
+
+    /**
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     * @param $row
+     * @return bool
+     */
+    private function isRowEmpty($row)
+    {
+        foreach ($row as $index => $column) {
+            if (!is_null($column) && strlen(trim($column)) != 0) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private function substituteStateAndCityWithIds($row)
@@ -186,7 +203,7 @@ class BulkShipmentRequestForm extends Model
      * @param $rowNumber
      * @return bool
      */
-    public function validateRow($row, $rowNumber)
+    private function validateRow($row, $rowNumber)
     {
         if (count($row) != 14 && count($row) > 0) {
             $this->addError('dataFile', 'Invalid shipment request on row ' . $rowNumber . ' in ' . $this->dataFile->name . '. Please check and correct');
