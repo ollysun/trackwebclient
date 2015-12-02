@@ -212,7 +212,7 @@ $this->params['breadcrumbs'] = array(
                         <th>Waybill No.</th>
                         <th>Company Name</th>
                         <th>Payment Method</th>
-                        <th>Billng Method</th>
+                        <th>Billing Method</th>
                         <th>Status</th>
                         <th>Amount</th>
                         <th>Invoice</th>
@@ -226,8 +226,8 @@ $this->params['breadcrumbs'] = array(
                         <tr>
                             <td>
                                 <div class="checkbox-nice">
-                                    <input id="" class="checkable" data-waybill="" data-sender="" type="checkbox">
-                                    <label for=""> </label>
+                                    <input id="corporate_parce_<?=$i?>" class="checkable" type="checkbox">
+                                    <label for="corporate_parce_<?=$i?>"> </label>
                                 </div>
                             </td>
                             <td><?= ++$i; ?></td>
