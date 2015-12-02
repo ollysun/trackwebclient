@@ -22,7 +22,8 @@ $this->params['breadcrumbs'] = array(
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title">Generate Invoice</h4>
                 </div>
                 <div class="modal-body">
@@ -38,36 +39,36 @@ $this->params['breadcrumbs'] = array(
                         </tr>
                         </thead>
                         <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>7123456</td>
-                                    <td>Delivered</td>
-                                    <td>1000</td>
-                                    <td>
-                                         <input type="text" class="form-control" style="width:50px;" value="15">
-                                    </td>
-                                    <td>850</td>
-                                </tr>
+                        <tr>
+                            <td>1</td>
+                            <td>7123456</td>
+                            <td>Delivered</td>
+                            <td>1000</td>
+                            <td>
+                                <input type="text" class="form-control" style="width:50px;" value="15">
+                            </td>
+                            <td>850</td>
+                        </tr>
 
-                                <tr>
-                                    <td>2</td>
-                                    <td>1234567</td>
-                                    <td>Delivered</td>
-                                    <td>2000</td>
-                                    <td>
-                                         <input type="text" class="form-control" style="width:50px;" value="15">
-                                    </td>
-                                    <td>1700</td>
-                                </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>1234567</td>
+                            <td>Delivered</td>
+                            <td>2000</td>
+                            <td>
+                                <input type="text" class="form-control" style="width:50px;" value="15">
+                            </td>
+                            <td>1700</td>
+                        </tr>
 
-                                <tr>
-                                    <td></td>
-                                    <td><b>NET TOTAL</b></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td><b>2550</b></td>
-                                </tr>
+                        <tr>
+                            <td></td>
+                            <td><b>NET TOTAL</b></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td><b>2550</b></td>
+                        </tr>
 
                         </tbody>
                     </table>
@@ -77,10 +78,11 @@ $this->params['breadcrumbs'] = array(
                             <div class="form-group">
                                 <label>Invoice address</label>
                                 <textarea class="form-control" rows="2"></textarea>
+
                                 <div class="checkbox">
                                     <label>
                                         <input type="checkbox">
-                                            Same as Invoice To
+                                        Same as Invoice To
                                     </label>
                                 </div>
                             </div>
@@ -123,7 +125,9 @@ $this->params['breadcrumbs'] = array(
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    <a href="#"><button type="button" class="btn btn-primary">Generate Invoice</button></a>
+                    <a href="#">
+                        <button type="button" class="btn btn-primary">Generate Invoice</button>
+                    </a>
                 </div>
             </div>
         </div>
@@ -139,25 +143,30 @@ $this->params['breadcrumbs'] = array(
                     <div class="clearfix">
                         <div class="pull-left form-group form-group-sm">
                             <label for="">From:</label><br>
+
                             <div class="input-group input-group-date-range">
                                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                <input name="from" id="" class="form-control date-range" value="<?= $fromDate;?>" data-provide="datepicker" data-date-format="yyyy/mm/dd" data-date-end-date="0d">
+                                <input name="from" id="" class="form-control date-range" value="<?= $fromDate; ?>"
+                                       data-provide="datepicker" data-date-format="yyyy/mm/dd" data-date-end-date="0d">
                             </div>
                         </div>
 
                         <div class="pull-left form-group form-group-sm">
                             <label for="">To:</label><br>
+
                             <div class="input-group input-group-date-range">
                                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                <input name="to" id="" class="form-control date-range"  value="<?= $toDate;?>" data-provide="datepicker" data-date-format="yyyy/mm/dd" data-date-end-date="0d">
+                                <input name="to" id="" class="form-control date-range" value="<?= $toDate; ?>"
+                                       data-provide="datepicker" data-date-format="yyyy/mm/dd" data-date-end-date="0d">
                             </div>
                         </div>
                         <div class="pull-left form-group form-group-sm">
                             <label>Company</label> <br>
                             <select name="company" class="form-control" style="width: 150px">
                                 <option value="">Select Company</option>
-                                <?php foreach($companies as $company):?>
-                                    <option <?= $selectedCompany == Calypso::getValue($company, 'id') ? 'selected' : ''?> value="<?= Calypso::getValue($company, 'id')?>"><?= strtoupper(Calypso::getValue($company, 'name', ''));?></option>
+                                <?php foreach ($companies as $company): ?>
+                                    <option <?= $selectedCompany == Calypso::getValue($company, 'id') ? 'selected' : '' ?>
+                                        value="<?= Calypso::getValue($company, 'id') ?>"><?= strtoupper(Calypso::getValue($company, 'name', '')); ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
@@ -165,8 +174,9 @@ $this->params['breadcrumbs'] = array(
                             <label>Status</label> <br>
                             <select name="status" class="form-control" style="width: 150px">
                                 <option value="">Select Status</option>
-                                <?php foreach($statuses as $status):?>
-                                    <option <?= $selectedStatus == $status ? 'selected' : ''?> value="<?= $status?>"><?= ServiceConstant::getStatus($status);?></option>
+                                <?php foreach ($statuses as $status): ?>
+                                    <option <?= $selectedStatus == $status ? 'selected' : '' ?>
+                                        value="<?= $status ?>"><?= ServiceConstant::getStatus($status); ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
@@ -182,7 +192,8 @@ $this->params['breadcrumbs'] = array(
             </div>
             <div class="pull-right clearfix">
                 <label>&nbsp;</label><br>
-                <button class="btn btn-primary" data-toggle="modal" data-target="#generateInvoice">Generate Invoice</button>
+                <button class="btn btn-primary" data-toggle="modal" data-target="#generateInvoice">Generate Invoice
+                </button>
 
             </div>
         </div>
@@ -210,25 +221,31 @@ $this->params['breadcrumbs'] = array(
                     </tr>
                     </thead>
                     <tbody>
-                    <?php $i = $offset; foreach($corporateParcels as $corporateParcel):?>
-                            <tr>
-                                <td>
-                                    <div class="checkbox-nice">
-                                        <input id="" class="checkable" data-waybill="" data-sender="" type="checkbox">
-                                        <label for=""> </label>
-                                    </div></td>
-                                <td><?= ++$i;?></td>
-                                <td><?= Calypso::getValue($corporateParcel, 'waybill_number');?></td>
-                                <td><?= strtoupper(Calypso::getValue($corporateParcel, 'company.name'));?></td>
-                                <td><?= strtoupper(Calypso::getValue($corporateParcel, 'payment_type.name', ''));?></td>
-                                <td><?= strtoupper(Calypso::getValue($corporateParcel, 'billing_type', ''));?></td>
-                                <td><?= ServiceConstant::getStatus(Calypso::getValue($corporateParcel, 'status')); ?></td>
-                                <td><?= Calypso::getValue($corporateParcel, 'amount_due')?></td>
-                                <td>n/a</td>
-                                <td>n/a</td>
-                                <td><button class="btn btn-primary btn-xs">View</button> <button class="btn btn-default btn-xs">Edit</button></td>
-                                <td></td>
-                            </tr>
+                    <?php $i = $offset;
+                    foreach ($corporateParcels as $corporateParcel): ?>
+                        <tr>
+                            <td>
+                                <div class="checkbox-nice">
+                                    <input id="" class="checkable" data-waybill="" data-sender="" type="checkbox">
+                                    <label for=""> </label>
+                                </div>
+                            </td>
+                            <td><?= ++$i; ?></td>
+                            <td><?= Calypso::getValue($corporateParcel, 'waybill_number'); ?></td>
+                            <td><?= strtoupper(Calypso::getValue($corporateParcel, 'company.name')); ?></td>
+                            <td><?= strtoupper(Calypso::getValue($corporateParcel, 'payment_type.name', '')); ?></td>
+                            <td><?= strtoupper(Calypso::getValue($corporateParcel, 'billing_type', '')); ?></td>
+                            <td><?= ServiceConstant::getStatus(Calypso::getValue($corporateParcel, 'status')); ?></td>
+                            <td><?= Calypso::getValue($corporateParcel, 'amount_due') ?></td>
+                            <td>n/a</td>
+                            <td>n/a</td>
+                            <td>
+                                <a href="<?= Url::to(['/shipments/view', 'waybill_number' => Calypso::getValue($corporateParcel, 'waybill_number')]) ?>"
+                                   class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i> View</a>
+                                <button class="btn btn-default btn-xs">Edit</button>
+                            </td>
+                            <td></td>
+                        </tr>
                     <?php endforeach; ?>
                     </tbody>
                 </table>
@@ -246,7 +263,8 @@ $this->params['breadcrumbs'] = array(
         <form method="post" action="" class="validate-form">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title" id="myModalLabel">Submit Teller Details</h4>
                 </div>
                 <div class="modal-body">
@@ -255,7 +273,7 @@ $this->params['breadcrumbs'] = array(
                     <input type="hidden" name="task" value="submit_teller">
                     <input type="hidden" id="waybill_numbers" name="waybill_numbers">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary" >Submit</button>
+                    <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
             </div>
         </form>
