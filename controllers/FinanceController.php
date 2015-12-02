@@ -51,8 +51,18 @@ class FinanceController extends BaseController
         return $this->render('customers_all',array('search'=>$waybillnumber,'parcels'=>$data,'payment_type'=>$method,'from_date'=>$from_date,'to_date'=>$to_date,'offset'=>$offset,'page_width'=>$page_width, 'total_count'=>$total_count));
     }
 
+    /**
+     * List Corporate Shipments Action
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @author Bolade Oye <bolade@cottacush.com>
+     * @return string
+     */
     public function actionCorporateshipment()
     {
+        $parcelAdapter = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+        $corporateParcels = $parcelAdapter->getCorporateParcels(0, 50);
+        var_dump($corporateParcels);
+        exit;
         return $this->render('corporateshipment');
     }
 
