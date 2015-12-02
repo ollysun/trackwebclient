@@ -69,8 +69,10 @@ class FinanceController extends BaseController
         $totalCount = Calypso::getValue($corporateParcelsResponse, 'total_count');
 
         $companies = (new CompanyAdapter())->getAllCompanies([]);
+        $statuses = ServiceConstant::getStatusRef();
 
         return $this->render('corporateshipment',[
+            'statuses' => $statuses,
             'companies' => $companies,
             'corporateParcels' => $corporateParcels,
             'offset' => $offset,

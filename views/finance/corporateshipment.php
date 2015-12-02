@@ -162,7 +162,11 @@ $this->params['breadcrumbs'] = array(
                         </div>
                         <div class="pull-left form-group form-group-sm">
                             <label>Status</label> <br>
-                            <select class="form-control" style="width: 150px"></select>
+                            <select class="form-control" style="width: 150px">
+                                <?php foreach($statuses as $status):?>
+                                    <option value="<?= $status?>"><?= ServiceConstant::getStatus($status);?></option>
+                                <?php endforeach; ?>
+                            </select>
                         </div>
                         <div class="pull-left">
                             <label>&nbsp;</label><br>
