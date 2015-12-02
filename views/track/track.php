@@ -14,8 +14,16 @@ $this->title = 'Tracking Portal';
     <div class="clearfix">
         <h1 class="pull-left">Tracking for #<?= $tracking_number ?></h1>
         <h4 class="pull-right text-muted">
-            Status: <strong
+            Status:
+            <?php if(Calypso::getDisplayValue($current_state_info, 'status') == ServiceConstant::RETURNED): ?>
+                <strong id="status" title="Reason for return" data-content="Reason for return details" data-placement="bottom"
                 class="text-danger"><?= Calypso::getDisplayValue($current_state_info, 'description', 'N/A') ?></strong>
+                <?php $this->registerJsFile('@web/js/libs/bootstrap.min.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
+                <?php $this->registerJs('$("#status").popover("show")'); ?>
+            <?php else: ?>
+             <strong
+                class="text-danger"><?= Calypso::getDisplayValue($current_state_info, 'description', 'N/A') ?></strong>
+            <?php endif; ?>
         </h4>
     </div>
     <br>
