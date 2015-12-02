@@ -1,6 +1,7 @@
 <?php
 namespace app\controllers;
 
+use Adapter\CompanyAdapter;
 use Yii;
 use Adapter\AdminAdapter;
 use Adapter\Globals\ServiceConstant;
@@ -55,15 +56,26 @@ class FinanceController extends BaseController
      * List Corporate Shipments Action
      * @author Adegoke Obasa <goke@cottacush.com>
      * @author Bolade Oye <bolade@cottacush.com>
+     * @param int $page
      * @return string
      */
-    public function actionCorporateshipment()
+    public function actionCorporateshipment($page = 1)
     {
+        $offset = ($page - 1) * $this->page_width;
+
         $parcelAdapter = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
-        $corporateParcels = $parcelAdapter->getCorporateParcels(0, 50);
-        var_dump($corporateParcels);
-        exit;
-        return $this->render('corporateshipment');
+        $corporateParcelsResponse = $parcelAdapter->getCorporateParcels(0, 50);
+        $corporateParcels = Calypso::getValue($corporateParcelsResponse, 'parcels');
+        $totalCount = Calypso::getValue($corporateParcelsResponse, 'total_count');
+
+        $companies = (new CompanyAdapter())->getAllCompanies([]);
+
+        return $this->render('corporateshipment',[
+            'companies' => $companies,
+            'corporateParcels' => $corporateParcels,
+            'offset' => $offset,
+            'total_count' => $totalCount,
+            'page_width' => $this->page_width]);
     }
 
     public function actionCreditnote()

@@ -409,7 +409,8 @@ class ParcelAdapter extends BaseAdapter
             'billing_type' => self::BILLING_METHOD_CORPORATE,
             'offset' => $offset,
             'count' => $count,
-            'with_total_count' => 1
+            'with_total_count' => 1,
+            'with_payment_type' => 1
         ]);
         $filters = array_filter($filters);
         $response = $this->request(ServiceConstant::URL_GET_ALL_PARCEL, $filters, self::HTTP_GET);

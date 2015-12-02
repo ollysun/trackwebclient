@@ -1,4 +1,5 @@
 <?php
+use Adapter\Util\Calypso;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use Adapter\Globals\ServiceConstant;
@@ -67,7 +68,7 @@ $this->params['breadcrumbs'] = array(
                                     <td></td>
                                     <td><b>2550</b></td>
                                 </tr>
-                                
+
                         </tbody>
                     </table>
 
@@ -172,12 +173,12 @@ $this->params['breadcrumbs'] = array(
             <div class="pull-right clearfix">
                 <label>&nbsp;</label><br>
                 <button class="btn btn-primary" data-toggle="modal" data-target="#generateInvoice">Generate Invoice</button>
-                
+
             </div>
         </div>
     </div>
     <div class="main-box-body">
-        <?php if (true): ?>
+        <?php if ($corporateParcels): ?>
             <div class="table-responsive">
                 <table id="table" class="table table-hover dataTable">
                     <thead>
@@ -199,32 +200,30 @@ $this->params['breadcrumbs'] = array(
                     </tr>
                     </thead>
                     <tbody>
+                    <?php $i = $offset; foreach($corporateParcels as $corporateParcel):?>
                             <tr>
                                 <td>
                                     <div class="checkbox-nice">
-
                                         <input id="" class="checkable" data-waybill="" data-sender="" type="checkbox">
                                         <label for=""> </label>
                                     </div></td>
-                                <td>1</td>
-                                <td>7123456</td>
+                                <td><?= ++$i;?></td>
+                                <td><?= Calypso::getValue($corporateParcel, 'waybill_number');?></td>
                                 <td>QA test</td>
-                                <td>Deferred</td>
-                                <td>Corporate</td>
-                                <td>Returned</td>
-                                <td>1000</td>
+                                <td><?= strtoupper(Calypso::getValue($corporateParcel, 'payment_type.name', ''));?></td>
+                                <td><?= strtoupper(Calypso::getValue($corporateParcel, 'billing_type', ''));?></td>
+                                <td><?= ServiceConstant::getStatus(Calypso::getValue($corporateParcel, 'status')); ?></td>
+                                <td><?= Calypso::getValue($corporateParcel, 'amount_due')?></td>
                                 <td>n/a</td>
                                 <td>n/a</td>
                                 <td><button class="btn btn-primary btn-xs">View</button> <button class="btn btn-default btn-xs">Edit</button></td>
-                                <td>
-                                    
-                                </td>
+                                <td></td>
                             </tr>
-                            
+                    <?php endforeach; ?>
                     </tbody>
                 </table>
             </div>
-            <?php //= $this->render('../elements/pagination_and_summary', ['first' => $offset, 'last' => $i, 'total_count' => $total_count, 'page_width' => $page_width]) ?>
+            <?= $this->render('../elements/pagination_and_summary', ['first' => $offset, 'last' => $i, 'total_count' => $total_count, 'page_width' => $page_width]) ?>
         <?php else: ?>
             There are no parcels matching the specified criteria.
         <?php endif; ?>
