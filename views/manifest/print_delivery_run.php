@@ -129,7 +129,7 @@ use Adapter\Globals\ServiceConstant;
                     <?php else: ?>
                         <tr>
                             <td class="show-only-right-cell-border"><?= ($i < 10) ? '0' . $i : '' . $i; ?></td>
-                            <td><?= Calypso::getValue($parcel, 'shipper_firstname') . " " . Calypso::getValue($parcel, 'shipper_lastname');?></td>
+                            <td><?= ucwords(Calypso::getValue($parcel, 'receiver_firstname') . " " . Calypso::getValue($parcel, 'receiver_lastname'));?></td>
                             <td><?= Calypso::getValue($parcel, 'waybill_number');?></td>
                             <td><?= strtoupper(Calypso::getValue($manifest, 'from_branch.code'));?></td>
                             <td><?= Calypso::getValue($parcel, 'no_of_package');?></td>

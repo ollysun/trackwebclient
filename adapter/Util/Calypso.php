@@ -158,8 +158,11 @@ class Calypso
                 , 'branch' => [ServiceConstant::BRANCH_TYPE_EC, ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
             'Finance' => [
                 'base' => 'finance', 'class' => 'fa fa-money', 'base_link' => [
+                    'Corporate Shipments' => ['base_link' => 'finance/corporateshipment', 'class' => ''],
+                    'Credit Note' => ['base_link' => 'finance/creditnote', 'class' => ''],
                     'Customers' => ['base_link' => 'finance/customersall', 'class' => ''],
-                    'Merchants' => ['base_link' => 'finance/merchantsdue', 'class' => '']
+                    'Invoice' => ['base_link' => 'finance/invoice', 'class' => ''],
+                    'Merchants' => ['base_link' => 'finance/merchantsdue', 'class' => ''],
                 ],
                 'branch' => [ServiceConstant::BRANCH_TYPE_HQ]
             ],
@@ -203,7 +206,7 @@ class Calypso
                 ['finance/*', 'billing/*', 'admin/*']
                 , self::getCorporateRoutes()),
             ServiceConstant::USER_TYPE_SWEEPER => array_merge(
-                ['site/*', 'parcels/*', 'shipments/*', 'hubs/*', 'finance/*', 'billing/*', 'admin/*', 'corporate/request/pending']
+                ['site/index', 'site/newparcel', 'parcels/*', 'shipments/*', 'hubs/*', 'finance/*', 'billing/*', 'admin/*', 'corporate/request/pending']
             , self::getCorporateRoutes()),
             ServiceConstant::USER_TYPE_DISPATCHER => array_merge(
                 ['site/*', 'parcels/*', 'shipments/*', 'hubs/*', 'finance/*', 'billing/*', 'admin/*', 'corporate/request/pending']

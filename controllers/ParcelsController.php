@@ -89,7 +89,7 @@ class ParcelsController extends BaseController
 
         $user = Calypso::getInstance()->session('user_session');
         $hubAdp = new BranchAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $centres = $hubAdp->getCentres($user['branch']['id']);
+        $centres = $hubAdp->getCentres($user['branch']['id'], 0, $this->page_width, false);
         $centres = new ResponseHandler($centres);
         $centres_list = $centres->getStatus() == ResponseHandler::STATUS_OK ? $centres->getData() : [];
 
