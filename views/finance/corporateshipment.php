@@ -219,7 +219,7 @@ $this->params['breadcrumbs'] = array(
                                     </div></td>
                                 <td><?= ++$i;?></td>
                                 <td><?= Calypso::getValue($corporateParcel, 'waybill_number');?></td>
-                                <td>QA test</td>
+                                <td><?= strtoupper(Calypso::getValue($corporateParcel, 'company.name'));?></td>
                                 <td><?= strtoupper(Calypso::getValue($corporateParcel, 'payment_type.name', ''));?></td>
                                 <td><?= strtoupper(Calypso::getValue($corporateParcel, 'billing_type', ''));?></td>
                                 <td><?= ServiceConstant::getStatus(Calypso::getValue($corporateParcel, 'status')); ?></td>
