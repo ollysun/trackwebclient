@@ -51,6 +51,21 @@ class FinanceController extends BaseController
         return $this->render('customers_all',array('search'=>$waybillnumber,'parcels'=>$data,'payment_type'=>$method,'from_date'=>$from_date,'to_date'=>$to_date,'offset'=>$offset,'page_width'=>$page_width, 'total_count'=>$total_count));
     }
 
+    public function actionCorporateshipment()
+    {
+        return $this->render('corporateshipment');
+    }
+
+    public function actionCreditnote()
+    {
+        return $this->render('creditnote');
+    }
+
+    public function actionInvoice()
+    {
+        return $this->render('invoice');
+    }
+
     public function actionMerchantspending()
     {
         return $this->render('merchants_pending');
@@ -77,5 +92,23 @@ class FinanceController extends BaseController
     public function actionMerchantspaid()
     {
         return $this->render('merchants_paid');
+    }
+
+    /**
+     * Print Invoice page
+     * @author Olajide Oye <jide@cottacush.com>
+     */
+    public function actionPrintinvoice() {
+        $this->layout = 'print';
+        return $this->render('print_invoice');
+    }
+
+    /**
+     * Print Credit Note page
+     * @author Olajide Oye <jide@cottacush.com>
+     */
+    public function actionPrintcreditnote() {
+        $this->layout = 'print';
+        return $this->render('print_credit_note');
     }
 }

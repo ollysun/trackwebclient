@@ -15,6 +15,7 @@ $this->params['breadcrumbs'] = array(
     ),*/
     array('label' => 'Ready for Sorting')
 );
+
 ?>
 
 <!-- this page specific styles -->
@@ -25,17 +26,14 @@ $this->params['breadcrumbs'] = array(
         text-align: center;
     }
 </style>
-<?php
-//$this->params['content_header_button'] = '<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i> Add New Staff</button>';
-?>
 
 <?php echo \Adapter\Util\Calypso::showFlashMessages(); ?>
 
-<form class="clearfix" method="post">
-    <div class="main-box">
-        <div class="main-box-header table-search-form">
-            <div class="clearfix">
-                <div class="pull-left">
+
+<div class="main-box">
+    <div class="main-box-header table-search-form">
+        <div class="clearfix">
+            <div class="pull-left">
                     <div class="pull-left form-group">
                         <label for="branch_type">Branch type</label><br>
                         <select id="branch_type" class="form-control input-sm" name="branch_type">
@@ -58,85 +56,96 @@ $this->params['breadcrumbs'] = array(
                         <label for="">&nbsp;</label><br>
                         <button type="submit" class="btn btn-sm btn-default" id="btn_apply_dest">Apply</button>
                     </div>
-                </div>
             </div>
-        </div>
-        <div class="main-box-body">
-            <?php if (!empty($parcel_next)) { ?>
-                <div class="table-responsive">
-                    <table id="next_dest" class="table table-hover next_dest">
-                        <thead>
-                        <tr>
-                            <th style="width: 20px;">
-                                <div class='checkbox-nice'>
-                                    <input id='chk_all' type='checkbox' class='chk_all'><label for='chk_all'></label>
-                                </div>
-                            </th>
-                            <th style="width: 20px">S/N</th>
-                            <th>Waybill No</th>
-                            <th>Origin</th>
-                            <th>Next Destination</th>
-                            <th>Final Destination</th>
-                            <th>Request Type</th>
-                            <th>Return Status</th>
-                            <th>Weight (Kg)</th>
-                            <th>Age analysis</th>
-                            <th>Action</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <?php
-                        $row = $offset;
-                        foreach ($parcel_next as $parcels) {
-                            ++$row;
-                            ?>
-                            <tr data-waybill='<?= $parcels['waybill_number'] ?>'>
-                                <td>
-                                    <div class='checkbox-nice'>
-                                        <input name='waybills[]' id='chk_<?= $row; ?>' type='checkbox' class='chk_next'><label
-                                            for='chk_<?= $row; ?>'></label>
-                                    </div>
-                                </td>
-                                <td><?= $row; ?></td>
-                                <td>
-                                    <a href='/shipments/view?waybill_number=<?= Calypso::getValue($parcels, 'waybill_number'); ?>'><?= Calypso::getValue($parcels, 'waybill_number') ?></a>
-                                </td>
-                                <td><?= ucwords(Calypso::getValue($parcels, 'sender_address.city.name') . ', ' . Calypso::getValue($parcels, 'sender_address.state.name')); ?></td>
-                                <td></td>
-                                <td>
-                                    <?php if (!is_null(Calypso::getDisplayValue($parcels, 'receiver_address.street_address1'))): ?>
-                                        <?= trim(Calypso::getValue($parcels, 'receiver_address.street_address1', ''), ',') ?>
-                                        <?= ', ' ?>
-                                    <?php endif; ?>
 
-
-                                    <?php if (!is_null(Calypso::getDisplayValue($parcels, 'receiver_address.street_address2'))): ?>
-                                        <?= trim(Calypso::getValue($parcels, 'receiver_address.street_address2', ''), ',') ?>
-                                        <?= ', ' ?>
-                                    <?php endif; ?>
-
-                                    <?= ucwords(Calypso::getValue($parcels, 'receiver_address.city.name') . ', ' . Calypso::getValue($parcels, 'receiver_address.state.name')); ?>
-                                </td>
-
-
-                                <td><?= ServiceConstant::getRequestType($parcels['request_type']) ?></td>
-                                <td><?= ServiceConstant::getReturnStatus($parcels); ?></td>
-                                <td><?= Calypso::getValue($parcels, 'weight') ?></td>
-                                <td></td>
-                                <td><?= $this->render('../elements/parcel/partial_return_button', ['parcel' => $parcels]) ?></td>
-                            </tr>
-                        <?php } ?>
-                        </tbody>
-                    </table>
+            <?php if ($isGroundsman): ?>
+                <div class="pull-right">
+                    <br/>
+                    <?= $this->render('../elements/parcel/parcel_unsort_button'); ?>
                 </div>
-                <?= $this->render('../elements/pagination_and_summary', ['first' => $offset, 'last' => $row, 'total_count' => $total_count, 'page_width' => $page_width]) ?>
-
-            <?php } else { ?>
-                <p>No record to display.</p>
-            <?php } ?>
+            <?php endif; ?>
         </div>
     </div>
-</form>
+    <div class="main-box-body">
+        <?php if (!empty($parcel_next)) { ?>
+            <div class="table-responsive">
+                <form method="post" id="table_form">
+                    <input type="hidden" id="form_branch_type" name="branch_type"/>
+                    <input type="hidden" id="form_branch_name" name="branch"/>
+                <table id="next_dest" class="table table-hover next_dest">
+                    <thead>
+                    <tr>
+                        <th style="width: 20px;">
+                            <div class='checkbox-nice'>
+                                <input id='chk_all' type='checkbox' class='chk_all'><label for='chk_all'></label>
+                            </div>
+                        </th>
+                        <th style="width: 20px">S/N</th>
+                        <th>Waybill No</th>
+                        <th>Origin</th>
+                        <th>Next Destination</th>
+                        <th>Final Destination</th>
+                        <th>Request Type</th>
+                        <th>Return Status</th>
+                        <th>Weight (Kg)</th>
+                        <th>Age analysis</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php
+                    $row = $offset;
+                    foreach ($parcel_next as $parcels) {
+                        ++$row;
+                        ?>
+                        <tr data-waybill='<?= $parcels['waybill_number'] ?>'>
+                            <td>
+                                <div class='checkbox-nice'>
+                                    <input name='waybills[]' id='chk_<?= $row; ?>' type='checkbox'
+                                           class='chk_next'><label
+                                        for='chk_<?= $row; ?>'></label>
+                                </div>
+                            </td>
+                            <td><?= $row; ?></td>
+                            <td>
+                                <a href='/shipments/view?waybill_number=<?= Calypso::getValue($parcels, 'waybill_number'); ?>'><?= Calypso::getValue($parcels, 'waybill_number') ?></a>
+                            </td>
+                            <td><?= ucwords(Calypso::getValue($parcels, 'sender_address.city.name') . ', ' . Calypso::getValue($parcels, 'sender_address.state.name')); ?></td>
+                            <td></td>
+                            <td>
+                                <?php if (!is_null(Calypso::getDisplayValue($parcels, 'receiver_address.street_address1'))): ?>
+                                    <?= trim(Calypso::getValue($parcels, 'receiver_address.street_address1', ''), ',') ?>
+                                    <?= ', ' ?>
+                                <?php endif; ?>
+
+
+                                <?php if (!is_null(Calypso::getDisplayValue($parcels, 'receiver_address.street_address2'))): ?>
+                                    <?= trim(Calypso::getValue($parcels, 'receiver_address.street_address2', ''), ',') ?>
+                                    <?= ', ' ?>
+                                <?php endif; ?>
+
+                                <?= ucwords(Calypso::getValue($parcels, 'receiver_address.city.name') . ', ' . Calypso::getValue($parcels, 'receiver_address.state.name')); ?>
+                            </td>
+
+
+                            <td><?= ServiceConstant::getRequestType($parcels['request_type']) ?></td>
+                            <td><?= ServiceConstant::getReturnStatus($parcels); ?></td>
+                            <td><?= Calypso::getValue($parcels, 'weight') ?></td>
+                            <td></td>
+                            <td><?= $this->render('../elements/parcel/partial_return_button', ['parcel' => $parcels, 'reasons_list' => $reasons_list]) ?></td>
+                        </tr>
+                    <?php } ?>
+                    </tbody>
+                </table>
+                    </form>
+            </div>
+            <?= $this->render('../elements/pagination_and_summary', ['first' => $offset, 'last' => $row, 'total_count' => $total_count, 'page_width' => $page_width]) ?>
+
+        <?php } else { ?>
+            <p>No record to display.</p>
+        <?php } ?>
+    </div>
+</div>
 
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">

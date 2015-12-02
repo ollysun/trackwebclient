@@ -1,0 +1,142 @@
+.invoice-page {
+  width: 960px;
+  height: 1358px;
+  margin: 20px auto;
+  padding: 21px 30px;
+  border: 1px solid #ccc;
+}
+@media print {
+  .invoice-page {
+    padding: 0;
+    border: 0;
+  }
+}
+.invoice-page h1,
+.invoice-page h2,
+.invoice-page h3,
+.invoice-page h4,
+.invoice-page h5,
+.invoice-page h6 {
+  margin: 0 0 10px;
+}
+.invoice-heading {
+  margin: 0 0 20px;
+}
+.invoice-logo {
+  height: 60px;
+}
+.invoice-middle-separator {
+  height: 70px;
+}
+@media print {
+  .invoice-middle-separator {
+    height: 150px;
+  }
+}
+.table {
+  margin: 0 0 5px;
+}
+.table,
+.table td,
+.table th {
+  border-color: #000 !important;
+}
+.table td,
+.table th {
+  padding: 4px 8px !important;
+}
+.table th {
+  border-width: 1px !important;
+}
+.table .invoice-amt-cell,
+.table .invoice-total-amt-cell {
+  width: 150px !important;
+  text-align: right;
+}
+.text-center th,
+.text-center td {
+  text-align: center;
+}
+@media screen, print {
+  tr.double-border {
+    border: 2px solid #000;
+  }
+  tr.double-border .invoice-total-amt-cell {
+    border-left: 2px solid #000;
+  }
+  .double-border td,
+  .double-border th {
+    border-width: 2px !important;
+  }
+}
+.vat-rate-col {
+  width: 90px;
+}
+.is-bordered {
+  border: 1px solid #000;
+}
+.is-double-bordered {
+  border: 2px solid #000 !important;
+}
+.small {
+  font-size: 85%;
+}
+.fill-in {
+  padding: 8px 0 10px;
+  height: 38px;
+}
+.fill-in:before,
+.fill-in:after {
+  content: "";
+  display: table;
+}
+.fill-in:after {
+  clear: both;
+}
+.fill-in-label,
+.fill-in-answer {
+  display: block;
+  height: 20px;
+}
+.fill-in-label {
+  padding-right: 14px;
+  float: left;
+  background: #fff;
+  font-weight: bold;
+  border-bottom: 1px solid #fff;
+}
+.fill-in-answer {
+  border-bottom: 1px solid #000;
+}
+.text-normal,
+.text-normal th {
+  font-weight: normal;
+}
+.table th.no-border {
+  border-color: tran !important;
+}
+.dashed-line {
+  display: block;
+  margin: 5px 0 10px;
+  border: 0;
+  border-bottom: 1px dashed #000;
+}
+.rotate-wrap {
+  height: 1150px;
+}
+.rotate {
+  position: relative;
+  margin-top: 20px;
+  -webkit-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
+  transform: rotate(90deg);
+}
+@media print {
+  .rotate {
+    margin-top: 70px;
+  }
+}
+.rotate .table {
+  width: 1200px;
+  font-size: 95%;
+}

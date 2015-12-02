@@ -57,9 +57,10 @@ $this->params['content_header_button'] = '<button onclick="javascript:window.ope
                 <tr>
                     <th width="16%">WAYBILL NO</th>
                     <th width="16%">DESTINATION</th>
-                    <th width="8%">PCS</th>
+                    <th width="5%">PCS</th>
                     <th width="8%">WT</th>
-                    <th width="16%">SHIPPER</th>
+                    <th width="16%">SHIPPER NAME</th>
+                    <th width="16%">CONSIGNEE NAME</th>
                     <th width="35%">DESCRIPTION OF SHIPMENT(S)</th>
                 </tr>
             </thead>
@@ -77,6 +78,7 @@ $this->params['content_header_button'] = '<button onclick="javascript:window.ope
                     <td><?= Calypso::getValue($parcel, 'no_of_package')?></td>
                     <td><?= Calypso::getValue($parcel, 'weight')?> KG</td>
                     <td><?= ucwords(Calypso::getValue($parcel, 'shipper_firstname') . ' ' .  Calypso::getValue($parcel, 'shipper_lastname'))?></td>
+                    <td><?= ucwords(Calypso::getValue($parcel, 'receiver_firstname') . ' ' .  Calypso::getValue($parcel, 'receiver_lastname'))?></td>
                     <td><?= Calypso::getValue($parcel, 'other_info')?></td>
                 </tr>
                 <?php endforeach; ?>

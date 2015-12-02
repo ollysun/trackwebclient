@@ -242,7 +242,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                         <input type="hidden" name="id" />
                         <input type="hidden" name="user_auth_id" />
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Create User</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
                     </div>
                 </div>
             </form>

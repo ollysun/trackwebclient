@@ -26,20 +26,6 @@ $(document).ready(function () {
         }
 
         waybill_numbers = [];
-        var held_by_id = '';
-
-        if (!old_branch) {
-            old_branch = parcels.to_branch_id = $(tr).attr('data-to-branch-id');
-        }
-        waybill.number = $(tr).attr('data-waybill');
-        waybill.final = TableHelper.getCellData('#next_dest', 5, $(tr).index());
-        parcels.waybills.push(waybill);
-        parcels.to_branch_id = $(tr).attr('data-to-branch-id');
-        parcels.to_branch_name = TableHelper.getCellData('#next_dest', 4, $(tr).index());
-
-        if (old_branch !== parcels.to_branch_id) {
-            same_branch = false;
-        }
 
         $.each(chkboxes, function (i, chk) {
             $(this).data('held_by_id');
