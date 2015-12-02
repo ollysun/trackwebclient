@@ -141,7 +141,7 @@ $this->params['breadcrumbs'] = array(
                             <label for="">From:</label><br>
                             <div class="input-group input-group-date-range">
                                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                <input name="from" id="" class="form-control date-range" value="" data-provide="datepicker" data-date-format="yyyy/mm/dd" data-date-end-date="0d">
+                                <input name="from" id="" class="form-control date-range" value="<?= $fromDate;?>" data-provide="datepicker" data-date-format="yyyy/mm/dd" data-date-end-date="0d">
                             </div>
                         </div>
 
@@ -149,7 +149,7 @@ $this->params['breadcrumbs'] = array(
                             <label for="">To:</label><br>
                             <div class="input-group input-group-date-range">
                                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                <input name="to" id="" class="form-control date-range"  value="" data-provide="datepicker" data-date-format="yyyy/mm/dd" data-date-end-date="0d">
+                                <input name="to" id="" class="form-control date-range"  value="<?= $toDate;?>" data-provide="datepicker" data-date-format="yyyy/mm/dd" data-date-end-date="0d">
                             </div>
                         </div>
                         <div class="pull-left form-group form-group-sm">

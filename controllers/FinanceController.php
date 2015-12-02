@@ -2,6 +2,7 @@
 namespace app\controllers;
 
 use Adapter\CompanyAdapter;
+use Adapter\Util\Util;
 use Yii;
 use Adapter\AdminAdapter;
 use Adapter\Globals\ServiceConstant;
@@ -63,8 +64,14 @@ class FinanceController extends BaseController
     {
         $offset = ($page - 1) * $this->page_width;
 
+
+        $fromDate = Yii::$app->request->get('from', Util::getToday('/'));
+        $toDate = Yii::$app->request->get('to', Util::getToday('/'));
+        $filters['start_created_date'] = $fromDate . ' 00:00:00';
+        $filters['end_created_date'] = $toDate . ' 23:59:59';
+
         $parcelAdapter = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
-        $corporateParcelsResponse = $parcelAdapter->getCorporateParcels(0, 50);
+        $corporateParcelsResponse = $parcelAdapter->getCorporateParcels($offset, $this->page_width, $filters);
         $corporateParcels = Calypso::getValue($corporateParcelsResponse, 'parcels');
         $totalCount = Calypso::getValue($corporateParcelsResponse, 'total_count');
 
@@ -72,6 +79,8 @@ class FinanceController extends BaseController
         $statuses = ServiceConstant::getStatusRef();
 
         return $this->render('corporateshipment',[
+            'fromDate' => $fromDate,
+            'toDate' => $toDate,
             'statuses' => $statuses,
             'companies' => $companies,
             'corporateParcels' => $corporateParcels,
