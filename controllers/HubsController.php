@@ -81,7 +81,8 @@ class HubsController extends BaseController
                     $this->flashSuccess('Parcels have been successfully moved to the next destination. <a href="delivery">Generate Manifest</a>');
                 }
             } else {
-                $this->flashError('An error occurred while trying to move parcels to next destination. Please try again.');}
+                $this->flashError('An error occurred while trying to move parcels to next destination. Please try again.');
+            }
         }
         $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $arrival_parcels = $parcelsAdapter->getParcelsForNextDestination($isGroundman ? ServiceConstant::ASSIGNED_TO_GROUNDSMAN : ServiceConstant::FOR_ARRIVAL, null, $isGroundman ? $this->userData['branch_id'] : $this->branch_to_view, null, $viewData['offset'], 50, 1);
@@ -307,7 +308,7 @@ class HubsController extends BaseController
         }
 
 
-        return $this->render('delivery',  $viewData);
+        return $this->render('delivery', $viewData);
     }
 
     /**
@@ -430,5 +431,42 @@ class HubsController extends BaseController
         }
 
         return $this->redirect(Yii::$app->request->referrer);
+    }
+
+
+    /**
+     * Shows parcels expected in the branch
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     * @param int $page
+     * @param null $page_width
+     * @return string
+     */
+    public function actionExpected($page = 1, $page_width = null)
+    {
+        $page_width = is_null($page_width) ? $this->page_width : $page_width;
+        $offset = ($page - 1) * $page_width;
+        $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $data = $parcelsAdapter->getExpectedParcels($offset, $page_width, $this->branch_to_view);
+        $expectedParcels = Calypso::getValue($data, 'parcels', []);
+        $total_count = Calypso::getValue($data, 'total_count', 0);
+        return $this->render('expected', ['parcels' => $expectedParcels, 'offset' => $offset, 'page_width' => $page_width, 'total_count' => $total_count]);
+    }
+
+    /**
+     * Shows parcels expected in the branch
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     * @param int $page
+     * @param null $page_width
+     * @return string
+     */
+    public function actionDraftsortings($page = 1, $page_width = null)
+    {
+        $page_width = is_null($page_width) ? $this->page_width : $page_width;
+        $offset = ($page - 1) * $page_width;
+        $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $data = $parcelsAdapter->getExpectedParcels($offset, $page_width, $this->branch_to_view);
+        $expectedParcels = Calypso::getValue($data, 'parcels', []);
+        $total_count = Calypso::getValue($data, 'total_count', 0);
+        return $this->render('expected', ['parcels' => $expectedParcels, 'offset' => $offset, 'page_width' => $page_width, 'total_count' => $total_count]);
     }
 }
