@@ -411,7 +411,8 @@ class ParcelAdapter extends BaseAdapter
             'count' => $count,
             'with_total_count' => 1,
             'with_payment_type' => 1,
-            'with_company' => 1
+            'with_company' => 1,
+            'with_invoice_parcel' => 1
         ]);
         $filters = array_filter($filters);
         $response = $this->request(ServiceConstant::URL_GET_ALL_PARCEL, $filters, self::HTTP_GET);

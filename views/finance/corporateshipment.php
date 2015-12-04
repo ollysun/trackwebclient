@@ -226,8 +226,12 @@ $this->params['breadcrumbs'] = array(
                         <tr>
                             <td>
                                 <div class="checkbox-nice">
-                                    <input id="corporate_parce_<?=$i?>" class="checkable" type="checkbox">
-                                    <label for="corporate_parce_<?=$i?>"> </label>
+                                    <?php if(is_null(Calypso::getValue($corporateParcel, 'invoice_parcel.id'))):?>
+                                        <input
+                                            data-company_id="<?= Calypso::getValue($corporateParcel, 'company.id')?>"
+                                            id="corporate_parce_<?=$i?>" class="checkable" type="checkbox">
+                                        <label for="corporate_parce_<?=$i?>"> </label>
+                                    <?php endif; ?>
                                 </div>
                             </td>
                             <td><?= ++$i; ?></td>
@@ -237,7 +241,7 @@ $this->params['breadcrumbs'] = array(
                             <td><?= strtoupper(Calypso::getValue($corporateParcel, 'billing_type', '')); ?></td>
                             <td><?= ServiceConstant::getStatus(Calypso::getValue($corporateParcel, 'status')); ?></td>
                             <td><?= Calypso::getValue($corporateParcel, 'amount_due') ?></td>
-                            <td>n/a</td>
+                            <td><?= Calypso::getValue($corporateParcel, 'invoice_parcel.invoice_number', 'N/A'); ?></td>
                             <td>n/a</td>
                             <td>
                                 <a href="<?= Url::to(['/shipments/view', 'waybill_number' => Calypso::getValue($corporateParcel, 'waybill_number')]) ?>"
@@ -287,3 +291,4 @@ $this->params['breadcrumbs'] = array(
 <?php $this->registerJsFile('@web/js/keyboardFormSubmit.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/form-watch-changes.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/validate.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/finance/corporate_shipment.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
