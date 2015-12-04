@@ -11,4 +11,22 @@ $(document).ready(function () {
             });
         }
     });
+
+    $('#generateInvoiceBtn').unbind('click').click(function (e) {
+        var proceed = false;
+        $('.checkable').each(function (i, v) {
+            if($(v).is(':checked')) {
+                proceed = true;
+                return false;
+            }
+        });
+
+        if(proceed) {
+
+        } else {
+            e.preventDefault();
+            e.stopPropagation();
+            alert('Select a least one corporate parcel to proceed');
+        }
+    });
 });
