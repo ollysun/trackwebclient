@@ -113,10 +113,6 @@ class FinanceController extends BaseController
                 $parcels[] = $parcel;
             }
 
-            unset($data['waybill_number']);
-            unset($data['discount']);
-            unset($data['net_amount']);
-
             $data['parcels'] = $parcels;
 
             $invoiceAdapter = new InvoiceAdapter();
