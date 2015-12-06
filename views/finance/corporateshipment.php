@@ -17,8 +17,8 @@ $this->params['breadcrumbs'] = array(
 ?>
 
 <!-- Generate Invoices Modal -->
-<form>
-    <div class="modal fade" id="generateInvoice">
+<div class="modal fade" id="generateInvoice">
+    <form class="validate-form" method="post" action="<?= Url::to("/finance/createinvoice");?>">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -38,38 +38,7 @@ $this->params['breadcrumbs'] = array(
                             <th>Net Amount</th>
                         </tr>
                         </thead>
-                        <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>7123456</td>
-                            <td>Delivered</td>
-                            <td>1000</td>
-                            <td>
-                                <input type="text" class="form-control" style="width:50px;" value="15">
-                            </td>
-                            <td>850</td>
-                        </tr>
-
-                        <tr>
-                            <td>2</td>
-                            <td>1234567</td>
-                            <td>Delivered</td>
-                            <td>2000</td>
-                            <td>
-                                <input type="text" class="form-control" style="width:50px;" value="15">
-                            </td>
-                            <td>1700</td>
-                        </tr>
-
-                        <tr>
-                            <td></td>
-                            <td><b>NET TOTAL</b></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td><b>2550</b></td>
-                        </tr>
-
+                        <tbody id="invoice_parcels">
                         </tbody>
                     </table>
 
@@ -77,7 +46,7 @@ $this->params['breadcrumbs'] = array(
                         <div class="col-xs-6">
                             <div class="form-group">
                                 <label>Invoice address</label>
-                                <textarea class="form-control" rows="2"></textarea>
+                                <textarea name="address" class="form-control validate required" rows="2"></textarea>
 
                                 <div class="checkbox">
                                     <label>
@@ -89,12 +58,12 @@ $this->params['breadcrumbs'] = array(
 
                             <div class="form-group">
                                 <label>Invoice To</label>
-                                <textarea class="form-control" rows="2"></textarea>
+                                <textarea name="to_address" class="form-control validate required" rows="2"></textarea>
                             </div>
 
                             <div class="form-group">
                                 <label>Reference</label>
-                                <textarea class="form-control" rows="3"></textarea>
+                                <textarea name="reference" class="form-control validate required" rows="3"></textarea>
                             </div>
 
                         </div>
@@ -103,36 +72,37 @@ $this->params['breadcrumbs'] = array(
                         <div class="col-xs-6">
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Accont Number</label>
-                                <input type="text" class="form-control">
+                                <input name="account_number" type="text" class="form-control">
                             </div>
 
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Stamp Duty</label>
-                                <input type="text" class="form-control">
+                                <input name="stamp_duty" type="text" class="form-control validate required number">
                             </div>
 
                             <div class="form-group">
                                 <label>Currency</label> <br>
-                                <select class="form-control">
-                                    <option>NGN</option>
+                                <select name="currency" class="form-control">
+                                    <option selected>NGN</option>
                                 </select>
                             </div>
-
-
                         </div>
                     </div>
 
                 </div>
                 <div class="modal-footer">
+                    <input type="hidden" name="total" id="net_total_field" class="form-control">
+                    <input type="hidden" name="company_id" id="company_id" class="form-control">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                     <a href="#">
-                        <button type="button" class="btn btn-primary">Generate Invoice</button>
+                        <button type="submit" class="btn btn-primary">Generate Invoice</button>
                     </a>
                 </div>
             </div>
         </div>
-    </div>
-</form>
+
+    </form>
+</div>
 
 <?php echo \Adapter\Util\Calypso::showFlashMessages(); ?>
 <div class="main-box">
@@ -192,7 +162,8 @@ $this->params['breadcrumbs'] = array(
             </div>
             <div class="pull-right clearfix">
                 <label>&nbsp;</label><br>
-                <button id="generateInvoiceBtn" class="btn btn-primary" data-toggle="modal" data-target="#generateInvoice">Generate Invoice
+                <button id="generateInvoiceBtn" class="btn btn-primary" data-toggle="modal"
+                        data-target="#generateInvoice">Generate Invoice
                 </button>
 
             </div>
@@ -225,14 +196,15 @@ $this->params['breadcrumbs'] = array(
                         <tr>
                             <td>
                                 <div class="checkbox-nice">
-                                    <?php if(is_null(Calypso::getValue($corporateParcel, 'invoice_parcel.id'))):?>
+                                    <?php if (is_null(Calypso::getValue($corporateParcel, 'invoice_parcel.id'))): ?>
                                         <input
-                                            data-company_id="<?= Calypso::getValue($corporateParcel, 'company.id')?>"
-                                            data-amount_due="<?= Calypso::getValue($corporateParcel, 'amount_due')?>"
-                                            data-company_name="<?= Calypso::getValue($corporateParcel, 'company.name')?>"
-                                            data-waybill_number="<?= Calypso::getValue($corporateParcel, 'waybill_number')?>"
-                                            id="corporate_parce_<?=$i?>" class="checkable" type="checkbox">
-                                        <label for="corporate_parce_<?=$i?>"> </label>
+                                            data-company_id="<?= Calypso::getValue($corporateParcel, 'company.id') ?>"
+                                            data-company_address="<?= Calypso::getValue($corporateParcel, 'company.address') ?>"
+                                            data-amount_due="<?= Calypso::getValue($corporateParcel, 'amount_due') ?>"
+                                            data-company_name="<?= Calypso::getValue($corporateParcel, 'company.name') ?>"
+                                            data-waybill_number="<?= Calypso::getValue($corporateParcel, 'waybill_number') ?>"
+                                            id="corporate_parce_<?= $i ?>" class="checkable" type="checkbox">
+                                        <label for="corporate_parce_<?= $i ?>"> </label>
                                     <?php endif; ?>
                                 </div>
                             </td>

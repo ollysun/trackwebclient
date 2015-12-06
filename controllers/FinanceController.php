@@ -2,6 +2,7 @@
 namespace app\controllers;
 
 use Adapter\CompanyAdapter;
+use Adapter\InvoiceAdapter;
 use Adapter\Util\Util;
 use Yii;
 use Adapter\AdminAdapter;
@@ -92,6 +93,46 @@ class FinanceController extends BaseController
             'page_width' => $this->page_width
         ]);
     }
+
+    /**
+     * Creates an invoice
+     * @author Adegoke Obasa <goke@cottacush.com>
+     */
+    public function actionCreateinvoice()
+    {
+        if(Yii::$app->request->isPost) {
+            $data = Yii::$app->getRequest()->post();
+
+            $parcels = [];
+            for($i = 0; $i < count(Calypso::getValue($data, 'waybill_number', [])); $i++) {
+                $parcel = [];
+                $parcel['waybill_number'] = Calypso::getValue($data, "waybill_number.$i");
+                $parcel['discount'] = floatval(((int)Calypso::getValue($data, "discount.$i")) / 100);
+                $parcel['net_amount'] = Calypso::getValue($data, "net_amount.$i");
+
+                $parcels[] = $parcel;
+            }
+
+            unset($data['waybill_number']);
+            unset($data['discount']);
+            unset($data['net_amount']);
+
+            $data['parcels'] = $parcels;
+
+            $invoiceAdapter = new InvoiceAdapter();
+            $response = $invoiceAdapter->createInvoice($data);
+
+            if($response) {
+                $this->flashSuccess('Invoice created successfully');
+            } else {
+                $this->flashError($invoiceAdapter->getLastErrorMessage());
+                return $this->redirect(Yii::$app->request->referrer);
+            }
+        }
+
+        return $this->redirect('/finance/invoice');
+    }
+
 
     public function actionCreditnote()
     {
