@@ -2,6 +2,7 @@ String.prototype.replaceAll = function (search, replacement) {
     var target = this;
     return target.split(search).join(replacement);
 };
+
 var Invoice = {
     getInvoiceParcelHtml: function (index, params) {
         var html = "\
@@ -61,6 +62,7 @@ var Invoice = {
         $("#net_total_field").val(total);
     }
 };
+
 $(document).ready(function () {
     $('.checkable').click(function (e) {
         var _this = $(this);
@@ -108,5 +110,13 @@ $(document).ready(function () {
     }).on('keyup', "input[data-waybill]", function () {
         Invoice.calculateNetAmount(this);
         Invoice.calculateTotalAmount();
-    })
+    });
+    
+    $("#same_as_invoice_to").click(function () {
+       if($(this).is(":checked")) {
+           $("textarea[name=to_address]").val($("textarea[name=address]").val());
+       } else {
+           $("textarea[name=to_address]").val('');
+       }
+    });
 });

@@ -50,7 +50,7 @@ $this->params['breadcrumbs'] = array(
 
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox">
+                                        <input id="same_as_invoice_to" type="checkbox">
                                         Same as Invoice To
                                     </label>
                                 </div>
@@ -220,7 +220,7 @@ $this->params['breadcrumbs'] = array(
                             <td>
                                 <a href="<?= Url::to(['/shipments/view', 'waybill_number' => Calypso::getValue($corporateParcel, 'waybill_number')]) ?>"
                                    class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i> View</a>
-                                <button class="btn btn-default btn-xs">Edit</button>
+<!--                                <button class="btn btn-default btn-xs">Edit</button>-->
                             </td>
                             <td></td>
                         </tr>
