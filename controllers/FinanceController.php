@@ -139,9 +139,44 @@ class FinanceController extends BaseController
         return $this->render('creditnote');
     }
 
-    public function actionInvoice()
+    /**
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @param int $page
+     * @return string
+     */
+    public function actionInvoice($page = 1)
     {
-        return $this->render('invoice');
+        $offset = ($page - 1) * $this->page_width;
+
+        $fromDate = Yii::$app->request->get('from', Util::getToday('/'));
+        $toDate = Yii::$app->request->get('to', Util::getToday('/'));
+        $filters['start_created_at'] = $fromDate;
+        $filters['end_created_at'] = $toDate;
+        $filters['company_id'] = Yii::$app->request->get('company');
+        $filters['status'] = Yii::$app->request->get('status');
+        $filters['offset'] = $offset;
+        $filters['count'] = $this->page_width;
+
+        $invoiceAdapter = new InvoiceAdapter();
+        $invoicesResponse = $invoiceAdapter->getInvoices($filters);
+        $invoices = Calypso::getValue($invoicesResponse, 'invoices');
+        $totalCount = Calypso::getValue($invoicesResponse, 'total_count');
+
+        $companies = (new CompanyAdapter())->getAllCompanies([]);
+        $statuses = ServiceConstant::getStatusRef();
+
+        return $this->render('invoice', [
+            'fromDate' => $fromDate,
+            'toDate' => $toDate,
+            'statuses' => $statuses,
+            'companies' => $companies,
+            'invoices' => $invoices,
+            'offset' => $offset,
+            'total_count' => $totalCount,
+            'selectedCompany' => $filters['company_id'],
+            'selectedStatus' => $filters['status'],
+            'page_width' => $this->page_width
+        ]);
     }
 
     public function actionMerchantspending()

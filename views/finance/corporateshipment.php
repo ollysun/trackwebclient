@@ -132,12 +132,8 @@ $this->params['breadcrumbs'] = array(
                         </div>
                         <div class="pull-left form-group form-group-sm">
                             <label>Company</label> <br>
-                            <select name="company" class="form-control" style="width: 150px">
-                                <option value="">Select Company</option>
-                                <?php foreach ($companies as $company): ?>
-                                    <option <?= $selectedCompany == Calypso::getValue($company, 'id') ? 'selected' : '' ?>
-                                        value="<?= Calypso::getValue($company, 'id') ?>"><?= strtoupper(Calypso::getValue($company, 'name', '')); ?></option>
-                                <?php endforeach; ?>
+                            <select class="form-control" style="width: 150px">
+                                <?= $this->render('../elements/finance/company_filter', ['companies' => $companies, 'selectedCompany' => $selectedCompany]) ?>
                             </select>
                         </div>
                         <div class="pull-left form-group form-group-sm">

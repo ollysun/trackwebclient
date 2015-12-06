@@ -52,7 +52,7 @@ class InvoiceAdapter extends BaseAdapter
         ]);
 
         $response = $this->request(ServiceConstant::URL_INVOICE_ALL,
-            $filters, self::HTTP_GET);
+            array_filter($filters), self::HTTP_GET);
 
         $response = new ResponseHandler($response);
 
