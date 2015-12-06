@@ -226,7 +226,7 @@ $this->params['breadcrumbs'] = array(
             </div>
             <?= $this->render('../elements/pagination_and_summary', ['first' => $offset, 'last' => $i, 'total_count' => $total_count, 'page_width' => $page_width]) ?>
         <?php else: ?>
-            There are no parcels matching the specified criteria.
+            There are no corporate parcels matching the specified criteria.
         <?php endif; ?>
     </div>
 </div>

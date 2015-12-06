@@ -204,8 +204,8 @@ $this->params['breadcrumbs'] = array(
 
                             <div class="input-group input-group-date-range">
                                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                <input name="from" id="" class="form-control date-range" value=""
-                                       data-provide="datepicker" data-date-format="yyyy/mm/dd" data-date-end-date="0d">
+                                <input name="from" id="" class="form-control date-range" value="<?= $fromDate; ?>"
+                                       data-provide="datepicker" data-date-format="yyyy/mm/dd" data-date-end-date="0d" >
                             </div>
                         </div>
 
@@ -214,7 +214,7 @@ $this->params['breadcrumbs'] = array(
 
                             <div class="input-group input-group-date-range">
                                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                <input name="to" id="" class="form-control date-range" value=""
+                                <input name="to" id="" class="form-control date-range" value="<?= $toDate; ?>"
                                        data-provide="datepicker" data-date-format="yyyy/mm/dd" data-date-end-date="0d">
                             </div>
                         </div>
@@ -292,7 +292,7 @@ $this->params['breadcrumbs'] = array(
             </div>
             <?= $this->render('../elements/pagination_and_summary', ['first' => $offset, 'last' => $i, 'total_count' => $total_count, 'page_width' => $page_width]) ?>
         <?php else: ?>
-            There are no parcels matching the specified criteria.
+            There are no invoices matching the specified criteria.
         <?php endif; ?>
     </div>
 </div>
