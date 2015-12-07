@@ -235,6 +235,14 @@ class ParcelService {
         $parcel['weight_billing_plan'] = Calypso::getValue($data, 'billing_plan', null);
         $parcel['onforwarding_billing_plan'] = Calypso::getValue($data, 'billing_plan', null);
 
+        if(empty($parcel['weight_billing_plan'])) {
+            $parcel['weight_billing_plan'] = BillingPlanAdapter::DEFAULT_WEIGHT_RANGE_PLAN;
+        }
+
+        if(empty($parcel['onforwarding_billing_plan'])) {
+            $parcel['onforwarding_billing_plan'] = BillingPlanAdapter::DEFAULT_ON_FORWARDING_PLAN;
+        }
+
         $parcel['is_billing_overridden'] = $parcel['billing_method'] == 'manual' ? 1 : 0;
         if(is_null($parcel['amount_due'])) {
             $error[] = "Amount must be calculated. Please ensure all zone billing and mapping are set.";
