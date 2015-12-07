@@ -52,8 +52,6 @@ $this->params['breadcrumbs'] = array(
     <div class="main-box-body">
         <?php if ($parcels): ?>
             <div class="table-responsive">
-                    <input type="hidden" id="form_branch_type" name="branch_type"/>
-                    <input type="hidden" id="form_branch_name" name="branch"/>
                     <table id="next_dest" class="table table-hover next_dest">
                         <thead>
                         <tr>
@@ -130,3 +128,4 @@ $this->params['breadcrumbs'] = array(
 <?php $this->registerJsFile('@web/js/libs/dataTables.tableTools.js', ['depends' => [JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/libs/jquery.dataTables.bootstrap.js', ['depends' => [JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/next_destination.js', ['depends' => [JqueryAsset::className()]]); ?>
+<?php $this->registerJsFile('@web/js/expected_shipments.js', ['depends' => [JqueryAsset::className()]]); ?>

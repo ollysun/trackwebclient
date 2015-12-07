@@ -422,4 +422,40 @@ class ParcelAdapter extends BaseAdapter
         $params = http_build_query($filters);
         return $this->request(ServiceConstant::URL_GET_ALL_PARCEL . '?' . $params, [], self::HTTP_GET);
     }
+
+    /**
+     * Get expected parcels for a branch
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     * @param $offset
+     * @param $page_width
+     * @param bool $paginate
+     * @return array|mixed|string
+     */
+    public function getDraftSorts($offset, $page_width, $paginate = true)
+    {
+        $filters = ['offset' => $offset, 'count' => $page_width, 'paginate' => ($paginate) ? 1 : 0];
+        $response = $this->request(ServiceConstant::URL_PARCEL_COUNT . $filters, [], self::HTTP_GET);
+        $responseHandler = new ResponseHandler($response);
+        if ($responseHandler->getStatus() == ResponseHandler::STATUS_OK) {
+            return $responseHandler->getData();
+        }
+        return [];
+    }
+
+    /**
+     * Create draft sortings
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     * @param $data array
+     * @return ResponseHandler
+     */
+    public function createDraftSort($data)
+    {
+        $rawResponse = $this->request(ServiceConstant::URL_DRAFT_SORT, Json::encode($data), self::HTTP_POST);
+        $response = new ResponseHandler($rawResponse);
+        if (!$response->isSuccess()) {
+            $this->lastErrorMessage = $response->getError();
+        }
+
+        return $response;
+    }
 }

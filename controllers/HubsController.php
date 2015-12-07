@@ -453,6 +453,47 @@ class HubsController extends BaseController
     }
 
     /**
+     * Draft sort parcels
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     */
+    public function actionDraftsortparcels()
+    {
+        if (!Yii::$app->getRequest()->isPost) {
+            return $this->redirect(Yii::$app->request->referrer);
+        }
+
+        $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $data = Yii::$app->getRequest()->post();
+        $response = $parcelsAdapter->createDraftSort($data);
+
+        if (!$response->isSuccess()) {
+            $this->flashError($response->getError());
+            return $this->refresh();
+        }
+
+        $failed_parcels = Calypso::getValue($response->getData(), 'failed', []);
+
+        if (count($failed_parcels) == 0) {
+            $this->flashSuccess('Parcels successfully draft sorted');
+            return $this->refresh();
+        }
+
+        $successful_parcels = Calypso::getValue($response->getData(), 'successful', []);
+
+        $failed_message = ($successful_parcels) ? ('<strong>Draft Sorted Parcels: ' . implode(', ', $successful_parcels) . '</strong><br/></br>') : '';
+        $failed_message .= '<strong>Failed to draft sort some parcels:</strong> <br/>';
+
+        foreach ($failed_parcels as $waybill_number => $message) {
+            $failed_message .= '#<strong>' . $waybill_number . '</strong> - Reason: ' . $message . '<br/>';
+        }
+
+        $flash_type = ($successful_parcels) ? 'warning' : 'danger';
+        Yii::$app->session->setFlash($flash_type, $failed_message);
+
+        return $this->redirect(Yii::$app->request->referrer);
+    }
+
+    /**
      * Shows draft sortings
      * @author Adeyemi Olaoye <yemi@cottacush.com>
      * @param int $page
