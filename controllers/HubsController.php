@@ -453,7 +453,7 @@ class HubsController extends BaseController
     }
 
     /**
-     * Shows parcels expected in the branch
+     * Shows draft sortings
      * @author Adeyemi Olaoye <yemi@cottacush.com>
      * @param int $page
      * @param null $page_width
