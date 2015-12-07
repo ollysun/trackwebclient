@@ -505,9 +505,9 @@ class HubsController extends BaseController
         $page_width = is_null($page_width) ? $this->page_width : $page_width;
         $offset = ($page - 1) * $page_width;
         $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $data = $parcelsAdapter->getExpectedParcels($offset, $page_width, $this->branch_to_view);
-        $expectedParcels = Calypso::getValue($data, 'parcels', []);
+        $data = $parcelsAdapter->getDraftSorts($offset, $page_width, true);
+        $draftSorts = Calypso::getValue($data, 'draft_sorts', []);
         $total_count = Calypso::getValue($data, 'total_count', 0);
-        return $this->render('expected', ['parcels' => $expectedParcels, 'offset' => $offset, 'page_width' => $page_width, 'total_count' => $total_count]);
+        return $this->render('expected', ['draft_sorts' => $draftSorts, 'offset' => $offset, 'page_width' => $page_width, 'total_count' => $total_count]);
     }
 }

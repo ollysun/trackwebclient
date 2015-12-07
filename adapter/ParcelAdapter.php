@@ -406,7 +406,18 @@ class ParcelAdapter extends BaseAdapter
         $response = $this->getParcelsByFilters($filters);
         $responseHandler = new ResponseHandler($response);
         if ($responseHandler->getStatus() == ResponseHandler::STATUS_OK) {
-            return $responseHandler->getData();
+            $responseData = $responseHandler->getData();
+            $parcels = Calypso::getValue($responseData, 'parcels', []);
+            $draftSorts = $this->getDraftSorts();
+            $sortedWaybillNumbers = array_column($draftSorts, 'waybill_number');
+            $expectedParcels = [];
+            foreach ($parcels as $parcel) {
+                if (!in_array(Calypso::getValue($parcel, 'waybill_number'), $sortedWaybillNumbers)) {
+                    $expectedParcels[] = $parcel;
+                }
+            }
+            $responseData['parcels'] = $expectedParcels;
+            return $responseData;
         }
         return false;
     }
@@ -424,17 +435,17 @@ class ParcelAdapter extends BaseAdapter
     }
 
     /**
-     * Get expected parcels for a branch
+     * Get draft sort parcels
      * @author Adeyemi Olaoye <yemi@cottacush.com>
      * @param $offset
      * @param $page_width
      * @param bool $paginate
      * @return array|mixed|string
      */
-    public function getDraftSorts($offset, $page_width, $paginate = true)
+    public function getDraftSorts($offset = null, $page_width = null, $paginate = false)
     {
         $filters = ['offset' => $offset, 'count' => $page_width, 'paginate' => ($paginate) ? 1 : 0];
-        $response = $this->request(ServiceConstant::URL_PARCEL_COUNT . $filters, [], self::HTTP_GET);
+        $response = $this->request(ServiceConstant::URL_GET_DRAFT_SORTS , $filters, self::HTTP_GET);
         $responseHandler = new ResponseHandler($response);
         if ($responseHandler->getStatus() == ResponseHandler::STATUS_OK) {
             return $responseHandler->getData();
