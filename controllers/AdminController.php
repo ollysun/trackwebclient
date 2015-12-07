@@ -337,6 +337,7 @@ class AdminController extends BaseController
             if ($status) {
                 $this->flashSuccess("Company created successfully");
             } else {
+                Calypso::getInstance()->setPageData($data);
                 $this->flashError($companyAdapter->getLastErrorMessage());
             }
             return $this->refresh();
