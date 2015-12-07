@@ -508,6 +508,6 @@ class HubsController extends BaseController
         $data = $parcelsAdapter->getDraftSorts($offset, $page_width, true);
         $draftSorts = Calypso::getValue($data, 'draft_sorts', []);
         $total_count = Calypso::getValue($data, 'total_count', 0);
-        return $this->render('expected', ['draft_sorts' => $draftSorts, 'offset' => $offset, 'page_width' => $page_width, 'total_count' => $total_count]);
+        return $this->render('draft_sorts', ['draft_sorts' => $draftSorts, 'offset' => $offset, 'page_width' => $page_width, 'total_count' => $total_count]);
     }
 }

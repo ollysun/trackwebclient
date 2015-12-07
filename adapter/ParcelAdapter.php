@@ -444,7 +444,7 @@ class ParcelAdapter extends BaseAdapter
      */
     public function getDraftSorts($offset = null, $page_width = null, $paginate = false)
     {
-        $filters = ['offset' => $offset, 'count' => $page_width, 'paginate' => ($paginate) ? 1 : 0];
+        $filters = ['offset' => $offset, 'count' => $page_width, 'paginate' => (($paginate) ? 1 : 0)];
         $response = $this->request(ServiceConstant::URL_GET_DRAFT_SORTS , $filters, self::HTTP_GET);
         $responseHandler = new ResponseHandler($response);
         if ($responseHandler->getStatus() == ResponseHandler::STATUS_OK) {
