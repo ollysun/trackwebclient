@@ -253,10 +253,31 @@ $this->params['breadcrumbs'] = array(
         </form>
     </div>
 </div>
-
-
+<script type="text/html" id="invoiceParcelTemplate">
+    <tr>
+        <td>{{index}}</td>
+        <td>{{waybill_number}}</td>
+        <td>{{company_name}}</td>
+        <td>{{amount}}</td>
+        <td>
+            <input type='text' name='discount[]' data-amount='{{amount}}' data-waybill='{{waybill_number}}' class='form-control' style='width:50px;' value='0'>
+            <input type='hidden' name='waybill_number[]' value='{{waybill_number}}'>
+            <input type='hidden' data-parcel_waybill='{{waybill_number}}' name='net_amount[]' value='{{amount}}'>
+        </td>
+        <td data-waybill='{{waybill_number}}'>{{amount}}</td>
+    </tr>
+</script>
+<script type="text/html" id="invoiceTotal">
+    <tr>
+        <td></td>
+        <td><b>NET TOTAL</b></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td><b id='net_total'></b></td>
+    </tr>
+</script>
 <!-- this page specific scripts -->
-
 <?php $this->registerJsFile('@web/js/hub_util.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/keyboardFormSubmit.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/form-watch-changes.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>

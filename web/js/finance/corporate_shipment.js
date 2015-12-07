@@ -5,19 +5,7 @@ String.prototype.replaceAll = function (search, replacement) {
 
 var Invoice = {
     getInvoiceParcelHtml: function (index, params) {
-        var html = "\
-            <tr>\
-            <td>{{index}}</td>\
-            <td>{{waybill_number}}</td>\
-            <td>{{company_name}}</td>\
-            <td>{{amount}}</td>\
-            <td>\
-            <input type='text' name='discount[]' data-amount='{{amount}}' data-waybill='{{waybill_number}}' class='form-control' style='width:50px;' value='0'>\
-            <input type='hidden' name='waybill_number[]' value='{{waybill_number}}'>\
-            <input type='hidden' data-parcel_waybill='{{waybill_number}}' name='net_amount[]' value='{{amount}}'>\
-            </td>\
-            <td data-waybill='{{waybill_number}}'>{{amount}}</td>\
-            </tr>";
+        var html = $("#invoiceParcelTemplate").html();
 
         return html
             .replaceAll('{{id}}', index)
@@ -32,14 +20,7 @@ var Invoice = {
             html += Invoice.getInvoiceParcelHtml((i + 1), v);
         });
 
-        html += "<tr>\
-            <td></td>\
-            <td><b>NET TOTAL</b></td>\
-        <td></td>\
-        <td></td>\
-        <td></td>\
-        <td><b id='net_total'></b></td>\
-            </tr>";
+        html += $("#invoiceTotal").html();
         return html;
     },
     calculateNetAmount: function (elem) {
