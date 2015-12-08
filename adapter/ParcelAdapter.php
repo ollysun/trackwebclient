@@ -226,7 +226,7 @@ class ParcelAdapter extends BaseAdapter
     public function getECDispatchedParcels($branch_id, $offset = 0, $count = 50, $search = null)
     {
         $filter = array(
-            'branch_id' => $branch_id,
+            'to_branch_id' => $branch_id,
             'with_total_count' => 1,
             'status' => ServiceConstant::BEING_DELIVERED,
             'waybill_number' => $search,
