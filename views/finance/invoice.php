@@ -205,7 +205,7 @@ $this->params['breadcrumbs'] = array(
                             <div class="input-group input-group-date-range">
                                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                 <input name="from" id="" class="form-control date-range" value="<?= $fromDate; ?>"
-                                       data-provide="datepicker" data-date-format="yyyy/mm/dd" data-date-end-date="0d" >
+                                       data-provide="datepicker" data-date-format="yyyy/mm/dd" data-date-end-date="0d">
                             </div>
                         </div>
 
@@ -237,10 +237,6 @@ $this->params['breadcrumbs'] = array(
             </div>
             <div class="pull-right clearfix">
                 <label>&nbsp;</label><br>
-                <button class="btn btn-primary" data-toggle="modal" data-target="#generateCreditNote">Generate Credit
-                    Note
-                </button>
-
             </div>
         </div>
     </div>
@@ -250,10 +246,6 @@ $this->params['breadcrumbs'] = array(
                 <table id="table" class="table table-hover dataTable">
                     <thead>
                     <tr>
-                        <th style="width: 20px" class="datatable-nosort">
-                            <div class="checkbox-nice"><input id="chbx_w_all" type="checkbox"><label
-                                    for="chbx_w_all"> </label></div>
-                        </th>
                         <th style="width: 20px">No.</th>
                         <th>Invoice Doc. No.</th>
                         <th>Company Name</th>
@@ -267,21 +259,22 @@ $this->params['breadcrumbs'] = array(
                     <?php $i = $offset;
                     foreach ($invoices as $invoice): ?>
                         <tr>
-                            <td>
-                                <div class="checkbox-nice">
-                                    <input id="" class="checkable" data-waybill="" data-sender="" type="checkbox">
-                                    <label for=""> </label>
-                                </div>
-                            </td>
-                            <td><?=++$i;?></td>
-                            <td><?= Calypso::getValue($invoice, 'invoice_number');?></td>
-                            <td><?= strtoupper(Calypso::getValue($invoice, 'company.name'));?></td>
-                            <td><?= Calypso::getValue($invoice, 'total');?></td>
-                            <td>NA</td>
+                            <td><?= ++$i; ?></td>
+                            <td><?= Calypso::getValue($invoice, 'invoice_number'); ?></td>
+                            <td><?= strtoupper(Calypso::getValue($invoice, 'company.name')); ?></td>
+                            <td><?= Calypso::getValue($invoice, 'total'); ?></td>
+                            <td><?= Calypso::getValue($invoice, 'credit_note.credit_note_number'); ?></td>
                             <td>
                                 <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#viewInvoice">
                                     View
                                 </button>
+
+                                <?php if (is_null(Calypso::getValue($invoice, 'credit_note.id'))): ?>
+                                    <button class="btn btn-primary btn-xs" data-toggle="modal"
+                                            data-target="#generateCreditNote">Generate Credit
+                                        Note
+                                    </button>
+                                <?php endif; ?>
                             </td>
                             <td>
                             </td>

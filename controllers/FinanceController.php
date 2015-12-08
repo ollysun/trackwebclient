@@ -146,8 +146,8 @@ class FinanceController extends BaseController
 
         $fromDate = Yii::$app->request->get('from', Util::getToday('/'));
         $toDate = Yii::$app->request->get('to', Util::getToday('/'));
-        $filters['start_created_at'] = $fromDate;
-        $filters['end_created_at'] = $toDate;
+        $filters['from_created_at'] = $fromDate;
+        $filters['to_created_at'] = $toDate;
         $filters['company_id'] = Yii::$app->request->get('company');
         $filters['status'] = Yii::$app->request->get('status');
         $filters['offset'] = $offset;
