@@ -80,30 +80,34 @@ $hub_data_col_indexes = [];
 			$y = 0;$d = [];$already_rendered = [];
 			foreach($hubs as $hub){
 
-				?>
-				<tr>
-					<td><?= strtoupper($hub['name']); ?></td>
-					<?php
-					for($x = 0; $x < count($hubs); $x++) {
-						$diagonal = $hub_data_col_indexes[$hub['id']] == $x ? 'matrix_diagonal':'';
+                ?>
+                <tr>
+                    <td><?= strtoupper($hub['name']); ?></td>
+                    <?php
+                    for ($x = 0; $x < count($hubs); $x++) {
+                        $not_set = false;
+                        $diagonal = $hub_data_col_indexes[$hub['id']] == $x ? 'matrix_diagonal' : '';
 //						$can_focus = $hub_data_col_indexes[$hub['id']] != $x;
-						if(isset($matrixMap[$hub['id'].'_'.$hubs[$x]['id']])){
-							$d = $matrixMap[$hub['id'].'_'.$hubs[$x]['id']];
-							$already_rendered[$hub['id'].'_'.$hubs[$x]['id']] = true;
-						}
-						if(isset($matrixMap[$hubs[$x]['id'].'_'.$hub['id']])){
-							$d = $matrixMap[$hubs[$x]['id'].'_'.$hub['id']];
-							$already_rendered[$hubs[$x]['id'].'_'.$hub['id']] = true;
-						}
-							?>
-							<td data-payload='<?= json_encode($d); ?>' data-from="<?= $hub['id'] ?>"
-								data-to="<?= $hubs[$x]['id']; ?>"
-								class="<?= $diagonal; ?><?= $can_focus ? ' matrix_cell' : ''; ?>"><?= $can_focus ? (sizeof($d) > 0 ? $d['zone']['code'] : 'N/S') : ''; ?></td>
-							<?php
-						
-					}
-					?>
-					<!--<td class="<?/*= $diagonal; */?>"></td>
+                        if (isset($matrixMap[$hub['id'] . '_' . $hubs[$x]['id']])) {
+                            $d = $matrixMap[$hub['id'] . '_' . $hubs[$x]['id']];
+                            $already_rendered[$hub['id'] . '_' . $hubs[$x]['id']] = true;
+                        } else if (isset($matrixMap[$hubs[$x]['id'] . '_' . $hub['id']])) {
+                            $d = $matrixMap[$hubs[$x]['id'] . '_' . $hub['id']];
+                            $already_rendered[$hubs[$x]['id'] . '_' . $hub['id']] = true;
+                        } else {
+                            $d = [];
+                            $not_set = true;
+                        }
+                        ?>
+                        <td data-payload='<?= json_encode($d); ?>' data-from="<?= $hub['id'] ?>"
+                            data-to="<?= $hubs[$x]['id']; ?>"
+                            class="<?= $diagonal; ?><?= ($can_focus && !$not_set) ? ' matrix_cell' : ''; ?>"><?= $can_focus ? (sizeof($d) > 0 ? $d['zone']['code'] : 'N/S') : ''; ?></td>
+                        <?php
+
+                    }
+                    ?>
+                    <!--<td class="<?/*= $diagonal; */
+                    ?>"></td>
 					<td class="matrix_cell">NW</td>-->
 
 				</tr>
