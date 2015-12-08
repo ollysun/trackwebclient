@@ -10,13 +10,17 @@ use Adapter\Util\Util;
 
 /**
  * Class ParcelAdapter
+ * @author Adegoke Obasa <goke@cottacush.com>
  * @author Adeyemi Olaoye <yemi@cottacush.com>
  * @author Richard Boyewa <boye@cottacush.com>
  * @author Rotimi Akintewe <akintewe.rotimi@gmail.com>
+ * @author Babatunde Otaru <tunde@cottacush.com>
  * @package Adapter
  */
 class ParcelAdapter extends BaseAdapter
 {
+    const BILLING_METHOD_CORPORATE = 'corporate';
+
     /**
      * @author Adeyemi Olaoye <yemi@cottacush.com>
      * @param $waybill_number
@@ -468,5 +472,34 @@ class ParcelAdapter extends BaseAdapter
         }
 
         return $response;
+    }
+
+    /**
+     * Get's corporate parcels
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @param $offset
+     * @param $count
+     * @param array $filters
+     * @return array|mixed|string
+     */
+    public function getCorporateParcels($offset, $count, $filters = [])
+    {
+        $filters = array_merge($filters, [
+            'billing_type' => self::BILLING_METHOD_CORPORATE,
+            'offset' => $offset,
+            'count' => $count,
+            'with_total_count' => 1,
+            'with_payment_type' => 1,
+            'with_company' => 1,
+            'with_invoice_parcel' => 1
+        ]);
+        $filters = array_filter($filters);
+        $response = $this->request(ServiceConstant::URL_GET_ALL_PARCEL, $filters, self::HTTP_GET);
+        $response = new ResponseHandler($response);
+
+        if ($response->isSuccess()) {
+            return $response->getData();
+        }
+        return [];
     }
 }

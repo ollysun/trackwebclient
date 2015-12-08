@@ -197,6 +197,9 @@ class ServiceConstant
     const URL_BILLING_PLAN_ADD = 'billingPlan/add';
     const URL_BILLING_PLAN_GET_ALL = 'billingPlan/getAll';
 
+    const URL_INVOICE_ADD = 'invoice/add';
+    const URL_INVOICE_ALL = 'invoice/getAll';
+
     const DATE_TIME_FORMAT = 'd M Y H:i';
     const DATE_FORMAT = 'd M Y';
     const TIME_FORMAT = 'g:i A';
