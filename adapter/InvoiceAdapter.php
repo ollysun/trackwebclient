@@ -48,6 +48,7 @@ class InvoiceAdapter extends BaseAdapter
     {
         $filters = array_merge($filters, [
             'with_company' => '1',
+            'with_credit_note' => '1',
             'with_total_count' => '1',
         ]);
 
