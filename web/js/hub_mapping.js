@@ -1,3 +1,8 @@
+/**
+ * @credits http://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript
+ * @param name
+ * @returns {string}
+ */
 function getParameterByName(name) {
     name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
     var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
