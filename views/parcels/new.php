@@ -361,7 +361,7 @@ $is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
                                         </div>
                                         <div class="col-md-6 col-xs-12">
                                             <label>Billing Plan</label>
-                                            <select id="billing_plan" class="form-control billing_plan">
+                                            <select id="billing_plan" name="billing_plan" class="form-control billing_plan">
                                                 <option value="">Select Company</option>
                                             </select>
                                         </div>
