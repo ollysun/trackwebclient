@@ -38,7 +38,9 @@ $this->params['breadcrumbs'] = array(
                         <th style="width: 20px">S/N</th>
                         <th>Sort Number</th>
                         <th>Waybill Number</th>
+                        <th>Origin</th>
                         <th>Next Destination</th>
+                        <th>Final Destination</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -58,10 +60,11 @@ $this->params['breadcrumbs'] = array(
                             <td><?= $row; ?></td>
                             <td><?= Calypso::getValue($draft_sort, 'sort_number') ?></td>
                             <td>
-                                <a href='/shipments/view?waybill_number=<?= Calypso::getValue($draft_sort, 'waybill_number'); ?>'><?= Calypso::getValue($draft_sort, 'waybill_number') ?></a>
+                                <a href='/shipments/view?waybill_number=<?= Calypso::getDisplayValue($draft_sort, 'waybill_number', ''); ?>'><?= Calypso::getValue($draft_sort, 'waybill_number') ?></a>
                             </td>
-
-                            <td><?= ucwords(Calypso::getValue($draft_sort, 'to_branch.name', '')) ?></td>
+                            <td><?= ucwords(Calypso::getDisplayValue($draft_sort, 'from_branch.name', '')) ?></td>
+                            <td><?= ucwords(Calypso::getDisplayValue($draft_sort, 'to_branch.name', '')) ?></td>
+                            <td><?= (Calypso::getDisplayValue($draft_sort, 'receiver_address.street_address1', false) ? ucwords(Calypso::getDisplayValue($draft_sort, 'receiver_address.street_address_1')). ', ' : ''). (Calypso::getDisplayValue($draft_sort, 'receiver_address.street_address2', false) ? ucwords(Calypso::getDisplayValue($draft_sort, 'receiver_address.street_address_2')). ', ' : ''). Calypso::getDisplayValue($draft_sort, 'receiver_address_city.name', ''). ', '. Calypso::getDisplayValue($draft_sort, 'receiver_address_state.name', '')  ?></td>
                         </tr>
                     <?php endforeach ?>
                     </tbody>
