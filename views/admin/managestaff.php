@@ -97,7 +97,7 @@ $this->params['content_header_button'] = '<button type="button" id="addNewStaffB
                     <th>Branch</th>
                     <th>User role</th>
                     <th>Status</th>
-                    <th>Action</th>
+                    <th style="width:6%;">Action</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -116,6 +116,7 @@ $this->params['content_header_button'] = '<button type="button" id="addNewStaffB
                         <td><?= strtoupper($staffMember['role']['name']) ?></td>
                         <td><?= ServiceConstant::getStatus($staffMember['status']) ?></td>
                         <td>
+                            <span data-toggle="tooltip" title="Edit">
                             <button
                                 data-id="<?= Calypso::getValue($staffMember, 'id'); ?>"
                                 data-fullname="<?= Calypso::getValue($staffMember, 'fullname'); ?>"
@@ -128,8 +129,15 @@ $this->params['content_header_button'] = '<button type="button" id="addNewStaffB
                                 data-state="<?= Calypso::getValue($staffMember, 'branch.state_id'); ?>"
                                 data-status="<?= Calypso::getValue($staffMember, 'status'); ?>"
                                 type="button" class="btn btn-default btn-xs editStaff" data-toggle="modal"
-                                    data-target="#myModal"><i class="fa fa-edit"></i> Edit
-                            </button>
+                                    data-target="#myModal"><i class="fa fa-edit"></i>
+                            </button></span>
+                            <span data-toggle="tooltip" title="Reset password">
+                                <button
+                                    data-auth-id="<?= Calypso::getValue($staffMember, 'user_auth_id'); ?>"
+                                    type="button" class="btn btn-default btn-xs resetPassword" data-toggle="modal"
+                                    data-target="#reset"><i class="fa fa-refresh"></i>
+                                </button>
+                            </span>
                         </td>
                     </tr>
                     <?php
@@ -279,6 +287,32 @@ $this->params['content_header_button'] = '<button type="button" id="addNewStaffB
     </div>
 </div>
 
+
+<div class="modal fade" id="reset" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <form class="validate-form" method="post" id="resetPasswordForm" action="resetpassword">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Reset Password</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Please fill the following information carefully. <strong>All fields are required.</strong></p>
+                    <div class="form-group">
+                        <label>New Password</label>
+                        <input name="password" type="password" class="form-control validate required">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input name="user_auth_id" type="hidden"/>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 <!-- this page specific scripts -->
 <?php $this->registerJsFile('@web/js/libs/jquery.dataTables.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/libs/dataTables.fixedHeader.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
