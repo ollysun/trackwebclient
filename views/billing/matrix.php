@@ -101,7 +101,7 @@ $hub_data_col_indexes = [];
                         ?>
                         <td data-payload='<?= json_encode($d); ?>' data-from="<?= $hub['id'] ?>"
                             data-to="<?= $hubs[$x]['id']; ?>"
-                            class="<?= $diagonal; ?><?= ($can_focus && !$not_set) ? ' matrix_cell' : ''; ?>"><?= $can_focus ? (sizeof($d) > 0 ? $d['zone']['code'] : 'N/S') : ''; ?></td>
+                            class="<?= $diagonal; ?><?= ($can_focus && !$not_set) ? 'matrix_cell zone_mapping' : 'matrix_cell not_set'; ?>"><?= $can_focus ? (sizeof($d) > 0 ? $d['zone']['code'] : 'N/S') : ''; ?></td>
                         <?php
 
                     }
@@ -177,4 +177,4 @@ $hub_data_col_indexes = [];
 <?php //$this->registerJsFile('@web/js/libs/dataTables.tableTools.js', ['depends' => [\app\assets\AppAsset::className()]]); ?>
 <?php //$this->registerJsFile('@web/js/libs/jquery.dataTables.bootstrap.js', ['depends' => [\app\assets\AppAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/hub_util.js', ['depends' => [\app\assets\AppAsset::className()]]); ?>
-<?php $this->registerJsFile('@web/js/billing_matrix.js', ['depends' => [\app\assets\AppAsset::className()]]); ?>
+<?php $this->registerJsFile('@web/js/billing_matrix.js?v=1.1.0', ['depends' => [\app\assets\AppAsset::className()]]); ?>
