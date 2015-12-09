@@ -13,7 +13,7 @@ $this->params['breadcrumbs'] = array(
     'url' => ['admin/managebranches'],
     'label' => 'Administrator'
     ),
-    array('label' => 'Company Registration')
+    array('label' => $this->title)
 );
 
 ?>
