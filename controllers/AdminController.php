@@ -29,8 +29,6 @@ use yii\helpers\Url;
 
 class AdminController extends BaseController
 {
-
-
     public function beforeAction($action)
     {
         $this->enableCsrfValidation = false;
@@ -108,7 +106,7 @@ class AdminController extends BaseController
                     $response = $hub->createNewHub($hub_data);
                     if ($response['status'] === Response::STATUS_OK) {
                         Yii::$app->session->setFlash('success', 'Hub has been created successfully.');
-                        Yii::$app->response->redirect("/admin/hubmapping?hub={$response['data']['id']}");
+                        return $this->redirect("/admin/hubmapping?hub={$response['data']['id']}");
                     } else {
                         Yii::$app->session->setFlash('danger', 'There was a problem creating the hub. Please try again.');
                     }
@@ -140,16 +138,16 @@ class AdminController extends BaseController
 
     public function actionManageecs()
     {
-        if(isset(Yii::$app->request->post()['filter_hub_id'])){
+        if (isset(Yii::$app->request->post()['filter_hub_id'])) {
             $page = 1;
-        }else {
+        } else {
             $page = \Yii::$app->getRequest()->get('page', 1);
         }
-         $this->page_width =\Yii::$app->getRequest()->get('page_width',80);
+        $this->page_width = \Yii::$app->getRequest()->get('page_width', 80);
 
-         $offset = ($page - 1) * $this->page_width;
+        $offset = ($page - 1) * $this->page_width;
 
-        if (Yii::$app->request->isPost &&  !isset(Yii::$app->request->post()['filter_hub_id'])) {
+        if (Yii::$app->request->isPost && !isset(Yii::$app->request->post()['filter_hub_id'])) {
             $entry = Yii::$app->request->post();
             $task = Calypso::getValue($entry, 'task', '');
             $error = [];
@@ -197,10 +195,10 @@ class AdminController extends BaseController
         $hubAdp = new BranchAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $hubs = $hubAdp->getHubs();
         $hubs = new ResponseHandler($hubs);
-        $filter_hub_id = Calypso::getDisplayValue(Yii::$app->request->post(),'filter_hub_id', null);
+        $filter_hub_id = Calypso::getDisplayValue(Yii::$app->request->post(), 'filter_hub_id', null);
 
         $hubAdp = new BranchAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $centres = $hubAdp->getCentres($filter_hub_id,$offset,$this->page_width);
+        $centres = $hubAdp->getCentres($filter_hub_id, $offset, $this->page_width);
         $centres = new ResponseHandler($centres);
 
 
@@ -209,7 +207,7 @@ class AdminController extends BaseController
         $centres_list_and_total_count = $centres->getStatus() == ResponseHandler::STATUS_OK ? $centres->getData() : [];
         $centres_list = $centres_list_and_total_count['branch_data'];
         $total_count = $centres_list_and_total_count['total_count'];
-        return $this->render('manageecs', array('total_count'=>$total_count, 'page_width' => $this->page_width,'offset' => $offset ,'States' => $state_list, 'hubs' => $hub_list, 'centres' => $centres_list, 'filter_hub_id' => $filter_hub_id));
+        return $this->render('manageecs', array('total_count' => $total_count, 'page_width' => $this->page_width, 'offset' => $offset, 'States' => $state_list, 'hubs' => $hub_list, 'centres' => $centres_list, 'filter_hub_id' => $filter_hub_id));
     }
 
     /**
@@ -292,6 +290,27 @@ class AdminController extends BaseController
 
 
         return $this->render('managestaff', ['states' => $state_list, 'roles' => $role_list, 'staffMembers' => $staffMembers, 'offset' => $offset, 'role' => $role, 'page_width' => $this->page_width]);
+    }
+
+    public function actionResetpassword()
+    {
+        if (Yii::$app->getRequest()->isPost) {
+            $auth_id = Yii::$app->getRequest()->post('user_auth_id');
+            $password = Yii::$app->getRequest()->post('password');
+
+            if (!isset($auth_id, $password)) {
+                $this->flashError('Required field(s) missing');
+            }
+
+            $user = new UserAdapter();
+            $outcome = $user->resetPassword($auth_id, $password);
+            if ($outcome === true) {
+                $this->flashSuccess('Password has been changed');
+            } else {
+                $this->flashError($outcome);
+            }
+        }
+        return $this->redirect('managestaff');
     }
 
     /**

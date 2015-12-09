@@ -26,7 +26,7 @@ $(document).ready(function () {
             editStaffForm.find("input[name=" + v + "]").val(data[v]);
         });
 
-       //  Load select fields
+        //  Load select fields
         var selectFields = ['state', 'role', 'status', 'branch_type'];
         $(selectFields).each(function (i, select) {
             editStaffForm.find("select[name=" + select + "] option").each(function (i, v) {
@@ -43,7 +43,12 @@ $(document).ready(function () {
         });
     });
 
-    $("#state").on('change', function(){
+    $("#state").on('change', function () {
         $("#branch_type").trigger('change');
-    })
+    });
+
+    $(".resetPassword").click(function () {
+        var form = $("#resetPasswordForm");
+        form.find("input[name=user_auth_id]").val($(this).data('auth-id'));
+    });
 });
