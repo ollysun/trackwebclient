@@ -76,16 +76,16 @@ $this->params['content_header_button'] = "<a href='".$downloadURL."' class='btn 
                             <label for="">For Return</label><br>
                             <select name="for_return" id="" class="form-control  filter-status">
                                 <option value="">Not Applicable</option>
-                                <option value="1" <?= $filters['for_return'] === ServiceConstant::TRUE ? 'selected':''?>>Yes</option>
-                                <option value="0" <?= $filters['for_return'] === ServiceConstant::FALSE ? 'selected':''?>>No</option>
+                                <option value="<?= ServiceConstant::TRUE; ?>" <?= $filters['for_return'] === ServiceConstant::TRUE ? 'selected':''?>>Yes</option>
+                                <option value="<?= ServiceConstant::FALSE; ?>" <?= $filters['for_return'] === ServiceConstant::FALSE ? 'selected':''?>>No</option>
                             </select>
                         </div>
                         <div class="pull-left form-group form-group-sm">
                             <label for="">Cash on Delivery</label><br>
                             <select name="cash_on_delivery" id="" class="form-control  filter-status">
                                 <option value="">Not Applicable</option>
-                                <option value="1" <?= $filters['cash_on_delivery'] === ServiceConstant::TRUE ? 'selected':''?>>Yes</option>
-                                <option value="0" <?= $filters['cash_on_delivery'] === ServiceConstant::FALSE ? 'selected':''?>>No</option>
+                                <option value="<?= ServiceConstant::TRUE; ?>" <?= $filters['cash_on_delivery'] === ServiceConstant::TRUE ? 'selected':''?>>Yes</option>
+                                <option value="<?= ServiceConstant::FALSE; ?>" <?= $filters['cash_on_delivery'] === ServiceConstant::FALSE ? 'selected':''?>>No</option>
                             </select>
                         </div>
                         <div class="pull-left form-group form-group-sm">
