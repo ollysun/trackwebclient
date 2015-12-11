@@ -3,6 +3,7 @@ use Adapter\Util\Calypso;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use Adapter\Globals\ServiceConstant;
+use Adapter\ParcelAdapter;
 
 /* @var $this yii\web\View */
 $this->title = 'Shipments: Arrival';
@@ -13,6 +14,8 @@ $this->params['breadcrumbs'] = array(
     ),*/
     array('label' => 'Receive Shipments')
 );
+
+$user_data = $this->context->userData;
 ?>
 
 <!-- this page specific styles -->
@@ -80,6 +83,10 @@ $this->params['breadcrumbs'] = array(
                     <th>Request Type</th>
                     <th>Return Status</th>
                     <th>Weight (Kg)</th>
+                    <?php if($user_data['role_id'] == ServiceConstant::USER_TYPE_ADMIN) { ?>
+                        <th>Originating Branch</th>
+                        <th>Current Location</th>
+                    <?php } ?>
                 </tr>
                 </thead>
                 <tbody>
@@ -108,7 +115,10 @@ $this->params['breadcrumbs'] = array(
                             <td><?= ServiceConstant::getRequestType($parcels['request_type']) ?></td>
                             <td><?= ServiceConstant::getReturnStatus($parcels); ?></td>
                             <td><?= Calypso::getValue($parcels, 'weight') ?></td>
-                            <td></td>
+                            <?php if($user_data['role_id'] == ServiceConstant::USER_TYPE_ADMIN) { ?>
+                                <td><?= strtoupper(Calypso::getValue($parcels, "created_branch.name")) ?></td>
+                                <td><?= ParcelAdapter::getCurrentLocation($parcels); ?></td>
+                            <?php } ?>
                         </tr>
                     <?php }
                 }

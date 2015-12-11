@@ -2,6 +2,8 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 use Adapter\Globals\ServiceConstant;
+use Adapter\ParcelAdapter;
+use Adapter\Util\Calypso;
 
 
 $this->title = 'New Shipments';
@@ -22,6 +24,7 @@ if ($search) {
         $link .= '&date_filter=' . $filter;
     }
 }
+$user_data = $this->context->userData;
 ?>
 <!-- this page specific styles -->
 <?= Html::cssFile('@web/css/libs/dataTables.fixedHeader.css') ?>
@@ -80,6 +83,10 @@ $this->params['content_header_button'] = $this->render('../elements/content_head
                         <th>Request Type</th>
                         <th>Return Status</th>
                         <th>Shipment Status</th>
+                        <?php if($user_data['role_id'] == ServiceConstant::USER_TYPE_ADMIN) { ?>
+                        <th>Originating Branch</th>
+                        <th>Current Location</th>
+                        <?php } ?>
                         <th width="14%">Action</th>
                     </tr>
                     </thead>
@@ -109,6 +116,10 @@ $this->params['content_header_button'] = $this->render('../elements/content_head
                                 <td><?= ServiceConstant::getRequestType($parcel['request_type']); ?></td>
                                 <td><?= ServiceConstant::getReturnStatus($parcel); ?></td>
                                 <td><?= ServiceConstant::getStatus($parcel['status']); ?></td>
+                                <?php if($user_data['role_id'] == ServiceConstant::USER_TYPE_ADMIN) { ?>
+                                <td><?= strtoupper(Calypso::getValue($parcel, "created_branch.name")) ?></td>
+                                <td><?= ParcelAdapter::getCurrentLocation($parcel); ?></td>
+                                <?php } ?>
                                 <td>
                                     <a title="View this shipment" href="<?= Url::toRoute(['/shipments/view?waybill_number=' . $parcel['waybill_number']]) ?>"
                                        class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>
