@@ -2,6 +2,7 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 use Adapter\Globals\ServiceConstant;
+use Adapter\ParcelAdapter;
 
 
 $this->title = 'New Shipments';
@@ -119,8 +120,10 @@ $this->params['content_header_button'] = $this->render('../elements/content_head
                                             <input type="hidden" name="task" value="cancel_shipment">
                                         </form>
                                     <?php endif; ?>
+                                    <?php if(!ParcelAdapter::isBag($parcel['waybill_number'])) : ?>
                                     <button title="Clone this shipment" data-href="<?= Url::toRoute(['/parcels/new?id=' . $parcel['id']]) ?>"
                                        class="btn btn-xs btn-info btnClone"><i class="fa fa-copy"></i></button>
+                                    <?php endif; ?>
                                     <?= $this->render('../elements/parcel/partial_return_button',['parcel'=>$parcel ,'reasons_list' => $reasons_list]) ?>
                                 </td>
                             </tr>
