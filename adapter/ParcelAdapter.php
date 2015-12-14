@@ -449,7 +449,7 @@ class ParcelAdapter extends BaseAdapter
     public function getDraftSorts($offset = null, $page_width = null, $paginate = false)
     {
         $filters = ['offset' => $offset, 'count' => $page_width, 'paginate' => (($paginate) ? 1 : 0)];
-        $response = $this->request(ServiceConstant::URL_GET_DRAFT_SORTS , $filters, self::HTTP_GET);
+        $response = $this->request(ServiceConstant::URL_GET_DRAFT_SORTS, $filters, self::HTTP_GET);
         $responseHandler = new ResponseHandler($response);
         if ($responseHandler->getStatus() == ResponseHandler::STATUS_OK) {
             return $responseHandler->getData();
@@ -471,6 +471,22 @@ class ParcelAdapter extends BaseAdapter
             $this->lastErrorMessage = $response->getError();
         }
 
+        return $response;
+    }
+
+    /**
+     * Discard draft sortings
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     * @param $data
+     * @return ResponseHandler
+     */
+    public function discardDraftSort($data)
+    {
+        $rawResponse = $this->request(ServiceConstant::URL_DISCARD_SORT, Json::encode($data), self::HTTP_POST);
+        $response = new ResponseHandler($rawResponse);
+        if (!$response->isSuccess()) {
+            $this->lastErrorMessage = $response->getError();
+        }
         return $response;
     }
 

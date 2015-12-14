@@ -22,6 +22,11 @@ $this->params['breadcrumbs'] = array(
 
 <?php echo \Adapter\Util\Calypso::showFlashMessages(); ?>
 
+<?php
+$this->params['content_header_button'] = '<button type="button" id="confirm_sorting" class="btn btn-primary btn-sm"><i class="fa fa-check"></i> Confirm</button>
+<button type="button" class="btn btn-danger btn-sm" id="discard_sorting"><i class="fa fa-times"></i> Discard</button>
+';
+?>
 
 <div class="main-box">
     <div class="main-box-body">

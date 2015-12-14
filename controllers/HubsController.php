@@ -10,6 +10,8 @@ namespace app\controllers;
 
 use Adapter\AdminAdapter;
 use Adapter\BranchAdapter;
+use Adapter\facades\ParcelDraftSortFacade;
+use Adapter\facades\ParcelDraftSortDiscardFacade;
 use Adapter\Globals\ServiceConstant;
 use Adapter\ParcelAdapter;
 use Adapter\RefAdapter;
@@ -19,6 +21,7 @@ use Adapter\RouteAdapter;
 use Adapter\Util\Calypso;
 use app\services\HubService;
 use Yii;
+use yii\base\Exception;
 
 class HubsController extends BaseController
 {
@@ -462,33 +465,37 @@ class HubsController extends BaseController
             return $this->redirect(Yii::$app->request->referrer);
         }
 
-        $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $parcelDraftSortFacade = new ParcelDraftSortFacade();
         $data = Yii::$app->getRequest()->post();
-        $response = $parcelsAdapter->createDraftSort($data);
-
-        if (!$response->isSuccess()) {
-            $this->flashError($response->getError());
-            return $this->refresh();
+        try {
+            $parcelDraftSortFacade->process($data);
+            Yii::$app->session->setFlash($parcelDraftSortFacade->getMessageFlashType(), $parcelDraftSortFacade->getMessage());
+        } catch (Exception $ex) {
+            $this->flashError($ex->getMessage());
         }
 
-        $failed_parcels = Calypso::getValue($response->getData(), 'failed', []);
+        return $this->redirect(Yii::$app->request->referrer);
+    }
 
-        if (count($failed_parcels) == 0) {
-            $this->flashSuccess('Parcels successfully draft sorted');
-            return $this->refresh();
+    /**
+     * discard draft sort parcels
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     * @return \yii\web\Response
+     */
+    public function actionDiscarddraftsort()
+    {
+        if (!Yii::$app->getRequest()->isPost) {
+            return $this->redirect(Yii::$app->request->referrer);
         }
 
-        $successful_parcels = Calypso::getValue($response->getData(), 'successful', []);
-
-        $failed_message = ($successful_parcels) ? ('<strong>Draft Sorted Parcels: ' . implode(', ', $successful_parcels) . '</strong><br/></br>') : '';
-        $failed_message .= '<strong>Failed to draft sort some parcels:</strong> <br/>';
-
-        foreach ($failed_parcels as $waybill_number => $message) {
-            $failed_message .= '#<strong>' . $waybill_number . '</strong> - Reason: ' . $message . '<br/>';
+        $parcelDraftSortDiscardFacade = new ParcelDraftSortDiscardFacade();
+        $data = Yii::$app->getRequest()->post();
+        try {
+            $parcelDraftSortDiscardFacade->process($data);
+            Yii::$app->session->setFlash($parcelDraftSortDiscardFacade->getMessageFlashType(), $parcelDraftSortDiscardFacade->getMessage());
+        } catch (Exception $ex) {
+            $this->flashError($ex->getMessage());
         }
-
-        $flash_type = ($successful_parcels) ? 'warning' : 'danger';
-        Yii::$app->session->setFlash($flash_type, $failed_message);
 
         return $this->redirect(Yii::$app->request->referrer);
     }
