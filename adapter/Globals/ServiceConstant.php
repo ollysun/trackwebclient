@@ -74,6 +74,7 @@ class ServiceConstant
     const URL_RETURN_REASONS = '/parcel/getreturnreasons';
     const URL_DRAFT_SORT = '/parcel/draftsort';
     const URL_DISCARD_SORT = '/parcel/discardsort';
+    const URL_CONFIRM_SORT = '/parcel/confirmsort';
     const URL_GET_DRAFT_SORTS = '/parcel/getdraftsorts';
 
     const URL_GET_ALL_BANKS = 'bank/getAll/';

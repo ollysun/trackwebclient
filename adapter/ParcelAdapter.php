@@ -491,6 +491,22 @@ class ParcelAdapter extends BaseAdapter
     }
 
     /**
+     * confirm draft sortings
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     * @param $data
+     * @return ResponseHandler
+     */
+    public function confirmDraftSort($data)
+    {
+        $rawResponse = $this->request(ServiceConstant::URL_CONFIRM_SORT, Json::encode($data), self::HTTP_POST);
+        $response = new ResponseHandler($rawResponse);
+        if (!$response->isSuccess()) {
+            $this->lastErrorMessage = $response->getError();
+        }
+        return $response;
+    }
+
+    /**
      * Get's corporate parcels
      * @author Adegoke Obasa <goke@cottacush.com>
      * @param $offset

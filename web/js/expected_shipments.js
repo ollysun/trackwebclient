@@ -7,7 +7,8 @@ ExpectedShipment.constants = {
     confirm_btn: $('#confirm_sorting'),
     to_branch: "",
     draft_sort_url: '/hubs/draftsortparcels',
-    discard_sorting_url: '/hubs/discarddraftsort'
+    discard_sorting_url: '/hubs/discarddraftsort',
+    confirm_sorting_url: '/hubs/confirmdraftsort'
 };
 
 /**
@@ -68,6 +69,23 @@ ExpectedShipment.discardSortings = function () {
     });
 };
 
+/**
+ * Confirm draft sorts
+ * @returns {boolean}
+ */
+ExpectedShipment.confirmSortings = function () {
+    var selectedSortNumbers = ExpectedShipment.getSelected('sortnumber');
+
+    if (selectedSortNumbers.length == 0) {
+        alert("You need to select at least one parcel to confirm sort");
+        return false;
+    }
+
+    $.post(ExpectedShipment.constants.confirm_sorting_url, {
+        sort_numbers: selectedSortNumbers
+    });
+};
+
 
 $(document).ready(function () {
     ExpectedShipment.constants.sort_btn.unbind('click').click(function () {
@@ -84,7 +102,7 @@ $(document).ready(function () {
     });
 
     ExpectedShipment.constants.confirm_btn.unbind('click').click(function () {
-
+        ExpectedShipment.confirmSortings();
     });
 
     ExpectedShipment.constants.discard_btn.unbind('click').click(function () {

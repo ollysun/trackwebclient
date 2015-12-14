@@ -10,6 +10,7 @@ namespace app\controllers;
 
 use Adapter\AdminAdapter;
 use Adapter\BranchAdapter;
+use Adapter\facades\ParcelDraftSortConfirmFacade;
 use Adapter\facades\ParcelDraftSortFacade;
 use Adapter\facades\ParcelDraftSortDiscardFacade;
 use Adapter\Globals\ServiceConstant;
@@ -493,6 +494,29 @@ class HubsController extends BaseController
         try {
             $parcelDraftSortDiscardFacade->process($data);
             Yii::$app->session->setFlash($parcelDraftSortDiscardFacade->getMessageFlashType(), $parcelDraftSortDiscardFacade->getMessage());
+        } catch (Exception $ex) {
+            $this->flashError($ex->getMessage());
+        }
+
+        return $this->redirect(Yii::$app->request->referrer);
+    }
+
+    /**
+     * confirm draft sort parcels
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     * @return \yii\web\Response
+     */
+    public function actionConfirmdraftsort()
+    {
+        if (!Yii::$app->getRequest()->isPost) {
+            return $this->redirect(Yii::$app->request->referrer);
+        }
+
+        $parcelDraftSortConfirmFacade = new ParcelDraftSortConfirmFacade();
+        $data = Yii::$app->getRequest()->post();
+        try {
+            $parcelDraftSortConfirmFacade->process($data);
+            Yii::$app->session->setFlash($parcelDraftSortConfirmFacade->getMessageFlashType(), $parcelDraftSortConfirmFacade->getMessage());
         } catch (Exception $ex) {
             $this->flashError($ex->getMessage());
         }
