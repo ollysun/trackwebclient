@@ -49,7 +49,7 @@ function mapIt($from, $to, $check)
                     $total = count($hubs);
                     for ($i = 0; $i < $total; $i++) {
                         ?>
-                        <tr>
+                        <tr data-hub_id="<?=$hubs[$i]['id']?>">
                             <?php if ($i == 0) { ?>
                             <td rowspan="<?= count($hubs); ?>"><?= strtoupper($hub['code']); ?></td><?php } ?>
                             <td><?= ucwords($hubs[$i]['name']) . " (" . strtoupper($hubs[$i]['code']) . ")"; ?></td>
@@ -89,4 +89,5 @@ function mapIt($from, $to, $check)
 <?php $this->registerJsFile('@web/js/libs/dataTables.fixedHeader.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/libs/dataTables.tableTools.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/libs/jquery.dataTables.bootstrap.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
+<?php $this->registerJsFile('@web/js/hub_mapping.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 
