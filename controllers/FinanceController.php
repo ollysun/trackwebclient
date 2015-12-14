@@ -14,6 +14,7 @@ use Adapter\ResponseHandler;
 use Adapter\Util\Calypso;
 use app\services\HubService;
 use yii\data\Pagination;
+use yii\helpers\Url;
 
 class FinanceController extends BaseController
 {
@@ -221,5 +222,27 @@ class FinanceController extends BaseController
     {
         $this->layout = 'print';
         return $this->render('print_credit_note');
+    }
+
+    /**
+     * Get's the parcels attached to an invoice
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @param null $invoice_number
+     * @return array|\yii\web\Response
+     */
+    public function actionGetinvoiceparcels($invoice_number = null)
+    {
+        if(is_null($invoice_number)) {
+            return $this->sendErrorResponse("Required(s) fields not sent", 400, null, 400);
+        }
+
+        if(!Yii::$app->request->isAjax) {
+            return $this->redirect(Url::to("/finance/invoice"));
+        }
+
+        $invoiceAdapter = new InvoiceAdapter();
+        $invoiceParcels = $invoiceAdapter->getInvoiceParcels(['invoice_number' => $invoice_number]);
+
+        return $this->sendSuccessResponse($invoiceParcels);
     }
 }

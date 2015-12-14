@@ -73,6 +73,7 @@ class InvoiceAdapter extends BaseAdapter
     {
         $filters = array_merge($filters, [
             'with_parcel' => '1',
+            'no_paginate' => '1',
         ]);
 
         $response = $this->request(ServiceConstant::URL_INVOICE_PARCELS,
