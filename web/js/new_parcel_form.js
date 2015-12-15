@@ -87,10 +87,11 @@ function getServerResponse(statusCode, message) {
             if (val === 'false') {
                 $('#CODAmount').val('');
                 $('input[name="CODAmount"]').removeClass('validate required non-zero-number').parent().removeClass('has-error');
-                ;
+                $('div#deferred_freight').addClass('hide');
             }
             else {
                 $('input[name="CODAmount"]').addClass('validate required non-zero-number');
+                $('div#deferred_freight').removeClass('hide');
             }
         }
     };
@@ -633,4 +634,16 @@ $(document).ready(function () {
             $("#billing_plan").trigger("change");
         }
     });
+
+    /**
+     * Include the freight cost in the cash to be collected
+
+    $('input[name="include_freight"]').on('change', function (event) {
+        if ($('input[name="include_freight"]:checked').val() == 1 && $('#paymentMethodDeferred:checked')) {
+            $('.amount-due').text(parseFloat($('#amount').val()) + parseFloat($('#CODAmount').val()));
+        }
+        else {
+            $('.amount-due').text($('#amount').val());
+        }
+    }); */
 });
