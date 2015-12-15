@@ -10,6 +10,9 @@ namespace app\controllers;
 
 use Adapter\AdminAdapter;
 use Adapter\BranchAdapter;
+use Adapter\facades\ParcelDraftSortConfirmFacade;
+use Adapter\facades\ParcelDraftSortFacade;
+use Adapter\facades\ParcelDraftSortDiscardFacade;
 use Adapter\Globals\ServiceConstant;
 use Adapter\ParcelAdapter;
 use Adapter\RefAdapter;
@@ -19,6 +22,7 @@ use Adapter\RouteAdapter;
 use Adapter\Util\Calypso;
 use app\services\HubService;
 use Yii;
+use yii\base\Exception;
 
 class HubsController extends BaseController
 {
@@ -81,7 +85,8 @@ class HubsController extends BaseController
                     $this->flashSuccess('Parcels have been successfully moved to the next destination. <a href="delivery">Generate Manifest</a>');
                 }
             } else {
-                $this->flashError('An error occurred while trying to move parcels to next destination. Please try again.');}
+                $this->flashError('An error occurred while trying to move parcels to next destination. Please try again.');
+            }
         }
         $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $arrival_parcels = $parcelsAdapter->getParcelsForNextDestination($isGroundman ? ServiceConstant::ASSIGNED_TO_GROUNDSMAN : ServiceConstant::FOR_ARRIVAL, null, $isGroundman ? $this->userData['branch_id'] : $this->branch_to_view, null, $viewData['offset'], 50, 1);
@@ -306,7 +311,7 @@ class HubsController extends BaseController
         }
 
 
-        return $this->render('delivery',  $viewData);
+        return $this->render('delivery', $viewData);
     }
 
     /**
@@ -429,5 +434,110 @@ class HubsController extends BaseController
         }
 
         return $this->redirect(Yii::$app->request->referrer);
+    }
+
+
+    /**
+     * Shows parcels expected in the branch
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     * @param int $page
+     * @param null $page_width
+     * @return string
+     */
+    public function actionExpected($page = 1, $page_width = null)
+    {
+        $page_width = is_null($page_width) ? $this->page_width : $page_width;
+        $offset = ($page - 1) * $page_width;
+        $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $data = $parcelsAdapter->getExpectedParcels($offset, $page_width, $this->branch_to_view);
+        $expectedParcels = Calypso::getValue($data, 'parcels', []);
+        $total_count = Calypso::getValue($data, 'total_count', 0);
+        return $this->render('expected', ['parcels' => $expectedParcels, 'offset' => $offset, 'page_width' => $page_width, 'total_count' => $total_count]);
+    }
+
+    /**
+     * Draft sort parcels
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     */
+    public function actionDraftsortparcels()
+    {
+        if (!Yii::$app->getRequest()->isPost) {
+            return $this->redirect(Yii::$app->request->referrer);
+        }
+
+        $parcelDraftSortFacade = new ParcelDraftSortFacade();
+        $data = Yii::$app->getRequest()->post();
+        try {
+            $parcelDraftSortFacade->process($data);
+            Yii::$app->session->setFlash($parcelDraftSortFacade->getMessageFlashType(), $parcelDraftSortFacade->getMessage());
+        } catch (Exception $ex) {
+            $this->flashError($ex->getMessage());
+        }
+
+        return $this->redirect(Yii::$app->request->referrer);
+    }
+
+    /**
+     * discard draft sort parcels
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     * @return \yii\web\Response
+     */
+    public function actionDiscarddraftsort()
+    {
+        if (!Yii::$app->getRequest()->isPost) {
+            return $this->redirect(Yii::$app->request->referrer);
+        }
+
+        $parcelDraftSortDiscardFacade = new ParcelDraftSortDiscardFacade();
+        $data = Yii::$app->getRequest()->post();
+        try {
+            $parcelDraftSortDiscardFacade->process($data);
+            Yii::$app->session->setFlash($parcelDraftSortDiscardFacade->getMessageFlashType(), $parcelDraftSortDiscardFacade->getMessage());
+        } catch (Exception $ex) {
+            $this->flashError($ex->getMessage());
+        }
+
+        return $this->redirect(Yii::$app->request->referrer);
+    }
+
+    /**
+     * confirm draft sort parcels
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     * @return \yii\web\Response
+     */
+    public function actionConfirmdraftsort()
+    {
+        if (!Yii::$app->getRequest()->isPost) {
+            return $this->redirect(Yii::$app->request->referrer);
+        }
+
+        $parcelDraftSortConfirmFacade = new ParcelDraftSortConfirmFacade();
+        $data = Yii::$app->getRequest()->post();
+        try {
+            $parcelDraftSortConfirmFacade->process($data);
+            Yii::$app->session->setFlash($parcelDraftSortConfirmFacade->getMessageFlashType(), $parcelDraftSortConfirmFacade->getMessage());
+        } catch (Exception $ex) {
+            $this->flashError($ex->getMessage());
+        }
+
+        return $this->redirect(Yii::$app->request->referrer);
+    }
+
+    /**
+     * Shows draft sortings
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     * @param int $page
+     * @param null $page_width
+     * @return string
+     */
+    public function actionDraftsortings($page = 1, $page_width = null)
+    {
+        $page_width = is_null($page_width) ? $this->page_width : $page_width;
+        $offset = ($page - 1) * $page_width;
+        $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $data = $parcelsAdapter->getDraftSorts($offset, $page_width, true);
+        $draftSorts = Calypso::getValue($data, 'draft_sorts', []);
+        $total_count = Calypso::getValue($data, 'total_count', 0);
+        return $this->render('draft_sorts', ['draft_sorts' => $draftSorts, 'offset' => $offset, 'page_width' => $page_width, 'total_count' => $total_count]);
     }
 }

@@ -32,6 +32,20 @@ class ParcelAdapter extends BaseAdapter
     }
 
     /**
+     * Returns the age analysis for the based on the status of the
+     * @param $parcel
+     * @return mixed
+     */
+    public static function getAgeAnalysis($parcel)
+    {
+        if (in_array($parcel['status'], [ServiceConstant::DELIVERED, ServiceConstant::CANCELLED, ServiceConstant::RETURNED])) {
+            return Util::ago($parcel['created_date'], $parcel['modified_date']);
+        } else {
+            return Util::ago($parcel['created_date']);
+        }
+    }
+
+    /**
      * @author Babatunde Otaru <tunde@cottacush.com>
      * @return Reasons[]
      */
@@ -428,6 +442,48 @@ class ParcelAdapter extends BaseAdapter
     }
 
     /**
+     * Get expected parcels for a branch
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     * @param $offset
+     * @param $page_width
+     * @param $branch
+     * @return array|mixed|string
+     */
+    public function getExpectedParcels($offset, $page_width, $branch)
+    {
+        $filters = [
+            'status' => ServiceConstant::IN_TRANSIT,
+            'to_branch_id' => $branch,
+            'with_total_count' => 1,
+            'with_to_branch' => 1,
+            'with_city' => 1,
+            'with_sender_address' => 1,
+            'with_receiver_address' => 1,
+            'with_created_branch' => 1,
+            'offset' => $offset,
+            'count' => $page_width
+        ];
+
+        $response = $this->getParcelsByFilters($filters);
+        $responseHandler = new ResponseHandler($response);
+        if ($responseHandler->getStatus() == ResponseHandler::STATUS_OK) {
+            $responseData = $responseHandler->getData();
+            $parcels = Calypso::getValue($responseData, 'parcels', []);
+            $draftSorts = $this->getDraftSorts();
+            $sortedWaybillNumbers = array_column($draftSorts, 'waybill_number');
+            $expectedParcels = [];
+            foreach ($parcels as $parcel) {
+                if (!in_array(Calypso::getValue($parcel, 'waybill_number'), $sortedWaybillNumbers)) {
+                    $expectedParcels[] = $parcel;
+                }
+            }
+            $responseData['parcels'] = $expectedParcels;
+            return $responseData;
+        }
+        return false;
+    }
+
+    /**
      * Returns parcels based on the filters
      * @author Olawale Lawal <wale@cottacush.com>
      * @param $filters
@@ -440,17 +496,71 @@ class ParcelAdapter extends BaseAdapter
     }
 
     /**
-     * Returns the age analysis for the based on the status of the
-     * @param $parcel
-     * @return mixed
+     * Get draft sort parcels
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     * @param $offset
+     * @param $page_width
+     * @param bool $paginate
+     * @return array|mixed|string
      */
-    public static function getAgeAnalysis($parcel)
+    public function getDraftSorts($offset = null, $page_width = null, $paginate = false)
     {
-        if (in_array($parcel['status'], [ServiceConstant::DELIVERED, ServiceConstant::CANCELLED, ServiceConstant::RETURNED])) {
-            return Util::ago($parcel['created_date'], $parcel['modified_date']);
-        } else {
-            return Util::ago($parcel['created_date']);
+        $filters = ['offset' => $offset, 'count' => $page_width, 'paginate' => (($paginate) ? 1 : 0)];
+        $response = $this->request(ServiceConstant::URL_GET_DRAFT_SORTS, $filters, self::HTTP_GET);
+        $responseHandler = new ResponseHandler($response);
+        if ($responseHandler->getStatus() == ResponseHandler::STATUS_OK) {
+            return $responseHandler->getData();
         }
+        return [];
+    }
+
+    /**
+     * Create draft sortings
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     * @param $data array
+     * @return ResponseHandler
+     */
+    public function createDraftSort($data)
+    {
+        $rawResponse = $this->request(ServiceConstant::URL_DRAFT_SORT, Json::encode($data), self::HTTP_POST);
+        $response = new ResponseHandler($rawResponse);
+        if (!$response->isSuccess()) {
+            $this->lastErrorMessage = $response->getError();
+        }
+
+        return $response;
+    }
+
+    /**
+     * Discard draft sortings
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     * @param $data
+     * @return ResponseHandler
+     */
+    public function discardDraftSort($data)
+    {
+        $rawResponse = $this->request(ServiceConstant::URL_DISCARD_SORT, Json::encode($data), self::HTTP_POST);
+        $response = new ResponseHandler($rawResponse);
+        if (!$response->isSuccess()) {
+            $this->lastErrorMessage = $response->getError();
+        }
+        return $response;
+    }
+
+    /**
+     * confirm draft sortings
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     * @param $data
+     * @return ResponseHandler
+     */
+    public function confirmDraftSort($data)
+    {
+        $rawResponse = $this->request(ServiceConstant::URL_CONFIRM_SORT, Json::encode($data), self::HTTP_POST);
+        $response = new ResponseHandler($rawResponse);
+        if (!$response->isSuccess()) {
+            $this->lastErrorMessage = $response->getError();
+        }
+        return $response;
     }
 
     /**
