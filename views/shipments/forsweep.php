@@ -3,6 +3,7 @@ use Adapter\Util\Calypso;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use Adapter\Globals\ServiceConstant;
+use Adapter\ParcelAdapter;
 
 
 $this->title = 'Shipments: Due for Sweep';
@@ -30,6 +31,8 @@ if($offset <= 0){
 }elseif (($offset - $page_width) >= 0){
     $show_prev = true;
 }
+
+$user_data = $this->context->userData;
 ?>
 <!-- this page specific styles -->
 <?= Html::cssFile('@web/css/libs/dataTables.fixedHeader.css') ?>
@@ -80,6 +83,10 @@ if($offset <= 0){
                     <th>Final Destination</th>
                     <th>Created Date</th>
                     <th>Return Status</th>
+                    <?php if($user_data['role_id'] == ServiceConstant::USER_TYPE_ADMIN) { ?>
+                        <th>Originating Branch</th>
+                        <th>Current Location</th>
+                    <?php } ?>
                     <th>Age analysis</th>
                     <th>Action</th>
                 </tr>
@@ -108,6 +115,10 @@ if($offset <= 0){
                             </td>
                             <td><?= date(ServiceConstant::DATE_TIME_FORMAT,strtotime($parcel['created_date'])); ?></td>
                             <td><?= ServiceConstant::getReturnStatus($parcels); ?></td>
+                            <?php if($user_data['role_id'] == ServiceConstant::USER_TYPE_ADMIN) { ?>
+                                <td><?= strtoupper(Calypso::getValue($parcel, "created_branch.name")) ?></td>
+                                <td><?= ParcelAdapter::getCurrentLocation($parcel); ?></td>
+                            <?php } ?>
                             <td></td>
                             <td><a href="<?= Url::toRoute(['/shipments/view?waybill_number='.$parcel['waybill_number']]) ?>" class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
                         </tr>
