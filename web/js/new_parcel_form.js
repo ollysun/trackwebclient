@@ -633,4 +633,25 @@ $(document).ready(function () {
             $("#billing_plan").trigger("change");
         }
     });
+
+
+    // Metric Select box functionality
+    var metricSelect = $('#metric-select'),
+        metricGroup = $('#metric-group');
+    var metricLabel = metricGroup.find('label'),
+        metricInput = metricGroup.find('.form-control'),
+        metricAddon = metricGroup.find('.input-group-addon');
+    metricSelect.on('change', function() {
+        var value = $(this).val();
+        if (value == 'weight') {
+            metricLabel.html('Total weight');
+            metricInput.removeClass('non-zero-integer').addClass('non-zero-number');
+            metricAddon.html('Kg');
+        }
+        else {
+            metricLabel.html('No of Pieces');
+            metricInput.removeClass('non-zero-number').addClass('non-zero-integer');
+            metricAddon.html('Pieces');
+        }
+    });
 });
