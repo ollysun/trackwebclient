@@ -49,7 +49,7 @@ abstract class BulkOperationFacade
      */
     public function getMessage()
     {
-        return $this->getSuccessfulItemsMessage() . '<br/>' . $this->getFailedItemsMessage();
+        return $this->getSuccessfulItemsMessage() . (($this->getSuccessfulItems()) ? '<br/>' : '') . $this->getFailedItemsMessage();
     }
 
     /**

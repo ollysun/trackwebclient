@@ -15,7 +15,7 @@ $this->params['breadcrumbs'] = array(
 <?= Html::cssFile('@web/css/libs/dataTables.fixedHeader.css') ?>
 <?= Html::cssFile('@web/css/libs/dataTables.tableTools.css') ?>
 <style>
-    .table.next_dest tbody > tr > td {
+    .table tbody > tr > td {
         text-align: center;
     }
 </style>
@@ -32,7 +32,7 @@ $this->params['content_header_button'] = '<button type="button" id="confirm_sort
     <div class="main-box-body">
         <?php if ($draft_sorts): ?>
             <div class="table-responsive">
-                <table id="next_dest" class="table table-hover next_dest">
+                <table class="table table-hover">
                     <thead>
                     <tr>
                         <th style="width: 20px;">
@@ -88,5 +88,5 @@ $this->params['content_header_button'] = '<button type="button" id="confirm_sort
 <?php $this->registerJsFile('@web/js/libs/dataTables.fixedHeader.js', ['depends' => [JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/libs/dataTables.tableTools.js', ['depends' => [JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/libs/jquery.dataTables.bootstrap.js', ['depends' => [JqueryAsset::className()]]); ?>
-<?php $this->registerJsFile('@web/js/next_destination.js', ['depends' => [JqueryAsset::className()]]); ?>
+<?php $this->registerJsFile('@web/js/table_util.js', ['depends' => [JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/expected_shipments.js', ['depends' => [JqueryAsset::className()]]); ?>
