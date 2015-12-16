@@ -541,4 +541,42 @@ class HubsController extends BaseController
         $total_count = Calypso::getValue($data, 'total_count', 0);
         return $this->render('draft_sorts', ['draft_sorts' => $draftSorts, 'offset' => $offset, 'page_width' => $page_width, 'total_count' => $total_count]);
     }
+
+    /**
+     * Create draft bag
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     */
+    public function actionCreatedraftbag()
+    {
+        if (!Yii::$app->getRequest()->isPost) {
+            return $this->redirect(Yii::$app->request->referrer);
+        }
+
+        $data = Yii::$app->request->post();
+        $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $response = $parcelsAdapter->createDraftBag($data);
+        if ($response->isSuccess()) {
+            $this->flashSuccess('Draft Bag successfully created');
+        } else {
+            $this->flashError($response->getError());
+        }
+
+        return $this->redirect(Yii::$app->request->referrer);
+    }
+
+    /**
+     * Get draft bag parcels
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     */
+    public function actionGetdraftbagparcels()
+    {
+        if (!Yii::$app->getRequest()->isAjax) {
+            return $this->redirect(Yii::$app->request->referrer);
+        }
+
+        $bag_number = Yii::$app->getRequest()->get('bag_number');
+        $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $response = $parcelsAdapter->getDraftBagParcels($bag_number);
+        return $this->sendSuccessResponse($response);
+    }
 }

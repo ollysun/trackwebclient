@@ -457,6 +457,24 @@ class ParcelAdapter extends BaseAdapter
         return [];
     }
 
+
+    /**
+     * Get parcels in a draft bag
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     * @param $bag_sort_number
+     * @return array|mixed
+     */
+    public function getDraftBagParcels($bag_sort_number)
+    {
+        $filters = ['bag_number' => $bag_sort_number, 'is_visible' => 0];
+        $response = $this->request(ServiceConstant::URL_GET_DRAFT_SORTS, $filters, self::HTTP_GET);
+        $responseHandler = new ResponseHandler($response);
+        if ($responseHandler->getStatus() == ResponseHandler::STATUS_OK) {
+            return $responseHandler->getData();
+        }
+        return [];
+    }
+
     /**
      * Create draft sortings
      * @author Adeyemi Olaoye <yemi@cottacush.com>
@@ -499,6 +517,22 @@ class ParcelAdapter extends BaseAdapter
     public function confirmDraftSort($data)
     {
         $rawResponse = $this->request(ServiceConstant::URL_CONFIRM_SORT, Json::encode($data), self::HTTP_POST);
+        $response = new ResponseHandler($rawResponse);
+        if (!$response->isSuccess()) {
+            $this->lastErrorMessage = $response->getError();
+        }
+        return $response;
+    }
+
+    /**
+     * create draft bag
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     * @param $data
+     * @return ResponseHandler
+     */
+    public function createDraftBag($data)
+    {
+        $rawResponse = $this->request(ServiceConstant::URL_CREATE_DRAFT_BAG, Json::encode($data), self::HTTP_POST);
         $response = new ResponseHandler($rawResponse);
         if (!$response->isSuccess()) {
             $this->lastErrorMessage = $response->getError();
