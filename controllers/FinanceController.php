@@ -2,6 +2,7 @@
 namespace app\controllers;
 
 use Adapter\CompanyAdapter;
+use Adapter\CreditNoteAdapter;
 use Adapter\InvoiceAdapter;
 use Adapter\Util\Util;
 use Yii;
@@ -130,6 +131,40 @@ class FinanceController extends BaseController
         return $this->redirect('/finance/invoice');
     }
 
+    /**
+     * Generates a credit note
+     * @author Adegoke Obasa <goke@cottacush.com>
+     */
+    public function actionGeneratecreditnote()
+    {
+        if(Yii::$app->request->isPost) {
+            $data = Yii::$app->getRequest()->post();
+
+            $parcels = [];
+            for($i = 0; $i < count(Calypso::getValue($data, 'invoice_parcel', [])); $i++) {
+                $parcel = [];
+                $parcel['invoice_parcel_id'] = Calypso::getValue($data, "invoice_parcel.$i");
+                $parcel['deducted_amount'] = floatval(((int)Calypso::getValue($data, "deducted_amount.$i")));
+                $parcel['new_net_amount'] = floatval(Calypso::getValue($data, "new_net_amount.$i"));
+
+                $parcels[] = $parcel;
+            }
+
+            $data['parcels'] = $parcels;
+
+            $invoiceAdapter = new CreditNoteAdapter();
+            $response = $invoiceAdapter->generateCreditNote($data);
+
+            if($response) {
+                $this->flashSuccess('Credit Note created successfully');
+            } else {
+                $this->flashError($invoiceAdapter->getLastErrorMessage());
+                return $this->redirect(Yii::$app->request->referrer);
+            }
+        }
+
+        return $this->redirect('/finance/creditnote');
+    }
 
     public function actionCreditnote()
     {

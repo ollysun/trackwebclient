@@ -17,14 +17,14 @@ $this->params['breadcrumbs'] = array(
 ?>
 
 <!-- Generate Credit Note Modal -->
-<form>
+<form method="post" action="<?= Url::to("/finance/generatecreditnote");?>">
     <div class="modal fade" id="generateCreditNote">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">Generate Credit Note</h4>
+                    <h4 class="modal-title">Generate Credit Note for Invoice (<span id="invoiceNumberLabel"></span>)</h4>
                 </div>
                 <div class="modal-body">
                     <div id="loading" style="text-align: center;">
@@ -49,9 +49,10 @@ $this->params['breadcrumbs'] = array(
                     </table>
                 </div>
                 <div class="modal-footer">
+                    <input type="hidden" name="invoice_number" id="invoice_number" class="form-control">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                     <a href="#">
-                        <button type="button" class="btn btn-primary">Generate Credit Note</button>
+                        <button type="submit" class="btn btn-primary">Generate Credit Note</button>
                     </a>
                 </div>
             </div>
@@ -274,7 +275,7 @@ $this->params['breadcrumbs'] = array(
         <td>{{net_amount}}</td>
         <td>
             <input name="deducted_amount[]" data-waybill='{{waybill_number}}' data-net_amount="{{net_amount}}" type="text" class="form-control" style="width:100px;margin-left: 65px;" value="0">
-            <input type='hidden' name='invoice_parcels[]' value='{{invoice_parcel_id}}'>
+            <input type='hidden' name='invoice_parcel[]' value='{{invoice_parcel_id}}'>
             <input type='hidden' data-parcel_waybill='{{waybill_number}}' name='new_net_amount[]' value='{{net_amount}}'>
         </td>
         <td data-waybill='{{waybill_number}}'>{{net_amount}}</td>

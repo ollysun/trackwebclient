@@ -11,7 +11,9 @@ var Invoice = {
             .error(errorCallback);
     },
     Constants : {
-        invoiceParcels : $("#invoiceParcels")
+        invoiceParcels : $("#invoiceParcels"),
+        invoiceNumber : $("#invoice_number"),
+        invoiceNumberLabel : $("#invoiceNumberLabel")
     },
     Templates : {
         invoiceParcel : $("#invoiceParcelTmpl").html(),
@@ -39,6 +41,9 @@ var Invoice = {
 $(document).ready(function () {
     $("button[data-generate_credit_note]").click(function () {
         var companyName = $(this).data('company_name');
+        var invoiceNumber = $(this).data('invoice_number');
+        Invoice.Constants.invoiceNumber.val(invoiceNumber);
+        Invoice.Constants.invoiceNumberLabel.html(invoiceNumber);
         Invoice.getInvoiceParcels($(this).data("invoice_number"), function (data) {
             $("#loading").addClass('hide');
             $("#table").removeClass('hide');
