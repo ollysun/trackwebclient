@@ -87,10 +87,11 @@ function getServerResponse(statusCode, message) {
             if (val === 'false') {
                 $('#CODAmount').val('');
                 $('input[name="CODAmount"]').removeClass('validate required non-zero-number').parent().removeClass('has-error');
-                ;
+                $('div#deferred_freight').addClass('hide');
             }
             else {
                 $('input[name="CODAmount"]').addClass('validate required non-zero-number');
+                $('div#deferred_freight').removeClass('hide');
             }
         }
     };

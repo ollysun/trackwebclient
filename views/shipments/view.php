@@ -208,7 +208,7 @@ $this->params['breadcrumbs'][] = 'Waybill';
 								<div class="col-xs-6">
 									<label>Amount to be collected</label>
 									<div class="form-control-static">
-										<span class="currency naira"></span><?= $parcelData['delivery_amount']; ?>
+										<span class="currency naira"></span><?= $parcelData['delivery_amount'] + ($parcelData['is_freight_included'] ? $parcelData['amount_due'] : 0); ?>
 									</div>
 								</div>
 								<?php } ?>

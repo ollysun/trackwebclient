@@ -288,7 +288,7 @@ $is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
                                         </div>
                                     </div>
                                     <div id="CODAmountWrap" class="col-xs-12 col-sm-6 col-lg-7 form-group <?= (Calypso::getValue($parcel, "info.cash_on_delivery", '') == '1') ? '' : "hidden"; ?>">
-                                        <label>Amount to be collected</label>
+                                        <label>Amount due to merchant</label>
 
                                         <div class="input-group">
                                             <span class="input-group-addon currency naira"></span>
@@ -445,6 +445,19 @@ $is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
                                         <label for="">POS Transaction ID</label>
                                         <input name="pos_transaction_id" class="form-control"
                                                value="<?= Calypso::getValue($parcel, "info.pos_trans_id", ''); ?>">
+                                    </div>
+                                </div>
+                                <div id="deferred_freight" class="form-group hide">
+                                    <label>Add Freight Cost to Cash on Delivery?</label><br>
+                                    <div class="validate">
+                                        <div class="radio-inline">
+                                            <input id="freightYes" type="radio" name="include_freight" value="<?= ServiceConstant::TRUE; ?>"> <label
+                                                for="freightYes" class="">Yes</label>
+                                        </div>
+                                        <div class="radio-inline">
+                                            <input id="freightNo" type="radio" name="include_freight" value="<?= ServiceConstant::FALSE; ?>"
+                                                   checked="checked"> <label for="freightNo" class="">No</label>
+                                        </div>
                                     </div>
                                 </div>
                                 <br>

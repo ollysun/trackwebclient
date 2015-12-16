@@ -112,5 +112,14 @@
                 }
             });
         });
+
+        var createCompanyForm = $('#createCompanyForm');
+        if(previous_data !== 0){
+
+            createCompanyForm.find('select').each(function() {
+                $(this).val($(this).data('selected')).trigger('change');
+            });
+            $('#myModal').modal('show');
+        }
     });
 })();

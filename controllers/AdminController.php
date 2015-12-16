@@ -78,8 +78,9 @@ class AdminController extends BaseController
         return $this->render('new_hub_mapping', array('hub' => $hub, 'hubs' => $hub_list, 'zones' => $zones_list));
     }
 
-    public function actionManagebranches()
+    public function actionManagebranches($page = 1)
     {
+        $offset = ($page - 1) * $this->page_width;
         if (Yii::$app->request->isPost) {
             $entry = Yii::$app->request->post();
             $error = [];
@@ -123,31 +124,27 @@ class AdminController extends BaseController
         }
 
         $refAdp = new RefAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $states = $refAdp->getStates(1); // Hardcoded Nigeria for now
+        $states = $refAdp->getStates(ServiceConstant::COUNTRY_NIGERIA); // Hardcoded Nigeria for now
         $states = new ResponseHandler($states);
 
-        $filter_state_id = Calypso::getValue(Yii::$app->request->post(), 'filter_state_id', null);
+        $filter_state_id = Yii::$app->request->get('filter_state_id', null);
         $hubAdp = new BranchAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $hubs = $hubAdp->getHubs($filter_state_id);
+        $hubs = $hubAdp->getHubs($filter_state_id, $offset, $this->page_width, true);
         $hubs = new ResponseHandler($hubs);
 
         $state_list = $states->getStatus() == ResponseHandler::STATUS_OK ? $states->getData() : [];
         $hub_list = $hubs->getStatus() == ResponseHandler::STATUS_OK ? $hubs->getData() : [];
-        return $this->render('managehubs', array('States' => $state_list, 'filter_state_id' => $filter_state_id, 'hubs' => $hub_list));
+
+        $total_count = Calypso::getValue($hub_list, 'total_count', 0);
+        $hub_list = Calypso::getValue($hub_list, 'hub_data', null);
+        return $this->render('managehubs', array('States' => $state_list, 'filter_state_id' => $filter_state_id, 'hubs' => $hub_list,'total_count' => $total_count, 'page_width' => $this->page_width, 'offset' => $offset));
     }
 
-    public function actionManageecs()
+    public function actionManageecs($page = 1)
     {
-        if (isset(Yii::$app->request->post()['filter_hub_id'])) {
-            $page = 1;
-        } else {
-            $page = \Yii::$app->getRequest()->get('page', 1);
-        }
-        $this->page_width = \Yii::$app->getRequest()->get('page_width', 80);
-
         $offset = ($page - 1) * $this->page_width;
 
-        if (Yii::$app->request->isPost && !isset(Yii::$app->request->post()['filter_hub_id'])) {
+        if (Yii::$app->request->isPost) {
             $entry = Yii::$app->request->post();
             $task = Calypso::getValue($entry, 'task', '');
             $error = [];
@@ -189,21 +186,20 @@ class AdminController extends BaseController
             return $this->refresh();
         }
         $refAdp = new RefAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $states = $refAdp->getStates(1); // Hardcoded Nigeria for now
+        $states = $refAdp->getStates(ServiceConstant::COUNTRY_NIGERIA); // Hardcoded Nigeria for now
         $states = new ResponseHandler($states);
 
-        $hubAdp = new BranchAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $hubs = $hubAdp->getHubs();
+        $branchAdapter = new BranchAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $hubs = $branchAdapter->getHubs();
         $hubs = new ResponseHandler($hubs);
-        $filter_hub_id = Calypso::getDisplayValue(Yii::$app->request->post(), 'filter_hub_id', null);
+        $filter_hub_id = Yii::$app->request->get('filter_hub_id', null);
 
-        $hubAdp = new BranchAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $centres = $hubAdp->getCentres($filter_hub_id, $offset, $this->page_width);
+        $centres = $branchAdapter->getCentres($filter_hub_id, $offset, $this->page_width, true, true);
         $centres = new ResponseHandler($centres);
 
-
         $state_list = $states->getStatus() == ResponseHandler::STATUS_OK ? $states->getData() : [];
-        $hub_list = $hubs->getStatus() == ResponseHandler::STATUS_OK ? $hubs->getData()['branch_data'] : [];
+        $hub_list = $hubs->getStatus() == ResponseHandler::STATUS_OK ? $hubs->getData() : [];
+
         $centres_list_and_total_count = $centres->getStatus() == ResponseHandler::STATUS_OK ? $centres->getData() : [];
         $centres_list = $centres_list_and_total_count['branch_data'];
         $total_count = $centres_list_and_total_count['total_count'];
@@ -356,6 +352,7 @@ class AdminController extends BaseController
             if ($status) {
                 $this->flashSuccess("Company created successfully");
             } else {
+                Calypso::getInstance()->setPageData($data);
                 $this->flashError($companyAdapter->getLastErrorMessage());
             }
             return $this->refresh();
@@ -678,5 +675,14 @@ class AdminController extends BaseController
             }
         }
         return $this->redirect(Url::to("/admin/managecities"));
+    }
+
+    /**
+     * Audit Trail
+     * @author Olajide Oye <jide@cottacush.com>
+     */
+    public function actionAudittrail()
+    {
+        return $this->render('audit_trail');
     }
 }
