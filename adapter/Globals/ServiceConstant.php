@@ -200,6 +200,7 @@ class ServiceConstant
     const URL_INVOICE_PARCELS = 'invoice/getInvoiceParcels';
 
     const URL_CREDIT_NOTE_ADD = 'creditNote/add';
+    const URL_CREDIT_NOTE_ALL = 'creditNote/getAll';
 
     const DATE_TIME_FORMAT = 'd M Y H:i';
     const DATE_FORMAT = 'd M Y';

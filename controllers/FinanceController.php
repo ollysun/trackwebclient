@@ -166,9 +166,45 @@ class FinanceController extends BaseController
         return $this->redirect('/finance/creditnote');
     }
 
-    public function actionCreditnote()
+    /**
+     * Credit Notes Page
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @param int $page
+     * @return string
+     */
+    public function actionCreditnote($page = 1)
     {
-        return $this->render('creditnote');
+        $offset = ($page - 1) * $this->page_width;
+
+        $fromDate = Yii::$app->request->get('from', Util::getToday('/'));
+        $toDate = Yii::$app->request->get('to', Util::getToday('/'));
+        $filters['from_created_at'] = $fromDate;
+        $filters['to_created_at'] = $toDate;
+        $filters['company_id'] = Yii::$app->request->get('company');
+        $filters['status'] = Yii::$app->request->get('status');
+        $filters['offset'] = $offset;
+        $filters['count'] = $this->page_width;
+
+        $creditNoteAdapter = new CreditNoteAdapter();
+        $creditNotesResponse = $creditNoteAdapter->getCreditNotes($filters);
+        $creditNotes = Calypso::getValue($creditNotesResponse, 'credit_notes');
+        $totalCount = Calypso::getValue($creditNotesResponse, 'total_count');
+
+        $companies = (new CompanyAdapter())->getAllCompanies([]);
+        $statuses = ServiceConstant::getStatusRef();
+
+        return $this->render('creditnote', [
+            'fromDate' => $fromDate,
+            'toDate' => $toDate,
+            'statuses' => $statuses,
+            'companies' => $companies,
+            'creditNotes' => $creditNotes,
+            'offset' => $offset,
+            'total_count' => $totalCount,
+            'selectedCompany' => $filters['company_id'],
+            'selectedStatus' => $filters['status'],
+            'page_width' => $this->page_width
+        ]);
     }
 
     /**
