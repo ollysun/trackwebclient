@@ -146,9 +146,9 @@ $is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
                                 </div>
                                 <div class="col-xs-12 col-sm-4 form-group">
                                     <label>Metric</label>
-                                    <select class="form-control" id="metric-select">
-                                        <option value="weight">Weight</option>
-                                        <option value="pieces">Pieces</option>
+                                    <select class="form-control" id="metric-select" name="qty_metrics">
+                                        <option value="<?= ServiceConstant::QTY_METRICS_WEIGHT ?>">Weight</option>
+                                        <option value="<?= ServiceConstant::QTY_METRICS_PIECES ?>">Pieces</option>
                                     </select>
                                 </div>
                                 <div class="col-xs-12 col-sm-5 form-group" id="metric-group">
