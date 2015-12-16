@@ -2,6 +2,7 @@
 use Adapter\Util\Calypso;
 use yii\helpers\Html;
 use Adapter\Globals\ServiceConstant;
+use Adapter\ParcelAdapter;
 
 /* @var $this yii\web\View */
 if (!isset($isGroundsman)) {
@@ -16,6 +17,7 @@ $this->params['breadcrumbs'] = array(
     array('label' => 'Ready for Sorting')
 );
 
+$user_data = $this->context->userData;
 ?>
 
 <!-- this page specific styles -->
@@ -88,6 +90,10 @@ $this->params['breadcrumbs'] = array(
                         <th>Request Type</th>
                         <th>Return Status</th>
                         <th>Weight/Piece</th>
+                        <?php if($user_data['role_id'] == ServiceConstant::USER_TYPE_ADMIN) { ?>
+                            <th>Originating Branch</th>
+                            <th>Current Location</th>
+                        <?php } ?>
                         <th>Age analysis</th>
                         <th>Action</th>
                     </tr>
@@ -131,6 +137,10 @@ $this->params['breadcrumbs'] = array(
                             <td><?= ServiceConstant::getRequestType($parcels['request_type']) ?></td>
                             <td><?= ServiceConstant::getReturnStatus($parcels); ?></td>
                             <td><?= Calypso::getValue($parcels, 'weight') ?></td>
+                            <?php if($user_data['role_id'] == ServiceConstant::USER_TYPE_ADMIN) { ?>
+                                <td><?= strtoupper(Calypso::getValue($parcels, "created_branch.name")) ?></td>
+                                <td><?= ParcelAdapter::getCurrentLocation($parcels); ?></td>
+                            <?php } ?>
                             <td></td>
                             <td><?= $this->render('../elements/parcel/partial_return_button', ['parcel' => $parcels, 'reasons_list' => $reasons_list]) ?></td>
                         </tr>
