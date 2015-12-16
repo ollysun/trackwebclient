@@ -39,8 +39,9 @@ $this->params['breadcrumbs'] = array(
                             <th>Company Name</th>
                             <th>Amount</th>
                             <th>Discount</th>
-                            <th>Deducted Amount</th>
                             <th>Net Amount</th>
+                            <th>Deducted Amount</th>
+                            <th>New Net Amount</th>
                         </tr>
                         </thead>
                         <tbody id="invoiceParcels">
@@ -270,8 +271,11 @@ $this->params['breadcrumbs'] = array(
         <td>{{company_name}}</td>
         <td>{{amount}}</td>
         <td>{{discount}}</td>
+        <td>{{net_amount}}</td>
         <td>
-            <input data-waybill='{{waybill_number}}' data-net_amount="{{net_amount}}" type="text" class="form-control" style="width:100px;margin-left: 65px;" value="0">
+            <input name="deducted_amount[]" data-waybill='{{waybill_number}}' data-net_amount="{{net_amount}}" type="text" class="form-control" style="width:100px;margin-left: 65px;" value="0">
+            <input type='hidden' name='invoice_parcels[]' value='{{invoice_parcel_id}}'>
+            <input type='hidden' data-parcel_waybill='{{waybill_number}}' name='new_net_amount[]' value='{{net_amount}}'>
         </td>
         <td data-waybill='{{waybill_number}}'>{{net_amount}}</td>
     </tr>
@@ -280,6 +284,8 @@ $this->params['breadcrumbs'] = array(
     <tr>
         <td></td>
         <td><b>NET TOTAL</b></td>
+        <td></td>
+        <td></td>
         <td></td>
         <td></td>
         <td></td>

@@ -25,6 +25,15 @@ var Invoice = {
             newAmount = parseFloat(netAmount - deductedAmount).toFixed(2);
         }
         Invoice.Constants.invoiceParcels.find("td[data-waybill='" + $(elem).data('waybill') + "']").html(newAmount);
+        Invoice.Constants.invoiceParcels.find("input[data-parcel_waybill='" + $(elem).data('waybill') + "']").val(newAmount);
+    },
+    calculateTotalAmount: function () {
+        var total = 0;
+        Invoice.Constants.invoiceParcels.find("td[data-waybill]").each(function (i, v) {
+            total += Number($(v).html());
+        });
+        total = parseFloat(total).toFixed(2);
+        $("#net_total").html(total);
     }
 };
 $(document).ready(function () {
@@ -46,12 +55,15 @@ $(document).ready(function () {
                         .replaceAll("{{amount}}", v.parcel.amount_due)
                         .replaceAll("{{company_name}}", companyName.toUpperCase())
                         .replaceAll("{{net_amount}}", v.net_amount)
+                        .replaceAll("{{invoice_parcel_id}}", v.id)
                         .replaceAll("{{discount}}", parseFloat(Number(v.discount) * 100).toFixed(2) + '%');
                 });
                 Invoice.Constants.invoiceParcels.html(html + Invoice.Templates.total);
+                Invoice.calculateTotalAmount();
             }
         }, function () {
-            
+            //TODO Handle Errors
+            $("#loading").addClass('hide');
         });
     });
 
@@ -59,6 +71,6 @@ $(document).ready(function () {
         this.value = this.value.replace(/[^0-9\.]/g, '');
     }).on('keyup', "input[data-waybill]", function () {
         Invoice.calculateNetAmount(this);
-        //Invoice.calculateTotalAmount();
+        Invoice.calculateTotalAmount();
     });
 });
