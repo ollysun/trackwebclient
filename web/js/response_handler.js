@@ -3,7 +3,6 @@ var ResponseHandler = function (response) {
 };
 
 ResponseHandler.prototype.isSuccess = function () {
-    console.log(this.response);
     return typeof this.response != 'undefined' &&
         this.response.hasOwnProperty('status') &&
         this.response.status == 'success';

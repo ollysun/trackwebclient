@@ -27,7 +27,8 @@ var Invoice = {
     Templates : {
         invoiceParcel : $("#invoiceParcelTmpl").html(),
         total : $("#invoiceParcelTotalTmpl").html(),
-        viewInvoiceParcels : $("#viewInvoiceParcelsTmpl").html()
+        viewInvoiceParcels : $("#viewInvoiceParcelsTmpl").html(),
+        viewInvoiceTotal : $("#viewInvoiceTotalTmpl").html()
     },
     calculateNetAmount: function (elem) {
         var netAmount = Number($(elem).data('net_amount'));
@@ -111,6 +112,7 @@ $(document).ready(function () {
                                 .replaceAll("{{discount}}", parseFloat(v.discount * 100).toFixed(2))
                                 .replaceAll("{{net_amount}}", v.net_amount);
                 });
+                html += Invoice.Templates.viewInvoiceTotal.replaceAll("{{total}}", invoice.total);
                 Invoice.Constants.viewInvoiceTable.find('tbody').html(html);
             }
         }, function () {
