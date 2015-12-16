@@ -27,49 +27,22 @@ $this->params['breadcrumbs'] = array(
                     <h4 class="modal-title">Generate Credit Note</h4>
                 </div>
                 <div class="modal-body">
-                    <table id="table" class="table table-hover dataTable">
+                    <div id="loading" style="text-align: center;">
+                        <i class="fa fa-spin fa-spinner fa-4x"></i>
+                        <p>Loading invoice parcels...</p>
+                    </div>
+                    <table id="table" class="hide table table-hover dataTable">
                         <thead>
                         <tr>
                             <th style="width: 20px">No.</th>
                             <th>Waybill No.</th>
                             <th>Company Name</th>
                             <th>Amount</th>
-                            <th>Discount (%)</th>
+                            <th>Deducted Amount</th>
                             <th>Net Amount</th>
                         </tr>
                         </thead>
-                        <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>7123456</td>
-                            <td>Delivered</td>
-                            <td>1000</td>
-                            <td>
-                                <input type="text" class="form-control" style="width:50px;" value="15">
-                            </td>
-                            <td>850</td>
-                        </tr>
-
-                        <tr>
-                            <td>2</td>
-                            <td>1234567</td>
-                            <td>Delivered</td>
-                            <td>2000</td>
-                            <td>
-                                <input type="text" class="form-control" style="width:50px;" value="15">
-                            </td>
-                            <td>1700</td>
-                        </tr>
-
-                        <tr>
-                            <td></td>
-                            <td><b>NET TOTAL</b></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td><b>2550</b></td>
-                        </tr>
-
+                        <tbody id="invoiceParcels">
                         </tbody>
                     </table>
                 </div>
@@ -270,7 +243,7 @@ $this->params['breadcrumbs'] = array(
                                 </button>
 
                                 <?php if (is_null(Calypso::getValue($invoice, 'credit_note.id'))): ?>
-                                    <button class="btn btn-primary btn-xs" data-toggle="modal"
+                                    <button data-company_name="<?= Calypso::getValue($invoice, 'company.name'); ?>"  data-invoice_number="<?= Calypso::getValue($invoice, 'invoice_number'); ?>" class="btn btn-primary btn-xs" data-generate_credit_note="true" data-toggle="modal"
                                             data-target="#generateCreditNote">Generate Credit
                                         Note
                                     </button>
@@ -289,6 +262,28 @@ $this->params['breadcrumbs'] = array(
         <?php endif; ?>
     </div>
 </div>
+<script type="text/html" id="invoiceParcelTmpl">
+    <tr>
+        <td>{{index}}</td>
+        <td>{{waybill_number}}</td>
+        <td>{{company_name}}</td>
+        <td>{{amount}}</td>
+        <td>
+            <input type="text" class="form-control" style="width:100px;margin-left: 65px;" value="15">
+        </td>
+        <td>{{net_amount}}</td>
+    </tr>
+</script>
+<script type="text/html" id="invoiceParcelTotalTmpl">
+    <tr>
+        <td></td>
+        <td><b>NET TOTAL</b></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td><b>2550</b></td>
+    </tr>
+</script>
 
 
 <div class="modal fade" id="teller-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -320,3 +315,5 @@ $this->params['breadcrumbs'] = array(
 <?php $this->registerJsFile('@web/js/keyboardFormSubmit.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/form-watch-changes.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/validate.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/finance/invoice.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/response_handler.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
