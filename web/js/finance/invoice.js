@@ -13,11 +13,21 @@ var Invoice = {
     Constants : {
         invoiceParcels : $("#invoiceParcels"),
         invoiceNumber : $("#invoice_number"),
-        invoiceNumberLabel : $("#invoiceNumberLabel")
+        invoiceNumberLabel : $("#invoiceNumberLabel"),
+        view_invoiceNumber : $("#view_invoiceNumber"),
+        view_invoiceAddress : $("#view_invoiceAddress"),
+        view_invoiceTo : $("#view_invoiceTo"),
+        view_reference : $("#view_reference"),
+        view_accountNumber : $("#view_accountNumber"),
+        view_stampDuty : $("#view_stampDuty"),
+        view_currency : $("#view_currency"),
+        viewInvoiceLoading : $("#viewInvoiceLoading"),
+        viewInvoiceTable : $("#viewInvoiceTable")
     },
     Templates : {
         invoiceParcel : $("#invoiceParcelTmpl").html(),
-        total : $("#invoiceParcelTotalTmpl").html()
+        total : $("#invoiceParcelTotalTmpl").html(),
+        viewInvoiceParcels : $("#viewInvoiceParcelsTmpl").html()
     },
     calculateNetAmount: function (elem) {
         var netAmount = Number($(elem).data('net_amount'));
@@ -69,6 +79,43 @@ $(document).ready(function () {
         }, function () {
             //TODO Handle Errors
             $("#loading").addClass('hide');
+            alert('Unable to load invoice parcels');
+        });
+    });
+
+    $("button[data-view_invoice='true']").unbind('click').click(function () {
+        var invoice = $(this).data('invoice');
+        Invoice.Constants.view_invoiceNumber.html(invoice.invoice_number);
+        Invoice.Constants.view_accountNumber.val(invoice.account_number);
+        Invoice.Constants.view_currency.val(invoice.currency);
+        Invoice.Constants.view_invoiceTo.val(invoice.to_address);
+        Invoice.Constants.view_reference.val(invoice.reference);
+        Invoice.Constants.view_invoiceAddress.val(invoice.address);
+        Invoice.Constants.view_stampDuty.val(invoice.stamp_duty);
+
+        Invoice.getInvoiceParcels(invoice.invoice_number, function (data) {
+            Invoice.Constants.viewInvoiceLoading.addClass('hide');
+            Invoice.Constants.viewInvoiceTable.removeClass('hide');
+            var response = new ResponseHandler(data);
+
+            if(response.isSuccess()) {
+                var invoiceParcels = response.getData();
+                var html = "";
+
+                $(invoiceParcels).each(function (i, v) {
+                    html += Invoice.Templates.viewInvoiceParcels
+                                .replaceAll("{{index}}", i  + 1)
+                                .replaceAll("{{waybill_number}}", v.waybill_number)
+                                .replaceAll("{{company_name}}", invoice.company.name.toUpperCase())
+                                .replaceAll("{{amount}}", v.parcel.amount_due)
+                                .replaceAll("{{discount}}", parseFloat(v.discount * 100).toFixed(2))
+                                .replaceAll("{{net_amount}}", v.net_amount);
+                });
+                Invoice.Constants.viewInvoiceTable.find('tbody').html(html);
+            }
+        }, function () {
+            Invoice.Constants.viewInvoiceLoading.addClass('hide');
+            alert('Unable to load invoice parcels');
         });
     });
 

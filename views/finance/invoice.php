@@ -68,10 +68,15 @@ $this->params['breadcrumbs'] = array(
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">58904</h4>
+                    <h4 class="modal-title" id="view_invoiceNumber"></h4>
                 </div>
                 <div class="modal-body">
-                    <table id="table" class="table table-hover dataTable">
+
+                    <div id="viewInvoiceLoading" style="text-align: center;">
+                        <i class="fa fa-spin fa-spinner fa-4x"></i>
+                        <p>Loading invoice parcels...</p>
+                    </div>
+                    <table id="viewInvoiceTable" class="table table-hover dataTable hide">
                         <thead>
                         <tr>
                             <th style="width: 20px">No.</th>
@@ -83,28 +88,6 @@ $this->params['breadcrumbs'] = array(
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>7123456</td>
-                            <td>Delivered</td>
-                            <td>1000</td>
-                            <td>
-                                <input type="text" class="form-control" style="width:50px;" value="15">
-                            </td>
-                            <td>850</td>
-                        </tr>
-
-                        <tr>
-                            <td>2</td>
-                            <td>1234567</td>
-                            <td>Delivered</td>
-                            <td>2000</td>
-                            <td>
-                                <input type="text" class="form-control" style="width:50px;" value="15">
-                            </td>
-                            <td>1700</td>
-                        </tr>
-
                         </tbody>
                     </table>
 
@@ -112,24 +95,17 @@ $this->params['breadcrumbs'] = array(
                         <div class="col-xs-6">
                             <div class="form-group">
                                 <label>Invoice address</label>
-                                <textarea class="form-control" rows="2"></textarea>
-
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox">
-                                        Same as Invoice To
-                                    </label>
-                                </div>
+                                <textarea disabled id="view_invoiceAddress" class="form-control" rows="2"></textarea>
                             </div>
 
                             <div class="form-group">
                                 <label>Invoice To</label>
-                                <textarea class="form-control" rows="2"></textarea>
+                                <textarea disabled id="view_invoiceTo" class="form-control" rows="2"></textarea>
                             </div>
 
                             <div class="form-group">
                                 <label>Reference</label>
-                                <textarea class="form-control" rows="3"></textarea>
+                                <textarea disabled id="view_reference" class="form-control" rows="3"></textarea>
                             </div>
 
                         </div>
@@ -138,22 +114,20 @@ $this->params['breadcrumbs'] = array(
                         <div class="col-xs-6">
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Accont Number</label>
-                                <input type="text" class="form-control">
+                                <input disabled id="view_accountNumber" type="text" class="form-control">
                             </div>
 
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Stamp Duty</label>
-                                <input type="text" class="form-control">
+                                <input disabled id="view_stampDuty" type="text" class="form-control">
                             </div>
 
                             <div class="form-group">
                                 <label>Currency</label> <br>
-                                <select class="form-control">
+                                <select id="view_currency" disabled class="form-control">
                                     <option>NGN</option>
                                 </select>
                             </div>
-
-
                         </div>
                     </div>
 
@@ -241,7 +215,9 @@ $this->params['breadcrumbs'] = array(
                             <td><?= Calypso::getValue($invoice, 'total'); ?></td>
                             <td><?= Calypso::getValue($invoice, 'credit_note.credit_note_number'); ?></td>
                             <td>
-                                <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#viewInvoice">
+                                <button
+                                    data-invoice='<?= json_encode($invoice); ?>'
+                                    data-view_invoice="true" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#viewInvoice">
                                     View
                                 </button>
 
@@ -291,6 +267,19 @@ $this->params['breadcrumbs'] = array(
         <td></td>
         <td></td>
         <td><b id='net_total'></b></td>
+    </tr>
+</script>
+
+<script type="text/html" id="viewInvoiceParcelsTmpl">
+    <tr>
+        <td>{{index}}</td>
+        <td>{{waybill_number}}</td>
+        <td>{{company_name}}</td>
+        <td>{{amount}}</td>
+        <td>
+            <input type="text" disabled class="form-control" style="width:100px;margin-left: 65px;" value="{{discount}}">
+        </td>
+        <td>{{net_amount}}</td>
     </tr>
 </script>
 
