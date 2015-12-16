@@ -541,6 +541,22 @@ class ParcelAdapter extends BaseAdapter
     }
 
     /**
+     * create draft bag
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     * @param $data
+     * @return ResponseHandler
+     */
+    public function confirmDraftBag($data)
+    {
+        $rawResponse = $this->request(ServiceConstant::URL_CONFIRM_DRAFT_BAG, Json::encode($data), self::HTTP_POST);
+        $response = new ResponseHandler($rawResponse);
+        if (!$response->isSuccess()) {
+            $this->lastErrorMessage = $response->getError();
+        }
+        return $response;
+    }
+
+    /**
      * Get's corporate parcels
      * @author Adegoke Obasa <goke@cottacush.com>
      * @param $offset

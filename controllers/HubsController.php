@@ -579,4 +579,26 @@ class HubsController extends BaseController
         $response = $parcelsAdapter->getDraftBagParcels($bag_number);
         return $this->sendSuccessResponse($response);
     }
+
+    /**
+     * Confirm a draft bag
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     */
+    public function actionConfirmdraftbag()
+    {
+        if (!Yii::$app->getRequest()->isPost) {
+            return $this->redirect(Yii::$app->request->referrer);
+        }
+
+        $data = Yii::$app->request->post();
+        $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $response = $parcelsAdapter->confirmDraftBag($data);
+        if ($response->isSuccess()) {
+            $this->flashSuccess('Draft Bag successfully confirmed');
+        } else {
+            $this->flashError($response->getError());
+        }
+
+        return $this->redirect(Yii::$app->request->referrer);
+    }
 }

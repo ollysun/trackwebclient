@@ -57,7 +57,8 @@ $this->params['content_header_button'] = '<button type="button" id="create_draft
                         ?>
                         <tr data-sortnumber='<?= Calypso::getValue($draft_sort, 'sort_number') ?>'
                             data-waybill='<?= Calypso::getValue($draft_sort, 'waybill_number') ?>'
-                            data-nextdestination='<?= ucwords(Calypso::getDisplayValue($draft_sort, 'to_branch.name', '')) ?>'>
+                            data-nextdestination='<?= ucwords(Calypso::getDisplayValue($draft_sort, 'to_branch.name', '')) ?>'
+                            data-tobranchid='<?= Calypso::getValue($draft_sort, 'to_branch.id', '') ?>'>
                             <td>
                                 <?php if (Calypso::getValue($draft_sort, 'waybill_number', false)): ?>
                                     <div class='checkbox-nice'>
@@ -86,8 +87,8 @@ $this->params['content_header_button'] = '<button type="button" id="create_draft
                             </td>
                             <td>
                                 <?php if (!Calypso::getValue($draft_sort, 'waybill_number', false)): ?>
-                                    <button class="btn btn-sm btn-primary bag-action-btn">Confirm/Discard Draft Bag
-                                    </button>
+                                    <button class="btn btn-sm btn-primary confirm-bag-action-btn">Confirm</button>
+                                    <button class="btn btn-sm btn-danger discard-draft-bag-btn">Discard</button>
                                 <?php endif; ?>
                             </td>
                         </tr>
@@ -130,6 +131,17 @@ $this->params['content_header_button'] = '<button type="button" id="create_draft
                         </select>
                     </div>
                 </div>
+
+
+                <div class="seal-details hide">
+                    <p>Seal ID</p>
+                    <div class="row">
+                        <div class="col-xs-6 form-group">
+                            <input class="form-control" type="text" id="seal_id"/>
+                        </div>
+                    </div>
+                </div>
+
                 <hr/>
                 <table class="table table-bordered table-condensed" id="bag_parcels_table">
                     <thead>
@@ -143,10 +155,9 @@ $this->params['content_header_button'] = '<button type="button" id="create_draft
                 </table>
             </div>
             <div class="modal-footer">
-                <div>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary" id="create_draft_bag_btn">Create Draft Bag</button>
-                </div>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-primary" id="create_draft_bag_btn">Create Draft Bag</button>
+                <button type="submit" class="btn btn-primary hide" id="confirm_draft_bag_btn">Confirm</button>
             </div>
         </div>
     </div>
