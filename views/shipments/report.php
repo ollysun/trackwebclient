@@ -39,11 +39,11 @@ $this->params['content_header_button'] = "<a href='".$downloadURL."' class='btn 
                             <input name="end_modified_date" class="form-control date-range" data-provide="datepicker" data-date-format="yyyy/mm/dd" data-date-end-date="0d" value="<?= $end_modified_date;?>">
                          </div>
                         <div class="pull-left form-group form-group-sm">
-                            <label for="">Min. Weight (KG)</label><br>
+                            <label for="">Min. WG/PC</label><br>
                             <input name="min_weight" class="form-control date-range" value="<?= $filters['min_weight'];?>">
                         </div>
                         <div class="pull-left form-group form-group-sm">
-                            <label for="">Max. Weight (KG)</label><br>
+                            <label for="">Max. WG/PC</label><br>
                             <input name="max_weight" class="form-control date-range" value="<?= $filters['max_weight'];?>">
                         </div>
                         <div class="pull-left form-group form-group-sm">

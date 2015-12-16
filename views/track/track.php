@@ -35,13 +35,13 @@ $this->title = 'Tracking Portal';
                 class="tracking-info-value"><?= ucfirst(Calypso::getDisplayValue($tracking_info, 'receiver.firstname', '')) . " " . ucfirst(Calypso::getDisplayValue($tracking_info, 'receiver.lastname', '')) ?></div>
         </div>
         <div class="col-xs-4">
-            <label class="tracking-info-label">Pieces</label>
+            <label class="tracking-info-label">Packages</label>
 
             <div
                 class="tracking-info-value"><?= Calypso::getDisplayValue($tracking_info, 'parcel.no_of_package', 'N/A') ?></div>
         </div>
         <div class="col-xs-4">
-            <label class="tracking-info-label">Weight</label>
+            <label class="tracking-info-label">Weight/Piece</label>
 
             <div class="tracking-info-value"><?= Calypso::getDisplayValue($tracking_info, 'parcel.weight', 'N/A') ?>Kg
             </div>

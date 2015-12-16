@@ -103,8 +103,8 @@ $this->params['content_header_button'] = '<button onclick="javascript:window.ope
                             </div>
                         </th>
                         <th>WAYBILL NO</th>
-                        <th width="10%">PCS</th>
-                        <th width="10%">Weight</th>
+                        <th width="10%">PCKGS</th>
+                        <th width="10%">Weight/Piece</th>
                     </tr>
                     </thead>
                     <tbody>

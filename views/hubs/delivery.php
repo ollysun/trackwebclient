@@ -101,7 +101,7 @@ $user_data = $this->context->userData;
                         <th>Final Destination</th>
                         <th>Request Type</th>
                         <th>Return Status</th>
-                        <th>Weight (Kg)</th>
+                        <th>Weight/Piece</th>
                         <?php if($user_data['role_id'] == ServiceConstant::USER_TYPE_ADMIN) { ?>
                             <th>Originating Branch</th>
                             <th>Current Location</th>
