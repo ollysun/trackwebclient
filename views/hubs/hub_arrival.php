@@ -79,7 +79,7 @@ $this->params['breadcrumbs'] = array(
                     <th>Final Destination</th>
                     <th>Request Type</th>
                     <th>Return Status</th>
-                    <th>Weight (Kg)</th>
+                    <th>Weight/Piece</th>
                 </tr>
                 </thead>
                 <tbody>

@@ -98,7 +98,7 @@ $this->params['breadcrumbs'] = [['label' => 'Sorted Shipments']];
                         <th>Final Destination</th>
                         <th>Request Type</th>
                         <th>Return Status</th>
-                        <th>Weight (Kg)</th>
+                        <th>Weight/Piece</th>
                         <th>Age analysis</th>
                     </tr>
                     </thead>

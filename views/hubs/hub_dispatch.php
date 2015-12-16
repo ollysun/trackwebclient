@@ -84,7 +84,7 @@ $this->params['breadcrumbs'] = array(
                         <th>Waybill No</th>
                         <th>Origin</th>
                         <th>Destination</th>
-                        <th>Weight</th>
+                        <th>Weight/Piece</th>
                         <th>Sweeper</th>
                         <th>Return Status</th>
                         <th>Age analysis</th>

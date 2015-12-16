@@ -62,8 +62,8 @@ $this->title = 'Invoices';
             <tr>
                 <th>Volumes Summary For Period</th>
                 <th>Total Shipments</th>
-                <th>Total Pieces</th>
-                <th>Total Weight</th>
+                <th>Total Packages</th>
+                <th>Total Weight/Piece</th>
                 <th>Base</th>
                 <th>Disc</th>
                 <th>Total EXCLUDING VAT</th>
