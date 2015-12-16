@@ -282,7 +282,6 @@ $this->params['breadcrumbs'] = array(
         <td>{{net_amount}}</td>
     </tr>
 </script>
-=
 <script type="text/html" id="viewInvoiceTotalTmpl">
     <tr>
         <td></td>
