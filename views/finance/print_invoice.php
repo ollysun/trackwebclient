@@ -23,10 +23,10 @@ $this->title = 'Invoices';
         <tbody>
             <tr>
                 <td height="120px">
-                    <?= ucfirst(Calypso::getValue($invoice, 'address'));?>
+                    <?= ucwords(Calypso::getValue($invoice, 'address'));?>
                 </td>
                 <td>
-                    <?= ucfirst(Calypso::getValue($invoice, 'to_address'));?>
+                    <?= ucwords(Calypso::getValue($invoice, 'to_address'));?>
                 </td>
             </tr>
             <tr>
@@ -131,7 +131,7 @@ $this->title = 'Invoices';
     </table>
 
     <div>
-        <strong>Amount In Words NGN : <?= ucfirst(Util::convert_number_to_words(Calypso::getValue($invoice, 'total_to_pay')));?></strong>
+        <strong>Amount In Words NGN : <?= ucwords(Util::convert_number_to_words(Calypso::getValue($invoice, 'total_to_pay_naira'))) . ' Naira';?> <?= ucwords(Util::convert_number_to_words(Calypso::getValue($invoice, 'total_to_pay_kobo'))) . ' Kobo';?></strong>
         <div class="small">
             Any queries on this invoice should be notified in writing within 7 days from date of invoice <br>
             This invoice is payable strictly within 0 days from date of invoice. <br>

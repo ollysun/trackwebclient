@@ -316,6 +316,8 @@ class FinanceController extends BaseController
         $invoice['new_total_net'] = $newTotalNet;
         $invoice['total_shipments'] = count($invoiceParcels);
         $invoice['total_to_pay'] = $invoice['st_standard_vat'] + $newTotalNet;
+        $invoice['total_to_pay_naira'] = round($invoice['st_standard_vat'] + $newTotalNet, 0, PHP_ROUND_HALF_DOWN);
+        $invoice['total_to_pay_kobo'] = ($invoice['total_to_pay'] -  $invoice['total_to_pay_naira']) * 100;
 
         $this->layout = 'print';
 
