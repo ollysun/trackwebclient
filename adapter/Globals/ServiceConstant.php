@@ -16,12 +16,6 @@ class ServiceConstant
     const USER_TYPE_GROUNDSMAN = 5;
     const USER_TYPE_COMPANY_ADMIN = 6;
     const USER_TYPE_COMPANY_OFFICER = 7;
-    /*const USER_TYPE_MANAGER = 2;
-    const USER_TYPE_CASHIER = 3;
-    const USER_TYPE_AGENT = 4;
-    const USER_TYPE_CUSTOMER = 5;
-    const USER_TYPE_SUPPORT = 6;
-    const USER_TYPE_ACCOUNTANT = 7;*/
 
     const ENTITY_TYPE_NORMAL = 1;
     const ENTITY_TYPE_BAG = 2;

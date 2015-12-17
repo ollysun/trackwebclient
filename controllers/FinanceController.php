@@ -292,6 +292,15 @@ class FinanceController extends BaseController
         $invoice = $invoiceAdapter->getInvoice($filters);
         $invoiceParcels = $invoiceAdapter->getInvoiceParcels($filters);
 
+        // Hack starts
+        $tempInvoiceParcels = $invoiceParcels;
+        $invoiceParcels = [];
+
+        for($i = 0; $i < 50; $i++) {
+            $invoiceParcels[] = Calypso::getValue($tempInvoiceParcels, "$i", $tempInvoiceParcels[0]);
+        }
+        // Hack ends
+
         $totalWeight = 0;
         $totalPieces = 0;
         $base = 0;
@@ -316,8 +325,9 @@ class FinanceController extends BaseController
         $invoice['new_total_net'] = $newTotalNet;
         $invoice['total_shipments'] = count($invoiceParcels);
         $invoice['total_to_pay'] = $invoice['st_standard_vat'] + $newTotalNet;
-        $invoice['total_to_pay_naira'] = round($invoice['st_standard_vat'] + $newTotalNet, 0, PHP_ROUND_HALF_DOWN);
-        $invoice['total_to_pay_kobo'] = (int) (($invoice['total_to_pay'] -  $invoice['total_to_pay_naira']) * 100);
+        $invoice['total_to_pay_naira'] = (int) ($invoice['st_standard_vat'] + $newTotalNet);
+        $koboValue = $invoice['total_to_pay'] -  floatval($invoice['total_to_pay_naira']);
+        $invoice['total_to_pay_kobo'] = round($koboValue * 100);
 
         $this->layout = 'print';
 

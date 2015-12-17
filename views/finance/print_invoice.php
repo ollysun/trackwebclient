@@ -160,7 +160,7 @@ $this->title = 'Invoices';
         </div>
         <h4 class="text-center">Please Raise Cheque In The Name of (COURIERPLUS SERVICES LIMITED)</h4>
         <em>Please detach below this line and send through the business manager or our courier to our finance department</em>
-        <hr class="dashed-line"></hr>
+        <hr class="dashed-line"/>
         <h4 class="text-center text-capitalize">PAYMENT NOTIFICATION SLIP/PAYMENT ADVICE</h4>
         <div class="row">
             <div class="col-xs-6">
