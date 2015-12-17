@@ -126,7 +126,7 @@ class HubsController extends BaseController
 
         $user_session = Calypso::getInstance()->session("user_session");
         $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $arrival_parcels = $parcelsAdapter->getParcelsForNextDestination(ServiceConstant::FOR_ARRIVAL, null, $user_session['branch_id'], null, $viewData['offset'], $viewData['page_width'], 1);
+        $arrival_parcels = $parcelsAdapter->getParcelsForNextDestination(ServiceConstant::FOR_ARRIVAL, null, $this->branch_to_view, null, $viewData['offset'], $viewData['page_width'], 1);
         if ($arrival_parcels['status'] === ResponseHandler::STATUS_OK) {
             $viewData['parcel_next'] = $arrival_parcels['data']['parcels'];
             $viewData['total_count'] = $arrival_parcels['data']['total_count'];
@@ -153,7 +153,7 @@ class HubsController extends BaseController
         $hub_list = $hubs->getStatus() == ResponseHandler::STATUS_OK ? $hubs->getData() : [];
 
         $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $dispatch_parcels = $parcelsAdapter->getDispatchedParcels($from_branch_id, $to_branch_id, $from_date . ' 000:00:00', $to_date . ' 23:59:59', ServiceConstant::IN_TRANSIT);
+        $dispatch_parcels = $parcelsAdapter->getDispatchedParcels($this->branch_to_view, $to_branch_id, $from_date . ' 00:00:00', $to_date . ' 23:59:59', ServiceConstant::IN_TRANSIT);
         $parcels = new ResponseHandler($dispatch_parcels);
         $parcel_list = $parcels->getStatus() == ResponseHandler::STATUS_OK ? $parcels->getData() : [];
 
@@ -296,7 +296,7 @@ class HubsController extends BaseController
 
         $user_session = Calypso::getInstance()->session("user_session");
         $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $for_delivery_parcels = $parcelsAdapter->getParcelsForNextDestination(ServiceConstant::FOR_SWEEPER, $user_session['branch_id'], $to_branch_id, null, $viewData['offset'], $viewData['page_width'], 1);
+        $for_delivery_parcels = $parcelsAdapter->getParcelsForNextDestination(ServiceConstant::FOR_SWEEPER, $this->branch_to_view, $to_branch_id, null, $viewData['offset'], $viewData['page_width'], 1);
         if ($for_delivery_parcels['status'] === ResponseHandler::STATUS_OK) {
             $viewData['parcel_delivery'] = $for_delivery_parcels['data']['parcels'];
             $viewData['total_count'] = $for_delivery_parcels['data']['total_count'];
@@ -320,7 +320,7 @@ class HubsController extends BaseController
 
         $user_session = Calypso::getInstance()->session("user_session");
         $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $in_transit_parcels = $parcelsAdapter->getParcelsForNextDestination(ServiceConstant::IN_TRANSIT, $user_session['branch_id'], $data['to_branch_id'], $data['held_by_id']);
+        $in_transit_parcels = $parcelsAdapter->getParcelsForNextDestination(ServiceConstant::IN_TRANSIT, $this->branch_to_view, $data['to_branch_id'], $data['held_by_id']);
         if ($in_transit_parcels['status'] === ResponseHandler::STATUS_OK) {
             $viewData['parcel_delivery'] = $in_transit_parcels['data'];
 
