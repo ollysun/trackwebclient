@@ -556,7 +556,7 @@ $this->title = 'Invoices';
                     </tr>
                     <tr>
                         <td colspan="15">INVOICE VALUE</td>
-                        <td class="invoice-total-amt-cell is-double-bordered"><?=  number_format(Calypso::getValue($invoice, 'new_total_net'), 2)?></td>
+                        <td class="invoice-total-amt-cell is-double-bordered"><?=  number_format(Calypso::getValue($invoice, 'total_excluding_vat'), 2)?></td>
                     </tr>
                     <tr>
                         <td colspan="15">Add 5% VAT</td>
