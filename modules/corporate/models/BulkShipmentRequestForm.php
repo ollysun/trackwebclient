@@ -21,7 +21,7 @@ class BulkShipmentRequestForm extends Model
 {
 
     const MAX_ROWS = 1000;
-    const MIN_ROWS = 2;
+    const MIN_ROWS = 1;
     /** @var  UploadedFile */
     public $dataFile;
 
@@ -32,9 +32,8 @@ class BulkShipmentRequestForm extends Model
     public function rules()
     {
         return [
-            ['dataFile', 'file', 'skipOnEmpty' => false, 'extensions' => 'csv', 'maxSize' => 1000000, 'checkExtensionByMimeType' => false],
+            ['dataFile', 'file', 'skipOnEmpty' => false, 'mimeTypes' => ['text/csv', 'text/plain'], 'maxSize' => 1000000, 'checkExtensionByMimeType' => true, 'wrongMimeType' => 'Invalid File uploaded. Please upload a valid CSV file.'],
             ['dataFile', 'validateRows']
-
         ];
     }
 
@@ -50,7 +49,7 @@ class BulkShipmentRequestForm extends Model
             $batchData = [];
             $keys = ['receiver_firstname', 'receiver_lastname', 'receiver_phone_number', 'receiver_email',
                 'receiver_address', 'receiver_state_id', 'receiver_city_id', 'receiver_company_name', 'no_of_packages',
-                'estimated_weight', 'parcel_value', 'cash_on_delivery', 'reference_number', 'parcel_description'];
+                'estimated_weight', 'parcel_value', 'cash_on_delivery', 'reference_number', 'description'];
 
             foreach ($rows as $row) {
                 $row = Util::swapKeys($row, $keys);
@@ -184,7 +183,7 @@ class BulkShipmentRequestForm extends Model
             return false;
         }
 
-        if (count($contents) < self::MIN_ROWS) {
+        if (count($contents) < self:: MIN_ROWS) {
             $this->addError($attribute, 'No requests in data file. Please add shipment requests');
             return false;
         }
