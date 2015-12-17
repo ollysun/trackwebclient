@@ -232,6 +232,10 @@ $(document).ready(function () {
         ExpectedShipment.discardSortings(sort_number);
     });
 
+    ExpectedShipment.constants.create_draft_bag_modal.on('hidden.bs.modal', function () {
+        ExpectedShipment.resetModal();
+    });
+
     ExpectedShipment.constants.modal_confirm_draft_bag_btn.unbind('click').click(function () {
         var sort_number = ExpectedShipment.constants.create_draft_bag_modal.data('sortnumber');
         var to_branch_id = ExpectedShipment.constants.create_draft_bag_modal.data('tobranchid');
