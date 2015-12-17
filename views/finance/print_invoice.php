@@ -207,7 +207,7 @@ $this->title = 'Invoices';
     <?= $this->render('../elements/finance/print_header'); ?>
     <div class="rotate-wrap">
         <div class="rotate">
-            <h4 class="text-center">Invoice No: </h4>
+            <h4 class="text-center">Invoice No: <?= Calypso::getValue($invoice, 'invoice_number');?></h4>
             <table class="table table-bordered is-double-bordered">
                 <thead>
                     <tr class="is-double-bordered">
@@ -556,19 +556,19 @@ $this->title = 'Invoices';
                     </tr>
                     <tr>
                         <td colspan="15">INVOICE VALUE</td>
-                        <td class="invoice-total-amt-cell is-double-bordered"></td>
+                        <td class="invoice-total-amt-cell is-double-bordered"><?=  number_format(Calypso::getValue($invoice, 'new_total_net'), 2)?></td>
                     </tr>
                     <tr>
                         <td colspan="15">Add 5% VAT</td>
-                        <td class="invoice-total-amt-cell is-double-bordered"></td>
+                        <td class="invoice-total-amt-cell is-double-bordered"><?=  number_format(Calypso::getValue($invoice, 'st_standard_vat'), 2)?></td>
                     </tr>
                     <tr>
                         <td colspan="15">Stamp Duty Charge</td>
-                        <td class="invoice-total-amt-cell is-double-bordered"></td>
+                        <td class="invoice-total-amt-cell is-double-bordered"><?=  number_format(Calypso::getValue($invoice, 'stamp_duty'), 2)?></td>
                     </tr>
                     <tr class="double-border">
                         <td colspan="15"><strong>AMOUNT DUE</strong></td>
-                        <td class="invoice-total-amt-cell is-double-bordered"></td>
+                        <td class="invoice-total-amt-cell is-double-bordered"><?=  number_format(Calypso::getValue($invoice, 'total_to_pay'), 2)?></td>
                     </tr>
                 </tbody>
             </table>
