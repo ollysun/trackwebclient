@@ -183,7 +183,7 @@ class BulkShipmentRequestForm extends Model
             return false;
         }
 
-        if (count($contents) < self:: MIN_ROWS) {
+        if (count($contents) < self::MIN_ROWS) {
             $this->addError($attribute, 'No requests in data file. Please add shipment requests');
             return false;
         }
