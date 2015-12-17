@@ -77,7 +77,7 @@ class ServiceConstant
     const URL_CONFIRM_SORT = '/parcel/confirmsort';
     const URL_GET_DRAFT_SORTS = '/parcel/getdraftsorts';
     const URL_CREATE_DRAFT_BAG = '/parcel/createdraftbag';
-    const URL_CONFIRM_DRAFT_BAG = '/parcel/confirmdraftbag?XDEBUG_SESSION_START=PHPSTORM';
+    const URL_CONFIRM_DRAFT_BAG = '/parcel/confirmdraftbag';
 
     const URL_GET_ALL_BANKS = 'bank/getAll/';
 
