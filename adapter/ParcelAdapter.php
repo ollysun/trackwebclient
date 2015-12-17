@@ -84,8 +84,7 @@ class ParcelAdapter extends BaseAdapter
             'with_receiver_address' => 1,
             'with_to_branch' => 1,
             'offset' => $offset,
-            'count' => $count,
-            'to_branch_id' => $branch_id
+            'count' => $count
         );
         $params = http_build_query($filters);
         return $this->request(ServiceConstant::URL_GET_ALL_PARCEL.'?'.$params, array(), self::HTTP_GET);
