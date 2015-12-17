@@ -157,7 +157,7 @@ class ShipmentsController extends BaseController
             $response = $parcel->getSearchParcels(null, $search, $offset, $page_width, 1, $this->branch_to_view);
             $search_action = true;
         } else {
-            $response = $parcel->getParcelsForDelivery(null, null, ServiceConstant::FOR_DELIVERY, $this->branch_to_view, $offset, $page_width, null, 1, null, $route_id, true);
+            $response = $parcel->getParcelsForDelivery(null, null, ServiceConstant::FOR_DELIVERY, $this->branch_to_view, $offset, $page_width, true, 1, null, $route_id, true);
             $search_action = false;
         }
         $response = new ResponseHandler($response);
@@ -237,7 +237,7 @@ class ShipmentsController extends BaseController
             $response = $parcel->getSearchParcels(null, $search, $offset, $page_width, 1, $this->branch_to_view);
             $search_action = $search;
         } else {
-            $response = $parcel->getParcels(null, null, ServiceConstant::FOR_SWEEPER, $this->branch_to_view, $offset, $page_width, null, 1);
+            $response = $parcel->getParcels(null, null, ServiceConstant::FOR_SWEEPER, $this->branch_to_view, $offset, $page_width, 1, 1, null, true);
             $search_action = false;
         }
         $response = new ResponseHandler($response);
@@ -325,7 +325,7 @@ class ShipmentsController extends BaseController
             $from_date = Calypso::getInstance()->get()->from;
             $to_date = Calypso::getInstance()->get()->to;
             $filter = null;
-            $response = $parcel->getFilterParcelsByDateAndStatus($from_date . ' 00:00:00', $to_date . ' 23:59:59', $filter, $offset, $this->page_width, 1, $this->branch_to_view, null, null, true);
+            $response = $parcel->getFilterParcelsByDateAndStatus($from_date . ' 00:00:00', $to_date . ' 23:59:59', $filter, $offset, $this->page_width, 1, $this->branch_to_view, null, true);
             $search_action = true;
 
         } elseif (!empty(Calypso::getInstance()->get()->search)) {  //check if not empty criteria
@@ -640,7 +640,7 @@ class ShipmentsController extends BaseController
         }
 
         $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $delivered_parcels = $parcelsAdapter->getDeliveredParcels($this->branch_to_view, $offset, $page_width, $from_date . '%2000:00:00', $to_date . '%2023:59:59');
+        $delivered_parcels = $parcelsAdapter->getDeliveredParcels($this->branch_to_view, $offset, $page_width, $from_date . ' 00:00:00', $to_date . ' 23:59:59');
         $parcelsHandler = new ResponseHandler($delivered_parcels);
         $total_count = 0;
         $parcels = [];
