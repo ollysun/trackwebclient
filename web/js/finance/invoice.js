@@ -22,7 +22,8 @@ var Invoice = {
         view_stampDuty : $("#view_stampDuty"),
         view_currency : $("#view_currency"),
         viewInvoiceLoading : $("#viewInvoiceLoading"),
-        viewInvoiceTable : $("#viewInvoiceTable")
+        viewInvoiceTable : $("#viewInvoiceTable"),
+        viewPrintInvoice : $("#viewPrintInvoice"),
     },
     Templates : {
         invoiceParcel : $("#invoiceParcelTmpl").html(),
@@ -93,6 +94,7 @@ $(document).ready(function () {
         Invoice.Constants.view_reference.val(invoice.reference);
         Invoice.Constants.view_invoiceAddress.val(invoice.address);
         Invoice.Constants.view_stampDuty.val(invoice.stamp_duty);
+        Invoice.Constants.viewPrintInvoice.prop('href', '/finance/printinvoice?invoice_number=' + invoice.invoice_number);
 
         Invoice.getInvoiceParcels(invoice.invoice_number, function (data) {
             Invoice.Constants.viewInvoiceLoading.addClass('hide');

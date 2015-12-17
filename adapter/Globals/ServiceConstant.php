@@ -237,6 +237,7 @@ class ServiceConstant
 
     const TRUE = 1;
     const FALSE = 0;
+    const DEFAULT_VAT_RATE = 5;
 
     public static function getStatus($status)
     {

@@ -1,4 +1,5 @@
 <?php
+use Adapter\Util\Util;
 use yii\helpers\Html;
 use Adapter\Util\Calypso;
 use yii\helpers\Url;
@@ -22,14 +23,10 @@ $this->title = 'Invoices';
         <tbody>
             <tr>
                 <td height="120px">
-                    ARM PENSIONS MANAGERS (PFA) LIMITED<br>
-                    5, MEKUNWEN ROAD, OFF OYINKAN ABAYOMI DRIVE, IKOYI<br>
-                    LAGOS, NIGERIA
+                    <?= ucfirst(Calypso::getValue($invoice, 'address'));?>
                 </td>
                 <td>
-                    ARM PENSIONS MANAGERS (PFA) LIMITED<br>
-                    5, MEKUNWEN ROAD, OFF OYINKAN ABAYOMI DRIVE, IKOYI<br>
-                    LAGOS, NIGERIA
+                    <?= ucfirst(Calypso::getValue($invoice, 'to_address'));?>
                 </td>
             </tr>
             <tr>
@@ -42,22 +39,22 @@ $this->title = 'Invoices';
         <tbody>
             <tr>
                 <td width="25%">Account Number</td>
-                <td width="25%">3030010029</td>
+                <td width="25%"><?= Calypso::getValue($invoice, 'account_number');?></td>
                 <td width="25%">Document Date</td>
-                <td width="25%">31/10/2015</td>
+                <td width="25%"><?= Calypso::getValue($invoice, 'current_date');?></td>
             </tr>
             <tr>
                 <td>Document Number</td>
-                <td>INV 20154796</td>
+                <td><?= Calypso::getValue($invoice, 'invoice_number');?></td>
                 <td>VAT Date</td>
-                <td>31/10/2015</td>
+                <td><?= Calypso::getValue($invoice, 'current_date');?></td>
             </tr>
         </tbody>
     </table>
     <table class="table is-bordered">
         <thead class="text-center">
             <tr>
-                <th colspan="7">For services rendered up to the 31/10/2015 - as per Specifications enclosed</th>
+                <th colspan="7">For services rendered up to the <?= Calypso::getValue($invoice, 'current_date');?> - as per Specifications enclosed</th>
             </tr>
             <tr>
                 <th>Volumes Summary For Period</th>
@@ -72,20 +69,20 @@ $this->title = 'Invoices';
         <tbody>
             <tr class="double-border">
                 <td>SUB-TOTAL ALL Services (excluding Surcharge)</td>
-                <td>113</td>
-                <td>212</td>
-                <td>1535.09</td>
-                <td class="invoice-amt-cell">633188.05 NGN</td>
-                <td class="invoice-amt-cell">-78183.60 NGN</td>
-                <td class="text-right invoice-total-amt-cell">554935.25 NGN</td>
+                <td><?= Calypso::getValue($invoice, 'total_shipments');?></td>
+                <td><?= Calypso::getValue($invoice, 'total_pieces');?></td>
+                <td><?= number_format(Calypso::getValue($invoice, 'total_weight'), 1);?></td>
+                <td class="invoice-amt-cell"><?= number_format(Calypso::getValue($invoice, 'base'), 2);?> NGN</td>
+                <td class="invoice-amt-cell"><?= number_format(Calypso::getValue($invoice, 'discount'), 2);?> NGN</td>
+                <td class="text-right invoice-total-amt-cell"><?= number_format(Calypso::getValue($invoice, 'total_excluding_vat'), 2);?> NGN</td>
             </tr>
             <tr class="double-border">
                 <td colspan="6">Stamp duty charge</td>
-                <td class="text-right invoice-total-amt-cell">50.00 NGN</td>
+                <td class="text-right invoice-total-amt-cell"><?= number_format(Calypso::getValue($invoice, 'stamp_duty'), 2);?> NGN</td>
             </tr>
             <tr class="double-border">
                 <td colspan="6">NET TOTAL NET (Including Surcharge)</td>
-                <td class="text-right invoice-total-amt-cell">554985.25 NGN</td>
+                <td class="text-right invoice-total-amt-cell"><?= number_format(Calypso::getValue($invoice, 'new_total_net'), 2);?> NGN</td>
             </tr>
         </tbody>
     </table>
@@ -96,8 +93,8 @@ $this->title = 'Invoices';
                 <td>ST STANDARD</td>
                 <td>5.00</td>
                 <td class="text-right">Base</td>
-                <td class="invoice-amt-cell">554935.25 NGN</td>
-                <td class="invoice-amt-cell">27746.76 NGN</td>
+                <td class="invoice-amt-cell"><?= number_format(Calypso::getValue($invoice, 'total_excluding_vat'), 2);?> NGN</td>
+                <td class="invoice-amt-cell"><?= number_format(Calypso::getValue($invoice, 'st_standard_vat'), 2);?> NGN</td>
                 <td class="invoice-total-amt-cell"></td>
             </tr>
             <tr>
@@ -105,7 +102,7 @@ $this->title = 'Invoices';
                 <td>XR EXEMPTED</td>
                 <td></td>
                 <td class="text-right">Base</td>
-                <td class="invoice-amt-cell">50.00 NGN</td>
+                <td class="invoice-amt-cell"><?= number_format(Calypso::getValue($invoice, 'stamp_duty'), 2);?> NGN</td>
                 <td class="invoice-amt-cell">0.00 NGN</td>
                 <td class="invoice-total-amt-cell"></td>
             </tr>
@@ -114,8 +111,8 @@ $this->title = 'Invoices';
                 <td></td>
                 <td></td>
                 <td class="text-right">Base</td>
-                <td class="invoice-amt-cell">554935.25 NGN</td>
-                <td class="invoice-amt-cell">27746.76 NGN</td>
+                <td class="invoice-amt-cell"><?= number_format(Calypso::getValue($invoice, 'total_excluding_vat'), 2);?> NGN</td>
+                <td class="invoice-amt-cell"><?= number_format(Calypso::getValue($invoice, 'st_standard_vat'), 2);?> NGN</td>
                 <td class="invoice-total-amt-cell"></td>
             </tr>
         </tbody>
@@ -124,17 +121,17 @@ $this->title = 'Invoices';
         <tbody>
             <tr>
                 <td><strong>VAT Total</strong></td>
-                <td class="invoice-total-amt-cell">27746.76 NGN</td>
+                <td class="invoice-total-amt-cell"><?= number_format(Calypso::getValue($invoice, 'st_standard_vat'), 2);?> NGN</td>
             </tr>
             <tr class="double-border">
                 <td><strong>TOTAL TO PAY (VAT Included)</strong></td>
-                <td class="invoice-total-amt-cell">582732.01 NGN</td>
+                <td class="invoice-total-amt-cell"><?= number_format(Calypso::getValue($invoice, 'total_to_pay'), 2);?> NGN</td>
             </tr>
         </tbody>
     </table>
 
     <div>
-        <strong>Amount In Words NGN : five* eight* two* seven* three* two* 1/100</strong>
+        <strong>Amount In Words NGN : <?= ucfirst(Util::convert_number_to_words(Calypso::getValue($invoice, 'total_to_pay')));?></strong>
         <div class="small">
             Any queries on this invoice should be notified in writing within 7 days from date of invoice <br>
             This invoice is payable strictly within 0 days from date of invoice. <br>
@@ -142,7 +139,6 @@ $this->title = 'Invoices';
             VAT NO : ISV10-002799562 <br>
             TIN NO : 03303688-0001 <br>
             A/C NO : 0046001502 (Access Bank Plc) <br><br>
-            LEV: 554935.25; <br>
         </div>
     </div>
     <div class="invoice-middle-separator"></div>
@@ -188,7 +184,7 @@ $this->title = 'Invoices';
             <div class="col-xs-6">
                 <div class="fill-in">
                     <span class="fill-in-label">Payment Date</span>
-                    <div class="fill-in-answer">seisoe</div>
+                    <div class="fill-in-answer"></div>
                 </div>
             </div>
         </div>
@@ -219,14 +215,14 @@ $this->title = 'Invoices';
                         <th>HAWB</th>
                         <th>Credit Note ID</th>
                         <th>PU Date</th>
+                        <th>Reference - City</th>
                         <th>Reference</th>
-                        <th>Reference</th>
-                        <th>Conee</th>
+                        <th>Consignee</th>
                         <th>Address</th>
                         <th>Origin</th>
                         <th>Town</th>
                         <th>Credit note description</th>
-                        <th>Weight</th>
+                        <th>Weight/Piece</th>
                         <th>Description</th>
                         <th>Actual</th>
                         <th>Credit note</th>

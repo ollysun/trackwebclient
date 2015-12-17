@@ -133,8 +133,8 @@ $this->params['breadcrumbs'] = array(
 
                 </div>
                 <div class="modal-footer">
-                    <a href="#">
-                        <button type="button" class="btn btn-primary">Print</button>
+                    <a id="viewPrintInvoice" href="#" class="btn btn-primary">
+                        Print
                     </a>
                 </div>
             </div>
