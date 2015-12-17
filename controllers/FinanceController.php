@@ -290,16 +290,13 @@ class FinanceController extends BaseController
         $invoiceAdapter = new InvoiceAdapter();
         $filters = ['invoice_number' => $invoice_number];
         $invoice = $invoiceAdapter->getInvoice($filters);
-        $invoiceParcels = $invoiceAdapter->getInvoiceParcels($filters);
-
-        // Hack starts
-        $tempInvoiceParcels = $invoiceParcels;
-        $invoiceParcels = [];
-
-        for($i = 0; $i < 50; $i++) {
-            $invoiceParcels[] = Calypso::getValue($tempInvoiceParcels, "$i", $tempInvoiceParcels[0]);
-        }
-        // Hack ends
+        $invoiceParcels = $invoiceAdapter->getInvoiceParcels(array_merge($filters, [
+            'with_receiver_address' => 1,
+            'with_receiver' => 1,
+            'with_receiver_city' => 1,
+            'with_sender_address' => 1,
+            'with_sender_city' => 1
+            ]));
 
         $totalWeight = 0;
         $totalPieces = 0;
@@ -330,8 +327,7 @@ class FinanceController extends BaseController
         $invoice['total_to_pay_kobo'] = round($koboValue * 100);
 
         $this->layout = 'print';
-
-        return $this->render('print_invoice', ['invoice' => $invoice]);
+        return $this->render('print_invoice', ['invoice' => $invoice, 'invoiceParcels' => $invoiceParcels]);
     }
 
     /**
