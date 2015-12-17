@@ -4,6 +4,7 @@ use yii\helpers\Url;
 use Adapter\Globals\ServiceConstant;
 use Adapter\Util\Calypso;
 use yii\web\View;
+use Adapter\ParcelAdapter;
 
 
 $this->title = 'Shipments: Due for Delivery';
@@ -119,6 +120,10 @@ $is_hub = $user['branch']['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
                     <th>Delivery Route</th>
                     <th>Return Status</th>
                     <th>Delivery Status</th>
+                    <?php if($user['role_id'] == ServiceConstant::USER_TYPE_ADMIN) { ?>
+                        <th>Originating Branch</th>
+                        <th>Current Location</th>
+                    <?php } ?>
                     <th>Age analysis</th>
                     <th>Action</th>
                 </tr>
@@ -138,6 +143,10 @@ $is_hub = $user['branch']['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
                             <td><?= $parcel['route']['name'];?></td>
                             <td><?= ServiceConstant::getReturnStatus($parcel); ?></td>
                             <td><?= ucwords(ServiceConstant::getDeliveryType($parcel['delivery_type'])); ?></td>
+                            <?php if($user['role_id'] == ServiceConstant::USER_TYPE_ADMIN) { ?>
+                                <td><?= strtoupper(Calypso::getValue($parcel, "created_branch.name")) ?></td>
+                                <td><?= ParcelAdapter::getCurrentLocation($parcel); ?></td>
+                            <?php } ?>
                             <td></td>
                             <td>
                                 <a href="<?= Url::toRoute(['/shipments/view?waybill_number='.$parcel['waybill_number']]) ?>" class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i> View</a>

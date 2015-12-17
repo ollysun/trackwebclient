@@ -269,6 +269,9 @@ class ServiceConstant
             case ServiceConstant::BEING_DELIVERED:
                 return 'In Transit to Customer';
                 break;
+            case ServiceConstant::ASSIGNED_TO_GROUNDSMAN:
+                return 'Assigned to Groundsman';
+                break;
             case ServiceConstant::MANIFEST_PENDING:
                 return 'Pending';
                 break;

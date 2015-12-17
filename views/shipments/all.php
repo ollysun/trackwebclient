@@ -18,6 +18,7 @@ if($search){
     $link = "&search=true&to=".urlencode($to)."&from=".urlencode($fro)."&page_width=".$page_width;
     if(!is_null($filter)){$link.= '&date_filter='. $filter;}
 }
+$user_data = $this->context->userData;
 ?>
 
 <!-- this page specific styles -->
@@ -81,7 +82,10 @@ if($search){
                     <th>Pieces</th>
                     <th>Return Status</th>
                     <th>Shipment Status</th>
-                    <th>Originating Centre</th>
+                    <?php if($user_data['role_id'] == ServiceConstant::USER_TYPE_ADMIN) { ?>
+                        <th>Originating Branch</th>
+                        <th>Current Location</th>
+                    <?php } ?>
                     <th>Shipment Age</th>
                     <th>Action</th>
                 </tr>
@@ -103,7 +107,10 @@ if($search){
                             <td><?= $parcel['no_of_package']; ?></td>
                             <td><?= ServiceConstant::getReturnStatus($parcel); ?></td>
                             <td><?= ServiceConstant::getStatus($parcel['status']); ?></td>
-                            <td><?= strtoupper(Calypso::getValue($parcel, "created_branch.name")) ?></td>
+                            <?php if($user_data['role_id'] == ServiceConstant::USER_TYPE_ADMIN) { ?>
+                                <td><?= strtoupper(Calypso::getValue($parcel, "created_branch.name")) ?></td>
+                                <td><?= ParcelAdapter::getCurrentLocation($parcel); ?></td>
+                            <?php } ?>
                             <td><?= ParcelAdapter::getAgeAnalysis($parcel); ?></td>
                             <td><a href="<?= Url::toRoute(['/shipments/view?waybill_number='.$parcel['waybill_number']]) ?>" class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
                         </tr>

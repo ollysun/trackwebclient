@@ -4,10 +4,13 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\web\JqueryAsset;
 use Adapter\Globals\ServiceConstant;
+use Adapter\ParcelAdapter;
 
 /* @var $this yii\web\View */
 $this->title = 'Shipment: Generate Manifest for Delivery';
 $this->params['breadcrumbs'] = [['label' => 'Sorted Shipments']];
+
+$user_data = $this->context->userData;
 ?>
 
 <!-- this page specific styles -->
@@ -99,6 +102,10 @@ $this->params['breadcrumbs'] = [['label' => 'Sorted Shipments']];
                         <th>Request Type</th>
                         <th>Return Status</th>
                         <th>Weight (Kg)</th>
+                        <?php if($user_data['role_id'] == ServiceConstant::USER_TYPE_ADMIN) { ?>
+                            <th>Originating Branch</th>
+                            <th>Current Location</th>
+                        <?php } ?>
                         <th>Age analysis</th>
                     </tr>
                     </thead>
@@ -127,6 +134,10 @@ $this->params['breadcrumbs'] = [['label' => 'Sorted Shipments']];
                             <td><?= ServiceConstant::getRequestType($parcels['request_type']) ?></td>
                             <td><?= ServiceConstant::getReturnStatus($parcels); ?></td>
                             <td><?= Calypso::getValue($parcels, 'weight') ?></td>
+                            <?php if($user_data['role_id'] == ServiceConstant::USER_TYPE_ADMIN) { ?>
+                                <td><?= strtoupper(Calypso::getValue($parcels, "created_branch.name")) ?></td>
+                                <td><?= ParcelAdapter::getCurrentLocation($parcels); ?></td>
+                            <?php } ?>
                             <td></td>
                         </tr>
                     <?php }
