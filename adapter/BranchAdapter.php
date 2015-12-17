@@ -37,12 +37,10 @@ class BranchAdapter extends BaseAdapter
         return $this->request(ServiceConstant::URL_BRANCH_GET_ONE . '?' . $filter, array(), self::HTTP_GET);
     }
 
-    public function getHubs($state = null, $offset = 0, $count = 50)
+    public function getHubs($state = null, $offset = 0, $count = 50, $paginate = false)
     {
-        $filter = 'branch_type=' . ServiceConstant::BRANCH_TYPE_HUB;
-        $filter .= ($state != null ? '&state_id=' . $state : '');
-        $filter .=  '&offset=' . $offset . '&count=' . $count;
-        return $this->request(ServiceConstant::URL_BRANCH_GET_ALL . '?' . $filter, array(), self::HTTP_GET);
+        $filters = array_filter(['state_id'=>$state, 'offset'=>$offset, 'count'=>$count, 'paginate'=>$paginate], 'strlen');
+        return $this->request(ServiceConstant::URL_BRANCH_GET_ALL_HUB, $filters, self::HTTP_GET);
     }
 
     public function createNewCentre($postData)
@@ -65,20 +63,17 @@ class BranchAdapter extends BaseAdapter
         return $this->request(ServiceConstant::URL_BRANCH_GET_ONE, array('id' => $id), self::HTTP_GET);
     }
 
-    public function getCentres($hub_id = null, $offset = 0, $count = 80, $paginate = true)
+    public function getCentres($hub_id = null, $offset = 0, $count = 50, $paginate = false, $with_parent =  false)
     {
-        $url = ServiceConstant::URL_BRANCH_GET_ALL;
-        if ($hub_id == null) {
-            $filter = "branch_type=" . ServiceConstant::BRANCH_TYPE_EC;
-        } else {
-            $url = ServiceConstant::URL_BRANCH_GET_ALL_EC;
-            $filter = ($hub_id != null ? 'hub_id=' . $hub_id : '');
-        }
-        $filter .= '&offset=' . $offset . '&count=' . $count;
-        if($paginate === false) {
-            $filter .= '&paginate=false';
-        }
-        return $this->request($url . '?' . $filter . '&with_parent=1', array(), self::HTTP_GET);
+        $filters = [
+            'hub_id'=>$hub_id,
+            'offset'=>$offset,
+            'count'=>$count,
+            'paginate'=>$paginate,
+            'with_parent'=>$with_parent
+        ];
+        $filters = array_filter($filters, 'strlen');
+        return $this->request(ServiceConstant::URL_BRANCH_GET_ALL_EC . '?', $filters, self::HTTP_GET);
     }
 
 
