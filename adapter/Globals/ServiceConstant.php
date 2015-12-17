@@ -197,6 +197,7 @@ class ServiceConstant
 
     const URL_INVOICE_ADD = 'invoice/add';
     const URL_INVOICE_ALL = 'invoice/getAll';
+    const URL_INVOICE_GET = 'invoice/get';
     const URL_INVOICE_PARCELS = 'invoice/getInvoiceParcels';
 
     const URL_CREDIT_NOTE_ADD = 'creditNote/add';
