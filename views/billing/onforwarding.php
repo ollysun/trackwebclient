@@ -18,7 +18,7 @@ $this->params['breadcrumbs'] = array(
 <?= Html::cssFile('@web/css/libs/dataTables.tableTools.css') ?>
 
 <?php
-$this->params['content_header_button'] = '<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i> Add an Onforwarding Charge</button>';
+$this->params['content_header_button'] = '<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i> Add an Onforwarding Charge</button> <button type="button" class="btn btn-danger" data-billing_plan_id="' . $billingPlanId . '" id="reset_onforwarding_btn"><i class="fa fa-circle-thin"></i> Reset Charges To Zero</button>';
 ?>
 
 <?php echo \Adapter\Util\Calypso::showFlashMessages(); ?>
@@ -48,12 +48,12 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                         ?>
                         <tr>
                         <td><?= ++$row; ?></td>
-                        <td class="n<?= $charge['id'];?>"><?= ucfirst($charge['name']); ?></td>
-                        <td class="c<?= $charge['id'];?>"><?=$charge['code']; ?></td>
-                        <td class="d<?= $charge['id'];?>"><?= ucfirst($charge['description']); ?></td>
-                        <td class="a<?= $charge['id'];?>"><?=$charge['amount']; ?></td>
-                        <td class="p<?= $charge['id'];?>"><?=$charge['percentage'] * 100; ?></td>
-                        <td class="h<?= $charge['id'];?>"><?= number_format((float) $charge['amount']*(1+floatval($charge['percentage'])) , 2, '.', ''); ?></td>
+                        <td class="n<?= $charge['id']; ?>"><?= ucfirst($charge['name']); ?></td>
+                        <td class="c<?= $charge['id']; ?>"><?= $charge['code']; ?></td>
+                        <td class="d<?= $charge['id']; ?>"><?= ucfirst($charge['description']); ?></td>
+                        <td class="a<?= $charge['id']; ?>"><?= $charge['amount']; ?></td>
+                        <td class="p<?= $charge['id']; ?>"><?= $charge['percentage'] * 100; ?></td>
+                        <td class="h<?= $charge['id']; ?>"><?= number_format((float)$charge['amount'] * (1 + floatval($charge['percentage'])), 2, '.', ''); ?></td>
                         <td>
                             <button type="button" class="btn btn-default btn-xs" data-toggle="modal"
                                     data-target="#editModal" data-id="<?= $charge['id']; ?>"><i class="fa fa-edit"></i>
@@ -95,11 +95,13 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                     <div class="row">
                         <div class="form-group col-xs-4">
                             <label for="">Base Price (<span class="currency naira"></span>)</label>
-                            <input type="text" class="form-control validate active-validate required number" name="onforward_amount">
+                            <input type="text" class="form-control validate active-validate required number"
+                                   name="onforward_amount">
                         </div>
                         <div class="form-group col-xs-4">
                             <label for="">Percentage (%)</label>
-                            <input type="text" class="form-control validate active-validate required integer" name="onforward_percentage">
+                            <input type="text" class="form-control validate active-validate required integer"
+                                   name="onforward_percentage">
                         </div>
                         <div class="form-group col-xs-4">
                             <label for="">Amount (<span class="currency naira"></span>)</label>
@@ -112,7 +114,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <input type="hidden" name="billing_plan_id" value="<?= $billingPlanId?>">
+                    <input type="hidden" name="billing_plan_id" value="<?= $billingPlanId ?>">
                     <input type="hidden" name="task" value="create">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary">Add Onforwarding Charge</button>
@@ -146,11 +148,13 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                         <div class="row">
                             <div class="form-group col-xs-4">
                                 <label for="">Base Price (<span class="currency naira"></span>)</label>
-                                <input type="text" class="form-control validate active-validate required number" name="onforward_amount">
+                                <input type="text" class="form-control validate active-validate required number"
+                                       name="onforward_amount">
                             </div>
                             <div class="form-group col-xs-4">
                                 <label for="">Percentage (%)</label>
-                                <input type="text" class="form-control validate active-validate required integer" name="onforward_percentage">
+                                <input type="text" class="form-control validate active-validate required integer"
+                                       name="onforward_percentage">
                             </div>
                             <div class="form-group col-xs-4">
                                 <label for="">Amount (<span class="currency naira"></span>)</label>
@@ -174,5 +178,6 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
 </div>
 
 <!-- this page specific scripts -->
-<?php $this->registerJsFile('@web/js/onforwarding.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
+<?php $this->registerJsFile('@web/js/bootbox.min.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/validate.js', ['depends' => [\app\assets\AppAsset::className()]]); ?>
+<?php $this->registerJsFile('@web/js/onforwarding.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
