@@ -481,7 +481,7 @@ class BillingController extends BaseController
 
         $billingPlanId = Yii::$app->request->get('billing_plan_id', BillingPlanAdapter::DEFAULT_WEIGHT_RANGE_PLAN);
         $billingAdp = new BillingAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $billings = $billingAdp->fetchAllBilling($billingPlanId);
+        $billings = $billingAdp->fetchAllBilling($billingPlanId, true);
         if ($billings['status'] == ResponseHandler::STATUS_OK) {
             $viewBag['billings'] = $billings['data'];
         }
@@ -677,7 +677,7 @@ class BillingController extends BaseController
     public function actionSavecorporate()
     {
         $billingAdapter = new BillingPlanAdapter();
-        if(Yii::$app->request->isPost) {
+        if (Yii::$app->request->isPost) {
             $name = Yii::$app->request->post('name');
             $type = Yii::$app->request->post('type');
             $companyId = Yii::$app->request->post('company');
@@ -699,7 +699,7 @@ class BillingController extends BaseController
      */
     public function actionDeleteweightrange()
     {
-        if(Yii::$app->request->isPost) {
+        if (Yii::$app->request->isPost) {
             $weightRangeAId = Yii::$app->request->post('range_id');
 
             $weightRangeAdapter = new WeightRangeAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
