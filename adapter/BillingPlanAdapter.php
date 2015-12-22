@@ -26,7 +26,7 @@ class BillingPlanAdapter extends BaseAdapter
 
     /**
      * Gets billing plan types
-     * @author Adegoke Obasa <goke@cottacush.com>s
+     * @author Adegoke Obasa <goke@cottacush.com>
      */
     public static function getTypes()
     {
