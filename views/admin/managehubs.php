@@ -25,7 +25,7 @@ $this->params['breadcrumbs'] = array(
 <?php echo \Adapter\Util\Calypso::showFlashMessages();?>
 <div class="main-box">
 	<div class="main-box-header table-search-form">
-		<form class="form-inline clearfix" id="state_filter" method="post">
+		<form class="form-inline clearfix" id="state_filter" method="get">
 			<div class="pull-left">
 				<?= $this->render('../elements/branch_type_filter', ['branch_type'=>'hub']) ?>
 			</div>
@@ -44,7 +44,6 @@ $this->params['breadcrumbs'] = array(
                         endif;
                         ?>
 					</select>
-					<input type="hidden" name="task" value="filter">
 				</div>
 				<div class="pull-left">
 					<label for="">&nbsp;</label><br>
@@ -71,12 +70,12 @@ $this->params['breadcrumbs'] = array(
 				</thead>
 				<tbody>
                     <?php
-
-                    if(isset($hubs) && is_array(($hubs))):
-                        $count=1; foreach($hubs as $hub){
+					$count=$offset;
+					if(isset($hubs) && is_array(($hubs))):
+                        foreach($hubs as $hub){
                     ?>
 					<tr class="text-center">
-						<td><?= $count++; ?></td>
+						<td><?= ++$count; ?></td>
 						<td class="n<?= $hub['id']; ?>"><?= $hub['name']; ?></td>
 						<td><?= strtoupper($hub['code']); ?></td>
 						<td><?= strtoupper($hub['state']['name']); ?></td>
@@ -91,6 +90,7 @@ $this->params['breadcrumbs'] = array(
                     ?>
 				</tbody>
 			</table>
+				<?= $this->render('../elements/pagination_and_summary', ['first' => $offset, 'last' => $count, 'total_count' => $total_count, 'page_width' => $page_width]) ?>
 			<?php } else {  ?>
 				<div class="alert alert-info text-center" role="alert">
 					<p><strong>No matching record found</strong></p>

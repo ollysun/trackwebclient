@@ -2,7 +2,7 @@
 use yii\helpers\Html;
 use Adapter\Util\Calypso;
 use yii\helpers\Url;
-
+use yii\helpers\Json;
 /* @var $this yii\web\View */
 $this->title = 'Companies Registration';
 $this->params['breadcrumbs'] = array(
@@ -12,7 +12,7 @@ $this->params['breadcrumbs'] = array(
     ),*/
     array('label' => 'Company Registration')
 );
-
+$submitted_data = Calypso::getInstance()->getPageData();
 ?>
 
 
@@ -22,7 +22,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
 
 <?= Html::cssFile('@web/css/libs/bootstrap-select.min.css') ?>
 
-<?php echo Calypso::showFlashMessages(); ?>
+<?php echo ($submitted_data) ? '':Calypso::showFlashMessages(); ?>
 
     <div class="main-box">
         <div class="main-box-header table-search-form">
@@ -107,7 +107,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
     <!-- Modal -->
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog modal-lg" role="document">
-            <form class="validate-form" method="post">
+            <form class="validate-form" method="post" id="createCompanyForm">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
@@ -115,38 +115,39 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                         <h4 class="modal-title" id="myModalLabel">Add a New Company</h4>
                     </div>
                     <div class="modal-body">
+                        <?php echo ($submitted_data) ? Calypso::showFlashMessages() : ''; ?>
                         <fieldset>
                             <legend>Company Details</legend>
                             <div class="row">
                                 <div class="col-xs-6 form-group">
                                     <label for="">Name</label>
-                                    <input type="text" name="company[name]" class="form-control validate required name">
+                                    <input type="text" name="company[name]" class="form-control validate required name" value="<?= Calypso::getDisplayValue($submitted_data,'company.name'); ?>">
                                 </div>
                                 <div class="col-xs-6 form-group">
                                     <label for="">Registration No</label>
-                                    <input type="text" name="company[reg_no]" class="form-control">
+                                    <input type="text" name="company[reg_no]" class="form-control" value="<?= Calypso::getDisplayValue($submitted_data,'company.reg_no'); ?>">
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-xs-6 form-group">
                                     <label for="">Email address</label>
                                     <input type="text" name="company[email]"
-                                           class="form-control validate required email">
+                                           class="form-control validate required email" value="<?= Calypso::getDisplayValue($submitted_data,'company.email'); ?>">
                                 </div>
                                 <div class="col-xs-6 form-group">
                                     <label for="">Phone number</label>
                                     <input type="text" name="company[phone_number]"
-                                           class="form-control validate required phone">
+                                           class="form-control validate required phone" value="<?= Calypso::getDisplayValue($submitted_data,'company.phone_number'); ?>">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label>Address</label>
-                                <input type="text" name="company[address]" class="form-control validate required">
+                                <input type="text" name="company[address]" class="form-control validate required" value="<?= Calypso::getDisplayValue($submitted_data,'company.address'); ?>">
                             </div>
                             <div class="row">
                                 <div class="col-xs-6 form-group">
                                     <label for="">State</label>
-                                    <select id="state" data-state data-target="city" class="form-control validate required">
+                                    <select id="state" name="company[state_id]" data-state data-target="city" class="form-control validate required"  data-selected="<?= Calypso::getDisplayValue($submitted_data,'company.state_id'); ?>">
                                         <option value="" selected>Select State</option>
                                         <?php foreach (Calypso::getValue($locations, 'states', []) as $state): ?>
                                             <option
@@ -156,7 +157,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                                 </div>
                                 <div class="col-xs-6 form-group">
                                     <label for="">City</label>
-                                    <select name="company[city_id]" id="city" class="form-control validate required">
+                                    <select name="company[city_id]" id="city" class="form-control validate required" data-selected="<?= Calypso::getDisplayValue($submitted_data,'company.city_id'); ?>">
                                         <option value="" selected>Select a State</option>
                                     </select>
                                 </div>
@@ -170,8 +171,8 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                                 <div class="row">
                                     <div class="col-xs-4 form-group">
                                         <label for="">Staff ID</label>
-                                        <input type="text" id="staff" class="form-control validate required">
-                                        <input id="staffId" type="hidden" name="company[relations_officer_id]"/>
+                                        <input type="text" id="staff" class="form-control validate required" name="staff" value="<?= Calypso::getDisplayValue($submitted_data,'staff'); ?>">
+                                        <input id="staffId" type="hidden" name="company[relations_officer_id]" value="<?= Calypso::getDisplayValue($submitted_data,'company.relations_officer_id'); ?>"/>
                                     </div>
                                     <div class="col-xs-4 form-group">
                                         </br>
@@ -207,24 +208,24 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                                     <div class="col-xs-6 form-group">
                                         <label for="">First name</label>
                                         <input name="primary_contact[firstname]" type="text"
-                                               class="form-control validate required name">
+                                               class="form-control validate required name" value="<?= Calypso::getDisplayValue($submitted_data,'primary_contact.firstname'); ?>">
                                     </div>
                                     <div class="col-xs-6 form-group">
                                         <label for="">Last name</label>
                                         <input name="primary_contact[lastname]" type="text"
-                                               class="form-control validate required name">
+                                               class="form-control validate required name" value="<?= Calypso::getDisplayValue($submitted_data,'primary_contact.lastname'); ?>">
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-xs-12 form-group">
                                         <label for="">Email address</label>
                                         <input name="primary_contact[email]" type="text"
-                                               class="form-control validate required email">
+                                               class="form-control validate required email" value="<?= Calypso::getDisplayValue($submitted_data,'primary_contact.email'); ?>">
                                     </div>
                                     <div class="col-xs-12 form-group">
                                         <label for="">Phone number</label>
                                         <input name="primary_contact[phone_number]" type="text"
-                                               class="form-control validate required phone">
+                                               class="form-control validate required phone" value="<?= Calypso::getDisplayValue($submitted_data,'primary_contact.phone_number'); ?>">
                                     </div>
                                 </div>
                             </fieldset>
@@ -235,31 +236,31 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                                 <div class="row">
                                     <div class="col-xs-12">
                                         <label for="enableSecondaryContact">Secondary Contact Available?</label>
-                                        <input type="checkbox" id="enableSecondaryContact"/>
+                                        <input type="checkbox" id="enableSecondaryContact" <?= is_null(Calypso::getValue($submitted_data, 'secondary_contact')) ? '':'checked'; ?>/>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-xs-6 form-group">
                                         <label for="">First name</label>
-                                        <input name="secondary_contact[firstname]" data-secondary_contact disabled
-                                               type="text" class="form-control name">
+                                        <input name="secondary_contact[firstname]" data-secondary_contact <?= is_null(Calypso::getValue($submitted_data, 'secondary_contact')) ? 'disabled':''; ?>
+                                               type="text" class="form-control name" value="<?= Calypso::getDisplayValue($submitted_data,'secondary_contact.firstname'); ?>">
                                     </div>
                                     <div class="col-xs-6 form-group">
                                         <label for="">Last name</label>
-                                        <input name="secondary_contact[lastname]" data-secondary_contact disabled
-                                               type="text" class="form-control name">
+                                        <input name="secondary_contact[lastname]" data-secondary_contact <?= is_null(Calypso::getValue($submitted_data, 'secondary_contact')) ? 'disabled':''; ?>
+                                        type="text" class="form-control name" value="<?= Calypso::getDisplayValue($submitted_data,'secondary_contact.lastname'); ?>">
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-xs-12 form-group">
                                         <label for="">Email address</label>
-                                        <input name="secondary_contact[email]" data-secondary_contact disabled
-                                               type="text" class="form-control email">
+                                        <input name="secondary_contact[email]" data-secondary_contact <?= is_null(Calypso::getValue($submitted_data, 'secondary_contact')) ? 'disabled':''; ?>
+                                               type="text" class="form-control email" value="<?= Calypso::getDisplayValue($submitted_data,'secondary_contact.email'); ?>">
                                     </div>
                                     <div class="col-xs-12 form-group">
                                         <label for="">Phone number</label>
-                                        <input name="secondary_contact[phone_number]" data-secondary_contact disabled
-                                               type="text" class="form-control phone">
+                                        <input name="secondary_contact[phone_number]" data-secondary_contact <?= is_null(Calypso::getValue($submitted_data, 'secondary_contact')) ? 'disabled':''; ?>
+                                               type="text" class="form-control phone" value="<?= Calypso::getDisplayValue($submitted_data,'secondary_contact.phone_number'); ?>">
                                     </div>
                                 </div>
                             </fieldset>
@@ -380,5 +381,8 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
     </div>
 
     <!-- this page specific scripts -->
+    <script type="text/javascript">
+        <?= "var previous_data = ". ($submitted_data ? 1: 0).";";?>
+    </script>
 <?php $this->registerJsFile('@web/js/validate.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/companies.js?v=1.0.0', ['depends' => [\app\assets\AppAsset::className()]]) ?>
