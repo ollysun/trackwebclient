@@ -195,7 +195,6 @@ class Util
      * Return an english representation of the time difference
      * @author Olawale Lawal <wale@cottacush.com>
      * @param $past_time
-     * @param string $base_time
      * @return string
      */
     public static function ago($past_time, $base_time = 'now')
