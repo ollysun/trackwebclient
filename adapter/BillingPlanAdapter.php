@@ -25,6 +25,20 @@ class BillingPlanAdapter extends BaseAdapter
     }
 
     /**
+     * Gets billing plan types
+     * @author Adegoke Obasa <goke@cottacush.com>
+     */
+    public static function getTypes()
+    {
+        return [
+            self::TYPE_WEIGHT => 'Weight',
+            self::TYPE_ON_FORWARDING => 'OnForwarding',
+            self::TYPE_NUMBER => 'Price',
+            self::TYPE_WEIGHT_AND_ON_FORWARDING => 'Weight and Onforwarding',
+        ];
+    }
+
+    /**
      * Creates a billing plan
      * @author Adegoke Obasa <goke@cottacush.com>
      * @param $name
@@ -95,16 +109,20 @@ class BillingPlanAdapter extends BaseAdapter
     }
 
     /**
-     * Gets billing plan types
-     * @author Adegoke Obasa <goke@cottacush.com>s
+     * Reset onforwarding charges to zero
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     * @param $data
+     * @return bool
      */
-    public static function getTypes()
+    public function resetOnforwarding($data)
     {
-        return [
-            self::TYPE_WEIGHT => 'Weight',
-            self::TYPE_ON_FORWARDING => 'OnForwarding',
-            self::TYPE_NUMBER => 'Price',
-            self::TYPE_WEIGHT_AND_ON_FORWARDING => 'Weight and Onforwarding',
-        ];
+        $rawResponse = $this->request(ServiceConstant::URL_RESET_ONFORWARDING_CHARGES, Json::encode($data), self::HTTP_POST);
+        $response = new ResponseHandler($rawResponse);
+
+        if (!$response->isSuccess()) {
+            $this->lastErrorMessage = $response->getError();
+        }
+
+        return $response->isSuccess();
     }
 }

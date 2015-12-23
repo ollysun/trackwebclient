@@ -194,6 +194,7 @@ class ServiceConstant
     const URL_BILLING_PLAN_GET_CITIES_WITH_CHARGE = 'billingPlan/getCitiesWithCharge';
     const URL_BILLING_PLAN_ADD = 'billingPlan/add';
     const URL_BILLING_PLAN_GET_ALL = 'billingPlan/getAll';
+    const URL_RESET_ONFORWARDING_CHARGES = 'billingPlan/resetOnforwardingChargesToZero';
 
     const URL_INVOICE_ADD = 'invoice/add';
     const URL_INVOICE_ALL = 'invoice/getAll';
