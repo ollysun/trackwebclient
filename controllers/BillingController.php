@@ -718,7 +718,7 @@ class BillingController extends BaseController
      * @author Babatunde Otaru <tunde@cottacush.com>
      * @return string
      */
-    public function actionGetbillingplannames()
+    public function actionGetallbillingplannames()
     {
         $billingAdapter = new BillingAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $responseHandler = new ResponseHandler($billingAdapter->getAllBillingPlanNames());
