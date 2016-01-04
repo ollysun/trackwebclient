@@ -24,8 +24,11 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                     <form class="table-search-form form-inline clearfix">
                         <div class="pull-left">
                             <label for="searchInput">Search</label><br>
+
                             <div class="input-group input-group-sm input-group-search">
-                                <input id="searchInput" type="text" name="search" placeholder="Company name" class="search-box form-control" value="<?= $search; ?>">
+                                <input id="searchInput" type="text" name="search" placeholder="Company name"
+                                       class="search-box form-control" value="<?= $search; ?>">
+
                                 <div class="input-group-btn">
                                     <button class="btn btn-default" type="submit">
                                         <i class="fa fa-search"></i>
@@ -105,10 +108,20 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                                 <?php endforeach; ?>
                             </select>
                         </div>
+                        <div class="form-group">
+                            <label class="checkbox-inline" >
+                                <input type="checkbox" id="clone-billing-plan">
+                                Clone existing billing plan
+                            </label>
+                        </div>
+                        <div class="form-group" id="clone-details">
+
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <input type="hidden" name="id">
-                        <input type="hidden" name="type" value="<?= BillingPlanAdapter::TYPE_WEIGHT_AND_ON_FORWARDING;?>">
+                        <input type="hidden" name="type"
+                               value="<?= BillingPlanAdapter::TYPE_WEIGHT_AND_ON_FORWARDING; ?>">
                         <input type="hidden" name="task" value="status">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary">Save changes</button>
@@ -118,4 +131,5 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
         </div>
     </div>
     <!-- this page specific scripts -->
+<?php $this->registerJsFile('@web/js/finance/corporate_billing.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/validate.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
