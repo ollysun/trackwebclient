@@ -3,7 +3,7 @@
     <option value="">Select Company</option>
     <?php foreach ($billing_plans as $billing_plan): ?>
         <option
-            value="<?= Calypso::getValue($company, 'id'); ?>"><?= $billing_plan ?>
+            value="<?= Calypso::getValue($billing_plan, 'id'); ?>"><?= Calypso::getValue($billing_plan, 'name'); ?>
         </option>
     <?php endforeach; ?>
 </select>

@@ -73,7 +73,7 @@ class ServiceConstant
     const URL_RETURN_REASONS = '/parcel/getreturnreasons';
     const URL_AUDIT_TRAIL_LOG = '/admin/getaudittrail';
     const URL_AUDIT_ADDITIONAL_DATA = '/admin/getauditdetails';
-    const URL_GET_ALL_BILLING_PLAN_NAMES = '/billing/getallbillingplannames';
+    const URL_GET_ALL_BILLING_PLAN_NAMES = '/billingPlan/getallbillingplannames';
     const URL_DRAFT_SORT = '/parcel/draftsort';
     const URL_DISCARD_SORT = '/parcel/discardsort';
     const URL_CONFIRM_SORT = '/parcel/confirmsort';
