@@ -1,13 +1,14 @@
-
-$("#clone-billing-plan").click(function () {
-    if ($("#clone-billing-plan").is(':checked')) {
+var cloneBillingPlan = $("#clone-billing-plan");
+var cloneDetails = $("#clone-details");
+cloneBillingPlan.click(function () {
+    if (cloneBillingPlan.is(':checked')) {
         $.get("getallbillingplannames",'','html').success(function (data) {
-            $("#clone-details").html(data);
+            cloneDetails.html(data);
         }).error(function(){
-            $("#clone-details").html('something went wrong');
+            cloneDetails.html('something went wrong');
         });
     } else {
-        $("#clone-details").html("");
+        cloneDetails.html("");
     }
 });
 
