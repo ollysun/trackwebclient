@@ -677,7 +677,7 @@ class BillingController extends BaseController
     public function actionSavecorporate()
     {
         $billingAdapter = new BillingPlanAdapter();
-        if(Yii::$app->request->isPost) {
+        if (Yii::$app->request->isPost) {
             $name = Yii::$app->request->post('name');
             $type = Yii::$app->request->post('type');
             $companyId = Yii::$app->request->post('company');
@@ -699,7 +699,7 @@ class BillingController extends BaseController
      */
     public function actionDeleteweightrange()
     {
-        if(Yii::$app->request->isPost) {
+        if (Yii::$app->request->isPost) {
             $weightRangeAId = Yii::$app->request->post('range_id');
 
             $weightRangeAdapter = new WeightRangeAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
@@ -711,6 +711,28 @@ class BillingController extends BaseController
                 $this->flashError($weightRangeAdapter->getLastErrorMessage());
             }
         }
+        return $this->redirect(Yii::$app->request->getReferrer());
+    }
+
+    /**
+     * Reset onforwarding charges to zero
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     */
+    public function actionResetonforwarding()
+    {
+        if (!Yii::$app->request->isPost) {
+            return $this->redirect(Yii::$app->request->getReferrer());
+        }
+
+        $data = Yii::$app->request->post();
+        $billingAdapter = new BillingPlanAdapter();
+        $requestStatus = $billingAdapter->resetOnforwarding($data);
+        if ($requestStatus) {
+            $this->flashSuccess('Onforwarding Charges successfully reset to zero');
+        } else {
+            $this->flashError($billingAdapter->getLastErrorMessage());
+        }
+
         return $this->redirect(Yii::$app->request->getReferrer());
     }
 
