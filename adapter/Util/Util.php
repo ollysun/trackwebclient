@@ -187,12 +187,32 @@ class Util
      * @param $past_time
      * @param int $reference
      * @return string
-    */
+     */
     public static function ago($past_time, $base_time = 'now')
     {
         $old_time = new Moment($base_time);
         $new_time = new Moment($past_time);
         return $new_time->from($old_time)->getRelative();
+    }
+
+    /**
+     * Reads a CSV file
+     * @credit http://www.codedevelopr.com/articles/reading-csv-files-into-php-array/
+     * @param $csvFile
+     * @return array
+     */
+    public static function readCSV($csvFile)
+    {
+        $line_of_text = [];
+        $file_handle = fopen($csvFile, 'r');
+        while (!feof($file_handle)) {
+            $rowData = fgetcsv($file_handle, 1024);
+            if ($rowData) {
+                $line_of_text[] = $rowData;
+            }
+        }
+        fclose($file_handle);
+        return $line_of_text;
     }
 
 }

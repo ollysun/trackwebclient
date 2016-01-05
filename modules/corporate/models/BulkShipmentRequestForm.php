@@ -79,16 +79,13 @@ class BulkShipmentRequestForm extends Model
      */
     public function getFileContents()
     {
-        $contents = file_get_contents($this->dataFile->tempName);
-        $contents = str_replace("\r\n", "\r", $contents);
-        $contents = explode("\r", $contents);
+        $contents = Util::readCSV($this->dataFile->tempName);
         $count = 0;
         $result = [];
-        foreach ($contents as $content) {
+        foreach ($contents as $rowData) {
             if (++$count == 1) {
                 continue;
             }
-            $rowData = str_getcsv($content);
             if (!$this->isRowEmpty($rowData)) {
                 $result[] = $rowData;
             }
