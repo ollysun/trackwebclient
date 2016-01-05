@@ -80,6 +80,7 @@ class BulkShipmentRequestForm extends Model
     public function getFileContents()
     {
         $contents = file_get_contents($this->dataFile->tempName);
+        $contents = str_replace("\r\n", "\r", $contents);
         $contents = explode("\r", $contents);
         $count = 0;
         $result = [];
