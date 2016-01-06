@@ -7,5 +7,5 @@ use Adapter\Util\Calypso;
     <?php foreach ($billing_plans as $billing_plan): ?>
         <option
             value="<?= Calypso::getValue($billing_plan, 'id'); ?>"><?= Calypso::getValue($billing_plan, 'name'); ?>
-     <?php endforeach; ?>
+    <?php endforeach; ?>
 </select>
