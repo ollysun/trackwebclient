@@ -99,6 +99,11 @@ class BillingAdapter extends BaseAdapter
         return $this->request(ServiceConstant::URL_BILLING_FETCH_BY_ID, $data, self::HTTP_GET);
     }
 
+    public function addException()
+    {
+
+    }
+
     /**
      * @author Babatunde Otaru <tunde@cottacush.com>
      * @return array|mixed|string
@@ -108,5 +113,4 @@ class BillingAdapter extends BaseAdapter
         return $this->request(ServiceConstant::URL_GET_ALL_BILLING_PLAN_NAMES,[],self::HTTP_GET);
     }
 
-    public function addException(){}
 }
