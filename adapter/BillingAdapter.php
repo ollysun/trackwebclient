@@ -110,4 +110,14 @@ class BillingAdapter extends BaseAdapter
 
     public function addException(){}
 
+    /**
+     * @author Babatunde Otaru <tunde@cottacush.com>
+     * @return array|mixed|string
+     */
+    public function getAllBillingPlanNames()
+    {
+        return $this->request(ServiceConstant::URL_GET_ALL_BILLING_PLAN_NAMES,[],self::HTTP_GET);
+    }
+
+
 }

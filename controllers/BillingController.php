@@ -677,7 +677,21 @@ class BillingController extends BaseController
     public function actionSavecorporate()
     {
         $billingAdapter = new BillingPlanAdapter();
-        if(Yii::$app->request->isPost) {
+        if (Yii::$app->request->isPost) {
+            if(Yii::$app->request->post('clone_billing_plan') != null){
+                $companyId = Yii::$app->request->post('company');
+                $baseBillingPlanId = Yii::$app->request->post('base_billing_plan_id');
+                $billingPlanName = Yii::$app->request->post('name');
+
+                $status = $billingAdapter->cloneBillingPlan($baseBillingPlanId,$companyId,$billingPlanName);
+                if($status){
+                    $this->flashSuccess('Billing Plan cloned successfully');
+                }
+                else{
+                    $this->flashError($billingAdapter->getLastErrorMessage());
+                }
+
+            }
             $name = Yii::$app->request->post('name');
             $type = Yii::$app->request->post('type');
             $companyId = Yii::$app->request->post('company');
@@ -699,7 +713,7 @@ class BillingController extends BaseController
      */
     public function actionDeleteweightrange()
     {
-        if(Yii::$app->request->isPost) {
+        if (Yii::$app->request->isPost) {
             $weightRangeAId = Yii::$app->request->post('range_id');
 
             $weightRangeAdapter = new WeightRangeAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
@@ -722,8 +736,30 @@ class BillingController extends BaseController
     {
         $billingAdapter = new BillingAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $responseHandler = new ResponseHandler($billingAdapter->getAllBillingPlanNames());
-        $billingPlans = $responseHandler->getData();
-        return $this->renderPartial('partial_billing_plans',['billing_plans' => $billingPlans]);
+        $billingPlanNames = $responseHandler->getData();
+        return $this->renderPartial('partial_billing_plans', ['billing_plan_names' => $billingPlanNames]);
+    }
+
+    /**
+     * Reset onforwarding charges to zero
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     */
+    public function actionResetonforwarding()
+    {
+        if (!Yii::$app->request->isPost) {
+            return $this->redirect(Yii::$app->request->getReferrer());
+        }
+
+        $data = Yii::$app->request->post();
+        $billingAdapter = new BillingPlanAdapter();
+        $requestStatus = $billingAdapter->resetOnforwarding($data);
+        if ($requestStatus) {
+            $this->flashSuccess('Onforwarding Charges successfully reset to zero');
+        } else {
+            $this->flashError($billingAdapter->getLastErrorMessage());
+        }
+
+        return $this->redirect(Yii::$app->request->getReferrer());
     }
 
 }
