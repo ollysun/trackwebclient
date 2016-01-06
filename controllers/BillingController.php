@@ -678,16 +678,15 @@ class BillingController extends BaseController
     {
         $billingAdapter = new BillingPlanAdapter();
         if (Yii::$app->request->isPost) {
-            if(Yii::$app->request->post('clone_billing_plan') != null){
+            if (Yii::$app->request->post('clone_billing_plan') != null) {
                 $companyId = Yii::$app->request->post('company');
                 $baseBillingPlanId = Yii::$app->request->post('base_billing_plan_id');
                 $billingPlanName = Yii::$app->request->post('name');
 
-                $status = $billingAdapter->cloneBillingPlan($baseBillingPlanId,$companyId,$billingPlanName);
-                if($status){
+                $status = $billingAdapter->cloneBillingPlan($baseBillingPlanId, $companyId, $billingPlanName);
+                if ($status) {
                     $this->flashSuccess('Billing Plan cloned successfully');
-                }
-                else{
+                } else {
                     $this->flashError($billingAdapter->getLastErrorMessage());
                 }
 
@@ -736,8 +735,8 @@ class BillingController extends BaseController
     {
         $billingAdapter = new BillingAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $responseHandler = new ResponseHandler($billingAdapter->getAllBillingPlanNames());
-        $billingPlans = $responseHandler->getData();
-        return $this->renderPartial('partial_billing_plans', ['billing_plans' => $billingPlans]);
+        $billingPlanNames = $responseHandler->getData();
+        return $this->renderPartial('partial_billing_plans', ['billing_plan_names' => $billingPlanNames]);
     }
 
     /**
