@@ -32,7 +32,7 @@ class BulkShipmentRequestForm extends Model
     public function rules()
     {
         return [
-            ['dataFile', 'file', 'skipOnEmpty' => false, 'mimeTypes' => ['text/csv', 'text/plain'], 'maxSize' => 1000000, 'checkExtensionByMimeType' => true, 'wrongMimeType' => 'Invalid File uploaded. Please upload a valid CSV file.'],
+            ['dataFile', 'file', 'skipOnEmpty' => false, 'extensions' => 'csv', 'maxSize' => 1000000, 'checkExtensionByMimeType' => false, 'wrongExtension' => 'Invalid File uploaded. Please upload a valid CSV file.'],
             ['dataFile', 'validateRows']
         ];
     }
