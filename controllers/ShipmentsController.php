@@ -939,6 +939,6 @@ class ShipmentsController extends BaseController
         $bilingPlanAdapter = new BillingPlanAdapter();
         $billingPlans = $bilingPlanAdapter->getBillingPlans(['no_paginate' => '1', 'type' => BillingPlanAdapter::TYPE_WEIGHT_AND_ON_FORWARDING]);
         $billingPlans = ArrayHelper::map($billingPlans, 'id', 'name', 'company_id');
-        return $this->renderPartial('partial_bulk_shipment', ['companies' => $companies, 'billing_plans' => $billingPlans]);
+        return $this->renderAjax('partial_bulk_shipment', ['companies' => $companies, 'billing_plans' => $billingPlans]);
     }
 }

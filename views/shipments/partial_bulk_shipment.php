@@ -4,18 +4,17 @@ use Adapter\Util\Calypso;
 use yii\helpers\Json;
 
 ?>
-
 <div class="row">
     <div class="col-xs-6">
         <div class="form-group">
             <label for="company_select">Company</label>
             <select id="company_select" class="form-control">
-                <option>Select a Company</option>
+                <option value="">Select a Company</option>
                 <?php foreach ($companies as $company): ?>
                     <option
-                        data-billing_plans='<?= Json::encode(Calypso::getValue($billing_plans, Calypso::getValue($company, 'id'))) ?>'
+                        data-billing_plans='<?= Json::encode(Calypso::getValue($billing_plans, Calypso::getValue($company, 'id'), [])) ?>'
                         value="<?= Calypso::getValue($company, 'id') ?>">
-                        <?= ucwords(Calypso::getValue($company, 'name')) ?>
+                        <?= strtoupper(Calypso::getValue($company, 'name')) ?>
                     </option>
                 <?php endforeach; ?>
             </select>
@@ -30,3 +29,5 @@ use yii\helpers\Json;
         </div>
     </div>
 </div>
+
+<?php $this->registerJsFile('@web/js/bulk_shipment.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
