@@ -9,5 +9,4 @@ use Adapter\Util\Calypso;
             value="<?= Calypso::getValue($billing_plan, 'id'); ?>"><?= Calypso::getValue($billing_plan, 'name'); ?>
         </option>
     <?php endforeach; ?>
-
 </select>
