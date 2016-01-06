@@ -736,8 +736,8 @@ class BillingController extends BaseController
     {
         $billingAdapter = new BillingAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $responseHandler = new ResponseHandler($billingAdapter->getAllBillingPlanNames());
-        $billingPlanNames = $responseHandler->getData();
-        return $this->renderPartial('partial_billing_plans', ['billing_plan_names' => $billingPlanNames]);
+        $billingPlans = $responseHandler->getData();
+        return $this->renderPartial('partial_billing_plans', ['billing_plans' => $billingPlans]);
     }
 
     /**
