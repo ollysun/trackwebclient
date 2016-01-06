@@ -101,7 +101,6 @@ class BillingAdapter extends BaseAdapter
 
     public function addException()
     {
-
     }
 
     /**
@@ -112,5 +111,6 @@ class BillingAdapter extends BaseAdapter
     {
         return $this->request(ServiceConstant::URL_GET_ALL_BILLING_PLAN_NAMES,[],self::HTTP_GET);
     }
+
 
 }
