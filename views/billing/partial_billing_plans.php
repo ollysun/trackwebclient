@@ -8,4 +8,5 @@ use Adapter\Util\Calypso;
         <option
             value="<?= Calypso::getValue($billing_plan, 'id'); ?>"><?= Calypso::getValue($billing_plan, 'name'); ?>
     <?php endforeach; ?>
+        </option>
 </select>
