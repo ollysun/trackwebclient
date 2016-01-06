@@ -3,6 +3,7 @@ namespace Adapter;
 
 use Adapter\Globals;
 use Adapter\Globals\ServiceConstant;
+use Adapter\Util\Calypso;
 use Adapter\Util\Response;
 use yii\helpers\Json;
 use Adapter\Util\Util;
@@ -69,21 +70,47 @@ class ParcelAdapter extends BaseAdapter
 
     public function getParcels($start_created_date, $end_created_date, $status, $branch_id = null, $offset = 0, $count = 50, $with_from = null, $with_total = null, $only_parents = null, $with_created_branch = null)
     {
-        $filter = !is_null($status) ? '&status=' . $status : '';
-        $filter .= !is_null($with_total) ? '&with_total_count=1' : '';
-        $filter .= !is_null($start_created_date) ? '&start_created_date=' . $start_created_date : '';
-        $filter .= !is_null($end_created_date) ? '&end_created_date=' . $end_created_date : '';
-        $filter .= !is_null($branch_id) ? '&from_branch_id=' . $branch_id : '';
-        $filter .= !is_null($with_from) ? '&with_from_branch=1' : '';
-        $filter .= !is_null($only_parents) ? '&show_parents=1' : '';
-        $filter .= !is_null($with_created_branch) ? '&with_created_branch' : '';
-        $url = ServiceConstant::URL_GET_ALL_PARCEL . '?with_sender=1&with_receiver=1&with_receiver_address=1&with_to_branch=1&offset=' . $offset . '&count=' . $count . $filter;
-        return $this->request($url, array(), self::HTTP_GET);
+        $filters = array(
+            'status' => $status,
+            'with_total_count' => $with_total,
+            'start_created_date' => $start_created_date,
+            'end_created_date' => $end_created_date,
+            'from_branch_id' => $branch_id,
+            'with_from_branch' => $with_from,
+            'show_parents' => $only_parents,
+            'with_created_branch' => $with_created_branch,
+            'with_sender' => 1,
+            'with_receiver' => 1,
+            'with_receiver_address' => 1,
+            'with_to_branch' => 1,
+            'offset' => $offset,
+            'count' => $count
+        );
+        $params = http_build_query($filters);
+        return $this->request(ServiceConstant::URL_GET_ALL_PARCEL.'?'.$params, array(), self::HTTP_GET);
     }
 
     public function getParcelsForDelivery($start_created_date, $end_created_date, $status, $branch_id = null, $offset = 0, $count = 50, $with_from = null, $with_total = null, $only_parents = null, $route_id = null, $with_route = null)
     {
-        $filters = array('status' => $status, 'with_total_count' => $with_total, 'show_parents' => $only_parents, 'start_created_date' => $start_created_date, 'end_created_date' => $end_created_date, 'from_branch_id' => $branch_id, 'with_sender' => 1, 'with_created_branch' => 1, 'with_receiver' => 1, 'with_receiver_address' => 1, 'with_to_branch' => 1, 'offset' => $offset, 'count' => $count, 'to_branch_id' => $branch_id, 'with_from_branch' => $with_from, 'route_id=' => $route_id, 'with_route' => $with_route);
+        $filters = array(
+            'status' => $status,
+            'with_total_count' => $with_total,
+            'show_parents' => $only_parents,
+            'start_created_date' => $start_created_date,
+            'end_created_date' => $end_created_date,
+            'from_branch_id' => $branch_id,
+            'with_sender' => 1,
+            'with_created_branch' => 1,
+            'with_receiver' => 1,
+            'with_receiver_address' => 1,
+            'with_to_branch' => 1,
+            'offset' => $offset,
+            'count' => $count,
+            'to_branch_id' => $branch_id,
+            'with_from_branch' => $with_from,
+            'route_id=' => $route_id,
+            'with_route' => $with_route
+        );
         $params = http_build_query($filters);
         return $this->request(ServiceConstant::URL_GET_ALL_PARCEL . '?' . $params, [], self::HTTP_GET);
     }
@@ -96,6 +123,7 @@ class ParcelAdapter extends BaseAdapter
             'to_branch_id' => $to_branch_id,
             'held_by_id' => $held_by_id,
             'with_total_count' => $with_total,
+            'with_from_branch' => 1,
             'with_to_branch' => 1,
             'with_city' => 1,
             'with_sender_address' => 1,
@@ -107,15 +135,30 @@ class ParcelAdapter extends BaseAdapter
         return $this->request(ServiceConstant::URL_GET_ALL_PARCEL . '?' . $params, array(), self::HTTP_GET);
     }
 
-    public function getSearchParcels($status, $waybill_number, $offset = 0, $count = 50, $with_total = null, $branch_id = null, $only_parents = null, $with_created_branch = null)
+    public function getSearchParcels($status, $waybill_number, $offset = 0, $count = 50, $with_total = null, $branch_id = null, $only_parents = null, $with_created_branch = true)
     {
-        $filters = array('status' => $status, 'waybill_number' => $waybill_number, 'with_total_count' => $with_total, 'show_parents' => $only_parents, 'branch_id' => $branch_id, 'with_sender' => 1, 'with_created_branch' => 1, 'with_receiver' => 1, 'with_receiver_address' => 1, 'with_to_branch' => 1, 'with_route' => 1, 'offset' => $offset, 'count' => $count);
+        $filters = array('status' => $status, 'waybill_number' => $waybill_number, 'with_total_count' => $with_total, 'show_parents' => $only_parents, 'branch_id' => $branch_id, 'with_sender' => 1, 'with_created_branch' => $with_created_branch, 'with_receiver' => 1, 'with_receiver_address' => 1, 'with_to_branch' => 1, 'with_route' => 1, 'offset' => $offset, 'count' => $count);
         return $this->request(ServiceConstant::URL_GET_ALL_PARCEL, array_filter($filters), self::HTTP_GET);
     }
 
-    public function getFilterParcelsByDateAndStatus($start_created_date, $end_created_date, $status, $offset = 0, $count = 50, $with_total = null, $branch_id = null, $only_parents = null, $with_created_branch = null)
+    public function getFilterParcelsByDateAndStatus($start_created_date, $end_created_date, $status, $offset = 0, $count = 50, $with_total = null, $branch_id = null, $only_parents = null, $with_created_branch = true)
     {
-        $filters = array('status' => $status, 'with_total_count' => $with_total, 'show_parents' => $only_parents, 'start_created_date' => $start_created_date, 'end_created_date' => $end_created_date, 'from_branch_id' => $branch_id, 'with_sender' => 1, 'with_created_branch' => 1, 'with_receiver' => 1, 'with_receiver_address' => 1, 'with_to_branch' => 1, 'offset' => $offset, 'count' => $count);
+        $filters = array(
+            'status' => $status,
+            'with_total_count' => $with_total,
+            'show_parents' => $only_parents,
+            'start_created_date' => $start_created_date,
+            'end_created_date' => $end_created_date,
+            'from_branch_id' => $branch_id,
+            'with_sender' => 1,
+            'with_created_branch' => $with_created_branch,
+            'with_receiver' => 1,
+            'with_receiver_address' => 1,
+            'with_to_branch' => 1,
+            'with_from_branch' => 1,
+            'offset' => $offset,
+            'count' => $count
+        );
         $params = http_build_query($filters);
         return $this->request(ServiceConstant::URL_GET_ALL_PARCEL . '?' . $params, [], self::HTTP_GET);
     }
@@ -129,6 +172,7 @@ class ParcelAdapter extends BaseAdapter
             'with_receiver' => 1,
             'with_receiver_address' => 1,
             'with_from_branch' => 1,
+            'with_to_branch' => 1,
             'show_parents' => $only_parents,
             'with_total_count' => $with_total,
             'with_created_branch' => 1,
@@ -232,6 +276,7 @@ class ParcelAdapter extends BaseAdapter
             'waybill_number' => $search,
             'with_receiver' => 1,
             'with_holder' => 1,
+            'with_to_branch' => 1,
             'with_created_branch' => 1,
             'offset' => $offset,
             'count' => $count
@@ -242,12 +287,24 @@ class ParcelAdapter extends BaseAdapter
 
     public function getDeliveredParcels($branch_id, $offset = 0, $count = 50, $start_modified_date = null, $end_modified_date = null)
     {
-        $filter = !is_null($branch_id) ? '&branch_id=' . $branch_id : '';
-        $filter .= '&with_total_count=1';
-        $filter .= '&status=' . ServiceConstant::DELIVERED;
-        $filter .= !is_null($start_modified_date) ? '&start_modified_date=' . $start_modified_date : '';
-        $filter .= !is_null($end_modified_date) ? '&end_modified_date=' . $end_modified_date : '';
-        return $this->request(ServiceConstant::URL_GET_ALL_PARCEL . '?with_receiver=1&with_sender=1&with_delivery_receipt=1&offset=' . $offset . '&count=' . $count . $filter, array(), self::HTTP_GET);
+
+        $filter = array(
+            'to_branch_id' => $branch_id,
+            'status' => ServiceConstant::DELIVERED,
+            'with_total_count' => 1,
+            'with_receiver' => 1,
+            'with_sender' => 1,
+            'start_modified_date' => $start_modified_date,
+            'end_modified_date' => $end_modified_date,
+            'with_created_branch' => 1,
+            'with_from_branch' => 1,
+            'with_to_branch' => 1,
+            'with_delivery_receipt' => 1,
+            'offset' => $offset,
+            'count' => $count
+        );
+        $filter = array_filter($filter, 'strlen');
+        return $this->request(ServiceConstant::URL_GET_ALL_PARCEL , $filter, self::HTTP_GET);
     }
 
     public function getMerchantParcels($with_bank_account = 1, $payment_status = null, $offset = 0, $count = 50, $with_total = 1, $only_parents = 1)
@@ -422,5 +479,28 @@ class ParcelAdapter extends BaseAdapter
             return $response->getData();
         }
         return [];
+    }
+
+    /**
+     * Returns the current location of the parcel
+     * @param $parcel
+     * @return string
+     */
+    public static function getCurrentLocation($parcel)
+    {
+        switch ($parcel['status']) {
+            case ServiceConstant::FOR_ARRIVAL:
+                return strtoupper(Calypso::getDisplayValue($parcel, 'to_branch.name'));
+            case ServiceConstant::IN_TRANSIT:
+                return 'In transit to ' . ucwords(Calypso::getDisplayValue($parcel, 'to_branch.name'));
+            case ServiceConstant::BEING_DELIVERED:
+                return 'In transit to Customer from '. ucwords(Calypso::getDisplayValue($parcel, 'to_branch.name'));
+            case ServiceConstant::ASSIGNED_TO_GROUNDSMAN:
+                return 'Being sorted at ' . ucwords(Calypso::getDisplayValue($parcel, 'to_branch.name'));
+            case ServiceConstant::DELIVERED:
+                return 'Delivered from ' . ucwords(Calypso::getDisplayValue($parcel, 'to_branch.name'));
+            default:
+                return strtoupper(Calypso::getDisplayValue($parcel, 'from_branch.name'));
+        }
     }
 }

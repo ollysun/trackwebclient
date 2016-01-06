@@ -194,6 +194,7 @@ class ServiceConstant
     const URL_BILLING_PLAN_GET_CITIES_WITH_CHARGE = 'billingPlan/getCitiesWithCharge';
     const URL_BILLING_PLAN_ADD = 'billingPlan/add';
     const URL_BILLING_PLAN_GET_ALL = 'billingPlan/getAll';
+    const URL_RESET_ONFORWARDING_CHARGES = 'billingPlan/resetOnforwardingChargesToZero';
 
     const URL_INVOICE_ADD = 'invoice/add';
     const URL_INVOICE_ALL = 'invoice/getAll';
@@ -268,6 +269,9 @@ class ServiceConstant
                 break;
             case ServiceConstant::BEING_DELIVERED:
                 return 'In Transit to Customer';
+                break;
+            case ServiceConstant::ASSIGNED_TO_GROUNDSMAN:
+                return 'Assigned to Groundsman';
                 break;
             case ServiceConstant::MANIFEST_PENDING:
                 return 'Pending';

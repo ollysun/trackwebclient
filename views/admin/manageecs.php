@@ -27,7 +27,7 @@ $this->params['breadcrumbs'] = array(
 <?php echo \Adapter\Util\Calypso::showFlashMessages(); ?>
 <div class="main-box">
     <div class="main-box-header table-search-form">
-        <form class="form-inline clearfix" id="filter" method="post">
+        <form class="form-inline clearfix" id="filter" method="get">
             <div class="pull-left">
                 <?= $this->render('../elements/branch_type_filter', ['branch_type' => 'ec']) ?>
             </div>
@@ -47,7 +47,6 @@ $this->params['breadcrumbs'] = array(
                         endif
                         ?>
                     </select>
-                    <input type="hidden" name="task" value="filter">
                 </div>
                 <div class="pull-left">
                     <label for="">&nbsp;</label><br>

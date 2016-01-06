@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\web\View;
 use Adapter\Globals\ServiceConstant;
+use Adapter\ParcelAdapter;
 
 /* @var $this yii\web\View */
 $this->title = 'Shipments: Dispatched';
@@ -14,6 +15,8 @@ $this->params['breadcrumbs'] = array(
 	),*/
 	array('label'=> 'Dispatched Shipments')
 );
+
+$user_data = $this->context->userData;
 ?>
 
     <!-- this page specific styles -->
@@ -87,6 +90,10 @@ $this->params['breadcrumbs'] = array(
                         <th>Weight</th>
                         <th>Sweeper</th>
                         <th>Return Status</th>
+                        <?php if($user_data['role_id'] == ServiceConstant::USER_TYPE_ADMIN) { ?>
+                            <th>Originating Branch</th>
+                            <th>Current Location</th>
+                        <?php } ?>
                         <th>Age analysis</th>
                         <th style="width: 30px;">Action</th>
                     </tr>
@@ -105,6 +112,10 @@ $this->params['breadcrumbs'] = array(
                                 <td><?= $parcel['weight']; ?> KG</td>
                                 <td><?= ucwords($parcel['holder']['fullname']); ?></td>
                                 <td><?= ServiceConstant::getReturnStatus($parcel); ?></td>
+                                <?php if($user_data['role_id'] == ServiceConstant::USER_TYPE_ADMIN) { ?>
+                                    <td><?= strtoupper(Calypso::getValue($parcel, "created_branch.name")) ?></td>
+                                    <td><?= ParcelAdapter::getCurrentLocation($parcel); ?></td>
+                                <?php } ?>
                                 <td></td>
                                 <td><a href="<?= Url::toRoute(['/shipments/view?waybill_number=' . $parcel['waybill_number']]) ?>"
                                        class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
