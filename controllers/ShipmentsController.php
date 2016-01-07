@@ -938,8 +938,8 @@ class ShipmentsController extends BaseController
     {
         $companyAdapter = new CompanyAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $companies = $companyAdapter->getAllCompanies([]);
-        $bilingPlanAdapter = new BillingPlanAdapter();
-        $billingPlans = $bilingPlanAdapter->getBillingPlans(['no_paginate' => '1', 'type' => BillingPlanAdapter::TYPE_WEIGHT_AND_ON_FORWARDING]);
+        $billingPlanAdapter = new BillingPlanAdapter();
+        $billingPlans = $billingPlanAdapter->getBillingPlans(['no_paginate' => '1', 'type' => BillingPlanAdapter::TYPE_WEIGHT_AND_ON_FORWARDING]);
         $billingPlans = ArrayHelper::map($billingPlans, 'id', 'name', 'company_id');
         return $this->renderAjax('partial_bulk_shipment', ['companies' => $companies, 'billing_plans' => $billingPlans]);
     }
