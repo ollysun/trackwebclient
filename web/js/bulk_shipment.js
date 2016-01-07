@@ -54,6 +54,8 @@ BulkShipment = {
 
         this.Constants.bulk_upload_file_btn.on('change', function (e) {
             if (e.target.files.length == 0) {
+                BulkShipment.Constants.uploaded_file_name_span.html('');
+                BulkShipment.Constants.modal_create_btn.prop('disabled', false);
                 return false;
             }
             BulkShipment.uploadedFile = e.target.files[0];
