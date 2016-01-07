@@ -35,6 +35,7 @@ class BulkShipmentModel extends Model
     private $parcel_types;
 
     /**
+     * @inheritdoc
      * @author Adeyemi Olaoye <yemi@cottacush.com>
      * @return array
      */
@@ -50,6 +51,7 @@ class BulkShipmentModel extends Model
     }
 
     /**
+     * Process data
      * @author Adeyemi Olaoye <yemi@cottacush.com>
      * @return bool
      */
@@ -107,9 +109,9 @@ class BulkShipmentModel extends Model
     }
 
     /**
+     * Validate data file rows
      * @author Adeyemi Olaoye <yemi@cottacush.com>
      * @param $attribute
-     * @param $params
      * @return bool
      */
     public function validateRows($attribute)
@@ -141,6 +143,7 @@ class BulkShipmentModel extends Model
     }
 
     /**
+     * Get contents of data file
      * @author Adeyemi Olaoye <yemi@cottacush.com>
      * @return array|string
      */
@@ -176,6 +179,7 @@ class BulkShipmentModel extends Model
     }
 
     /**
+     * Check if row is empty
      * @author Adeyemi Olaoye <yemi@cottacush.com>
      * @param $row
      * @return bool
@@ -253,6 +257,7 @@ class BulkShipmentModel extends Model
     }
 
     /**
+     * Get cell row and column information
      * @author Adeyemi Olaoye <yemi@cottacush.com>
      * @param $key
      * @return string
