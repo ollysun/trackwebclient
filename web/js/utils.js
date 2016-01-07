@@ -16,7 +16,7 @@ var TrackPlusUtil = {
         if (this.isUndefined(data)) {
             data = {};
         }
-
+        target.html('Loading...');
         $.get(url, data, function (response) {
                 if (!TrackPlusUtil.isUndefined(successCallBack)) {
                     successCallBack();
@@ -37,6 +37,28 @@ var TrackPlusUtil = {
      */
     isUndefined: function (value) {
         return (typeof value == 'undefined');
+    },
+
+    ResponseConstants: {
+        success: 'success',
+        fail: 'fail',
+        error: 'error'
+    },
+
+    showErrorMessage: function (target, message) {
+        this.removeErrorMessage(target);
+        if (!target.hasClass('alert')) {
+            target.addClass('alert');
+        }
+        target.addClass('alert-danger');
+        target.html(message);
+        target.show();
+    },
+
+    removeErrorMessage: function (target) {
+        target.html('');
+        target.removeClass('alert-danger');
+        target.hide();
     }
 };
 

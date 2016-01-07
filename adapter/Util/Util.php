@@ -94,7 +94,9 @@ class Util
     {
         $result = [];
         foreach ($array as $key => $value) {
-            $result[$keys[$key]] = $value;
+            if (isset($keys[$key])) {
+                $result[$keys[$key]] = $value;
+            }
         }
 
         return $result;
@@ -187,12 +189,47 @@ class Util
      * @param $past_time
      * @param int $reference
      * @return string
-    */
+     */
     public static function ago($past_time, $base_time = 'now')
     {
         $old_time = new Moment($base_time);
         $new_time = new Moment($past_time);
         return $new_time->from($old_time)->getRelative();
+    }
+
+    /**
+     * Get Excel column name from number - 1 == A
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     * @credits http://stackoverflow.com/questions/3302857/algorithm-to-get-the-excel-like-column-name-of-a-number
+     * @param $num
+     * @return string
+     */
+    public static function getExcelColumnNameFromNumber($num)
+    {
+        $numeric = ($num - 1) % 26;
+        $letter = chr(65 + $numeric);
+        $num2 = intval(($num - 1) / 26);
+        if ($num2 > 0) {
+            return self::getExcelColumnNameFromNumber($num2) . $letter;
+        } else {
+            return $letter;
+        }
+    }
+
+    /**
+     * Get Excel Column Number from Name
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     * @credits http://www.bradino.com/php/excel-column-convert-letters-to-numbers/
+     * @param $col
+     * @param int $start
+     * @return int
+     */
+    public static function getExcelColumnNumberFromName($col, $start = 0)
+    {
+        $col = str_pad($col, 2, '0', STR_PAD_LEFT);
+        $i = ($col{0} == '0') ? 0 : (ord($col{0}) - 64) * 26;
+        $i += ord($col{1}) - 64;
+        return $i - (1 - $start);
     }
 
 }

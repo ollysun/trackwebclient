@@ -232,7 +232,7 @@ $(document).ready(function(){
     }
 
     $('#create_bulk_shipment_btn').unbind('click').click(function () {
-        $('#bulk_shipment_modal').modal();
+        $('#bulk_shipment_modal').modal({backdrop: 'static'});
         TrackPlusUtil.renderPartial($('#bulk_shipment_modal_body'), 'bulkshipment');
     });
 

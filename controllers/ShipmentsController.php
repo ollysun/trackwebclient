@@ -24,6 +24,7 @@ use Adapter\RequestHelper;
 use Adapter\ResponseHandler;
 use Adapter\Util\Calypso;
 use Adapter\Util\Util;
+use app\models\BulkShipmentModel;
 use app\services\HubService;
 use Adapter\TellerAdapter;
 use yii\data\Pagination;
@@ -32,6 +33,7 @@ use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 use yii\web\Response;
 use Adapter\RouteAdapter;
+use yii\web\UploadedFile;
 
 /**
  * Class ShipmentsController
@@ -940,5 +942,27 @@ class ShipmentsController extends BaseController
         $billingPlans = $bilingPlanAdapter->getBillingPlans(['no_paginate' => '1', 'type' => BillingPlanAdapter::TYPE_WEIGHT_AND_ON_FORWARDING]);
         $billingPlans = ArrayHelper::map($billingPlans, 'id', 'name', 'company_id');
         return $this->renderAjax('partial_bulk_shipment', ['companies' => $companies, 'billing_plans' => $billingPlans]);
+    }
+
+    /**
+     * Create bulk shipment
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     */
+    public function actionCreatebulkshipment()
+    {
+        if (!Yii::$app->getRequest()->isAjax) {
+            return $this->redirect(Yii::$app->getRequest()->getReferrer());
+        }
+
+        $model = new BulkShipmentModel();
+        $postData = Yii::$app->getRequest()->post();
+        $model->load($postData, '');
+        $model->dataFile = UploadedFile::getInstanceByName('dataFile');
+
+        if (!$model->process()) {
+            return $this->sendErrorResponse(implode($model->getErrors('dataFile'), '<br/>'), 200);
+        }
+
+        return $this->sendSuccessResponse(true);
     }
 }

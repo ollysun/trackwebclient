@@ -240,7 +240,7 @@ $this->params['content_header_button'] = $this->render('../elements/content_head
 
 <div class="modal fade" id="bulk_shipment_modal" tabindex="-1" role="dialog" aria-labelledby="BulkShipmentModal">
     <div class="modal-dialog" role="document">
-        <form id="arrived_parcels" class="" method="post">
+        <form id="bulk_shipment_form" method="post" enctype="multipart/form-data">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
@@ -251,7 +251,7 @@ $this->params['content_header_button'] = $this->render('../elements/content_head
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary" >Create</button>
+                    <button  class="btn btn-primary" id="modal_create_btn" >Create</button>
                 </div>
             </div>
         </form>
