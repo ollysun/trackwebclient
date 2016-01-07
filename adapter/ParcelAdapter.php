@@ -32,6 +32,43 @@ class ParcelAdapter extends BaseAdapter
     }
 
     /**
+     * Returns the age analysis for the based on the status of the
+     * @param $parcel
+     * @return mixed
+     */
+    public static function getAgeAnalysis($parcel)
+    {
+        if (in_array($parcel['status'], [ServiceConstant::DELIVERED, ServiceConstant::CANCELLED, ServiceConstant::RETURNED])) {
+            return Util::ago($parcel['created_date'], $parcel['modified_date']);
+        } else {
+            return Util::ago($parcel['created_date']);
+        }
+    }
+
+    /**
+     * Returns the current location of the parcel
+     * @param $parcel
+     * @return string
+     */
+    public static function getCurrentLocation($parcel)
+    {
+        switch ($parcel['status']) {
+            case ServiceConstant::FOR_ARRIVAL:
+                return strtoupper(Calypso::getDisplayValue($parcel, 'to_branch.name'));
+            case ServiceConstant::IN_TRANSIT:
+                return 'In transit to ' . ucwords(Calypso::getDisplayValue($parcel, 'to_branch.name'));
+            case ServiceConstant::BEING_DELIVERED:
+                return 'In transit to Customer from ' . ucwords(Calypso::getDisplayValue($parcel, 'to_branch.name'));
+            case ServiceConstant::ASSIGNED_TO_GROUNDSMAN:
+                return 'Being sorted at ' . ucwords(Calypso::getDisplayValue($parcel, 'to_branch.name'));
+            case ServiceConstant::DELIVERED:
+                return 'Delivered from ' . ucwords(Calypso::getDisplayValue($parcel, 'to_branch.name'));
+            default:
+                return strtoupper(Calypso::getDisplayValue($parcel, 'from_branch.name'));
+        }
+    }
+
+    /**
      * @author Babatunde Otaru <tunde@cottacush.com>
      * @return Reasons[]
      */
@@ -87,7 +124,7 @@ class ParcelAdapter extends BaseAdapter
             'count' => $count
         );
         $params = http_build_query($filters);
-        return $this->request(ServiceConstant::URL_GET_ALL_PARCEL.'?'.$params, array(), self::HTTP_GET);
+        return $this->request(ServiceConstant::URL_GET_ALL_PARCEL . '?' . $params, array(), self::HTTP_GET);
     }
 
     public function getParcelsForDelivery($start_created_date, $end_created_date, $status, $branch_id = null, $offset = 0, $count = 50, $with_from = null, $with_total = null, $only_parents = null, $route_id = null, $with_route = null)
@@ -304,7 +341,7 @@ class ParcelAdapter extends BaseAdapter
             'count' => $count
         );
         $filter = array_filter($filter, 'strlen');
-        return $this->request(ServiceConstant::URL_GET_ALL_PARCEL , $filter, self::HTTP_GET);
+        return $this->request(ServiceConstant::URL_GET_ALL_PARCEL, $filter, self::HTTP_GET);
     }
 
     public function getMerchantParcels($with_bank_account = 1, $payment_status = null, $offset = 0, $count = 50, $with_total = 1, $only_parents = 1)
@@ -439,20 +476,6 @@ class ParcelAdapter extends BaseAdapter
     }
 
     /**
-     * Returns the age analysis for the based on the status of the
-     * @param $parcel
-     * @return mixed
-     */
-    public static function getAgeAnalysis($parcel)
-    {
-        if (in_array($parcel['status'], [ServiceConstant::DELIVERED, ServiceConstant::CANCELLED, ServiceConstant::RETURNED])) {
-            return Util::ago($parcel['created_date'], $parcel['modified_date']);
-        } else {
-            return Util::ago($parcel['created_date']);
-        }
-    }
-
-    /**
      * Get's corporate parcels
      * @author Adegoke Obasa <goke@cottacush.com>
      * @param $offset
@@ -482,25 +505,21 @@ class ParcelAdapter extends BaseAdapter
     }
 
     /**
-     * Returns the current location of the parcel
-     * @param $parcel
-     * @return string
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     * @param $parcelsData
+     * @param $company_id
+     * @param $billing_plan_id
+     * @return bool
      */
-    public static function getCurrentLocation($parcel)
+    public function createBulkShipmentTask($parcelsData, $company_id, $billing_plan_id)
     {
-        switch ($parcel['status']) {
-            case ServiceConstant::FOR_ARRIVAL:
-                return strtoupper(Calypso::getDisplayValue($parcel, 'to_branch.name'));
-            case ServiceConstant::IN_TRANSIT:
-                return 'In transit to ' . ucwords(Calypso::getDisplayValue($parcel, 'to_branch.name'));
-            case ServiceConstant::BEING_DELIVERED:
-                return 'In transit to Customer from '. ucwords(Calypso::getDisplayValue($parcel, 'to_branch.name'));
-            case ServiceConstant::ASSIGNED_TO_GROUNDSMAN:
-                return 'Being sorted at ' . ucwords(Calypso::getDisplayValue($parcel, 'to_branch.name'));
-            case ServiceConstant::DELIVERED:
-                return 'Delivered from ' . ucwords(Calypso::getDisplayValue($parcel, 'to_branch.name'));
-            default:
-                return strtoupper(Calypso::getDisplayValue($parcel, 'from_branch.name'));
+        $data = ['data' => $parcelsData, 'company_id' => $company_id, 'billing_plan_id' => $billing_plan_id];
+        $rawResponse = $this->request(ServiceConstant::URL_CREATE_BULK_SHIPMENT_TASK, Json::encode($data), self::HTTP_POST);
+        $response = new ResponseHandler($rawResponse);
+        if (!$response->isSuccess()) {
+            $this->lastErrorMessage = $response->getError();
         }
+        $this->setResponseHandler($response);
+        return $response;
     }
 }

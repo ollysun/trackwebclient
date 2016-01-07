@@ -72,6 +72,7 @@ class ServiceConstant
     const URL_REMOVE_FROM_BAG = '/parcel/removefrombag';
     const URL_UNSORT_PARCEL = '/parcel/unsort';
     const URL_RETURN_REASONS = '/parcel/getreturnreasons';
+    const URL_CREATE_BULK_SHIPMENT_TASK = '/parcel/createbulkshipmenttask';
 
     const URL_GET_ALL_BANKS = 'bank/getAll/';
 

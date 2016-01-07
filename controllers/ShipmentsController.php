@@ -959,10 +959,20 @@ class ShipmentsController extends BaseController
         $model->load($postData, '');
         $model->dataFile = UploadedFile::getInstanceByName('dataFile');
 
-        if (!$model->process()) {
-            return $this->sendErrorResponse(implode($model->getErrors('dataFile'), '<br/>'), 200);
+        $response = $model->process();
+
+        if (!($response instanceof ResponseHandler)) {
+            if ($model->hasErrors()) {
+                return $this->sendErrorResponse($model->getErrorMessage(), 200);
+            } else {
+                return $this->sendErrorResponse('Something went wrong while creating bulk shipment. Please try again', 200);
+            }
         }
 
-        return $this->sendSuccessResponse(true);
+        if (!$response->isSuccess()) {
+            return $this->sendErrorResponse($response->getError(), 200);
+        }
+
+        return $this->sendSuccessResponse($response->getData());
     }
 }

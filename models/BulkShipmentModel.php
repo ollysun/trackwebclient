@@ -4,6 +4,7 @@ namespace app\models;
 
 use Adapter\CompanyAdapter;
 use Adapter\Globals\ServiceConstant;
+use Adapter\ParcelAdapter;
 use Adapter\RefAdapter;
 use Adapter\RequestHelper;
 use Adapter\Util\Calypso;
@@ -42,7 +43,9 @@ class BulkShipmentModel extends Model
         return [
             ['dataFile', 'file', 'skipOnEmpty' => false, 'extensions' => ['xls', 'xlsx'], 'maxSize' => 1000000, 'checkExtensionByMimeType' => false, 'wrongExtension' => 'Invalid File uploaded. Please upload a valid XLS or XLSX file.'],
             ['dataFile', 'validateRows'],
-            [['billing_plan_id', 'company_id'], 'safe']
+            [['billing_plan_id', 'company_id'], 'safe'],
+            ['billing_plan_id', 'number', 'message' => 'Please select a Billing Plan', 'skipOnEmpty' => false, 'integerOnly' => true],
+            ['company_id', 'number', 'message' => 'Please select a Company', 'skipOnEmpty' => false, 'integerOnly' => true]
         ];
     }
 
@@ -61,7 +64,13 @@ class BulkShipmentModel extends Model
         $refData = new RefAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $this->parcel_types = Calypso::getValue($refData->getparcelType(), 'data', []);
 
-        return $this->validate();
+        if (!$this->validate()) {
+            return false;
+        }
+
+        $parcelAdapter = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $response = $parcelAdapter->createBulkShipmentTask($this->shipmentData, $this->company_id, $this->billing_plan_id);
+        return $response;
     }
 
     /**
@@ -103,7 +112,7 @@ class BulkShipmentModel extends Model
      * @param $params
      * @return bool
      */
-    public function validateRows($attribute, $params)
+    public function validateRows($attribute)
     {
         $contents = $this->getFileContents();
 
@@ -363,7 +372,7 @@ class BulkShipmentModel extends Model
     {
         if (is_null($this->currentRow['parcel_type'])) {
             $this->addError('dataFile', 'Please enter a Shipment Type ' .
-                $this->getCellInformation('parcel_type').  'Shipment type should be one of ' . strtoupper(implode(', ', array_column($this->parcel_types, 'name'))));
+                $this->getCellInformation('parcel_type') . 'Shipment type should be one of ' . strtoupper(implode(', ', array_column($this->parcel_types, 'name'))));
             return false;
         }
 
@@ -389,6 +398,22 @@ class BulkShipmentModel extends Model
         }
 
         return $parcel_type;
+    }
+
+    /**
+     * Get model error message
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     * @return string
+     */
+    public function getErrorMessage()
+    {
+        $allErrors = [];
+        $errors = $this->getErrors();
+        foreach ($errors as $field => $fieldErrors) {
+            $allErrors += $fieldErrors;
+        }
+
+        return implode('<br/>', $allErrors);
     }
 
 }
