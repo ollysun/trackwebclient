@@ -76,7 +76,7 @@ BulkShipment = {
                     }
                 },
                 error: function (e) {
-                    console.log('error:' + e);
+                    BulkShipment.showErrorMessage('Something went wrong while creating bulk shipment. Please try again');
                 },
                 dataType: 'json',
 
