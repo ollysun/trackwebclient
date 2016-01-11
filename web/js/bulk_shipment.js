@@ -70,13 +70,13 @@ BulkShipment = {
             BulkShipment.Constants.bulk_shipment_form.ajaxSubmit({
                 success: function (response) {
                     if (response.status == TrackPlusUtil.ResponseConstants.error) {
-                        BulkShipment.showErrorMessage(response.message);
+                        BulkShipment.showMessage(response.message);
                     } else if (response.status == TrackPlusUtil.ResponseConstants.success) {
-                        TrackPlusUtil.removeErrorMessage($('#message_area'));
+                        BulkShipment.showMessage('Shipments have been queued for creation. View Progress', false);
                     }
                 },
                 error: function (e) {
-                    BulkShipment.showErrorMessage('Something went wrong while creating bulk shipment. Please try again');
+                    BulkShipment.showMessage('Something went wrong while creating bulk shipment. Please try again');
                 },
                 dataType: 'json',
 
@@ -98,8 +98,8 @@ BulkShipment = {
         this.Constants.company_billing_plan_select.html(selectOptions);
     },
 
-    showErrorMessage: function (message) {
-        TrackPlusUtil.showErrorMessage($('#message_area'), message);
+    showMessage: function (message, is_error) {
+        TrackPlusUtil.showMessage($('#message_area'), message, is_error);
     }
 };
 

@@ -973,6 +973,7 @@ class ShipmentsController extends BaseController
             return $this->sendErrorResponse($response->getError(), 200);
         }
 
-        return $this->sendSuccessResponse($response->getData());
+        $this->flashSuccess('Shipments have been queued for creation. View Progress');
+        return $this->redirect(Yii::$app->getRequest()->getReferrer());
     }
 }

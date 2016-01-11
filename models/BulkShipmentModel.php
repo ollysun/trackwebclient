@@ -83,7 +83,7 @@ class BulkShipmentModel extends Model
     private function getShipmentFieldsMap()
     {
         return [
-            Util::getExcelColumnNumberFromName('G') => 'reference',
+            Util::getExcelColumnNumberFromName('G') => 'reference_number',
             Util::getExcelColumnNumberFromName('H') => 'receiver_name',
             Util::getExcelColumnNumberFromName('I') => 'receiver_address_1',
             Util::getExcelColumnNumberFromName('J') => 'receiver_address_2',
@@ -94,7 +94,7 @@ class BulkShipmentModel extends Model
             Util::getExcelColumnNumberFromName('P') => 'receiver_email',
             Util::getExcelColumnNumberFromName('Q') => 'receiver_phone_number',
             Util::getExcelColumnNumberFromName('R') => 'weight',
-            Util::getExcelColumnNumberFromName('T') => 'no_of_packages',
+            Util::getExcelColumnNumberFromName('T') => 'no_of_package',
             Util::getExcelColumnNumberFromName('U') => 'parcel_type',
             Util::getExcelColumnNumberFromName('X') => 'description_1',
             Util::getExcelColumnNumberFromName('Y') => 'description_2',
@@ -218,6 +218,8 @@ class BulkShipmentModel extends Model
 
         $this->currentRow['sender_country'] = ServiceConstant::COUNTRY_NIGERIA;
         $this->currentRow['receiver_country'] = ServiceConstant::COUNTRY_NIGERIA;
+        $this->currentRow['sender_phone_number'] = $this->company['phone_number'];
+        $this->currentRow['sender_email'] = $this->company['email'];
 
         $this->setSenderAddress();
 
@@ -364,7 +366,7 @@ class BulkShipmentModel extends Model
      */
     private function setDescription()
     {
-        $this->currentRow['description'] = implode(', ', array_filter([$this->currentRow['description_1'], $this->currentRow['description_2']]));
+        $this->currentRow['other_info'] = implode(', ', array_filter([$this->currentRow['description_1'], $this->currentRow['description_2']]));
         unset($this->currentRow['description_1'], $this->currentRow['description_2']);
     }
 
@@ -386,7 +388,7 @@ class BulkShipmentModel extends Model
             $this->addError('dataFile', 'Invalid Shipment type *' . strtoupper($this->currentRow['parcel_type']) . '* ' . $this->getCellInformation('parcel_type') . '. Shipment type should be one of ' . strtoupper(implode(', ', array_column($this->parcel_types, 'name'))));
             return false;
         }
-        $this->currentRow['parcel_type'] = $parcel_type['name'];
+        $this->currentRow['parcel_type'] = $parcel_type['id'];
         return true;
 
     }

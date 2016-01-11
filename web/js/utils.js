@@ -45,19 +45,24 @@ var TrackPlusUtil = {
         error: 'error'
     },
 
-    showErrorMessage: function (target, message) {
-        this.removeErrorMessage(target);
+    showMessage: function (target, message, is_error) {
+        this.removeMessage(target);
         if (!target.hasClass('alert')) {
             target.addClass('alert');
         }
-        target.addClass('alert-danger');
+        if (this.isUndefined(is_error) || is_error) {
+            target.addClass('alert-danger');
+        } else {
+            target.addClass('alert-success');
+        }
         target.html(message);
         target.show();
     },
 
-    removeErrorMessage: function (target) {
+    removeMessage: function (target) {
         target.html('');
         target.removeClass('alert-danger');
+        target.removeClass('alert-success');
         target.hide();
     }
 };
