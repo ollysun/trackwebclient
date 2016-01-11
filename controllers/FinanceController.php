@@ -2,6 +2,7 @@
 namespace app\controllers;
 
 use Adapter\CompanyAdapter;
+use Adapter\CreditNoteAdapter;
 use Adapter\InvoiceAdapter;
 use Adapter\Util\Util;
 use Yii;
@@ -14,6 +15,7 @@ use Adapter\ResponseHandler;
 use Adapter\Util\Calypso;
 use app\services\HubService;
 use yii\data\Pagination;
+use yii\helpers\Url;
 
 class FinanceController extends BaseController
 {
@@ -129,10 +131,80 @@ class FinanceController extends BaseController
         return $this->redirect('/finance/invoice');
     }
 
-
-    public function actionCreditnote()
+    /**
+     * Generates a credit note
+     * @author Adegoke Obasa <goke@cottacush.com>
+     */
+    public function actionGeneratecreditnote()
     {
-        return $this->render('creditnote');
+        if(Yii::$app->request->isPost) {
+            $data = Yii::$app->getRequest()->post();
+
+            $parcels = [];
+            for($i = 0; $i < count(Calypso::getValue($data, 'invoice_parcel', [])); $i++) {
+                $parcel = [];
+                $parcel['invoice_parcel_id'] = Calypso::getValue($data, "invoice_parcel.$i");
+                $parcel['deducted_amount'] = floatval(((int)Calypso::getValue($data, "deducted_amount.$i")));
+                $parcel['new_net_amount'] = floatval(Calypso::getValue($data, "new_net_amount.$i"));
+
+                $parcels[] = $parcel;
+            }
+
+            $data['parcels'] = $parcels;
+
+            $invoiceAdapter = new CreditNoteAdapter();
+            $response = $invoiceAdapter->generateCreditNote($data);
+
+            if($response) {
+                $this->flashSuccess('Credit Note created successfully');
+            } else {
+                $this->flashError($invoiceAdapter->getLastErrorMessage());
+                return $this->redirect(Yii::$app->request->referrer);
+            }
+        }
+
+        return $this->redirect('/finance/creditnote');
+    }
+
+    /**
+     * Credit Notes Page
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @param int $page
+     * @return string
+     */
+    public function actionCreditnote($page = 1)
+    {
+        $offset = ($page - 1) * $this->page_width;
+
+        $fromDate = Yii::$app->request->get('from', Util::getToday('/'));
+        $toDate = Yii::$app->request->get('to', Util::getToday('/'));
+        $filters['from_created_at'] = $fromDate;
+        $filters['to_created_at'] = $toDate;
+        $filters['company_id'] = Yii::$app->request->get('company');
+        $filters['status'] = Yii::$app->request->get('status');
+        $filters['offset'] = $offset;
+        $filters['count'] = $this->page_width;
+
+        $creditNoteAdapter = new CreditNoteAdapter();
+        $creditNotesResponse = $creditNoteAdapter->getCreditNotes($filters);
+        $creditNotes = Calypso::getValue($creditNotesResponse, 'credit_notes');
+        $totalCount = Calypso::getValue($creditNotesResponse, 'total_count');
+
+        $companies = (new CompanyAdapter())->getAllCompanies([]);
+        $statuses = ServiceConstant::getStatusRef();
+
+        return $this->render('creditnote', [
+            'fromDate' => $fromDate,
+            'toDate' => $toDate,
+            'statuses' => $statuses,
+            'companies' => $companies,
+            'creditNotes' => $creditNotes,
+            'offset' => $offset,
+            'total_count' => $totalCount,
+            'selectedCompany' => $filters['company_id'],
+            'selectedStatus' => $filters['status'],
+            'page_width' => $this->page_width
+        ]);
     }
 
     /**
@@ -146,8 +218,8 @@ class FinanceController extends BaseController
 
         $fromDate = Yii::$app->request->get('from', Util::getToday('/'));
         $toDate = Yii::$app->request->get('to', Util::getToday('/'));
-        $filters['start_created_at'] = $fromDate;
-        $filters['end_created_at'] = $toDate;
+        $filters['from_created_at'] = $fromDate;
+        $filters['to_created_at'] = $toDate;
         $filters['company_id'] = Yii::$app->request->get('company');
         $filters['status'] = Yii::$app->request->get('status');
         $filters['offset'] = $offset;
@@ -221,5 +293,27 @@ class FinanceController extends BaseController
     {
         $this->layout = 'print';
         return $this->render('print_credit_note');
+    }
+
+    /**
+     * Get's the parcels attached to an invoice
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @param null $invoice_number
+     * @return array|\yii\web\Response
+     */
+    public function actionGetinvoiceparcels($invoice_number = null)
+    {
+        if(is_null($invoice_number)) {
+            return $this->sendErrorResponse("Required(s) fields not sent", 400, null, 400);
+        }
+
+        if(!Yii::$app->request->isAjax) {
+            return $this->redirect(Url::to("/finance/invoice"));
+        }
+
+        $invoiceAdapter = new InvoiceAdapter();
+        $invoiceParcels = $invoiceAdapter->getInvoiceParcels(['invoice_number' => $invoice_number]);
+
+        return $this->sendSuccessResponse($invoiceParcels);
     }
 }

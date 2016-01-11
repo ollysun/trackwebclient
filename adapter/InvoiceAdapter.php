@@ -39,19 +39,44 @@ class InvoiceAdapter extends BaseAdapter
     }
 
     /**
+ * Get all invoices based on filters
+ * @author Adegoke Obasa <goke@cottacush.com>
+ * @param array $filters
+ * @return array|mixed
+ */
+    public function getInvoices($filters = [])
+    {
+        $filters = array_merge($filters, [
+            'with_company' => '1',
+            'with_credit_note' => '1',
+            'with_total_count' => '1',
+        ]);
+
+        $response = $this->request(ServiceConstant::URL_INVOICE_ALL,
+            array_filter($filters), self::HTTP_GET);
+
+        $response = new ResponseHandler($response);
+
+        if ($response->isSuccess()) {
+            return $response->getData();
+        }
+        return [];
+    }
+
+    /**
      * Get all invoices based on filters
      * @author Adegoke Obasa <goke@cottacush.com>
      * @param array $filters
      * @return array|mixed
      */
-    public function getInvoices($filters = [])
+    public function getInvoiceParcels($filters = [])
     {
         $filters = array_merge($filters, [
-            'with_company' => '1',
-            'with_total_count' => '1',
+            'with_parcel' => '1',
+            'no_paginate' => '1',
         ]);
 
-        $response = $this->request(ServiceConstant::URL_INVOICE_ALL,
+        $response = $this->request(ServiceConstant::URL_INVOICE_PARCELS,
             array_filter($filters), self::HTTP_GET);
 
         $response = new ResponseHandler($response);
