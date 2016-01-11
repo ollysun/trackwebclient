@@ -125,4 +125,26 @@ class BillingPlanAdapter extends BaseAdapter
 
         return $response->isSuccess();
     }
+
+    /**
+     * @author Babatunde Otaru <tunde@cottacush.com>
+     * @param $baseBillingPlanId
+     * @param $companyId
+     * @param $billingPlanName
+     * @return bool
+     */
+    public function cloneBillingPlan($baseBillingPlanId,$companyId,$billingPlanName)
+    {
+        $params['base_billing_plan_id'] = $baseBillingPlanId;
+        $params['company_id' ] = $companyId;
+        $params['billing_plan_name'] = $billingPlanName;
+        $rawResponse = $this->request(ServiceConstant::URL_CLONE_BILLING_PLAN,$params,self::HTTP_POST);
+        $response = new ResponseHandler($rawResponse);
+
+        if(!$response->isSuccess()){
+            $this->lastErrorMessage = $response->getError();
+        }
+
+        return $response->isSuccess();
+    }
 }
