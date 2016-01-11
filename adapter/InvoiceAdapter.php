@@ -39,11 +39,35 @@ class InvoiceAdapter extends BaseAdapter
     }
 
     /**
- * Get all invoices based on filters
- * @author Adegoke Obasa <goke@cottacush.com>
- * @param array $filters
- * @return array|mixed
- */
+     * Get's the details of an invoice
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @param $filters
+     * @return array|mixed
+     */
+    public function getInvoice($filters)
+    {
+        $filters = array_merge($filters, [
+            'with_company' => '1',
+            'with_credit_note' => '1',
+        ]);
+
+        $response = $this->request(ServiceConstant::URL_INVOICE_GET,
+            array_filter($filters), self::HTTP_GET);
+
+        $response = new ResponseHandler($response);
+
+        if ($response->isSuccess()) {
+            return $response->getData();
+        }
+        return [];
+    }
+
+    /**
+     * Get all invoices based on filters
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @param array $filters
+     * @return array|mixed
+     */
     public function getInvoices($filters = [])
     {
         $filters = array_merge($filters, [

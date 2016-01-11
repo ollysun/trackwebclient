@@ -278,11 +278,56 @@ class FinanceController extends BaseController
     /**
      * Print Invoice page
      * @author Olajide Oye <jide@cottacush.com>
+     * @param null $invoice_number
+     * @return string|\yii\web\Response
      */
-    public function actionPrintinvoice()
+    public function actionPrintinvoice($invoice_number = null)
     {
+        if(is_null($invoice_number)) {
+            return $this->redirect(Url::to("/finance/invoice"));
+        }
+
+        $invoiceAdapter = new InvoiceAdapter();
+        $filters = ['invoice_number' => $invoice_number];
+        $invoice = $invoiceAdapter->getInvoice($filters);
+        $invoiceParcels = $invoiceAdapter->getInvoiceParcels(array_merge($filters, [
+            'with_receiver_address' => 1,
+            'with_receiver' => 1,
+            'with_receiver_city' => 1,
+            'with_sender_address' => 1,
+            'with_sender_city' => 1
+            ]));
+
+        $totalWeight = 0;
+        $totalPieces = 0;
+        $base = 0;
+        $discount = 0;
+        foreach($invoiceParcels as $invoiceParcel) {
+            $totalWeight += (float) Calypso::getValue($invoiceParcel, 'parcel.weight');
+            $totalPieces += (int) Calypso::getValue($invoiceParcel, 'parcel.no_of_package');
+            $base += (float) Calypso::getValue($invoiceParcel, 'net_amount');
+            $discount += floatval(Calypso::getValue($invoiceParcel, 'parcel.amount_due')) - floatval(Calypso::getValue($invoiceParcel, 'net_amount'));
+        }
+
+        $totalExcludingVat = $base - $discount;
+        $newTotalNet = Calypso::getValue($invoice, 'stamp_duty', 0) + $totalExcludingVat;
+
+        $invoice['current_date'] = Util::getCurrentDate();
+        $invoice['total_weight'] = $totalWeight;
+        $invoice['total_pieces'] = $totalPieces;
+        $invoice['base'] = $base;
+        $invoice['discount'] = $discount;
+        $invoice['total_excluding_vat'] = $totalExcludingVat;
+        $invoice['st_standard_vat'] = $totalExcludingVat * (ServiceConstant::DEFAULT_VAT_RATE / 100);
+        $invoice['new_total_net'] = $newTotalNet;
+        $invoice['total_shipments'] = count($invoiceParcels);
+        $invoice['total_to_pay'] = $invoice['st_standard_vat'] + $newTotalNet;
+        $invoice['total_to_pay_naira'] = (int) ($invoice['st_standard_vat'] + $newTotalNet);
+        $koboValue = $invoice['total_to_pay'] -  floatval($invoice['total_to_pay_naira']);
+        $invoice['total_to_pay_kobo'] = round($koboValue * 100);
+
         $this->layout = 'print';
-        return $this->render('print_invoice');
+        return $this->render('print_invoice', ['invoice' => $invoice, 'invoiceParcels' => $invoiceParcels]);
     }
 
     /**
