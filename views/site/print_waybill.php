@@ -110,8 +110,8 @@ $this->title = 'Waybill '.$parcelData['waybill_number'];
 
     <div class="shipment">
         <div class="shipment__packages"><?= $parcelData['no_of_package']; ?></div>
-        <div class="shipment__actual-weight"><?= Calypso::getInstance()->formatWeight($parcelData['weight']); ?>Kg</div>
-        <div class="shipment__dimensional-weight"></div>
+        <div class="shipment__actual-weight"><?= ($parcelData['qty_metrics'] == ServiceConstant::QTY_METRICS_WEIGHT) ? Calypso::getInstance()->formatWeight($parcelData['weight']).'Kg' : ''; ?></div>
+        <div class="shipment__dimensional-weight"><?= ($parcelData['qty_metrics'] == ServiceConstant::QTY_METRICS_PIECES) ? Calypso::getDisplayValue($parcelData, 'weight') : '' ?></div>
     </div>
 
     <div class="service-type">

@@ -249,6 +249,7 @@ class ParcelService {
         $parcel['pos_amount'] = Calypso::getValue($data, 'amount_in_pos', null);
         $parcel['pos_trans_id'] = Calypso::getValue($data, 'pos_transaction_id', null);
         $parcel['is_freight_included'] = Calypso::getValue($data, 'include_freight', null);
+        $parcel['qty_metrics'] = Calypso::getValue($data, 'qty_metrics');
 
         /**
          * Set Pickup Request Id
