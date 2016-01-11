@@ -46,6 +46,29 @@ class ParcelAdapter extends BaseAdapter
     }
 
     /**
+     * Returns the current location of the parcel
+     * @param $parcel
+     * @return string
+     */
+    public static function getCurrentLocation($parcel)
+    {
+        switch ($parcel['status']) {
+            case ServiceConstant::FOR_ARRIVAL:
+                return strtoupper(Calypso::getDisplayValue($parcel, 'to_branch.name'));
+            case ServiceConstant::IN_TRANSIT:
+                return 'In transit to ' . ucwords(Calypso::getDisplayValue($parcel, 'to_branch.name'));
+            case ServiceConstant::BEING_DELIVERED:
+                return 'In transit to Customer from ' . ucwords(Calypso::getDisplayValue($parcel, 'to_branch.name'));
+            case ServiceConstant::ASSIGNED_TO_GROUNDSMAN:
+                return 'Being sorted at ' . ucwords(Calypso::getDisplayValue($parcel, 'to_branch.name'));
+            case ServiceConstant::DELIVERED:
+                return 'Delivered from ' . ucwords(Calypso::getDisplayValue($parcel, 'to_branch.name'));
+            default:
+                return strtoupper(Calypso::getDisplayValue($parcel, 'from_branch.name'));
+        }
+    }
+
+    /**
      * @author Babatunde Otaru <tunde@cottacush.com>
      * @return Reasons[]
      */
@@ -639,29 +662,6 @@ class ParcelAdapter extends BaseAdapter
             return $response->getData();
         }
         return [];
-    }
-
-    /**
-     * Returns the current location of the parcel
-     * @param $parcel
-     * @return string
-     */
-    public static function getCurrentLocation($parcel)
-    {
-        switch ($parcel['status']) {
-            case ServiceConstant::FOR_ARRIVAL:
-                return strtoupper(Calypso::getDisplayValue($parcel, 'to_branch.name'));
-            case ServiceConstant::IN_TRANSIT:
-                return 'In transit to ' . ucwords(Calypso::getDisplayValue($parcel, 'to_branch.name'));
-            case ServiceConstant::BEING_DELIVERED:
-                return 'In transit to Customer from '. ucwords(Calypso::getDisplayValue($parcel, 'to_branch.name'));
-            case ServiceConstant::ASSIGNED_TO_GROUNDSMAN:
-                return 'Being sorted at ' . ucwords(Calypso::getDisplayValue($parcel, 'to_branch.name'));
-            case ServiceConstant::DELIVERED:
-                return 'Delivered from ' . ucwords(Calypso::getDisplayValue($parcel, 'to_branch.name'));
-            default:
-                return strtoupper(Calypso::getDisplayValue($parcel, 'from_branch.name'));
-        }
     }
 
     /**
