@@ -48,7 +48,7 @@ $this->params['content_header_button'] = '<span class="label label-success">CONF
                             <th>Origin</th>
                             <th>Next Destination</th>
                             <th>Final Destination</th>
-                            <th>Weight (Kg)</th>
+                            <th>Weight/Piece</th>
                         </tr>
                         </thead>
                         <tbody>
