@@ -676,4 +676,13 @@ class AdminController extends BaseController
         }
         return $this->redirect(Url::to("/admin/managecities"));
     }
+
+    /**
+     * Audit Trail
+     * @author Olajide Oye <jide@cottacush.com>
+     */
+    public function actionAudittrail()
+    {
+        return $this->render('audit_trail');
+    }
 }

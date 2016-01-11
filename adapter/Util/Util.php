@@ -192,7 +192,7 @@ class Util
     {
         $old_time = new Moment($base_time);
         $new_time = new Moment($past_time);
-        return $new_time->from($old_time)->getRelative();
+        return $new_time->subtractHours(1)->from($old_time)->getRelative();
     }
 
     /**

@@ -147,7 +147,8 @@ class Calypso
                     'Pricing' => ['base_link' => 'billing/pricing', 'class' => ''],
                     'Onforwarding_Charges' => ['base_link' => 'billing/onforwarding', 'class' => ''],
                     'Corporate_Billing' => ['base_link' => 'billing/corporate', 'class' => '']
-                ], 'branch' => [ServiceConstant::BRANCH_TYPE_HQ]]
+                ], 'branch' => [ServiceConstant::BRANCH_TYPE_HQ]],
+                'Audit_Trail' => ['base_link' => 'admin/audittrail', 'class' => ''],
             ], 'branch' => [ServiceConstant::BRANCH_TYPE_HQ]],
             'Parcel History' => [
                 'base' => 'track',
