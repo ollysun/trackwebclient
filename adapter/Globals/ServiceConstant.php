@@ -16,12 +16,6 @@ class ServiceConstant
     const USER_TYPE_GROUNDSMAN = 5;
     const USER_TYPE_COMPANY_ADMIN = 6;
     const USER_TYPE_COMPANY_OFFICER = 7;
-    /*const USER_TYPE_MANAGER = 2;
-    const USER_TYPE_CASHIER = 3;
-    const USER_TYPE_AGENT = 4;
-    const USER_TYPE_CUSTOMER = 5;
-    const USER_TYPE_SUPPORT = 6;
-    const USER_TYPE_ACCOUNTANT = 7;*/
 
     const ENTITY_TYPE_NORMAL = 1;
     const ENTITY_TYPE_BAG = 2;
@@ -208,6 +202,11 @@ class ServiceConstant
 
     const URL_INVOICE_ADD = 'invoice/add';
     const URL_INVOICE_ALL = 'invoice/getAll';
+    const URL_INVOICE_GET = 'invoice/get';
+    const URL_INVOICE_PARCELS = 'invoice/getInvoiceParcels';
+
+    const URL_CREDIT_NOTE_ADD = 'creditNote/add';
+    const URL_CREDIT_NOTE_ALL = 'creditNote/getAll';
 
     const DATE_TIME_FORMAT = 'd M Y H:i';
     const DATE_FORMAT = 'd M Y';
@@ -243,6 +242,7 @@ class ServiceConstant
 
     const TRUE = 1;
     const FALSE = 0;
+    const DEFAULT_VAT_RATE = 5;
 
     public static function getStatus($status)
     {

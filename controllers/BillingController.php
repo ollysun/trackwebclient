@@ -481,7 +481,7 @@ class BillingController extends BaseController
 
         $billingPlanId = Yii::$app->request->get('billing_plan_id', BillingPlanAdapter::DEFAULT_WEIGHT_RANGE_PLAN);
         $billingAdp = new BillingAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $billings = $billingAdp->fetchAllBilling($billingPlanId);
+        $billings = $billingAdp->fetchAllBilling($billingPlanId, true);
         if ($billings['status'] == ResponseHandler::STATUS_OK) {
             $viewBag['billings'] = $billings['data'];
         }
