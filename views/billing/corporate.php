@@ -110,7 +110,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                         </div>
                         <div class="form-group">
                             <label class="checkbox-inline" >
-                                <input type="checkbox" id="clone-billing-plan">
+                                <input type="checkbox" id="clone-billing-plan" name="clone_billing_plan">
                                 Clone existing billing plan
                             </label>
                         </div>

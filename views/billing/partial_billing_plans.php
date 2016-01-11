@@ -2,7 +2,7 @@
 use Adapter\Util\Calypso;
 ?>
 <label for="">Billing Plan name</label>
-<select name="billing Plan" class="form-control validate required">
+<select name="base_billing_plan_id" class="form-control validate required">
     <option value="">Select Company</option>
     <?php foreach ($billing_plan_names as $billing_plan_name): ?>
         <option

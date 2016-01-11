@@ -690,17 +690,18 @@ class BillingController extends BaseController
                     $this->flashError($billingAdapter->getLastErrorMessage());
                 }
 
-            }
-            $name = Yii::$app->request->post('name');
-            $type = Yii::$app->request->post('type');
-            $companyId = Yii::$app->request->post('company');
-
-            $status = $billingAdapter->createBillingPlan($name, $type, $companyId);
-
-            if ($status) {
-                $this->flashSuccess("Billing plan created successfully");
             } else {
-                $this->flashError($billingAdapter->getLastErrorMessage());
+                $name = Yii::$app->request->post('name');
+                $type = Yii::$app->request->post('type');
+                $companyId = Yii::$app->request->post('company');
+
+                $status = $billingAdapter->createBillingPlan($name, $type, $companyId);
+
+                if ($status) {
+                    $this->flashSuccess("Billing plan created successfully");
+                } else {
+                    $this->flashError($billingAdapter->getLastErrorMessage());
+                }
             }
         }
         return $this->redirect(Url::to("/billing/corporate"));

@@ -135,10 +135,10 @@ class BillingPlanAdapter extends BaseAdapter
      */
     public function cloneBillingPlan($baseBillingPlanId,$companyId,$billingPlanName)
     {
-        $filter['base_billing_plan_id'] = $baseBillingPlanId;
-        $filter['company_id' ] = $companyId;
-        $filter['$billingPlanName'] = $billingPlanName;
-        $rawResponse = $this->request(ServiceConstant::URL_CLONE_BILLING_PLAN,$filter,self::HTTP_GET);
+        $params['base_billing_plan_id'] = $baseBillingPlanId;
+        $params['company_id' ] = $companyId;
+        $params['billing_plan_name'] = $billingPlanName;
+        $rawResponse = $this->request(ServiceConstant::URL_CLONE_BILLING_PLAN,$params,self::HTTP_POST);
         $response = new ResponseHandler($rawResponse);
 
         if(!$response->isSuccess()){
