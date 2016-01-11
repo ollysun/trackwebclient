@@ -87,10 +87,11 @@ function getServerResponse(statusCode, message) {
             if (val === 'false') {
                 $('#CODAmount').val('');
                 $('input[name="CODAmount"]').removeClass('validate required non-zero-number').parent().removeClass('has-error');
-                ;
+                $('div#deferred_freight').addClass('hide');
             }
             else {
                 $('input[name="CODAmount"]').addClass('validate required non-zero-number');
+                $('div#deferred_freight').removeClass('hide');
             }
         }
     };
@@ -631,6 +632,27 @@ $(document).ready(function () {
             }
             $("#billing_plan").html(html);
             $("#billing_plan").trigger("change");
+        }
+    });
+
+
+    // Metric Select box functionality
+    var metricSelect = $('#metric-select'),
+        metricGroup = $('#metric-group');
+    var metricLabel = metricGroup.find('label'),
+        metricInput = metricGroup.find('.form-control'),
+        metricAddon = metricGroup.find('.input-group-addon');
+    metricSelect.on('change', function() {
+        var value = $(this).val();
+        if (value == 'weight') {
+            metricLabel.html('Total weight');
+            metricInput.removeClass('non-zero-integer').addClass('non-zero-number');
+            metricAddon.html('Kg');
+        }
+        else {
+            metricLabel.html('No of Pieces');
+            metricInput.removeClass('non-zero-number').addClass('non-zero-integer');
+            metricAddon.html('Pieces');
         }
     });
 });

@@ -103,36 +103,21 @@ $is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
                                 </div>
                                 <?php } ?>
                             </div>
-
-                            <div class="form-group">
-                                <label for="">Parcel Type</label>
-
-                                <select name="parcel_type" id="" class="form-control validate required">
-                                    <option value="">Please select</option>
-                                    <?php if (isset($parcelType) && is_array($parcelType['data'])) {
-                                        $type_id = Calypso::getValue($parcel, "info.parcel_type", '');
-                                        foreach ($parcelType['data'] as $item) {
-
-                                            $selected = ($type_id == $item['id']) ? "selected" : '';
-                                            echo "<option value='{$item["id"]}' {$selected}>" . strtoupper($item['name']) . "</option>";
-                                        }
-                                    } ?>
-                                </select>
-                            </div>
                             <div class="row">
-                                <div class="col-xs-12 col-sm-3 form-group">
-                                    <label>No. of Packages</label>
-                                    <input name="no_of_packages" class="form-control validate required non-zero-integer"
-                                           value="<?= Calypso::getValue($parcel, "info.no_of_package", ''); ?>">
-                                </div>
-                                <div class="col-xs-12 col-sm-4 form-group">
-                                    <label>Total weight</label>
+                                <div class="col-xs-12 col-sm-7 form-group">
+                                    <label for="">Parcel Type</label>
 
-                                    <div class="input-group">
-                                        <input name="parcel_weight" class="form-control validate required non-zero-number" id="weight"
-                                               value="<?= Calypso::getValue($parcel, "info.weight", ''); ?>">
-                                        <span class="input-group-addon">Kg</span>
-                                    </div>
+                                    <select name="parcel_type" id="" class="form-control validate required">
+                                        <option value="">Please select</option>
+                                        <?php if (isset($parcelType) && is_array($parcelType['data'])) {
+                                            $type_id = Calypso::getValue($parcel, "info.parcel_type", '');
+                                            foreach ($parcelType['data'] as $item) {
+
+                                                $selected = ($type_id == $item['id']) ? "selected" : '';
+                                                echo "<option value='{$item["id"]}' {$selected}>" . strtoupper($item['name']) . "</option>";
+                                            }
+                                        } ?>
+                                    </select>
                                 </div>
                                 <div class="col-xs-12 col-sm-5 form-group">
                                     <label>Parcel value</label>
@@ -150,6 +135,29 @@ $is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
                                         </div>
                                         <input name="parcel_value" type="text" class="form-control validate non-zero-number"
                                                value="<?= Calypso::getValue($parcel, "info.package_value", ''); ?>">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-3 form-group">
+                                    <label>No. of Packages</label>
+                                    <input name="no_of_packages" class="form-control validate required non-zero-integer"
+                                           value="<?= Calypso::getValue($parcel, "info.no_of_package", ''); ?>">
+                                </div>
+                                <div class="col-xs-12 col-sm-4 form-group">
+                                    <label>Metric</label>
+                                    <select class="form-control" id="metric-select">
+                                        <option value="weight">Weight</option>
+                                        <option value="pieces">Pieces</option>
+                                    </select>
+                                </div>
+                                <div class="col-xs-12 col-sm-5 form-group" id="metric-group">
+                                    <label>Total weight</label>
+
+                                    <div class="input-group">
+                                        <input name="parcel_weight" class="form-control validate required non-zero-number" id="weight"
+                                               value="<?= Calypso::getValue($parcel, "info.weight", ''); ?>">
+                                        <span class="input-group-addon">Kg</span>
                                     </div>
                                 </div>
                             </div>
@@ -280,7 +288,7 @@ $is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
                                         </div>
                                     </div>
                                     <div id="CODAmountWrap" class="col-xs-12 col-sm-6 col-lg-7 form-group <?= (Calypso::getValue($parcel, "info.cash_on_delivery", '') == '1') ? '' : "hidden"; ?>">
-                                        <label>Amount to be collected</label>
+                                        <label>Amount due to merchant</label>
 
                                         <div class="input-group">
                                             <span class="input-group-addon currency naira"></span>
@@ -437,6 +445,19 @@ $is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
                                         <label for="">POS Transaction ID</label>
                                         <input name="pos_transaction_id" class="form-control"
                                                value="<?= Calypso::getValue($parcel, "info.pos_trans_id", ''); ?>">
+                                    </div>
+                                </div>
+                                <div id="deferred_freight" class="form-group hide">
+                                    <label>Add Freight Cost to Cash on Delivery?</label><br>
+                                    <div class="validate">
+                                        <div class="radio-inline">
+                                            <input id="freightYes" type="radio" name="include_freight" value="<?= ServiceConstant::TRUE; ?>"> <label
+                                                for="freightYes" class="">Yes</label>
+                                        </div>
+                                        <div class="radio-inline">
+                                            <input id="freightNo" type="radio" name="include_freight" value="<?= ServiceConstant::FALSE; ?>"
+                                                   checked="checked"> <label for="freightNo" class="">No</label>
+                                        </div>
                                     </div>
                                 </div>
                                 <br>

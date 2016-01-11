@@ -824,12 +824,11 @@ class ShipmentsController extends BaseController
         $filters['start_created_date'] = $from_date . ' 00:00:00';
         $filters['end_created_date'] = $end_date . ' 23:59:59';
 
-        $start_modified_date = Yii::$app->request->get('start_modified_date', date('Y/m/d'));
-        $end_modified_date = Yii::$app->request->get('end_modified_date', date('Y/m/d'));
+        $start_modified_date = Yii::$app->request->get('start_modified_date', null);
+        $end_modified_date = Yii::$app->request->get('end_modified_date', null);
 
-        $filters['start_modified_date'] = $start_modified_date . ' 00:00:00';
-        $filters['end_modified_date'] = $end_modified_date . ' 23:59:59';
-
+        $filters['start_modified_date'] = (Util::checkEmpty($start_modified_date) ? null : $start_modified_date. ' 00:00:00');
+        $filters['end_modified_date'] =  (Util::checkEmpty($end_modified_date) ? null : $end_modified_date.' 23:59:59');
 
         if (!empty(Yii::$app->request->get('download'))) {
 

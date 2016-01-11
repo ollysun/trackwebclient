@@ -85,6 +85,16 @@ class Util
     }
 
     /**
+     * Get's current date in specified format
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @param string $format
+     * @return bool|string
+     */
+    public static function getCurrentDate($format = 'd/m/Y') {
+        return date($format);
+    }
+
+    /**
      * @author Adeyemi Olaoye <yemi@cottacush.com>
      * @param $array
      * @param $keys
@@ -187,14 +197,151 @@ class Util
      * Return an english representation of the time difference
      * @author Olawale Lawal <wale@cottacush.com>
      * @param $past_time
-     * @param int $reference
      * @return string
      */
     public static function ago($past_time, $base_time = 'now')
     {
         $old_time = new Moment($base_time);
         $new_time = new Moment($past_time);
-        return $new_time->from($old_time)->getRelative();
+        return $new_time->subtractHours(1)->from($old_time)->getRelative();
+    }
+
+    /**
+     * Reads a CSV file
+     * @credit http://www.codedevelopr.com/articles/reading-csv-files-into-php-array/
+     * @param $csvFile
+     * @return array
+     */
+    public static function readCSV($csvFile)
+    {
+        $line_of_text = [];
+        $file_handle = fopen($csvFile, 'r');
+        while (!feof($file_handle)) {
+            $rowData = fgetcsv($file_handle, 1024);
+            if ($rowData) {
+                $line_of_text[] = $rowData;
+            }
+        }
+        fclose($file_handle);
+        return $line_of_text;
+    }
+
+    /**
+     * Converts a number to words
+     * @credit http://www.karlrixon.co.uk/writing/convert-numbers-to-words-with-php/
+     * @param $number
+     * @return bool|null|string
+     */
+    public static function convert_number_to_words($number) {
+
+        $hyphen      = '-';
+        $conjunction = ' and ';
+        $separator   = ', ';
+        $negative    = 'negative ';
+        $decimal     = ' point ';
+        $dictionary  = array(
+            0                   => 'zero',
+            1                   => 'one',
+            2                   => 'two',
+            3                   => 'three',
+            4                   => 'four',
+            5                   => 'five',
+            6                   => 'six',
+            7                   => 'seven',
+            8                   => 'eight',
+            9                   => 'nine',
+            10                  => 'ten',
+            11                  => 'eleven',
+            12                  => 'twelve',
+            13                  => 'thirteen',
+            14                  => 'fourteen',
+            15                  => 'fifteen',
+            16                  => 'sixteen',
+            17                  => 'seventeen',
+            18                  => 'eighteen',
+            19                  => 'nineteen',
+            20                  => 'twenty',
+            30                  => 'thirty',
+            40                  => 'fourty',
+            50                  => 'fifty',
+            60                  => 'sixty',
+            70                  => 'seventy',
+            80                  => 'eighty',
+            90                  => 'ninety',
+            100                 => 'hundred',
+            1000                => 'thousand',
+            1000000             => 'million',
+            1000000000          => 'billion',
+            1000000000000       => 'trillion',
+            1000000000000000    => 'quadrillion',
+            1000000000000000000 => 'quintillion'
+        );
+
+        if (!is_numeric($number)) {
+            return false;
+        }
+
+        if (($number >= 0 && (int) $number < 0) || (int) $number < 0 - PHP_INT_MAX) {
+            // overflow
+            trigger_error(
+                'convert_number_to_words only accepts numbers between -' . PHP_INT_MAX . ' and ' . PHP_INT_MAX,
+                E_USER_WARNING
+            );
+            return false;
+        }
+
+        if ($number < 0) {
+            return $negative . self::convert_number_to_words(abs($number));
+        }
+
+        $string = $fraction = null;
+
+        if (strpos($number, '.') !== false) {
+            list($number, $fraction) = explode('.', $number);
+        }
+
+        switch (true) {
+            case $number < 21:
+                $string = $dictionary[$number];
+                break;
+            case $number < 100:
+                $tens   = ((int) ($number / 10)) * 10;
+                $units  = $number % 10;
+                $string = $dictionary[$tens];
+                if ($units) {
+                    $string .= $hyphen . $dictionary[$units];
+                }
+                break;
+            case $number < 1000:
+                $hundreds  = $number / 100;
+                $remainder = $number % 100;
+                $string = $dictionary[$hundreds] . ' ' . $dictionary[100];
+                if ($remainder) {
+                    $string .= $conjunction . self::convert_number_to_words($remainder);
+                }
+                break;
+            default:
+                $baseUnit = pow(1000, floor(log($number, 1000)));
+                $numBaseUnits = (int) ($number / $baseUnit);
+                $remainder = $number % $baseUnit;
+                $string = self::convert_number_to_words($numBaseUnits) . ' ' . $dictionary[$baseUnit];
+                if ($remainder) {
+                    $string .= $remainder < 100 ? $conjunction : $separator;
+                    $string .= self::convert_number_to_words($remainder);
+                }
+                break;
+        }
+
+        if (null !== $fraction && is_numeric($fraction)) {
+            $string .= $decimal;
+            $words = array();
+            foreach (str_split((string) $fraction) as $number) {
+                $words[] = $dictionary[$number];
+            }
+            $string .= implode(' ', $words);
+        }
+
+        return $string;
     }
 
     /**

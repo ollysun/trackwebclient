@@ -32,7 +32,7 @@ class BulkShipmentRequestForm extends Model
     public function rules()
     {
         return [
-            ['dataFile', 'file', 'skipOnEmpty' => false, 'mimeTypes' => ['text/csv', 'text/plain'], 'maxSize' => 1000000, 'checkExtensionByMimeType' => true, 'wrongMimeType' => 'Invalid File uploaded. Please upload a valid CSV file.'],
+            ['dataFile', 'file', 'skipOnEmpty' => false, 'extensions' => 'csv', 'maxSize' => 1000000, 'checkExtensionByMimeType' => false, 'wrongExtension' => 'Invalid File uploaded. Please upload a valid CSV file.'],
             ['dataFile', 'validateRows']
         ];
     }
@@ -79,15 +79,13 @@ class BulkShipmentRequestForm extends Model
      */
     public function getFileContents()
     {
-        $contents = file_get_contents($this->dataFile->tempName);
-        $contents = explode("\r", $contents);
+        $contents = Util::readCSV($this->dataFile->tempName);
         $count = 0;
         $result = [];
-        foreach ($contents as $content) {
+        foreach ($contents as $rowData) {
             if (++$count == 1) {
                 continue;
             }
-            $rowData = str_getcsv($content);
             if (!$this->isRowEmpty($rowData)) {
                 $result[] = $rowData;
             }

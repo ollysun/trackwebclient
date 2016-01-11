@@ -46,29 +46,6 @@ class ParcelAdapter extends BaseAdapter
     }
 
     /**
-     * Returns the current location of the parcel
-     * @param $parcel
-     * @return string
-     */
-    public static function getCurrentLocation($parcel)
-    {
-        switch ($parcel['status']) {
-            case ServiceConstant::FOR_ARRIVAL:
-                return strtoupper(Calypso::getDisplayValue($parcel, 'to_branch.name'));
-            case ServiceConstant::IN_TRANSIT:
-                return 'In transit to ' . ucwords(Calypso::getDisplayValue($parcel, 'to_branch.name'));
-            case ServiceConstant::BEING_DELIVERED:
-                return 'In transit to Customer from ' . ucwords(Calypso::getDisplayValue($parcel, 'to_branch.name'));
-            case ServiceConstant::ASSIGNED_TO_GROUNDSMAN:
-                return 'Being sorted at ' . ucwords(Calypso::getDisplayValue($parcel, 'to_branch.name'));
-            case ServiceConstant::DELIVERED:
-                return 'Delivered from ' . ucwords(Calypso::getDisplayValue($parcel, 'to_branch.name'));
-            default:
-                return strtoupper(Calypso::getDisplayValue($parcel, 'from_branch.name'));
-        }
-    }
-
-    /**
      * @author Babatunde Otaru <tunde@cottacush.com>
      * @return Reasons[]
      */
@@ -124,7 +101,7 @@ class ParcelAdapter extends BaseAdapter
             'count' => $count
         );
         $params = http_build_query($filters);
-        return $this->request(ServiceConstant::URL_GET_ALL_PARCEL . '?' . $params, array(), self::HTTP_GET);
+        return $this->request(ServiceConstant::URL_GET_ALL_PARCEL.'?'.$params, array(), self::HTTP_GET);
     }
 
     public function getParcelsForDelivery($start_created_date, $end_created_date, $status, $branch_id = null, $offset = 0, $count = 50, $with_from = null, $with_total = null, $only_parents = null, $route_id = null, $with_route = null)
@@ -307,7 +284,7 @@ class ParcelAdapter extends BaseAdapter
     public function getECDispatchedParcels($branch_id, $offset = 0, $count = 50, $search = null)
     {
         $filter = array(
-            'branch_id' => $branch_id,
+            'to_branch_id' => $branch_id,
             'with_total_count' => 1,
             'status' => ServiceConstant::BEING_DELIVERED,
             'waybill_number' => $search,
@@ -341,7 +318,7 @@ class ParcelAdapter extends BaseAdapter
             'count' => $count
         );
         $filter = array_filter($filter, 'strlen');
-        return $this->request(ServiceConstant::URL_GET_ALL_PARCEL, $filter, self::HTTP_GET);
+        return $this->request(ServiceConstant::URL_GET_ALL_PARCEL , $filter, self::HTTP_GET);
     }
 
     public function getMerchantParcels($with_bank_account = 1, $payment_status = null, $offset = 0, $count = 50, $with_total = 1, $only_parents = 1)
@@ -464,6 +441,48 @@ class ParcelAdapter extends BaseAdapter
     }
 
     /**
+     * Get expected parcels for a branch
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     * @param $offset
+     * @param $page_width
+     * @param $branch
+     * @return array|mixed|string
+     */
+    public function getExpectedParcels($offset, $page_width, $branch)
+    {
+        $filters = [
+            'status' => ServiceConstant::IN_TRANSIT,
+            'to_branch_id' => $branch,
+            'with_total_count' => 1,
+            'with_to_branch' => 1,
+            'with_city' => 1,
+            'with_sender_address' => 1,
+            'with_receiver_address' => 1,
+            'with_created_branch' => 1,
+            'offset' => $offset,
+            'count' => $page_width
+        ];
+
+        $response = $this->getParcelsByFilters($filters);
+        $responseHandler = new ResponseHandler($response);
+        if ($responseHandler->getStatus() == ResponseHandler::STATUS_OK) {
+            $responseData = $responseHandler->getData();
+            $parcels = Calypso::getValue($responseData, 'parcels', []);
+            $draftSorts = $this->getDraftSorts();
+            $sortedWaybillNumbers = array_column($draftSorts, 'waybill_number');
+            $expectedParcels = [];
+            foreach ($parcels as $parcel) {
+                if (!in_array(Calypso::getValue($parcel, 'waybill_number'), $sortedWaybillNumbers)) {
+                    $expectedParcels[] = $parcel;
+                }
+            }
+            $responseData['parcels'] = $expectedParcels;
+            return $responseData;
+        }
+        return false;
+    }
+
+    /**
      * Returns parcels based on the filters
      * @author Olawale Lawal <wale@cottacush.com>
      * @param $filters
@@ -473,6 +492,124 @@ class ParcelAdapter extends BaseAdapter
     {
         $params = http_build_query($filters);
         return $this->request(ServiceConstant::URL_GET_ALL_PARCEL . '?' . $params, [], self::HTTP_GET);
+    }
+
+    /**
+     * Get draft sort parcels
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     * @param $offset
+     * @param $page_width
+     * @param bool $paginate
+     * @return array|mixed|string
+     */
+    public function getDraftSorts($offset = null, $page_width = null, $paginate = false)
+    {
+        $filters = ['offset' => $offset, 'count' => $page_width, 'paginate' => (($paginate) ? 1 : 0)];
+        $response = $this->request(ServiceConstant::URL_GET_DRAFT_SORTS, $filters, self::HTTP_GET);
+        $responseHandler = new ResponseHandler($response);
+        if ($responseHandler->getStatus() == ResponseHandler::STATUS_OK) {
+            return $responseHandler->getData();
+        }
+        return [];
+    }
+
+
+    /**
+     * Get parcels in a draft bag
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     * @param $bag_sort_number
+     * @return array|mixed
+     */
+    public function getDraftBagParcels($bag_sort_number)
+    {
+        $filters = ['bag_number' => $bag_sort_number, 'is_visible' => 0];
+        $response = $this->request(ServiceConstant::URL_GET_DRAFT_SORTS, $filters, self::HTTP_GET);
+        $responseHandler = new ResponseHandler($response);
+        if ($responseHandler->getStatus() == ResponseHandler::STATUS_OK) {
+            return $responseHandler->getData();
+        }
+        return [];
+    }
+
+    /**
+     * Create draft sortings
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     * @param $data array
+     * @return ResponseHandler
+     */
+    public function createDraftSort($data)
+    {
+        $rawResponse = $this->request(ServiceConstant::URL_DRAFT_SORT, Json::encode($data), self::HTTP_POST);
+        $response = new ResponseHandler($rawResponse);
+        if (!$response->isSuccess()) {
+            $this->lastErrorMessage = $response->getError();
+        }
+
+        return $response;
+    }
+
+    /**
+     * Discard draft sortings
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     * @param $data
+     * @return ResponseHandler
+     */
+    public function discardDraftSort($data)
+    {
+        $rawResponse = $this->request(ServiceConstant::URL_DISCARD_SORT, Json::encode($data), self::HTTP_POST);
+        $response = new ResponseHandler($rawResponse);
+        if (!$response->isSuccess()) {
+            $this->lastErrorMessage = $response->getError();
+        }
+        return $response;
+    }
+
+    /**
+     * confirm draft sortings
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     * @param $data
+     * @return ResponseHandler
+     */
+    public function confirmDraftSort($data)
+    {
+        $rawResponse = $this->request(ServiceConstant::URL_CONFIRM_SORT, Json::encode($data), self::HTTP_POST);
+        $response = new ResponseHandler($rawResponse);
+        if (!$response->isSuccess()) {
+            $this->lastErrorMessage = $response->getError();
+        }
+        return $response;
+    }
+
+    /**
+     * create draft bag
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     * @param $data
+     * @return ResponseHandler
+     */
+    public function createDraftBag($data)
+    {
+        $rawResponse = $this->request(ServiceConstant::URL_CREATE_DRAFT_BAG, Json::encode($data), self::HTTP_POST);
+        $response = new ResponseHandler($rawResponse);
+        if (!$response->isSuccess()) {
+            $this->lastErrorMessage = $response->getError();
+        }
+        return $response;
+    }
+
+    /**
+     * create draft bag
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     * @param $data
+     * @return ResponseHandler
+     */
+    public function confirmDraftBag($data)
+    {
+        $rawResponse = $this->request(ServiceConstant::URL_CONFIRM_DRAFT_BAG, Json::encode($data), self::HTTP_POST);
+        $response = new ResponseHandler($rawResponse);
+        if (!$response->isSuccess()) {
+            $this->lastErrorMessage = $response->getError();
+        }
+        return $response;
     }
 
     /**
@@ -502,6 +639,29 @@ class ParcelAdapter extends BaseAdapter
             return $response->getData();
         }
         return [];
+    }
+
+    /**
+     * Returns the current location of the parcel
+     * @param $parcel
+     * @return string
+     */
+    public static function getCurrentLocation($parcel)
+    {
+        switch ($parcel['status']) {
+            case ServiceConstant::FOR_ARRIVAL:
+                return strtoupper(Calypso::getDisplayValue($parcel, 'to_branch.name'));
+            case ServiceConstant::IN_TRANSIT:
+                return 'In transit to ' . ucwords(Calypso::getDisplayValue($parcel, 'to_branch.name'));
+            case ServiceConstant::BEING_DELIVERED:
+                return 'In transit to Customer from '. ucwords(Calypso::getDisplayValue($parcel, 'to_branch.name'));
+            case ServiceConstant::ASSIGNED_TO_GROUNDSMAN:
+                return 'Being sorted at ' . ucwords(Calypso::getDisplayValue($parcel, 'to_branch.name'));
+            case ServiceConstant::DELIVERED:
+                return 'Delivered from ' . ucwords(Calypso::getDisplayValue($parcel, 'to_branch.name'));
+            default:
+                return strtoupper(Calypso::getDisplayValue($parcel, 'from_branch.name'));
+        }
     }
 
     /**
