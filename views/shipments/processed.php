@@ -99,8 +99,7 @@ $this->params['content_header_button'] = $this->render('../elements/content_head
                     $i = $offset;
                     if (isset($parcels) && is_array($parcels)) {
                         foreach ($parcels as $parcel) {
-                            ;
-                            ?>
+                    ?>
                             <tr data-waybill="<?= strtoupper($parcel['waybill_number']); ?>">
                                 <td>
                                     <div class="checkbox-nice">
