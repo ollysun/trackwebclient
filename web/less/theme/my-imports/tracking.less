@@ -41,6 +41,22 @@
 	margin-top: 80px;
 }
 .tracking {
+	&-item {
+		padding-top: 20px;
+		padding-bottom: 80px;
+		margin-bottom: 50px;
+		border-bottom: 2px solid #ddd;
+
+		&:only-child {
+			padding-top: 0;
+		}
+
+		&:last-child {
+			border-bottom: 0;
+			margin-bottom: 0;
+		}
+	}
+
 	&-logo {
 		font-size: 54px;
 		color: #666;
