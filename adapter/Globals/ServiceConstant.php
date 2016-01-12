@@ -243,6 +243,9 @@ class ServiceConstant
     const FALSE = 0;
     const DEFAULT_VAT_RATE = 5;
 
+    const QTY_METRICS_WEIGHT = 'weight';
+    const QTY_METRICS_PIECES = 'pieces';
+
     public static function getStatus($status)
     {
         switch ($status) {

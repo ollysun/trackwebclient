@@ -62,7 +62,7 @@ $this->params['content_header_button'] = '';
                             <th>Receiver</th>
                             <th>Receiver Phone</th>
                             <th>Reference Number</th>
-                            <th>Weight</th>
+                            <th>Weight/Piece</th>
                             <th>Status</th>
                             <th>Action</th>
                         </tr>

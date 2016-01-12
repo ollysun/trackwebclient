@@ -841,7 +841,7 @@ class ShipmentsController extends BaseController
             $name = 'report_' . date(ServiceConstant::DATE_TIME_FORMAT) . '.csv';
             $data = array();
 
-            $headers = array('SN', 'Waybill Number', 'Sender', 'Sender Email', 'Sender Phone', 'Sender Address', 'Receiver', 'Receiver Email', 'Receiver Phone', 'Receiver Address', 'Weight', 'Payment Method', 'Amount Due', 'Cash Amount', 'POS Amount', 'POS Transaction ID', 'Parcel Type', 'Cash on Delivery', 'Delivery Type', 'Package Value', '# of Package', 'Shipping Type', 'Created Date', 'Last Modified Date', 'Status', 'Reference Number', 'Originating Branch', 'Route', 'Request Type', 'For Return', 'Other Info');
+            $headers = array('SN', 'Waybill Number', 'Sender', 'Sender Email', 'Sender Phone', 'Sender Address', 'Receiver', 'Receiver Email', 'Receiver Phone', 'Receiver Address', 'Weight/Piece', 'Payment Method', 'Amount Due', 'Cash Amount', 'POS Amount', 'POS Transaction ID', 'Parcel Type', 'Cash on Delivery', 'Delivery Type', 'Package Value', '# of Package', 'Shipping Type', 'Created Date', 'Last Modified Date', 'Status', 'Reference Number', 'Originating Branch', 'Route', 'Request Type', 'For Return', 'Other Info');
             foreach ($response->getData() as $key => $result) {
                 $data[] = [
                     $key + 1,

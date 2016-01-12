@@ -106,20 +106,14 @@ $this->params['breadcrumbs'][] = 'Waybill';
 							<div class="row form-group">
 								<div class="col-xs-6">
 									<label>Parcel type</label>
-									<?php
-										if(isset($parcelType, $parcelType['data']) && is_array($parcelType['data'])) {
-											foreach ($parcelType['data'] as $item) {
-												if($item['id'] == $parcelData['parcel_type']) {
-													echo '<div class="form-control-static">'.ucwords($item['name']).'</div>';
-												}
-											}
-										}
-									?>
+									<div class="form-control-static">
+										<?= ServiceConstant::getParcelType($parcelData['parcel_type']) ?>
+									</div>
 								</div>
 								<div class="col-xs-6">
-									<label>Shipment Weight</label>
+									<label><?= ($parcelData['qty_metrics'] == ServiceConstant::QTY_METRICS_WEIGHT ? 'Shipment Weight':'No. of Pieces'); ?></label>
 									<div class="form-control-static">
-										<?= $parcelData['weight']; ?>Kg
+										<?= $parcelData['weight'] . ($parcelData['qty_metrics'] == ServiceConstant::QTY_METRICS_WEIGHT ? 'Kg':''); ?>
 									</div>
 								</div>
 								<div class="col-xs-6 hidden">
@@ -150,15 +144,9 @@ $this->params['breadcrumbs'][] = 'Waybill';
 								</div>
 								<div class="col-xs-6">
 									<label>Service type</label>
-									<?php
-										if(isset($serviceType, $serviceType['data']) && is_array($serviceType['data'])) {
-											foreach ($serviceType['data'] as $item) {
-												if($item['id'] == $parcelData['shipping_type']) {
-													echo '<div class="form-control-static">'.ucwords($item['name']).'</div>';
-												}
-											}
-										}
-									?>
+									<div class="form-control-static">
+									<?= ucwords(ServiceConstant::getShippingType($parcelData['shipping_type'])); ?>
+									</div>
 								</div>
 							</div>
 							<div class="form-group">
