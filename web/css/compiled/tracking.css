@@ -2944,6 +2944,19 @@ svg {
 .empty-tracking-no {
   margin-top: 80px;
 }
+.tracking-item {
+  padding-top: 20px;
+  padding-bottom: 80px;
+  margin-bottom: 50px;
+  border-bottom: 2px solid #ddd;
+}
+.tracking-item:only-child {
+  padding-top: 0;
+}
+.tracking-item:last-child {
+  border-bottom: 0;
+  margin-bottom: 0;
+}
 .tracking-logo {
   font-size: 54px;
   color: #666;
