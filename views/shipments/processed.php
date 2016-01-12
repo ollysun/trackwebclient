@@ -46,8 +46,11 @@ $this->params['content_header_button'] = $this->render('../elements/content_head
                 <form class="form-inline clearfix">
                     <div class="pull-left form-group">
                         <label for="searchInput">Search</label><br>
+
                         <div class="input-group input-group-sm input-group-search">
-                            <input id="searchInput" type="text" name="search" placeholder="Waybill Number" class="search-box form-control">
+                            <input id="searchInput" type="text" name="search" placeholder="Waybill Number"
+                                   class="search-box form-control">
+
                             <div class="input-group-btn">
                                 <button class="btn btn-default" type="submit">
                                     <i class="fa fa-search"></i>
@@ -58,7 +61,8 @@ $this->params['content_header_button'] = $this->render('../elements/content_head
                 </form>
                 <div class="pull-left hidden">
                     <label>&nbsp;</label><br>
-                    <button type="button" class="btn btn-sm btn-default"><i class="fa fa-download"></i> Download</button>
+                    <button type="button" class="btn btn-sm btn-default"><i class="fa fa-download"></i> Download
+                    </button>
                 </div>
             </div>
         </div>
@@ -83,9 +87,9 @@ $this->params['content_header_button'] = $this->render('../elements/content_head
                         <th>Request Type</th>
                         <th>Return Status</th>
                         <th>Shipment Status</th>
-                        <?php if($user_data['role_id'] == ServiceConstant::USER_TYPE_ADMIN) { ?>
-                        <th>Originating Branch</th>
-                        <th>Current Location</th>
+                        <?php if ($user_data['role_id'] == ServiceConstant::USER_TYPE_ADMIN) { ?>
+                            <th>Originating Branch</th>
+                            <th>Current Location</th>
                         <?php } ?>
                         <th width="14%">Action</th>
                     </tr>
@@ -94,8 +98,8 @@ $this->params['content_header_button'] = $this->render('../elements/content_head
                     <?php
                     $i = $offset;
                     if (isset($parcels) && is_array($parcels)) {
-                        foreach ($parcels as $parcel) {;
-                            ?>
+                        foreach ($parcels as $parcel) {
+                    ?>
                             <tr data-waybill="<?= strtoupper($parcel['waybill_number']); ?>">
                                 <td>
                                     <div class="checkbox-nice">
@@ -105,7 +109,8 @@ $this->params['content_header_button'] = $this->render('../elements/content_head
                                                data-sender="<?= strtoupper($parcel['sender']['firstname'] . ' ' . $parcel['sender']['lastname']) ?>"
                                                type="checkbox"><label
                                             for="chbx_w_<?= $i; ?>"> </label>
-                                    </div></td>
+                                    </div>
+                                </td>
                                 <td><?= $i ?></td>
                                 <td><?= strtoupper($parcel['waybill_number']); ?></td>
                                 <td><?= strtoupper($parcel['sender']['firstname'] . ' ' . $parcel['sender']['lastname']) ?></td>
@@ -116,25 +121,30 @@ $this->params['content_header_button'] = $this->render('../elements/content_head
                                 <td><?= ServiceConstant::getRequestType($parcel['request_type']); ?></td>
                                 <td><?= ServiceConstant::getReturnStatus($parcel); ?></td>
                                 <td><?= ServiceConstant::getStatus($parcel['status']); ?></td>
-                                <?php if($user_data['role_id'] == ServiceConstant::USER_TYPE_ADMIN) { ?>
-                                <td><?= strtoupper(Calypso::getValue($parcel, "created_branch.name")) ?></td>
-                                <td><?= ParcelAdapter::getCurrentLocation($parcel); ?></td>
+                                <?php if ($user_data['role_id'] == ServiceConstant::USER_TYPE_ADMIN) { ?>
+                                    <td><?= strtoupper(Calypso::getValue($parcel, "created_branch.name")) ?></td>
+                                    <td><?= ParcelAdapter::getCurrentLocation($parcel); ?></td>
                                 <?php } ?>
                                 <td>
-                                    <a title="View this shipment" href="<?= Url::toRoute(['/shipments/view?waybill_number=' . $parcel['waybill_number']]) ?>"
+                                    <a title="View this shipment"
+                                       href="<?= Url::toRoute(['/shipments/view?waybill_number=' . $parcel['waybill_number']]) ?>"
                                        class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>
                                     <?php if (in_array($parcel['status'], [ServiceConstant::FOR_DELIVERY, ServiceConstant::FOR_SWEEPER])) : ?>
                                         <form method="post">
-                                            <button title="Cancel this shipment" type="submit" class="btn btn-xs btn-danger" name="parcel_id"><i class="fa fa-times"></i></button>
-                                            <input type="hidden" name="waybill_numbers" value="<?= $parcel['waybill_number'] ?>">
+                                            <button title="Cancel this shipment" type="submit"
+                                                    class="btn btn-xs btn-danger" name="parcel_id"><i
+                                                    class="fa fa-times"></i></button>
+                                            <input type="hidden" name="waybill_numbers"
+                                                   value="<?= $parcel['waybill_number'] ?>">
                                             <input type="hidden" name="task" value="cancel_shipment">
                                         </form>
                                     <?php endif; ?>
-                                    <?php if(!ParcelAdapter::isBag($parcel['waybill_number'])) : ?>
-                                    <button title="Clone this shipment" data-href="<?= Url::toRoute(['/parcels/new?id=' . $parcel['id']]) ?>"
-                                       class="btn btn-xs btn-info btnClone"><i class="fa fa-copy"></i></button>
+                                    <?php if (!ParcelAdapter::isBag($parcel['waybill_number'])) : ?>
+                                        <button title="Clone this shipment"
+                                                data-href="<?= Url::toRoute(['/parcels/new?id=' . $parcel['id']]) ?>"
+                                                class="btn btn-xs btn-info btnClone"><i class="fa fa-copy"></i></button>
                                     <?php endif; ?>
-                                    <?= $this->render('../elements/parcel/partial_return_button',['parcel'=>$parcel ,'reasons_list' => $reasons_list]) ?>
+                                    <?= $this->render('../elements/parcel/partial_return_button', ['parcel' => $parcel, 'reasons_list' => $reasons_list]) ?>
                                 </td>
                             </tr>
                             <?php
@@ -157,7 +167,8 @@ $this->params['content_header_button'] = $this->render('../elements/content_head
         <form method="post" action="" class="validate-form">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title" id="myModalLabel">Submit Teller Details</h4>
                 </div>
                 <div class="modal-body">
@@ -179,7 +190,8 @@ $this->params['content_header_button'] = $this->render('../elements/content_head
                         </div>
                         <div class="col-xs-6 form-group">
                             <label for="">Account no</label>
-                            <input type="text" class="form-control validate required non-zero-integer" name="account_no">
+                            <input type="text" class="form-control validate required non-zero-integer"
+                                   name="account_no">
                         </div>
                     </div>
                     <div class="row">
@@ -189,9 +201,11 @@ $this->params['content_header_button'] = $this->render('../elements/content_head
                         </div>
                         <div class="col-xs-6 form-group">
                             <label for="">Amount paid</label>
+
                             <div class="input-group">
                                 <span class="input-group-addon currency naira"></span>
-                                <input type="text" class="form-control validate required non-zero-number" name="amount_paid">
+                                <input type="text" class="form-control validate required non-zero-number"
+                                       name="amount_paid">
                             </div>
                         </div>
                     </div>
@@ -223,6 +237,26 @@ $this->params['content_header_button'] = $this->render('../elements/content_head
     </div>
 </div>
 
+<div class="modal fade" id="bulk_shipment_modal" tabindex="-1" role="dialog" aria-labelledby="BulkShipmentModal">
+    <div class="modal-dialog" role="document">
+        <form id="bulk_shipment_form" method="post" enctype="multipart/form-data">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Create Bulk Shipment</h4>
+                </div>
+                <div class="modal-body" id="bulk_shipment_modal_body">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button  class="btn btn-primary" id="modal_create_btn" >Create</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
 <?= $this->render('../elements/parcel/partial_return_form') ?>
 
 <!-- this page specific scripts -->
@@ -230,6 +264,7 @@ $this->params['content_header_button'] = $this->render('../elements/content_head
 <?= $this->registerJsFile('@web/js/libs/dataTables.fixedHeader.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
 <?= $this->registerJsFile('@web/js/libs/dataTables.tableTools.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
 <?= $this->registerJsFile('@web/js/libs/jquery.dataTables.bootstrap.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/utils.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/hub_util.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/jquery.dataTables.min.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/dataTables.bootstrap.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
@@ -239,3 +274,4 @@ $this->params['content_header_button'] = $this->render('../elements/content_head
 <?php $this->registerJsFile('@web/js/validate.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/bootbox.min.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/submit_teller.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
+

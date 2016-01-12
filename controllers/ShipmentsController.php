@@ -11,7 +11,9 @@ namespace app\controllers;
 
 use Adapter\AdminAdapter;
 use Adapter\BankAdapter;
+use Adapter\BillingPlanAdapter;
 use Adapter\BranchAdapter;
+use Adapter\CompanyAdapter;
 use Adapter\Globals\HttpStatusCodes;
 use Adapter\Globals\ServiceConstant;
 use Adapter\ParcelAdapter;
@@ -22,13 +24,16 @@ use Adapter\RequestHelper;
 use Adapter\ResponseHandler;
 use Adapter\Util\Calypso;
 use Adapter\Util\Util;
+use app\models\BulkShipmentModel;
 use app\services\HubService;
 use Adapter\TellerAdapter;
 use yii\data\Pagination;
 use Yii;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 use yii\web\Response;
 use Adapter\RouteAdapter;
+use yii\web\UploadedFile;
 
 /**
  * Class ShipmentsController
@@ -103,7 +108,6 @@ class ShipmentsController extends BaseController
         }
         return $this->render('all', array('filter' => $filter, 'parcels' => $data, 'from_date' => $from_date, 'to_date' => $to_date, 'offset' => $offset, 'page_width' => $this->page_width, 'search' => $search_action, 'total_count' => $total_count));
     }
-
 
     public function actionFordelivery($page = 1, $search = false, $page_width = null)
     {
@@ -614,7 +618,7 @@ class ShipmentsController extends BaseController
         }
         $user_session = Calypso::getInstance()->session("user_session");
         $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $dispatch_parcels = $parcelsAdapter->getECDispatchedParcels($this->branch_to_view, $offset, $page_width,$search);
+        $dispatch_parcels = $parcelsAdapter->getECDispatchedParcels($this->branch_to_view, $offset, $page_width, $search);
         $parcels = new ResponseHandler($dispatch_parcels);
         $total_count = 0;
         if ($parcels->getStatus() == ResponseHandler::STATUS_OK) {
@@ -917,11 +921,78 @@ class ShipmentsController extends BaseController
             'filters' => $filters,
             'from_date' => $from_date,
             'end_date' => $end_date,
-            'start_modified_date'=>$start_modified_date,
+            'start_modified_date' => $start_modified_date,
             'end_modified_date' => $end_modified_date,
             'offset' => $offset,
             'page_width' => $page_width,
             'total_count' => $total_count
         ));
     }
+
+    /**
+     * Bulk Shipment
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     */
+    public function actionBulkshipment()
+    {
+        $companyAdapter = new CompanyAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $companies = $companyAdapter->getAllCompanies([]);
+        $billingPlanAdapter = new BillingPlanAdapter();
+        $billingPlans = $billingPlanAdapter->getBillingPlans(['no_paginate' => '1', 'type' => BillingPlanAdapter::TYPE_WEIGHT_AND_ON_FORWARDING]);
+        $billingPlans = ArrayHelper::map($billingPlans, 'id', 'name', 'company_id');
+        return $this->renderAjax('partial_bulk_shipment', ['companies' => $companies, 'billing_plans' => $billingPlans]);
+    }
+
+    /**
+     * Create bulk shipment
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     */
+    public function actionCreatebulkshipment()
+    {
+        if (!Yii::$app->getRequest()->isAjax) {
+            return $this->redirect(Yii::$app->getRequest()->getReferrer());
+        }
+
+        $model = new BulkShipmentModel();
+        $postData = Yii::$app->getRequest()->post();
+        $model->load($postData, '');
+        $model->dataFile = UploadedFile::getInstanceByName('dataFile');
+
+        $response = $model->process();
+
+        if (!($response instanceof ResponseHandler)) {
+            if ($model->hasErrors()) {
+                return $this->sendErrorResponse($model->getErrorMessage(), 200);
+            } else {
+                return $this->sendErrorResponse('Something went wrong while creating bulk shipment. Please try again', 200);
+            }
+        }
+
+        if (!$response->isSuccess()) {
+            return $this->sendErrorResponse($response->getError(), 200);
+        }
+
+        $this->flashSuccess('Shipments have been queued for creation. <a href="/shipments/bulk">View Progress</a>');
+        return $this->redirect(Yii::$app->getRequest()->getReferrer());
+    }
+
+    /**
+     * View Bulk Shipment Tasks
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     * @return string
+     */
+    public function actionBulk()
+    {
+        $parcelAdapter = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $taskId = Yii::$app->getRequest()->get('task_id', false);
+        if (!$taskId) {
+            $tasks = $parcelAdapter->getBulkShipmentTasks();
+            return $this->render('bulk_shipment_tasks', ['tasks' => $tasks]);
+        }
+
+        $task = $parcelAdapter->getBulkShipmentTask($taskId);
+        return $this->render('bulk_shipment_task_details', ['task_id' => $taskId, 'task' => $task]);
+    }
+
+
 }
