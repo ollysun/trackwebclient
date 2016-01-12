@@ -18,49 +18,71 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
 
 <?php echo \Adapter\Util\Calypso::showFlashMessages(); ?>
 <div class="main-box">
-    <div class="main-box-header">
+    <div class="main-box-header table-search-form clearfix">
+        <div class=" clearfix">
+            <div class="pull-right clearfix">
+                <form class="form-inline clearfix">
+                    <div class="pull-left form-group">
+                        <label for="searchInput">Search</label><br>
+                        <div class="input-group input-group-sm input-group-search">
+                            <input id="searchInput" type="text" name="search" placeholder="Route name" class="search-box form-control">
+                            <div class="input-group-btn">
+                                <button class="btn btn-default" type="submit">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <div class="pull-left hidden">
+                    <label>&nbsp;</label><br>
+                    <button type="button" class="btn btn-sm btn-default"><i class="fa fa-download"></i> Download</button>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="main-box-body">
-        <?php if (count($routes) > 0) : ?>
-        <div class="table-responsive">
-            <table id="table" class="table table-hover ">
-                <thead>
-                <tr>
-                    <th style="width: 20px">S/N</th>
-                    <th>Route Name</th>
-                    <th>Hub</th>
-                    <th>Action</th>
-                </tr>
-                </thead>
-                <tbody>
-                <?php
-                $row = $offset;
-                if (isset($routes) && is_array(($routes))):
-                    foreach ($routes as $route) {
-                        ?>
-                        <tr>
-                        <td><?= ++$row; ?></<td></td>
-                        <td class="n<?= ucwords($route['id']); ?>"><?= ucwords($route['name']); ?></td>
-                        <td><?= strtoupper("{$route['branch_name']} ({$route['branch_code']})"); ?></td>
-                        <td>
-                            <button type="button" class="btn btn-default btn-xs" data-toggle="modal"
-                                    data-target="#editModal" data-id="<?= $route['id']; ?>" data-branch-id="<?= $route['branch_id']; ?>"><i class="fa fa-edit"></i> Edit
-                            </button>
-                        </td>
-                        </tr><?php
-                    }
-                endif;
-                ?>
-                </tbody>
-            </table>
-        </div>
-        <?= $this->render('../elements/pagination_and_summary', ['first' => $offset, 'last'=>$row, 'total_count'=> $total_count,'page_width'=>$page_width]) ?>
-        <?php else:  ?>
-            There are no parcels matching the specified criteria.
-        <?php endif;  ?>
+        <?php if ($total_count > 0) : ?>
+            <div class="table-responsive">
+                <table id="table" class="table table-hover ">
+                    <thead>
+                    <tr>
+                        <th style="width: 20px">S/N</th>
+                        <th>Route Name</th>
+                        <th>Hub</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php
+                    $row = $offset;
+                    if (isset($routes) && is_array(($routes))):
+                        foreach ($routes as $route) {
+                            ?>
+                            <tr>
+                            <td><?= ++$row; ?></
+                            <td></td>
+                            <td class="n<?= ucwords($route['id']); ?>"><?= ucwords($route['name']); ?></td>
+                            <td><?= strtoupper("{$route['branch_name']} ({$route['branch_code']})"); ?></td>
+                            <td>
+                                <button type="button" class="btn btn-default btn-xs" data-toggle="modal"
+                                        data-target="#editModal" data-id="<?= $route['id']; ?>"
+                                        data-branch-id="<?= $route['branch_id']; ?>"><i class="fa fa-edit"></i> Edit
+                                </button>
+                            </td>
+                            </tr><?php
+                        }
+                    endif;
+                    ?>
+                    </tbody>
+                </table>
+            </div>
+            <?= $this->render('../elements/pagination_and_summary', ['first' => $offset, 'last' => $row, 'total_count' => $total_count, 'page_width' => $page_width]) ?>
+        <?php else: ?>
+            There are no Routes matching the specified name.
+        <?php endif; ?>
     </div>
 </div>
-
 
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
