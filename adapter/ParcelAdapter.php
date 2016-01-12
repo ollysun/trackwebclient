@@ -682,4 +682,37 @@ class ParcelAdapter extends BaseAdapter
         $this->setResponseHandler($response);
         return $response;
     }
+
+    /**
+     * Get bulk shipment tasks
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     * @return array|mixed|string
+     */
+    public function getBulkShipmentTasks()
+    {
+        $response = $this->request(ServiceConstant::URL_GET_BULK_SHIPMENT_TASKS, [], self::HTTP_GET);
+        $response = new ResponseHandler($response);
+
+        if ($response->isSuccess()) {
+            return $response->getData();
+        }
+        return [];
+    }
+
+    /**
+     * Get bulk shipment task
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     * @param $task_id
+     * @return array|mixed|string
+     */
+    public function getBulkShipmentTask($task_id)
+    {
+        $response = $this->request(ServiceConstant::URL_GET_BULK_SHIPMENT_TASK, ['task_id' => $task_id], self::HTTP_GET);
+        $response = new ResponseHandler($response);
+
+        if ($response->isSuccess()) {
+            return $response->getData();
+        }
+        return [];
+    }
 }

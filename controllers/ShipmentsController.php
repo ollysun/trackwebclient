@@ -972,7 +972,27 @@ class ShipmentsController extends BaseController
             return $this->sendErrorResponse($response->getError(), 200);
         }
 
-        $this->flashSuccess('Shipments have been queued for creation. View Progress');
+        $this->flashSuccess('Shipments have been queued for creation. <a href="/shipments/bulk">View Progress</a>');
         return $this->redirect(Yii::$app->getRequest()->getReferrer());
     }
+
+    /**
+     * View Bulk Shipment Tasks
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     * @return string
+     */
+    public function actionBulk()
+    {
+        $parcelAdapter = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $taskId = Yii::$app->getRequest()->get('task_id', false);
+        if (!$taskId) {
+            $tasks = $parcelAdapter->getBulkShipmentTasks();
+            return $this->render('bulk_shipment_tasks', ['tasks' => $tasks]);
+        }
+
+        $task = $parcelAdapter->getBulkShipmentTask($taskId);
+        return $this->render('bulk_shipment_task_details', ['task_id' => $taskId, 'task' => $task]);
+    }
+
+
 }
