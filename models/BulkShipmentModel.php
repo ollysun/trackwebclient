@@ -393,6 +393,12 @@ class BulkShipmentModel extends Model
 
     }
 
+    /**
+     * Get parcel type by name
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     * @param $name
+     * @return array
+     */
     private function getParcelTypeByName($name)
     {
         $parcel_type = array_filter($this->parcel_types, function ($value) use ($name) {
@@ -421,6 +427,11 @@ class BulkShipmentModel extends Model
         }
 
         return implode('<br/>', $allErrors);
+    }
+
+    private function setPaymentType()
+    {
+        $paymentMethod = $refData->getPaymentMethods();
     }
 
 }
