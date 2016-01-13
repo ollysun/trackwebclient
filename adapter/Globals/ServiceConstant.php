@@ -42,7 +42,6 @@ class ServiceConstant
     const MANIFEST_CANCELLED = 21;
     const MANIFEST_HAS_ISSUE = 22;
     const RETURNED = 23;
-
     const URL_ADD_PARCEL = 'parcel/add/';
     const URL_GET_ONE_PARCEL = 'parcel/getone/';
     const URL_GET_ALL_PARCEL = 'parcel/getAll';
@@ -66,6 +65,9 @@ class ServiceConstant
     const URL_REMOVE_FROM_BAG = '/parcel/removefrombag';
     const URL_UNSORT_PARCEL = '/parcel/unsort';
     const URL_RETURN_REASONS = '/parcel/getreturnreasons';
+    const URL_AUDIT_TRAIL_LOG = '/admin/getaudittrail';
+    const URL_AUDIT_ADDITIONAL_DATA = '/admin/getauditdetails';
+    const URL_GET_ALL_BILLING_PLAN_NAMES = '/billingPlan/getallbillingplannames';
     const URL_DRAFT_SORT = '/parcel/draftsort';
     const URL_DISCARD_SORT = '/parcel/discardsort';
     const URL_CONFIRM_SORT = '/parcel/confirmsort';
@@ -75,6 +77,7 @@ class ServiceConstant
     const URL_CREATE_BULK_SHIPMENT_TASK = '/parcel/createbulkshipmenttask';
     const URL_GET_BULK_SHIPMENT_TASKS = '/parcel/getbulkshipmenttasks';
     const URL_GET_BULK_SHIPMENT_TASK = '/parcel/getbulkshipmenttask';
+
 
     const URL_GET_ALL_BANKS = 'bank/getAll/';
 
@@ -198,6 +201,7 @@ class ServiceConstant
     const URL_BILLING_PLAN_ADD = 'billingPlan/add';
     const URL_BILLING_PLAN_GET_ALL = 'billingPlan/getAll';
     const URL_RESET_ONFORWARDING_CHARGES = 'billingPlan/resetOnforwardingChargesToZero';
+    const URL_CLONE_BILLING_PLAN = 'billingPlan/clonebillingplan';
 
     const URL_INVOICE_ADD = 'invoice/add';
     const URL_INVOICE_ALL = 'invoice/getAll';
