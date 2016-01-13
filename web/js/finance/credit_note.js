@@ -1,6 +1,3 @@
-/**
- * Created by tunde <tunde@cottacush.com> on 1/13/16.
- */
  $("#viewCreditNoteDetails").click(function (){
      var data = this.dataset;
      var company_name = data['company_name'];
