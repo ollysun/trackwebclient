@@ -16,12 +16,6 @@ class ServiceConstant
     const USER_TYPE_GROUNDSMAN = 5;
     const USER_TYPE_COMPANY_ADMIN = 6;
     const USER_TYPE_COMPANY_OFFICER = 7;
-    /*const USER_TYPE_MANAGER = 2;
-    const USER_TYPE_CASHIER = 3;
-    const USER_TYPE_AGENT = 4;
-    const USER_TYPE_CUSTOMER = 5;
-    const USER_TYPE_SUPPORT = 6;
-    const USER_TYPE_ACCOUNTANT = 7;*/
 
     const ENTITY_TYPE_NORMAL = 1;
     const ENTITY_TYPE_BAG = 2;
@@ -48,7 +42,6 @@ class ServiceConstant
     const MANIFEST_CANCELLED = 21;
     const MANIFEST_HAS_ISSUE = 22;
     const RETURNED = 23;
-
     const URL_ADD_PARCEL = 'parcel/add/';
     const URL_GET_ONE_PARCEL = 'parcel/getone/';
     const URL_GET_ALL_PARCEL = 'parcel/getAll';
@@ -72,6 +65,16 @@ class ServiceConstant
     const URL_REMOVE_FROM_BAG = '/parcel/removefrombag';
     const URL_UNSORT_PARCEL = '/parcel/unsort';
     const URL_RETURN_REASONS = '/parcel/getreturnreasons';
+    const URL_AUDIT_TRAIL_LOG = '/admin/getaudittrail';
+    const URL_AUDIT_ADDITIONAL_DATA = '/admin/getauditdetails';
+    const URL_GET_ALL_BILLING_PLAN_NAMES = '/billingPlan/getallbillingplannames';
+    const URL_DRAFT_SORT = '/parcel/draftsort';
+    const URL_DISCARD_SORT = '/parcel/discardsort';
+    const URL_CONFIRM_SORT = '/parcel/confirmsort';
+    const URL_GET_DRAFT_SORTS = '/parcel/getdraftsorts';
+    const URL_CREATE_DRAFT_BAG = '/parcel/createdraftbag';
+    const URL_CONFIRM_DRAFT_BAG = '/parcel/confirmdraftbag';
+
 
     const URL_GET_ALL_BANKS = 'bank/getAll/';
 
@@ -195,9 +198,15 @@ class ServiceConstant
     const URL_BILLING_PLAN_ADD = 'billingPlan/add';
     const URL_BILLING_PLAN_GET_ALL = 'billingPlan/getAll';
     const URL_RESET_ONFORWARDING_CHARGES = 'billingPlan/resetOnforwardingChargesToZero';
+    const URL_CLONE_BILLING_PLAN = 'billingPlan/clonebillingplan';
 
     const URL_INVOICE_ADD = 'invoice/add';
     const URL_INVOICE_ALL = 'invoice/getAll';
+    const URL_INVOICE_GET = 'invoice/get';
+    const URL_INVOICE_PARCELS = 'invoice/getInvoiceParcels';
+
+    const URL_CREDIT_NOTE_ADD = 'creditNote/add';
+    const URL_CREDIT_NOTE_ALL = 'creditNote/getAll';
 
     const DATE_TIME_FORMAT = 'd M Y H:i';
     const DATE_FORMAT = 'd M Y';
@@ -233,6 +242,10 @@ class ServiceConstant
 
     const TRUE = 1;
     const FALSE = 0;
+    const DEFAULT_VAT_RATE = 5;
+
+    const QTY_METRICS_WEIGHT = 'weight';
+    const QTY_METRICS_PIECES = 'pieces';
 
     public static function getStatus($status)
     {

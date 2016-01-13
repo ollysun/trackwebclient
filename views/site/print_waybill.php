@@ -1,6 +1,7 @@
 <?php
 use Adapter\Util\Calypso;
 use yii\helpers\Html;
+use Adapter\Globals\ServiceConstant;
 
 $copies = ["Sender's Copy", "EC Copy", "Ack. Copy", "Recipient's Copy"];
 $this->title = 'Waybill '.$parcelData['waybill_number'];
@@ -109,8 +110,8 @@ $this->title = 'Waybill '.$parcelData['waybill_number'];
 
     <div class="shipment">
         <div class="shipment__packages"><?= $parcelData['no_of_package']; ?></div>
-        <div class="shipment__actual-weight"><?= Calypso::getInstance()->formatWeight($parcelData['weight']); ?>Kg</div>
-        <div class="shipment__dimensional-weight"></div>
+        <div class="shipment__actual-weight"><?= ($parcelData['qty_metrics'] == ServiceConstant::QTY_METRICS_WEIGHT) ? Calypso::getInstance()->formatWeight($parcelData['weight']).'Kg' : ''; ?></div>
+        <div class="shipment__dimensional-weight"><?= ($parcelData['qty_metrics'] == ServiceConstant::QTY_METRICS_PIECES) ? Calypso::getDisplayValue($parcelData, 'weight') : '' ?></div>
     </div>
 
     <div class="service-type">
@@ -141,7 +142,7 @@ $this->title = 'Waybill '.$parcelData['waybill_number'];
         <div class="cod__inner">
             <div class="cod__yes <?= $parcelData['cash_on_delivery'] == '1' ? 'is-active' : '' ?> "></div>
             <div class="cod__no <?= $parcelData['cash_on_delivery'] == '1' ? '' : 'is-active' ?>"></div>
-            <?php if($parcelData['cash_on_delivery']) { echo '<div class="cod__amt">'.Calypso::getInstance()->formatCurrency($parcelData['delivery_amount']).'</div>'; } ?>
+            <?php if($parcelData['cash_on_delivery']) { echo '<div class="cod__amt">'.Calypso::getInstance()->formatCurrency($parcelData['delivery_amount']+ ($parcelData['is_freight_included'] ? $parcelData['amount_due'] : 0)).'</div>'; } ?>
         </div>
     </div>
 

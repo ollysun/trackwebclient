@@ -113,7 +113,7 @@
   font-weight: normal;
 }
 .table th.no-border {
-  border-color: tran !important;
+  border-color: transparent !important;
 }
 .dashed-line {
   display: block;

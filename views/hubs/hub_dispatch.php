@@ -87,7 +87,7 @@ $user_data = $this->context->userData;
                         <th>Waybill No</th>
                         <th>Origin</th>
                         <th>Destination</th>
-                        <th>Weight</th>
+                        <th>Weight/Piece</th>
                         <th>Sweeper</th>
                         <th>Return Status</th>
                         <?php if($user_data['role_id'] == ServiceConstant::USER_TYPE_ADMIN) { ?>

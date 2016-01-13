@@ -81,7 +81,7 @@ class ShipmentsController extends BaseController
             $filter = null;
 
         } else {
-            $response = $parcel->getParcels($from_date . '%2000:00:00', $to_date . '%2023:59:59', null, $this->branch_to_view, $offset, $this->page_width, 1, 1, 1, true);
+            $response = $parcel->getParcels($from_date . ' 00:00:00', $to_date . ' 23:59:59', null, $this->branch_to_view, $offset, $this->page_width, 1, 1, 1, true);
             //$response = $parcel->getParcels(null,null,$offset,$this->page_width);
             //$response = $parcel->getNewParcelsByDate(date('Y-m-d', strtotime('now')).' 00:00:00',$offset,$this->page_width, 1,$this->userData['branch_id']);
             $search_action = false;
@@ -820,12 +820,11 @@ class ShipmentsController extends BaseController
         $filters['start_created_date'] = $from_date . ' 00:00:00';
         $filters['end_created_date'] = $end_date . ' 23:59:59';
 
-        $start_modified_date = Yii::$app->request->get('start_modified_date', date('Y/m/d'));
-        $end_modified_date = Yii::$app->request->get('end_modified_date', date('Y/m/d'));
+        $start_modified_date = Yii::$app->request->get('start_modified_date', null);
+        $end_modified_date = Yii::$app->request->get('end_modified_date', null);
 
-        $filters['start_modified_date'] = $start_modified_date . ' 00:00:00';
-        $filters['end_modified_date'] = $end_modified_date . ' 23:59:59';
-
+        $filters['start_modified_date'] = (Util::checkEmpty($start_modified_date) ? null : $start_modified_date. ' 00:00:00');
+        $filters['end_modified_date'] =  (Util::checkEmpty($end_modified_date) ? null : $end_modified_date.' 23:59:59');
 
         if (!empty(Yii::$app->request->get('download'))) {
 
@@ -838,7 +837,7 @@ class ShipmentsController extends BaseController
             $name = 'report_' . date(ServiceConstant::DATE_TIME_FORMAT) . '.csv';
             $data = array();
 
-            $headers = array('SN', 'Waybill Number', 'Sender', 'Sender Email', 'Sender Phone', 'Sender Address', 'Receiver', 'Receiver Email', 'Receiver Phone', 'Receiver Address', 'Weight', 'Payment Method', 'Amount Due', 'Cash Amount', 'POS Amount', 'POS Transaction ID', 'Parcel Type', 'Cash on Delivery', 'Delivery Type', 'Package Value', '# of Package', 'Shipping Type', 'Created Date', 'Last Modified Date', 'Status', 'Reference Number', 'Originating Branch', 'Route', 'Request Type', 'For Return', 'Other Info');
+            $headers = array('SN', 'Waybill Number', 'Sender', 'Sender Email', 'Sender Phone', 'Sender Address', 'Receiver', 'Receiver Email', 'Receiver Phone', 'Receiver Address', 'Weight/Piece', 'Payment Method', 'Amount Due', 'Cash Amount', 'POS Amount', 'POS Transaction ID', 'Parcel Type', 'Cash on Delivery', 'Delivery Type', 'Package Value', '# of Package', 'Shipping Type', 'Created Date', 'Last Modified Date', 'Status', 'Reference Number', 'Originating Branch', 'Route', 'Request Type', 'For Return', 'Other Info');
             foreach ($response->getData() as $key => $result) {
                 $data[] = [
                     $key + 1,

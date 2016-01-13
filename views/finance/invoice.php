@@ -17,66 +17,42 @@ $this->params['breadcrumbs'] = array(
 ?>
 
 <!-- Generate Credit Note Modal -->
-<form>
+<form method="post" action="<?= Url::to("/finance/generatecreditnote");?>">
     <div class="modal fade" id="generateCreditNote">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">Generate Credit Note</h4>
+                    <h4 class="modal-title">Generate Credit Note for Invoice (<span id="invoiceNumberLabel"></span>)</h4>
                 </div>
                 <div class="modal-body">
-                    <table id="table" class="table table-hover dataTable">
+                    <div id="loading" style="text-align: center;">
+                        <i class="fa fa-spin fa-spinner fa-4x"></i>
+                        <p>Loading invoice parcels...</p>
+                    </div>
+                    <table id="table" class="hide table table-hover dataTable">
                         <thead>
                         <tr>
                             <th style="width: 20px">No.</th>
                             <th>Waybill No.</th>
                             <th>Company Name</th>
                             <th>Amount</th>
-                            <th>Discount (%)</th>
+                            <th>Discount</th>
                             <th>Net Amount</th>
+                            <th>Deducted Amount</th>
+                            <th>New Net Amount</th>
                         </tr>
                         </thead>
-                        <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>7123456</td>
-                            <td>Delivered</td>
-                            <td>1000</td>
-                            <td>
-                                <input type="text" class="form-control" style="width:50px;" value="15">
-                            </td>
-                            <td>850</td>
-                        </tr>
-
-                        <tr>
-                            <td>2</td>
-                            <td>1234567</td>
-                            <td>Delivered</td>
-                            <td>2000</td>
-                            <td>
-                                <input type="text" class="form-control" style="width:50px;" value="15">
-                            </td>
-                            <td>1700</td>
-                        </tr>
-
-                        <tr>
-                            <td></td>
-                            <td><b>NET TOTAL</b></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td><b>2550</b></td>
-                        </tr>
-
+                        <tbody id="invoiceParcels">
                         </tbody>
                     </table>
                 </div>
                 <div class="modal-footer">
+                    <input type="hidden" name="invoice_number" id="invoice_number" class="form-control">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                     <a href="#">
-                        <button type="button" class="btn btn-primary">Generate Credit Note</button>
+                        <button type="submit" class="btn btn-primary">Generate Credit Note</button>
                     </a>
                 </div>
             </div>
@@ -92,10 +68,15 @@ $this->params['breadcrumbs'] = array(
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">58904</h4>
+                    <h4 class="modal-title" id="view_invoiceNumber"></h4>
                 </div>
                 <div class="modal-body">
-                    <table id="table" class="table table-hover dataTable">
+
+                    <div id="viewInvoiceLoading" style="text-align: center;">
+                        <i class="fa fa-spin fa-spinner fa-4x"></i>
+                        <p>Loading invoice parcels...</p>
+                    </div>
+                    <table id="viewInvoiceTable" class="table table-hover dataTable hide">
                         <thead>
                         <tr>
                             <th style="width: 20px">No.</th>
@@ -107,28 +88,6 @@ $this->params['breadcrumbs'] = array(
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>7123456</td>
-                            <td>Delivered</td>
-                            <td>1000</td>
-                            <td>
-                                <input type="text" class="form-control" style="width:50px;" value="15">
-                            </td>
-                            <td>850</td>
-                        </tr>
-
-                        <tr>
-                            <td>2</td>
-                            <td>1234567</td>
-                            <td>Delivered</td>
-                            <td>2000</td>
-                            <td>
-                                <input type="text" class="form-control" style="width:50px;" value="15">
-                            </td>
-                            <td>1700</td>
-                        </tr>
-
                         </tbody>
                     </table>
 
@@ -136,24 +95,17 @@ $this->params['breadcrumbs'] = array(
                         <div class="col-xs-6">
                             <div class="form-group">
                                 <label>Invoice address</label>
-                                <textarea class="form-control" rows="2"></textarea>
-
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox">
-                                        Same as Invoice To
-                                    </label>
-                                </div>
+                                <textarea disabled id="view_invoiceAddress" class="form-control" rows="2"></textarea>
                             </div>
 
                             <div class="form-group">
                                 <label>Invoice To</label>
-                                <textarea class="form-control" rows="2"></textarea>
+                                <textarea disabled id="view_invoiceTo" class="form-control" rows="2"></textarea>
                             </div>
 
                             <div class="form-group">
                                 <label>Reference</label>
-                                <textarea class="form-control" rows="3"></textarea>
+                                <textarea disabled id="view_reference" class="form-control" rows="3"></textarea>
                             </div>
 
                         </div>
@@ -162,29 +114,27 @@ $this->params['breadcrumbs'] = array(
                         <div class="col-xs-6">
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Accont Number</label>
-                                <input type="text" class="form-control">
+                                <input disabled id="view_accountNumber" type="text" class="form-control">
                             </div>
 
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Stamp Duty</label>
-                                <input type="text" class="form-control">
+                                <input disabled id="view_stampDuty" type="text" class="form-control">
                             </div>
 
                             <div class="form-group">
                                 <label>Currency</label> <br>
-                                <select class="form-control">
+                                <select id="view_currency" disabled class="form-control">
                                     <option>NGN</option>
                                 </select>
                             </div>
-
-
                         </div>
                     </div>
 
                 </div>
                 <div class="modal-footer">
-                    <a href="#">
-                        <button type="button" class="btn btn-primary">Print</button>
+                    <a id="viewPrintInvoice" href="#" class="btn btn-primary">
+                        Print
                     </a>
                 </div>
             </div>
@@ -205,7 +155,7 @@ $this->params['breadcrumbs'] = array(
                             <div class="input-group input-group-date-range">
                                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                 <input name="from" id="" class="form-control date-range" value="<?= $fromDate; ?>"
-                                       data-provide="datepicker" data-date-format="yyyy/mm/dd" data-date-end-date="0d" >
+                                       data-provide="datepicker" data-date-format="yyyy/mm/dd" data-date-end-date="0d">
                             </div>
                         </div>
 
@@ -237,10 +187,6 @@ $this->params['breadcrumbs'] = array(
             </div>
             <div class="pull-right clearfix">
                 <label>&nbsp;</label><br>
-                <button class="btn btn-primary" data-toggle="modal" data-target="#generateCreditNote">Generate Credit
-                    Note
-                </button>
-
             </div>
         </div>
     </div>
@@ -250,10 +196,6 @@ $this->params['breadcrumbs'] = array(
                 <table id="table" class="table table-hover dataTable">
                     <thead>
                     <tr>
-                        <th style="width: 20px" class="datatable-nosort">
-                            <div class="checkbox-nice"><input id="chbx_w_all" type="checkbox"><label
-                                    for="chbx_w_all"> </label></div>
-                        </th>
                         <th style="width: 20px">No.</th>
                         <th>Invoice Doc. No.</th>
                         <th>Company Name</th>
@@ -267,21 +209,24 @@ $this->params['breadcrumbs'] = array(
                     <?php $i = $offset;
                     foreach ($invoices as $invoice): ?>
                         <tr>
+                            <td><?= ++$i; ?></td>
+                            <td><?= Calypso::getValue($invoice, 'invoice_number'); ?></td>
+                            <td><?= strtoupper(Calypso::getValue($invoice, 'company.name')); ?></td>
+                            <td><?= Calypso::getValue($invoice, 'total'); ?></td>
+                            <td><?= Calypso::getValue($invoice, 'credit_note.credit_note_number'); ?></td>
                             <td>
-                                <div class="checkbox-nice">
-                                    <input id="" class="checkable" data-waybill="" data-sender="" type="checkbox">
-                                    <label for=""> </label>
-                                </div>
-                            </td>
-                            <td><?=++$i;?></td>
-                            <td><?= Calypso::getValue($invoice, 'invoice_number');?></td>
-                            <td><?= strtoupper(Calypso::getValue($invoice, 'company.name'));?></td>
-                            <td><?= Calypso::getValue($invoice, 'total');?></td>
-                            <td>NA</td>
-                            <td>
-                                <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#viewInvoice">
+                                <button
+                                    data-invoice='<?= json_encode($invoice); ?>'
+                                    data-view_invoice="true" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#viewInvoice">
                                     View
                                 </button>
+
+                                <?php if (is_null(Calypso::getValue($invoice, 'credit_note.id'))): ?>
+                                    <button data-company_name="<?= Calypso::getValue($invoice, 'company.name'); ?>"  data-invoice_number="<?= Calypso::getValue($invoice, 'invoice_number'); ?>" class="btn btn-primary btn-xs" data-generate_credit_note="true" data-toggle="modal"
+                                            data-target="#generateCreditNote">Generate Credit
+                                        Note
+                                    </button>
+                                <?php endif; ?>
                             </td>
                             <td>
                             </td>
@@ -296,8 +241,57 @@ $this->params['breadcrumbs'] = array(
         <?php endif; ?>
     </div>
 </div>
+<script type="text/html" id="invoiceParcelTmpl">
+    <tr>
+        <td>{{index}}</td>
+        <td>{{waybill_number}}</td>
+        <td>{{company_name}}</td>
+        <td>{{amount}}</td>
+        <td>{{discount}}</td>
+        <td>{{net_amount}}</td>
+        <td>
+            <input name="deducted_amount[]" data-waybill='{{waybill_number}}' data-net_amount="{{net_amount}}" type="text" class="form-control" style="width:100px;margin-left: 65px;" value="0">
+            <input type='hidden' name='invoice_parcel[]' value='{{invoice_parcel_id}}'>
+            <input type='hidden' data-parcel_waybill='{{waybill_number}}' name='new_net_amount[]' value='{{net_amount}}'>
+        </td>
+        <td data-waybill='{{waybill_number}}'>{{net_amount}}</td>
+    </tr>
+</script>
+<script type="text/html" id="invoiceParcelTotalTmpl">
+    <tr>
+        <td></td>
+        <td><b>NET TOTAL</b></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td><b id='net_total'></b></td>
+    </tr>
+</script>
 
-
+<script type="text/html" id="viewInvoiceParcelsTmpl">
+    <tr>
+        <td>{{index}}</td>
+        <td>{{waybill_number}}</td>
+        <td>{{company_name}}</td>
+        <td>{{amount}}</td>
+        <td>
+            <input type="text" disabled class="form-control" style="width:100px;margin-left: 65px;" value="{{discount}}">
+        </td>
+        <td>{{net_amount}}</td>
+    </tr>
+</script>
+<script type="text/html" id="viewInvoiceTotalTmpl">
+    <tr>
+        <td></td>
+        <td><b>NET TOTAL</b></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td><b>{{total}}</b></td>
+    </tr>
+</script>
 <div class="modal fade" id="teller-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <form method="post" action="" class="validate-form">
@@ -327,3 +321,5 @@ $this->params['breadcrumbs'] = array(
 <?php $this->registerJsFile('@web/js/keyboardFormSubmit.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/form-watch-changes.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/validate.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/finance/invoice.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/response_handler.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>

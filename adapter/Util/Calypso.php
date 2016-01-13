@@ -119,6 +119,8 @@ class Calypso
             'Receive_Shipments' => ['base_link' => 'hubs/hubarrival', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
             'Ready_for_Sorting' => ['base_link' => 'hubs/destination', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
             'Ready_for_Sorting_G-man' => ['base_link' => 'hubs/destination-groundsman', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_HUB]],
+            'Expected_Shipments' => ['base_link' => 'hubs/expected', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_HUB]],
+            'Draft_Sortings' => ['base_link' => 'hubs/draftsortings', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_HUB]],
             'Sorted_Shipments' => ['base_link' => 'hubs/delivery', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
             'Due_for_Delivery' => ['base_link' => 'shipments/fordelivery', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_EC, ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
             'Due_for_Sweep' => ['base_link' => 'shipments/forsweep', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_EC, ServiceConstant::BRANCH_TYPE_HQ]],
@@ -145,7 +147,8 @@ class Calypso
                     'Pricing' => ['base_link' => 'billing/pricing', 'class' => ''],
                     'Onforwarding_Charges' => ['base_link' => 'billing/onforwarding', 'class' => ''],
                     'Corporate_Billing' => ['base_link' => 'billing/corporate', 'class' => '']
-                ], 'branch' => [ServiceConstant::BRANCH_TYPE_HQ]]
+                ], 'branch' => [ServiceConstant::BRANCH_TYPE_HQ]],
+                'Audit_Trail' => ['base_link' => 'admin/audittrail', 'class' => ''],
             ], 'branch' => [ServiceConstant::BRANCH_TYPE_HQ]],
             'Parcel History' => [
                 'base' => 'track',

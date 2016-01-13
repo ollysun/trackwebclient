@@ -137,7 +137,7 @@ class AdminController extends BaseController
 
         $total_count = Calypso::getValue($hub_list, 'total_count', 0);
         $hub_list = Calypso::getValue($hub_list, 'hub_data', null);
-        return $this->render('managehubs', array('States' => $state_list, 'filter_state_id' => $filter_state_id, 'hubs' => $hub_list,'total_count' => $total_count, 'page_width' => $this->page_width, 'offset' => $offset));
+        return $this->render('managehubs', array('States' => $state_list, 'filter_state_id' => $filter_state_id, 'hubs' => $hub_list, 'total_count' => $total_count, 'page_width' => $this->page_width, 'offset' => $offset));
     }
 
     public function actionManageecs($page = 1)
@@ -447,7 +447,7 @@ class AdminController extends BaseController
     public function actionManageroutes($page = 1)
     {
         $offset = ($page - 1) * $this->page_width;
-
+        $search = Yii::$app->request->get('search',null);
         if (Yii::$app->request->isPost) {
             $entry = Yii::$app->request->post();
             $task = Calypso::getValue(Yii::$app->request->post(), 'task');
@@ -492,7 +492,7 @@ class AdminController extends BaseController
 
         $branch_to_view = null;
         $routeAdp = new RouteAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $routes = $routeAdp->getRoutes($branch_to_view, $offset, $this->page_width, true);
+        $routes = $routeAdp->getRoutes($branch_to_view, $offset, $this->page_width, true,null, $search);
         $routes = new ResponseHandler($routes);
 
         $route_list = [];
@@ -675,5 +675,14 @@ class AdminController extends BaseController
             }
         }
         return $this->redirect(Url::to("/admin/managecities"));
+    }
+
+    /**
+     * Audit Trail
+     * @author Olajide Oye <jide@cottacush.com>
+     */
+    public function actionAudittrail()
+    {
+        return $this->render('audit_trail');
     }
 }
