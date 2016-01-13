@@ -5,6 +5,6 @@
      $.get('getcreditnoteparcels',{credit_note_no:credit_note_no,company_name:company_name},'html').success(function(response){
          $('#viewInvoice').html(response);
      }).error(function(){
-         $('#viewInvoice').html("");
+         $('#viewInvoice').html("This Page couldn't load. Pls try again later.");
      })
  });
