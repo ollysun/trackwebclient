@@ -207,6 +207,7 @@ class ServiceConstant
 
     const URL_CREDIT_NOTE_ADD = 'creditNote/add';
     const URL_CREDIT_NOTE_ALL = 'creditNote/getAll';
+    const URL_CREDIT_NOTE_PARCELS = 'creditnote/getparcels';
 
     const DATE_TIME_FORMAT = 'd M Y H:i';
     const DATE_FORMAT = 'd M Y';
