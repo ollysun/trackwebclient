@@ -678,16 +678,30 @@ class BillingController extends BaseController
     {
         $billingAdapter = new BillingPlanAdapter();
         if (Yii::$app->request->isPost) {
-            $name = Yii::$app->request->post('name');
-            $type = Yii::$app->request->post('type');
-            $companyId = Yii::$app->request->post('company');
+            if (Yii::$app->request->post('clone_billing_plan') != null) {
+                $companyId = Yii::$app->request->post('company');
+                $baseBillingPlanId = Yii::$app->request->post('base_billing_plan_id');
+                $billingPlanName = Yii::$app->request->post('name');
 
-            $status = $billingAdapter->createBillingPlan($name, $type, $companyId);
+                $status = $billingAdapter->cloneBillingPlan($baseBillingPlanId, $companyId, $billingPlanName);
+                if ($status) {
+                    $this->flashSuccess('Billing Plan cloned successfully');
+                } else {
+                    $this->flashError($billingAdapter->getLastErrorMessage());
+                }
 
-            if ($status) {
-                $this->flashSuccess("Billing plan created successfully");
             } else {
-                $this->flashError($billingAdapter->getLastErrorMessage());
+                $name = Yii::$app->request->post('name');
+                $type = Yii::$app->request->post('type');
+                $companyId = Yii::$app->request->post('company');
+
+                $status = $billingAdapter->createBillingPlan($name, $type, $companyId);
+
+                if ($status) {
+                    $this->flashSuccess("Billing plan created successfully");
+                } else {
+                    $this->flashError($billingAdapter->getLastErrorMessage());
+                }
             }
         }
         return $this->redirect(Url::to("/billing/corporate"));
@@ -712,6 +726,18 @@ class BillingController extends BaseController
             }
         }
         return $this->redirect(Yii::$app->request->getReferrer());
+    }
+
+    /**
+     * @author Babatunde Otaru <tunde@cottacush.com>
+     * @return string
+     */
+    public function actionGetallbillingplannames()
+    {
+        $billingAdapter = new BillingAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $responseHandler = new ResponseHandler($billingAdapter->getAllBillingPlanNames());
+        $billingPlanNames = $responseHandler->getData();
+        return $this->renderPartial('partial_billing_plans', ['billing_plan_names' => $billingPlanNames]);
     }
 
     /**
