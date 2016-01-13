@@ -940,7 +940,11 @@ class ShipmentsController extends BaseController
         $billingPlanAdapter = new BillingPlanAdapter();
         $billingPlans = $billingPlanAdapter->getBillingPlans(['no_paginate' => '1', 'type' => BillingPlanAdapter::TYPE_WEIGHT_AND_ON_FORWARDING]);
         $billingPlans = ArrayHelper::map($billingPlans, 'id', 'name', 'company_id');
-        return $this->renderAjax('partial_bulk_shipment', ['companies' => $companies, 'billing_plans' => $billingPlans]);
+
+        $refData = new RefAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $paymentMethods = Calypso::getValue($refData->getPaymentMethods(), 'data', []);
+
+        return $this->renderAjax('partial_bulk_shipment', ['companies' => $companies, 'billing_plans' => $billingPlans, 'payment_methods' => $paymentMethods]);
     }
 
     /**

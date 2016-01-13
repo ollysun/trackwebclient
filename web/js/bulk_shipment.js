@@ -16,7 +16,9 @@ BulkShipment = {
         url_create_bulk_shipment: 'createbulkshipment',
         bulk_shipment_form: $('#bulk_shipment_form'),
         company_id_input: $('#company_id_input'),
-        billing_plan_id_input: $('#billing_plan_id_input')
+        billing_plan_id_input: $('#billing_plan_id_input'),
+        payment_type_input: $('#payment_type_input'),
+        payment_method_select: $('#payment_method_select')
     },
 
     /**
@@ -64,8 +66,12 @@ BulkShipment = {
         });
 
         this.Constants.modal_create_btn.unbind('click').click(function () {
+            $(this).text('Working...');
+            $(this).prop('disabled', true);
+            var _this = $(this);
             BulkShipment.Constants.company_id_input.val(BulkShipment.Constants.company_select.val());
             BulkShipment.Constants.billing_plan_id_input.val(BulkShipment.Constants.company_billing_plan_select.val());
+            BulkShipment.Constants.payment_type_input.val(BulkShipment.Constants.payment_method_select.val());
 
             BulkShipment.Constants.bulk_shipment_form.ajaxSubmit({
                 success: function (response) {
@@ -76,7 +82,11 @@ BulkShipment = {
                     }
                 },
                 error: function (e) {
-                    BulkShipment.showMessage('Something went wrong while creating bulk shipment. Please try again');
+                    //BulkShipment.showMessage('Something went wrong while creating bulk shipment. Please try again');
+                },
+                complete: function(){
+                    _this.text('Create');
+                    _this.prop('disabled', false);
                 },
                 dataType: 'json',
 

@@ -25,6 +25,7 @@ class BulkShipmentModel extends Model
     public $dataFile;
     public $company_id;
     public $billing_plan_id;
+    public $payment_type;
     private $shipmentData = [];
     private $cities;
     private $company;
@@ -44,7 +45,7 @@ class BulkShipmentModel extends Model
         return [
             ['dataFile', 'file', 'skipOnEmpty' => false, 'extensions' => ['xls', 'xlsx'], 'maxSize' => 1000000, 'checkExtensionByMimeType' => false, 'wrongExtension' => 'Invalid File uploaded. Please upload a valid XLS or XLSX file.'],
             ['dataFile', 'validateRows'],
-            [['billing_plan_id', 'company_id'], 'safe'],
+            [['billing_plan_id', 'company_id', 'payment_type'], 'safe'],
             ['billing_plan_id', 'number', 'message' => 'Please select a Billing Plan', 'skipOnEmpty' => false, 'integerOnly' => true],
             ['company_id', 'number', 'message' => 'Please select a Company', 'skipOnEmpty' => false, 'integerOnly' => true]
         ];
@@ -220,6 +221,7 @@ class BulkShipmentModel extends Model
         $this->currentRow['receiver_country'] = ServiceConstant::COUNTRY_NIGERIA;
         $this->currentRow['sender_phone_number'] = $this->company['phone_number'];
         $this->currentRow['sender_email'] = $this->company['email'];
+        $this->currentRow['payment_type'] = $this->payment_type;
 
         $this->setSenderAddress();
 
@@ -379,7 +381,7 @@ class BulkShipmentModel extends Model
     {
         if (is_null($this->currentRow['parcel_type'])) {
             $this->addError('dataFile', 'Please enter a Shipment Type ' .
-                $this->getCellInformation('parcel_type') . 'Shipment type should be one of ' . strtoupper(implode(', ', array_column($this->parcel_types, 'name'))));
+                $this->getCellInformation('parcel_type') . '. Shipment type should be one of ' . strtoupper(implode(', ', array_column($this->parcel_types, 'name'))));
             return false;
         }
 
@@ -427,11 +429,6 @@ class BulkShipmentModel extends Model
         }
 
         return implode('<br/>', $allErrors);
-    }
-
-    private function setPaymentType()
-    {
-        $paymentMethod = $refData->getPaymentMethods();
     }
 
 }

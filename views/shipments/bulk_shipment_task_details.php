@@ -61,9 +61,9 @@ $this->params['breadcrumbs'] = array(
                             <?php if (Calypso::getValue($detail, 'status', '') == 'in_progress'): ?>
                                 <span class="label label-warning">IN PROGRESS</span>
                             <?php elseif (Calypso::getValue($detail, 'status', '') == 'failed'): ?>
-                                <span class="label label-danger"><?= strtoupper(Calypso::getValue($task, 'status', '')) ?></span>
+                                <span class="label label-danger"><?= strtoupper(Calypso::getValue($detail, 'status', '')) ?></span>
                             <?php elseif (Calypso::getValue($detail, 'status', '') == 'success'): ?>
-                                <span class="label label-success"><?= strtoupper(Calypso::getValue($task, 'status', '')) ?></span>
+                                <span class="label label-success"><?= strtoupper(Calypso::getValue($detail, 'status', '')) ?></span>
                             <?php else: ?>
                                 <?= strtoupper(Calypso::getValue($detail, 'status', '')) ?>
                             <?php endif; ?>
