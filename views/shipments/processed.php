@@ -250,7 +250,7 @@ $this->params['content_header_button'] = $this->render('../elements/content_head
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    <button  class="btn btn-primary" id="modal_create_btn" >Create</button>
+                    <button type="button" class="btn btn-primary" id="modal_create_btn" >Create</button>
                 </div>
             </div>
         </form>

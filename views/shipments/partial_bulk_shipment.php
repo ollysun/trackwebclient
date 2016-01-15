@@ -30,6 +30,17 @@ use yii\helpers\Json;
             </select>
         </div>
     </div>
+    <div class="col-xs-6">
+        <div class="form-group">
+            <label for="payment_method_select">Payment Method</label>
+            <select id="payment_method_select" class="form-control">
+                <?php foreach ($payment_methods as $payment_method): ?>
+                    <option
+                        value="<?= Calypso::getValue($payment_method, 'id') ?>"><?= strtoupper(Calypso::getValue($payment_method, 'name')) ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+    </div>
 </div>
 <br/><br/>
 <div class="row">
@@ -38,6 +49,7 @@ use yii\helpers\Json;
         <input name="dataFile" type="file" id="bulk_upload_file_btn" class="hide"/>
         <input name="company_id" id="company_id_input" type="hidden"/>
         <input name="billing_plan_id" id="billing_plan_id_input" type="hidden"/>
+        <input name="payment_type" id="payment_type_input" type="hidden"/>
         <br/>
     </div>
     <br/><br/>
