@@ -46,7 +46,7 @@ use Adapter\Util\Calypso;
             </table>
         </div>
         <div class="modal-footer">
-            <a href="#">
+            <a href="<?= 'printcreditnote'?>"
                 <button type="button" class="btn btn-primary">Print Credit Note</button>
             </a>
         </div>
