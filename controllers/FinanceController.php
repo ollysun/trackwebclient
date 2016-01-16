@@ -336,6 +336,13 @@ class FinanceController extends BaseController
      */
     public function actionPrintcreditnote()
     {
+        // invoice to and invoicing address -> invoices table
+        // account number -> company through company_id on invoices
+        // doc number is credit_note_number -> credit_notes table
+        // doc_date is created_at -> credit_notes table
+        // vat_date same as doc_date above.
+        // waybill num
+
         $this->layout = 'print';
         return $this->render('print_credit_note');
     }
