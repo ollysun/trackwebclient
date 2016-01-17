@@ -198,7 +198,7 @@ $(document).ready(function(){
         var chkboxes = $('.chk_next');
         var selected = false;
         $.each(chkboxes, function(i, chk){
-            if($(chk).attr('value')) {
+            if($(chk).is(':checked')) {
                 selected = true;
             }
         });
