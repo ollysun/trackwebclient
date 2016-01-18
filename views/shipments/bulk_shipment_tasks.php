@@ -15,7 +15,7 @@ $this->params['breadcrumbs'] = array(
     )
 );
 ?>
-
+<?php echo \Adapter\Util\Calypso::showFlashMessages(); ?>
 <div class="main-box">
     <div class="main-box-body">
         <div class="table-responsive">
@@ -46,23 +46,31 @@ $this->params['breadcrumbs'] = array(
                         <td><?= strtoupper(Calypso::getDisplayValue($task, 'started_at', 'N/A')) ?></td>
                         <td><?= strtoupper(Calypso::getDisplayValue($task, 'completed_at', 'N/A')) ?></td>
                         <td>
-                        <?php if (Calypso::getValue($task, 'status', '') == 'queued'): ?>
-                           <span class="label label-info"><?= strtoupper(Calypso::getValue($task, 'status', '')) ?></span>
-                        <?php elseif (Calypso::getValue($task, 'status', '') == 'in_progress'): ?>
-                            <span class="label label-warning">IN PROGRESS</span>
-                        <?php elseif (Calypso::getValue($task, 'status', '') == 'failed'): ?>
-                           <span class="label label-danger"><?= strtoupper(Calypso::getValue($task, 'status', '')) ?></span>
-                        <?php elseif (Calypso::getValue($task, 'status', '') == 'success'): ?>
-                            <span class="label label-success"><?= strtoupper(Calypso::getValue($task, 'status', '')) ?></span>
-                        <?php else: ?>
-                            <?= strtoupper(Calypso::getValue($task, 'status', '')) ?>
-                        <?php endif; ?>
+                            <?php if (Calypso::getValue($task, 'status', '') == 'queued'): ?>
+                                <span
+                                    class="label label-info"><?= strtoupper(Calypso::getValue($task, 'status', '')) ?></span>
+                            <?php elseif (Calypso::getValue($task, 'status', '') == 'in_progress'): ?>
+                                <span class="label label-warning">IN PROGRESS</span>
+                            <?php elseif (Calypso::getValue($task, 'status', '') == 'failed'): ?>
+                                <span
+                                    class="label label-danger"><?= strtoupper(Calypso::getValue($task, 'status', '')) ?></span>
+                            <?php elseif (Calypso::getValue($task, 'status', '') == 'success'): ?>
+                                <span
+                                    class="label label-success"><?= strtoupper(Calypso::getValue($task, 'status', '')) ?></span>
+                            <?php else: ?>
+                                <?= strtoupper(Calypso::getValue($task, 'status', '')) ?>
+                            <?php endif; ?>
                         </td>
                         <td>
                             <a class="btn btn-default"
-                                    href="<?= Url::to('/shipments/bulk?task_id=' . Calypso::getValue($task, 'id', '')) ?>"><i
+                               href="<?= Url::to('/shipments/bulk?task_id=' . Calypso::getValue($task, 'id', '')) ?>"><i
                                     class="glyphicon glyphicon-eye-open"></i> View Details
                             </a>
+                            <button class="print_btn btn btn-primary"
+                                    data-create_task_url="<?= '/shipments/printbulkshipment?task_id='. Calypso::getValue($task, 'id', '') ?>"
+                                    data-print_url="<?= $s3_base_url . 'waybills_task_' . Calypso::getValue($task, 'id', '') . '.pdf' ?>">
+                                <i class="glyphicon glyphicon-print"></i> Print
+                            </button>
                         </td>
                     </tr>
                 <?php endforeach; ?>
@@ -72,4 +80,7 @@ $this->params['breadcrumbs'] = array(
         </div>
     </div>
 </div>
+
+<?php $this->registerJsFile('@web/js/utils.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/bulk_shipment_tasks.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
 
