@@ -13,6 +13,7 @@ BulkShipment = {
         bulk_upload_file_btn: $('#bulk_upload_file_btn'),
         uploaded_file_name_span: $('#uploaded_file_name'),
         modal_create_btn: $('#modal_create_btn'),
+        modal_cancel_btn: $('#modal_cancel_btn'),
         url_create_bulk_shipment: 'createbulkshipment',
         bulk_shipment_form: $('#bulk_shipment_form'),
         company_id_input: $('#company_id_input'),
@@ -28,12 +29,10 @@ BulkShipment = {
         $('#message_area').hide();
         this.Constants.modal_create_btn.prop('disabled', true);
 
-        this.Constants.bulk_shipment_modal.unbind('hide.bs.modal');
-
         this.Constants.company_select.on('change', function () {
             if (BulkShipment.Constants.company_select.val() == "") {
                 BulkShipment.Constants.modal_create_btn.prop('disabled', true);
-                BulkShipment.Constants.company_billing_plan_select.html('<option>Select a Billing Plan</option>');
+                BulkShipment.Constants.company_billing_plan_select.html('<option>Select a Company</option>');
                 return true;
             }
             var selected_company = BulkShipment.Constants.company_select.find('option:selected');
@@ -58,6 +57,7 @@ BulkShipment = {
             if (e.target.files.length == 0) {
                 BulkShipment.Constants.uploaded_file_name_span.html('');
                 BulkShipment.Constants.modal_create_btn.prop('disabled', false);
+                BulkShipment.uploadedFile = null;
                 return false;
             }
             BulkShipment.uploadedFile = e.target.files[0];
@@ -84,7 +84,7 @@ BulkShipment = {
                 error: function (e) {
                     //BulkShipment.showMessage('Something went wrong while creating bulk shipment. Please try again');
                 },
-                complete: function(){
+                complete: function () {
                     _this.text('Create');
                     _this.prop('disabled', false);
                 },
@@ -95,6 +95,14 @@ BulkShipment = {
             ;
             return false;
         });
+
+        this.Constants.modal_cancel_btn.unbind('click').click(function () {
+            if (BulkShipment.uploadedFile != null) {
+                BulkShipment.Constants.company_select.val('').change();
+                BulkShipment.Constants.payment_method_select.prop('selectedIndex', 0);
+                return false;
+            }
+        })
     },
     /**
      * Populate billing plans dropdown with billing plans
