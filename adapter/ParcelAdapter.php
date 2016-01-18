@@ -101,7 +101,7 @@ class ParcelAdapter extends BaseAdapter
             'count' => $count
         );
         $params = http_build_query($filters);
-        return $this->request(ServiceConstant::URL_GET_ALL_PARCEL.'?'.$params, array(), self::HTTP_GET);
+        return $this->request(ServiceConstant::URL_GET_ALL_PARCEL . '?' . $params, array(), self::HTTP_GET);
     }
 
     public function getParcelsForDelivery($start_created_date, $end_created_date, $status, $branch_id = null, $offset = 0, $count = 50, $with_from = null, $with_total = null, $only_parents = null, $route_id = null, $with_route = null)
@@ -318,7 +318,7 @@ class ParcelAdapter extends BaseAdapter
             'count' => $count
         );
         $filter = array_filter($filter, 'strlen');
-        return $this->request(ServiceConstant::URL_GET_ALL_PARCEL , $filter, self::HTTP_GET);
+        return $this->request(ServiceConstant::URL_GET_ALL_PARCEL, $filter, self::HTTP_GET);
     }
 
     public function getMerchantParcels($with_bank_account = 1, $payment_status = null, $offset = 0, $count = 50, $with_total = 1, $only_parents = 1)
@@ -714,5 +714,23 @@ class ParcelAdapter extends BaseAdapter
             return $response->getData();
         }
         return [];
+    }
+
+    /**
+     * Get bulk shipment task
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     * @param $task_id
+     * @return ResponseHandler
+     */
+    public function createBulkWaybillPrintingTask($task_id)
+    {
+        $response = $this->request(ServiceConstant::URL_CREATE_BULK_WAYBILL_PRINTING_TASK, Json::encode(['bulk_shipment_task_id' => $task_id]), self::HTTP_POST);
+        $response = new ResponseHandler($response);
+
+        if (!$response->isSuccess()) {
+            $this->lastErrorMessage = $response->getError();
+        }
+
+        return $response;
     }
 }

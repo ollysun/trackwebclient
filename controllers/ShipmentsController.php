@@ -827,8 +827,8 @@ class ShipmentsController extends BaseController
         $start_modified_date = Yii::$app->request->get('start_modified_date', null);
         $end_modified_date = Yii::$app->request->get('end_modified_date', null);
 
-        $filters['start_modified_date'] = (Util::checkEmpty($start_modified_date) ? null : $start_modified_date. ' 00:00:00');
-        $filters['end_modified_date'] =  (Util::checkEmpty($end_modified_date) ? null : $end_modified_date.' 23:59:59');
+        $filters['start_modified_date'] = (Util::checkEmpty($start_modified_date) ? null : $start_modified_date . ' 00:00:00');
+        $filters['end_modified_date'] = (Util::checkEmpty($end_modified_date) ? null : $end_modified_date . ' 23:59:59');
 
         if (!empty(Yii::$app->request->get('download'))) {
 
@@ -991,12 +991,35 @@ class ShipmentsController extends BaseController
         $taskId = Yii::$app->getRequest()->get('task_id', false);
         if (!$taskId) {
             $tasks = $parcelAdapter->getBulkShipmentTasks();
-            return $this->render('bulk_shipment_tasks', ['tasks' => $tasks]);
+            $environment = getenv("APPLICATION_ENV") ? getenv("APPLICATION_ENV") : 'local';
+            $s3BaseUrl = '//s3-us-west-2.amazonaws.com/bulk-waybills/' . $environment . '/';
+            return $this->render('bulk_shipment_tasks', ['tasks' => $tasks, 's3_base_url' => $s3BaseUrl]);
         }
 
         $task = $parcelAdapter->getBulkShipmentTask($taskId);
         return $this->render('bulk_shipment_task_details', ['task_id' => $taskId, 'task' => $task]);
     }
 
+    /**
+     * Print Bulk Shipment
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     * @param null $task_id
+     * @return Response
+     */
+    public function actionPrintbulkshipment($task_id = null)
+    {
+        if (is_null($task_id)) {
+            return $this->redirect(Yii::$app->getRequest()->getReferrer());
+        }
 
+        $parcelAdapter = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $response = $parcelAdapter->createBulkWaybillPrintingTask($task_id);
+        if ($response->isSuccess()) {
+            $this->flashSuccess("Waybills generation for bulk Shipment #$task_id has been queued. A link to a printable document will be sent to your email when done.");
+        } else {
+            $this->flashError($parcelAdapter->getLastErrorMessage());
+        }
+
+        return $this->redirect(Yii::$app->getRequest()->getReferrer());
+    }
 }

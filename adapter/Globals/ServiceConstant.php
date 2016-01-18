@@ -77,6 +77,7 @@ class ServiceConstant
     const URL_CREATE_BULK_SHIPMENT_TASK = '/parcel/createbulkshipmenttask';
     const URL_GET_BULK_SHIPMENT_TASKS = '/parcel/getbulkshipmenttasks';
     const URL_GET_BULK_SHIPMENT_TASK = '/parcel/getbulkshipmenttask';
+    const URL_CREATE_BULK_WAYBILL_PRINTING_TASK = '/parcel/createbulkwaybillprintingtask';
 
 
     const URL_GET_ALL_BANKS = 'bank/getAll/';

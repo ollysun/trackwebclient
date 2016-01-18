@@ -64,6 +64,13 @@ var TrackPlusUtil = {
         target.removeClass('alert-danger');
         target.removeClass('alert-success');
         target.hide();
+    },
+
+    openInNewWindow: function (url) {
+        var win = window.open(url, '_blank');
+        if (win) {
+            win.focus();
+        }
     }
 };
 
