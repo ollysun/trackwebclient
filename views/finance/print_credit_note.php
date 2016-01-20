@@ -22,93 +22,68 @@ $this->title = 'Credit note';
     <tbody>
         <tr>
             <td height="120px">
-                ARM PENSIONS MANAGERS (PFA) LIMITED<br>
-                5, MEKUNWEN ROAD, OFF OYINKAN ABAYOMI DRIVE, IKOYI<br>
-                LAGOS, NIGERIA
+                <?= strtoupper(Calypso::getValue($credit_note_details[0],'invoice.address')); ?>
             </td>
             <td>
-                ARM PENSIONS MANAGERS (PFA) LIMITED<br>
-                5, MEKUNWEN ROAD, OFF OYINKAN ABAYOMI DRIVE, IKOYI<br>
-                LAGOS, NIGERIA
+                <?= strtoupper(Calypso::getValue($credit_note_details[0],'invoice.to_address')); ?>
             </td>
-        </tr>
-        <tr>
-            <td>VAT Reg. Nr</td>
-            <td>Page Nr. 1/1</td>
         </tr>
     </tbody>
 </table>
 <table class="table table-bordered double-border">
     <tbody>
         <tr>
-            <td width="25%">Account Number</td>
-            <td width="25%">7011010099</td>
-            <td width="25%">Document Date</td>
-            <td width="25%">28/10/2015</td>
+            <td width="40%">Document Number</td>
+            <td> <?= Calypso::getValue($credit_note_details[0],"creditNote.credit_note_number")?> </td>
         </tr>
-        <tr>
-            <td>Document Number</td>
-            <td>CNS 2015181</td>
-            <td>VAT Date</td>
-            <td>28/10/2015</td>
-        </tr>
+         <tr>
+             <td>Created Date</td>
+             <td> <?= Calypso::getValue($credit_note_details[0],'creditNote.created_at'); ?> </td>
+         </tr>
     </tbody>
 </table>
-<table class="table">
-    <thead>
-        <tr>
-            <th class="text-center" colspan="7">Being Credit Note for awb 50637473 (SEPT 2015)</th>
-        </tr>
-        <tr class="text-normal is-bordered">
+<br><br>
+
+    <table class="table">
+        <caption><strong>Being Credit Note for <?= Calypso::getValue($credit_note_details[0],'invoice.invoice_number')?></strong></caption>
+        <thead>
+    <tr class="text-normal is-bordered">
             <th>
-                1<br><br>
+               <strong> S/N </strong>
             </th>
             <th>
-                <strong>Our Ref</strong> <br>
-                000000050637473 <br>
-                Shipment is for Rene Collection
+                <strong>Our Ref</strong>
             </th>
+
             <th>
-                <strong>Your Ref</strong> <br> <br> <br>
-            </th>
-            <th class="text-right">
                 <strong>Total Charge</strong> <br>
-                1500.00 <br> <br>
             </th>
-            <th class="text-right">
-                <strong>Should be</strong> <br>
-                0.00 <br> <br>
-            </th>
+
             <th>
-                V/C <br> ST <br> <br>
+                <strong> Discount </strong> <br>
             </th>
-            <th class="text-right">
+
+            <th style="text-align:right">
                 <strong>Credit Amount</strong> <br>
-                1500.00 NGN <br> <br>
             </th>
         </tr>
     </thead>
     <tbody>
+    <?php $i = 0; $totalAmount = 0.00;
+    $companyName = Calypso::getValue($credit_note_details[0], 'name');
+    foreach($credit_note_parcels as $credit_note_parcel ){
+        $newNetAmount = Calypso::getValue($credit_note_parcel, 'creditNoteParcel.new_net_amount');
+        $vatCharge = '75.00';
+        ?>
         <tr class="is-bordered">
-            <td colspan="6">NET TOTAL</td>
-            <td class="text-right invoice-total-amt-cell">1500.00 NGN</td>
+            <td><?= ++$i; ?></td>
+            <td> <?= Calypso::getValue($credit_note_parcel, 'invoiceParcel.waybill_number') ?><br> Shipment is for <?=$companyName?> </td>
+            <td><?= Calypso::getValue($credit_note_parcel, 'invoiceParcel.net_amount') ?></td>
+            <td> <?= Calypso::getValue($credit_note_parcel, 'creditNoteParcel.deducted_amount')?>  </td>
+            <td align="right"> <?= $newNetAmount; ?></td>
+            <?php $totalAmount += $newNetAmount; ?>
         </tr>
-        <tr class="is-bordered">
-            <td colspan="4"></td>
-            <td>VAT Rate</td>
-            <td>Base</td>
-            <td class="text-right invoice-total-amt-cell"></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td colspan="3">ST STANDARD</td>
-            <td>5.00%</td>
-            <td>1500.00 NGN</td>
-            <td class="text-right invoice-total-amt-cell">75.00 NGN</td>
-        </tr>
-        <tr>
-
-        </tr>
+    <?php } ?>
     </tbody>
 </table>
 
@@ -116,11 +91,12 @@ $this->title = 'Credit note';
     <tbody>
         <tr>
             <td><strong>VAT Total</strong></td>
-            <td class="invoice-total-amt-cell">75.00 NGN</td>
+            <td class="invoice-total-amt-cell"><?= $vatCharge?> NGN</td>
+            <?php $totalAmount += floatval($vatCharge); ?>
         </tr>
         <tr class="double-border">
             <td><strong>Credit Note Total</strong></td>
-            <td class="invoice-total-amt-cell">1575.00 NGN</td>
+            <td class="invoice-total-amt-cell"><?= number_format($totalAmount,2) ?> NGN</td>
         </tr>
     </tbody>
 </table>
@@ -157,9 +133,5 @@ $this->title = 'Credit note';
     </div>
     <h4 class="text-center">Please Raise Cheque In The Name of (COURIERPLUS SERVICES LIMITED)</h4>
 </div>
-
-
-
-
 
 </div>
