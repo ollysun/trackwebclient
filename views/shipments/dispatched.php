@@ -149,7 +149,7 @@ $user_data = $this->context->userData;
                         </div>
                         <div class="form-group col-md-6">
                             <label for="phone">Receiver's Phone Number</label>
-                            <input type="text" class="form-control" name="phone" id="phone" required>
+                            <input type="text" class="form-control" name="phone" id="phone" placeholder="--Optional--">
                         </div>
                     </div>
 

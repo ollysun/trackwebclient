@@ -65,11 +65,10 @@ function getServerResponse(statusCode, message) {
         params.to_branch_id = $('#city_receiver').find('option:selected').attr('data-branch-id');
         params.city_id = $('#city_receiver').find('option:selected').attr('data-city_id');
         params.weight = $('#weight').val();
-        var onforwardingBillingField = $("#onforwarding_billing_plan");
-        var weightBillingField = $("#onforwarding_billing_plan");
-        if (weightBillingField.is(":visible") && onforwardingBillingField.is(":visible")) {
-            params.weight_billing_plan_id = weightBillingField.val();
-            params.onforwarding_billing_plan_id = onforwardingBillingField.val();
+        var billingField = $("#billing_plan");
+        if ($("input[name='billing_method']:checked").val() == 'corporate') {
+            params.weight_billing_plan_id = billingField.val();
+            params.onforwarding_billing_plan_id = billingField.val();
         }
         Parcel.calculateAmount(params);
     }
