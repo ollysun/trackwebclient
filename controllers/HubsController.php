@@ -187,7 +187,7 @@ class HubsController extends BaseController
     {
         $routeAdp = new RouteAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $user_session = Calypso::getInstance()->session("user_session");
-        $routes = $routeAdp->getRoutes($user_session['branch_id']);
+        $routes = $routeAdp->getRoutes($user_session['branch_id'],null,null,null,true,null);
 
         if ($routes['status'] === ResponseHandler::STATUS_OK) {
             return $this->sendSuccessResponse($routes['data']);
