@@ -838,11 +838,20 @@ class ShipmentsController extends BaseController
             $filtered_parcels = $parcel->getParcelsByFilters(array_filter($filters, 'strlen'));
             $response = new ResponseHandler($filtered_parcels);
 
+            $parcels = [];
+            if($response->isSuccess()){
+                $parcels = $response->getData();
+            }
+
+            if($response->getStatus() == 600){
+                $this->flashError('Max download limit exceeded. You can\'t download more than 1500 parcel report');
+            }
+
             $name = 'report_' . date(ServiceConstant::DATE_TIME_FORMAT) . '.csv';
             $data = array();
 
             $headers = array('SN', 'Waybill Number', 'Sender', 'Sender Email', 'Sender Phone', 'Sender Address', 'Receiver', 'Receiver Email', 'Receiver Phone', 'Receiver Address', 'Weight/Piece', 'Payment Method', 'Amount Due', 'Cash Amount', 'POS Amount', 'POS Transaction ID', 'Parcel Type', 'Cash on Delivery', 'Delivery Type', 'Package Value', '# of Package', 'Shipping Type', 'Created Date', 'Last Modified Date', 'Status', 'Reference Number', 'Originating Branch', 'Route', 'Request Type', 'For Return', 'Other Info');
-            foreach ($response->getData() as $key => $result) {
+            foreach ($parcels as $key => $result) {
                 $data[] = [
                     $key + 1,
                     $result['waybill_number'],
@@ -878,7 +887,7 @@ class ShipmentsController extends BaseController
                 ];
             }
             Util::exportToCSV($name, $headers, $data);
-            exit;
+            return $this->redirect(Url::to('/shipments/report'));
         }
 
         $filters['offset'] = $offset;
@@ -893,6 +902,10 @@ class ShipmentsController extends BaseController
 
         $branch_adapter = new BranchAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $branches = $branch_adapter->getAll();
+
+        if(!$branches){
+            $branches = [];
+        }
 
         $route_adapter = new RouteAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $routes = $route_adapter->getRoutes(null, null, null, null, null);
