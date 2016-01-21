@@ -15,7 +15,7 @@ $this->title = 'Tracking Portal';
     <?php //Please wrap for loop around .tracking-item ?>
     <div class="tracking-item">
         <div class="clearfix">
-            <h1 class="pull-left">Tracking for #<?= $tracking_number ?></h1>
+            <h1 class="pull-left">Tracking for #<?= ServiceConstant::humanizeWaybillNumber($tracking_number) ?></h1>
             <h4 class="pull-right text-muted">
                 Status:
                 <?php if(Calypso::getDisplayValue($current_state_info, 'status') == ServiceConstant::RETURNED): ?>
