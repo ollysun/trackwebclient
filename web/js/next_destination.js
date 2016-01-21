@@ -180,6 +180,7 @@ $(document).ready(function(){
                 dest_value = $('#branch_name').val();
                 destination = (dest_value !== '') ? $('#branch_name').find('option:selected').text() : '';
                 $(chk).prop('checked', true);
+                $(chk).attr('value', waybill);
                 TableHelper.setCellData('#next_dest', rowIndex, 4, destination);
             });
         } else {
