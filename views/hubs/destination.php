@@ -108,7 +108,7 @@ $user_data = $this->context->userData;
                             <td>
                                 <div class='checkbox-nice'>
                                     <input name='waybills[]' id='chk_<?= $row; ?>' type='checkbox'
-                                           class='chk_next' value=<?= Calypso::getValue($parcels, 'waybill_number');?>><label
+                                           class='chk_next'><label
                                         for='chk_<?= $row; ?>'></label>
                                 </div>
                             </td>
