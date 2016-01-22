@@ -654,4 +654,21 @@ $(document).ready(function () {
             metricAddon.html('Pieces');
         }
     });
+
+    function customerCorporateShipments() {
+        var radios = $('input[name="customer_corporate_shipments"]'),
+            groups = $('.customer-corporate-shipment-group'),
+            hideClass = 'hide';
+
+        activate('input[name="shipper_customer_corporate_shipments"]', '.shipper-cc-group')
+        activate('input[name="receiver_customer_corporate_shipments"]', '.receiver-cc-group')
+        function activate(radioSelector,groupSelector) {
+            $(radioSelector).click(function(e) {
+                var val = $(this).val();
+                $(groupSelector).addClass(hideClass);
+                $(groupSelector+'.'+val+'-group').removeClass(hideClass);
+            });
+        }
+    }
+    customerCorporateShipments();
 });
