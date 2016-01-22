@@ -4,8 +4,8 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use Adapter\Globals\ServiceConstant;
 
-
 $this->title = 'Credit Note';
+
 $this->params['breadcrumbs'] = array(
     array(
         'url' => ['finance/index'],
@@ -34,7 +34,7 @@ $this->params['breadcrumbs'] = array(
 
                             <div class="input-group input-group-date-range">
                                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                <input name="from" id="" class="form-control date-range" value="<?= $fromDate;?>"
+                                <input name="from" id="" class="form-control date-range" value="<?= $fromDate; ?>"
                                        data-provide="datepicker" data-date-format="yyyy/mm/dd" data-date-end-date="0d">
                             </div>
                         </div>
@@ -44,7 +44,7 @@ $this->params['breadcrumbs'] = array(
 
                             <div class="input-group input-group-date-range">
                                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                <input name="to" id="" class="form-control date-range" value="<?= $toDate;?>"
+                                <input name="to" id="" class="form-control date-range" value="<?= $toDate; ?>"
                                        data-provide="datepicker" data-date-format="yyyy/mm/dd" data-date-end-date="0d">
                             </div>
                         </div>
@@ -94,8 +94,8 @@ $this->params['breadcrumbs'] = array(
                                 <button class="btn btn-primary btn-xs "
                                         data-toggle="modal"
                                         data-target="#viewInvoice"
-                                        data-company_name="<?=strtoupper(Calypso::getValue($creditNote, 'company.name'));?>"
-                                        data-credit_note_no="<?= Calypso::getValue($creditNote, 'credit_note_number');?>"
+                                        data-company_name="<?= strtoupper(Calypso::getValue($creditNote, 'company.name')); ?>"
+                                        data-credit_note_no="<?= Calypso::getValue($creditNote, 'credit_note_number'); ?>"
                                         id="viewCreditNoteDetails">
                                     View
                                 </button>

@@ -336,8 +336,15 @@ class FinanceController extends BaseController
      */
     public function actionPrintcreditnote()
     {
+        $credit_note_number = Yii::$app->request->get('credit_note_no');
+        $company_name = Yii::$app->request->get('company_name');
+        $creditNoteAdapter = new CreditNoteAdapter();
+        $rawPrintOutDetails = $creditNoteAdapter->getPrintOutDetails($credit_note_number);
+        $printOutDetails = (new ResponseHandler($rawPrintOutDetails))->getData();
+        $creditNoteDetails = $printOutDetails['credit_note'];
+        $creditNoteParcels = $printOutDetails['credit_note_parcels'];
         $this->layout = 'print';
-        return $this->render('print_credit_note');
+        return $this->render('print_credit_note',['company_name' => $company_name, 'credit_note_details' => $creditNoteDetails, 'credit_note_parcels' =>  $creditNoteParcels]);
     }
 
     /**
@@ -374,6 +381,6 @@ class FinanceController extends BaseController
         $creditNoteParcelsResources = $creditNoteAdapter->getCreditNoteParcels($creditNoteNo);
         $responseHandler = new ResponseHandler($creditNoteParcelsResources);
         $creditNoteParcels = $responseHandler->getData();
-        return $this->renderPartial('partial_credit_note_parcels', ['credit_note_parcels' => $creditNoteParcels,'company_name' => $companyName]);
+        return $this->renderPartial('partial_credit_note_parcels', ['credit_note_parcels' => $creditNoteParcels,'company_name' => $companyName ,'credit_note_no' => $creditNoteNo]);
     }
 }
