@@ -74,34 +74,21 @@ $this->title = 'Credit note';
         <tbody>
         <?php $i = 0;
         $totalAmount = 0.00;
-        $companyName = Calypso::getValue($credit_note_details[0], 'name');?>
-        <?php for($i=0; $i < 39; $i++){?>
-        <tr class="is-bordered">
-
-                <td> <?= $i; ?></td>
-        <td>1</td>
-        <td>1 </td>
-        <td>1  </td>
-        <td>1</td>
-<!--        --><?php //$totalAmount += $newNetAmount; ?>
-
-        </tr>
-        <?php }?>
-
-        //        foreach ($credit_note_parcels as $credit_note_parcel) {
-//            $newNetAmount = Calypso::getValue($credit_note_parcel, 'creditNoteParcel.new_net_amount');
-//            $vatCharge = '75.00';
-//            ?>
-<!--            <tr class="is-bordered">-->
-<!--                <td>--><?//= ++$i; ?><!--</td>-->
-<!--                <td> --><?//= Calypso::getValue($credit_note_parcel, 'invoiceParcel.waybill_number') ?><!--<br> Shipment is-->
-<!--                    for --><?//= $companyName ?><!-- </td>-->
-<!--                <td>--><?//= Calypso::getValue($credit_note_parcel, 'invoiceParcel.net_amount') ?><!--</td>-->
-<!--                <td> --><?//= Calypso::getValue($credit_note_parcel, 'creditNoteParcel.deducted_amount') ?><!--  </td>-->
-<!--                <td align="right"> --><?//= $newNetAmount; ?><!--</td>-->
-<!--                --><?php //$totalAmount += $newNetAmount; ?>
-<!--            </tr>-->
-<!--        --><?php //} ?>
+        $companyName = Calypso::getValue($credit_note_details[0], 'name'); ?>
+        <?php foreach ($credit_note_parcels as $credit_note_parcel) {
+            $newNetAmount = Calypso::getValue($credit_note_parcel, 'creditNoteParcel.new_net_amount');
+            $vatCharge = '75.00';
+            ?>
+            <tr class="is-bordered">
+                <td><?= ++$i; ?></td>
+                <td> <?= Calypso::getValue($credit_note_parcel, 'invoiceParcel.waybill_number') ?><br> Shipment is
+                    for <?= $companyName ?> </td>
+                <td><?= Calypso::getValue($credit_note_parcel, 'invoiceParcel.net_amount') ?></td>
+                <td> <?= Calypso::getValue($credit_note_parcel, 'creditNoteParcel.deducted_amount') ?>  </td>
+                <td align="right"> <?= $newNetAmount; ?></td>
+                <?php $totalAmount += $newNetAmount; ?>
+            </tr>
+        <?php } ?>
         </tbody>
     </table>
 
@@ -109,7 +96,7 @@ $this->title = 'Credit note';
         <tbody>
         <tr>
             <td><strong>VAT Total</strong></td>
-            <td class="invoice-total-amt-cell"><?= $vatCharge = 0 ?> NGN</td>
+            <td class="invoice-total-amt-cell"><?=$vatCharge?> NGN</td>
             <?php $totalAmount += floatval($vatCharge); ?>
         </tr>
         <tr class="double-border">

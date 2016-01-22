@@ -1,6 +1,6 @@
 <?php
 use Adapter\Util\Calypso;
-
+use yii\helpers\Url;
 ?>
 
 
@@ -46,9 +46,7 @@ use Adapter\Util\Calypso;
             </table>
         </div>
         <div class="modal-footer">
-            <a href="printcreditnote?credit_note_no=<?= $credit_note_no?>">
-                <button type="button" class="btn btn-primary">Print Credit Note</button>
-            </a>
+                <button type="button" class="btn btn-primary" onclick="window.open('printcreditnote?credit_note_no=<?= $credit_note_no?>','mywin','width=300')">Print Credit Note</button>
         </div>
     </div>
 </div>

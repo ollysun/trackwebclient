@@ -4,8 +4,8 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use Adapter\Globals\ServiceConstant;
 
-
 $this->title = 'Credit Note';
+
 $this->params['breadcrumbs'] = array(
     array(
         'url' => ['finance/index'],
