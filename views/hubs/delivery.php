@@ -96,6 +96,7 @@ $user_data = $this->context->userData;
                         </th>
                         <th style="width: 20px">S/N</th>
                         <th>Waybill No</th>
+                        <th>Reference No</th>
                         <th>Origin</th>
                         <th>Next Destination</th>
                         <th>Final Destination</th>
@@ -128,6 +129,7 @@ $user_data = $this->context->userData;
                             <td>
                                 <a href='/shipments/view?waybill_number=<?= Calypso::getValue($parcels, 'waybill_number') ?>'><?= Calypso::getValue($parcels, 'waybill_number') ?></a>
                             </td>
+                            <td><?= Calypso::getValue($parcels, 'reference_number') ?></td>
                             <td><?= ucwords(Calypso::getValue($parcels, 'sender_address.city.name') . ', ' . Calypso::getValue($parcels, 'sender_address.state.name')) ?></td>
                             <td><?= strtoupper(Calypso::getValue($parcels, 'to_branch.name')); ?> </td>
                             <td><?= ucwords(Calypso::getValue($parcels, 'receiver_address.city.name') . ', ' . Calypso::getValue($parcels, 'receiver_address.state.name')) ?></td>

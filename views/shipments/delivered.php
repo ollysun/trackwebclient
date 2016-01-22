@@ -37,6 +37,7 @@ $user_data = $this->context->userData;
                     <!-- <th style="width: 20px;"></th> -->
                     <th style="width: 20px">S/N</th>
                     <th>Waybill No.</th>
+                    <th>Reference No.</th>
                     <th>Sender</th>
                     <th>Sender Phone</th>
                     <th>Receiver</th>
@@ -58,6 +59,7 @@ $user_data = $this->context->userData;
                         <tr>
                            <td><?= ++$row; ?></td>
                             <td><?= $parcel['waybill_number']; ?></td>
+                            <td><?= $parcel['reference_number']; ?></td>
                             <td><?= ucwords($parcel['sender']['firstname'].' '. $parcel['sender']['lastname']) ?></td>
                             <td><?= $parcel['sender']['phone'] ?></td>
                             <td><?= ucwords(Calypso::getDisplayValue($parcel, 'delivery_receipt.name', '')) ?></td>

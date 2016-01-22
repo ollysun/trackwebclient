@@ -77,6 +77,7 @@ $user_data = $this->context->userData;
                     <th style="width: 20px;"></th>
                     <th style="width: 20px">S/N</th>
                     <th>Waybill No</th>
+                    <th>Reference No</th>
                     <th>Origin</th>
                     <th>Next Destination</th>
                     <th>Final Destination</th>
@@ -98,7 +99,8 @@ $user_data = $this->context->userData;
                         ++$row;
                         ?>
                         <tr data-waybill='<?= $parcels['waybill_number'] ?>'>
-                            <td>
+                        <tr data-waybill='<?= $parcels['reference_number'] ?>'>
+                        <td>
                                 <div class='checkbox-nice'>
                                     <input name='waybills[]' id='chk_<?= $row; ?>' type='checkbox'
                                            class='chk_next'><label
