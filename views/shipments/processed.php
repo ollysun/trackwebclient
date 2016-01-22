@@ -79,6 +79,7 @@ $this->params['content_header_button'] = $this->render('../elements/content_head
                         </th>
                         <th style="width: 20px">No.</th>
                         <th>Waybill No.</th>
+                        <th>Reference No.</th>
                         <th>Shipper</th>
                         <th>Receiver</th>
                         <th>Receiver Phone</th>
@@ -101,7 +102,7 @@ $this->params['content_header_button'] = $this->render('../elements/content_head
                         foreach ($parcels as $parcel) {
                     ?>
                             <tr data-waybill="<?= strtoupper($parcel['waybill_number']); ?>">
-                                <td>
+                            <td>
                                     <div class="checkbox-nice">
 
                                         <input id="chbx_w_<?= ++$i; ?>" class="checkable"
@@ -113,6 +114,7 @@ $this->params['content_header_button'] = $this->render('../elements/content_head
                                 </td>
                                 <td><?= $i ?></td>
                                 <td><?= strtoupper($parcel['waybill_number']); ?></td>
+                                <td><?= strtoupper($parcel['reference_number']); ?></td>
                                 <td><?= strtoupper($parcel['sender']['firstname'] . ' ' . $parcel['sender']['lastname']) ?></td>
                                 <td><?= strtoupper($parcel['receiver']['firstname'] . ' ' . $parcel['receiver']['lastname']) ?></td>
                                 <td><?= $parcel['receiver']['phone'] ?></td>

@@ -74,6 +74,7 @@ $user_data = $this->context->userData;
                 <tr>
                     <th style="width: 20px">S/N</th>
                     <th>Waybill No.</th>
+                    <th>Reference No.</th>
                     <th>Shipper</th>
                     <th>Shipper Phone</th>
                     <th>Receiver</th>
@@ -99,6 +100,7 @@ $user_data = $this->context->userData;
                         <tr>
                             <td><?= ++$i; ?></td>
                             <td><?= strtoupper($parcel['waybill_number']); ?></td>
+                            <td><?= strtoupper($parcel['reference_number']); ?></td>
                             <td><?= strtoupper($parcel['sender']['firstname'].' '. $parcel['sender']['lastname']) ?></td>
                             <td><?= $parcel['sender']['phone'] ?></td>
                             <td><?= strtoupper($parcel['receiver']['firstname'].' '. $parcel['receiver']['lastname']) ?></td>

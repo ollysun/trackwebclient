@@ -156,6 +156,7 @@ $this->params['content_header_button'] = "<a href='".$downloadURL."' class='btn 
                         <tr>
                             <th style="width: 20px">S/N</th>
                             <th>Waybill No.</th>
+                            <th>Reference No.</th>
                             <th>Receiver</th>
                             <th>Receiver Phone</th>
                             <th>Created Date</th>
@@ -175,6 +176,7 @@ $this->params['content_header_button'] = "<a href='".$downloadURL."' class='btn 
                             <tr>
                                 <td><?= ++$i ?></td>
                                 <td><?= strtoupper($parcel['waybill_number']); ?></td>
+                                <td><?= strtoupper($parcel['reference_number']); ?></td>
                                 <td><?= strtoupper($parcel['receiver']['firstname'].' '. $parcel['receiver']['lastname']) ?></td>
                                 <td><?= $parcel['receiver']['phone'] ?></td>
                                 <td><?= Util::formatDate(ServiceConstant::DATE_TIME_FORMAT,$parcel['created_date']); ?></td>

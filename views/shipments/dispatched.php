@@ -65,6 +65,7 @@ $user_data = $this->context->userData;
                     <!-- <th style="width: 20px;"></th> -->
                     <th style="width: 20px">S/N</th>
                     <th>Waybill No.</th>
+                    <th>Reference No.</th>
                     <th>Receiver</th>
                     <th>Receiver Phone</th>
                     <th>Dispatcher</th>
@@ -95,6 +96,7 @@ $user_data = $this->context->userData;
                                 </td>
                                 <td><?= ++$row; ?></td>
                                 <td><?= $parcel['waybill_number']; ?></td>
+                                <td><?= $parcel['reference_number']; ?></td>
                                 <td><?= ucwords($parcel['receiver']['firstname'] . ' ' . $parcel['receiver']['lastname']) ?></td>
                                 <td><?= $parcel['receiver']['phone'] ?></td>
                                 <td><?= ucwords($parcel['holder']['fullname']); ?></td>
