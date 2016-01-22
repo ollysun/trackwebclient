@@ -101,7 +101,7 @@ class ParcelAdapter extends BaseAdapter
             'count' => $count
         );
         $params = http_build_query($filters);
-        return $this->request(ServiceConstant::URL_GET_ALL_PARCEL.'?'.$params, array(), self::HTTP_GET);
+        return $this->request(ServiceConstant::URL_GET_ALL_PARCEL . '?' . $params, array(), self::HTTP_GET);
     }
 
     public function getParcelsForDelivery($start_created_date, $end_created_date, $status, $branch_id = null, $offset = 0, $count = 50, $with_from = null, $with_total = null, $only_parents = null, $route_id = null, $with_route = null)
@@ -318,7 +318,7 @@ class ParcelAdapter extends BaseAdapter
             'count' => $count
         );
         $filter = array_filter($filter, 'strlen');
-        return $this->request(ServiceConstant::URL_GET_ALL_PARCEL , $filter, self::HTTP_GET);
+        return $this->request(ServiceConstant::URL_GET_ALL_PARCEL, $filter, self::HTTP_GET);
     }
 
     public function getMerchantParcels($with_bank_account = 1, $payment_status = null, $offset = 0, $count = 50, $with_total = 1, $only_parents = 1)
@@ -654,7 +654,7 @@ class ParcelAdapter extends BaseAdapter
             case ServiceConstant::IN_TRANSIT:
                 return 'In transit to ' . ucwords(Calypso::getDisplayValue($parcel, 'to_branch.name'));
             case ServiceConstant::BEING_DELIVERED:
-                return 'In transit to Customer from '. ucwords(Calypso::getDisplayValue($parcel, 'to_branch.name'));
+                return 'In transit to Customer from ' . ucwords(Calypso::getDisplayValue($parcel, 'to_branch.name'));
             case ServiceConstant::ASSIGNED_TO_GROUNDSMAN:
                 return 'Being sorted at ' . ucwords(Calypso::getDisplayValue($parcel, 'to_branch.name'));
             case ServiceConstant::DELIVERED:
@@ -662,5 +662,75 @@ class ParcelAdapter extends BaseAdapter
             default:
                 return strtoupper(Calypso::getDisplayValue($parcel, 'from_branch.name'));
         }
+    }
+
+    /**
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     * @param $parcelsData
+     * @param $company_id
+     * @param $billing_plan_id
+     * @return bool
+     */
+    public function createBulkShipmentTask($parcelsData, $company_id, $billing_plan_id)
+    {
+        $data = ['data' => $parcelsData, 'company_id' => $company_id, 'billing_plan_id' => $billing_plan_id];
+        $rawResponse = $this->request(ServiceConstant::URL_CREATE_BULK_SHIPMENT_TASK, Json::encode($data), self::HTTP_POST);
+        $response = new ResponseHandler($rawResponse);
+        if (!$response->isSuccess()) {
+            $this->lastErrorMessage = $response->getError();
+        }
+        $this->setResponseHandler($response);
+        return $response;
+    }
+
+    /**
+     * Get bulk shipment tasks
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     * @return array|mixed|string
+     */
+    public function getBulkShipmentTasks()
+    {
+        $response = $this->request(ServiceConstant::URL_GET_BULK_SHIPMENT_TASKS, [], self::HTTP_GET);
+        $response = new ResponseHandler($response);
+
+        if ($response->isSuccess()) {
+            return $response->getData();
+        }
+        return [];
+    }
+
+    /**
+     * Get bulk shipment task
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     * @param $task_id
+     * @return array|mixed|string
+     */
+    public function getBulkShipmentTask($task_id)
+    {
+        $response = $this->request(ServiceConstant::URL_GET_BULK_SHIPMENT_TASK, ['task_id' => $task_id], self::HTTP_GET);
+        $response = new ResponseHandler($response);
+
+        if ($response->isSuccess()) {
+            return $response->getData();
+        }
+        return [];
+    }
+
+    /**
+     * Get bulk shipment task
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     * @param $task_id
+     * @return ResponseHandler
+     */
+    public function createBulkWaybillPrintingTask($task_id)
+    {
+        $response = $this->request(ServiceConstant::URL_CREATE_BULK_WAYBILL_PRINTING_TASK, Json::encode(['bulk_shipment_task_id' => $task_id]), self::HTTP_POST);
+        $response = new ResponseHandler($response);
+
+        if (!$response->isSuccess()) {
+            $this->lastErrorMessage = $response->getError();
+        }
+
+        return $response;
     }
 }
