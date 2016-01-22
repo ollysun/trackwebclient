@@ -2,6 +2,7 @@
 use Adapter\Globals\ServiceConstant;
 use Adapter\Util\Util;
 use yii\helpers\Url;
+use Adapter\Util\Calypso;
 
 
 $this->title = 'Reports';
@@ -11,9 +12,12 @@ $this->params['breadcrumbs'] = array(
 $downloadURL = Url::to().((parse_url(Url::to(), PHP_URL_QUERY) == NULL) ? '?' : '&').'download=1';
 ?>
 
+
 <?php
 $this->params['content_header_button'] = "<a href='".$downloadURL."' class='btn btn-primary'><i class='fa fa-download'></i> Download as CSV</a>";
 ?>
+
+<?php echo \Adapter\Util\Calypso::showFlashMessages(); ?>
 
 <div class="main-box">
     <div class="main-box-header table-search-form ">
