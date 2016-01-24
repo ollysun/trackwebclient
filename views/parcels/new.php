@@ -38,7 +38,7 @@ $is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
                             <h2>Sender Information</h2>
                         </div>
                         <div class="main-box-body">
-                            <?= $this->render('../elements/new_parcel_user_information', ['prefix' => 'shipper', 'countries' => $countries, 'states' => $states, 'parcel' => $parcel]) ?>
+                            <?= $this->render('../elements/new_parcel_user_information', ['prefix' => 'shipper', 'countries' => $countries, 'states' => $states, 'parcel' => $parcel, 'companies' => $companies]) ?>
                         </div>
                     </div>
                     <div class="col-xs-12 col-lg-6">
@@ -46,7 +46,7 @@ $is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
                             <h2>Receiver Information</h2>
                         </div>
                         <div class="main-box-body">
-                            <?= $this->render('../elements/new_parcel_user_information', ['prefix' => 'receiver', 'countries' => $countries, 'states' => $states, 'parcel' => $parcel]) ?>
+                            <?= $this->render('../elements/new_parcel_user_information', ['prefix' => 'receiver', 'countries' => $countries, 'states' => $states, 'parcel' => $parcel, 'companies' => $companies]) ?>
                         </div>
                     </div>
                 </div>
@@ -471,7 +471,7 @@ $is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
                             <div class="clearfix main-box-body main-box-button-wrap">
                                 <a href="#newParcelForm" data-slide="prev" class="btn btn-default pull-left"><i
                                         class="fa fa-arrow-left"></i> Back</a>
-                                <button type="submit" class="btn btn-primary pull-right"><i class="fa fa-check"></i>
+                                <button id="create_parcel_btn" type="submit" class="btn btn-primary pull-right"><i class="fa fa-check"></i>
                                     CREATE
                                 </button>
                             </div>
@@ -487,7 +487,9 @@ $is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
 <?php $this->registerJsFile('@web/js/keyboardFormSubmit.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/form-watch-changes.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/validate.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
-<?php $this->registerJsFile('@web/js/new_parcel_form.js?2.2.3', ['depends' => [\app\assets\AppAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/libs/select2.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/utils.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/new_parcel_form.js?2.4.0', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php
 $this->registerJs('$(".alert").delay(5000).fadeOut(1500);',View::POS_READY);
 ?>
