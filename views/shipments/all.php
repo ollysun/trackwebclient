@@ -39,7 +39,7 @@ $user_data = $this->context->userData;
                     <div class="pull-left">
                         <label for="searchInput">Search</label><br>
                         <div class="input-group input-group-sm input-group-search">
-                            <input id="searchInput" type="text" name="search" placeholder="Waybill Number" class="search-box form-control">
+                            <input id="searchInput" type="text" name="search" placeholder="Search by Waybill or Reference No." class="search-box form-control">
                             <div class="input-group-btn">
                                 <button class="btn btn-default" type="submit">
                                     <i class="fa fa-search"></i>

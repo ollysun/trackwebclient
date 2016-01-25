@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use Adapter\Globals\ServiceConstant;
 use Adapter\Util\Calypso;
+
 ?>
 
 <!-- this page specific styles -->
@@ -33,8 +34,9 @@ use Adapter\Util\Calypso;
                 </tr>
                 </thead>
                 <tbody>
-                <?php foreach ($tracking_infos as $waybill_number => $tracking_info):
-                $i = 0; ?>
+                <?php $i = 0;
+                foreach ($tracking_infos as $waybill_number => $tracking_info):
+                ?>
                 <tr data-shipment-id="<?= Calypso::getDisplayValue($tracking_info, 'parcel.waybill_number') ?>">
                     <td><?= ++$i ?></td>
                     <td><?= Calypso::getDisplayValue($tracking_info, 'parcel.waybill_number') ?></td>
