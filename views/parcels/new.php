@@ -19,6 +19,7 @@ $is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
 
 
 <?= Html::cssFile('@web/css/libs/bootstrap-select.min.css') ?>
+<?= Html::cssFile('@web/css/libs/select2.css') ?>
 
 <?php echo Calypso::showFlashMessages(); ?>
 

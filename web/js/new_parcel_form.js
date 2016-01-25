@@ -596,7 +596,9 @@ $(document).ready(function () {
         if (val == 'manual') {
             $("input[name='manual_amount']").addClass('validate integer required');
         } else if (val == 'auto') {
-            calculateBilling();
+            if ($(this).is(':visible')) {
+                calculateBilling();
+            }
         } else if (val == 'corporate') {
             $(".amount-due").html("");
             $("#company").trigger("change");
@@ -695,11 +697,16 @@ $(document).ready(function () {
                 $('#company').val(company.id).change();
             }
         });
+
+        $(target).removeClass('form-control').attr('style', 'width:100%').select2();
     }
 
     corporateContactInit($('#shipper_corporate_select'), 'shipper');
     corporateContactInit($('#receiver_corporate_select'), 'receiver');
 
+    $('input[name="shipper_customer_corporate_shipments"][value="customer"]').click(function () {
+        $('#autoBillingMethod').click();
+    });
 
     $('#create_parcel_btn').click(function () {
         if ($("input[name='billing_method']:checked").val() != 'corporate') {
