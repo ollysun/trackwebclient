@@ -1,5 +1,7 @@
 <?php use Adapter\Util\Calypso;
-	$prefix_map = [ 'shipper' => 'sender', 'receiver' => 'receiver' ];
+use yii\helpers\Json;
+
+$prefix_map = [ 'shipper' => 'sender', 'receiver' => 'receiver' ];
 ?>
 
 <div class="form-group">
@@ -11,8 +13,11 @@
 		</div>
 	</div>
 	<div class="<?= $prefix; ?>-cc-group corporate-group hide">
-		<select class="form-control">
+		<select class="form-control" id="<?= $prefix; ?>_corporate_select">
 			<option>Choose a Company</option>
+			<?php foreach($companies as $company):?>
+				<option data-company='<?=Json::encode($company)?>' value="<?= Calypso::getValue($company, 'id')?>" <?= Calypso::getValue($parcel, 'company_id') == Calypso::getValue($company, 'id') ? 'selected' : '';?>><?= strtoupper(Calypso::getValue($company, 'name'))?></option>
+			<?php endforeach;?>
 		</select>
 	</div>
 	<div>
