@@ -58,7 +58,12 @@ class TrackController extends BaseController
                     return $this->render('track_search_details', ['tracking_infos' => $trackingInfo]);
                 }
             }
-            return $this->render('track', ['tracking_number' => $tracking_number, 'tracking_info' => $trackingInfo, 'current_state_info' => $currentStateInfo]);
+            return $this->render('track',
+                [
+                    'tracking_number' => Calypso::getValue($trackingInfo, 'parcel.waybill_number', $tracking_number),
+                    'tracking_info' => $trackingInfo,
+                    'current_state_info' => $currentStateInfo
+                ]);
         }
         return $this->render('track_search', ['tracking_number' => $tracking_number]);
     }
