@@ -39,7 +39,7 @@ $user_data = $this->context->userData;
                     <div class="pull-left">
                         <label for="searchInput">Search</label><br>
                         <div class="input-group input-group-sm input-group-search">
-                            <input id="searchInput" type="text" name="search" placeholder="Waybill Number" class="search-box form-control">
+                            <input id="searchInput" type="text" name="search" placeholder="Search by Waybill or Reference No." class="search-box form-control">
                             <div class="input-group-btn">
                                 <button class="btn btn-default" type="submit">
                                     <i class="fa fa-search"></i>
@@ -74,6 +74,7 @@ $user_data = $this->context->userData;
                 <tr>
                     <th style="width: 20px">S/N</th>
                     <th>Waybill No.</th>
+                    <th>Reference No.</th>
                     <th>Shipper</th>
                     <th>Shipper Phone</th>
                     <th>Receiver</th>
@@ -99,6 +100,7 @@ $user_data = $this->context->userData;
                         <tr>
                             <td><?= ++$i; ?></td>
                             <td><?= strtoupper($parcel['waybill_number']); ?></td>
+                            <td><?= strtoupper($parcel['reference_number']); ?></td>
                             <td><?= strtoupper($parcel['sender']['firstname'].' '. $parcel['sender']['lastname']) ?></td>
                             <td><?= $parcel['sender']['phone'] ?></td>
                             <td><?= strtoupper($parcel['receiver']['firstname'].' '. $parcel['receiver']['lastname']) ?></td>

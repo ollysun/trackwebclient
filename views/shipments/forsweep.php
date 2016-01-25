@@ -51,7 +51,7 @@ $user_data = $this->context->userData;
                 <div class="pull-left form-group">
                     <label for="searchInput">Search</label><br>
                     <div class="input-group input-group-sm input-group-search">
-                        <input id="searchInput" type="text" name="search" placeholder="" class="search-box form-control" value="<?= $search; ?>">
+                        <input id="searchInput" type="text" name="search" placeholder="Search by Waybill or Reference No." class="search-box form-control" value="<?= $search; ?>">
                         <div class="input-group-btn">
                             <button class="btn btn-default" type="submit">
                                 <i class="fa fa-search"></i>
@@ -78,6 +78,7 @@ $user_data = $this->context->userData;
                     <th style="width: 20px"><div class="checkbox-nice"><input id="chbx_w_all" type="checkbox"><label for="chbx_w_all"> </label></div></th>
                     <th style="width: 20px">No.</th>
                     <th>Waybill No.</th>
+                    <th>Reference No.</th>
                     <th>Shipper</th>
                     <th>Request Type</th>
                     <th>Final Destination</th>
@@ -108,6 +109,7 @@ $user_data = $this->context->userData;
                             </td>
                             <td><?= $i ?></td>
                             <td><?= strtoupper($parcel['waybill_number']); ?></td>
+                            <td><?= strtoupper($parcel['reference_number']); ?></td>
                             <td><?= strtoupper($parcel['sender']['firstname'].' '. $parcel['sender']['lastname']) ?></td>
                             <td><?= ServiceConstant::getRequestType($parcel['request_type']) ?></td>
                             <td><?= ucwords(Calypso::getValue($parcel, 'receiver_address.city.name')) . ', ' .

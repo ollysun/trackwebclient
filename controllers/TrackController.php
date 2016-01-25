@@ -40,6 +40,7 @@ class TrackController extends BaseController
         $tracking_number = \Yii::$app->request->getQueryParam('query', '');
         $tracking_number = HtmlPurifier::process($tracking_number);
         $tracking_number = trim($tracking_number);
+        $tracking_number = str_replace(' ', '', $tracking_number);
 
         if (isset($tracking_number) && strlen($tracking_number) > 0) {
             $trackAdapter = new TrackAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
@@ -57,7 +58,12 @@ class TrackController extends BaseController
                     return $this->render('track_search_details', ['tracking_infos' => $trackingInfo]);
                 }
             }
-            return $this->render('track', ['tracking_number' => $tracking_number, 'tracking_info' => $trackingInfo, 'current_state_info' => $currentStateInfo]);
+            return $this->render('track',
+                [
+                    'tracking_number' => Calypso::getValue($trackingInfo, 'parcel.waybill_number', $tracking_number),
+                    'tracking_info' => $trackingInfo,
+                    'current_state_info' => $currentStateInfo
+                ]);
         }
         return $this->render('track_search', ['tracking_number' => $tracking_number]);
     }
