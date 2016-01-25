@@ -108,8 +108,6 @@ $this->title = 'Credit note';
 
     <div>
         <div>
-            <strong>Amount In Words NGN : one* five* seven* five* 0/100</strong>
-
             <div class="small">
                 Any queries on this invoice should be notified in writing within 15 days from date of invoice <br>
                 This invoice is payable strictly within 0 days from date of invoice. <br>
