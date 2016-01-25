@@ -3,14 +3,28 @@
 ?>
 
 <div class="form-group">
-	<div class="input-group">
+	<div class="input-group <?= $prefix; ?>-cc-group customer-group">
 		<input id="<?=$prefix?>SearchBox"  data-target="#<?php echo $prefix;?>SearchFlyOutPanel" type="text" class="form-control phone" placeholder="Search customers by phone number"
 			   value="<?php echo Calypso::getValue($parcel, "info.{$prefix_map[$prefix]}.phone", ''); ?>">
 		<div class="input-group-btn">
 			<button class="btn btn-default <?=$prefix?>" id="btn_Search_<?=$prefix?>" type="button"><i class="fa fa-search"></i></button>
 		</div>
 	</div>
-	<span class="help-block">Phone number format: 234xxxxxxxxxx</span>
+	<div class="<?= $prefix; ?>-cc-group corporate-group hide">
+		<select class="form-control">
+			<option>Choose a Company</option>
+		</select>
+	</div>
+	<div>
+			<label class="radio-inline-cc-group">
+				<input type="radio" name="<?= $prefix; ?>_customer_corporate_shipments" value="customer" checked>
+				Customer shipment
+			</label>
+			<label class="radio-inline-cc-group">
+				<input type="radio" name="<?= $prefix; ?>_customer_corporate_shipments" value="corporate">
+				Corporate shipment
+			</label>
+	</div>
 </div>
 <div id="<?php echo $prefix;?>SearchFlyOutPanelWrap" class="flyout-panel-wrap">
 	<div id="<?php echo $prefix;?>SearchFlyOutPanel" class="flyout-panel">
