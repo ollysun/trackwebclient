@@ -176,6 +176,7 @@ $this->params['breadcrumbs'] = array(
                         </th>
                         <th style="width: 20px">No.</th>
                         <th>Waybill No.</th>
+                        <th>Reference No.</th>
                         <th>Company Name</th>
                         <th>Payment Method</th>
                         <th>Billing Method</th>
@@ -206,6 +207,7 @@ $this->params['breadcrumbs'] = array(
                             </td>
                             <td><?= ++$i; ?></td>
                             <td><?= Calypso::getValue($corporateParcel, 'waybill_number'); ?></td>
+                            <td><?= Calypso::getValue($corporateParcel, 'reference_number'); ?></td>
                             <td><?= strtoupper(Calypso::getValue($corporateParcel, 'company.name')); ?></td>
                             <td><?= strtoupper(Calypso::getValue($corporateParcel, 'payment_type.name', '')); ?></td>
                             <td><?= strtoupper(Calypso::getValue($corporateParcel, 'billing_type', '')); ?></td>

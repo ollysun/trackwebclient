@@ -46,6 +46,7 @@ $user_data = $this->context->userData;
                     <tr>
                         <th style="width: 20px">S/N</th>
                         <th>Waybill No.</th>
+                        <th>Reference No.</th>
                         <th>Sender</th>
                         <th>Sender Phone</th>
                         <?php if($user_data['role_id'] == ServiceConstant::USER_TYPE_ADMIN) { ?>
@@ -64,6 +65,7 @@ $user_data = $this->context->userData;
                             <tr>
                                 <td><?= ++$row; ?></td>
                                 <td><?= $parcel['waybill_number']; ?></td>
+                                <td><?= $parcel['reference_number']; ?></td>
                                 <td><?= ucwords($parcel['sender']['firstname'] . ' ' . $parcel['sender']['lastname']) ?></td>
                                 <td><?= $parcel['sender']['phone'] ?></td>
                                 <?php if($user_data['role_id'] == ServiceConstant::USER_TYPE_ADMIN) { ?>
