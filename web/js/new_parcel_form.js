@@ -596,7 +596,9 @@ $(document).ready(function () {
         if (val == 'manual') {
             $("input[name='manual_amount']").addClass('validate integer required');
         } else if (val == 'auto') {
-            calculateBilling();
+            if ($(this).is(':visible')) {
+                calculateBilling();
+            }
         } else if (val == 'corporate') {
             $(".amount-due").html("");
             $("#company").trigger("change");
@@ -611,14 +613,16 @@ $(document).ready(function () {
     });
 
     $("#billing_plan").change(function () {
-        calculateBilling();
+        if ($(this).is(':visible')) {
+            calculateBilling();
+        }
     });
 
     $("#company").change(function () {
         var companyId = $(this).val();
-        $("#billing_plan").html("<option selected>Select Company</option>");
+        $("#billing_plan").html("<option value='' selected>Select Company</option>");
         $(".amount-due").html("");
-        if (typeof billingPlans != "undefined"&& companyId != "") {
+        if (typeof billingPlans != "undefined" && companyId != "") {
             if (!billingPlans.hasOwnProperty(companyId)) {
                 alert("This company does not have a billing plan");
                 return false;
@@ -641,7 +645,7 @@ $(document).ready(function () {
     var metricLabel = metricGroup.find('label'),
         metricInput = metricGroup.find('.form-control'),
         metricAddon = metricGroup.find('.input-group-addon');
-    metricSelect.on('change', function() {
+    metricSelect.on('change', function () {
         var value = $(this).val();
         if (value == 'weight') {
             metricLabel.html('Total weight');
@@ -662,13 +666,61 @@ $(document).ready(function () {
 
         activate('input[name="shipper_customer_corporate_shipments"]', '.shipper-cc-group')
         activate('input[name="receiver_customer_corporate_shipments"]', '.receiver-cc-group')
-        function activate(radioSelector,groupSelector) {
-            $(radioSelector).click(function(e) {
+        function activate(radioSelector, groupSelector) {
+            $(radioSelector).click(function (e) {
                 var val = $(this).val();
                 $(groupSelector).addClass(hideClass);
-                $(groupSelector+'.'+val+'-group').removeClass(hideClass);
+                $(groupSelector + '.' + val + '-group').removeClass(hideClass);
             });
         }
     }
+
     customerCorporateShipments();
+
+    function corporateContactInit(target, contact_type) {
+        target.on('change', function () {
+            if ($(this).val() == "") {
+                return true;
+            }
+            var option = $(this).find(':selected');
+            var company = option.data('company');
+            $('#firstname_' + contact_type).val(company.name.toUpperCase());
+            $('#email_' + contact_type).val(company.email.toLowerCase());
+            $('#phone_' + contact_type).val(company.phone_number);
+            $('#address_' + contact_type + '_1').val(TrackPlusUtil.toTitleCase(company.address));
+            $('#state_' + contact_type).val(company.state.id);
+            $('#country_' + contact_type).val(company.state.country_id);
+            Parcel.getCities(company.state.id, $('#city_' + contact_type), company.city_id);
+
+            if (contact_type == 'shipper') {
+                $('#corporateBillingMethod').click();
+                $('#company').val(company.id).change();
+            }
+        });
+
+        $(target).removeClass('form-control').attr('style', 'width:100%').select2();
+    }
+
+    corporateContactInit($('#shipper_corporate_select'), 'shipper');
+    corporateContactInit($('#receiver_corporate_select'), 'receiver');
+
+    $('input[name="shipper_customer_corporate_shipments"][value="customer"]').click(function () {
+        $('#autoBillingMethod').click();
+    });
+
+    $('#create_parcel_btn').click(function () {
+        if ($("input[name='billing_method']:checked").val() != 'corporate') {
+            return true;
+        }
+
+        if ($('#company').val() == '') {
+            alert('Please select a company');
+            return false;
+        }
+
+        if ($('#billing_plan').val() == '') {
+            alert('Please select a billing plan');
+            return false;
+        }
+    });
 });
