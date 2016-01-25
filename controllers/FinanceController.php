@@ -102,11 +102,11 @@ class FinanceController extends BaseController
      */
     public function actionCreateinvoice()
     {
-        if(Yii::$app->request->isPost) {
+        if (Yii::$app->request->isPost) {
             $data = Yii::$app->getRequest()->post();
 
             $parcels = [];
-            for($i = 0; $i < count(Calypso::getValue($data, 'waybill_number', [])); $i++) {
+            for ($i = 0; $i < count(Calypso::getValue($data, 'waybill_number', [])); $i++) {
                 $parcel = [];
                 $parcel['waybill_number'] = Calypso::getValue($data, "waybill_number.$i");
                 $parcel['discount'] = floatval(((int)Calypso::getValue($data, "discount.$i")) / 100);
@@ -120,7 +120,7 @@ class FinanceController extends BaseController
             $invoiceAdapter = new InvoiceAdapter();
             $response = $invoiceAdapter->createInvoice($data);
 
-            if($response) {
+            if ($response) {
                 $this->flashSuccess('Invoice created successfully');
             } else {
                 $this->flashError($invoiceAdapter->getLastErrorMessage());
@@ -137,11 +137,11 @@ class FinanceController extends BaseController
      */
     public function actionGeneratecreditnote()
     {
-        if(Yii::$app->request->isPost) {
+        if (Yii::$app->request->isPost) {
             $data = Yii::$app->getRequest()->post();
 
             $parcels = [];
-            for($i = 0; $i < count(Calypso::getValue($data, 'invoice_parcel', [])); $i++) {
+            for ($i = 0; $i < count(Calypso::getValue($data, 'invoice_parcel', [])); $i++) {
                 $parcel = [];
                 $parcel['invoice_parcel_id'] = Calypso::getValue($data, "invoice_parcel.$i");
                 $parcel['deducted_amount'] = floatval(((int)Calypso::getValue($data, "deducted_amount.$i")));
@@ -155,7 +155,7 @@ class FinanceController extends BaseController
             $invoiceAdapter = new CreditNoteAdapter();
             $response = $invoiceAdapter->generateCreditNote($data);
 
-            if($response) {
+            if ($response) {
                 $this->flashSuccess('Credit Note created successfully');
             } else {
                 $this->flashError($invoiceAdapter->getLastErrorMessage());
@@ -283,7 +283,7 @@ class FinanceController extends BaseController
      */
     public function actionPrintinvoice($invoice_number = null)
     {
-        if(is_null($invoice_number)) {
+        if (is_null($invoice_number)) {
             return $this->redirect(Url::to("/finance/invoice"));
         }
 
@@ -296,16 +296,16 @@ class FinanceController extends BaseController
             'with_receiver_city' => 1,
             'with_sender_address' => 1,
             'with_sender_city' => 1
-            ]));
+        ]));
 
         $totalWeight = 0;
         $totalPieces = 0;
         $base = 0;
         $discount = 0;
-        foreach($invoiceParcels as $invoiceParcel) {
-            $totalWeight += (float) Calypso::getValue($invoiceParcel, 'parcel.weight');
-            $totalPieces += (int) Calypso::getValue($invoiceParcel, 'parcel.no_of_package');
-            $base += (float) Calypso::getValue($invoiceParcel, 'net_amount');
+        foreach ($invoiceParcels as $invoiceParcel) {
+            $totalWeight += (float)Calypso::getValue($invoiceParcel, 'parcel.weight');
+            $totalPieces += (int)Calypso::getValue($invoiceParcel, 'parcel.no_of_package');
+            $base += (float)Calypso::getValue($invoiceParcel, 'net_amount');
             $discount += floatval(Calypso::getValue($invoiceParcel, 'parcel.amount_due')) - floatval(Calypso::getValue($invoiceParcel, 'net_amount'));
         }
 
@@ -322,8 +322,8 @@ class FinanceController extends BaseController
         $invoice['new_total_net'] = $newTotalNet;
         $invoice['total_shipments'] = count($invoiceParcels);
         $invoice['total_to_pay'] = $invoice['st_standard_vat'] + $newTotalNet;
-        $invoice['total_to_pay_naira'] = (int) ($invoice['st_standard_vat'] + $newTotalNet);
-        $koboValue = $invoice['total_to_pay'] -  floatval($invoice['total_to_pay_naira']);
+        $invoice['total_to_pay_naira'] = (int)($invoice['st_standard_vat'] + $newTotalNet);
+        $koboValue = $invoice['total_to_pay'] - floatval($invoice['total_to_pay_naira']);
         $invoice['total_to_pay_kobo'] = round($koboValue * 100);
 
         $this->layout = 'print';
@@ -336,8 +336,15 @@ class FinanceController extends BaseController
      */
     public function actionPrintcreditnote()
     {
+        $credit_note_number = Yii::$app->request->get('credit_note_no');
+        $company_name = Yii::$app->request->get('company_name');
+        $creditNoteAdapter = new CreditNoteAdapter();
+        $rawPrintOutDetails = $creditNoteAdapter->getPrintOutDetails($credit_note_number);
+        $printOutDetails = (new ResponseHandler($rawPrintOutDetails))->getData();
+        $creditNoteDetails = $printOutDetails['credit_note'];
+        $creditNoteParcels = $printOutDetails['credit_note_parcels'];
         $this->layout = 'print';
-        return $this->render('print_credit_note');
+        return $this->render('print_credit_note',['company_name' => $company_name, 'credit_note_details' => $creditNoteDetails, 'credit_note_parcels' =>  $creditNoteParcels]);
     }
 
     /**
@@ -348,11 +355,11 @@ class FinanceController extends BaseController
      */
     public function actionGetinvoiceparcels($invoice_number = null)
     {
-        if(is_null($invoice_number)) {
+        if (is_null($invoice_number)) {
             return $this->sendErrorResponse("Required(s) fields not sent", 400, null, 400);
         }
 
-        if(!Yii::$app->request->isAjax) {
+        if (!Yii::$app->request->isAjax) {
             return $this->redirect(Url::to("/finance/invoice"));
         }
 
@@ -360,5 +367,20 @@ class FinanceController extends BaseController
         $invoiceParcels = $invoiceAdapter->getInvoiceParcels(['invoice_number' => $invoice_number]);
 
         return $this->sendSuccessResponse($invoiceParcels);
+    }
+
+    /**
+     * @author Babatunde Otaru <tunde@cottacush.com>
+     * @return string
+     */
+    public function actionGetcreditnoteparcels()
+    {
+        $creditNoteNo = Yii::$app->request->get('credit_note_no');
+        $companyName = Yii::$app->request->get('company_name');
+        $creditNoteAdapter = new CreditNoteAdapter();
+        $creditNoteParcelsResources = $creditNoteAdapter->getCreditNoteParcels($creditNoteNo);
+        $responseHandler = new ResponseHandler($creditNoteParcelsResources);
+        $creditNoteParcels = $responseHandler->getData();
+        return $this->renderPartial('partial_credit_note_parcels', ['credit_note_parcels' => $creditNoteParcels,'company_name' => $companyName ,'credit_note_no' => $creditNoteNo]);
     }
 }
