@@ -20,7 +20,7 @@ $this->title = 'Waybill '.$parcelData['waybill_number'];
     </div>
     <br/>
     <div class="waybill-no">
-        <?= $parcelData['waybill_number']; ?>
+        <?= ServiceConstant::humanizeWaybillNumber($parcelData['waybill_number']); ?>
     </div>
 
 
