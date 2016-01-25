@@ -4,8 +4,8 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use Adapter\Globals\ServiceConstant;
 
-
 $this->title = 'Credit Note';
+
 $this->params['breadcrumbs'] = array(
     array(
         'url' => ['finance/index'],
@@ -19,64 +19,6 @@ $this->params['breadcrumbs'] = array(
 <!-- View Credit Note Modal -->
 <form>
     <div class="modal fade" id="viewInvoice">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                            aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">58904</h4>
-                </div>
-                <div class="modal-body">
-                    <table id="table" class="table table-hover dataTable">
-                        <thead>
-                        <tr>
-                            <th style="width: 20px">No.</th>
-                            <th>Waybill No.</th>
-                            <th>Company Name</th>
-                            <th>Amount</th>
-                            <th>Discount (%)</th>
-                            <th>Net Amount</th>
-                            <th>deducted Amount</th>
-                            <th>New Net Amount</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>7123456</td>
-                            <td>Delivered</td>
-                            <td>1000</td>
-                            <td>
-                                <input type="text" class="form-control" style="width:50px;" value="15">
-                            </td>
-                            <td>850</td>
-                            <td>0</td>
-                            <td>850</td>
-                        </tr>
-
-                        <tr>
-                            <td>2</td>
-                            <td>1234567</td>
-                            <td>Delivered</td>
-                            <td>2000</td>
-                            <td>
-                                <input type="text" class="form-control" style="width:50px;" value="15">
-                            </td>
-                            <td>1700</td>
-                            <td>650</td>
-                            <td>1050</td>
-                        </tr>
-
-                        </tbody>
-                    </table>
-                </div>
-                <div class="modal-footer">
-                    <a href="#">
-                        <button type="button" class="btn btn-primary">Print Credit Note</button>
-                    </a>
-                </div>
-            </div>
-        </div>
     </div>
 </form>
 
@@ -139,6 +81,7 @@ $this->params['breadcrumbs'] = array(
                     </tr>
                     </thead>
                     <tbody>
+
                     <?php $i = $offset;
                     foreach ($creditNotes as $creditNote): ?>
                         <tr>
@@ -148,12 +91,14 @@ $this->params['breadcrumbs'] = array(
                             <td><?= Calypso::getValue($creditNote, 'invoice.total'); ?></td>
                             <td><?= Calypso::getValue($creditNote, 'credit_note_number'); ?></td>
                             <td>
-                                <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#viewInvoice">
+                                <button class="btn btn-primary btn-xs "
+                                        data-toggle="modal"
+                                        data-target="#viewInvoice"
+                                        data-company_name="<?= strtoupper(Calypso::getValue($creditNote, 'company.name')); ?>"
+                                        data-credit_note_no="<?= Calypso::getValue($creditNote, 'credit_note_number'); ?>"
+                                        id="viewCreditNoteDetails">
                                     View
                                 </button>
-                            </td>
-                            <td>
-
                             </td>
                         </tr>
                     <?php endforeach; ?>
@@ -197,3 +142,4 @@ $this->params['breadcrumbs'] = array(
 <?php $this->registerJsFile('@web/js/keyboardFormSubmit.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/form-watch-changes.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/validate.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/finance/credit_note.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>

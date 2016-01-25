@@ -5,6 +5,7 @@ namespace Adapter;
 use Adapter\Globals\ServiceConstant;
 use Adapter\Util\Calypso;
 use yii\helpers\Json;
+use yii\helpers\Url;
 
 /**
  * Class CreditNoteAdapter
@@ -61,5 +62,27 @@ class CreditNoteAdapter extends BaseAdapter
             return $response->getData();
         }
         return [];
+    }
+
+    /**
+     * @author Babatunde Otaru <tunde@cottacush.com>
+     * @param $credit_note_no
+     * @return array
+     */
+    public function getCreditNoteParcels($credit_note_no)
+    {
+        $filter['credit_note_no'] = $credit_note_no;
+        return $this->request(ServiceConstant::URL_CREDIT_NOTE_PARCELS,$filter, self::HTTP_GET);
+    }
+
+    /**
+     * @author Babatunde Otaru <tunde@cottacush.com>
+     * @param $credit_note_no
+     * @return array|mixed|string
+     */
+    public function getPrintOutDetails($credit_note_no)
+    {
+        $filter['credit_note_no'] = $credit_note_no;
+        return $this->request(ServiceConstant::URL_CREDIT_NOTE_PRINTOUT_DETAILS,$filter,self::HTTP_GET);
     }
 }
