@@ -99,7 +99,6 @@ $user_data = $this->context->userData;
                         ++$row;
                         ?>
                         <tr data-waybill='<?= $parcels['waybill_number'] ?>'>
-                        <tr data-waybill='<?= $parcels['reference_number'] ?>'>
                         <td>
                                 <div class='checkbox-nice'>
                                     <input name='waybills[]' id='chk_<?= $row; ?>' type='checkbox'
@@ -111,7 +110,8 @@ $user_data = $this->context->userData;
                             <td>
                                 <a href='/shipments/view?waybill_number=<?= Calypso::getValue($parcels, 'waybill_number'); ?>'><?= Calypso::getValue($parcels, 'waybill_number') ?></a>
                             </td>
-                            <td><?= ucwords(Calypso::getValue($parcels, 'sender_address.city.name') . ', ' . Calypso::getValue($parcels, 'sender_address.state.name')); ?></td>
+                            <td><?= Calypso::getValue($parcels, 'reference_number') ?></td>
+                        <td><?= ucwords(Calypso::getValue($parcels, 'sender_address.city.name') . ', ' . Calypso::getValue($parcels, 'sender_address.state.name')); ?></td>
                             <td></td>
                             <td><?= ucwords(Calypso::getValue($parcels, 'receiver_address.city.name') . ', ' . Calypso::getValue($parcels, 'receiver_address.state.name')); ?></td>
                             <td><?= ServiceConstant::getRequestType($parcels['request_type']) ?></td>
