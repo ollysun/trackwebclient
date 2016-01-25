@@ -40,6 +40,7 @@ class TrackController extends BaseController
         $tracking_number = \Yii::$app->request->getQueryParam('query', '');
         $tracking_number = HtmlPurifier::process($tracking_number);
         $tracking_number = trim($tracking_number);
+        $tracking_number = str_replace(' ', '', $tracking_number);
 
         if (isset($tracking_number) && strlen($tracking_number) > 0) {
             $trackAdapter = new TrackAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());

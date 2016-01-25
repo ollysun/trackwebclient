@@ -85,6 +85,7 @@ $user_data = $this->context->userData;
                     <tr>
                         <th style="width: 20px">S/N</th>
                         <th>Waybill No</th>
+                        <th>Reference No</th>
                         <th>Origin</th>
                         <th>Destination</th>
                         <th>Weight/Piece</th>
@@ -107,6 +108,7 @@ $user_data = $this->context->userData;
                             <tr data-waybill='<?= $parcel['waybill_number'] ?>'>
                                 <td><?= $row++; ?></td>
                                 <td><?= $parcel['waybill_number']; ?></td>
+                                <td><?= $parcel['reference_number']; ?></td>
                                 <td><?= ucwords($parcel['from_branch']['name']); ?></td>
                                 <td><?= ucwords($parcel['to_branch']['name']); ?></td>
                                 <td><?= $parcel['weight']; ?> KG</td>
