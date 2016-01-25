@@ -48,7 +48,7 @@ $this->params['content_header_button'] = $this->render('../elements/content_head
                         <label for="searchInput">Search</label><br>
 
                         <div class="input-group input-group-sm input-group-search">
-                            <input id="searchInput" type="text" name="search" placeholder="Waybill Number"
+                            <input id="searchInput" type="text" name="search" placeholder="Search by Waybill or Reference No."
                                    class="search-box form-control">
 
                             <div class="input-group-btn">
