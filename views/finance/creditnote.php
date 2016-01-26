@@ -91,12 +91,12 @@ $this->params['breadcrumbs'] = array(
                             <td><?= Calypso::getValue($creditNote, 'invoice.total'); ?></td>
                             <td><?= Calypso::getValue($creditNote, 'credit_note_number'); ?></td>
                             <td>
-                                <button class="btn btn-primary btn-xs "
+                                <button class="btn btn-primary btn-xs view-credit-note-details"
                                         data-toggle="modal"
                                         data-target="#viewInvoice"
                                         data-company_name="<?= strtoupper(Calypso::getValue($creditNote, 'company.name')); ?>"
                                         data-credit_note_no="<?= Calypso::getValue($creditNote, 'credit_note_number'); ?>"
-                                        id="viewCreditNoteDetails">
+                                >
                                     View
                                 </button>
                             </td>
