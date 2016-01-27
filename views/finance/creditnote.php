@@ -8,7 +8,7 @@ $this->title = 'Credit Note';
 
 $this->params['breadcrumbs'] = array(
     array(
-        'url' => ['finance/index'],
+        'url' => ['finance/creditnote'],
         'label' => 'Finance'
     ),
     array('label' => $this->title)
