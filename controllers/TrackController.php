@@ -41,11 +41,19 @@ class TrackController extends BaseController
         $tracking_number = HtmlPurifier::process($tracking_number);
         $tracking_number = trim($tracking_number);
         $tracking_number = str_replace(' ', '', $tracking_number);
-
+        $waybill_array = explode(',', $tracking_number);
+        $count = count(explode(',', $tracking_number));
+        if ($count > 10) {
+            return $this->render('track',
+                [
+                    'tracking_info' => $trackingInfo = null,
+                    'current_state_info' => $currentStateInfo = null,
+                    'count' => $count
+                ]);
+        }
         if (isset($tracking_number) && strlen($tracking_number) > 0) {
             $trackAdapter = new TrackAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
             $trackingInfo = $trackAdapter->getTrackingInfo($tracking_number);
-
             $currentStateInfo = null;
             if ($trackingInfo) {
                 if (count($trackingInfo) == 1) {
@@ -62,7 +70,8 @@ class TrackController extends BaseController
                 [
                     'tracking_number' => Calypso::getValue($trackingInfo, 'parcel.waybill_number', $tracking_number),
                     'tracking_info' => $trackingInfo,
-                    'current_state_info' => $currentStateInfo
+                    'current_state_info' => $currentStateInfo,
+                    'count' => $count
                 ]);
         }
         return $this->render('track_search', ['tracking_number' => $tracking_number]);
