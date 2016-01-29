@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use Adapter\Util\Calypso;
 use yii\helpers\Url;
 
+
 /* @var $this yii\web\View */
 $this->title = 'Invoices';
 ?>
@@ -39,7 +40,7 @@ $this->title = 'Invoices';
             <tbody>
             <tr>
                 <td width="25%">Account Number</td>
-                <td width="25%"><?= Calypso::getValue($invoice, 'account_number'); ?></td>
+                <td width="25%"><?= Calypso::getValue($invoice, 'company.reg_no'); ?></td>
                 <td width="25%">Document Date</td>
                 <td width="25%"><?= Calypso::getValue($invoice, 'current_date'); ?></td>
             </tr>
