@@ -845,6 +845,7 @@ class ShipmentsController extends BaseController
 
             if ($response->getStatus() == 600) {
                 $this->flashError('Max download limit exceeded. You can\'t download more than 1500 parcel report');
+                return $this->redirect(Url::to('/shipments/report'));
             }
 
             $name = 'report_' . date(ServiceConstant::DATE_TIME_FORMAT) . '.csv';
@@ -891,7 +892,6 @@ class ShipmentsController extends BaseController
                 ];
             }
             Util::exportToCSV($name, $headers, $data);
-            return $this->redirect(Url::to('/shipments/report'));
         }
 
         $filters['offset'] = $offset;
