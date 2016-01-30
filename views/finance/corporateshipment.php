@@ -195,7 +195,7 @@ $this->params['breadcrumbs'] = array(
                             <td>
                                 <div class="checkbox-nice">
                                     <?php if (is_null(Calypso::getValue($corporateParcel, 'invoice_parcel.id'))): ?>
-                                        <input
+                                        <input name="parcel"
                                             data-company_id="<?= Calypso::getValue($corporateParcel, 'company.id') ?>"
                                             data-company_address="<?= Calypso::getValue($corporateParcel, 'company.address') ?>"
                                             data-amount_due="<?= Calypso::getValue($corporateParcel, 'amount_due') ?>"

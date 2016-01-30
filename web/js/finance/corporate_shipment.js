@@ -47,7 +47,7 @@ var Invoice = {
 $(document).ready(function () {
 
     $("#chbx_w_all").change(function () {
-        $("input:checkbox").prop("checked", $(this).prop("checked"));
+        $("input[name=parcel]").prop("checked", $(this).prop("checked"));
     });
 
     $('.checkable').click(function (e) {
