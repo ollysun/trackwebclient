@@ -851,7 +851,7 @@ class ShipmentsController extends BaseController
             $name = 'report_' . date(ServiceConstant::DATE_TIME_FORMAT) . '.csv';
             $data = array();
 
-            $headers = array('SN', 'Waybill Number', 'Sender', 'Sender Email', 'Sender Phone', 'Sender Address', 'Receiver', 'Receiver Email', 'Receiver Phone', 'Receiver Address', 'Receiver City', 'Receiver State', 'Weight/Piece', 'Payment Method', 'Amount Due', 'Cash Amount', 'POS Amount', 'POS Transaction ID', 'Parcel Type', 'Cash on Delivery', 'Delivery Type', 'Package Value', '# of Package', 'Shipping Type', 'Created Date', 'Last Modified Date', 'Status', 'Reference Number', 'Originating Branch', 'Route', 'Request Type', 'For Return', 'Other Info', 'Company Reg No', 'Billing Plan Name');
+            $headers = array('SN', 'Waybill Number', 'Sender', 'Sender Email', 'Sender Phone', 'Sender Address', 'Receiver City', 'Receiver State', 'Receiver', 'Receiver Email', 'Receiver Phone', 'Receiver Address', 'Receiver City', 'Receiver State', 'Weight/Piece', 'Payment Method', 'Amount Due', 'Cash Amount', 'POS Amount', 'POS Transaction ID', 'Parcel Type', 'Cash on Delivery', 'Delivery Type', 'Package Value', '# of Package', 'Shipping Type', 'Created Date', 'Last Modified Date', 'Status', 'Reference Number', 'Originating Branch', 'Route', 'Request Type', 'For Return', 'Other Info', 'Company Reg No', 'Billing Plan Name');
             foreach ($parcels as $key => $result) {
                 $data[] = [
                     $key + 1,
@@ -859,7 +859,9 @@ class ShipmentsController extends BaseController
                     $result['sender']['firstname'] . ' ' . $result['sender']['lastname'],
                     $result['sender']['email'],
                     $result['sender']['phone'],
-                    $result['sender_address']['street_address1'] . ' ' . $result['sender_address']['street_address2'] . ', ' . $result['sender_address']['city']['name'] . ', ' . $result['sender_address']['state']['name'],
+                    $result['sender_address']['street_address1'] . ' ' . $result['sender_address']['street_address2'],
+                    ucwords($result['sender_address']['city']['name']),
+                    ucwords($result['sender_address']['state']['name']),
                     $result['receiver']['firstname'] . ' ' . $result['receiver']['lastname'],
                     $result['receiver']['email'],
                     $result['receiver']['phone'],
