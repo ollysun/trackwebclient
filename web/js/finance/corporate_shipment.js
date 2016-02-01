@@ -85,6 +85,7 @@ $(document).ready(function () {
             $('textarea[name=address]').val(parcels[0].company_name + ',' +  "\n" + address);
             $('input[name=company_id]').val(parcels[0].company_id);
             $('input[name=account_number]').val(parcels[0].account_number);
+            $('textarea[name=reference]').val(parcels[0].reference_number);
             $("#invoice_parcels").html(Invoice.getInvoiceParcelsHtml(parcels))
                 .find("input[data-waybill]").trigger('keyup');
         } else {
