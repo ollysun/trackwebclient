@@ -77,6 +77,15 @@ $this->params['content_header_button'] = "<a href='".$downloadURL."' class='btn 
                             </select>
                         </div>
                         <div class="pull-left form-group form-group-sm">
+                            <label for="">Current Branch</label><br>
+                            <select name="from_branch_id" id="" class="form-control  filter-status">
+                                <option value="">Not Applicable</option>
+                                <?php foreach ($branches as $branch) { ?>
+                                    <option value="<?= $branch['id']; ?>" <?= $filters['from_branch_id'] == $branch['id'] ? 'selected':''?>><?= strtoupper($branch['name']); ?></option>
+                                <?php } ?>
+                            </select>
+                        </div>
+                        <div class="pull-left form-group form-group-sm">
                             <label for="">For Return</label><br>
                             <select name="for_return" id="" class="form-control  filter-status">
                                 <option value="">Not Applicable</option>
