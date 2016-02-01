@@ -39,12 +39,19 @@ TrackingAsset::register($this);
             <?= Html::img('@web/img/tnt-cp-logo-color.png', ['class' => 'normal-logo', 'alt' => 'CourierPlus Logo']) ?>
         </div>
         <div class="navbar-text text-muted">TRACKING PORTAL</div>
-        <form class="navbar-right navbar-form">
-            <input name="query" type="text" class="form-control header-track-no-search"
-                   placeholder="Enter Waybill / Tracking no"
-                   value="<?= Yii::$app->request->getQueryParam('query', '') ?>">
-            <button type="submit" class="btn btn-primary btn-sm">Track</button>
+        <?php if(!isset($this->params['hide-tracking-header-form'])): ?>
+        <form id="track-search-form" class="navbar-right navbar-form">
+            <div class="form-group" style="width: 500px;">
+                <span class="pull-right">
+                    <input name="query" type="text" class="form-control header-track-no-search"
+                           placeholder="Enter Waybill / Tracking no"
+                           value="<?= Yii::$app->request->getQueryParam('query', '') ?>">
+                    <button type="submit" class="btn btn-primary btn-sm">Track</button>
+                </span>
+                <span class="clearfix"></span>
+            </div>
         </form>
+        <?php endif; ?>
     </div>
 </header>
 <br>
@@ -54,7 +61,7 @@ TrackingAsset::register($this);
 </div>
 
 <br><br><br><br>
-
+<?php $this->registerJsFile('@web/js/track-search.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 <?php $this->endBody() ?>
 </body>
 </html>
