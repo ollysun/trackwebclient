@@ -4,7 +4,6 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use Adapter\Globals\ServiceConstant;
 
-
 $this->title = 'Corporate Shipments';
 $this->params['breadcrumbs'] = array(
     array(
@@ -71,7 +70,7 @@ $this->params['breadcrumbs'] = array(
 
                         <div class="col-xs-6">
                             <div class="form-group">
-                                <label for="exampleInputEmail1">Accont Number</label>
+                                <label for="exampleInputEmail1">Account Number</label>
                                 <input name="account_number" type="text" class="form-control">
                             </div>
 
@@ -202,6 +201,7 @@ $this->params['breadcrumbs'] = array(
                                             data-company_name="<?= Calypso::getValue($corporateParcel, 'company.name') ?>"
                                             data-waybill_number="<?= Calypso::getValue($corporateParcel, 'waybill_number') ?>"
                                             data-reference_number="<?= Calypso::getValue($corporateParcel, 'reference_number') ?>"
+                                            data-account_number="<?= Calypso::getValue($corporateParcel,'bank_account.account_no')?>"
                                             id="corporate_parce_<?= $i ?>" class="checkable" type="checkbox">
                                         <label for="corporate_parce_<?= $i ?>"> </label>
                                     <?php endif; ?>
