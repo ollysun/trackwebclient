@@ -805,7 +805,7 @@ class ShipmentsController extends BaseController
         $page_width = is_null($page_width) ? $this->page_width : $page_width;
         $offset = ($page - 1) * $page_width;
 
-        $filter_params = ['start_modified_date', 'end_modified_date', 'for_return', 'parcel_type', 'status', 'min_weight', 'max_weight', 'min_amount_due', 'max_amount_due', 'cash_on_delivery', 'delivery_type', 'payment_type', 'shipping_type', 'start_created_date', 'end_created_date', 'created_branch_id', 'route_id', 'request_type'];
+        $filter_params = ['start_modified_date', 'end_modified_date', 'for_return', 'parcel_type', 'status', 'min_weight', 'max_weight', 'min_amount_due', 'max_amount_due', 'cash_on_delivery', 'delivery_type', 'payment_type', 'shipping_type', 'start_created_date', 'end_created_date', 'created_branch_id', 'from_branch_id', 'route_id', 'request_type'];
         $extra_details = ['with_to_branch', 'with_from_branch', 'with_sender', 'with_sender_address', 'with_receiver', 'with_receiver_address', 'with_bank_account', 'with_created_branch', 'with_route', 'with_created_by', 'with_company'];
 
 
