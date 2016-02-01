@@ -171,6 +171,7 @@ class Util
             fputcsv($stream, $row);
         }
         fclose($stream);
+        exit;
     }
 
     /**
