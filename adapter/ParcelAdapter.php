@@ -353,7 +353,7 @@ class ParcelAdapter extends BaseAdapter
      */
     public function getBag($waybill_number)
     {
-        $response = $this->request(ServiceConstant::URL_GET_ONE_PARCEL, array('waybill_number' => $waybill_number, 'with_linked' => var_export(true, true)), self::HTTP_GET);
+        $response = $this->request(ServiceConstant::URL_GET_BAG, array('waybill_number' => $waybill_number), self::HTTP_GET);
         $response = new ResponseHandler($response);
         if ($response->getStatus() == Response::STATUS_OK) {
             return $response->getData();
