@@ -172,7 +172,8 @@ $this->params['breadcrumbs'] = array(
                     <thead>
                     <tr>
                         <th style="width: 20px" class="datatable-nosort">
-                            <div class="checkbox-nice"></div>
+                            <div class="checkbox-nice"><input id="chbx_w_all" type="checkbox"><label
+                                    for="chbx_w_all"> </label></div>
                         </th>
                         <th style="width: 20px">No.</th>
                         <th>Waybill No.</th>
@@ -194,12 +195,13 @@ $this->params['breadcrumbs'] = array(
                             <td>
                                 <div class="checkbox-nice">
                                     <?php if (is_null(Calypso::getValue($corporateParcel, 'invoice_parcel.id'))): ?>
-                                        <input
+                                        <input name="parcel"
                                             data-company_id="<?= Calypso::getValue($corporateParcel, 'company.id') ?>"
                                             data-company_address="<?= Calypso::getValue($corporateParcel, 'company.address') ?>"
                                             data-amount_due="<?= Calypso::getValue($corporateParcel, 'amount_due') ?>"
                                             data-company_name="<?= Calypso::getValue($corporateParcel, 'company.name') ?>"
                                             data-waybill_number="<?= Calypso::getValue($corporateParcel, 'waybill_number') ?>"
+                                            data-reference_number="<?= Calypso::getValue($corporateParcel, 'reference_number') ?>"
                                             id="corporate_parce_<?= $i ?>" class="checkable" type="checkbox">
                                         <label for="corporate_parce_<?= $i ?>"> </label>
                                     <?php endif; ?>

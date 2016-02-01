@@ -29,18 +29,23 @@ $this->title = (empty($bag)) ? '' : 'Bag: #' . $waybill_number;
         </div>
         <br>
 
-        <div class="row">
+        <div class="row" style="text-align: center">
             <div class="col-xs-3">
                 <?= strtoupper(Calypso::getValue($bag, 'from_branch.name')); ?>
                 <hr class="manifest-hr">
                 Origin Station
             </div>
-            <div class="col-xs-3 col-xs-offset-1">
+            <div class="col-xs-3">
                 <?= strtoupper(Calypso::getValue($bag, 'to_branch.name')); ?>
                 <hr class="manifest-hr">
-                Destination
+                Next Destination
             </div>
-            <div class="col-xs-3 col-xs-offset-1">
+            <div class="col-xs-3">
+                <?= strtoupper(Calypso::getValue($bag, 'parcels.0.to_branch.name')); ?>
+                <hr class="manifest-hr">
+                Final Destination
+            </div>
+            <div class="col-xs-3">
                 <?= Calypso::getDisplayValue($bag, 'seal_id', 'N/A'); ?>
                 <hr class="manifest-hr">
                 SEAL ID
@@ -56,7 +61,8 @@ $this->title = (empty($bag)) ? '' : 'Bag: #' . $waybill_number;
                     <th width="16%">WAYBILL NO</th>
                     <th width="8%">PCS</th>
                     <th width="8%">WT</th>
-                    <th width="35%">DESCRIPTION OF SHIPMENT(S)</th>
+                    <th width="30%">DESCRIPTION OF SHIPMENT(S)</th>
+                    <th width="15%">FINAL DESTINATION</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -72,6 +78,7 @@ $this->title = (empty($bag)) ? '' : 'Bag: #' . $waybill_number;
                         <td><?= Calypso::getValue($parcel, 'no_of_package') ?></td>
                         <td><?= Calypso::getValue($parcel, 'weight') ?> KG</td>
                         <td><?= Calypso::getValue($parcel, 'other_info') ?></td>
+                        <td><?= ucwords(Calypso::getValue($parcel, 'receiver_address.city.name') . ', ' . Calypso::getValue($parcel, 'receiver_address.state.name')) ?></td>
                     </tr>
                 <?php endforeach; ?>
                 <tr class="total-row">

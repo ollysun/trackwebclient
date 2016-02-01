@@ -805,8 +805,8 @@ class ShipmentsController extends BaseController
         $page_width = is_null($page_width) ? $this->page_width : $page_width;
         $offset = ($page - 1) * $page_width;
 
-        $filter_params = ['start_modified_date', 'end_modified_date', 'for_return', 'parcel_type', 'status', 'min_weight', 'max_weight', 'min_amount_due', 'max_amount_due', 'cash_on_delivery', 'delivery_type', 'payment_type', 'shipping_type', 'start_created_date', 'end_created_date', 'created_branch_id', 'route_id', 'request_type'];
-        $extra_details = ['with_to_branch', 'with_from_branch', 'with_sender', 'with_sender_address', 'with_receiver', 'with_receiver_address', 'with_bank_account', 'with_created_branch', 'with_route', 'with_created_by','with_company'];
+        $filter_params = ['start_modified_date', 'end_modified_date', 'for_return', 'parcel_type', 'status', 'min_weight', 'max_weight', 'min_amount_due', 'max_amount_due', 'cash_on_delivery', 'delivery_type', 'payment_type', 'shipping_type', 'start_created_date', 'end_created_date', 'created_branch_id', 'from_branch_id', 'route_id', 'request_type', 'branch_type'];
+        $extra_details = ['with_to_branch', 'with_from_branch', 'with_sender', 'with_sender_address', 'with_receiver', 'with_receiver_address', 'with_bank_account', 'with_created_branch', 'with_route', 'with_created_by', 'with_company'];
 
 
         $filters = [];
@@ -839,18 +839,19 @@ class ShipmentsController extends BaseController
             $response = new ResponseHandler($filtered_parcels);
 
             $parcels = [];
-            if($response->isSuccess()){
+            if ($response->isSuccess()) {
                 $parcels = $response->getData();
             }
 
-            if($response->getStatus() == 600){
+            if ($response->getStatus() == 600) {
                 $this->flashError('Max download limit exceeded. You can\'t download more than 1500 parcel report');
+                return $this->redirect(Url::to('/shipments/report'));
             }
 
             $name = 'report_' . date(ServiceConstant::DATE_TIME_FORMAT) . '.csv';
             $data = array();
 
-            $headers = array('SN', 'Waybill Number', 'Sender', 'Sender Email', 'Sender Phone', 'Sender Address', 'Receiver', 'Receiver Email', 'Receiver Phone', 'Receiver Address', 'Weight/Piece', 'Payment Method', 'Amount Due', 'Cash Amount', 'POS Amount', 'POS Transaction ID', 'Parcel Type', 'Cash on Delivery', 'Delivery Type', 'Package Value', '# of Package', 'Shipping Type', 'Created Date', 'Last Modified Date', 'Status', 'Reference Number', 'Originating Branch', 'Route', 'Request Type', 'For Return', 'Other Info','Company Reg No','Billing Plan Name');
+            $headers = array('SN', 'Waybill Number', 'Sender', 'Sender Email', 'Sender Phone', 'Sender Address', 'Sender City', 'Sender State', 'Receiver', 'Receiver Email', 'Receiver Phone', 'Receiver Address', 'Receiver City', 'Receiver State', 'Weight/Piece', 'Payment Method', 'Amount Due', 'Cash Amount', 'POS Amount', 'POS Transaction ID', 'Parcel Type', 'Cash on Delivery', 'Delivery Type', 'Package Value', '# of Package', 'Shipping Type', 'Created Date', 'Last Modified Date', 'Status', 'Reference Number', 'Originating Branch', 'Route', 'Request Type', 'For Return', 'Other Info', 'Company Reg No', 'Billing Plan Name');
             foreach ($parcels as $key => $result) {
                 $data[] = [
                     $key + 1,
@@ -858,11 +859,15 @@ class ShipmentsController extends BaseController
                     $result['sender']['firstname'] . ' ' . $result['sender']['lastname'],
                     $result['sender']['email'],
                     $result['sender']['phone'],
-                    $result['sender_address']['street_address1'] . ' ' . $result['sender_address']['street_address2'] . ', ' . $result['sender_address']['city']['name'] . ', ' . $result['sender_address']['state']['name'],
+                    $result['sender_address']['street_address1'] . ' ' . $result['sender_address']['street_address2'],
+                    ucwords($result['sender_address']['city']['name']),
+                    ucwords($result['sender_address']['state']['name']),
                     $result['receiver']['firstname'] . ' ' . $result['receiver']['lastname'],
                     $result['receiver']['email'],
                     $result['receiver']['phone'],
-                    $result['receiver_address']['street_address1'] . ' ' . $result['receiver_address']['street_address2'] . ', ' . $result['receiver_address']['city']['name'] . ', ' . $result['receiver_address']['state']['name'],
+                    $result['receiver_address']['street_address1'] . ' ' . $result['receiver_address']['street_address2'],
+                    ucwords($result['receiver_address']['city']['name']),
+                    ucwords($result['receiver_address']['state']['name']),
                     $result['weight'],
                     ServiceConstant::getPaymentMethod($result['payment_type']),
                     $result['amount_due'],
@@ -889,7 +894,6 @@ class ShipmentsController extends BaseController
                 ];
             }
             Util::exportToCSV($name, $headers, $data);
-            return $this->redirect(Url::to('/shipments/report'));
         }
 
         $filters['offset'] = $offset;
@@ -903,7 +907,8 @@ class ShipmentsController extends BaseController
         $delivery_types = ServiceConstant::getDeliveryTypes();
 
         $branch_adapter = new BranchAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $branches = $branch_adapter->getAll();
+        $ecs = $branch_adapter->getAllEcs();
+        $hubs = Calypso::getValue($branch_adapter->getAllHubs(), 'data', []);
 
         $route_adapter = new RouteAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $routes = $route_adapter->getRoutes(null, null, null, null, null);
@@ -922,7 +927,8 @@ class ShipmentsController extends BaseController
 
         return $this->render('report', array(
             'parcels' => $parcels,
-            'branches' => $branches['data'],
+            'ecs' => $ecs,
+            'hubs' => $hubs,
             'routes' => $routes['data'],
             'statuses' => $status,
             'payment_methods' => $payment_methods,
