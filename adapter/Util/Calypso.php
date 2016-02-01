@@ -210,10 +210,10 @@ class Calypso
                 ['finance/*', 'billing/*', 'admin/*']
                 , self::getCorporateRoutes()),
             ServiceConstant::USER_TYPE_SWEEPER => array_merge(
-                ['site/index', 'site/newparcel', 'parcels/*', 'shipments/*', 'hubs/*', 'finance/*', 'billing/*', 'admin/*', 'corporate/request/pending']
-            , self::getCorporateRoutes()),
+                ['site/index', 'site/newparcel', 'shipments/bulk', 'manifest/index', 'shipments/dispatched', 'shipments/returned', 'shipments/fordelivery', 'hubs/*', 'finance/*', 'billing/*', 'admin/*', 'corporate/request/pending']
+                , self::getCorporateRoutes()),
             ServiceConstant::USER_TYPE_DISPATCHER => array_merge(
-                ['site/*', 'parcels/*', 'shipments/*', 'hubs/*', 'finance/*', 'billing/*', 'admin/*', 'corporate/request/pending']
+                ['site/*', 'manifest/index', 'shipments/dispatched', 'shipments/returned', 'shipments/fordelivery', 'hubs/*', 'finance/*', 'billing/*', 'admin/*', 'corporate/request/pending']
                 , self::getCorporateRoutes()
             ),
             ServiceConstant::USER_TYPE_GROUNDSMAN => array_merge([
@@ -260,7 +260,8 @@ class Calypso
      * Make a page that can possibly contain a bagged parcel a referrer page
      * @author Akintewe Rotimi <akintewe.rotimi@gmail.com>
      */
-    public static function makeAnUnbagReferrer() {
+    public static function makeAnUnbagReferrer()
+    {
         //set unbag referrer
         $unbag_referrer = \Yii::$app->request->getUrl();
         Calypso::getInstance()->session('unbag_referrer', $unbag_referrer);
@@ -291,10 +292,11 @@ class Calypso
      * @author Akintewe Rotimi <akintewe.rotimi@gmail.com>
      * @return string
      */
-    public static function getUnbagReferrer() {
+    public static function getUnbagReferrer()
+    {
         //get unbag referrer
         $unbag_referrer = Calypso::getInstance()->session('unbag_referrer');
-        if(empty($unbag_referrer)) {
+        if (empty($unbag_referrer)) {
             $unbag_referrer = ServiceConstant::DEFAULT_UNBAG_REFERRER;
         }
         return $unbag_referrer;
