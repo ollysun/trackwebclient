@@ -82,9 +82,9 @@ $(document).ready(function () {
 
             var address = (parcels[0].company_address).replace(/([a-z])([A-Z])/g, '$1 $2');
             address = address.replace(/,/g,', ');
-            $('textarea[name=address]').val("[ " + parcels[0].company_name + " ]" +  "\n" + address);
+            $('textarea[name=address]').val(parcels[0].company_name + ',' +  "\n" + address);
             $('input[name=company_id]').val(parcels[0].company_id);
-            $('input[name=account_number]').val(parcels[0].reference_number);
+            $('input[name=account_number]').val(parcels[0].account_number);
             $("#invoice_parcels").html(Invoice.getInvoiceParcelsHtml(parcels))
                 .find("input[data-waybill]").trigger('keyup');
         } else {
