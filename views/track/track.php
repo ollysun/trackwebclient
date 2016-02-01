@@ -19,7 +19,7 @@ $this->title = 'Tracking Portal';
                 <h4 class="pull-right text-muted">
                     Status:
                     <?php if (Calypso::getDisplayValue($current_state_info, 'status') == ServiceConstant::RETURNED): ?>
-                        <strong id="status" title="Reason for return" data-content="Reason for return details"
+                        <strong id="status" title="Reason for return" data-content="<?=Calypso::getDisplayValue($tracking_info, 'parcel_return_comment.comment')?>"
                                 data-placement="bottom"
                                 class="text-danger"><?= Calypso::getDisplayValue($current_state_info, 'description', 'N/A') ?></strong>
                         <?php $this->registerJsFile('@web/js/libs/bootstrap.min.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
