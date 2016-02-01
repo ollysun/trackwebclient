@@ -1,8 +1,13 @@
 <?php
 use Adapter\Globals\ServiceConstant;
 use Adapter\Util\Util;
+use app\assets\AppAsset;
+use yii\helpers\Html;
+use yii\helpers\Json;
 use yii\helpers\Url;
 use Adapter\Util\Calypso;
+use yii\web\JqueryAsset;
+use yii\web\View;
 
 
 $this->title = 'Reports';
@@ -12,6 +17,7 @@ $this->params['breadcrumbs'] = array(
 $downloadURL = Url::to().((parse_url(Url::to(), PHP_URL_QUERY) == NULL) ? '?' : '&').'download=1';
 ?>
 
+<?= Html::cssFile('@web/css/libs/select2.css') ?>
 
 <?php
 $this->params['content_header_button'] = "<a href='".$downloadURL."' class='btn btn-primary'><i class='fa fa-download'></i> Download as CSV</a>";
@@ -64,15 +70,6 @@ $this->params['content_header_button'] = "<a href='".$downloadURL."' class='btn 
                                 <option value="">Not Applicable</option>
                                 <?php foreach ($statuses as $status) { ?>
                                     <option value="<?= $status; ?>" <?= $filters['status'] == $status ? 'selected':''?>><?= ServiceConstant::getStatus($status); ?></option>
-                                <?php } ?>
-                            </select>
-                        </div>
-                        <div class="pull-left form-group form-group-sm">
-                            <label for="">Originating Branch</label><br>
-                            <select name="created_branch_id" id="" class="form-control  filter-status">
-                                <option value="">Not Applicable</option>
-                                <?php foreach ($branches as $branch) { ?>
-                                    <option value="<?= $branch['id']; ?>" <?= $filters['created_branch_id'] == $branch['id'] ? 'selected':''?>><?= strtoupper($branch['name']); ?></option>
                                 <?php } ?>
                             </select>
                         </div>
@@ -131,15 +128,43 @@ $this->params['content_header_button'] = "<a href='".$downloadURL."' class='btn 
                         <div class="pull-left form-group form-group-sm">
                             <label for="">Request Type</label><br>
                             <select name="request_type" id="" class="form-control  filter-status">
-                                <option value="">Not Applicable</option>
                                 <?php foreach ($request_types as $method) { ?>
                                     <option value="<?= $method; ?>" <?= $filters['request_type'] == $method ? 'selected':''?>><?= ServiceConstant::getRequestType($method); ?></option>
                                 <?php } ?>
                             </select>
                         </div>
+                        <div class="pull-left form-group form-group-sm">
+                            <label for="">Branch Type</label><br>
+                            <select name="branch_type" id="branch_type" class="form-control filter-status">
+                                <option value="hub" <?=(Calypso::getValue($filters, 'branch_type', false) == 'hub') ? ' selected="selected"' : '' ?>>Hub</option>
+                                <option value="ec" <?=(Calypso::getValue($filters, 'branch_type', false) == 'ec') ? ' selected="selected"' : '' ?>>Express Centre</option>
+                            </select>
+                        </div>
+                        <div class="pull-left form-group form-group-sm">
+                            <label for="">Originating Branch</label><br>
+                            <select name="created_branch_id" id="created_branch_select" class="form-control  filter-status" multiple="true">
+                                <?php
+                                $branches = (Calypso::getValue($filters, 'branch_type', false) == 'ec') ? $ecs : $hubs;
+                                foreach ($branches as $branch) { ?>
+                                    <option value="<?= $branch['id']; ?>" <?= $filters['created_branch_id'] == $branch['id'] ? 'selected':''?>><?= strtoupper($branch['name']); ?></option>
+                                <?php } ?>
+                            </select>
+                            <input type="hidden" name="created_branch_id" value=""/>
+                        </div>
+                        <div class="pull-left form-group form-group-sm">
+                            <label for="">Current Branch</label><br>
+                            <select id="current_branch_select" class="form-control  filter-status" multiple="true">
+                                <?php
+                                $branches = (Calypso::getValue($filters, 'branch_type', false) == 'ec') ? $ecs : $hubs;
+                                foreach ($branches as $branch) { ?>
+                                    <option value="<?= $branch['id']; ?>" <?= $filters['from_branch_id'] == $branch['id'] ? 'selected':''?>><?= strtoupper($branch['name']); ?></option>
+                                <?php } ?>
+                            </select>
+                            <input type="hidden" name="from_branch_id" value=""/>
+                        </div>
                         <div class="pull-left">
                             <label>&nbsp;</label><br>
-                            <button class="btn btn-default btn-sm" type="submit"><i class="fa fa-filter"></i> APPLY</button>
+                            <button class="btn btn-default btn-sm" id="apply" type="submit"><i class="fa fa-filter"></i> APPLY</button>
                         </div>
                     </div>
                 </form>
@@ -201,4 +226,11 @@ $this->params['content_header_button'] = "<a href='".$downloadURL."' class='btn 
         <?php endif;  ?>
     </div>
 </div>
-<?php $this->registerJsFile('@web/js/libs/bootstrap-datepicker.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?><?php $this->registerJsFile('@web/js/jquery.dataTables.min.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/libs/bootstrap-datepicker.js', ['depends' => [JqueryAsset::className()]]); ?>
+<?php $this->registerJsFile('@web/js/jquery.dataTables.min.js', ['depends' => [JqueryAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/libs/select2.js', ['depends' => [AppAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/utils.js', ['depends' => [JqueryAsset::className()]]) ?>
+<?php $this->registerJs('var ecs = '. Json::encode($ecs).'; var hubs = '. Json::encode($hubs).'; var filters = ' .Json::encode($filters).';', View::POS_HEAD); ?>
+<?php $this->registerJsFile('@web/js/report.js', ['depends' => [JqueryAsset::className()]]) ?>
+
+

@@ -45,6 +45,7 @@ var TrackPlusUtil = {
         error: 'error'
     },
 
+
     showMessage: function (target, message, is_error) {
         this.removeMessage(target);
         if (!target.hasClass('alert')) {
@@ -77,6 +78,41 @@ var TrackPlusUtil = {
         return str.replace(/\w\S*/g, function (txt) {
             return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
         });
+    },
+
+    /**
+     *
+     * @param target
+     * @param data
+     * @param value_key
+     * @param label_key
+     * @param selected
+     * @param placeholder
+     * @param callback
+     */
+    fillSelect: function (target, data, value_key, label_key, placeholder, selected, callback) {
+        target.html('');
+        var optionsHtml = '';
+        if (typeof placeholder != 'undefined') {
+            optionsHtml += '<option value="">' + placeholder + '</option>';
+        }
+        for (var i = 0; i < data.length; i++) {
+            optionsHtml += '<option value="' + data[i][value_key] + '"';
+
+            if (typeof selected != 'undefined' && selected == data[i][value_key]) {
+                optionsHtml += ' selected="selected"';
+            }
+            if (typeof label_key == 'function') {
+                optionsHtml += '>' + label_key(data[i]) + '</option>';
+            } else {
+                optionsHtml += '>' + data[i][label_key] + '</option>';
+            }
+        }
+        target.html(optionsHtml);
+
+        if (typeof callback == 'function') {
+            callback();
+        }
     }
 };
 
