@@ -711,14 +711,13 @@ $(document).ready(function () {
     $('#create_parcel_btn').click(function () {
 
         if($('#company').val() != $('#shipper_corporate_select').val()){
-            alert('You can choose another corporate\'s plan for this corporate');
+            alert('You can\'t choose another corporate\'s plan for this corporate');
             return false;
         }
 
         if ($("input[name='billing_method']:checked").val() != 'corporate') {
             return true;
         }
-
 
         if ($('#company').val() == '') {
             alert('Please select a company');
