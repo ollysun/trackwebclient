@@ -710,9 +710,11 @@ $(document).ready(function () {
 
     $('#create_parcel_btn').click(function () {
 
-        if($('#company').val() != $('#shipper_corporate_select').val()){
-            alert('You can\'t choose another corporate\'s plan for this corporate');
-            return false;
+        if ($('#corporate_shipment').is(':checked')) {
+            if ($('#company').val() != $('#shipper_corporate_select').val()) {
+                alert('You can\'t choose another corporate\'s plan for this corporate');
+                return false;
+            }
         }
 
         if ($("input[name='billing_method']:checked").val() != 'corporate') {

@@ -234,8 +234,8 @@ class ParcelService {
         }
 
         $parcel['billing_type'] = Calypso::getValue($data, 'billing_method', 'auto');
-        if($senderInfo['sender_type'] == 'corporate'){
-            $parcel['billing_type'] = 'corporate';
+        if($senderInfo['sender_type'] == ServiceConstant::SHIPMENTS_SENDER_TYPE_CORPORATE){
+            $parcel['billing_type'] = ServiceConstant::SHIPMENTS_SENDER_TYPE_CORPORATE;
         }
         $parcel['weight_billing_plan'] = Calypso::getDisplayValue($data, 'billing_plan', BillingPlanAdapter::DEFAULT_WEIGHT_RANGE_PLAN);
         $parcel['onforwarding_billing_plan'] = Calypso::getDisplayValue($data, 'billing_plan', BillingPlanAdapter::DEFAULT_ON_FORWARDING_PLAN);
