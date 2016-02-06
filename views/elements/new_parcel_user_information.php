@@ -26,7 +26,7 @@ $prefix_map = [ 'shipper' => 'sender', 'receiver' => 'receiver' ];
 				Customer shipment
 			</label>
 			<label class="radio-inline-cc-group">
-				<input type="radio" name="<?= $prefix; ?>_customer_corporate_shipments" value="corporate">
+				<input type="radio" id="corporate_shipment" name="<?= $prefix; ?>_customer_corporate_shipments" value="corporate">
 				Corporate shipment
 			</label>
 	</div>
