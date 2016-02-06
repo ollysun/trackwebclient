@@ -17,7 +17,7 @@ $this->params['breadcrumbs'] = array(
 
 <!-- Generate Invoices Modal -->
 <div class="modal fade" id="generateInvoice">
-    <form class="validate-form" method="post" action="<?= Url::to("/finance/createinvoice"); ?>">
+    <form class="validate-form" method="post" action="<?= Url::to("/finance/createinvoice");?>">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -70,7 +70,7 @@ $this->params['breadcrumbs'] = array(
 
                         <div class="col-xs-6">
                             <div class="form-group">
-                                <label for="exampleInputEmail1">Account Number</label>
+                                <label for="exampleInputEmail1">Accont Number</label>
                                 <input name="account_number" type="text" class="form-control">
                             </div>
 
@@ -200,7 +200,6 @@ $this->params['breadcrumbs'] = array(
                                                data-amount_due="<?= Calypso::getValue($corporateParcel, 'amount_due') ?>"
                                                data-company_name="<?= Calypso::getValue($corporateParcel, 'company.name') ?>"
                                                data-waybill_number="<?= Calypso::getValue($corporateParcel, 'waybill_number') ?>"
-                                               data-account_number="<?= Calypso::getValue($corporateParcel, 'company.reg_no') ?>"
                                                data-reference_number="<?= Calypso::getValue($corporateParcel, 'reference_number') ?>"
                                                id="corporate_parce_<?= $i ?>" class="checkable" type="checkbox">
                                         <label for="corporate_parce_<?= $i ?>"> </label>
@@ -221,8 +220,11 @@ $this->params['breadcrumbs'] = array(
                                 <a href="<?= Url::to(['/shipments/view', 'waybill_number' => Calypso::getValue($corporateParcel, 'waybill_number')]) ?>"
                                    class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i> View</a>
 
+                                <a href=<?= '../parcels/new?edit=1&id=' . Calypso::getValue($corporateParcel,'id')?>>
+                                    <button class="btn btn-default btn-xs">Edit</button></a>
 
                             </td>
+                            <td></td>
                         </tr>
                     <?php endforeach; ?>
                     </tbody>
@@ -264,8 +266,7 @@ $this->params['breadcrumbs'] = array(
         <td>{{company_name}}</td>
         <td>{{amount}}</td>
         <td>
-            <input type='text' name='discount[]' data-amount='{{amount}}' data-waybill='{{waybill_number}}'
-                   class='form-control' style='width:50px;' value='0'>
+            <input type='text' name='discount[]' data-amount='{{amount}}' data-waybill='{{waybill_number}}' class='form-control' style='width:50px;' value='0'>
             <input type='hidden' name='waybill_number[]' value='{{waybill_number}}'>
             <input type='hidden' data-parcel_waybill='{{waybill_number}}' name='net_amount[]' value='{{amount}}'>
         </td>
