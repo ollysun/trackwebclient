@@ -39,7 +39,9 @@ class ParcelsController extends BaseController
     {
 
         if (Yii::$app->request->isPost) {
+
             $data = Yii::$app->request->post();
+            $parcel = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
 
             $parcelService = new ParcelService();
             $payload = $parcelService->buildPostData($data);
@@ -47,8 +49,6 @@ class ParcelsController extends BaseController
                 $this->sendAsyncFormResponse(1, array('message' => implode('<br />', $payload['messages'])), "Parcel.onFormErrorCallback");
 
             } else {
-
-                $parcel = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
                 $response = $parcel->createNewParcel(json_encode($payload));
                 if ($response['status'] === Response::STATUS_OK) {
                     $this->sendAsyncFormResponse(1, $response['data'], "Parcel.onFormSuccessCallback");
@@ -60,6 +60,7 @@ class ParcelsController extends BaseController
 
         $parcel = [];
         $id = Yii::$app->request->get('id');
+        $edit = Yii::$app->request->get('edit');
         $pickupRequestId = Yii::$app->request->get('pickup_request_id');
         $shipmentRequestId = Yii::$app->request->get('shipment_request_id');
         if (isset($id)) {
@@ -70,6 +71,10 @@ class ParcelsController extends BaseController
         } else if (isset($shipmentRequestId)) {
             $shipmentRequest = (new CompanyAdapter())->getShipmentRequest($shipmentRequestId);
             $parcel = ParcelService::convertShipmentRequest($shipmentRequest);
+        }
+
+        if (isset($edit)) {
+            $parcel['info']['edit'] = true;
         }
 
         $refData = new RefAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());

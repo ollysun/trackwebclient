@@ -4,7 +4,6 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use Adapter\Globals\ServiceConstant;
 
-
 $this->title = 'Corporate Shipments';
 $this->params['breadcrumbs'] = array(
     array(
@@ -220,7 +219,10 @@ $this->params['breadcrumbs'] = array(
                             <td>
                                 <a href="<?= Url::to(['/shipments/view', 'waybill_number' => Calypso::getValue($corporateParcel, 'waybill_number')]) ?>"
                                    class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i> View</a>
-<!--                                <button class="btn btn-default btn-xs">Edit</button>-->
+
+                                <a href=<?= '../parcels/new?edit=1&id=' . Calypso::getValue($corporateParcel,'id')?>>
+                                <button class="btn btn-default btn-xs">Edit</button></a>
+
                             </td>
                             <td></td>
                         </tr>
