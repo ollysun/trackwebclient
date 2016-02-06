@@ -221,6 +221,7 @@ $this->params['breadcrumbs'] = array(
                                    class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i> View</a>
 
                                 <a href=<?= '../parcels/new?edit=1&id=' . Calypso::getValue($corporateParcel,'id')?>>
+
                                     <button class="btn btn-default btn-xs">Edit</button></a>
 
                             </td>
