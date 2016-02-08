@@ -217,6 +217,9 @@ $this->params['breadcrumbs'] = array(
                             <td><?= Calypso::getValue($corporateParcel, 'invoice_parcel.invoice_number', 'N/A'); ?></td>
                             <td>n/a</td>
                             <td>
+                                <a href=<?= '../parcels/new?edit=1&id=' . Calypso::getValue($corporateParcel, 'id') ?>>
+                                    <button class="btn btn-default btn-xs">Edit</button>
+                                </a>
                                 <a href="<?= Url::to(['/shipments/view', 'waybill_number' => Calypso::getValue($corporateParcel, 'waybill_number')]) ?>"
                                    class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i> View</a>
                             </td>
