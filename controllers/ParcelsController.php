@@ -41,7 +41,6 @@ class ParcelsController extends BaseController
         if (Yii::$app->request->isPost) {
 
             $data = Yii::$app->request->post();
-            $parcel = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
 
             $parcelService = new ParcelService();
             $payload = $parcelService->buildPostData($data);
@@ -49,6 +48,7 @@ class ParcelsController extends BaseController
                 $this->sendAsyncFormResponse(1, array('message' => implode('<br />', $payload['messages'])), "Parcel.onFormErrorCallback");
 
             } else {
+                $parcel = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
                 $response = $parcel->createNewParcel(json_encode($payload));
                 if ($response['status'] === Response::STATUS_OK) {
                     $this->sendAsyncFormResponse(1, $response['data'], "Parcel.onFormSuccessCallback");
