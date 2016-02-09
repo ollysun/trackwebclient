@@ -4,7 +4,6 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use Adapter\Globals\ServiceConstant;
 
-
 $this->title = 'Corporate Shipments';
 $this->params['breadcrumbs'] = array(
     array(
@@ -18,7 +17,7 @@ $this->params['breadcrumbs'] = array(
 
 <!-- Generate Invoices Modal -->
 <div class="modal fade" id="generateInvoice">
-    <form class="validate-form" method="post" action="<?= Url::to("/finance/createinvoice");?>">
+    <form class="validate-form" method="post" action="<?= Url::to("/finance/createinvoice"); ?>">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -196,13 +195,13 @@ $this->params['breadcrumbs'] = array(
                                 <div class="checkbox-nice">
                                     <?php if (is_null(Calypso::getValue($corporateParcel, 'invoice_parcel.id'))): ?>
                                         <input name="parcel"
-                                            data-company_id="<?= Calypso::getValue($corporateParcel, 'company.id') ?>"
-                                            data-company_address="<?= Calypso::getValue($corporateParcel, 'company.address') ?>"
-                                            data-amount_due="<?= Calypso::getValue($corporateParcel, 'amount_due') ?>"
-                                            data-company_name="<?= Calypso::getValue($corporateParcel, 'company.name') ?>"
-                                            data-waybill_number="<?= Calypso::getValue($corporateParcel, 'waybill_number') ?>"
-                                            data-reference_number="<?= Calypso::getValue($corporateParcel, 'reference_number') ?>"
-                                            id="corporate_parce_<?= $i ?>" class="checkable" type="checkbox">
+                                               data-company_id="<?= Calypso::getValue($corporateParcel, 'company.id') ?>"
+                                               data-company_address="<?= Calypso::getValue($corporateParcel, 'company.address') ?>"
+                                               data-amount_due="<?= Calypso::getValue($corporateParcel, 'amount_due') ?>"
+                                               data-company_name="<?= Calypso::getValue($corporateParcel, 'company.name') ?>"
+                                               data-waybill_number="<?= Calypso::getValue($corporateParcel, 'waybill_number') ?>"
+                                               data-reference_number="<?= Calypso::getValue($corporateParcel, 'reference_number') ?>"
+                                               id="corporate_parce_<?= $i ?>" class="checkable" type="checkbox">
                                         <label for="corporate_parce_<?= $i ?>"> </label>
                                     <?php endif; ?>
                                 </div>
@@ -218,9 +217,11 @@ $this->params['breadcrumbs'] = array(
                             <td><?= Calypso::getValue($corporateParcel, 'invoice_parcel.invoice_number', 'N/A'); ?></td>
                             <td>n/a</td>
                             <td>
+                                <a href=<?= '../parcels/new?edit=1&id=' . Calypso::getValue($corporateParcel, 'id') ?>>
+                                    <button class="btn btn-default btn-xs">Edit</button>
+                                </a>
                                 <a href="<?= Url::to(['/shipments/view', 'waybill_number' => Calypso::getValue($corporateParcel, 'waybill_number')]) ?>"
                                    class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i> View</a>
-<!--                                <button class="btn btn-default btn-xs">Edit</button>-->
                             </td>
                             <td></td>
                         </tr>
@@ -264,7 +265,8 @@ $this->params['breadcrumbs'] = array(
         <td>{{company_name}}</td>
         <td>{{amount}}</td>
         <td>
-            <input type='text' name='discount[]' data-amount='{{amount}}' data-waybill='{{waybill_number}}' class='form-control' style='width:50px;' value='0'>
+            <input type='text' name='discount[]' data-amount='{{amount}}' data-waybill='{{waybill_number}}'
+                   class='form-control' style='width:50px;' value='0'>
             <input type='hidden' name='waybill_number[]' value='{{waybill_number}}'>
             <input type='hidden' data-parcel_waybill='{{waybill_number}}' name='net_amount[]' value='{{amount}}'>
         </td>
