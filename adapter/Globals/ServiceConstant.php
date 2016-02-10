@@ -254,6 +254,8 @@ class ServiceConstant
     const QTY_METRICS_WEIGHT = 'weight';
     const QTY_METRICS_PIECES = 'pieces';
 
+    const SHIPMENTS_SENDER_TYPE_CORPORATE = 'corporate';
+
     public static function getStatus($status)
     {
         switch ($status) {
@@ -268,9 +270,6 @@ class ServiceConstant
                 break;
             case ServiceConstant::REMOVED:
                 return '<span class="label label-danger">Removed</span>';
-                break;
-            case ServiceConstant::COLLECTED:
-                return 'Collected';
                 break;
             case ServiceConstant::DELIVERED:
                 return 'Delivered';
@@ -317,7 +316,7 @@ class ServiceConstant
     public static function getStatusRef()
     {
         return [ServiceConstant::IN_TRANSIT, ServiceConstant::DELIVERED, ServiceConstant::CANCELLED, ServiceConstant::FOR_ARRIVAL
-            , ServiceConstant::FOR_DELIVERY, ServiceConstant::FOR_SWEEPER, ServiceConstant::COLLECTED, ServiceConstant::BEING_DELIVERED, ServiceConstant::RETURNED];
+            , ServiceConstant::FOR_DELIVERY, ServiceConstant::FOR_SWEEPER, ServiceConstant::BEING_DELIVERED, ServiceConstant::RETURNED];
     }
 
     /**

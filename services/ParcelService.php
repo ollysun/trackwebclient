@@ -17,23 +17,24 @@ use Adapter\RequestHelper;
 use Adapter\ResponseHandler;
 use Adapter\Util\Calypso;
 
-class ParcelService {
+class ParcelService
+{
 
     public static function getParcelDetails($id)
     {
         $cloneParcels = [];
         $data = [];
-        $parcel = new ParcelAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+        $parcel = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $response = $parcel->getOneParcel($id);
         $response = new ResponseHandler($response);
-        if($response->getStatus() == ResponseHandler::STATUS_OK){
+        if ($response->getStatus() == ResponseHandler::STATUS_OK) {
             $data = $response->getData();
             $cloneParcels['info'] = $data;
             if (isset($data['sender_address']) && isset($data['sender_address']['city_id'])) {
                 $city_id = $data['sender_address']['city_id'];
-                $regionAdp = new RegionAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+                $regionAdp = new RegionAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
                 $sender_location = $regionAdp->getCity($city_id);
-                if($sender_location['status'] === ResponseHandler::STATUS_OK) {
+                if ($sender_location['status'] === ResponseHandler::STATUS_OK) {
                     $cloneParcels['sender_location'] = $sender_location['data'];
                 } else {
                     $cloneParcels['sender_location'] = [];
@@ -41,18 +42,18 @@ class ParcelService {
             }
             if (isset($data['receiver_address']) && isset($data['receiver_address']['city_id'])) {
                 $city_id = $data['receiver_address']['city_id'];
-                $regionAdp = new RegionAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+                $regionAdp = new RegionAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
                 $receiver_location = $regionAdp->getCity($city_id);
-                if($receiver_location['status'] === ResponseHandler::STATUS_OK) {
+                if ($receiver_location['status'] === ResponseHandler::STATUS_OK) {
                     $cloneParcels['receiver_location'] = $receiver_location['data'];
                 } else {
                     $cloneParcels['receiver_location'] = [];
                 }
             }
-            $bankAdapter = new BankAdapter(RequestHelper::getClientID(),RequestHelper::getAccessToken());
+            $bankAdapter = new BankAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
             $bankInfo = $bankAdapter->getSenderBankAccout($data['sender']['id']);
             if ($bankInfo['status'] === ResponseHandler::STATUS_OK) {
-                if(!empty($bankInfo['data'])) {
+                if (!empty($bankInfo['data'])) {
                     $sender_merchant = $bankInfo['data']['0'];
                     $cloneParcels['sender_merchant'] = $sender_merchant;
                 }
@@ -72,18 +73,18 @@ class ParcelService {
     {
         /**
          * Pickup Request Mapping*
-        `pickup_name` - Sender Firstname
-        `pickup_address` - Sender Address
-        `pickup_phone_number` - Sender Phone
-        `pickup_state_id`- Sender State
-        `pickup_city_id` - Sender City
-        `destination_name` - Receiver Firstname
-        `destination_address` -  Receiver Address
-        `destination_phone_number` - Receiver Phone Number
-        `destination_state_id` - Receiver State
-        `destination_city_id` - Receiver City
-        `shipment_description` - Parcel Description
-        `request_detail` - ??
+         * `pickup_name` - Sender Firstname
+         * `pickup_address` - Sender Address
+         * `pickup_phone_number` - Sender Phone
+         * `pickup_state_id`- Sender State
+         * `pickup_city_id` - Sender City
+         * `destination_name` - Receiver Firstname
+         * `destination_address` -  Receiver Address
+         * `destination_phone_number` - Receiver Phone Number
+         * `destination_state_id` - Receiver State
+         * `destination_city_id` - Receiver City
+         * `shipment_description` - Parcel Description
+         * `request_detail` - ??
          */
         $parcel = [];
         $parcel['pickup_request_id'] = Calypso::getValue($pickupRequest, 'id');
@@ -115,23 +116,23 @@ class ParcelService {
     {
         /**
          * Shipment Request Mapping
-        `receiver_firstname` - Receiver Firstname
-        `receiver_lastname` - Receiver Lastname
-        `receiver_phone_number` - Receiver Phone number
-        `receiver_email` - Receiver email
-        `receiver_address` - Receiver address
-        `receiver_state_id` - Receiver State
-        `receiver_city_id` - Receiver City
-        `receiver_company_name` - Add in bracket to parcel description
-        `company.name` - Sender Name
-        `company.email` - Sender Email
-        `company.primary_contact.phone_number` - Sender Phone number
-        `cash_on_delivery` - Cash On Delivery
-        `reference_number` - Reference Number
-        `estimated_weight` - Total Weight
-        `no_of_packages` - No of packages
-        `parcel_value` - Parcel Value
-        `description`  - Parcel Description
+         * `receiver_firstname` - Receiver Firstname
+         * `receiver_lastname` - Receiver Lastname
+         * `receiver_phone_number` - Receiver Phone number
+         * `receiver_email` - Receiver email
+         * `receiver_address` - Receiver address
+         * `receiver_state_id` - Receiver State
+         * `receiver_city_id` - Receiver City
+         * `receiver_company_name` - Add in bracket to parcel description
+         * `company.name` - Sender Name
+         * `company.email` - Sender Email
+         * `company.primary_contact.phone_number` - Sender Phone number
+         * `cash_on_delivery` - Cash On Delivery
+         * `reference_number` - Reference Number
+         * `estimated_weight` - Total Weight
+         * `no_of_packages` - No of packages
+         * `parcel_value` - Parcel Value
+         * `description`  - Parcel Description
          */
         $parcel = [];
         $parcel['shipment_request_id'] = Calypso::getValue($shipmentRequest, 'id');
@@ -158,7 +159,7 @@ class ParcelService {
         $parcel['info']['weight'] = Calypso::getValue($shipmentRequest, 'estimated_weight');
         $cashOnDelivery = Calypso::getValue($shipmentRequest, 'cash_on_delivery');
 
-        if(!empty($cashOnDelivery)) {
+        if (!empty($cashOnDelivery)) {
             $parcel['info']['delivery_amount'] = Calypso::getValue($shipmentRequest, 'cash_on_delivery');
             $parcel['info']['cash_on_delivery'] = 1;
         }
@@ -168,7 +169,8 @@ class ParcelService {
         return $parcel;
     }
 
-    public function buildPostData($data) {
+    public function buildPostData($data)
+    {
 
         $error = [];
         $senderInfo = [];
@@ -179,6 +181,7 @@ class ParcelService {
         $parcel = [];
         $payload = [];
 
+        $senderInfo['sender_type'] = Calypso::getValue($data,'shipper_customer_corporate_shipments');
         $senderInfo['firstname'] = Calypso::getValue($data, 'firstname.shipper');
         $senderInfo['lastname'] = Calypso::getDisplayValue($data, 'lastname.shipper', '');
         $senderInfo['phone'] = Calypso::getValue($data, 'phone.shipper');
@@ -210,33 +213,37 @@ class ParcelService {
 
         $parcel['parcel_type'] = Calypso::getValue($data, 'parcel_type');
         $parcel['no_of_package'] = Calypso::getValue($data, 'no_of_packages');
-        if(!is_numeric($parcel['no_of_package'])) {
+        if (!is_numeric($parcel['no_of_package'])) {
             $error[] = "Number of packages must be an integer";
         }
         $parcel['weight'] = Calypso::getValue($data, 'parcel_weight');
-        if(!isset($parcel['weight']) || !is_numeric($parcel['weight'])) {
+        if (!isset($parcel['weight']) || !is_numeric($parcel['weight'])) {
             $error[] = "Weight cannot be empty and must be numeric";
         }
 
         $parcel['billing_method'] = Calypso::getValue($data, 'billing_method', 'auto');
-        $parcel['package_value'] = Calypso::getValue($data, 'parcel_value',0);
+        $parcel['package_value'] = Calypso::getValue($data, 'parcel_value', 0);
 
         // Manual Billing Amount
         $parcel['amount_due'] = Calypso::getValue($data, 'amount');
         $manualAmount = Calypso::getValue($data, 'manual_amount');
         $corporateAmount = Calypso::getValue($data, 'corporate_amount');
 
-        if($parcel['billing_method'] == 'manual') {
+        if ($parcel['billing_method'] == 'manual') {
             $parcel['amount_due'] = $manualAmount;
-        } else if($parcel['billing_method'] == 'corporate') {
+        } else if ($parcel['billing_method'] == 'corporate') {
             $parcel['amount_due'] = $corporateAmount;
         }
+
         $parcel['billing_type'] = Calypso::getValue($data, 'billing_method', 'auto');
+        if($senderInfo['sender_type'] == ServiceConstant::SHIPMENTS_SENDER_TYPE_CORPORATE){
+            $parcel['billing_type'] = ServiceConstant::SHIPMENTS_SENDER_TYPE_CORPORATE;
+        }
         $parcel['weight_billing_plan'] = Calypso::getDisplayValue($data, 'billing_plan', BillingPlanAdapter::DEFAULT_WEIGHT_RANGE_PLAN);
         $parcel['onforwarding_billing_plan'] = Calypso::getDisplayValue($data, 'billing_plan', BillingPlanAdapter::DEFAULT_ON_FORWARDING_PLAN);
 
         $parcel['is_billing_overridden'] = $parcel['billing_method'] == 'manual' ? 1 : 0;
-        if(is_null($parcel['amount_due'])) {
+        if (is_null($parcel['amount_due'])) {
             $error[] = "Amount must be calculated. Please ensure all zone billing and mapping are set.";
         }
         $parcel['cash_on_delivery'] = ($data['cash_on_delivery'] === 'true') ? 1 : 0;
@@ -250,30 +257,34 @@ class ParcelService {
         $parcel['pos_trans_id'] = Calypso::getValue($data, 'pos_transaction_id', null);
         $parcel['is_freight_included'] = Calypso::getValue($data, 'include_freight', null);
         $parcel['qty_metrics'] = Calypso::getValue($data, 'qty_metrics');
+        if (Calypso::getValue($data, 'parcel_id')) {
+            $parcel['id'] = Calypso::getValue($data, 'parcel_id');
+        }
 
         /**
          * Set Pickup Request Id
          */
-        if(isset($data['pickup_request_id'])) {
+        if (isset($data['pickup_request_id'])) {
             $payload['pickup_request_id'] = Calypso::getValue($data, 'pickup_request_id', null);
         }
 
         /**
          * Set Shipment Request Id
          */
-        if(isset($data['shipment_request_id'])) {
+        if (isset($data['shipment_request_id'])) {
             $payload['shipment_request_id'] = Calypso::getValue($data, 'shipment_request_id', null);
         }
 
-        if($parcel['payment_type'] == '3' && (!is_null($parcel['cash_amount']) && !is_null($parcel['pos_amount']))) {
-            $cash_amount = (int) $parcel['cash_amount'];
-            $pos_amount = (int) $parcel['pos_amount'];
-            $amount_due = (int) $parcel['amount_due'];
-            if($cash_amount + $pos_amount !== $amount_due) {
+        if ($parcel['payment_type'] == '3' && (!is_null($parcel['cash_amount']) && !is_null($parcel['pos_amount']))) {
+            $cash_amount = (int)$parcel['cash_amount'];
+            $pos_amount = (int)$parcel['pos_amount'];
+            $amount_due = (int)$parcel['amount_due'];
+            if ($cash_amount + $pos_amount !== $amount_due) {
                 $error[] = "POS and cash amount must sum up to the amount due.";
             }
         }
         $parcel['request_type'] = (Calypso::getValue($data, 'merchant') === 'yes') ? ServiceConstant::REQUEST_ECOMMERCE : ServiceConstant::REQUEST_OTHERS;
+
 
         $payload['sender'] = $senderInfo;
         $payload['receiver'] = $receiverInfo;
@@ -285,14 +296,16 @@ class ParcelService {
         $payload['is_corporate_lead'] = (Calypso::getValue($data, 'corporate_lead') === 'true') ? 1 : 0;
         $payload['to_hub'] = (Calypso::getValue($data, 'send_to_hub') === '1') ? 1 : 0;
 
-        if(!empty($error)) {
-            return [ 'status' => false, 'messages' => $error ];
+
+        if (!empty($error)) {
+            return ['status' => false, 'messages' => $error];
         }
 
         return $payload;
     }
 
-    public function buildBillingCalculationData($data) {
+    public function buildBillingCalculationData($data)
+    {
         $response['payload']['from_branch_id'] = $data['from_branch_id'];
         $response['payload']['to_branch_id'] = $data['to_branch_id'];
         $response['payload']['city_id'] = $data['city_id'];

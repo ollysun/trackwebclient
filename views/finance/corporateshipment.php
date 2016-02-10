@@ -4,7 +4,6 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use Adapter\Globals\ServiceConstant;
 
-
 $this->title = 'Corporate Shipments';
 $this->params['breadcrumbs'] = array(
     array(
@@ -196,13 +195,14 @@ $this->params['breadcrumbs'] = array(
                                 <div class="checkbox-nice">
                                     <?php if (is_null(Calypso::getValue($corporateParcel, 'invoice_parcel.id'))): ?>
                                         <input name="parcel"
-                                            data-company_id="<?= Calypso::getValue($corporateParcel, 'company.id') ?>"
-                                            data-company_address="<?= Calypso::getValue($corporateParcel, 'company.address') ?>"
-                                            data-amount_due="<?= Calypso::getValue($corporateParcel, 'amount_due') ?>"
-                                            data-company_name="<?= Calypso::getValue($corporateParcel, 'company.name') ?>"
-                                            data-waybill_number="<?= Calypso::getValue($corporateParcel, 'waybill_number') ?>"
-                                            data-reference_number="<?= Calypso::getValue($corporateParcel, 'reference_number') ?>"
-                                            id="corporate_parce_<?= $i ?>" class="checkable" type="checkbox">
+                                               data-company_id="<?= Calypso::getValue($corporateParcel, 'company.id') ?>"
+                                               data-company_address="<?= Calypso::getValue($corporateParcel, 'company.address') ?>"
+                                               data-amount_due="<?= Calypso::getValue($corporateParcel, 'amount_due') ?>"
+                                               data-company_name="<?= Calypso::getValue($corporateParcel, 'company.name') ?>"
+                                               data-waybill_number="<?= Calypso::getValue($corporateParcel, 'waybill_number') ?>"
+                                               data-account_number="<?= Calypso::getValue($corporateParcel, 'company.reg_no') ?>"
+                                               data-reference_number="<?= Calypso::getValue($corporateParcel, 'reference_number') ?>"
+                                               id="corporate_parce_<?= $i ?>" class="checkable" type="checkbox">
                                         <label for="corporate_parce_<?= $i ?>"> </label>
                                     <?php endif; ?>
                                 </div>
@@ -220,7 +220,6 @@ $this->params['breadcrumbs'] = array(
                             <td>
                                 <a href="<?= Url::to(['/shipments/view', 'waybill_number' => Calypso::getValue($corporateParcel, 'waybill_number')]) ?>"
                                    class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i> View</a>
-<!--                                <button class="btn btn-default btn-xs">Edit</button>-->
                             </td>
                             <td></td>
                         </tr>
