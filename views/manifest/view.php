@@ -56,6 +56,7 @@ $this->params['content_header_button'] = '<button onclick="javascript:window.ope
             <thead>
                 <tr>
                     <th width="16%">WAYBILL NO</th>
+                    <th width="10%">REFERENCE NO</th>
                     <th width="16%">DESTINATION</th>
                     <th width="5%">PCS</th>
                     <th width="8%">WT</th>
@@ -74,6 +75,7 @@ $this->params['content_header_button'] = '<button onclick="javascript:window.ope
                     ?>
                 <tr>
                     <td><?= Calypso::getValue($parcel, 'waybill_number')?></td>
+                    <td><?= Calypso::getValue($parcel, 'reference_number')?></td>
                     <td><?= strtoupper(Calypso::getValue($parcel, 'destination_name'))?> (<?= strtoupper(Calypso::getValue($parcel, 'destination_code'))?>)</td>
                     <td><?= Calypso::getValue($parcel, 'no_of_package')?></td>
                     <td><?= Calypso::getValue($parcel, 'weight')?> KG</td>
