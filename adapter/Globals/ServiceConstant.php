@@ -254,6 +254,8 @@ class ServiceConstant
     const QTY_METRICS_WEIGHT = 'weight';
     const QTY_METRICS_PIECES = 'pieces';
 
+    const SHIPMENTS_SENDER_TYPE_CORPORATE = 'corporate';
+
     public static function getStatus($status)
     {
         switch ($status) {
