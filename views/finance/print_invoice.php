@@ -4,7 +4,6 @@ use yii\helpers\Html;
 use Adapter\Util\Calypso;
 use yii\helpers\Url;
 
-
 /* @var $this yii\web\View */
 $this->title = 'Invoices';
 ?>
@@ -194,14 +193,14 @@ $this->title = 'Invoices';
                     <div class="fill-in">
                         <span class="fill-in-label">Account number</span>
 
-                        <div class="fill-in-answer"></div>
+                        <div class="fill-in-answer"><?= Calypso::getValue($invoice,'account_number') ?></div>
                     </div>
                 </div>
                 <div class="col-xs-6">
                     <div class="fill-in">
                         <span class="fill-in-label">Invoice number</span>
 
-                        <div class="fill-in-answer"></div>
+                        <div class="fill-in-answer"><?= Calypso::getValue($invoice,'invoice_number') ?></div>
                     </div>
                 </div>
                 <div class="col-xs-6">
