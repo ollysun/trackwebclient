@@ -108,6 +108,7 @@ $user_data = $this->context->userData;
                             <th>Current Location</th>
                         <?php } ?>
                         <th>Age analysis</th>
+                        <th>Action</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -141,6 +142,11 @@ $user_data = $this->context->userData;
                                 <td><?= ParcelAdapter::getCurrentLocation($parcels); ?></td>
                             <?php } ?>
                             <td></td>
+                            <td>
+                                <a href=<?= '../parcels/new?edit=1&id=' . Calypso::getValue($parcels, 'id') ?>>
+                                    <button class="btn btn-default btn-xs">Edit</button>
+                                </a>
+                            </td>
                         </tr>
                     <?php }
                     ?>
