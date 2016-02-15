@@ -819,16 +819,16 @@ class ShipmentsController extends BaseController
             $filters[$extra] = true;
         }
 
-        $from_date = Yii::$app->request->get('start_created_date', date('Y/m/d'));
-        $end_date = Yii::$app->request->get('end_created_date', date('Y/m/d'));
-        $filters['start_created_date'] = $from_date . ' 00:00:00';
-        $filters['end_created_date'] = $end_date . ' 23:59:59';
-
         $start_modified_date = Yii::$app->request->get('start_modified_date', null);
         $end_modified_date = Yii::$app->request->get('end_modified_date', null);
+        $filters['start_modified_date'] = (Util::checkEmpty($start_modified_date))? null : $start_modified_date .' 00:00:00';
+        $filters['end_modified_date'] = (Util::checkEmpty($end_modified_date))? null :  $end_modified_date . ' 23:59:59';
 
-        $filters['start_modified_date'] = (Util::checkEmpty($start_modified_date) ? null : $start_modified_date . ' 00:00:00');
-        $filters['end_modified_date'] = (Util::checkEmpty($end_modified_date) ? null : $end_modified_date . ' 23:59:59');
+        $start_created_date = Yii::$app->request->get('start_created_date', null);
+        $end_created_date = Yii::$app->request->get('end_created_date', null);
+
+        $filters['start_created_date'] = (Util::checkEmpty($start_created_date) ? null : $start_created_date . ' 00:00:00');
+        $filters['end_created_date'] = (Util::checkEmpty($end_created_date) ? null : $end_created_date . ' 23:59:59');
 
         if (!empty(Yii::$app->request->get('download'))) {
 
@@ -936,10 +936,10 @@ class ShipmentsController extends BaseController
             'shipping_types' => $shipping_types,
             'delivery_types' => $delivery_types,
             'filters' => $filters,
-            'from_date' => $from_date,
-            'end_date' => $end_date,
             'start_modified_date' => $start_modified_date,
             'end_modified_date' => $end_modified_date,
+            'start_created_date' => $start_created_date,
+            'end_created_date' => $end_created_date,
             'offset' => $offset,
             'page_width' => $page_width,
             'total_count' => $total_count
