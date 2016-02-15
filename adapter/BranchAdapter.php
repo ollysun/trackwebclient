@@ -116,6 +116,10 @@ class BranchAdapter extends BaseAdapter
         return $this->request(ServiceConstant::URL_ZONES_MATRIX_GET, [], self::HTTP_GET);
     }
 
+    /**
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     * @return array|mixed|string
+     */
     public function getAll()
     {
         return $this->request(ServiceConstant::URL_GET_ALL_BRANCH, [], self::HTTP_GET);

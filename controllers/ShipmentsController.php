@@ -27,7 +27,6 @@ use Adapter\Util\Util;
 use app\models\BulkShipmentModel;
 use app\services\HubService;
 use Adapter\TellerAdapter;
-use yii\data\Pagination;
 use Yii;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
@@ -805,14 +804,13 @@ class ShipmentsController extends BaseController
         $page_width = is_null($page_width) ? $this->page_width : $page_width;
         $offset = ($page - 1) * $page_width;
 
-        $filter_params = ['start_modified_date', 'end_modified_date', 'for_return', 'parcel_type', 'status', 'min_weight', 'max_weight', 'min_amount_due', 'max_amount_due', 'cash_on_delivery', 'delivery_type', 'payment_type', 'shipping_type', 'start_created_date', 'end_created_date', 'created_branch_id', 'from_branch_id', 'route_id', 'request_type', 'branch_type'];
-        $extra_details = ['with_to_branch', 'with_from_branch', 'with_sender', 'with_sender_address', 'with_receiver', 'with_receiver_address', 'with_bank_account', 'with_created_branch', 'with_route', 'with_created_by', 'with_company'];
+        $filter_params = ['start_modified_date', 'end_modified_date', 'for_return', 'parcel_type', 'status', 'min_weight', 'max_weight', 'min_amount_due', 'max_amount_due', 'cash_on_delivery', 'delivery_type', 'payment_type', 'shipping_type', 'start_created_date', 'end_created_date', 'created_branch_id', 'route_id', 'request_type', 'from_branch_id', 'branch_type'];
+        $extra_details = ['with_receiver', 'with_receiver_address', 'with_route'];
 
 
         $filters = [];
         foreach ($filter_params as $param) {
-            $$param = Yii::$app->request->get($param);
-            $filters[$param] = $$param;
+            $filters[$param] = Yii::$app->request->get($param);
         }
 
         foreach ($extra_details as $extra) {
@@ -830,75 +828,10 @@ class ShipmentsController extends BaseController
         $filters['start_created_date'] = (Util::checkEmpty($start_created_date) ? null : $start_created_date . ' 00:00:00');
         $filters['end_created_date'] = (Util::checkEmpty($end_created_date) ? null : $end_created_date . ' 23:59:59');
 
-        if (!empty(Yii::$app->request->get('download'))) {
-
-            $parcel = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-
-            $filters['send_all'] = true;
-            $filtered_parcels = $parcel->getParcelsByFilters(array_filter($filters, 'strlen'));
-            $response = new ResponseHandler($filtered_parcels);
-
-            $parcels = [];
-            if ($response->isSuccess()) {
-                $parcels = $response->getData();
-            }
-
-            if ($response->getStatus() == 600) {
-                $this->flashError('Max download limit exceeded. You can\'t download more than 1500 parcel report');
-                return $this->redirect(Url::to('/shipments/report'));
-            }
-
-            $name = 'report_' . date(ServiceConstant::DATE_TIME_FORMAT) . '.csv';
-            $data = array();
-
-            $headers = array('SN', 'Waybill Number', 'Sender', 'Sender Email', 'Sender Phone', 'Sender Address', 'Sender City', 'Sender State', 'Receiver', 'Receiver Email', 'Receiver Phone', 'Receiver Address', 'Receiver City', 'Receiver State', 'Weight/Piece', 'Payment Method', 'Amount Due', 'Cash Amount', 'POS Amount', 'POS Transaction ID', 'Parcel Type', 'Cash on Delivery', 'Delivery Type', 'Package Value', '# of Package', 'Shipping Type', 'Created Date', 'Last Modified Date', 'Status', 'Reference Number', 'Originating Branch', 'Route', 'Request Type', 'For Return', 'Other Info', 'Company Reg No', 'Billing Plan Name');
-            foreach ($parcels as $key => $result) {
-                $data[] = [
-                    $key + 1,
-                    $result['waybill_number'],
-                    $result['sender']['firstname'] . ' ' . $result['sender']['lastname'],
-                    $result['sender']['email'],
-                    $result['sender']['phone'],
-                    $result['sender_address']['street_address1'] . ' ' . $result['sender_address']['street_address2'],
-                    ucwords($result['sender_address']['city']['name']),
-                    ucwords($result['sender_address']['state']['name']),
-                    $result['receiver']['firstname'] . ' ' . $result['receiver']['lastname'],
-                    $result['receiver']['email'],
-                    $result['receiver']['phone'],
-                    $result['receiver_address']['street_address1'] . ' ' . $result['receiver_address']['street_address2'],
-                    ucwords($result['receiver_address']['city']['name']),
-                    ucwords($result['receiver_address']['state']['name']),
-                    $result['weight'],
-                    ServiceConstant::getPaymentMethod($result['payment_type']),
-                    $result['amount_due'],
-                    $result['cash_amount'],
-                    $result['pos_amount'],
-                    $result['pos_trans_id'],
-                    ServiceConstant::getParcelType($result['parcel_type']),
-                    $result['cash_on_delivery'] ? 'Yes' : 'No',
-                    ServiceConstant::getDeliveryType($result['delivery_type']),
-                    $result['package_value'],
-                    $result['no_of_package'],
-                    ServiceConstant::getShippingType($result['shipping_type']),
-                    Util::convertToTrackingDateFormat($result['created_date']),
-                    Util::formatDate(ServiceConstant::DATE_TIME_FORMAT, $result['modified_date']),
-                    strip_tags(ServiceConstant::getStatus($result['status'])),
-                    $result['reference_number'],
-                    isset($result['created_branch']) ? $result['created_branch']['name'] : '',
-                    isset($result['route']) ? $result['route']['name'] : '',
-                    ServiceConstant::getRequestType($result['request_type']),
-                    $result['for_return'] ? 'Yes' : 'No',
-                    $result['other_info'],
-                    $result['company']['reg_no'],
-                    $result['billing_plan']['name'],
-                ];
-            }
-            Util::exportToCSV($name, $headers, $data);
-        }
-
         $filters['offset'] = $offset;
         $filters['count'] = $page_width;
         $filters['with_total_count'] = true;
+        $filters['report'] = 1;
 
         $status = ServiceConstant::getStatusRef();
         $payment_methods = ServiceConstant::getPaymentMethods();
@@ -907,6 +840,10 @@ class ShipmentsController extends BaseController
         $delivery_types = ServiceConstant::getDeliveryTypes();
 
         $branch_adapter = new BranchAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $branches = Calypso::getValue($branch_adapter->getAll(), 'data', []);
+        if (!$branches) {
+            $branches = [];
+        }
         $ecs = $branch_adapter->getAllEcs();
         $hubs = Calypso::getValue($branch_adapter->getAllHubs(), 'data', []);
 
@@ -923,10 +860,13 @@ class ShipmentsController extends BaseController
             $data = $response->getData();
             $parcels = $data['parcels'];
             $total_count = $data['total_count'];
+        } else {
+            $this->flashError('Could not load reports');
         }
 
         return $this->render('report', array(
             'parcels' => $parcels,
+            'branches' => $branches,
             'ecs' => $ecs,
             'hubs' => $hubs,
             'routes' => $routes['data'],
@@ -944,6 +884,104 @@ class ShipmentsController extends BaseController
             'page_width' => $page_width,
             'total_count' => $total_count
         ));
+    }
+
+    /**
+     * Download parcels report
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     */
+    public function actionDownloadreport()
+    {
+        set_time_limit(0);
+        $extra_details = ['with_to_branch', 'with_from_branch', 'with_sender', 'with_sender_address', 'with_receiver', 'with_receiver_address', 'with_bank_account', 'with_created_branch', 'with_route', 'with_created_by', 'with_company'];
+
+        $filters = Yii::$app->request->get();
+
+        foreach ($extra_details as $extra) {
+            $filters[$extra] = true;
+        }
+
+        $from_date = Yii::$app->request->get('start_created_date', date('Y/m/d'));
+        $end_date = Yii::$app->request->get('end_created_date', date('Y/m/d'));
+        $filters['start_created_date'] = $from_date . ' 00:00:00';
+        $filters['end_created_date'] = $end_date . ' 23:59:59';
+
+        $start_modified_date = Yii::$app->request->get('start_modified_date', null);
+        $end_modified_date = Yii::$app->request->get('end_modified_date', null);
+
+        $filters['start_modified_date'] = (Util::checkEmpty($start_modified_date) ? null : $start_modified_date . ' 00:00:00');
+        $filters['end_modified_date'] = (Util::checkEmpty($end_modified_date) ? null : $end_modified_date . ' 23:59:59');
+
+        $parcel = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+
+        $filters['report'] = 1;
+        $filters['with_total_count'] = true;
+
+        $offset = 0;
+        $count = 1000;
+        $all_parcels = [];
+
+
+        $filters['count'] = $count;
+        while (true) {
+            $filters['offset'] = $offset;
+            $filtered_parcels = $parcel->getParcelsByFilters(array_filter($filters, 'strlen'));
+            $response = new ResponseHandler($filtered_parcels);
+            if ($response->isSuccess()) {
+                $data = $response->getData();
+                $all_parcels = array_merge($all_parcels, $data['parcels']);
+                if (count($all_parcels) == $data['total_count']) {
+                    break;
+                }
+                $offset += $count;
+            } else {
+                $this->flashError('An error occurred while trying to download report');
+                return $this->redirect(Yii::$app->getRequest()->getReferrer());
+            }
+        }
+
+        $name = 'report_' . date(ServiceConstant::DATE_TIME_FORMAT) . '.csv';
+        $data = array();
+
+        $headers = array('SN', 'Waybill Number', 'Sender', 'Sender Email', 'Sender Phone', 'Sender Address', 'Receiver', 'Receiver Email', 'Receiver Phone', 'Receiver Address', 'Weight/Piece', 'Payment Method', 'Amount Due', 'Cash Amount', 'POS Amount', 'POS Transaction ID', 'Parcel Type', 'Cash on Delivery', 'Delivery Type', 'Package Value', '# of Package', 'Shipping Type', 'Created Date', 'Last Modified Date', 'Status', 'Reference Number', 'Originating Branch', 'Route', 'Request Type', 'For Return', 'Other Info', 'Company Reg No', 'Billing Plan Name');
+        foreach ($all_parcels as $key => $result) {
+            $data[] = [
+                $key + 1,
+                $result['parcel_waybill_number'],
+                $result['sender_firstname'] . ' ' . $result['sender_lastname'],
+                $result['sender_email'],
+                $result['sender_phone'],
+                $result['sender_address_street_address1'] . ' ' . $result['sender_address_street_address2'] . ', ' . $result['sender_address_city_name'] . ', ' . $result['sender_address_state_name'],
+                $result['receiver_firstname'] . ' ' . $result['receiver_lastname'],
+                $result['receiver_email'],
+                $result['receiver_phone'],
+                $result['receiver_address_street_address1'] . ' ' . $result['receiver_address_street_address2'] . ', ' . $result['receiver_address_city_name'] . ', ' . $result['receiver_address_state_name'],
+                $result['parcel_weight'],
+                ServiceConstant::getPaymentMethod($result['parcel_payment_type']),
+                $result['parcel_amount_due'],
+                $result['parcel_cash_amount'],
+                $result['parcel_pos_amount'],
+                $result['parcel_pos_trans_id'],
+                ServiceConstant::getParcelType($result['parcel_parcel_type']),
+                $result['parcel_cash_on_delivery'] ? 'Yes' : 'No',
+                ServiceConstant::getDeliveryType($result['parcel_delivery_type']),
+                $result['parcel_package_value'],
+                $result['parcel_no_of_package'],
+                ServiceConstant::getShippingType($result['parcel_shipping_type']),
+                Util::convertToTrackingDateFormat($result['parcel_created_date']),
+                Util::formatDate(ServiceConstant::DATE_TIME_FORMAT, $result['parcel_modified_date']),
+                strip_tags(ServiceConstant::getStatus($result['parcel_status'])),
+                $result['parcel_reference_number'],
+                $result['created_branch_name'],
+                Calypso::getDisplayValue($result, 'route_name', ''),
+                ServiceConstant::getRequestType(Calypso::getDisplayValue($result, 'parcel_request_type', '')),
+                $result['parcel_for_return'] ? 'Yes' : 'No',
+                $result['parcel_other_info'],
+                $result['company_reg_no'],
+                $result['billing_plan_name'],
+            ];
+        }
+        Util::exportToCSV($name, $headers, $data);
     }
 
     /**

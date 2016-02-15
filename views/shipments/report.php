@@ -14,7 +14,7 @@ $this->title = 'Reports';
 $this->params['breadcrumbs'] = array(
     array('label' => 'Shipments')
 );
-$downloadURL = Url::to() . ((parse_url(Url::to(), PHP_URL_QUERY) == NULL) ? '?' : '&') . 'download=1';
+$downloadURL = Url::to('downloadreport?') . parse_url(Url::to(), PHP_URL_QUERY);
 ?>
 
 <?= Html::cssFile('@web/css/libs/select2.css') ?>
@@ -250,20 +250,20 @@ $this->params['content_header_button'] = "<a href='" . $downloadURL . "' class='
                             ?>
                             <tr>
                                 <td><?= ++$i ?></td>
-                                <td><?= strtoupper($parcel['waybill_number']); ?></td>
-                                <td><?= strtoupper($parcel['reference_number']); ?></td>
-                                <td><?= strtoupper($parcel['receiver']['firstname'] . ' ' . $parcel['receiver']['lastname']) ?></td>
-                                <td><?= $parcel['receiver']['phone'] ?></td>
-                                <td><?= Util::formatDate(ServiceConstant::DATE_TIME_FORMAT, $parcel['created_date']); ?></td>
-                                <td><?= $parcel['route']['name']; ?></td>
+                                <td><?= strtoupper(Calypso::getValue($parcel, 'parcel_waybill_number')); ?></td>
+                                <td><?= strtoupper(Calypso::getValue($parcel, 'parcel_reference_number')); ?></td>
+                                <td><?= strtoupper(Calypso::getValue($parcel, 'receiver_firstname') . ' ' . Calypso::getValue($parcel, 'receiver_lastname')) ?></td>
+                                <td><?= Calypso::getValue($parcel, 'parcel_reference_number') ?></td>
+                                <td><?= Util::formatDate(ServiceConstant::DATE_TIME_FORMAT, Calypso::getValue($parcel, 'parcel_created_date')); ?></td>
+                                <td><?= Calypso::getValue($parcel, 'route_name'); ?></td>
                                 <td><?= ServiceConstant::getReturnStatus($parcel); ?></td>
-                                <td><?= ServiceConstant::getStatus($parcel['status']); ?></td>
-                                <td><?= Util::formatDate(ServiceConstant::DATE_TIME_FORMAT, $parcel['modified_date']); ?>
-                                    (<?= Util::ago($parcel['modified_date']); ?>)
+                                <td><?= ServiceConstant::getStatus($parcel['parcel_status']); ?></td>
+                                <td><?= Util::formatDate(ServiceConstant::DATE_TIME_FORMAT, Calypso::getValue($parcel, 'parcel_modified_date')); ?>
+                                    (<?= Util::ago(Calypso::getValue($parcel, 'parcel_modified_date')); ?>)
                                 </td>
-                                <td><?= ucwords(ServiceConstant::getDeliveryType($parcel['delivery_type'])); ?></td>
+                                <td><?= ucwords(ServiceConstant::getDeliveryType(Calypso::getValue($parcel, 'parcel_delivery_type'))); ?></td>
                                 <td>
-                                    <a href="<?= Url::toRoute(['/shipments/view?waybill_number=' . $parcel['waybill_number']]) ?>"
+                                    <a href="<?= Url::toRoute(['/shipments/view?waybill_number=' . Calypso::getValue($parcel, 'parcel_waybill_number')]) ?>"
                                        class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i></a>
                                 </td>
                             </tr>
