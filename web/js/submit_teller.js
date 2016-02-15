@@ -49,6 +49,13 @@ $(document).ready(function () {
                     callback: function () {
                         cloneShipment($(self), false)
                     }
+                },
+                edit: {
+                    label: "Edit",
+                    className: "btn-default",
+                    callback: function () {
+                        editShipment($(self));
+                    }
                 }
             }
         });
@@ -80,5 +87,9 @@ $(document).ready(function () {
         } else {
             window.location = clone_url;
         }
+    }
+
+    function editShipment(object) {
+        window.location = $(object).attr('data-href') + '&edit=1';
     }
 });

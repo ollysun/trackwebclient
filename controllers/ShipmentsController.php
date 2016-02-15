@@ -800,6 +800,7 @@ class ShipmentsController extends BaseController
      */
     public function actionReport($page = 1, $page_width = null)
     {
+
         $page_width = is_null($page_width) ? $this->page_width : $page_width;
         $offset = ($page - 1) * $page_width;
 
@@ -843,6 +844,8 @@ class ShipmentsController extends BaseController
         if (!$branches) {
             $branches = [];
         }
+        $ecs = $branch_adapter->getAllEcs();
+        $hubs = Calypso::getValue($branch_adapter->getAllHubs(), 'data', []);
 
         $route_adapter = new RouteAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $routes = $route_adapter->getRoutes(null, null, null, null, null);
@@ -864,6 +867,8 @@ class ShipmentsController extends BaseController
         return $this->render('report', array(
             'parcels' => $parcels,
             'branches' => $branches,
+            'ecs' => $ecs,
+            'hubs' => $hubs,
             'routes' => $routes['data'],
             'statuses' => $status,
             'payment_methods' => $payment_methods,

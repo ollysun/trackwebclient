@@ -34,8 +34,12 @@ $this->params['content_header_button'] = '<button onclick="javascript:window.ope
                     <div class="form-control-static"><?= strtoupper(Calypso::getValue($bag, 'from_branch.name'));?> </div>
                 </div>
                 <div class="col-xs-3">
-                    <label for="">Destination</label>
+                    <label for="">Next Destination</label>
                     <div class="form-control-static"><?= strtoupper(Calypso::getValue($bag, 'to_branch.name'));?> </div>
+                </div>
+                <div class="col-xs-3">
+                    <label for="">Final Destination</label>
+                    <div class="form-control-static"><?= strtoupper(Calypso::getValue($bag, 'parcels.0.to_branch.name', 'N/A'));?> </div>
                 </div>
                 <div class="col-xs-3">
                     <label for="">Created Date</label>
@@ -54,6 +58,7 @@ $this->params['content_header_button'] = '<button onclick="javascript:window.ope
                     <th width="8%">PCS</th>
                     <th width="8%">WT</th>
                     <th width="35%">DESCRIPTION OF SHIPMENT(S)</th>
+                    <th width="10%">FINAL DESTINATION</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -69,6 +74,7 @@ $this->params['content_header_button'] = '<button onclick="javascript:window.ope
                         <td><?= Calypso::getValue($parcel, 'no_of_package')?></td>
                         <td><?= Calypso::getValue($parcel, 'weight')?> KG</td>
                         <td><?= Calypso::getValue($parcel, 'other_info')?></td>
+                        <td><?= ucwords(Calypso::getValue($parcel, 'receiver_address.city.name'). ', '. Calypso::getValue($parcel, 'receiver_address.state.name'))?></td>
                     </tr>
                 <?php endforeach; ?>
                 <tr class="total-row">

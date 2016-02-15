@@ -51,7 +51,7 @@ $user_data = $this->context->userData;
                     <div class="pull-left form-group">
                         <label for="branch_name" id="hub_branch_label">Branch Name</label><br>
                         <select id="branch_name" class="form-control input-sm" name="branch">
-                            <option>Select Name...</option>
+                            <option value="">Select Name...</option>
                         </select>
                     </div>
                     <div class="pull-left">
@@ -84,10 +84,10 @@ $user_data = $this->context->userData;
                         </th>
                         <th style="width: 20px">S/N</th>
                         <th>Waybill No</th>
-                        <th>Reference No</th>
                         <th>Origin</th>
                         <th>Next Destination</th>
                         <th>Final Destination</th>
+                        <th>Reference No</th>
                         <th>Request Type</th>
                         <th>Return Status</th>
                         <th>Weight/Piece</th>
@@ -117,7 +117,6 @@ $user_data = $this->context->userData;
                             <td>
                                 <a href='/shipments/view?waybill_number=<?= Calypso::getValue($parcels, 'waybill_number'); ?>'><?= Calypso::getValue($parcels, 'waybill_number') ?></a>
                             </td>
-                            <td><?= Calypso::getValue($parcels, 'reference_number') ?></td>
                             <td><?= ucwords(Calypso::getValue($parcels, 'sender_address.city.name') . ', ' . Calypso::getValue($parcels, 'sender_address.state.name')); ?></td>
                             <td></td>
                             <td>
@@ -134,8 +133,7 @@ $user_data = $this->context->userData;
 
                                 <?= ucwords(Calypso::getValue($parcels, 'receiver_address.city.name') . ', ' . Calypso::getValue($parcels, 'receiver_address.state.name')); ?>
                             </td>
-
-
+                            <td><?= Calypso::getValue($parcels, 'reference_number') ?></td>
                             <td><?= ServiceConstant::getRequestType($parcels['request_type']) ?></td>
                             <td><?= ServiceConstant::getReturnStatus($parcels); ?></td>
                             <td><?= Calypso::getValue($parcels, 'weight') ?></td>

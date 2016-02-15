@@ -44,7 +44,8 @@ class ServiceConstant
     const RETURNED = 23;
     const URL_ADD_PARCEL = 'parcel/add/';
     const URL_GET_ONE_PARCEL = 'parcel/getone/';
-    const URL_GET_ALL_PARCEL = 'parcel/getAll?XDEBUG_SESSION_START=PHPSTORM';
+    const URL_GET_BAG = 'parcel/getbag/';
+    const URL_GET_ALL_PARCEL = 'parcel/getAll';
     const URL_MOVE_TO_FOR_SWEEPER = '/parcel/moveToForSweeper/';
     const URL_ASSIGN_TO_GROUNDSMAN = '/parcel/assignToGroundsMan/';
     const URL_MOVE_TO_IN_TRANSIT = '/parcel/moveToInTransit/';
@@ -253,6 +254,8 @@ class ServiceConstant
     const QTY_METRICS_WEIGHT = 'weight';
     const QTY_METRICS_PIECES = 'pieces';
 
+    const SHIPMENTS_SENDER_TYPE_CORPORATE = 'corporate';
+
     public static function getStatus($status)
     {
         switch ($status) {
@@ -267,9 +270,6 @@ class ServiceConstant
                 break;
             case ServiceConstant::REMOVED:
                 return '<span class="label label-danger">Removed</span>';
-                break;
-            case ServiceConstant::COLLECTED:
-                return 'Collected';
                 break;
             case ServiceConstant::DELIVERED:
                 return 'Delivered';
@@ -316,7 +316,7 @@ class ServiceConstant
     public static function getStatusRef()
     {
         return [ServiceConstant::IN_TRANSIT, ServiceConstant::DELIVERED, ServiceConstant::CANCELLED, ServiceConstant::FOR_ARRIVAL
-            , ServiceConstant::FOR_DELIVERY, ServiceConstant::FOR_SWEEPER, ServiceConstant::COLLECTED, ServiceConstant::BEING_DELIVERED, ServiceConstant::RETURNED];
+            , ServiceConstant::FOR_DELIVERY, ServiceConstant::FOR_SWEEPER, ServiceConstant::BEING_DELIVERED, ServiceConstant::RETURNED];
     }
 
     /**

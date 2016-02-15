@@ -38,8 +38,8 @@ $this->title = 'Invoices';
         <table class="table table-bordered double-border">
             <tbody>
             <tr>
-                <td width="25%">Account Number</td>
-                <td width="25%"><?= Calypso::getValue($invoice, 'account_number'); ?></td>
+                <td width="25%">Reg No.</td>
+                <td width="25%"><?= Calypso::getValue($invoice, 'company.reg_no'); ?></td>
                 <td width="25%">Document Date</td>
                 <td width="25%"><?= Calypso::getValue($invoice, 'current_date'); ?></td>
             </tr>
@@ -193,14 +193,14 @@ $this->title = 'Invoices';
                     <div class="fill-in">
                         <span class="fill-in-label">Account number</span>
 
-                        <div class="fill-in-answer"></div>
+                        <div class="fill-in-answer"><?= Calypso::getValue($invoice,'account_number') ?></div>
                     </div>
                 </div>
                 <div class="col-xs-6">
                     <div class="fill-in">
                         <span class="fill-in-label">Invoice number</span>
 
-                        <div class="fill-in-answer"></div>
+                        <div class="fill-in-answer"><?= Calypso::getValue($invoice,'invoice_number') ?></div>
                     </div>
                 </div>
                 <div class="col-xs-6">

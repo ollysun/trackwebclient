@@ -45,6 +45,11 @@ var Invoice = {
 };
 
 $(document).ready(function () {
+
+    $("#chbx_w_all").change(function () {
+        $("input[name=parcel]").prop("checked", $(this).prop("checked"));
+    });
+
     $('.checkable').click(function (e) {
         var _this = $(this);
         var companyId = _this.data('company_id');
@@ -75,8 +80,12 @@ $(document).ready(function () {
                 }
             });
 
-            $('textarea[name=address]').val(parcels[0].company_address);
+            var address = (parcels[0].company_address).replace(/([a-z])([A-Z])/g, '$1 $2');
+            address = address.replace(/,/g,', ');
+            $('textarea[name=address]').val(parcels[0].company_name + ',' +  "\n" + address);
             $('input[name=company_id]').val(parcels[0].company_id);
+            $('input[name=account_number]').val(parcels[0].account_number);
+            $('textarea[name=reference]').val(parcels[0].reference_number);
             $("#invoice_parcels").html(Invoice.getInvoiceParcelsHtml(parcels))
                 .find("input[data-waybill]").trigger('keyup');
         } else {
@@ -101,3 +110,5 @@ $(document).ready(function () {
        }
     });
 });
+
+
