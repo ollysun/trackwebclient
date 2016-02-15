@@ -708,6 +708,10 @@ $(document).ready(function () {
         $('#autoBillingMethod').click();
     });
 
+    if ($('#corporate_shipment').is(':checked')) {
+        $('#shipper_corporate_select').trigger('change');
+    }
+
     $('#create_parcel_btn').click(function () {
 
         if ($('#corporate_shipment').is(':checked')) {
