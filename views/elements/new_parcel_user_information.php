@@ -5,18 +5,19 @@ $prefix_map = [ 'shipper' => 'sender', 'receiver' => 'receiver' ];
 ?>
 
 <div class="form-group">
-	<div class="input-group <?= $prefix; ?>-cc-group customer-group">
+	<div class="input-group <?= $prefix; ?>-cc-group customer-group <?= Calypso::getValue($parcel, 'info.billing_type') == 'corporate' ? 'hide' : '';?>">
 		<input id="<?=$prefix?>SearchBox"  data-target="#<?php echo $prefix;?>SearchFlyOutPanel" type="text" class="form-control phone" placeholder="Search customers by phone number"
 			   value="<?php echo Calypso::getValue($parcel, "info.{$prefix_map[$prefix]}.phone", ''); ?>">
 		<div class="input-group-btn">
 			<button class="btn btn-default <?=$prefix?>" id="btn_Search_<?=$prefix?>" type="button"><i class="fa fa-search"></i></button>
 		</div>
 	</div>
-	<div class="<?= $prefix; ?>-cc-group corporate-group hide">
+	<div class="<?= $prefix; ?>-cc-group corporate-group <?= Calypso::getValue($parcel, 'info.billing_type') == 'corporate' ? '' : 'hide';?>">
 		<select class="form-control" id="<?= $prefix; ?>_corporate_select">
 			<option>Choose a Company</option>
+			<?php $sender_name = Calypso::getValue($parcel,'info.sender.firstname');?>
 			<?php foreach($companies as $company):?>
-				<option data-company='<?=Json::encode($company)?>' value="<?= Calypso::getValue($company, 'id')?>" <?= Calypso::getValue($parcel, 'company_id') == Calypso::getValue($company, 'id') ? 'selected' : '';?>><?= strtoupper(Calypso::getValue($company, 'name'))?></option>
+				<option data-company='<?=Json::encode($company)?>' value="<?= Calypso::getValue($company, 'id')?>" <?= $sender_name == Calypso::getValue($company, 'name') ? 'selected' : '';?>><?= strtoupper(Calypso::getValue($company, 'name'))?></option>
 			<?php endforeach;?>
 		</select>
 	</div>
