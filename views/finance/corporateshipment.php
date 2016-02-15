@@ -200,6 +200,7 @@ $this->params['breadcrumbs'] = array(
                                                data-amount_due="<?= Calypso::getValue($corporateParcel, 'amount_due') ?>"
                                                data-company_name="<?= Calypso::getValue($corporateParcel, 'company.name') ?>"
                                                data-waybill_number="<?= Calypso::getValue($corporateParcel, 'waybill_number') ?>"
+                                               data-account_number="<?= Calypso::getValue($corporateParcel, 'company.reg_no') ?>"
                                                data-reference_number="<?= Calypso::getValue($corporateParcel, 'reference_number') ?>"
                                                id="corporate_parce_<?= $i ?>" class="checkable" type="checkbox">
                                         <label for="corporate_parce_<?= $i ?>"> </label>
