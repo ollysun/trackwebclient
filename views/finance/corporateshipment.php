@@ -221,6 +221,7 @@ $this->params['breadcrumbs'] = array(
                                 <a href="<?= Url::to(['/shipments/view', 'waybill_number' => Calypso::getValue($corporateParcel, 'waybill_number')]) ?>"
                                    class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i> View</a>
                             </td>
+
                             <td></td>
                         </tr>
                     <?php endforeach; ?>
