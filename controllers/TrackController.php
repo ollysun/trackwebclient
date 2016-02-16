@@ -41,6 +41,7 @@ class TrackController extends BaseController
         $tracking_number = HtmlPurifier::process($tracking_number);
         $tracking_number = trim($tracking_number);
         $tracking_number = str_replace(' ', '', $tracking_number);
+        $tracking_number = rtrim($tracking_number,',');
         $count = count(explode(',', $tracking_number));
         if ($count > 10) {
             return $this->render('track',
