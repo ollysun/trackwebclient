@@ -14,7 +14,7 @@ abstract class BaseAdapter
     const HTTP_STATUS_CREATED = 201;
     const HTTP_STATUS_BAD_REQUEST = 400;
 
-    protected $_curlagent;
+    protected $_curlagent = null;
     protected $_client_id;
     protected $_access_token;
     protected $_response_as_json;
@@ -148,7 +148,9 @@ abstract class BaseAdapter
 
     protected function request($url, $params, $http_method)
     {
-        $this->_curlagent = new CurlAgent('', true);
+        if (is_null($this->_curlagent)) {
+            $this->_curlagent = new CurlAgent('', true);
+        }
         if ($this->_access_token != null) {
             $this->_curlagent->setHeader('i', $this->_client_id);
             $this->_curlagent->setHeader('a', $this->_access_token);

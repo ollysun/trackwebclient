@@ -125,12 +125,10 @@ class CurlAgent {
         $response = curl_exec($s);
 
         $header_size = curl_getinfo($s, CURLINFO_HEADER_SIZE);
-        $header = substr($response, 0, $header_size);
         $this->_webpage = substr($response, $header_size);
 
         $this->_status = curl_getinfo($s,CURLINFO_HTTP_CODE);
         curl_close($s);
-        gc_collect_cycles();
     }
 
     public function getHttpStatus()

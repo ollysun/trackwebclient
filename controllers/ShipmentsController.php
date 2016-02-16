@@ -912,6 +912,7 @@ class ShipmentsController extends BaseController
         $filters['start_modified_date'] = (Util::checkEmpty($start_modified_date) ? null : $start_modified_date . ' 00:00:00');
         $filters['end_modified_date'] = (Util::checkEmpty($end_modified_date) ? null : $end_modified_date . ' 23:59:59');
 
+        $parcel = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
 
         $filters['report'] = 1;
         $filters['with_total_count'] = true;
@@ -924,7 +925,6 @@ class ShipmentsController extends BaseController
         $filters['count'] = $count;
         while (true) {
             $filters['offset'] = $offset;
-            $parcel = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
             $filtered_parcels = $parcel->getParcelsByFilters(array_filter($filters, 'strlen'));
             $response = new ResponseHandler($filtered_parcels);
             if ($response->isSuccess()) {
