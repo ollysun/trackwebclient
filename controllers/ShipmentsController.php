@@ -918,7 +918,7 @@ class ShipmentsController extends BaseController
         $filters['with_total_count'] = true;
 
         $offset = 0;
-        $count = 1000;
+        $count = 500;
         $all_parcels = [];
 
 
