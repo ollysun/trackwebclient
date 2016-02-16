@@ -490,8 +490,7 @@ class ParcelAdapter extends BaseAdapter
      */
     public function getParcelsByFilters($filters)
     {
-        $params = http_build_query($filters);
-        return $this->request(ServiceConstant::URL_GET_ALL_PARCEL . '?' . $params, [], self::HTTP_GET);
+        return $this->request(ServiceConstant::URL_GET_ALL_PARCEL, $filters, self::HTTP_GET);
     }
 
     /**

@@ -2,7 +2,8 @@
 
 namespace Adapter\Util;
 
-class CurlAgent {
+class CurlAgent
+{
     protected $_useragent = 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)';
     protected $_url;
     protected $_followlocation;
@@ -11,7 +12,7 @@ class CurlAgent {
     protected $_cookieFileLocation = './cookie.txt';
     protected $_post;
     protected $_postFields;
-    protected $_referer ="http://localhost";
+    protected $_referer = "http://localhost";
     protected $_headers;
 
     protected $_session;
@@ -20,23 +21,27 @@ class CurlAgent {
     protected $_noBody;
     protected $_status;
     protected $_binaryTransfer;
-    public    $authentication = 0;
-    public    $auth_name      = '';
-    public    $auth_pass      = '';
+    public $authentication = 0;
+    public $auth_name = '';
+    public $auth_pass = '';
 
-    public function useAuth($use){
+    public function useAuth($use)
+    {
         $this->authentication = 0;
-        if($use == true) $this->authentication = 1;
+        if ($use == true) $this->authentication = 1;
     }
 
-    public function setName($name){
+    public function setName($name)
+    {
         $this->auth_name = $name;
     }
-    public function setPass($pass){
+
+    public function setPass($pass)
+    {
         $this->auth_pass = $pass;
     }
 
-    public function __construct($url,$includeHeader = false,$followlocation = true,$timeOut = 30,$maxRedirecs = 4,$binaryTransfer = false,$noBody = false)
+    public function __construct($url, $includeHeader = false, $followlocation = true, $timeOut = 30, $maxRedirecs = 4, $binaryTransfer = false, $noBody = false)
     {
         $this->_url = $url;
         $this->_followlocation = $followlocation;
@@ -50,7 +55,8 @@ class CurlAgent {
         $this->_headers = array();
     }
 
-    public function setReferer($referer){
+    public function setReferer($referer)
+    {
         $this->_referer = $referer;
     }
 
@@ -59,7 +65,7 @@ class CurlAgent {
         $this->_cookieFileLocation = $path;
     }
 
-    public function setPost ($postFields)
+    public function setPost($postFields)
     {
         $this->_post = true;
         $this->_postFields = $postFields;
@@ -70,48 +76,46 @@ class CurlAgent {
         $this->_useragent = $userAgent;
     }
 
-    public function setHeader($key, $value){
+    public function setHeader($key, $value)
+    {
         $this->_headers[] = "$key: $value";
     }
 
     public function createCurl($url = 'nul')
     {
-        if($url != 'nul'){
+        if ($url != 'nul') {
             $this->_url = $url;
         }
 
         $s = curl_init();
 
-        curl_setopt($s,CURLOPT_URL,$this->_url);
-        curl_setopt($s,CURLOPT_TIMEOUT,$this->_timeout);
-        curl_setopt($s,CURLOPT_MAXREDIRS,$this->_maxRedirects);
-        curl_setopt($s,CURLOPT_RETURNTRANSFER,true);
-        curl_setopt($s,CURLOPT_FOLLOWLOCATION,$this->_followlocation);
+        curl_setopt($s, CURLOPT_URL, $this->_url);
+        curl_setopt($s, CURLOPT_TIMEOUT, $this->_timeout);
+        curl_setopt($s, CURLOPT_MAXREDIRS, $this->_maxRedirects);
+        curl_setopt($s, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($s, CURLOPT_FOLLOWLOCATION, $this->_followlocation);
 
         if ($this->_cookieFileLocation) {
             curl_setopt($s, CURLOPT_COOKIEJAR, $this->_cookieFileLocation);
             curl_setopt($s, CURLOPT_COOKIEFILE, $this->_cookieFileLocation);
         }
 
-        if($this->authentication == 1){
-            curl_setopt($s, CURLOPT_USERPWD, $this->auth_name.':'.$this->auth_pass);
+        if ($this->authentication == 1) {
+            curl_setopt($s, CURLOPT_USERPWD, $this->auth_name . ':' . $this->auth_pass);
         }
-        if($this->_post)
-        {
-            curl_setopt($s,CURLOPT_POST,true);
-            curl_setopt($s,CURLOPT_POSTFIELDS,$this->_postFields);
+        if ($this->_post) {
+            curl_setopt($s, CURLOPT_POST, true);
+            curl_setopt($s, CURLOPT_POSTFIELDS, $this->_postFields);
 
         }
 
-        if($this->_includeHeader)
-        {
-            curl_setopt($s,CURLOPT_HEADER,true);
-            curl_setopt($s,CURLOPT_HTTPHEADER,$this->_headers);
+        if ($this->_includeHeader) {
+            curl_setopt($s, CURLOPT_HEADER, true);
+            curl_setopt($s, CURLOPT_HTTPHEADER, $this->_headers);
         }
 
-        if($this->_noBody)
-        {
-            curl_setopt($s,CURLOPT_NOBODY,true);
+        if ($this->_noBody) {
+            curl_setopt($s, CURLOPT_NOBODY, true);
         }
         /*
         if($this->_binary)
@@ -119,16 +123,15 @@ class CurlAgent {
             curl_setopt($s,CURLOPT_BINARYTRANSFER,true);
         }
         */
-        curl_setopt($s,CURLOPT_USERAGENT,$this->_useragent);
-        curl_setopt($s,CURLOPT_REFERER,$this->_referer);
+        curl_setopt($s, CURLOPT_USERAGENT, $this->_useragent);
+        curl_setopt($s, CURLOPT_REFERER, $this->_referer);
 
         $response = curl_exec($s);
 
         $header_size = curl_getinfo($s, CURLINFO_HEADER_SIZE);
-        $header = substr($response, 0, $header_size);
         $this->_webpage = substr($response, $header_size);
 
-        $this->_status = curl_getinfo($s,CURLINFO_HTTP_CODE);
+        $this->_status = curl_getinfo($s, CURLINFO_HTTP_CODE);
         curl_close($s);
     }
 
@@ -137,7 +140,13 @@ class CurlAgent {
         return $this->_status;
     }
 
-    public function getResponse(){
+    public function getResponse()
+    {
         return $this->_webpage;
     }
-} 
+
+    public function getHeaders()
+    {
+        return $this->_headers;
+    }
+}
