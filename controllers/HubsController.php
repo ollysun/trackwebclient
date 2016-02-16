@@ -160,9 +160,10 @@ class HubsController extends BaseController
         $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $dispatch_parcels = $parcelsAdapter->getDispatchedParcels($this->branch_to_view, $to_branch_id, $from_date . ' 00:00:00', $to_date . ' 23:59:59', ServiceConstant::IN_TRANSIT);
         $parcels = new ResponseHandler($dispatch_parcels);
+        $reasons_list = $parcelsAdapter->getParcelReturnReasons(); // get all reason
         $parcel_list = $parcels->getStatus() == ResponseHandler::STATUS_OK ? $parcels->getData() : [];
 
-        return $this->render('hub_dispatch', array('sweeper' => [], 'hubs' => $hub_list, 'parcels' => $parcel_list, 'branch_id' => $to_branch_id, 'from_date' => $from_date, 'to_date' => $to_date));
+        return $this->render('hub_dispatch', array('reasons_list' => $reasons_list, 'sweeper' => [], 'hubs' => $hub_list, 'parcels' => $parcel_list, 'branch_id' => $to_branch_id, 'from_date' => $from_date, 'to_date' => $to_date));
     }
 
     /**
@@ -187,7 +188,7 @@ class HubsController extends BaseController
     {
         $routeAdp = new RouteAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $user_session = Calypso::getInstance()->session("user_session");
-        $routes = $routeAdp->getRoutes($user_session['branch_id'],null,null,null,true,null);
+        $routes = $routeAdp->getRoutes($user_session['branch_id'], null, null, null, true, null);
 
         if ($routes['status'] === ResponseHandler::STATUS_OK) {
             return $this->sendSuccessResponse($routes['data']);

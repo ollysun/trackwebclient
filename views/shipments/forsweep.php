@@ -122,7 +122,10 @@ $user_data = $this->context->userData;
                                 <td><?= ParcelAdapter::getCurrentLocation($parcel); ?></td>
                             <?php } ?>
                             <td></td>
-                            <td><a href="<?= Url::toRoute(['/shipments/view?waybill_number='.$parcel['waybill_number']]) ?>" class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
+                            <td>  <a href=<?= '../parcels/new?edit=1&id=' . Calypso::getValue($parcel, 'id') ?>>
+                                    <button class="btn btn-default btn-xs">Edit</button>
+                                </a>
+                                <a href="<?= Url::toRoute(['/shipments/view?waybill_number='.$parcel['waybill_number']]) ?>" class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
                         </tr>
                     <?php
                     }}
