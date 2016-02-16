@@ -819,8 +819,8 @@ class ShipmentsController extends BaseController
 
         $start_modified_date = Yii::$app->request->get('start_modified_date', null);
         $end_modified_date = Yii::$app->request->get('end_modified_date', null);
-        $filters['start_modified_date'] = (Util::checkEmpty($start_modified_date))? null : $start_modified_date .' 00:00:00';
-        $filters['end_modified_date'] = (Util::checkEmpty($end_modified_date))? null :  $end_modified_date . ' 23:59:59';
+        $filters['start_modified_date'] = (Util::checkEmpty($start_modified_date)) ? null : $start_modified_date . ' 00:00:00';
+        $filters['end_modified_date'] = (Util::checkEmpty($end_modified_date)) ? null : $end_modified_date . ' 23:59:59';
 
         $start_created_date = Yii::$app->request->get('start_created_date', null);
         $end_created_date = Yii::$app->request->get('end_created_date', null);
@@ -918,70 +918,86 @@ class ShipmentsController extends BaseController
         $filters['with_total_count'] = true;
 
         $offset = 0;
-        $count = 250;
-        $all_parcels = [];
+        $count = 500;
+
+        $name = 'report_' . date(ServiceConstant::DATE_TIME_FORMAT) . '.csv';
+        header('Content-Type: text/csv');
+        header('Content-Disposition: attachment; filename=' . $name);
+        header('Pragma: no-cache');
+        header("Expires: 0");
+        $stream = fopen("php://output", "w");
+
+
+        $headers = array('SN', 'Waybill Number', 'Sender', 'Sender Email', 'Sender Phone', 'Sender Address', 'Receiver', 'Receiver Email', 'Receiver Phone', 'Receiver Address', 'Weight/Piece', 'Payment Method', 'Amount Due', 'Cash Amount', 'POS Amount', 'POS Transaction ID', 'Parcel Type', 'Cash on Delivery', 'Delivery Type', 'Package Value', '# of Package', 'Shipping Type', 'Created Date', 'Last Modified Date', 'Status', 'Reference Number', 'Originating Branch', 'Route', 'Request Type', 'For Return', 'Other Info', 'Company Reg No', 'Billing Plan Name');
+        fputcsv($stream, $headers);
 
 
         $filters['count'] = $count;
+        $total_count = 0;
+        $serial_number = 1;
         while (true) {
             $filters['offset'] = $offset;
             $filtered_parcels = $parcel->getParcelsByFilters(array_filter($filters, 'strlen'));
             $response = new ResponseHandler($filtered_parcels);
             if ($response->isSuccess()) {
                 $data = $response->getData();
-                $all_parcels = array_merge($all_parcels, $data['parcels']);
-                if (count($all_parcels) == $data['total_count']) {
+                $parcels = $data['parcels'];
+
+                $exportData = [];
+                foreach ($parcels as $key => $result) {
+                    $exportData[] = [
+                        $serial_number++,
+                        $result['parcel_waybill_number'],
+                        $result['sender_firstname'] . ' ' . $result['sender_lastname'],
+                        $result['sender_email'],
+                        $result['sender_phone'],
+                        $result['sender_address_street_address1'] . ' ' . $result['sender_address_street_address2'] . ', ' . $result['sender_address_city_name'] . ', ' . $result['sender_address_state_name'],
+                        $result['receiver_firstname'] . ' ' . $result['receiver_lastname'],
+                        $result['receiver_email'],
+                        $result['receiver_phone'],
+                        $result['receiver_address_street_address1'] . ' ' . $result['receiver_address_street_address2'] . ', ' . $result['receiver_address_city_name'] . ', ' . $result['receiver_address_state_name'],
+                        $result['parcel_weight'],
+                        ServiceConstant::getPaymentMethod($result['parcel_payment_type']),
+                        $result['parcel_amount_due'],
+                        $result['parcel_cash_amount'],
+                        $result['parcel_pos_amount'],
+                        $result['parcel_pos_trans_id'],
+                        ServiceConstant::getParcelType($result['parcel_parcel_type']),
+                        $result['parcel_cash_on_delivery'] ? 'Yes' : 'No',
+                        ServiceConstant::getDeliveryType($result['parcel_delivery_type']),
+                        $result['parcel_package_value'],
+                        $result['parcel_no_of_package'],
+                        ServiceConstant::getShippingType($result['parcel_shipping_type']),
+                        Util::convertToTrackingDateFormat($result['parcel_created_date']),
+                        Util::formatDate(ServiceConstant::DATE_TIME_FORMAT, $result['parcel_modified_date']),
+                        strip_tags(ServiceConstant::getStatus($result['parcel_status'])),
+                        $result['parcel_reference_number'],
+                        $result['created_branch_name'],
+                        Calypso::getDisplayValue($result, 'route_name', ''),
+                        ServiceConstant::getRequestType(Calypso::getDisplayValue($result, 'parcel_request_type', '')),
+                        $result['parcel_for_return'] ? 'Yes' : 'No',
+                        $result['parcel_other_info'],
+                        $result['company_reg_no'],
+                        $result['billing_plan_name'],
+                    ];
+                }
+
+                foreach ($exportData as $row) {
+                    fputcsv($stream, $row);
+                }
+                $total_count += count($parcels);
+                if ($total_count == $data['total_count']) {
                     break;
                 }
                 $offset += $count;
             } else {
-                $this->flashError('An error occurred while trying to download report');
+                $this->flashError('An error occurred while trying to download report: Reason: ' . $response->getError());
                 return $this->redirect(Yii::$app->getRequest()->getReferrer());
             }
         }
 
-        $name = 'report_' . date(ServiceConstant::DATE_TIME_FORMAT) . '.csv';
-        $data = array();
-
-        $headers = array('SN', 'Waybill Number', 'Sender', 'Sender Email', 'Sender Phone', 'Sender Address', 'Receiver', 'Receiver Email', 'Receiver Phone', 'Receiver Address', 'Weight/Piece', 'Payment Method', 'Amount Due', 'Cash Amount', 'POS Amount', 'POS Transaction ID', 'Parcel Type', 'Cash on Delivery', 'Delivery Type', 'Package Value', '# of Package', 'Shipping Type', 'Created Date', 'Last Modified Date', 'Status', 'Reference Number', 'Originating Branch', 'Route', 'Request Type', 'For Return', 'Other Info', 'Company Reg No', 'Billing Plan Name');
-        foreach ($all_parcels as $key => $result) {
-            $data[] = [
-                $key + 1,
-                $result['parcel_waybill_number'],
-                $result['sender_firstname'] . ' ' . $result['sender_lastname'],
-                $result['sender_email'],
-                $result['sender_phone'],
-                $result['sender_address_street_address1'] . ' ' . $result['sender_address_street_address2'] . ', ' . $result['sender_address_city_name'] . ', ' . $result['sender_address_state_name'],
-                $result['receiver_firstname'] . ' ' . $result['receiver_lastname'],
-                $result['receiver_email'],
-                $result['receiver_phone'],
-                $result['receiver_address_street_address1'] . ' ' . $result['receiver_address_street_address2'] . ', ' . $result['receiver_address_city_name'] . ', ' . $result['receiver_address_state_name'],
-                $result['parcel_weight'],
-                ServiceConstant::getPaymentMethod($result['parcel_payment_type']),
-                $result['parcel_amount_due'],
-                $result['parcel_cash_amount'],
-                $result['parcel_pos_amount'],
-                $result['parcel_pos_trans_id'],
-                ServiceConstant::getParcelType($result['parcel_parcel_type']),
-                $result['parcel_cash_on_delivery'] ? 'Yes' : 'No',
-                ServiceConstant::getDeliveryType($result['parcel_delivery_type']),
-                $result['parcel_package_value'],
-                $result['parcel_no_of_package'],
-                ServiceConstant::getShippingType($result['parcel_shipping_type']),
-                Util::convertToTrackingDateFormat($result['parcel_created_date']),
-                Util::formatDate(ServiceConstant::DATE_TIME_FORMAT, $result['parcel_modified_date']),
-                strip_tags(ServiceConstant::getStatus($result['parcel_status'])),
-                $result['parcel_reference_number'],
-                $result['created_branch_name'],
-                Calypso::getDisplayValue($result, 'route_name', ''),
-                ServiceConstant::getRequestType(Calypso::getDisplayValue($result, 'parcel_request_type', '')),
-                $result['parcel_for_return'] ? 'Yes' : 'No',
-                $result['parcel_other_info'],
-                $result['company_reg_no'],
-                $result['billing_plan_name'],
-            ];
-        }
-        Util::exportToCSV($name, $headers, $data);
+        fclose($stream);
+        exit;
     }
 
     /**

@@ -151,7 +151,7 @@ abstract class BaseAdapter
         if (is_null($this->_curlagent)) {
             $this->_curlagent = new CurlAgent('', true);
         }
-        if ($this->_access_token != null) {
+        if ($this->_access_token != null && !$this->_curlagent->getHeaders()) {
             $this->_curlagent->setHeader('i', $this->_client_id);
             $this->_curlagent->setHeader('a', $this->_access_token);
         }
