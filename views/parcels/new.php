@@ -17,6 +17,7 @@ $this->params['breadcrumbs'] = array(
 );
 
 $is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
+$is_admin = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HQ;
 ?>
 
 
@@ -75,7 +76,7 @@ $is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
 
                                     <div class="validate" style=<?= ($edit) ? 'display:none;' : '' ?>>
                                         <div class="radio-inline">
-                                            <!--This was done to allow the default to be send to hub -->
+                                            <!--This was done to allow the default to be sent to hub -->
                                             <input id="sendToHubYes" type="radio" name="send_to_hub" value="1"
                                                    style="display:none;"
                                                 <?= (Calypso::getValue($parcel, "info.to_hub", '') == "2") ? "" : ' checked="checked"'; ?>>
@@ -88,7 +89,7 @@ $is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
                                         </div>
                                     </div>
                                 </div>
-                                <?php if ($is_hub) {
+                                <?php if ($is_hub  || $is_admin){
                                     ?>
                                     <div class="col-xs-12 col-sm-6 form-group" id="hubsWrap">
                                         <label>Destination</label>

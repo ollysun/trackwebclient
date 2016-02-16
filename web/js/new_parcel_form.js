@@ -712,7 +712,7 @@ $(document).ready(function () {
         $('#shipper_corporate_select').trigger('change');
     }
 
-    $('#create_parcel_btn').click(function () {
+    $('#create_parcel_btn, #update_parcel_btn').click(function () {
 
         if ($('#corporate_shipment').is(':checked')) {
             if ($('#company').val() != $('#shipper_corporate_select').val()) {
