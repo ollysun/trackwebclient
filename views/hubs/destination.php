@@ -36,28 +36,28 @@ $user_data = $this->context->userData;
     <div class="main-box-header table-search-form">
         <div class="clearfix">
             <div class="pull-left">
-                    <div class="pull-left form-group">
-                        <label for="branch_type">Branch type</label><br>
-                        <select id="branch_type" class="form-control input-sm" name="branch_type">
-                            <?php if (!$isGroundsman): ?>
-                                <option value="hub">Hub</option>
-                            <?php else: ?>
-                                <option value="" selected>Select...</option>
-                                <option value="route">Route</option>
-                            <?php endif; ?>
-                            <option value="exp" <?php echo($isGroundsman ? '' : 'selected') ?> >Express Centres</option>
-                        </select>
-                    </div>
-                    <div class="pull-left form-group">
-                        <label for="branch_name" id="hub_branch_label">Branch Name</label><br>
-                        <select id="branch_name" class="form-control input-sm" name="branch">
-                            <option value="">Select Name...</option>
-                        </select>
-                    </div>
-                    <div class="pull-left">
-                        <label for="">&nbsp;</label><br>
-                        <button type="submit" class="btn btn-sm btn-default" id="btn_apply_dest">Apply</button>
-                    </div>
+                <div class="pull-left form-group">
+                    <label for="branch_type">Branch type</label><br>
+                    <select id="branch_type" class="form-control input-sm" name="branch_type">
+                        <?php if (!$isGroundsman): ?>
+                            <option value="hub">Hub</option>
+                        <?php else: ?>
+                            <option value="" selected>Select...</option>
+                            <option value="route">Route</option>
+                        <?php endif; ?>
+                        <option value="exp" <?php echo($isGroundsman ? '' : 'selected') ?> >Express Centres</option>
+                    </select>
+                </div>
+                <div class="pull-left form-group">
+                    <label for="branch_name" id="hub_branch_label">Branch Name</label><br>
+                    <select id="branch_name" class="form-control input-sm" name="branch">
+                        <option value="">Select Name...</option>
+                    </select>
+                </div>
+                <div class="pull-left">
+                    <label for="">&nbsp;</label><br>
+                    <button type="submit" class="btn btn-sm btn-default" id="btn_apply_dest">Apply</button>
+                </div>
             </div>
 
             <?php if ($isGroundsman): ?>
@@ -74,80 +74,82 @@ $user_data = $this->context->userData;
                 <form method="post" id="table_form">
                     <input type="hidden" id="form_branch_type" name="branch_type"/>
                     <input type="hidden" id="form_branch_name" name="branch"/>
-                <table id="next_dest" class="table table-hover next_dest">
-                    <thead>
-                    <tr>
-                        <th style="width: 20px;">
-                            <div class='checkbox-nice'>
-                                <input id='chk_all' type='checkbox' class='chk_all'><label for='chk_all'></label>
-                            </div>
-                        </th>
-                        <th style="width: 20px">S/N</th>
-                        <th>Waybill No</th>
-                        <th>Origin</th>
-                        <th>Next Destination</th>
-                        <th>Final Destination</th>
-                        <th>Reference No</th>
-                        <th>Request Type</th>
-                        <th>Return Status</th>
-                        <th>Weight/Piece</th>
-                        <?php if($user_data['role_id'] == ServiceConstant::USER_TYPE_ADMIN) { ?>
-                            <th>Originating Branch</th>
-                            <th>Current Location</th>
-                        <?php } ?>
-                        <th>Age analysis</th>
-                        <th>Action</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <?php
-                    $row = $offset;
-                    foreach ($parcel_next as $parcels) {
-                        ++$row;
-                        ?>
-                        <tr data-waybill='<?= $parcels['waybill_number'] ?>'>
-                            <td>
+                    <table id="next_dest" class="table table-hover next_dest">
+                        <thead>
+                        <tr>
+                            <th style="width: 20px;">
                                 <div class='checkbox-nice'>
-                                    <input name='waybills[]' id='chk_<?= $row; ?>' type='checkbox'
-                                           class='chk_next'><label
-                                        for='chk_<?= $row; ?>'></label>
+                                    <input id='chk_all' type='checkbox' class='chk_all'><label for='chk_all'></label>
                                 </div>
-                            </td>
-                            <td><?= $row; ?></td>
-                            <td>
-                                <a href='/shipments/view?waybill_number=<?= Calypso::getValue($parcels, 'waybill_number'); ?>'><?= Calypso::getValue($parcels, 'waybill_number') ?></a>
-                            </td>
-                            <td><?= ucwords(Calypso::getValue($parcels, 'sender_address.city.name') . ', ' . Calypso::getValue($parcels, 'sender_address.state.name')); ?></td>
-                            <td></td>
-                            <td>
-                                <?php if (!is_null(Calypso::getDisplayValue($parcels, 'receiver_address.street_address1'))): ?>
-                                    <?= trim(Calypso::getValue($parcels, 'receiver_address.street_address1', ''), ',') ?>
-                                    <?= ', ' ?>
-                                <?php endif; ?>
-
-
-                                <?php if (!is_null(Calypso::getDisplayValue($parcels, 'receiver_address.street_address2'))): ?>
-                                    <?= trim(Calypso::getValue($parcels, 'receiver_address.street_address2', ''), ',') ?>
-                                    <?= ', ' ?>
-                                <?php endif; ?>
-
-                                <?= ucwords(Calypso::getValue($parcels, 'receiver_address.city.name') . ', ' . Calypso::getValue($parcels, 'receiver_address.state.name')); ?>
-                            </td>
-                            <td><?= Calypso::getValue($parcels, 'reference_number') ?></td>
-                            <td><?= ServiceConstant::getRequestType($parcels['request_type']) ?></td>
-                            <td><?= ServiceConstant::getReturnStatus($parcels); ?></td>
-                            <td><?= Calypso::getValue($parcels, 'weight') ?></td>
-                            <?php if($user_data['role_id'] == ServiceConstant::USER_TYPE_ADMIN) { ?>
-                                <td><?= strtoupper(Calypso::getValue($parcels, "created_branch.name")) ?></td>
-                                <td><?= ParcelAdapter::getCurrentLocation($parcels); ?></td>
+                            </th>
+                            <th style="width: 20px">S/N</th>
+                            <th>Waybill No</th>
+                            <th>Origin</th>
+                            <th>Next Destination</th>
+                            <th>Final Destination</th>
+                            <th>Reference No</th>
+                            <th>Request Type</th>
+                            <th>Return Status</th>
+                            <th>Weight/Piece</th>
+                            <?php if ($user_data['role_id'] == ServiceConstant::USER_TYPE_ADMIN) { ?>
+                                <th>Originating Branch</th>
+                                <th>Current Location</th>
                             <?php } ?>
-                            <td></td>
-                            <td><?= $this->render('../elements/parcel/partial_return_button', ['parcel' => $parcels, 'reasons_list' => $reasons_list]) ?></td>
+                            <th>Age analysis</th>
+                            <th>Action</th>
                         </tr>
-                    <?php } ?>
-                    </tbody>
-                </table>
-                    </form>
+                        </thead>
+                        <tbody>
+                        <?php
+                        $row = $offset;
+                        foreach ($parcel_next as $parcels) {
+                            ++$row;
+                            ?>
+                            <tr data-waybill='<?= $parcels['waybill_number'] ?>'>
+                                <td>
+                                    <div class='checkbox-nice'>
+                                        <input name='waybills[]' id='chk_<?= $row; ?>' type='checkbox'
+                                               class='chk_next'><label
+                                            for='chk_<?= $row; ?>'></label>
+                                    </div>
+                                </td>
+                                <td><?= $row; ?></td>
+                                <td>
+                                    <a href='/shipments/view?waybill_number=<?= Calypso::getValue($parcels, 'waybill_number'); ?>'><?= Calypso::getValue($parcels, 'waybill_number') ?></a>
+                                </td>
+                                <td><?= ucwords(Calypso::getValue($parcels, 'sender_address.city.name') . ', ' . Calypso::getValue($parcels, 'sender_address.state.name')); ?></td>
+                                <td></td>
+                                <td>
+                                    <?php if (!is_null(Calypso::getDisplayValue($parcels, 'receiver_address.street_address1'))): ?>
+                                        <?= trim(Calypso::getValue($parcels, 'receiver_address.street_address1', ''), ',') ?>
+                                        <?= ', ' ?>
+                                    <?php endif; ?>
+
+
+                                    <?php if (!is_null(Calypso::getDisplayValue($parcels, 'receiver_address.street_address2'))): ?>
+                                        <?= trim(Calypso::getValue($parcels, 'receiver_address.street_address2', ''), ',') ?>
+                                        <?= ', ' ?>
+                                    <?php endif; ?>
+
+                                    <?= ucwords(Calypso::getValue($parcels, 'receiver_address.city.name') . ', ' . Calypso::getValue($parcels, 'receiver_address.state.name')); ?>
+                                </td>
+                                <td><?= Calypso::getValue($parcels, 'reference_number') ?></td>
+                                <td><?= ServiceConstant::getRequestType($parcels['request_type']) ?></td>
+                                <td><?= ServiceConstant::getReturnStatus($parcels); ?></td>
+                                <td><?= Calypso::getValue($parcels, 'weight') ?></td>
+                                <?php if ($user_data['role_id'] == ServiceConstant::USER_TYPE_ADMIN) { ?>
+                                    <td><?= strtoupper(Calypso::getValue($parcels, "created_branch.name")) ?></td>
+                                    <td><?= ParcelAdapter::getCurrentLocation($parcels); ?></td>
+                                <?php } ?>
+                                <td></td>
+                                <td>
+                                    <?= $this->render('../elements/parcel/partial_return_button', ['parcel' => $parcels, 'reasons_list' => $reasons_list]) ?>
+                                </td>
+                            </tr>
+                        <?php } ?>
+                        </tbody>
+                    </table>
+                </form>
             </div>
             <?= $this->render('../elements/pagination_and_summary', ['first' => $offset, 'last' => $row, 'total_count' => $total_count, 'page_width' => $page_width]) ?>
 

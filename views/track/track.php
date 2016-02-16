@@ -154,9 +154,9 @@ $this->title = 'Tracking Portal';
                         <span><?= (Calypso::getValue($current_state_info, 'status') == ServiceConstant::BEING_DELIVERED) ? "On it's way to you" : '' ?></span>
                         <?php if (Calypso::getValue($current_state_info, 'status') == ServiceConstant::DELIVERED && Calypso::getValue($tracking_info, 'delivery_receipt', false)): ?>
                             <span
-                                class="tracking-status-inner date"><?= Util::convertToTrackingDateFormat(Calypso::getValue($current_state_info, 'created_date', '')) ?></span>
+                                class="tracking-status-inner date"><?= Util::convertToTrackingDateFormat(Calypso::getValue($tracking_info, 'delivery_receipt.delivered_at', '')) ?></span>
                             <span
-                                class="tracking-status-inner time"><?= Util::convertDateTimeToTime(Calypso::getValue($current_state_info, 'created_date', '')) ?></span>
+                                class="tracking-status-inner time"><?= Util::convertDateTimeToTime(Calypso::getValue($tracking_info, 'delivery_receipt.delivered_at', '')) ?></span>
                             <br><a class="btn btn-sm btn-success" tabindex="0" role="button" data-toggle="popover"
                                    data-placement="left" title="Proof of Delivery Information">Proof of Delivery</a>
                             <div id="pod" style="display:none;">
@@ -170,7 +170,7 @@ $this->title = 'Tracking Portal';
                                     <label>Date</label>
 
                                     <div
-                                        class="form-control-static"><?= Util::convertToTrackingDateFormat(Calypso::getValue($tracking_info, 'delivery_receipt.created_at', '')) ?></div>
+                                        class="form-control-static"><?= Util::convertToTrackingDateFormat(Calypso::getValue($tracking_info, 'delivery_receipt.delivered_at', '')) ?></div>
                                 </div>
                                 <?php if (Calypso::getDisplayValue($tracking_info, 'delivery_receipt.receipt_path', false)): ?>
                                     <div class="form-group">
