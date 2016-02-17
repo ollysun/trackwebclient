@@ -100,7 +100,7 @@ var Parcel_Delivery = {
 };
 
 $(document).ready(function(){
-    $('[data-target=#runModal]').on('click', function(event) {
+    $('button[data-target="#runModal"]').on('click', function(event) {
         var chkboxes = $('.checkable:checked');
         var selected = false;
 

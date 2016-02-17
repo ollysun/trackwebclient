@@ -8,7 +8,7 @@ $(document).ready(function () {
     });
 
 
-    $("[data-target=#passwordModal]").on("click", function (event) {
+    $("button[data-target='#passwordModal']").on("click", function (event) {
         var chkboxes = $(".checkable:checked");
 
         if (!chkboxes.length) {
