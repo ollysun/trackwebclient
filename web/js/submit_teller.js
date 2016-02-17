@@ -4,7 +4,7 @@ $(document).ready(function () {
         $("input:checkbox").prop("checked", $(this).prop("checked"));
     });
 
-    $("[data-target=#teller-modal]").on("click", function (event) {
+    $("button[data-target='#teller-modal']").on("click", function (event) {
         var chkboxes = $(".checkable:checked");
 
         if (!chkboxes.length) {
