@@ -618,6 +618,7 @@ class ShipmentsController extends BaseController
         $user_session = Calypso::getInstance()->session("user_session");
         $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $dispatch_parcels = $parcelsAdapter->getECDispatchedParcels($this->branch_to_view, $offset, $page_width, $search);
+        $reasons_list = $parcelsAdapter->getParcelReturnReasons();
         $parcels = new ResponseHandler($dispatch_parcels);
         $total_count = 0;
         if ($parcels->getStatus() == ResponseHandler::STATUS_OK) {
@@ -626,7 +627,7 @@ class ShipmentsController extends BaseController
             $total_count = $data['total_count'];
         }
 
-        return $this->render('dispatched', array('todays_date' => $todays_date, 'parcels' => $parcels, 'total_count' => $total_count, 'offset' => $offset, 'page_width' => $page_width));
+        return $this->render('dispatched', array('reasons_list' => $reasons_list, 'todays_date' => $todays_date, 'parcels' => $parcels, 'total_count' => $total_count, 'offset' => $offset, 'page_width' => $page_width));
     }
 
     public function actionDelivered($page = 1, $page_width = null)
