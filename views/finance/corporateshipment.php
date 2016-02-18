@@ -17,7 +17,7 @@ $this->params['breadcrumbs'] = array(
 
 <!-- Generate Invoices Modal -->
 <div class="modal fade" id="generateInvoice">
-    <form class="validate-form" method="post" action="<?= Url::to("/finance/createinvoice");?>">
+    <form class="validate-form" method="post" action="<?= Url::to("/finance/createinvoice"); ?>">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -140,8 +140,10 @@ $this->params['breadcrumbs'] = array(
                             <select name="status" class="form-control" style="width: 150px">
                                 <option value="">Select Status</option>
                                 <?php foreach ($statuses as $status): ?>
-                                    <option <?= $selectedStatus == $status ? 'selected' : '' ?>
-                                        value="<?= $status ?>"><?= ServiceConstant::getStatus($status); ?></option>
+                                    <?php if ($status != ServiceConstant::CANCELLED) { ?>
+                                        <option <?= $selectedStatus == $status ? 'selected' : '' ?>
+                                            value="<?= $status ?>"><?= ServiceConstant::getStatus($status); ?></option>
+                                    <?php } ?>
                                 <?php endforeach; ?>
                             </select>
                         </div>
@@ -264,7 +266,8 @@ $this->params['breadcrumbs'] = array(
         <td>{{company_name}}</td>
         <td>{{amount}}</td>
         <td>
-            <input type='text' name='discount[]' data-amount='{{amount}}' data-waybill='{{waybill_number}}' class='form-control' style='width:50px;' value='0'>
+            <input type='text' name='discount[]' data-amount='{{amount}}' data-waybill='{{waybill_number}}'
+                   class='form-control' style='width:50px;' value='0'>
             <input type='hidden' name='waybill_number[]' value='{{waybill_number}}'>
             <input type='hidden' data-parcel_waybill='{{waybill_number}}' name='net_amount[]' value='{{amount}}'>
         </td>
