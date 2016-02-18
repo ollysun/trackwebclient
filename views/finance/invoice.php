@@ -4,7 +4,6 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use Adapter\Globals\ServiceConstant;
 
-
 $this->title = 'Invoices';
 $this->params['breadcrumbs'] = array(
     array(
@@ -17,18 +16,20 @@ $this->params['breadcrumbs'] = array(
 ?>
 
 <!-- Generate Credit Note Modal -->
-<form method="post" action="<?= Url::to("/finance/generatecreditnote");?>">
+<form method="post" action="<?= Url::to("/finance/generatecreditnote"); ?>">
     <div class="modal fade" id="generateCreditNote">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">Generate Credit Note for Invoice (<span id="invoiceNumberLabel"></span>)</h4>
+                    <h4 class="modal-title">Generate Credit Note for Invoice (<span id="invoiceNumberLabel"></span>)
+                    </h4>
                 </div>
                 <div class="modal-body">
                     <div id="loading" style="text-align: center;">
                         <i class="fa fa-spin fa-spinner fa-4x"></i>
+
                         <p>Loading invoice parcels...</p>
                     </div>
                     <table id="table" class="hide table table-hover dataTable">
@@ -74,6 +75,7 @@ $this->params['breadcrumbs'] = array(
 
                     <div id="viewInvoiceLoading" style="text-align: center;">
                         <i class="fa fa-spin fa-spinner fa-4x"></i>
+
                         <p>Loading invoice parcels...</p>
                     </div>
                     <table id="viewInvoiceTable" class="table table-hover dataTable hide">
@@ -215,14 +217,20 @@ $this->params['breadcrumbs'] = array(
                             <td><?= Calypso::getValue($invoice, 'total'); ?></td>
                             <td><?= Calypso::getValue($invoice, 'credit_note.credit_note_number'); ?></td>
                             <td>
+                                <?php
+                                ?>
+                                <span class="hide"><?= json_encode($invoice)?></span>
                                 <button
-                                    data-invoice='<?= json_encode($invoice); ?>'
-                                    data-view_invoice="true" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#viewInvoice">
+                                    data-view_invoice="true" class="btn btn-primary btn-xs" data-toggle="modal"
+                                    data-target="#viewInvoice">
                                     View
                                 </button>
 
                                 <?php if (is_null(Calypso::getValue($invoice, 'credit_note.id'))): ?>
-                                    <button data-company_name="<?= Calypso::getValue($invoice, 'company.name'); ?>"  data-invoice_number="<?= Calypso::getValue($invoice, 'invoice_number'); ?>" class="btn btn-primary btn-xs" data-generate_credit_note="true" data-toggle="modal"
+                                    <button data-company_name="<?= Calypso::getValue($invoice, 'company.name'); ?>"
+                                            data-invoice_number="<?= Calypso::getValue($invoice, 'invoice_number'); ?>"
+                                            class="btn btn-primary btn-xs" data-generate_credit_note="true"
+                                            data-toggle="modal"
                                             data-target="#generateCreditNote">Generate Credit
                                         Note
                                     </button>
@@ -250,9 +258,11 @@ $this->params['breadcrumbs'] = array(
         <td>{{discount}}</td>
         <td>{{net_amount}}</td>
         <td>
-            <input name="deducted_amount[]" data-waybill='{{waybill_number}}' data-net_amount="{{net_amount}}" type="text" class="form-control" style="width:100px;margin-left: 65px;" value="0">
+            <input name="deducted_amount[]" data-waybill='{{waybill_number}}' data-net_amount="{{net_amount}}"
+                   type="text" class="form-control" style="width:100px;margin-left: 65px;" value="0">
             <input type='hidden' name='invoice_parcel[]' value='{{invoice_parcel_id}}'>
-            <input type='hidden' data-parcel_waybill='{{waybill_number}}' name='new_net_amount[]' value='{{net_amount}}'>
+            <input type='hidden' data-parcel_waybill='{{waybill_number}}' name='new_net_amount[]'
+                   value='{{net_amount}}'>
         </td>
         <td data-waybill='{{waybill_number}}'>{{net_amount}}</td>
     </tr>
@@ -277,7 +287,8 @@ $this->params['breadcrumbs'] = array(
         <td>{{company_name}}</td>
         <td>{{amount}}</td>
         <td>
-            <input type="text" disabled class="form-control" style="width:100px;margin-left: 65px;" value="{{discount}}">
+            <input type="text" disabled class="form-control" style="width:100px;margin-left: 65px;"
+                   value="{{discount}}">
         </td>
         <td>{{net_amount}}</td>
     </tr>
