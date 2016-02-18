@@ -200,16 +200,31 @@ $this->params['content_header_button'] = "<a href='" . $downloadURL . "' class='
                         </div>
                         <div class="pull-left form-group form-group-sm">
                             <label for="">Current Branch</label><br>
-                            <select id="current_branch_select" class="form-control  filter-status" multiple="true">
+                            <select id="current_branch_select" class="form-control  filter-status" multiple="true>
                                 <?php
 
-                                foreach ($branches as $branch) { ?>
+                            foreach ($branches as $branch) { ?>
                                     <option
-                                        value="<?= $branch['id']; ?>" <?= $filters['from_branch_id'] == $branch['id'] ? 'selected' : '' ?>><?= strtoupper($branch['name']); ?></option>
-                                <?php } ?>
+                                        value="<?= $branch['id']; ?>
+                            " <?= $filters['from_branch_id'] == $branch['id'] ? 'selected' : '' ?>
+                            ><?= strtoupper($branch['name']); ?></option>
+                            <?php } ?>
                             </select>
                             <input type="hidden" name="from_branch_id" value=""/>
                         </div>
+
+                        <div class="pull-left form-group form-group-sm">
+                            <label for="">Select Corporate</label><br>
+                            <select name="company_id" id="current_branch_select" class="form-control  filter-status">
+                                <option value="">All</option>
+                                <?php foreach ($companies as $company) { ?>
+                                <option
+                                    value=<?= $company['id']; ?> <?= ($company['id'] == $selected_company) ? 'selected' : '' ?>>
+                                    <?= strtoupper($company['name']); ?></option>
+                                    <?php } ?>
+                            </select>
+                        </div>
+
                         <div class="pull-left">
                             <label>&nbsp;</label><br>
                             <button class="btn btn-default btn-sm" id="apply" type="submit"><i class="fa fa-filter"></i>

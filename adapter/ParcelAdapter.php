@@ -490,6 +490,7 @@ class ParcelAdapter extends BaseAdapter
      */
     public function getParcelsByFilters($filters)
     {
+        $filters = array_merge($filters,['with_company' => 1]);
         return $this->request(ServiceConstant::URL_GET_ALL_PARCEL, $filters, self::HTTP_GET);
     }
 
