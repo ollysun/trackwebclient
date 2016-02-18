@@ -292,6 +292,7 @@ class FinanceController extends BaseController
         $filters = ['invoice_number' => $invoice_number];
         $invoice = $invoiceAdapter->getInvoice($filters);
         $invoiceParcels = $invoiceAdapter->getInvoiceParcels(array_merge($filters, [
+            'with_delivery_receipt' => 1,
             'with_receiver_address' => 1,
             'with_receiver' => 1,
             'with_receiver_city' => 1,
