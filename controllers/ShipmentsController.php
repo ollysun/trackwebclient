@@ -804,7 +804,7 @@ class ShipmentsController extends BaseController
         $page_width = is_null($page_width) ? $this->page_width : $page_width;
         $offset = ($page - 1) * $page_width;
 
-        $filter_params = ['start_modified_date', 'end_modified_date', 'for_return', 'parcel_type', 'status', 'min_weight', 'max_weight', 'min_amount_due', 'max_amount_due', 'cash_on_delivery', 'delivery_type', 'payment_type', 'shipping_type', 'start_created_date', 'end_created_date', 'created_branch_id', 'route_id', 'request_type', 'from_branch_id', 'branch_type'];
+        $filter_params = ['company_id', 'start_modified_date', 'end_modified_date', 'for_return', 'parcel_type', 'status', 'min_weight', 'max_weight', 'min_amount_due', 'max_amount_due', 'cash_on_delivery', 'delivery_type', 'payment_type', 'shipping_type', 'start_created_date', 'end_created_date', 'created_branch_id', 'route_id', 'request_type', 'from_branch_id', 'branch_type'];
         $extra_details = ['with_receiver', 'with_receiver_address', 'with_route'];
 
 
@@ -864,6 +864,8 @@ class ShipmentsController extends BaseController
             $this->flashError('Could not load reports');
         }
 
+        $companies = (new CompanyAdapter())->getAllCompanies([]);
+
         return $this->render('report', array(
             'parcels' => $parcels,
             'branches' => $branches,
@@ -882,7 +884,9 @@ class ShipmentsController extends BaseController
             'end_created_date' => $end_created_date,
             'offset' => $offset,
             'page_width' => $page_width,
-            'total_count' => $total_count
+            'total_count' => $total_count,
+            'companies' => $companies,
+            'selected_company' => $filters['company_id']
         ));
     }
 
@@ -928,7 +932,7 @@ class ShipmentsController extends BaseController
         $stream = fopen("php://output", "w");
 
 
-        $headers = array('SN', 'Waybill Number', 'Sender', 'Sender Email', 'Sender Phone', 'Sender Address', 'Receiver', 'Receiver Email', 'Receiver Phone', 'Receiver Address', 'Weight/Piece', 'Payment Method', 'Amount Due', 'Cash Amount', 'POS Amount', 'POS Transaction ID', 'Parcel Type', 'Cash on Delivery', 'Delivery Type', 'Package Value', '# of Package', 'Shipping Type', 'Created Date', 'Last Modified Date', 'Status', 'Reference Number', 'Originating Branch', 'Route', 'Request Type', 'For Return', 'Other Info', 'Company Reg No', 'Billing Plan Name', 'Created By');
+        $headers = array('SN', 'Waybill Number', 'Sender', 'Sender Email', 'Sender Phone', 'Sender Address', 'Sender City', 'Sender State', 'Receiver', 'Receiver Email', 'Receiver Phone', 'Receiver Address', 'Receiver City', 'Receiver State', 'Weight/Piece', 'Payment Method', 'Amount Due', 'Cash Amount', 'POS Amount', 'POS Transaction ID', 'Parcel Type', 'Cash on Delivery', 'Delivery Type', 'Package Value', '# of Package', 'Shipping Type', 'Created Date', 'Last Modified Date', 'Status', 'Reference Number', 'Originating Branch', 'Route', 'Request Type', 'For Return', 'Other Info', 'Company Reg No', 'Billing Plan Name', 'Created By');
         fputcsv($stream, $headers);
 
 
@@ -951,11 +955,15 @@ class ShipmentsController extends BaseController
                         $result['sender_firstname'] . ' ' . $result['sender_lastname'],
                         $result['sender_email'],
                         $result['sender_phone'],
-                        $result['sender_address_street_address1'] . ' ' . $result['sender_address_street_address2'] . ', ' . $result['sender_address_city_name'] . ', ' . $result['sender_address_state_name'],
+                        $result['sender_address_street_address1'] . ' ' . $result['sender_address_street_address2'],
+                        $result['sender_address_city_name'],
+                        $result['sender_address_state_name'],
                         $result['receiver_firstname'] . ' ' . $result['receiver_lastname'],
                         $result['receiver_email'],
                         $result['receiver_phone'],
-                        $result['receiver_address_street_address1'] . ' ' . $result['receiver_address_street_address2'] . ', ' . $result['receiver_address_city_name'] . ', ' . $result['receiver_address_state_name'],
+                        $result['receiver_address_street_address1'] . ' ' . $result['receiver_address_street_address2'],
+                        $result['receiver_address_city_name'],
+                        $result['receiver_address_state_name'],
                         $result['parcel_weight'],
                         ServiceConstant::getPaymentMethod($result['parcel_payment_type']),
                         $result['parcel_amount_due'],
