@@ -73,7 +73,7 @@ class FinanceController extends BaseController
         $filters['end_created_date'] = $toDate . ' 23:59:59';
         $filters['company_id'] = Yii::$app->request->get('company');
         $filters['status'] = Yii::$app->request->get('status');
-        $filters['is_corporate_shipment'] = 1;
+        $filters['remove_cancelled_shipments'] = 1;
         $filters['with_bank_account'] = true;
 
         $parcelAdapter = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
