@@ -86,7 +86,7 @@ $(document).ready(function () {
     });
 
     $("button[data-view_invoice='true']").unbind('click').click(function () {
-        var invoice = $(this).data('invoice');
+        var invoice = JSON.parse($(this).prev().html());
         Invoice.Constants.view_invoiceNumber.html(invoice.invoice_number);
         Invoice.Constants.view_accountNumber.val(invoice.account_number);
         Invoice.Constants.view_currency.val(invoice.currency);
