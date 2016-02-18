@@ -61,11 +61,13 @@ class FinanceController extends BaseController
      * @author Adegoke Obasa <goke@cottacush.com>
      * @author Bolade Oye <bolade@cottacush.com>
      * @param int $page
+     * @param int $page_width
      * @return string
      */
-    public function actionCorporateshipment($page = 1)
+    public function actionCorporateshipment($page = 1, $page_width = null)
     {
-        $offset = ($page - 1) * $this->page_width;
+        $page_width = is_null($page_width) ? $this->page_width : $page_width;
+        $offset = ($page - 1) * $page_width;
 
         $fromDate = Yii::$app->request->get('from', Util::getToday('/'));
         $toDate = Yii::$app->request->get('to', Util::getToday('/'));
@@ -76,7 +78,7 @@ class FinanceController extends BaseController
         $filters['with_bank_account'] = true;
 
         $parcelAdapter = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $corporateParcelsResponse = $parcelAdapter->getCorporateParcels($offset, $this->page_width, $filters);
+        $corporateParcelsResponse = $parcelAdapter->getCorporateParcels($offset, $page_width, $filters);
         $corporateParcels = Calypso::getValue($corporateParcelsResponse, 'parcels');
         $totalCount = Calypso::getValue($corporateParcelsResponse, 'total_count');
 
@@ -93,7 +95,7 @@ class FinanceController extends BaseController
             'total_count' => $totalCount,
             'selectedCompany' => $filters['company_id'],
             'selectedStatus' => $filters['status'],
-            'page_width' => $this->page_width
+            'page_width' => $page_width
         ]);
     }
 
@@ -345,7 +347,7 @@ class FinanceController extends BaseController
         $creditNoteDetails = $printOutDetails['credit_note'];
         $creditNoteParcels = $printOutDetails['credit_note_parcels'];
         $this->layout = 'print';
-        return $this->render('print_credit_note',['company_name' => $company_name, 'credit_note_details' => $creditNoteDetails, 'credit_note_parcels' =>  $creditNoteParcels]);
+        return $this->render('print_credit_note', ['company_name' => $company_name, 'credit_note_details' => $creditNoteDetails, 'credit_note_parcels' => $creditNoteParcels]);
     }
 
     /**
@@ -382,6 +384,6 @@ class FinanceController extends BaseController
         $creditNoteParcelsResources = $creditNoteAdapter->getCreditNoteParcels($creditNoteNo);
         $responseHandler = new ResponseHandler($creditNoteParcelsResources);
         $creditNoteParcels = $responseHandler->getData();
-        return $this->renderPartial('partial_credit_note_parcels', ['credit_note_parcels' => $creditNoteParcels,'company_name' => $companyName ,'credit_note_no' => $creditNoteNo]);
+        return $this->renderPartial('partial_credit_note_parcels', ['credit_note_parcels' => $creditNoteParcels, 'company_name' => $companyName, 'credit_note_no' => $creditNoteNo]);
     }
 }
