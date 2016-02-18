@@ -109,6 +109,10 @@ $(document).ready(function () {
            $("textarea[name=to_address]").val('');
        }
     });
+
+    $("select#page_width").on('change', function (event) {
+        $("#records_filter").click();
+    });
 });
 
 

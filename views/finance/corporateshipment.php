@@ -147,9 +147,26 @@ $this->params['breadcrumbs'] = array(
                                 <?php endforeach; ?>
                             </select>
                         </div>
+
                         <div class="pull-left">
                             <label>&nbsp;</label><br>
-                            <button class="btn btn-default btn-sm"><i class="fa fa-search"></i></button>
+                            <button class="btn btn-default btn-sm" id="records_filter"><i class="fa fa-search"></i></button>
+                        </div>
+
+                        <div class="form-group form-group-sm form-inline">
+                            <br/>
+                            <label for="page_width">Records</label>
+                            <select name="page_width" id="page_width" class="form-control ">
+                                <?php
+                                $page_width = isset($page_width) ? $page_width : 50;
+                                for ($i = 50; $i <= 500; $i += 50) {
+                                    ?>
+                                    <option <?= $page_width == $i ? 'selected' : '' ?>
+                                        value="<?= $i ?>"><?= $i ?></option>
+                                    <?php
+                                }
+                                ?>
+                            </select>
                         </div>
                     </div>
                 </form>
@@ -162,7 +179,6 @@ $this->params['breadcrumbs'] = array(
                 <button id="generateInvoiceBtn" class="btn btn-primary" data-toggle="modal"
                         data-target="#generateInvoice">Generate Invoice
                 </button>
-
             </div>
         </div>
     </div>
