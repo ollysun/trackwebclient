@@ -237,7 +237,7 @@ class ShipmentsController extends BaseController
 
         if (!empty(Calypso::getInstance()->get()->search)) {  //check if not empty criteria
             $search = Calypso::getInstance()->get()->search;
-            $response = $parcel->getSearchParcels(null, $search, $offset, $page_width, 1, $this->branch_to_view);
+            $response = $parcel->getSearchParcels(null, $search, $offset, $page_width, 1, $this->branch_to_view,1);
             $search_action = $search;
         } else {
             $response = $parcel->getParcels(null, null, ServiceConstant::FOR_SWEEPER, $this->branch_to_view, $offset, $page_width, 1, 1, null, true);
