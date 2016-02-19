@@ -41,7 +41,7 @@ $user_data = $this->context->userData;
     <div class="main-box-body">
         <?php if (!empty($parcels)) { ?>
             <div class="table-responsive">
-                <table class="table table-hover">
+                <table class="table table-hover dataTable">
                     <thead>
                     <tr>
                         <th style="width: 20px">S/N</th>
@@ -89,3 +89,5 @@ $user_data = $this->context->userData;
 </div>
 
 
+<?php $this->registerJsFile('@web/js/table.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/libs/jquery.dataTables.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
