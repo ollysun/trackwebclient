@@ -504,7 +504,8 @@ $is_admin = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HQ;
                                     </div>
                                 </div>
                                 <br>
-                                <?php if ($is_admin && $edit) { ?>
+
+                                <div style="display: <?= ($is_admin && $edit) ? '' : 'none' ?>;">
                                     <div class="row">
                                         <div class="col-xs-12 col-sm-6 form-group">
                                             <label>Insurance</label>
@@ -520,7 +521,7 @@ $is_admin = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HQ;
                                                 </div>
                                                 <input name="insurance" type="text"
                                                        class="form-control validate number"
-                                                       value="">
+                                                       value="<?= (Calypso::getValue($parcel, "info.insurance", '')) ?>">
                                             </div>
                                         </div>
 
@@ -538,7 +539,7 @@ $is_admin = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HQ;
                                                 </div>
                                                 <input name="duty_charge" type="text"
                                                        class="form-control validate number"
-                                                       value="">
+                                                       value="<?= (Calypso::getValue($parcel, "info.duty_charge", '')) ?>">
                                             </div>
                                         </div>
                                     </div>
@@ -557,7 +558,7 @@ $is_admin = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HQ;
                                                 </div>
                                                 <input name="handling_charge" type="text"
                                                        class="form-control validate number"
-                                                       value="">
+                                                       value="<?= (Calypso::getValue($parcel, "info.handling_charge", '')) ?>">
                                             </div>
                                         </div>
 
@@ -575,7 +576,7 @@ $is_admin = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HQ;
                                                 </div>
                                                 <input name="cost_of_crating" type="text"
                                                        class="form-control validate number"
-                                                       value="">
+                                                       value="<?= (Calypso::getValue($parcel, "info.cost_of_crating", '')) ?>">
                                             </div>
                                         </div>
                                     </div>
@@ -594,7 +595,7 @@ $is_admin = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HQ;
                                                 </div>
                                                 <input name="storage_demurrage" type="text"
                                                        class="form-control validate number"
-                                                       value="">
+                                                       value="<?= (Calypso::getValue($parcel, "info.storage_demurrage", '')) ?>">
                                             </div>
                                         </div>
 
@@ -612,11 +613,11 @@ $is_admin = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HQ;
                                                 </div>
                                                 <input name="others" type="text"
                                                        class="form-control validate number"
-                                                       value="">
+                                                       value="<?= (Calypso::getValue($parcel, "info.others", '')) ?>">
                                             </div>
                                         </div>
                                     </div>
-                                <?php } ?>
+                                </div>
                             </div>
                             <?php if (isset($parcel['pickup_request_id'])): ?>
                                 <input type="hidden" name="pickup_request_id"
