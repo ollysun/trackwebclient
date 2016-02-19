@@ -89,7 +89,7 @@ $is_admin = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HQ;
                                         </div>
                                     </div>
                                 </div>
-                                <?php if ($is_hub  || $is_admin){
+                                <?php if ($is_hub || $is_admin) {
                                     ?>
                                     <div class="col-xs-12 col-sm-6 form-group" id="hubsWrap">
                                         <label>Destination</label>
@@ -504,6 +504,119 @@ $is_admin = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HQ;
                                     </div>
                                 </div>
                                 <br>
+                                <?php if ($is_admin && $edit) { ?>
+                                    <div class="row">
+                                        <div class="col-xs-12 col-sm-6 form-group">
+                                            <label>Insurance</label>
+
+                                            <div class="input-group">
+                                                <div class="input-group-btn">
+                                                    <select name="currency" id="currencySelect" class="selectpicker"
+                                                            data-width="70px" data-style="btn-default"
+                                                            title="Please choose a currency">
+                                                        <option title="NGN" value="NGN" selected="selected">Naira
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                                <input name="insurance" type="text"
+                                                       class="form-control validate number"
+                                                       value="">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-xs-12 col-sm-6 form-group">
+                                            <label>Duty Charge</label>
+
+                                            <div class="input-group">
+                                                <div class="input-group-btn">
+                                                    <select name="currency" id="currencySelect" class="selectpicker"
+                                                            data-width="70px" data-style="btn-default"
+                                                            title="Please choose a currency">
+                                                        <option title="NGN" value="NGN" selected="selected">Naira
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                                <input name="duty_charge" type="text"
+                                                       class="form-control validate number"
+                                                       value="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-12 col-sm-6 form-group">
+                                            <label>Handling Charge</label>
+
+                                            <div class="input-group">
+                                                <div class="input-group-btn">
+                                                    <select name="currency" id="currencySelect" class="selectpicker"
+                                                            data-width="70px" data-style="btn-default"
+                                                            title="Please choose a currency">
+                                                        <option title="NGN" value="NGN" selected="selected">Naira
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                                <input name="handling_charge" type="text"
+                                                       class="form-control validate number"
+                                                       value="">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-xs-12 col-sm-6 form-group">
+                                            <label>Cost of Crating</label>
+
+                                            <div class="input-group">
+                                                <div class="input-group-btn">
+                                                    <select name="currency" id="currencySelect" class="selectpicker"
+                                                            data-width="70px" data-style="btn-default"
+                                                            title="Please choose a currency">
+                                                        <option title="NGN" value="NGN" selected="selected">Naira
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                                <input name="cost_of_crating" type="text"
+                                                       class="form-control validate number"
+                                                       value="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-12 col-sm-6 form-group">
+                                            <label>Storage/Demurrage</label>
+
+                                            <div class="input-group">
+                                                <div class="input-group-btn">
+                                                    <select name="currency" id="currencySelect" class="selectpicker"
+                                                            data-width="70px" data-style="btn-default"
+                                                            title="Please choose a currency">
+                                                        <option title="NGN" value="NGN" selected="selected">Naira
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                                <input name="storage_demurrage" type="text"
+                                                       class="form-control validate number"
+                                                       value="">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-xs-12 col-sm-6 form-group">
+                                            <label>Others</label>
+
+                                            <div class="input-group">
+                                                <div class="input-group-btn">
+                                                    <select name="currency" id="currencySelect" class="selectpicker"
+                                                            data-width="70px" data-style="btn-default"
+                                                            title="Please choose a currency">
+                                                        <option title="NGN" value="NGN" selected="selected">Naira
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                                <input name="others" type="text"
+                                                       class="form-control validate number"
+                                                       value="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                <?php } ?>
                             </div>
                             <?php if (isset($parcel['pickup_request_id'])): ?>
                                 <input type="hidden" name="pickup_request_id"
@@ -513,6 +626,7 @@ $is_admin = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HQ;
                                 <input type="hidden" name="shipment_request_id"
                                        value="<?= $parcel['shipment_request_id']; ?>">
                             <?php endif; ?>
+
                             <div class="clearfix main-box-body main-box-button-wrap">
                                 <a href="#newParcelForm" data-slide="prev" class="btn btn-default pull-left"><i
                                         class="fa fa-arrow-left"></i> Back</a>
