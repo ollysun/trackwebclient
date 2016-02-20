@@ -150,7 +150,8 @@ $this->params['breadcrumbs'] = array(
 
                         <div class="pull-left">
                             <label>&nbsp;</label><br>
-                            <button class="btn btn-default btn-sm" id="records_filter"><i class="fa fa-search"></i></button>
+                            <button class="btn btn-default btn-sm" id="records_filter"><i class="fa fa-search"></i>
+                            </button>
                         </div>
 
                         <div class="form-group form-group-sm form-inline">
@@ -242,8 +243,6 @@ $this->params['breadcrumbs'] = array(
                                     <button class="btn btn-default btn-xs">Edit</button>
                                 </a>
                             </td>
-
-                            <td></td>
                         </tr>
                     <?php endforeach; ?>
                     </tbody>
@@ -303,9 +302,13 @@ $this->params['breadcrumbs'] = array(
         <td><b id='net_total'></b></td>
     </tr>
 </script>
+
 <!-- this page specific scripts -->
+<?php $this->registerJsFile('@web/js/table.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/libs/jquery.dataTables.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/hub_util.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/keyboardFormSubmit.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/form-watch-changes.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/validate.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/finance/corporate_shipment.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
+

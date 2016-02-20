@@ -86,7 +86,7 @@ $user_data = $this->context->userData;
     <div class="main-box-body">
         <div class="table-responsive">
             <?php if (count($parcels) > 0) { ?>
-                <table id="table" class="table table-hover ">
+                <table id="table" class="table table-hover dataTable">
                     <thead>
                     <tr>
                         <th style="width: 20px">S/N</th>
@@ -157,6 +157,7 @@ $this->registerJs($ex, View::POS_READY);
 <?= $this->render('../elements/parcel/partial_return_form') ?>
 
 <!-- this page specific scripts -->
+<?php $this->registerJsFile('@web/js/table.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/libs/jquery.dataTables.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/libs/dataTables.fixedHeader.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/libs/dataTables.tableTools.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>

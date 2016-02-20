@@ -94,7 +94,7 @@ $this->params['breadcrumbs'] = array(
         <div class="table-responsive">
 
             <?php if (count($parcels) > 0) { ?>
-                <table id="table" class="table table- table-striped table-hover">
+                <table id="table" class="table table- table-striped table-hover dataTable">
                     <thead>
                     <tr>
                         <th rowspan="2" style="width: 20px">S/N</th>
@@ -145,3 +145,5 @@ $this->params['breadcrumbs'] = array(
     </div>
 </div>
 <?php $this->registerJsFile('@web/js/libs/bootstrap-datepicker.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?><?php $this->registerJsFile('@web/js/jquery.dataTables.min.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/table.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/libs/jquery.dataTables.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
