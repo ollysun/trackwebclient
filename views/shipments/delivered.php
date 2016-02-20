@@ -25,9 +25,10 @@ $user_data = $this->context->userData;
 <div class="main-box">
     <div class="main-box-header table-search-form clearfix">
         <div class="pull-left">
-            <?= $this->render('../elements/parcels_date_filter', array('from_date' => $from_date, 'to_date' => $to_date)); ?>
+            <?= $this->render('../elements/parcels_date_filter', array('from_date' => $from_date, 'to_date' => $to_date , 'page_width' => $page_width)); ?>
         </div>
     </div>
+
     <div class="main-box-body">
         <?php if(!empty($parcels)) { ?>
         <div class="table-responsive">

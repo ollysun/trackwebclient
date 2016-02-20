@@ -68,6 +68,8 @@ $is_hub = $user['branch']['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
                     </div>
                 </div>
             </form>
+
+
             <div class="pull-left">
                 <?php if($is_hub): ?>
                     <form class="pull-left" method="get">
@@ -103,6 +105,30 @@ $is_hub = $user['branch']['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
                 <?php if(!empty($parcels)): ?><div class="pull-left">
                     <label>&nbsp;</label><br>&nbsp;<button type="button" class="btn btn-sm btn-default" data-toggle="modal" data-target="#runModal">Generate Delivery Run</button></div><?php endif; ?>
             </div>
+
+            <form>
+                <div class="form-group form-group-sm form-inline pull-right">
+                    <br/>
+                    <label for="page_width">Records</label>
+                    <?php $page = $page_width; ?>
+
+                    <select name="page_width" id="page_width" class="form-control ">
+                        <?php
+                        $page_width = isset($page_width) ? $page_width : 50;
+                        for ($i = 50; $i <= 500; $i += 50) {
+                            ?>
+                            <option <?= $page_width == $i ? 'selected' : '' ?>
+                                value="<?= $i ?>"><?= $i ?></option>
+                            <?php
+                        }
+                        ?>
+                    </select>
+                </div>
+
+                <button id="records_filter" type="submit" hidden></button>
+
+            </form>
+
         </div>
     </div>
     <div class="main-box-body">
@@ -311,3 +337,5 @@ $("#chbx_w_all").change(function () {
 ';
 $this->registerJs($ex,View::POS_READY);
 ?>
+<?php $this->registerJsFile('@web/js/record_filter.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
+
