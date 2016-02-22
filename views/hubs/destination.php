@@ -59,27 +59,9 @@ $user_data = $this->context->userData;
                     <button type="submit" class="btn btn-sm btn-default" id="btn_apply_dest">Apply</button>
                 </div>
             </div>
-            <form>
-                <div class="form-group form-group-sm form-inline pull-right">
-                    <br/>
 
-                    <label for="page_width">Records</label>
-                    <select name="page_width" id="page_width" class="form-control ">
-                        <?php
-                        $page_width = isset($page_width) ? $page_width : 50;
-                        for ($i = 50; $i <= 500; $i += 50) {
-                            ?>
-                            <option <?= $page_width == $i ? 'selected' : '' ?>
-                                value="<?= $i ?>"><?= $i ?></option>
-                            <?php
-                        }
-                        ?>
-                    </select>
-                </div>
+            <?= $this->render('../elements/parcel_records_filter', ['page_width' => $page_width]) ?>
 
-                <button id="records_filter" type="submit" hidden></button>
-
-            </form>
             <?php if ($isGroundsman): ?>
                 <div class="pull-right">
                     <br/>
@@ -251,5 +233,4 @@ $user_data = $this->context->userData;
 <?php $this->registerJsFile('@web/js/libs/jquery.dataTables.bootstrap.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/next_destination.js?v1.0.2', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/return.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
-<?php $this->registerJsFile('@web/js/record_filter.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 
