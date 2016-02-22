@@ -16,6 +16,7 @@ use Adapter\RegionAdapter;
 use Adapter\RequestHelper;
 use Adapter\ResponseHandler;
 use Adapter\Util\Calypso;
+use Adapter\Util\Util;
 
 class ParcelService
 {
@@ -181,7 +182,7 @@ class ParcelService
         $parcel = [];
         $payload = [];
 
-        $senderInfo['sender_type'] = Calypso::getValue($data,'shipper_customer_corporate_shipments');
+        $senderInfo['sender_type'] = Calypso::getValue($data, 'shipper_customer_corporate_shipments');
         $senderInfo['firstname'] = Calypso::getValue($data, 'firstname.shipper');
         $senderInfo['lastname'] = Calypso::getDisplayValue($data, 'lastname.shipper', '');
         $senderInfo['phone'] = Calypso::getValue($data, 'phone.shipper');
@@ -236,7 +237,7 @@ class ParcelService
         }
 
         $parcel['billing_type'] = Calypso::getValue($data, 'billing_method', 'auto');
-        if($senderInfo['sender_type'] == ServiceConstant::SHIPMENTS_SENDER_TYPE_CORPORATE){
+        if ($senderInfo['sender_type'] == ServiceConstant::SHIPMENTS_SENDER_TYPE_CORPORATE) {
             $parcel['billing_type'] = ServiceConstant::SHIPMENTS_SENDER_TYPE_CORPORATE;
         }
         $parcel['weight_billing_plan'] = Calypso::getDisplayValue($data, 'billing_plan', BillingPlanAdapter::DEFAULT_WEIGHT_RANGE_PLAN);
@@ -285,6 +286,13 @@ class ParcelService
         }
         $parcel['request_type'] = (Calypso::getValue($data, 'merchant') === 'yes') ? ServiceConstant::REQUEST_ECOMMERCE : ServiceConstant::REQUEST_OTHERS;
 
+
+        $parcel['insurance'] = Calypso::getValue($data, 'insurance', null);
+        $parcel['duty_charge'] = Calypso::getValue($data, 'duty_charge', null);
+        $parcel['handling_charge'] = Calypso::getValue($data, 'handling_charge', null);
+        $parcel['cost_of_crating'] = Calypso::getValue($data, 'cost_of_crating', null);
+        $parcel['storage_demurrage'] = Calypso::getValue($data, 'storage_demurrage', null);
+        $parcel['others'] = Calypso::getValue($data, 'others', null);
 
         $payload['sender'] = $senderInfo;
         $payload['receiver'] = $receiverInfo;
