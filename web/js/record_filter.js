@@ -1,6 +1,6 @@
 $(document).ready(function () {
 
-    $("#page_width, #page_width_2").on('change', function () {
+    $("#page_width_record").on('change', function () {
         $("#records_filter").click();
     });
 });

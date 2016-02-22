@@ -61,26 +61,7 @@ $user_data = $this->context->userData;
                 </div>
             </form>
 
-            <form>
-                <div class="form-group form-group-sm form-inline pull-right">
-                    <br/>
-                    <label for="page_width">Records</label>
-                    <?php $page = $page_width; ?>
-
-                    <select name="page_width" id="page_width" class="form-control ">
-                        <?php
-                        $page_width = isset($page_width) ? $page_width : 50;
-                        for ($i = 50; $i <= 500; $i += 50) {
-                            ?>
-                            <option <?= $page_width == $i ? 'selected' : '' ?>
-                                value="<?= $i ?>"><?= $i ?></option>
-                            <?php
-                        }
-                        ?>
-                    </select>
-                </div>
-
-                <button id="records_filter" type="submit" hidden></button>
+            <?= $this->render('../elements/parcel_records_filter', ['page_width' => $page_width]) ?>
 
             </form>
             <?php if(!empty($parcels)): ?>
@@ -246,7 +227,6 @@ $user_data = $this->context->userData;
 <?php //$this->registerJsFile('@web/js/table.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/ec_forsweeper.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/table.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
-<?php $this->registerJsFile('@web/js/record_filter.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 
 
 
