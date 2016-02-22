@@ -60,6 +60,8 @@ $user_data = $this->context->userData;
                 </div>
             </div>
 
+            <?= $this->render('../elements/parcel_records_filter', ['page_width' => $page_width]) ?>
+
             <?php if ($isGroundsman): ?>
                 <div class="pull-right">
                     <br/>
@@ -74,15 +76,15 @@ $user_data = $this->context->userData;
                 <form method="post" id="table_form">
                     <input type="hidden" id="form_branch_type" name="branch_type"/>
                     <input type="hidden" id="form_branch_name" name="branch"/>
-                    <table id="next_dest" class="table table-hover next_dest">
+                    <table id="next_dest" class="table table-hover next_dest dataTable">
                         <thead>
                         <tr>
-                            <th style="width: 20px;">
+                            <th style="width: 20px;" class="datatable-nosort">
                                 <div class='checkbox-nice'>
                                     <input id='chk_all' type='checkbox' class='chk_all'><label for='chk_all'></label>
                                 </div>
                             </th>
-                            <th style="width: 20px">S/N</th>
+                            <th style="width: 20px" >S/N</th>
                             <th>Waybill No</th>
                             <th>Origin</th>
                             <th>Next Destination</th>
@@ -224,9 +226,11 @@ $user_data = $this->context->userData;
 <?= $this->render('../elements/parcel/partial_return_form') ?>
 
 <!-- this page specific scripts -->
+<?php $this->registerJsFile('@web/js/table.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/libs/jquery.dataTables.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/libs/dataTables.fixedHeader.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/libs/dataTables.tableTools.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/libs/jquery.dataTables.bootstrap.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/next_destination.js?v1.0.2', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/return.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
+

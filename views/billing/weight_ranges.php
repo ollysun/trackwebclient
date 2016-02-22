@@ -24,7 +24,7 @@ $this->params['breadcrumbs'] = array(
 	</div>
 	<div class="main-box-body">
 		<div class="table-responsive">
-			<table id="table" class="table table-hover">
+			<table id="table" class="table table-hover dataTable">
 				<thead>
 					<tr>
 						<th style="width: 20px">S/N</th>
@@ -157,3 +157,6 @@ $this->params['breadcrumbs'] = array(
 <?php //$this->registerJsFile('@web/js/libs/jquery.dataTables.bootstrap.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/validate.js', ['depends' => [\app\assets\AppAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/weights.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
+<?php $this->registerJsFile('@web/js/table.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/libs/jquery.dataTables.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
+

@@ -19,10 +19,10 @@ $this->params['breadcrumbs'] = array(
 <div class="main-box">
     <div class="main-box-body">
         <div class="table-responsive">
-            <table id="table" class="table table-hover">
+            <table id="table" class="table table-hover dataTable">
                 <thead>
                 <tr>
-                    <th>#</th>
+                    <th class="datatable-nosort">#</th>
                     <th>Waybill Number</th>
                     <th>Receiver's Name</th>
                     <th>Receiver's Address</th>
@@ -78,3 +78,6 @@ $this->params['breadcrumbs'] = array(
     </div>
 </div>
 
+
+<?php $this->registerJsFile('@web/js/table.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/libs/jquery.dataTables.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>

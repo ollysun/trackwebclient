@@ -17,6 +17,7 @@ $user_data = $this->context->userData;
 <?= Html::cssFile('@web/css/libs/dataTables.fixedHeader.css') ?>
 <?= Html::cssFile('@web/css/libs/dataTables.tableTools.css') ?>
 
+
 <?php echo \Adapter\Util\Calypso::showFlashMessages(); ?>
 
 <div class="main-box">
@@ -86,10 +87,10 @@ $user_data = $this->context->userData;
     <div class="main-box-body">
         <div class="table-responsive">
             <?php if (!empty($parcel_delivery)) { ?>
-                <table id="next_dest" class="table table-hover next_dest">
+                <table id="next_dest" class="table table-hover next_dest dataTable">
                     <thead>
                     <tr>
-                        <th style="width: 20px;">
+                        <th style="width: 20px;" class="datatable-nosort">
                             <div class='checkbox-nice'>
                                 <input id='chk_all' type='checkbox' class='chk_all'><label for='chk_all'></label>
                             </div>
@@ -306,6 +307,7 @@ $user_data = $this->context->userData;
 </div>
 
 <!-- this page specific scripts -->
+<?php $this->registerJsFile('@web/js/table.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/libs/jquery.dataTables.js', ['depends' => [JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/libs/dataTables.fixedHeader.js', ['depends' => [JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/libs/dataTables.tableTools.js', ['depends' => [JqueryAsset::className()]]); ?>

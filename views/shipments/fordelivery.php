@@ -68,6 +68,8 @@ $is_hub = $user['branch']['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
                     </div>
                 </div>
             </form>
+
+
             <div class="pull-left">
                 <?php if($is_hub): ?>
                     <form class="pull-left" method="get">
@@ -103,6 +105,9 @@ $is_hub = $user['branch']['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
                 <?php if(!empty($parcels)): ?><div class="pull-left">
                     <label>&nbsp;</label><br>&nbsp;<button type="button" class="btn btn-sm btn-default" data-toggle="modal" data-target="#runModal">Generate Delivery Run</button></div><?php endif; ?>
             </div>
+
+            <?= $this->render('../elements/parcel_records_filter', ['page_width' => $page_width]) ?>
+
         </div>
     </div>
     <div class="main-box-body">
@@ -311,3 +316,4 @@ $("#chbx_w_all").change(function () {
 ';
 $this->registerJs($ex,View::POS_READY);
 ?>
+
