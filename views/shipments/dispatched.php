@@ -79,31 +79,34 @@ $user_data = $this->context->userData;
 
 
     <?php } ?>
-    <?php if(!empty($parcels)) { ?>
-    <div class="main-box-body">
-        <div class="table-responsive">
-            <table class="table table-hover dataTable">
-                <thead>
-                <tr>
-                    <th style="width: 20px" class="datatable-nosort"><div class="checkbox-nice"><input id="chbx_w_all" type="checkbox"><label for="chbx_w_all"> </label></div></th>
-                    <!-- <th style="width: 20px;"></th> -->
-                    <th style="width: 20px">S/N</th>
-                    <th>Waybill No.</th>
-                    <th>Reference No.</th>
-                    <th>Receiver</th>
-                    <th>Receiver Phone</th>
-                    <th>Dispatcher</th>
-                    <th>Status</th>
-                    <th>Return Status</th>
-                    <?php if($user_data['role_id'] == ServiceConstant::USER_TYPE_ADMIN) { ?>
-                        <th>Originating Branch</th>
-                        <th>Current Location</th>
-                    <?php } ?>
-                    <th>Age analysis</th>
-                    <th>Action</th>
-                </tr>
-                </thead>
-                <tbody>
+    <?php if (!empty($parcels)) { ?>
+        <div class="main-box-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th style="width: 20px">
+                            <div class="checkbox-nice"><input id="chbx_w_all" type="checkbox"><label
+                                    for="chbx_w_all"> </label></div>
+                        </th>
+                        <!-- <th style="width: 20px;"></th> -->
+                        <th style="width: 20px">S/N</th>
+                        <th>Waybill No.</th>
+                        <th>Reference No.</th>
+                        <th>Receiver</th>
+                        <th>Receiver Phone</th>
+                        <th>Dispatcher</th>
+                        <th>Status</th>
+                        <th>Return Status</th>
+                        <?php if ($user_data['role_id'] == ServiceConstant::USER_TYPE_ADMIN) { ?>
+                            <th>Originating Branch</th>
+                            <th>Current Location</th>
+                        <?php } ?>
+                        <th>Age analysis</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
                     <?php
                     if (isset($parcels)) {
                         $row = $offset;
@@ -115,7 +118,7 @@ $user_data = $this->context->userData;
                                     <div class="checkbox-nice"><input class="checkable" id="chbx_w_<?= $i; ?>"
                                                                       class="checkable"
                                                                       data-waybill="<?= strtoupper($parcel['waybill_number']); ?>"
-                                                                      type="checkbox" <?= $parcel['for_return'] ? 'data-is-return':'';?>><label
+                                                                      type="checkbox" <?= $parcel['for_return'] ? 'data-is-return' : ''; ?>><label
                                             for="chbx_w_<?= $i++; ?>"> </label></div>
                                 </td>
                                 <td><?= ++$row; ?></td>
@@ -126,7 +129,7 @@ $user_data = $this->context->userData;
                                 <td><?= ucwords($parcel['holder']['fullname']); ?></td>
                                 <td><?= ServiceConstant::getStatus($parcel['status']); ?></td>
                                 <td><?= ServiceConstant::getReturnStatus($parcel); ?></td>
-                                <?php if($user_data['role_id'] == ServiceConstant::USER_TYPE_ADMIN) { ?>
+                                <?php if ($user_data['role_id'] == ServiceConstant::USER_TYPE_ADMIN) { ?>
                                     <td><?= strtoupper(Calypso::getValue($parcel, "created_branch.name")) ?></td>
                                     <td><?= ParcelAdapter::getCurrentLocation($parcel); ?></td>
                                 <?php } ?>
@@ -134,9 +137,10 @@ $user_data = $this->context->userData;
                                 <td>
                                     <a href="<?= Url::toRoute(['/shipments/view?waybill_number=' . $parcel['waybill_number']]) ?>"
                                        class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i> View</a>
-                                    <a href=<?= '../parcels/new?edit=1&id=' . Calypso::getValue($parcel, 'id') ?>>
-                                        <button class="btn btn-default btn-xs">Edit</button>
-                                    </a>
+                                    <button title="Clone this shipment"
+                                            data-href="<?= Url::toRoute(['/parcels/new?id=' . $parcel['id']]) ?>"
+                                            class="btn btn-xs btn-info btnClone"><i class="fa fa-copy"></i></button>
+                                    <?= $this->render('../elements/parcel/partial_return_button', ['parcel' => $parcel, 'reasons_list' => $reasons_list]) ?>
                                 </td>
                             </tr>
                         <?php }
@@ -164,6 +168,7 @@ $user_data = $this->context->userData;
                 </div>
                 <div class="modal-body">
                     <p>Please enter your password to authenticate this operation.</p>
+
                     <div class="form-group">
                         <label>Password</label>
                         <input type="password" class="form-control" name="password" required>
@@ -185,27 +190,32 @@ $user_data = $this->context->userData;
 
                     <div class="row">
 
-                            <div class='col-sm-6'>
-                                <div class="form-group">
-                                    <label for="">Date of delivery:</label><br>
-                                    <div class="input-group input-group-date-range">
-                                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                        <input name="date" id="" class="form-control date-range" value="" data-provide="datepicker" data-date-format="yyyy/mm/dd" data-date-end-date="0d" required>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class='col-sm-6'>
+                            <div class="form-group">
+                                <label for="">Date of delivery:</label><br>
 
-                             <div class='col-sm-6'>
-                                <div class="form-group">
-                                    <label for="">Time of delivery:</label><br>
-                                    <div class='input-group timepicker-orient-top'>
-                                             <span class="input-group-addon" >
-                                                <span class="glyphicon glyphicon-time" ></span>
-                                            </span>
-                                            <input name='time' id="" class="form-control time-range" data-provide="timepicker" required>
-                                    </div>
+                                <div class="input-group input-group-date-range">
+                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                    <input name="date" id="" class="form-control date-range" value=""
+                                           data-provide="datepicker" data-date-format="yyyy/mm/dd"
+                                           data-date-end-date="0d" required>
                                 </div>
                             </div>
+                        </div>
+
+                        <div class='col-sm-6'>
+                            <div class="form-group">
+                                <label for="">Time of delivery:</label><br>
+
+                                <div class='input-group timepicker-orient-top'>
+                                             <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-time"></span>
+                                            </span>
+                                    <input name='time' id="" class="form-control time-range" data-provide="timepicker"
+                                           required>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -225,7 +235,8 @@ $user_data = $this->context->userData;
         <form id="held_parcels" class="">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title" id="myModalLabel">Receive Shipments</h4>
                 </div>
                 <div class="modal-body">
@@ -235,8 +246,10 @@ $user_data = $this->context->userData;
                             <div class="col-xs-6">
                                 <div class="form-group">
                                     <label>Staff ID</label>
+
                                     <div class="input-group">
                                         <input id="staff_no" value="RONNY-001" class="form-control">
+
                                         <div class="input-group-btn">
                                             <button type="button" id="get_arrival" class="btn btn-default">Load</button>
                                         </div>
@@ -248,10 +261,13 @@ $user_data = $this->context->userData;
                             </div>
                             <div class="col-xs-6">
                                 <label>Staff Name</label>
+
                                 <div id="sweeper_name" class="form-control-static"><em>Not Available</em></div>
                                 <label>Department</label><br>
+
                                 <div id="role" class="form-control-static"><em>Not Available</em></div>
                                 <label>Branch of Operation</label><br>
+
                                 <div id="branch" class="form-control-static"><em>Not Available</em></div>
                                 <input id="staff_user_id" name="staff_user_id" type="hidden">
                             </div>
@@ -280,6 +296,8 @@ $user_data = $this->context->userData;
     </div>
 </div>
 <!-- this page specific scripts -->
+<?= $this->render('../elements/parcel/partial_return_form') ?>
+
 <script type="text/javascript">
     var beingdelivered = <?= ServiceConstant::BEING_DELIVERED ?>;
 </script>
@@ -287,6 +305,7 @@ $user_data = $this->context->userData;
 <?= $this->registerJsFile('@web/js/libs/bootstrap-datepicker.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
 <?= $this->registerJsFile('@web/js/requests.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
 <?= $this->registerJsFile('@web/js/shipment_dispatched.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/submit_teller.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?= $this->registerJsFile('@web/js/submit_teller.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?= $this->registerJsFile('@web/js/table.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
 <?= $this->registerJsFile('@web/js/libs/jquery.dataTables.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
