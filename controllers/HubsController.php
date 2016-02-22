@@ -41,6 +41,9 @@ class HubsController extends BaseController
     /**
      * This action allows setting next destination for shipments
      * @author Adegoke Obasa <goke@cottacush.com>
+     * @param int $page
+     * @param null $page_width
+     * @param null $type
      * @return string
      */
     public function actionDestination($page = 1, $page_width = null, $type = null)
@@ -89,7 +92,7 @@ class HubsController extends BaseController
             }
         }
         $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $arrival_parcels = $parcelsAdapter->getParcelsForNextDestination($isGroundman ? ServiceConstant::ASSIGNED_TO_GROUNDSMAN : ServiceConstant::FOR_ARRIVAL, null, $isGroundman ? $this->userData['branch_id'] : $this->branch_to_view, null, $viewData['offset'], 50, 1);
+        $arrival_parcels = $parcelsAdapter->getParcelsForNextDestination($isGroundman ? ServiceConstant::ASSIGNED_TO_GROUNDSMAN : ServiceConstant::FOR_ARRIVAL, null, $isGroundman ? $this->userData['branch_id'] : $this->branch_to_view, null, $viewData['offset'], $viewData['page_width'], 1);
 
 
         if ($arrival_parcels['status'] === ResponseHandler::STATUS_OK) {

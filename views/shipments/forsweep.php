@@ -60,6 +60,10 @@ $user_data = $this->context->userData;
                     </div>
                 </div>
             </form>
+
+            <?= $this->render('../elements/parcel_records_filter', ['page_width' => $page_width]) ?>
+
+            </form>
             <?php if(!empty($parcels)): ?>
             <div class="pull-left">
                 <label>&nbsp;</label><br>
@@ -72,10 +76,10 @@ $user_data = $this->context->userData;
     <div class="main-box-body">
         <?php if(!empty($parcels)): ?>
         <div class="table-responsive">
-            <table id="next_dest" class="table table-hover">
+            <table id="next_dest" class="table table-hover dataTable">
                 <thead>
                 <tr>
-                    <th style="width: 20px"><div class="checkbox-nice"><input id="chbx_w_all" type="checkbox"><label for="chbx_w_all"> </label></div></th>
+                    <th style="width: 20px" class="datatable-nosort"><div class="checkbox-nice"><input id="chbx_w_all" type="checkbox"><label for="chbx_w_all"> </label></div></th>
                     <th style="width: 20px">No.</th>
                     <th>Waybill No.</th>
                     <th>Reference No.</th>
@@ -222,5 +226,7 @@ $user_data = $this->context->userData;
 <?php $this->registerJsFile('@web/js/dataTables.bootstrap.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
 <?php //$this->registerJsFile('@web/js/table.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/ec_forsweeper.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
+<?php $this->registerJsFile('@web/js/table.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
+
 
 
