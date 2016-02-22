@@ -1,5 +1,5 @@
 
-<form>
+<form id="records_filter_form">
     <div class="form-group form-group-sm form-inline pull-left">
         <br/>
         <label for="page_width">Records</label>
@@ -17,8 +17,6 @@
             ?>
         </select>
     </div>
-
-    <button id="records_filter" type="submit" hidden></button>
 
 </form>
 
