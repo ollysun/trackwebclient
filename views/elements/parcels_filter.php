@@ -53,10 +53,27 @@ if(!isset($filter)){$filter="-1";}
             </div>
             <div class="pull-left">
                 <label>&nbsp;</label><br>
-                <button class="btn btn-default btn-sm"><i class="fa fa-search"></i></button>
+                <button id="records_filter" class="btn btn-default btn-sm"><i class="fa fa-search"></i></button>
+            </div>
+
+            <div class="form-group form-group-sm form-inline">
+                <br/>
+                <label for="page_width">Records</label>
+                <select name="page_width" id="page_width_2" class="form-control ">
+                    <?php
+                    $page_width = isset($page_width) ? $page_width : 50;
+                    for ($i = 50; $i <= 500; $i += 50) {
+                        ?>
+                        <option <?= $page_width == $i ? 'selected' : '' ?>
+                            value="<?= $i ?>"><?= $i ?></option>
+                        <?php
+                    }
+                    ?>
+                </select>
             </div>
         </div>
     </form>
 <?php
 $this->registerJsFile('@web/js/libs/bootstrap-datepicker.js', ['depends' => [\yii\web\JqueryAsset::className()]]);
+$this->registerJsFile('@web/js/record_filter.js', ['depends' => [\yii\web\JqueryAsset::className()]]);
 ?>

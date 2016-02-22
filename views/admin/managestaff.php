@@ -86,7 +86,7 @@ $this->params['content_header_button'] = '<button type="button" id="addNewStaffB
     <div class="main-box-body">
         <div class="table-responsive">
             <?php if(count($staffMembers) > 0) {?>
-            <table id="table" class="table table-hover ">
+            <table id="table" class="table table-hover dataTable">
                 <thead>
                 <tr>
                     <th style="width: 20px">S/N</th>

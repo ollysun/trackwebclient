@@ -29,8 +29,8 @@ $user_data = $this->context->userData;
 <div class="main-box">
     <div class="main-box-header table-search-form">
         <div class="clearfix">
-            <div class="pull-left hidden">
-                <form class="clearfix">
+            <form class="clearfix">
+                <div class="pull-left hidden">
                     <div class="pull-left form-group">
                         <label for="">Branch type</label><br>
                         <select class="form-control input-sm">
@@ -49,16 +49,33 @@ $user_data = $this->context->userData;
                     </div>
                     <div class="pull-left">
                         <label for="">&nbsp;</label><br>
-                        <button type="submit" class="btn btn-sm btn-default">Apply</button>
+                        <button id="records_filter" type="submit" class="btn btn-sm btn-default">Apply</button>
                     </div>
-                </form>
-            </div>
+                </div>
+
+                <div class="form-group form-group-sm form-inline">
+                    <br/>
+                    <label for="page_width">Records</label>
+                    <select name="page_width" id="page_width" class="form-control ">
+                        <?php
+                        $page_width = isset($page_width) ? $page_width : 50;
+                        for ($i = 50; $i <= 500; $i += 50) {
+                            ?>
+                            <option <?= $page_width == $i ? 'selected' : '' ?>
+                                value="<?= $i ?>"><?= $i ?></option>
+                            <?php
+                        }
+                        ?>
+                    </select>
+                </div>
+            </form>
 
             <div class="pull-right clearfix">
                 <form class="table-search-form form-inline clearfix">
                     <div class="pull-left form-group">
                         <label for="searchInput">&nbsp;</label><br>
-                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">
+                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal"
+                                data-target="#myModal">
                             Receive
                         </button>
                     </div>
@@ -84,7 +101,7 @@ $user_data = $this->context->userData;
                     <th>Request Type</th>
                     <th>Return Status</th>
                     <th>Weight/Piece</th>
-                    <?php if($user_data['role_id'] == ServiceConstant::USER_TYPE_ADMIN) { ?>
+                    <?php if ($user_data['role_id'] == ServiceConstant::USER_TYPE_ADMIN) { ?>
                         <th>Originating Branch</th>
                         <th>Current Location</th>
                     <?php } ?>
@@ -99,7 +116,7 @@ $user_data = $this->context->userData;
                         ++$row;
                         ?>
                         <tr data-waybill='<?= $parcels['waybill_number'] ?>'>
-                        <td>
+                            <td>
                                 <div class='checkbox-nice'>
                                     <input name='waybills[]' id='chk_<?= $row; ?>' type='checkbox'
                                            class='chk_next'><label
@@ -111,13 +128,13 @@ $user_data = $this->context->userData;
                                 <a href='/shipments/view?waybill_number=<?= Calypso::getValue($parcels, 'waybill_number'); ?>'><?= Calypso::getValue($parcels, 'waybill_number') ?></a>
                             </td>
                             <td><?= Calypso::getValue($parcels, 'reference_number') ?></td>
-                        <td><?= ucwords(Calypso::getValue($parcels, 'sender_address.city.name') . ', ' . Calypso::getValue($parcels, 'sender_address.state.name')); ?></td>
+                            <td><?= ucwords(Calypso::getValue($parcels, 'sender_address.city.name') . ', ' . Calypso::getValue($parcels, 'sender_address.state.name')); ?></td>
                             <td></td>
                             <td><?= ucwords(Calypso::getValue($parcels, 'receiver_address.city.name') . ', ' . Calypso::getValue($parcels, 'receiver_address.state.name')); ?></td>
                             <td><?= ServiceConstant::getRequestType($parcels['request_type']) ?></td>
                             <td><?= ServiceConstant::getReturnStatus($parcels); ?></td>
                             <td><?= Calypso::getValue($parcels, 'weight') ?></td>
-                            <?php if($user_data['role_id'] == ServiceConstant::USER_TYPE_ADMIN) { ?>
+                            <?php if ($user_data['role_id'] == ServiceConstant::USER_TYPE_ADMIN) { ?>
                                 <td><?= strtoupper(Calypso::getValue($parcels, "created_branch.name")) ?></td>
                                 <td><?= ParcelAdapter::getCurrentLocation($parcels); ?></td>
                             <?php } ?>
@@ -218,5 +235,6 @@ $user_data = $this->context->userData;
 <?php $this->registerJsFile('@web/js/jquery.dataTables.min.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/dataTables.bootstrap.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/table.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/record_filter.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 
 

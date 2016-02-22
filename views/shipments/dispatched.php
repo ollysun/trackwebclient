@@ -37,14 +37,16 @@ $user_data = $this->context->userData;
                 <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#passwordModal"
                         data-action="return"><i class="fa fa-check"></i> Mark as Returned
                 </button>
+
+                <?= $this->render('../elements/parcel_records_filter', ['page_width' => $page_width]) ?>
+
             </div>
+
 
             <form class="table-search-form form-inline pull-right clearfix">
                 <div class="pull-left form-group">
                     <div class="input-group input-group-sm input-group-search">
-                        <input id="searchInput" type="text" name="search" placeholder="Search by Waybill number"
-                               class="search-box form-control">
-
+                        <input id="searchInput" type="text" name="search" placeholder="Search by Waybill number" class="search-box form-control">
                         <div class="input-group-btn">
                             <button class="btn btn-default" type="submit" formmethod="post">
                                 <i class="fa fa-search"></i>
@@ -284,4 +286,7 @@ $user_data = $this->context->userData;
 <?= $this->registerJsFile('@web/js/requests.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
 <?= $this->registerJsFile('@web/js/shipment_dispatched.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/submit_teller.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
+<?= $this->registerJsFile('@web/js/submit_teller.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
+<?= $this->registerJsFile('@web/js/table.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
+<?= $this->registerJsFile('@web/js/libs/jquery.dataTables.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
 

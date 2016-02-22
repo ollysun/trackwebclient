@@ -236,8 +236,6 @@ $this->params['breadcrumbs'] = array(
                                     </button>
                                 <?php endif; ?>
                             </td>
-                            <td>
-                            </td>
                         </tr>
                     <?php endforeach; ?>
                     </tbody>
@@ -334,3 +332,6 @@ $this->params['breadcrumbs'] = array(
 <?php $this->registerJsFile('@web/js/validate.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/finance/invoice.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/response_handler.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/table.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/libs/jquery.dataTables.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
+

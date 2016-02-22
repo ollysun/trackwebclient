@@ -60,6 +60,8 @@ $user_data = $this->context->userData;
                 </div>
             </div>
 
+            <?= $this->render('../elements/parcel_records_filter', ['page_width' => $page_width]) ?>
+
             <?php if ($isGroundsman): ?>
                 <div class="pull-right">
                     <br/>
@@ -231,3 +233,4 @@ $user_data = $this->context->userData;
 <?php $this->registerJsFile('@web/js/libs/jquery.dataTables.bootstrap.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/next_destination.js?v1.0.2', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/return.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
+
