@@ -82,10 +82,10 @@ $user_data = $this->context->userData;
     <?php if(!empty($parcels)) { ?>
     <div class="main-box-body">
         <div class="table-responsive">
-            <table class="table table-hover">
+            <table class="table table-hover dataTable">
                 <thead>
                 <tr>
-                    <th style="width: 20px"><div class="checkbox-nice"><input id="chbx_w_all" type="checkbox"><label for="chbx_w_all"> </label></div></th>
+                    <th style="width: 20px" class="datatable-nosort"><div class="checkbox-nice"><input id="chbx_w_all" type="checkbox"><label for="chbx_w_all"> </label></div></th>
                     <!-- <th style="width: 20px;"></th> -->
                     <th style="width: 20px">S/N</th>
                     <th>Waybill No.</th>
@@ -287,5 +287,8 @@ $user_data = $this->context->userData;
 <?= $this->registerJsFile('@web/js/libs/bootstrap-datepicker.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
 <?= $this->registerJsFile('@web/js/requests.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
 <?= $this->registerJsFile('@web/js/shipment_dispatched.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
+<?= $this->registerJsFile('@web/js/submit_teller.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
+<?= $this->registerJsFile('@web/js/table.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
+<?= $this->registerJsFile('@web/js/libs/jquery.dataTables.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/record_filter.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 

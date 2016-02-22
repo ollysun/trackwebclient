@@ -47,7 +47,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
         <div class="main-box-body">
             <div class="table-responsive">
                 <?php if (count($companyEcs) > 0) { ?>
-                    <table id="table" class="table table-hover ">
+                    <table id="table" class="table table-hover dataTable">
                         <thead>
                         <tr>
                             <th style="width: 20px">S/N</th>
@@ -179,3 +179,6 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
     <!-- this page specific scripts -->
 <?php $this->registerJsFile('@web/js/validate.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/corporate/company_ecs.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/table.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/libs/jquery.dataTables.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
+

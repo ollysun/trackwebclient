@@ -91,7 +91,7 @@ $user_data = $this->context->userData;
             <table id="next_dest" class="table table-hover next_dest dataTable">
                 <thead>
                 <tr>
-                    <th style="width: 20px;"></th>
+                    <th style="width: 20px;" class="datatable-nosort"></th>
                     <th style="width: 20px">S/N</th>
                     <th>Waybill No</th>
                     <th>Reference No</th>
