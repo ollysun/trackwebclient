@@ -59,7 +59,7 @@ $this->params['content_header_button'] = '';
                             <th>Company</th>
                             <th>Waybill No</th>
                             <th>Description</th>
-                            <th>Pickup</th>
+                            <th>Pickup Initiator</th>
                             <th>Pickup Add., City, State</th>
                             <th>Destination</th>
                             <th>Dest. Add., City, State</th>
