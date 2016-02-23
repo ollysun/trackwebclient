@@ -26,7 +26,7 @@ $is_admin = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HQ;
 
 <?php echo Calypso::showFlashMessages(); ?>
 
-<form action="#" target="async_frame" method="post" enctype="multipart/form-data"
+<form id="shipment_create" action="#" target="async_frame" method="post" enctype="multipart/form-data"
       class="validate-form add-required-asterisks" data-keyboard-submit data-watch-changes>
 
     <div id="newParcelForm" class="l-new-parcel-form carousel slide">
