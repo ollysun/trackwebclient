@@ -736,7 +736,7 @@ $(document).ready(function () {
         }
     });
 
-    $('#shipment_creation').one('submit', function() {
+    $('#shipment_create').one('submit', function() {
         $(this).find('input[type="submit"]').attr('disabled','disabled');
     });
 });
