@@ -234,14 +234,14 @@ if (!in_array(Calypso::getValue($sessionData, 'role_id'), [ServiceConstant::USER
             </fieldset>
             <br><br>
         </div>
-        <div class="col-xs-12 col-sm-6">
+        <div class="col-xs-10 col-sm-3">
             <fieldset>
                 <legend>Billing Information</legend>
                 <div class="form-group">
                     <label>Billed Amount</label>
 
                     <div class="form-control-static">
-                        <span class="currency naira"></span><?= $parcelData['amount_due']; ?>
+                        <span class="currency naira"></span><?= $parcelData['base_price']; ?>
                     </div>
                 </div>
                 <div class="form-group">
@@ -302,7 +302,56 @@ if (!in_array(Calypso::getValue($sessionData, 'role_id'), [ServiceConstant::USER
             </fieldset>
             <br><br>
         </div>
-        <div class="col-xs-12 col-sm-6">
+        <div class="col-xs-12 col-sm-4">
+
+            <fieldset>
+                <legend>Extra charges</legend>
+                <div class="col-xs-6 form-group">
+                    <label> Insurance</label>
+
+                    <div class="form-control-static"><span
+                            class="currency naira"></span><?= $parcelData['insurance']; ?></div>
+                </div>
+
+                <div class="col-xs-6 form-group">
+                    <label> storage/Demurrage</label>
+
+                    <div class="form-control-static"><span
+                            class="currency naira"></span><?= $parcelData['storage_demurrage']; ?></div>
+                </div>
+
+                <div class="col-xs-6 form-group">
+                    <label> Handling charge</label>
+
+                    <div class="form-control-static"><span
+                            class="currency naira"></span><?= $parcelData['handling_charge']; ?></div>
+                </div>
+
+                <div class="col-xs-6 form-group">
+                    <label> Duty Charge</label>
+
+                    <div class="form-control-static"><span
+                            class="currency naira"></span><?= $parcelData['duty_charge']; ?></div>
+                </div>
+
+                <div class="col-xs-6 form-group">
+                    <label> Cost of Crating</label>
+
+                    <div class="form-control-static"><span
+                            class="currency naira"></span><?= $parcelData['cost_of_crating']; ?></div>
+                </div>
+
+                <div class="col-xs-6 form-group">
+                    <label> others</label>
+
+                    <div class="form-control-static"><span
+                            class="currency naira"></span><?= $parcelData['others']; ?></div>
+                </div>
+
+
+            </fieldset>
+        </div>
+        <div class="col-xs-12 col-sm-4">
             <fieldset>
                 <legend>Creation Information</legend>
                 <div class="form-group">
