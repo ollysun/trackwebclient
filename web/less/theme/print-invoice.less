@@ -7,7 +7,13 @@
 	margin: 20px auto;
 	padding: 21px 30px;
 	border: 1px solid #ccc;
-
+	&.landscape {
+		width: 1358px;
+		height: 960px;
+		&.continuous {
+			height: auto;
+		}
+	}
 	@media print {
 		padding: 0;
 		border: 0;
