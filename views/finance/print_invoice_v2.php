@@ -7,10 +7,9 @@ use yii\helpers\Url;
 /* @var $this yii\web\View */
 $this->title = 'Invoices';
 ?>
-
 <?= Html::cssFile('@web/css/compiled/print-invoice.css') ?>
 
-    <div class="invoice-page landscape continuous">
+    <div class="invoice-page landscape continuous" style="<?= getPageHeight(2); ?>">
         <?= $this->render('../elements/finance/print_header'); ?>
         <div class="text-center"><h4>INVOICE - ORIGINAL</h4></div>
         <table class="table table-bordered">
@@ -237,11 +236,18 @@ $this->title = 'Invoices';
         <br>
         <br>
         <br>
+    </div>
+    <?php
+        $invoicePacelsCount = count($invoiceParcels);
+        // number of extra fields at the bottom plus the table title plus table header
+        $invoiceExtras = 6;
+        $parcelPages = getNumberOfSheets($invoicePacelsCount, 14, $invoiceExtras);
+    ?>
+    <div class="invoice-page landscape continuous" style="<?= getPageHeight($parcelPages) ?>">
         <div class="">
-            <div class="">
-                <h4 class="text-center">Invoice No: <?= Calypso::getValue($invoice, 'invoice_number'); ?></h4>
-                <table class="table table-bordered is-double-bordered">
-                    <thead>
+            <h4 class="text-center">Invoice No: <?= Calypso::getValue($invoice, 'invoice_number'); ?></h4>
+            <table class="table table-bordered is-double-bordered">
+                <thead>
                     <tr class="is-double-bordered">
                         <th>S/N</th>
                         <th>HAWB</th>
@@ -259,52 +265,106 @@ $this->title = 'Invoices';
                         <th>Other Charges</th>
                         <th class="invoice-total-amt-cell is-double-bordered">Total</th>
                     </tr>
-                    </thead>
-                    <tbody>
-                    <?php
-                    for ($i = 0; $i < count($invoiceParcels); $i++):
-                        $invoiceParcel = Calypso::getValue($invoiceParcels, "$i");
-                    ?>
-                        <tr style="height: 45px;">
-                            <td><?= $i + 1; ?></td>
-                            <td><?= Calypso::getValue($invoiceParcel, 'waybill_number'); ?></td>
-                            <td><?= !is_null($invoiceParcel) ? Calypso::getValue($invoice, 'credit_note.credit_note_number') : '<br/><br/>'; ?></td>
-                            <td><?= Util::formatDate(\Adapter\Globals\ServiceConstant::DATE_FORMAT, Calypso::getValue($invoiceParcel, 'parcel.created_date')); ?></td>
-                            <td><?= strtoupper(Calypso::getValue($invoiceParcel, 'receiver.firstname') . ' ' . Calypso::getValue($invoiceParcel, 'receiver.lastname')); ?></td>
-                            <td style="height: 000px;"><?= strtoupper(mb_strimwidth(Calypso::getValue($invoiceParcel, 'receiver_address.street_address1', ""), 0, 25, "...")); ?></td>
-                            <td><?= strtoupper(Calypso::getValue($invoiceParcel, 'sender_city.name')) ?></td>
-                            <td><?= strtoupper(Calypso::getValue($invoiceParcel, 'receiver_city.name')) ?></td>
-                            <td></td>
-                            <td><?= Calypso::getValue($invoiceParcel, 'parcel.weight'); ?></td>
-                            <td><?= Calypso::getValue($invoiceParcel, 'delivery_receipt.name'); ?></td>
-                            <td><?= Calypso::getValue($invoiceParcel, 'delivery_receipt.delivered_at'); ?></td>
-                            <td><?= number_format(Calypso::getValue($invoiceParcel, 'parcel.amount_due'), 2); ?></td>
-                            <td></td>
-                            <td class="invoice-total-amt-cell is-double-bordered"><?= number_format(Calypso::getValue($invoiceParcel, 'net_amount'), 2); ?></td>
-                        </tr>
-                    <?php endfor; ?>
-                    <tr>
-                        <td colspan="13">INVOICE VALUE</td>
+                </thead>
+                <tbody>
+                <?php
+                for ($i = 0; $i < $invoicePacelsCount; $i++):
+                    $invoiceParcel = Calypso::getValue($invoiceParcels, "$i");
+                ?>
+                    <tr style="height: 45px;">
+                        <td><?= $i + 1; ?></td>
+                        <td><?= Calypso::getValue($invoiceParcel, 'waybill_number'); ?></td>
+                        <td><?= !is_null($invoiceParcel) ? Calypso::getValue($invoice, 'credit_note.credit_note_number') : '<br/><br/>'; ?></td>
+                        <td><?= Util::formatDate(\Adapter\Globals\ServiceConstant::DATE_FORMAT, Calypso::getValue($invoiceParcel, 'parcel.created_date')); ?></td>
+                        <td><?= strtoupper(Calypso::getValue($invoiceParcel, 'receiver.firstname') . ' ' . Calypso::getValue($invoiceParcel, 'receiver.lastname')); ?></td>
+                        <td style="height: 000px;"><?= strtoupper(mb_strimwidth(Calypso::getValue($invoiceParcel, 'receiver_address.street_address1', ""), 0, 25, "...")); ?></td>
+                        <td><?= strtoupper(Calypso::getValue($invoiceParcel, 'sender_city.name')) ?></td>
+                        <td><?= strtoupper(Calypso::getValue($invoiceParcel, 'receiver_city.name')) ?></td>
                         <td></td>
-                        <td class="invoice-total-amt-cell is-double-bordered"><?= number_format(Calypso::getValue($invoice, 'total_excluding_vat'), 2) ?></td>
-                    </tr>
-                    <tr>
-                        <td colspan="13">Add 5% VAT</td>
+                        <td><?= Calypso::getValue($invoiceParcel, 'parcel.weight'); ?></td>
+                        <td><?= Calypso::getValue($invoiceParcel, 'delivery_receipt.name'); ?></td>
+                        <td><?= Calypso::getValue($invoiceParcel, 'delivery_receipt.delivered_at'); ?></td>
+                        <td><?= number_format(Calypso::getValue($invoiceParcel, 'parcel.amount_due'), 2); ?></td>
                         <td></td>
-                        <td class="invoice-total-amt-cell is-double-bordered"><?= number_format(Calypso::getValue($invoice, 'st_standard_vat'), 2) ?></td>
+                        <td class="invoice-total-amt-cell is-double-bordered"><?= number_format(Calypso::getValue($invoiceParcel, 'net_amount'), 2); ?></td>
                     </tr>
-                    <tr>
-                        <td colspan="13">Stamp Duty Charge</td>
-                        <td></td>
-                        <td class="invoice-total-amt-cell is-double-bordered"><?= number_format(Calypso::getValue($invoice, 'stamp_duty'), 2) ?></td>
-                    </tr>
-                    <tr class="double-border">
-                        <td colspan="13"><strong>AMOUNT DUE</strong></td>
-                        <td></td>
-                        <td class="invoice-total-amt-cell is-double-bordered"><?= number_format(Calypso::getValue($invoice, 'total_to_pay'), 2) ?></td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
+                <?php endfor; ?>
+                <tr>
+                    <td colspan="13">INVOICE VALUE</td>
+                    <td></td>
+                    <td class="invoice-total-amt-cell is-double-bordered"><?= number_format(Calypso::getValue($invoice, 'total_excluding_vat'), 2) ?></td>
+                </tr>
+                <tr>
+                    <td colspan="13">Add 5% VAT</td>
+                    <td></td>
+                    <td class="invoice-total-amt-cell is-double-bordered"><?= number_format(Calypso::getValue($invoice, 'st_standard_vat'), 2) ?></td>
+                </tr>
+                <tr>
+                    <td colspan="13">Stamp Duty Charge</td>
+                    <td></td>
+                    <td class="invoice-total-amt-cell is-double-bordered"><?= number_format(Calypso::getValue($invoice, 'stamp_duty'), 2) ?></td>
+                </tr>
+                <tr class="double-border">
+                    <td colspan="13"><strong>AMOUNT DUE</strong></td>
+                    <td></td>
+                    <td class="invoice-total-amt-cell is-double-bordered"><?= number_format(Calypso::getValue($invoice, 'total_to_pay'), 2) ?></td>
+                </tr>
+                </tbody>
+            </table>
         </div>
     </div>
+
+    <div class="invoice-page landscape continuous">
+        <h4 class="text-center">Other Charges for Invoice</h4>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th rowspan="2">S/N</th>
+                    <th rowspan="2">Waybill no</th>
+                    <th rowspan="2">Reference</th>
+                    <th colspan="6" style="text-align:center">Charges</th>
+                    <th rowspan="2">Total</th>
+                </tr>
+                <tr>
+                    <th>Charge 1</th>
+                    <th>Charge 2</th>
+                    <th>Charge 3</th>
+                    <th>Charge 4</th>
+                    <th>Charge 5</th>
+                    <th>Charge 6</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+<?php
+    function getNumberOfSheets($count, $numberPerSheet,$extras=0) {
+        $count = (int) $count;
+        $numberPerSheet = (int) $numberPerSheet;
+        $extras = (int) $extras;
+
+        $numberOfSheets = round((($count+$extras) / $numberPerSheet));
+
+        return $numberOfSheets;
+    }
+    function getPageHeight($no_of_pages) {
+        $pageHeight = 1000;
+        $no_of_pages = (int) $no_of_pages;
+
+        return 'height:'.($pageHeight * $no_of_pages).'px';
+    }
+?>
