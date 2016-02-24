@@ -97,6 +97,7 @@ class ParcelAdapter extends BaseAdapter
             'with_receiver' => 1,
             'with_receiver_address' => 1,
             'with_to_branch' => 1,
+            'with_parcel_comment' => 1,
             'offset' => $offset,
             'count' => $count
         );
@@ -143,6 +144,7 @@ class ParcelAdapter extends BaseAdapter
             'with_sender_address' => 1,
             'with_receiver_address' => 1,
             'with_created_branch' => 1,
+            'with_parcel_comment' => 1,
             'offset' => $offset,
             'count' => $count);
         $params = http_build_query($filter);
@@ -151,7 +153,7 @@ class ParcelAdapter extends BaseAdapter
 
     public function getSearchParcels($status, $waybill_number, $offset = 0, $count = 50, $with_total = null, $branch_id = null, $only_parents = null, $with_created_branch = true)
     {
-        $filters = array('status' => $status, 'waybill_number' => $waybill_number, 'with_total_count' => $with_total, 'show_parents' => $only_parents, 'branch_id' => $branch_id, 'with_sender' => 1, 'with_created_branch' => $with_created_branch, 'with_receiver' => 1, 'with_receiver_address' => 1, 'with_to_branch' => 1, 'with_route' => 1, 'offset' => $offset, 'count' => $count);
+        $filters = array('with_parcel_comment' => 1, 'status' => $status, 'waybill_number' => $waybill_number, 'with_total_count' => $with_total, 'show_parents' => $only_parents, 'branch_id' => $branch_id, 'with_sender' => 1, 'with_created_branch' => $with_created_branch, 'with_receiver' => 1, 'with_receiver_address' => 1, 'with_to_branch' => 1, 'with_route' => 1, 'offset' => $offset, 'count' => $count);
         return $this->request(ServiceConstant::URL_GET_ALL_PARCEL, array_filter($filters), self::HTTP_GET);
     }
 
@@ -170,6 +172,7 @@ class ParcelAdapter extends BaseAdapter
             'with_receiver_address' => 1,
             'with_to_branch' => 1,
             'with_from_branch' => 1,
+            'with_parcel_comment' => 1,
             'offset' => $offset,
             'count' => $count
         );
@@ -190,6 +193,7 @@ class ParcelAdapter extends BaseAdapter
             'show_parents' => $only_parents,
             'with_total_count' => $with_total,
             'with_created_branch' => 1,
+            'with_parcel_comment' => 1,
             'offset' => $offset,
             'count' => $count);
         $params = http_build_query($filter);
@@ -207,6 +211,7 @@ class ParcelAdapter extends BaseAdapter
             'with_from_branch' => 1,
             'with_holder' => 1,
             'with_created_branch' => 1,
+            'with_parcel_comment' => 1,
             'history_status' => $status);
         $params = http_build_query($filter);
         return $this->request(ServiceConstant::URL_GET_ALL_PARCEL . '?' . $params, [], self::HTTP_GET);
@@ -292,6 +297,7 @@ class ParcelAdapter extends BaseAdapter
             'with_holder' => 1,
             'with_to_branch' => 1,
             'with_created_branch' => 1,
+            'with_parcel_comment' => 1,
             'offset' => $offset,
             'count' => $count
         );
@@ -490,7 +496,7 @@ class ParcelAdapter extends BaseAdapter
      */
     public function getParcelsByFilters($filters)
     {
-        $filters = array_merge($filters,['with_company' => 1]);
+        $filters = array_merge($filters, ['with_company' => 1]);
         return $this->request(ServiceConstant::URL_GET_ALL_PARCEL, $filters, self::HTTP_GET);
     }
 
