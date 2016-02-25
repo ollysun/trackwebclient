@@ -84,7 +84,7 @@ $user_data = $this->context->userData;
                                     <input id='chk_all' type='checkbox' class='chk_all'><label for='chk_all'></label>
                                 </div>
                             </th>
-                            <th style="width: 20px" >S/N</th>
+                            <th style="width: 20px">S/N</th>
                             <th>Waybill No</th>
                             <th>Origin</th>
                             <th>Next Destination</th>
@@ -111,7 +111,7 @@ $user_data = $this->context->userData;
                                 <td>
                                     <div class='checkbox-nice'>
                                         <input name='waybills[]' id='chk_<?= $row; ?>' type='checkbox'
-                                               class='chk_next'><label
+                                               class='chk_next'/><label
                                             for='chk_<?= $row; ?>'></label>
                                     </div>
                                 </td>
@@ -146,6 +146,7 @@ $user_data = $this->context->userData;
                                 <td></td>
                                 <td>
                                     <?= $this->render('../elements/parcel/partial_return_button', ['parcel' => $parcels, 'reasons_list' => $reasons_list]) ?>
+                                    <?= $this->render('../elements/parcel/partial_cancel_button', ['waybill_number' => $parcels['waybill_number'], 'status' => $parcels['status']]) ?>
                                 </td>
                             </tr>
                         <?php } ?>
@@ -153,6 +154,7 @@ $user_data = $this->context->userData;
                     </table>
                 </form>
             </div>
+
             <?= $this->render('../elements/pagination_and_summary', ['first' => $offset, 'last' => $row, 'total_count' => $total_count, 'page_width' => $page_width]) ?>
 
         <?php } else { ?>
@@ -223,6 +225,8 @@ $user_data = $this->context->userData;
     </div>
 </div>
 
+
+<?= $this->render('../elements/parcel/partial_cancel_shipment_form') ?>
 <?= $this->render('../elements/parcel/partial_return_form') ?>
 
 <!-- this page specific scripts -->
@@ -233,4 +237,5 @@ $user_data = $this->context->userData;
 <?php $this->registerJsFile('@web/js/libs/jquery.dataTables.bootstrap.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/next_destination.js?v1.0.2', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/return.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
+
 

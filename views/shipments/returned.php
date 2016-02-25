@@ -16,6 +16,8 @@ $this->params['breadcrumbs'] = array(
 $user_data = $this->context->userData;
 ?>
 
+<?php echo \Adapter\Util\Calypso::showFlashMessages(); ?>
+
 <div class="main-box">
     <div class="main-box-header table-search-form clearfix">
         <form class="table-search-form form-inline pull-right clearfix">
@@ -74,7 +76,9 @@ $user_data = $this->context->userData;
                                 <?php } ?>
                                 <td>
                                     <a href="<?= Url::toRoute(['/shipments/view?waybill_number=' . $parcel['waybill_number']]) ?>"
-                                       class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
+                                       class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i> View</a>
+                                    <?= $this->render('../elements/parcel/partial_cancel_button', ['waybill_number' => $parcel['waybill_number'], 'status' => $parcel['status']]) ?>
+                                </td>
                             </tr>
                         <?php }
                     } ?>
@@ -88,6 +92,7 @@ $user_data = $this->context->userData;
     </div>
 </div>
 
+<?= $this->render('../elements/parcel/partial_cancel_shipment_form') ?>
 
 <?php $this->registerJsFile('@web/js/table.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/libs/jquery.dataTables.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
