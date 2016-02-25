@@ -119,7 +119,7 @@ $user_data = $this->context->userData;
                                 <td><?= ucwords($parcel['to_branch']['name']); ?></td>
                                 <td><?= $parcel['weight']; ?> KG</td>
                                 <td><?= ucwords($parcel['holder']['fullname']); ?></td>
-                                <td><?= ServiceConstant::getReturnStatus($parcel); ?></td>
+                                <td><?= $parcel['return_reason']['comment']?></td>
                                 <?php if ($user_data['role_id'] == ServiceConstant::USER_TYPE_ADMIN) { ?>
                                     <td><?= strtoupper(Calypso::getValue($parcel, "created_branch.name")) ?></td>
                                     <td><?= ParcelAdapter::getCurrentLocation($parcel); ?></td>
