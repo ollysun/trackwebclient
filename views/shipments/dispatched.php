@@ -121,6 +121,7 @@ $user_data = $this->context->userData;
                                             data-href="<?= Url::toRoute(['/parcels/new?id=' . $parcel['id']]) ?>"
                                             class="btn btn-xs btn-info btnClone"><i class="fa fa-copy"></i></button>
                                     <?= $this->render('../elements/parcel/partial_return_button', ['parcel' => $parcel, 'reasons_list' => $reasons_list]) ?>
+                                    <?= $this->render('../elements/parcel/partial_cancel_button', ['waybill_number' => $parcel['waybill_number'], 'status' => $parcel['status']]) ?>
                                 </td>
                             </tr>
                         <?php }
@@ -277,6 +278,8 @@ $user_data = $this->context->userData;
 </div>
 <!-- this page specific scripts -->
 <?= $this->render('../elements/parcel/partial_return_form') ?>
+
+<?= $this->render('../elements/parcel/partial_cancel_shipment_form') ?>
 
 <script type="text/javascript">
     var beingdelivered = <?= ServiceConstant::BEING_DELIVERED ?>;

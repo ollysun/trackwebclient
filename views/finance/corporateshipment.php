@@ -242,6 +242,7 @@ $this->params['breadcrumbs'] = array(
                                 <a href=<?= '../parcels/new?edit=1&id=' . Calypso::getValue($corporateParcel, 'id') ?>>
                                     <button class="btn btn-default btn-xs">Edit</button>
                                 </a>
+                                <?= $this->render('../elements/parcel/partial_cancel_button', ['waybill_number' => $corporateParcel['waybill_number'], 'status' => $corporateParcel['status']]) ?>
                             </td>
                         </tr>
                     <?php endforeach; ?>
@@ -303,6 +304,8 @@ $this->params['breadcrumbs'] = array(
     </tr>
 </script>
 
+<?= $this->render('../elements/parcel/partial_cancel_shipment_form') ?>
+
 <!-- this page specific scripts -->
 <?php $this->registerJsFile('@web/js/table.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/libs/jquery.dataTables.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
@@ -311,4 +314,3 @@ $this->params['breadcrumbs'] = array(
 <?php $this->registerJsFile('@web/js/form-watch-changes.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/validate.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/finance/corporate_shipment.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
-

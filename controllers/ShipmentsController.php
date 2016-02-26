@@ -1112,4 +1112,24 @@ class ShipmentsController extends BaseController
 
         return $this->redirect(Yii::$app->getRequest()->getReferrer());
     }
+
+    /**
+     * @author Babatunde Otaru <tunde@cottacush.com>
+     * @param $waybill_number
+     * @return Response
+     */
+    public function actionCancelshipment($waybill_number)
+    {
+        $parcelAdapter = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $response = $parcelAdapter->cancel(['waybill_numbers' => $waybill_number]);
+        $response = new ResponseHandler($response);
+        if ($response->getStatus() == ResponseHandler::STATUS_OK) {
+            $this->flashSuccess('Shipment successfully marked as CANCELLED');
+        } else {
+            $this->flashError('An error occurred while trying to cancel shipment. #' . $response->getError());
+        }
+
+        return $this->redirect(Yii::$app->request->referrer);
+
+    }
 }

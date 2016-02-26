@@ -129,7 +129,9 @@ $user_data = $this->context->userData;
                             <td>  <a href=<?= '../parcels/new?edit=1&id=' . Calypso::getValue($parcel, 'id') ?>>
                                     <button class="btn btn-default btn-xs">Edit</button>
                                 </a>
-                                <a href="<?= Url::toRoute(['/shipments/view?waybill_number='.$parcel['waybill_number']]) ?>" class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i> View</a></td>
+                                <a href="<?= Url::toRoute(['/shipments/view?waybill_number='.$parcel['waybill_number']]) ?>" class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i> View</a>
+                                <?= $this->render('../elements/parcel/partial_cancel_button', ['waybill_number' => $parcel['waybill_number'], 'status' => $parcel['status']]) ?>
+                            </td>
                         </tr>
                     <?php
                     }}
@@ -217,6 +219,10 @@ $user_data = $this->context->userData;
         </form>
     </div>
 </div>
+
+<?= $this->render('../elements/parcel/partial_cancel_shipment_form') ?>
+
+
 <!-- this page specific scripts -->
 <?= $this->registerJsFile('@web/js/libs/jquery.dataTables.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
 <?= $this->registerJsFile('@web/js/libs/dataTables.fixedHeader.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
