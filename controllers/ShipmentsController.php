@@ -157,7 +157,7 @@ class ShipmentsController extends BaseController
             $search_action = true;
         } elseif (!empty(Calypso::getInstance()->get()->search)) {
             $search = Calypso::getInstance()->get()->search;
-            $response = $parcel->getSearchParcels(null, $search, $offset, $page_width, 1, $this->branch_to_view,1);
+            $response = $parcel->getSearchParcels(null, $search, $offset, $page_width, 1, $this->branch_to_view, 1);
             $search_action = true;
         } else {
             $response = $parcel->getParcelsForDelivery(null, null, ServiceConstant::FOR_DELIVERY, $this->branch_to_view, $offset, $page_width, true, 1, null, $route_id, true);
@@ -237,7 +237,7 @@ class ShipmentsController extends BaseController
 
         if (!empty(Calypso::getInstance()->get()->search)) {  //check if not empty criteria
             $search = Calypso::getInstance()->get()->search;
-            $response = $parcel->getSearchParcels(null, $search, $offset, $page_width, 1, $this->branch_to_view,1);
+            $response = $parcel->getSearchParcels(null, $search, $offset, $page_width, 1, $this->branch_to_view, 1);
             $search_action = $search;
         } else {
             $response = $parcel->getParcels(null, null, ServiceConstant::FOR_SWEEPER, $this->branch_to_view, $offset, $page_width, 1, 1, null, true);
@@ -833,6 +833,7 @@ class ShipmentsController extends BaseController
         $filters['count'] = $page_width;
         $filters['with_total_count'] = true;
         $filters['report'] = 1;
+        $filters['show_both_parent_and_splits'] = 1;
 
         $status = ServiceConstant::getStatusRef();
         $payment_methods = ServiceConstant::getPaymentMethods();
@@ -921,6 +922,7 @@ class ShipmentsController extends BaseController
 
         $filters['report'] = 1;
         $filters['with_total_count'] = true;
+        $filters['show_both_parent_and_splits'] = 1;
 
         $offset = 0;
         $count = 500;
@@ -933,7 +935,7 @@ class ShipmentsController extends BaseController
         $stream = fopen("php://output", "w");
 
 
-        $headers = array('SN', 'Waybill Number', 'Sender', 'Sender Email', 'Sender Phone', 'Sender Address', 'Sender City', 'Sender State', 'Receiver', 'Receiver Email', 'Receiver Phone', 'Receiver Address', 'Receiver City', 'Receiver State', 'Weight/Piece', 'Payment Method', 'Amount Due', 'Cash Amount', 'POS Amount', 'POS Transaction ID', 'Parcel Type', 'Cash on Delivery', 'Delivery Type', 'Package Value', '# of Package', 'Shipping Type', 'Created Date', 'Last Modified Date', 'Status', 'Reference Number', 'Originating Branch', 'Route', 'Request Type', 'For Return', 'Other Info', 'Company Reg No', 'Billing Plan Name', 'Created By', 'Amount due to Merchant');
+        $headers = array('SN', 'Waybill Number', 'Sender', 'Sender Email', 'Sender Phone', 'Sender Address', 'Sender City', 'Sender State', 'Receiver', 'Receiver Email', 'Receiver Phone', 'Receiver Address', 'Receiver City', 'Receiver State', 'Weight/Piece', 'Payment Method', 'Amount Due', 'Cash Amount', 'POS Amount', 'POS Transaction ID', 'Parcel Type', 'Cash on Delivery', 'Delivery Type', 'Package Value', '# of Package', 'Shipping Type', 'Created Date', 'Last Modified Date', 'Status', 'Reference Number', 'Originating Branch', 'Route', 'Request Type', 'For Return', 'Other Info', 'Company Reg No', 'Billing Plan Name', 'Created By', 'Amount due to Merchant', 'Insurance Charge', 'Storrage/Demurrage Charge', 'Handling Charge', 'Duty Charge', 'Cost of Crating', 'Other Charges');
         fputcsv($stream, $headers);
 
 
@@ -990,6 +992,12 @@ class ShipmentsController extends BaseController
                         $result['billing_plan_name'],
                         $result['created_by_fullname'],
                         $result['parcel_cash_on_delivery_amount'],
+                        $result['parcel_insurance'],
+                        $result['parcel_storage_demurrage'],
+                        $result['parcel_handling_charge'],
+                        $result['parcel_duty_charge'],
+                        $result['parcel_cost_of_crating'],
+                        $result['parcel_others'],
                     ];
                 }
 
@@ -1103,5 +1111,25 @@ class ShipmentsController extends BaseController
         }
 
         return $this->redirect(Yii::$app->getRequest()->getReferrer());
+    }
+
+    /**
+     * @author Babatunde Otaru <tunde@cottacush.com>
+     * @param $waybill_number
+     * @return Response
+     */
+    public function actionCancelshipment($waybill_number)
+    {
+        $parcelAdapter = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $response = $parcelAdapter->cancel(['waybill_numbers' => $waybill_number]);
+        $response = new ResponseHandler($response);
+        if ($response->getStatus() == ResponseHandler::STATUS_OK) {
+            $this->flashSuccess('Shipment successfully marked as CANCELLED');
+        } else {
+            $this->flashError('An error occurred while trying to cancel shipment. #' . $response->getError());
+        }
+
+        return $this->redirect(Yii::$app->request->referrer);
+
     }
 }

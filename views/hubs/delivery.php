@@ -136,7 +136,7 @@ $user_data = $this->context->userData;
                             <td><?= strtoupper(Calypso::getValue($parcels, 'to_branch.name')); ?> </td>
                             <td><?= ucwords(Calypso::getValue($parcels, 'receiver_address.city.name') . ', ' . Calypso::getValue($parcels, 'receiver_address.state.name')) ?></td>
                             <td><?= ServiceConstant::getRequestType($parcels['request_type']) ?></td>
-                            <td><?= ServiceConstant::getReturnStatus($parcels); ?></td>
+                            <td><?= Calypso::getValue($parcels, 'return_reason.comment')  ?></td>
                             <td><?= Calypso::getValue($parcels, 'weight') ?></td>
                             <?php if($user_data['role_id'] == ServiceConstant::USER_TYPE_ADMIN) { ?>
                                 <td><?= strtoupper(Calypso::getValue($parcels, "created_branch.name")) ?></td>
@@ -147,6 +147,7 @@ $user_data = $this->context->userData;
                                 <a href=<?= '../parcels/new?edit=1&id=' . Calypso::getValue($parcels, 'id') ?>>
                                     <button class="btn btn-default btn-xs">Edit</button>
                                 </a>
+                                <?= $this->render('../elements/parcel/partial_cancel_button', ['waybill_number' => $parcels['waybill_number'], 'status' => $parcels['status']]) ?>
                             </td>
                         </tr>
                     <?php }
@@ -305,6 +306,8 @@ $user_data = $this->context->userData;
         </div>
     </div>
 </div>
+
+<?= $this->render('../elements/parcel/partial_cancel_shipment_form') ?>
 
 <!-- this page specific scripts -->
 <?php $this->registerJsFile('@web/js/table.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>

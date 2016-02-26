@@ -148,7 +148,7 @@ $is_hub = $user['branch']['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
                             <td><?= $parcel['receiver']['phone'] ?></td>
                             <td><?= date(ServiceConstant::DATE_TIME_FORMAT,strtotime($parcel['created_date'])); ?></td>
                             <td><?= $parcel['route']['name'];?></td>
-                            <td><?= ServiceConstant::getReturnStatus($parcel); ?></td>
+                            <td><?= Calypso::getValue($parcels, 'return_reason.comment')  ?></td>
                             <td><?= ucwords(ServiceConstant::getDeliveryType($parcel['delivery_type'])); ?></td>
                             <?php if($user['role_id'] == ServiceConstant::USER_TYPE_ADMIN) { ?>
                                 <td><?= strtoupper(Calypso::getValue($parcel, "created_branch.name")) ?></td>
@@ -158,6 +158,7 @@ $is_hub = $user['branch']['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
                             <td>
                                 <a href="<?= Url::toRoute(['/shipments/view?waybill_number='.$parcel['waybill_number']]) ?>" class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i> View</a>
                                 <?= $this->render('../elements/parcel/partial_return_button',['parcel'=>$parcel , 'reasons_list' => $reasons_list]) ?>
+                                <?= $this->render('../elements/parcel/partial_cancel_button', ['waybill_number' => $parcel['waybill_number'], 'status' => $parcel['status']]) ?>
                             </td>
                         </tr>
                     <?php
@@ -295,6 +296,8 @@ $is_hub = $user['branch']['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
     </div>
 </div>
 
+<?= $this->render('../elements/parcel/partial_cancel_shipment_form') ?>
+
 <?= $this->render('../elements/parcel/partial_return_form') ?>
 
 <!-- this page specific scripts -->
@@ -314,6 +317,8 @@ $("#chbx_w_all").change(function () {
 });
 
 ';
+
+
 $this->registerJs($ex,View::POS_READY);
 ?>
 
