@@ -107,7 +107,7 @@ $user_data = $this->context->userData;
                             <td><?= ServiceConstant::getRequestType($parcel['request_type']) ?></td>
                             <td><?= date(ServiceConstant::DATE_TIME_FORMAT,strtotime($parcel['created_date'])); ?></td>
                             <td><?= $parcel['no_of_package']; ?></td>
-                            <td><?= ServiceConstant::getReturnStatus($parcel); ?></td>
+                            <td><?= $parcel['return_reason']['comment'] ?></td>
                             <td><?= ServiceConstant::getStatus($parcel['status']); ?></td>
                             <?php if($user_data['role_id'] == ServiceConstant::USER_TYPE_ADMIN) { ?>
                                 <td><?= strtoupper(Calypso::getValue($parcel, "created_branch.name")) ?></td>

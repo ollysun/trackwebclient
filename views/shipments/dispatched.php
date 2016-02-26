@@ -108,7 +108,7 @@ $user_data = $this->context->userData;
                                 <td><?= $parcel['receiver']['phone'] ?></td>
                                 <td><?= ucwords($parcel['holder']['fullname']); ?></td>
                                 <td><?= ServiceConstant::getStatus($parcel['status']); ?></td>
-                                <td><?= ServiceConstant::getReturnStatus($parcel); ?></td>
+                                <td><?= $parcel['return_reason']['comment']; ?></td>
                                 <?php if ($user_data['role_id'] == ServiceConstant::USER_TYPE_ADMIN) { ?>
                                     <td><?= strtoupper(Calypso::getValue($parcel, "created_branch.name")) ?></td>
                                     <td><?= ParcelAdapter::getCurrentLocation($parcel); ?></td>

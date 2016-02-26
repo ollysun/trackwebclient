@@ -132,7 +132,7 @@ $user_data = $this->context->userData;
                             <td></td>
                             <td><?= ucwords(Calypso::getValue($parcels, 'receiver_address.city.name') . ', ' . Calypso::getValue($parcels, 'receiver_address.state.name')); ?></td>
                             <td><?= ServiceConstant::getRequestType($parcels['request_type']) ?></td>
-                            <td><?= ServiceConstant::getReturnStatus($parcels); ?></td>
+                            <td><?= Calypso::getValue($parcels, 'return_reason.comment'); ?></td>
                             <td><?= Calypso::getValue($parcels, 'weight') ?></td>
                             <?php if ($user_data['role_id'] == ServiceConstant::USER_TYPE_ADMIN) { ?>
                                 <td><?= strtoupper(Calypso::getValue($parcels, "created_branch.name")) ?></td>

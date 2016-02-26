@@ -137,7 +137,7 @@ $user_data = $this->context->userData;
                                 </td>
                                 <td><?= Calypso::getValue($parcels, 'reference_number') ?></td>
                                 <td><?= ServiceConstant::getRequestType($parcels['request_type']) ?></td>
-                                <td><?= ServiceConstant::getReturnStatus($parcels); ?></td>
+                                <td><?= Calypso::getValue($parcels, 'return_reason.comment'); ?></td>
                                 <td><?= Calypso::getValue($parcels, 'weight') ?></td>
                                 <?php if ($user_data['role_id'] == ServiceConstant::USER_TYPE_ADMIN) { ?>
                                     <td><?= strtoupper(Calypso::getValue($parcels, "created_branch.name")) ?></td>
