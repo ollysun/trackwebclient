@@ -8,6 +8,13 @@
   padding: 21px 30px;
   border: 1px solid #ccc;
 }
+.invoice-page.landscape {
+  width: 1358px;
+  height: 1000px;
+}
+.invoice-page.landscape.continuous {
+  height: auto;
+}
 @media print {
   .invoice-page {
     padding: 0;

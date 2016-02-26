@@ -332,7 +332,7 @@ class FinanceController extends BaseController
         $invoice['total_to_pay_kobo'] = round($koboValue * 100);
 
         $this->layout = 'print';
-        return $this->render('print_invoice', ['invoice' => $invoice, 'invoiceParcels' => $invoiceParcels]);
+        return $this->render('print_invoice_v2', ['invoice' => $invoice, 'invoiceParcels' => $invoiceParcels]);
     }
 
     /**
