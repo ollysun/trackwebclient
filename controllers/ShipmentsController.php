@@ -833,6 +833,7 @@ class ShipmentsController extends BaseController
         $filters['count'] = $page_width;
         $filters['with_total_count'] = true;
         $filters['report'] = 1;
+        $filters['show_both_parent_and_splits'] = 1;
 
         $status = ServiceConstant::getStatusRef();
         $payment_methods = ServiceConstant::getPaymentMethods();
@@ -921,6 +922,7 @@ class ShipmentsController extends BaseController
 
         $filters['report'] = 1;
         $filters['with_total_count'] = true;
+        $filters['show_both_parent_and_splits'] = 1;
 
         $offset = 0;
         $count = 500;
