@@ -147,6 +147,7 @@ $user_data = $this->context->userData;
                                 <a href=<?= '../parcels/new?edit=1&id=' . Calypso::getValue($parcels, 'id') ?>>
                                     <button class="btn btn-default btn-xs">Edit</button>
                                 </a>
+                                <?= $this->render('../elements/parcel/partial_cancel_button', ['waybill_number' => $parcels['waybill_number'], 'status' => $parcels['status']]) ?>
                             </td>
                         </tr>
                     <?php }
@@ -305,6 +306,8 @@ $user_data = $this->context->userData;
         </div>
     </div>
 </div>
+
+<?= $this->render('../elements/parcel/partial_cancel_shipment_form') ?>
 
 <!-- this page specific scripts -->
 <?php $this->registerJsFile('@web/js/table.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
