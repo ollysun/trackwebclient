@@ -210,7 +210,7 @@ class Calypso
                 ['finance/*', 'billing/*', 'admin/*']
                 , self::getCorporateRoutes()),
             ServiceConstant::USER_TYPE_SWEEPER => array_merge(
-                ['site/index', 'site/newparcel', 'shipments/bulk', 'manifest/index', 'shipments/dispatched', 'shipments/returned', 'shipments/fordelivery', 'hubs/*', 'finance/*', 'billing/*', 'admin/*', 'corporate/request/pending']
+                ['site/index', 'site/newparcel', 'shipments/bulk', 'manifest/index', 'shipments/dispatched', 'shipments/returned', 'shipments/fordelivery', 'finance/*', 'billing/*', 'admin/*', 'corporate/request/pending']
                 , self::getCorporateRoutes()),
             ServiceConstant::USER_TYPE_DISPATCHER => array_merge(
                 ['site/*', 'manifest/index', 'shipments/dispatched', 'shipments/returned', 'shipments/fordelivery', 'hubs/*', 'finance/*', 'billing/*', 'admin/*', 'corporate/request/pending']
