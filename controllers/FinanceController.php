@@ -331,8 +331,15 @@ class FinanceController extends BaseController
         $koboValue = $invoice['total_to_pay'] - floatval($invoice['total_to_pay_naira']);
         $invoice['total_to_pay_kobo'] = round($koboValue * 100);
 
+        $number_of_sheets = 14;
+        $invoice_extras = 6;
+        $no_of_pages = $invoiceAdapter->getNumberOfSheets(count($invoiceParcels), $number_of_sheets, $invoice_extras);
+
+        $page_height = $invoiceAdapter->getPageHeight($no_of_pages);
+        $template_header_page_height = $invoiceAdapter->getPageHeight(2);
+
         $this->layout = 'print';
-        return $this->render('print_invoice_v2', ['invoice' => $invoice, 'invoiceParcels' => $invoiceParcels]);
+        return $this->render('print_invoice_v2', ['template_header_page_height' => $template_header_page_height, 'page_height' => $page_height, 'parcelPages' => $no_of_pages, 'invoice' => $invoice, 'invoiceParcels' => $invoiceParcels]);
     }
 
     /**

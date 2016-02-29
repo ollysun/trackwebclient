@@ -380,4 +380,17 @@ class Util
         return $i - (1 - $start);
     }
 
+    /**
+     * @author Babatunde Otaru <tunde@cottacush.com>
+     * @param $charges_array
+     * @return int
+     */
+    public static function calculateExtraCharges($charges_array)
+    {
+        foreach ($charges_array as $value) {
+            $total = 0;
+            $total += $value;
+            return $total;
+        }
+    }
 }

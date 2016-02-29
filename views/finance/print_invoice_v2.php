@@ -9,7 +9,7 @@ $this->title = 'Invoices';
 ?>
 <?= Html::cssFile('@web/css/compiled/print-invoice.css') ?>
 
-    <div class="invoice-page landscape continuous" style="<?= getPageHeight(2); ?>">
+    <div class="invoice-page landscape continuous" style="<?= $template_header_page_height ?>">
         <?= $this->render('../elements/finance/print_header'); ?>
         <div class="text-center"><h4>INVOICE - ORIGINAL</h4></div>
         <table class="table table-bordered">
@@ -238,12 +238,9 @@ $this->title = 'Invoices';
         <br>
     </div>
 <?php
-$invoicePacelsCount = count($invoiceParcels);
-// number of extra fields at the bottom plus the table title plus table header
-$invoiceExtras = 6;
-$parcelPages = getNumberOfSheets($invoicePacelsCount, 14, $invoiceExtras);
+
 ?>
-    <div class="invoice-page landscape continuous" style="<?= getPageHeight($parcelPages) ?>">
+    <div class="invoice-page landscape continuous" style="<?= $parcelPages ?>">
         <div class="">
             <h4 class="text-center">Invoice No: <?= Calypso::getValue($invoice, 'invoice_number'); ?></h4>
             <table class="table table-bordered is-double-bordered">
@@ -268,7 +265,7 @@ $parcelPages = getNumberOfSheets($invoicePacelsCount, 14, $invoiceExtras);
                 </thead>
                 <tbody>
                 <?php
-                for ($i = 0; $i < $invoicePacelsCount; $i++):
+                for ($i = 0; $i < count($invoiceParcels); $i++):
                     $invoiceParcel = Calypso::getValue($invoiceParcels, "$i");
                     ?>
                     <tr style="height: 45px;">
@@ -295,7 +292,7 @@ $parcelPages = getNumberOfSheets($invoicePacelsCount, 14, $invoiceExtras);
                             Calypso::getValue($invoiceParcel, 'parcel.others')
                         ];
                         ?>
-                        <td><?= $total_charge = calculateExtraCharges($extra_charges_array); ?></td>
+                        <td><?= $total_charge = Util::calculateExtraCharges($extra_charges_array); ?></td>
                         <td class="invoice-total-amt-cell is-double-bordered"><?= number_format(Calypso::getValue($invoiceParcel, 'net_amount') + $total_charge, 2); ?></td>
                     </tr>
                 <?php endfor; ?>
@@ -325,12 +322,9 @@ $parcelPages = getNumberOfSheets($invoicePacelsCount, 14, $invoiceExtras);
     </div>
 
 <?php
-$invoicePacelsCount = count($invoiceParcels);
-// number of extra fields at the bottom plus the table title plus table header
-$invoiceExtras = 6;
-$parcelPages = getNumberOfSheets($invoicePacelsCount, 14, $invoiceExtras);
+
 ?>
-    <div class="invoice-page landscape continuous" style="<?= getPageHeight($parcelPages) ?>">
+    <div class="invoice-page landscape continuous" style="<?= $page_height ?>">
         <h4 class="text-center">Other Charges for Invoice</h4>
         <table class="table table-bordered">
             <thead>
@@ -352,7 +346,7 @@ $parcelPages = getNumberOfSheets($invoicePacelsCount, 14, $invoiceExtras);
             </thead>
             <tbody>
             <?php
-            for ($i = 0; $i < $invoicePacelsCount; $i++):
+            for ($i = 0; $i < count($invoiceParcels); $i++):
                 $invoiceParcel = Calypso::getValue($invoiceParcels, "$i");
                 ?>
                 <tr>
@@ -375,41 +369,10 @@ $parcelPages = getNumberOfSheets($invoicePacelsCount, 14, $invoiceExtras);
                         Calypso::getValue($invoiceParcel, 'parcel.others')
                     ];
                     ?>
-                    <td><?= calculateExtraCharges($extra_charges_array); ?></td>
+                    <td><?= Util::calculateExtraCharges($extra_charges_array); ?></td>
                 </tr>
             <?php endfor; ?>
 
             </tbody>
         </table>
     </div>
-
-<?php
-function getNumberOfSheets($count, $numberPerSheet, $extras = 0)
-{
-    $count = (int)$count;
-    $numberPerSheet = (int)$numberPerSheet;
-    $extras = (int)$extras;
-
-    $numberOfSheets = round((($count + $extras) / $numberPerSheet));
-
-    return $numberOfSheets;
-}
-
-function getPageHeight($no_of_pages)
-{
-    $pageHeight = 1000;
-    $no_of_pages = (int)$no_of_pages;
-
-    return 'height:' . ($pageHeight * $no_of_pages) . 'px';
-}
-
-function calculateExtraCharges($charges_array)
-{
-    foreach ($charges_array as $value) {
-        $total = 0;
-        $total += $value;
-        return $total;
-    }
-}
-
-?>
