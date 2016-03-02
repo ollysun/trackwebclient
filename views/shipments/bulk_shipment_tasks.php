@@ -66,11 +66,13 @@ $this->params['breadcrumbs'] = array(
                                href="<?= Url::to('/shipments/bulk?task_id=' . Calypso::getValue($task, 'id', '')) ?>"><i
                                     class="glyphicon glyphicon-eye-open"></i> View Details
                             </a>
+                            <?php if(Calypso::getValue($task, 'status', '') == 'success'):?>
                             <button class="print_btn btn btn-primary"
                                     data-create_task_url="<?= '/shipments/printbulkshipment?task_id='. Calypso::getValue($task, 'id', '') ?>"
                                     data-print_url="<?= $s3_base_url . 'waybills_task_' . Calypso::getValue($task, 'id', '') . '.pdf' ?>">
                                 <i class="glyphicon glyphicon-print"></i> Print
                             </button>
+                            <?php endif ?>
                         </td>
                     </tr>
                 <?php endforeach; ?>
