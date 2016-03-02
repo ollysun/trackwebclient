@@ -86,6 +86,6 @@ $this->params['breadcrumbs'] = array(
 <?php $this->registerJsFile('@web/js/table.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/libs/jquery.dataTables.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/utils.js?v1.1.0', ['depends' => [\app\assets\AppAsset::className()]]) ?>
-<?php $this->registerJsFile('@web/js/bulk_shipment_tasks.js?v1.1.0', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/bulk_shipment_tasks.js?v1.1.1', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
 
 
