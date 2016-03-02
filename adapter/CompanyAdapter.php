@@ -30,7 +30,7 @@ class CompanyAdapter extends BaseAdapter
      */
     public function createCompany($data)
     {
-        if(Calypso::getValue($data, 'company.reg_no') == '') {
+        if (Calypso::getValue($data, 'company.reg_no') == '') {
             $data['company']['reg_no'] = null;
         }
         $rawResponse = $this->request(ServiceConstant::URL_COMPANY_ADD, Json::encode($data), self::HTTP_POST);
@@ -51,7 +51,7 @@ class CompanyAdapter extends BaseAdapter
      */
     public function editCompany($data)
     {
-        if(Calypso::getValue($data, 'company.reg_no') == '') {
+        if (Calypso::getValue($data, 'company.reg_no') == '') {
             $data['company']['reg_no'] = null;
         }
         $rawResponse = $this->request(ServiceConstant::URL_COMPANY_EDIT, Json::encode($data), self::HTTP_POST);
@@ -129,7 +129,7 @@ class CompanyAdapter extends BaseAdapter
     {
 
         $filters = array_merge($filters, array(
-            'no_paginate' => 'true'));
+            'no_paginate' => 'true', 'remove_cancelled' => 'true'));
 
         $response = $this->request(ServiceConstant::URL_COMPANY_ALL,
             $filters, self::HTTP_GET);

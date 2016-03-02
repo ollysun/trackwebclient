@@ -90,7 +90,7 @@ class BranchAdapter extends BaseAdapter
      */
     public function getAllEcs()
     {
-        $response = $this->request(ServiceConstant::URL_GET_ALL_EC_IN_HUB, [], self::HTTP_GET);
+        $response = $this->request(ServiceConstant::URL_GET_ALL_EC_IN_HUB, ['remove_cancelled' => 1], self::HTTP_GET);
         $response = new ResponseHandler($response);
         if($response->isSuccess()) {
             return $response->getData();
@@ -102,7 +102,7 @@ class BranchAdapter extends BaseAdapter
      * Get all Hubs
      * @author Adeyemi Olaoye <yemi@cottacush.com>
      * @author Richard Boyewa <boye@cottacush.com>
-     * @author Olawale Lawal <wale@cottacush.com>
+     * @author Olawale Lawal <wale@cottacush.com>report
      * @param bool|true $paginate
      * @return array|mixed|string
      */
