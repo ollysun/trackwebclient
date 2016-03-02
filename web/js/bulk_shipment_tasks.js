@@ -8,6 +8,7 @@ $(document).ready(function () {
         $.ajax(print_url, {
             method: 'HEAD',
             success: function () {
+                externalWindow.document.write('');
                 TrackPlusUtil.openExternalLinkInNewWindow(externalWindow, print_url, 'Loading Waybills...');
             },
             error: function () {
