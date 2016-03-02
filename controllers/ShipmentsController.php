@@ -1105,7 +1105,8 @@ class ShipmentsController extends BaseController
         $parcelAdapter = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $response = $parcelAdapter->createBulkWaybillPrintingTask($task_id);
         if ($response->isSuccess()) {
-            $this->flashSuccess("Waybills generation for bulk Shipment #$task_id has been queued. A link to a printable document will be sent to your email when done.");
+            $userEmail = ArrayHelper::getValue(Yii::$app->getSession()->get('user_session'), 'email');
+            $this->flashSuccess("Waybills generation for bulk Shipment #$task_id has been queued. A link to a printable document will be sent to your email (<strong>".$userEmail."</strong>) when done.");
         } else {
             $this->flashError($parcelAdapter->getLastErrorMessage());
         }
