@@ -2,7 +2,7 @@ $(document).ready(function () {
     $('.print_btn').click(function () {
         var print_url = $(this).data('print_url');
         var create_task_url = $(this).data('create_task_url');
-        var externalWindow = window.open('', 'newwin');
+        var externalWindow = window.open('', '_blank');
         externalWindow.document.write('Checking for waybills...');
 
         $.ajax(print_url, {
