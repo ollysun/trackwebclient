@@ -651,4 +651,9 @@ class SiteController extends BaseController
         }
         return $this->render('track_search_details');
     }
+
+    public function actionWaiting()
+    {
+
+    }
 }
