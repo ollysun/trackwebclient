@@ -110,4 +110,36 @@ class InvoiceAdapter extends BaseAdapter
         }
         return [];
     }
+
+    /**
+     * @author Olajide Oye <jide@cottacush.com>
+     * @param $count
+     * @param $numberPerSheet
+     * @param int $extras
+     * @return float
+     */
+    function getNumberOfSheets($count, $numberPerSheet, $extras = 0)
+    {
+        $count = (int)$count;
+        $numberPerSheet = (int)$numberPerSheet;
+        $extras = (int)$extras;
+
+        $numberOfSheets = round((($count + $extras) / $numberPerSheet));
+
+        return $numberOfSheets;
+    }
+
+    /**
+     * @author Olajide Oye <jide@cottacush.com>
+     * @param $no_of_pages
+     * @return string
+     */
+    function getPageHeight($no_of_pages)
+    {
+        $pageHeight = 1000;
+        $no_of_pages = (int)$no_of_pages;
+
+        return 'height:' . ($pageHeight * $no_of_pages) . 'px';
+    }
+
 }
