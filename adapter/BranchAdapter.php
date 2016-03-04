@@ -102,7 +102,7 @@ class BranchAdapter extends BaseAdapter
      * Get all Hubs
      * @author Adeyemi Olaoye <yemi@cottacush.com>
      * @author Richard Boyewa <boye@cottacush.com>
-     * @author Olawale Lawal <wale@cottacush.com>report
+     * @author Olawale Lawal <wale@cottacush.com>
      * @param bool|true $paginate
      * @return array|mixed|string
      */
