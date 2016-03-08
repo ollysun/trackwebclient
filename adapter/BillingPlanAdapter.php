@@ -95,7 +95,7 @@ class BillingPlanAdapter extends BaseAdapter
         $filters = array_merge([
             'company_only' => '1',
             'with_company' => '1',
-            'remove_cancelled' => 1
+            'filter_removed' => 1
         ], $filters);
 
         $response = $this->request(ServiceConstant::URL_BILLING_PLAN_GET_ALL,

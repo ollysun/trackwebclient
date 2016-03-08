@@ -129,7 +129,7 @@ class CompanyAdapter extends BaseAdapter
     {
 
         $filters = array_merge($filters, array(
-            'no_paginate' => 'true', 'remove_cancelled' => 'true'));
+            'no_paginate' => 'true', 'filter_removed' => 1));
 
         $response = $this->request(ServiceConstant::URL_COMPANY_ALL,
             $filters, self::HTTP_GET);
