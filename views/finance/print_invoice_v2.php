@@ -9,7 +9,7 @@ $this->title = 'Invoices';
 ?>
 <?= Html::cssFile('@web/css/compiled/print-invoice.css') ?>
 
-    <div class="invoice-page landscape continuous" style="<?= getPageHeight(2); ?>">
+    <div class="invoice-page landscape continuous" style="<?= $template_header_page_height ?>">
         <?= $this->render('../elements/finance/print_header'); ?>
         <div class="text-center"><h4>INVOICE - ORIGINAL</h4></div>
         <table class="table table-bordered">
@@ -237,40 +237,37 @@ $this->title = 'Invoices';
         <br>
         <br>
     </div>
-    <?php
-        $invoicePacelsCount = count($invoiceParcels);
-        // number of extra fields at the bottom plus the table title plus table header
-        $invoiceExtras = 6;
-        $parcelPages = getNumberOfSheets($invoicePacelsCount, 14, $invoiceExtras);
-    ?>
-    <div class="invoice-page landscape continuous" style="<?= getPageHeight($parcelPages) ?>">
+<?php
+
+?>
+    <div class="invoice-page landscape continuous" style="<?= $parcelPages ?>">
         <div class="">
             <h4 class="text-center">Invoice No: <?= Calypso::getValue($invoice, 'invoice_number'); ?></h4>
             <table class="table table-bordered is-double-bordered">
                 <thead>
-                    <tr class="is-double-bordered">
-                        <th>S/N</th>
-                        <th>HAWB</th>
-                        <th>Credit Note ID</th>
-                        <th>PU Date</th>
-                        <th>Consignee</th>
-                        <th>Address</th>
-                        <th>Origin</th>
-                        <th>Town</th>
-                        <th>Credit note description</th>
-                        <th>Weight/Pcs</th>
-                        <th class="invoice-total-amt-cell" style="text-align: left">Name of Receiver</th>
-                        <th>Date/Time Received</th>
-                        <th>Actual</th>
-                        <th>Other Charges</th>
-                        <th class="invoice-total-amt-cell is-double-bordered">Total</th>
-                    </tr>
+                <tr class="is-double-bordered">
+                    <th>S/N</th>
+                    <th>HAWB</th>
+                    <th>Credit Note ID</th>
+                    <th>PU Date</th>
+                    <th>Consignee</th>
+                    <th>Address</th>
+                    <th>Origin</th>
+                    <th>Town</th>
+                    <th>Credit note description</th>
+                    <th>Weight/Pcs</th>
+                    <th class="invoice-total-amt-cell" style="text-align: left">Name of Receiver</th>
+                    <th>Date/Time Received</th>
+                    <th>Actual</th>
+                    <th>Other Charges</th>
+                    <th class="invoice-total-amt-cell is-double-bordered">Total</th>
+                </tr>
                 </thead>
                 <tbody>
                 <?php
-                for ($i = 0; $i < $invoicePacelsCount; $i++):
+                for ($i = 0; $i < count($invoiceParcels); $i++):
                     $invoiceParcel = Calypso::getValue($invoiceParcels, "$i");
-                ?>
+                    ?>
                     <tr style="height: 45px;">
                         <td><?= $i + 1; ?></td>
                         <td><?= Calypso::getValue($invoiceParcel, 'waybill_number'); ?></td>
@@ -285,8 +282,18 @@ $this->title = 'Invoices';
                         <td><?= Calypso::getValue($invoiceParcel, 'delivery_receipt.name'); ?></td>
                         <td><?= Calypso::getValue($invoiceParcel, 'delivery_receipt.delivered_at'); ?></td>
                         <td><?= number_format(Calypso::getValue($invoiceParcel, 'parcel.amount_due'), 2); ?></td>
-                        <td></td>
-                        <td class="invoice-total-amt-cell is-double-bordered"><?= number_format(Calypso::getValue($invoiceParcel, 'net_amount'), 2); ?></td>
+                        <?php
+                        $extra_charges_array = [
+                            Calypso::getValue($invoiceParcel, 'parcel.insurance'),
+                            Calypso::getValue($invoiceParcel, 'parcel.storrage_demurrage'),
+                            Calypso::getValue($invoiceParcel, 'parcel.cost_of_crating'),
+                            Calypso::getValue($invoiceParcel, 'parcel.duty_charge'),
+                            Calypso::getValue($invoiceParcel, 'parcel.handling_charge'),
+                            Calypso::getValue($invoiceParcel, 'parcel.others')
+                        ];
+                        ?>
+                        <td><?= $total_charge = Util::calculateExtraCharges($extra_charges_array); ?></td>
+                        <td class="invoice-total-amt-cell is-double-bordered"><?= number_format(Calypso::getValue($invoiceParcel, 'net_amount') + $total_charge, 2); ?></td>
                     </tr>
                 <?php endfor; ?>
                 <tr>
@@ -314,57 +321,58 @@ $this->title = 'Invoices';
         </div>
     </div>
 
-    <div class="invoice-page landscape continuous">
+<?php
+
+?>
+    <div class="invoice-page landscape continuous" style="<?= $page_height ?>">
         <h4 class="text-center">Other Charges for Invoice</h4>
         <table class="table table-bordered">
             <thead>
-                <tr>
-                    <th rowspan="2">S/N</th>
-                    <th rowspan="2">Waybill no</th>
-                    <th rowspan="2">Reference</th>
-                    <th colspan="6" style="text-align:center">Charges</th>
-                    <th rowspan="2">Total</th>
-                </tr>
-                <tr>
-                    <th>Charge 1</th>
-                    <th>Charge 2</th>
-                    <th>Charge 3</th>
-                    <th>Charge 4</th>
-                    <th>Charge 5</th>
-                    <th>Charge 6</th>
-                </tr>
+            <tr>
+                <th rowspan="2">S/N</th>
+                <th rowspan="2">Waybill no</th>
+                <th rowspan="2">Reference</th>
+                <th colspan="6" style="text-align:center">Charges</th>
+                <th rowspan="2">Total</th>
+            </tr>
+            <tr>
+                <th>Insurance</th>
+                <th>Storrage/Demurrage</th>
+                <th>Cost of Crating</th>
+                <th>Duty Charge</th>
+                <th>Handling Charge</th>
+                <th>Others</th>
+            </tr>
             </thead>
             <tbody>
+            <?php
+            for ($i = 0; $i < count($invoiceParcels); $i++):
+                $invoiceParcel = Calypso::getValue($invoiceParcels, "$i");
+                ?>
                 <tr>
-                    <td>1</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td><?= $i + 1; ?></td>
+                    <td><?= Calypso::getValue($invoiceParcel, 'waybill_number'); ?></td>
+                    <td><?= Calypso::getValue($invoiceParcel, 'parcel.reference_number'); ?></td>
+                    <td><?= Calypso::getDisplayValue($invoiceParcel, 'parcel.insurance', 0); ?></td>
+                    <td><?= Calypso::getDisplayValue($invoiceParcel, 'parcel.storrage_demurrage', 0); ?></td>
+                    <td><?= Calypso::getDisplayValue($invoiceParcel, 'parcel.cost_of_crating', 0); ?></td>
+                    <td><?= Calypso::getDisplayValue($invoiceParcel, 'parcel.duty_charge', 0); ?></td>
+                    <td><?= Calypso::getDisplayValue($invoiceParcel, 'parcel.handling_charge', 0); ?></td>
+                    <td><?= Calypso::getDisplayValue($invoiceParcel, 'parcel.others', 0); ?></td>
+                    <?php
+                    $extra_charges_array = [
+                        Calypso::getValue($invoiceParcel, 'parcel.insurance'),
+                        Calypso::getValue($invoiceParcel, 'parcel.storrage_demurrage'),
+                        Calypso::getValue($invoiceParcel, 'parcel.cost_of_crating'),
+                        Calypso::getValue($invoiceParcel, 'parcel.duty_charge'),
+                        Calypso::getValue($invoiceParcel, 'parcel.handling_charge'),
+                        Calypso::getValue($invoiceParcel, 'parcel.others')
+                    ];
+                    ?>
+                    <td><?= Util::calculateExtraCharges($extra_charges_array); ?></td>
                 </tr>
+            <?php endfor; ?>
+
             </tbody>
         </table>
     </div>
-
-<?php
-    function getNumberOfSheets($count, $numberPerSheet,$extras=0) {
-        $count = (int) $count;
-        $numberPerSheet = (int) $numberPerSheet;
-        $extras = (int) $extras;
-
-        $numberOfSheets = round((($count+$extras) / $numberPerSheet));
-
-        return $numberOfSheets;
-    }
-    function getPageHeight($no_of_pages) {
-        $pageHeight = 1000;
-        $no_of_pages = (int) $no_of_pages;
-
-        return 'height:'.($pageHeight * $no_of_pages).'px';
-    }
-?>
