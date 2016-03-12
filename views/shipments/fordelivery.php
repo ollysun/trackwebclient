@@ -148,7 +148,7 @@ $is_hub = $user['branch']['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
                             <td><?= $parcel['receiver']['phone'] ?></td>
                             <td><?= date(ServiceConstant::DATE_TIME_FORMAT,strtotime($parcel['created_date'])); ?></td>
                             <td><?= $parcel['route']['name'];?></td>
-                            <td><?= Calypso::getValue($parcels, 'return_reason.comment')  ?></td>
+                            <td><?= Calypso::getValue($parcel, 'return_reason.comment')  ?></td>
                             <td><?= ucwords(ServiceConstant::getDeliveryType($parcel['delivery_type'])); ?></td>
                             <?php if($user['role_id'] == ServiceConstant::USER_TYPE_ADMIN) { ?>
                                 <td><?= strtoupper(Calypso::getValue($parcel, "created_branch.name")) ?></td>
