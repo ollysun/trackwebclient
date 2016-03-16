@@ -115,10 +115,9 @@ $user_data = $this->context->userData;
                             <?php } ?>
                             <td><?= ParcelAdapter::getAgeAnalysis($parcel); ?></td>
                             <td><a href="<?= Url::toRoute(['/shipments/view?waybill_number='.$parcel['waybill_number']]) ?>" class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i> View</a>
-                                <a href=<?= '../parcels/new?edit=1&id=' . Calypso::getValue($parcel, 'id') ?>>
-                                    <button class="btn btn-default btn-xs">Edit</button>
-                                </a>
+
                                 <?= $this->render('../elements/parcel/partial_cancel_button', ['waybill_number' => $parcel['waybill_number'], 'status' => $parcel['status']]) ?>
+                                <?= $this->render('../elements/partial_edit_button', ['parcel' => $parcel]) ?>
                             </td>
                         </tr>
                     <?php
