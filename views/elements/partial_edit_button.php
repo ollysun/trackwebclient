@@ -5,6 +5,6 @@ use Adapter\Globals\ServiceConstant;
 $branch_type = $this->context->userData['branch']['branch_type'];
 if($parcel['edit_access'] || $branch_type == ServiceConstant::BRANCH_TYPE_HQ){
 ?>
-<a href=<?= '../parcels/new?edit=1&id=' . Calypso::getValue($parcel, 'id') ?> class="btn btn-default btn-xs">Edit</a>
+<a href=<?= \yii\helpers\Url::to('/parcels/new?edit=1&id=' . Calypso::getValue($parcel, 'id')); ?> class="btn btn-default btn-xs">Edit</a>
 
 <?php } ?>
