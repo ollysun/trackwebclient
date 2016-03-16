@@ -239,9 +239,7 @@ $this->params['breadcrumbs'] = array(
                             <td>
                                 <a href="<?= Url::to(['/shipments/view', 'waybill_number' => Calypso::getValue($corporateParcel, 'waybill_number')]) ?>"
                                    class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i> View</a>
-                                <a href=<?= '../parcels/new?edit=1&id=' . Calypso::getValue($corporateParcel, 'id') ?>>
-                                    <button class="btn btn-default btn-xs">Edit</button>
-                                </a>
+                                <?= $this->render('../elements/partial_edit_button', ['parcel' => $corporateParcel] ); ?>
                                 <?= $this->render('../elements/parcel/partial_cancel_button', ['waybill_number' => $corporateParcel['waybill_number'], 'status' => $corporateParcel['status']]) ?>
                             </td>
                         </tr>
