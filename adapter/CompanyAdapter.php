@@ -30,7 +30,7 @@ class CompanyAdapter extends BaseAdapter
      */
     public function createCompany($data)
     {
-        if(Calypso::getValue($data, 'company.reg_no') == '') {
+        if (Calypso::getValue($data, 'company.reg_no') == '') {
             $data['company']['reg_no'] = null;
         }
         $rawResponse = $this->request(ServiceConstant::URL_COMPANY_ADD, Json::encode($data), self::HTTP_POST);
@@ -51,7 +51,7 @@ class CompanyAdapter extends BaseAdapter
      */
     public function editCompany($data)
     {
-        if(Calypso::getValue($data, 'company.reg_no') == '') {
+        if (Calypso::getValue($data, 'company.reg_no') == '') {
             $data['company']['reg_no'] = null;
         }
         $rawResponse = $this->request(ServiceConstant::URL_COMPANY_EDIT, Json::encode($data), self::HTTP_POST);
@@ -496,6 +496,20 @@ class CompanyAdapter extends BaseAdapter
         $response = new ResponseHandler($response);
 
         if ($response->isSuccess()) {
+            return $response->getData();
+        }
+        return [];
+    }
+
+    /**
+     * @author Babatunde Otaru <tunde@cottacush.com>
+     * @return array|mixed
+     */
+    public function getAllAccountTypes()
+    {
+        $response = $this->request(ServiceConstant::URL_COMPANY_GET_ALL_ACCOUNT_TYPES, [], self::HTTP_GET);
+        $response = new ResponseHandler($response);
+        if($response->isSuccess()){
             return $response->getData();
         }
         return [];

@@ -380,12 +380,17 @@ class AdminController extends BaseController
         $companies = Calypso::getValue($companiesData, 'companies', []);
         $totalCount = Calypso::getValue($companiesData, 'total_count', 0);
 
+        $account_types = $companyAdapter->getAllAccountTypes();
+
         return $this->render('companies', [
             'locations' => ['states' => $states],
             'companies' => $companies,
             'offset' => $offset,
             'total_count' => $totalCount,
-            'page_width' => $this->page_width]);
+            'page_width' => $this->page_width,
+            'account_types' => $account_types
+            ]
+        );
     }
 
     /**

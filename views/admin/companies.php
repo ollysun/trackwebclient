@@ -145,7 +145,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                                 <input type="text" name="company[address]" class="form-control validate required" value="<?= Calypso::getDisplayValue($submitted_data,'company.address'); ?>">
                             </div>
                             <div class="row">
-                                <div class="col-xs-6 form-group">
+                                <div class="col-xs-4 form-group">
                                     <label for="">State</label>
                                     <select id="state" name="company[state_id]" data-state data-target="city" class="form-control validate required"  data-selected="<?= Calypso::getDisplayValue($submitted_data,'company.state_id'); ?>">
                                         <option value="" selected>Select State</option>
@@ -155,10 +155,19 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                                         <?php endforeach; ?>
                                     </select>
                                 </div>
-                                <div class="col-xs-6 form-group">
+                                <div class="col-xs-4 form-group">
                                     <label for="">City</label>
                                     <select name="company[city_id]" id="city" class="form-control validate required" data-selected="<?= Calypso::getDisplayValue($submitted_data,'company.city_id'); ?>">
                                         <option value="" selected>Select a State</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-xs-4 form-group">
+                                    <label for="">Account Type</label>
+                                    <select name="company[account_type]" class="form-control">
+                                        <?php foreach ($account_types as $account_type) {?>
+                                            <option value="<?= $account_type['id']?>"><?= $account_type['acronym']?></option>
+                                        <?php } ?>
                                     </select>
                                 </div>
                             </div>
