@@ -805,7 +805,10 @@ class ShipmentsController extends BaseController
         $page_width = is_null($page_width) ? $this->page_width : $page_width;
         $offset = ($page - 1) * $page_width;
 
-        $filter_params = ['company_id', 'start_modified_date', 'end_modified_date', 'for_return', 'parcel_type', 'status', 'min_weight', 'max_weight', 'min_amount_due', 'max_amount_due', 'cash_on_delivery', 'delivery_type', 'payment_type', 'shipping_type', 'start_created_date', 'end_created_date', 'created_branch_id', 'route_id', 'request_type', 'from_branch_id', 'branch_type'];
+        $filter_params = ['company_id', 'start_modified_date', 'end_modified_date', 'for_return', 'parcel_type',
+            'status', 'min_weight', 'max_weight', 'min_amount_due', 'max_amount_due', 'cash_on_delivery', 'delivery_type',
+            'payment_type', 'shipping_type', 'start_created_date', 'end_created_date', 'created_branch_id', 'route_id', 'request_type',
+            'from_branch_id', 'branch_type', 'return_reason_comment'];
         $extra_details = ['with_receiver', 'with_receiver_address', 'with_route'];
 
 
@@ -855,6 +858,8 @@ class ShipmentsController extends BaseController
         $parcel = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $filtered_parcels = $parcel->getParcelsByFilters(array_filter($filters, 'strlen'));
         $response = new ResponseHandler($filtered_parcels);
+        $return_reasons = $parcel->getParcelReturnReasons();
+
 
         $parcels = [];
         $total_count = 0;
@@ -888,7 +893,9 @@ class ShipmentsController extends BaseController
             'page_width' => $page_width,
             'total_count' => $total_count,
             'companies' => $companies,
-            'selected_company' => $filters['company_id']
+            'selected_company' => $filters['company_id'],
+            'return_reasons' => $return_reasons,
+            'selected_return_reason' => $filters['return_reason_comment']
         ));
     }
 
@@ -1106,7 +1113,7 @@ class ShipmentsController extends BaseController
         $response = $parcelAdapter->createBulkWaybillPrintingTask($task_id);
         if ($response->isSuccess()) {
             $userEmail = ArrayHelper::getValue(Yii::$app->getSession()->get('user_session'), 'email');
-            $this->flashSuccess("Waybills generation for bulk Shipment #$task_id has been queued. A link to a printable document will be sent to your email (<strong>".$userEmail."</strong>) when done.");
+            $this->flashSuccess("Waybills generation for bulk Shipment #$task_id has been queued. A link to a printable document will be sent to your email (<strong>" . $userEmail . "</strong>) when done.");
         } else {
             $this->flashError($parcelAdapter->getLastErrorMessage());
         }
