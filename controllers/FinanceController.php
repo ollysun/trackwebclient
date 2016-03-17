@@ -19,10 +19,12 @@ use yii\helpers\Url;
 
 class FinanceController extends BaseController
 {
+    public $userData = null;
 
     public function beforeAction($action)
     {
         $this->enableCsrfValidation = false;
+        $this->userData = (Calypso::getInstance()->session('user_session'));
         return parent::beforeAction($action);
     }
 
