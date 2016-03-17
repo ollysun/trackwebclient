@@ -500,4 +500,18 @@ class CompanyAdapter extends BaseAdapter
         }
         return [];
     }
+
+    /**
+     * @author Babatunde Otaru <tunde@cottacush.com>
+     * @return array|mixed
+     */
+    public function getAllAccountTypes()
+    {
+        $response = $this->request(ServiceConstant::URL_COMPANY_GET_ALL_ACCOUNT_TYPES, [], self::HTTP_GET);
+        $response = new ResponseHandler($response);
+        if($response->isSuccess()){
+            return $response->getData();
+        }
+        return [];
+    }
 }
