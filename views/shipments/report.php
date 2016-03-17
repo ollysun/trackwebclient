@@ -225,6 +225,19 @@ $this->params['content_header_button'] = "<a href='" . $downloadURL . "' class='
                             </select>
                         </div>
 
+                        <div class="pull-left form-group form-group-sm">
+                            <label for="">Select Negative Status</label><br>
+                            <select name="return_reason_comment" id="current_branch_select" class="form-control  filter-status">
+                                <option value="">None</option>
+                                <?php foreach ($return_reasons as $return_reason) { ?>
+                                    <option
+                                        value="<?= strtoupper($return_reason['meaning_of_status']); ?>"
+                                        <?= (strtoupper($return_reason['meaning_of_status']) == $selected_return_reason) ? 'selected' : ''?>>
+                                        <?= strtoupper($return_reason['meaning_of_status']); ?></option>
+                                <?php } ?>
+                            </select>
+                        </div>
+
                         <div class="pull-left">
                             <label>&nbsp;</label><br>
                             <button class="btn btn-default btn-sm" id="apply" type="submit"><i class="fa fa-filter"></i>
@@ -271,7 +284,7 @@ $this->params['content_header_button'] = "<a href='" . $downloadURL . "' class='
                                 <td><?= Calypso::getValue($parcel, 'parcel_reference_number') ?></td>
                                 <td><?= Util::formatDate(ServiceConstant::DATE_TIME_FORMAT, Calypso::getValue($parcel, 'parcel_created_date')); ?></td>
                                 <td><?= Calypso::getValue($parcel, 'route_name'); ?></td>
-                                <td><?= ServiceConstant::getReturnStatus($parcel); ?></td>
+                                <td><?= Calypso::getDisplayValue($parcel, 'parcel_comment_comment'); ?></td>
                                 <td><?= ServiceConstant::getStatus($parcel['parcel_status']); ?></td>
                                 <td><?= Util::formatDate(ServiceConstant::DATE_TIME_FORMAT, Calypso::getValue($parcel, 'parcel_modified_date')); ?>
                                     (<?= Util::ago(Calypso::getValue($parcel, 'parcel_modified_date')); ?>)
