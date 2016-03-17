@@ -284,7 +284,7 @@ $this->params['content_header_button'] = "<a href='" . $downloadURL . "' class='
                                 <td><?= Calypso::getValue($parcel, 'parcel_reference_number') ?></td>
                                 <td><?= Util::formatDate(ServiceConstant::DATE_TIME_FORMAT, Calypso::getValue($parcel, 'parcel_created_date')); ?></td>
                                 <td><?= Calypso::getValue($parcel, 'route_name'); ?></td>
-                                <td><?= ServiceConstant::getReturnStatus($parcel); ?></td>
+                                <td><?= Calypso::getDisplayValue($parcel, 'parcel_comment_comment'); ?></td>
                                 <td><?= ServiceConstant::getStatus($parcel['parcel_status']); ?></td>
                                 <td><?= Util::formatDate(ServiceConstant::DATE_TIME_FORMAT, Calypso::getValue($parcel, 'parcel_modified_date')); ?>
                                     (<?= Util::ago(Calypso::getValue($parcel, 'parcel_modified_date')); ?>)

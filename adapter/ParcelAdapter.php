@@ -124,6 +124,7 @@ class ParcelAdapter extends BaseAdapter
             'to_branch_id' => $branch_id,
             'with_from_branch' => $with_from,
             'route_id=' => $route_id,
+            'with_parcel_comment' => 1,
             'with_route' => $with_route
         );
         $params = http_build_query($filters);
@@ -510,7 +511,10 @@ class ParcelAdapter extends BaseAdapter
      */
     public function getParcelsByFilters($filters)
     {
-        $filters = array_merge($filters, ['with_company' => 1]);
+        $filters = array_merge($filters, [
+            'with_company' => 1,
+            'with_parcel_comment' => 1,
+        ]);
         return $this->request(ServiceConstant::URL_GET_ALL_PARCEL, $filters, self::HTTP_GET);
     }
 
