@@ -48,15 +48,20 @@ $this->params['breadcrumbs'][] = 'Company Details';
                     </div>
                 </div>
                 <div class="row form-group">
-                    <div class="col-xs-6">
+                    <div class="col-xs-4">
                         <label>City</label>
 
                         <div class="form-control-static"><?= strtoupper(Calypso::getValue($company, 'city.name', '')); ?></div>
                     </div>
-                    <div class="col-xs-6">
+                    <div class="col-xs-4">
                         <label>State</label>
 
                         <div class="form-control-static"><?= strtoupper(Calypso::getValue($company, 'state.name', '')); ?></div>
+                    </div>
+                    <div class="col-xs-4">
+                        <label>Account Type</label>
+
+                        <div class="form-control-static"><?= strtoupper(Calypso::getValue($company, 'account_type.code', '') . '-' . Calypso::getValue($company, 'account_type.acronym', '') ); ?></div>
                     </div>
                 </div>
             </fieldset>
