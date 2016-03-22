@@ -166,7 +166,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                                     <label for="">Account Type</label>
                                     <select name="company[account_type]" class="form-control">
                                         <?php foreach ($account_types as $account_type) {?>
-                                            <option value="<?= $account_type['id']?>"><?= $account_type['acronym']?></option>
+                                            <option value="<?= $account_type['id']?>"><?= $account_type['code'].'-'.$account_type['acronym']?></option>
                                         <?php } ?>
                                     </select>
                                 </div>
