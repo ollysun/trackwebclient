@@ -515,4 +515,21 @@ class CompanyAdapter extends BaseAdapter
         }
         return [];
     }
+
+    /**
+     * @author Oluwarotimi Akintewe <akintewe.rotimi@gmail.com>
+     * @param $postData
+     * @return array|mixed
+     */
+    public function changeStatus($postData)
+    {
+        $rawResponse = $this->request(ServiceConstant::URL_COMPANY_CHANGE_STATUS, json_encode($postData), self::HTTP_POST);
+        $response = new ResponseHandler($rawResponse);
+
+        if ($response->isSuccess()) {
+            return $response->getData();
+        }
+
+        $this->lastErrorMessage = $response->getError();
+    }
 }

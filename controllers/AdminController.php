@@ -690,4 +690,24 @@ class AdminController extends BaseController
     {
         return $this->render('audit_trail');
     }
+
+    public function actionActivation() {
+
+        $payload = json_decode(Yii::$app->request->getRawBody());
+        $companyId = Calypso::getValue($payload, 'company_id');
+        $status = Calypso::getValue($payload, 'status');
+        $status = $status == ServiceConstant::ACTIVE ? ServiceConstant::INACTIVE : ServiceConstant::ACTIVE;
+
+        if (is_null($companyId) || is_null($status)) {
+            $this->sendErrorResponse(ResponseMessages::INVALID_PARAMETERS, ResponseCodes::INVALID_PARAMETERS, null, 400);
+        }
+
+        $companyAdapter = new CompanyAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $response = $companyAdapter->changeStatus(['company_id' => $companyId, 'status' => $status]);
+        if(!is_null($response)) {
+            return $this->sendSuccessResponse($status);
+        } else {
+            return $this->sendErrorResponse($companyAdapter->getLastErrorMessage(), 200);
+        }
+    }
 }

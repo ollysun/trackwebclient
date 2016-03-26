@@ -59,6 +59,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                             <th>Email</th>
                             <th>Phone number</th>
                             <th>Address</th>
+                            <th>Status</th>
                             <th>Action</th>
                         </tr>
                         </thead>
@@ -70,6 +71,24 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                                 <td><?= Calypso::getValue($company, 'email'); ?></td>
                                 <td><?= Calypso::getValue($company, 'phone_number'); ?></td>
                                 <td><?= Calypso::getValue($company, 'address'); ?></td>
+                                <td>
+                                    <?php
+                                        $status = Calypso::getValue($company, 'status');
+
+                                        if($status == 1) {
+                                            $label = "Active";
+                                            $action = "Deactivate";
+                                            $class = 'success';
+                                            $icon = "lock";
+                                        } else {
+                                            $label = "Inactive";
+                                            $action = "Activate";
+                                            $class = 'danger';
+                                            $icon = "unlock";
+                                        }
+                                        echo "<span class='label label-{$class}'>{$label}</span>";
+                                    ?>
+                                </td>
                                 <td>
                                     <a href="<?= Url::toRoute(['/admin/viewcompany?id=' . Calypso::getValue($company, 'id')]); ?>"
                                        class="btn btn-xs btn-default"><i
@@ -88,6 +107,9 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                                         type="button" class="btn btn-default btn-xs editCompany" data-toggle="modal"
                                             data-target="#editModal"><i class="fa fa-edit"></i> Edit
                                     </button>
+                                    <button data-status="<?php echo Calypso::getValue($company, 'status'); ?>" data-id="<?= Calypso::getValue($company, 'id'); ?>"
+                                       class="btn btn-xs btn-default activation"><i
+                                            class="fa fa-<?php echo $icon; ?>">&nbsp;</i><?php echo $action; ?></button>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
