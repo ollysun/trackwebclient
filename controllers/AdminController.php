@@ -722,7 +722,7 @@ class AdminController extends BaseController
         }
     }
 
-    public static function getStatusDetails($statusId)
+    private static function getStatusDetails($statusId)
     {
         if($statusId == ServiceConstant::ACTIVE) {
 
