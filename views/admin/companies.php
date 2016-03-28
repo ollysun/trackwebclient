@@ -73,20 +73,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                                 <td><?= Calypso::getValue($company, 'address'); ?></td>
                                 <td>
                                     <?php
-                                        $status = Calypso::getValue($company, 'status');
-
-                                        if($status == 1) {
-                                            $label = "Active";
-                                            $action = "Deactivate";
-                                            $class = 'success';
-                                            $icon = "lock";
-                                        } else {
-                                            $label = "Inactive";
-                                            $action = "Activate";
-                                            $class = 'danger';
-                                            $icon = "unlock";
-                                        }
-                                        echo "<span class='label label-{$class}'>{$label}</span>";
+                                        echo "<span class='label label-{$company['status_details']['class']}'>{$company['status_details']['label']}</span>";
                                     ?>
                                 </td>
                                 <td>
@@ -109,7 +96,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                                     </button>
                                     <button data-status="<?php echo Calypso::getValue($company, 'status'); ?>" data-id="<?= Calypso::getValue($company, 'id'); ?>"
                                        class="btn btn-xs btn-default activation"><i
-                                            class="fa fa-<?php echo $icon; ?>">&nbsp;</i><?php echo $action; ?></button>
+                                            class="fa fa-<?php echo $company['status_details']['icon']; ?>">&nbsp;</i><?php echo $company['status_details']['action']; ?></button>
                                 </td>
                             </tr>
                         <?php endforeach; ?>

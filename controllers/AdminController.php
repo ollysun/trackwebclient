@@ -19,6 +19,7 @@ use Adapter\Util\ResponseCodes;
 use Adapter\Util\ResponseMessages;
 use Adapter\ZoneAdapter;
 use Adapter\RequestHelper;
+use app\services\AdminService;
 use Yii;
 use Adapter\Util\Response;
 use Adapter\AdminAdapter;
@@ -381,6 +382,7 @@ class AdminController extends BaseController
         $totalCount = Calypso::getValue($companiesData, 'total_count', 0);
 
         $account_types = $companyAdapter->getAllAccountTypes();
+        $this->decorateWithStatus($companies);
 
         return $this->render('companies', [
             'locations' => ['states' => $states],
@@ -708,6 +710,37 @@ class AdminController extends BaseController
             return $this->sendSuccessResponse($status);
         } else {
             return $this->sendErrorResponse($companyAdapter->getLastErrorMessage(), 200);
+        }
+    }
+
+    private function decorateWithStatus(&$companies)
+    {
+        $length = count($companies);
+        for($i = 0; $i < $length; $i++) {
+            $status = Calypso::getValue($companies[$i], 'status');
+            $companies[$i]['status_details'] = self::getStatusDetails($status);
+        }
+    }
+
+    public static function getStatusDetails($statusId)
+    {
+        if($statusId == ServiceConstant::ACTIVE) {
+
+            return [
+                'label' => 'Active',
+                'action' => 'Deactivate',
+                'class' => 'success',
+                'icon' => 'lock',
+            ];
+
+        } else {
+
+            return [
+                'label' => 'Inactive',
+                'action' => 'Activate',
+                'class' => 'danger',
+                'icon' => 'unlock',
+            ];
         }
     }
 }
