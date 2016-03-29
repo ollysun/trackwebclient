@@ -121,5 +121,30 @@
             });
             $('#myModal').modal('show');
         }
+
+        $('.activation').on('click', function() {
+            var data = {};
+            data.status = $(this).attr('data-status');
+            var action_text = data.status == 1 ? 'activate' : 'deactivate';
+            data.company_id = $(this).attr('data-id');
+
+            $.ajax({
+                url: '/admin/activation',
+                type: 'POST',
+                dataType: 'JSON',
+                data: JSON.stringify(data),
+                success: function (response) {
+                    if (response.status == 'success') {
+                        alert('Company successfully ' + action_text + 'd !');
+                        location.reload();
+                    } else {
+                        alert('An error occurred when trying to ' + action_text + ' company. Please try again later');
+                    }
+                },
+                error: function (err) {
+                    alert('An error occurred when trying to ' + action_text + ' company. Please try again later');
+                }
+            })
+        })
     });
 })();
