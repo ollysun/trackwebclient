@@ -2,10 +2,6 @@ String.prototype.replaceAll = function (search, replacement) {
     var target = this;
     return target.split(search).join(replacement);
 };
-String.prototype.replaceAllExtended = function (search, replacement) {
-    var target = this;
-    return target.replace(new RegExp(search, 'gi'), replacement);
-};
 
 function InvoiceObject() {
     this.company_id = 0;
@@ -193,10 +189,6 @@ $(document).ready(function () {
             t.push(parcels[i].waybill_number);
         }
         return t;
-    }
-
-    function updateAddress(el, key, index){
-        console.log(el);
     }
 
     function getAccordionHTML(){
