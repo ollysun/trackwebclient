@@ -213,10 +213,10 @@ $(document).ready(function () {
     });
 
     $("#generate_Invoice_btn").unbind("click").on("click", function(){
-        console.log(invoicePayload);
+
         $("#generate_Invoice_btn").attr('disabled', 'disabled').html('Processing... Please wait.');
         $.post("/finance/createbulkinvoice",{data:invoicePayload}, function(response){
-            console.log(response);
+
             try{
                 var jsonResponse = JSON.parse(response);
                 alert(jsonResponse.message);
