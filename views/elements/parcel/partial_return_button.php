@@ -2,7 +2,7 @@
 use Adapter\Globals\ServiceConstant;
 use \Adapter\Util;
 
-if (!in_array($parcel['status'], [ServiceConstant::DELIVERED, ServiceConstant::BEING_DELIVERED, ServiceConstant::CANCELLED]) && !$parcel['for_return'] && !in_array($parcel['entity_type'], [ServiceConstant::ENTITY_TYPE_BAG, ServiceConstant::ENTITY_TYPE_PARENT])) : ?>
+if (!in_array($parcel['status'], [ServiceConstant::DELIVERED, ServiceConstant::CANCELLED]) && !$parcel['for_return'] && !in_array($parcel['entity_type'], [ServiceConstant::ENTITY_TYPE_BAG, ServiceConstant::ENTITY_TYPE_PARENT])) : ?>
 
     <button data-return="<?= $parcel['waybill_number'] ?>"
             data-reasons='<?= \yii\helpers\Json::encode($reasons_list) ?>'
