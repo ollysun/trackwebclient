@@ -137,6 +137,27 @@ class FinanceController extends BaseController
         return $this->redirect('/finance/invoice');
     }
 
+    public function actionCreatebulkinvoice()
+    {
+        if (Yii::$app->request->isPost) {
+            $data = Yii::$app->getRequest()->post();
+
+            $invoiceAdapter = new InvoiceAdapter();
+            $response = $invoiceAdapter->createBulkInvoice($data);
+            $jsonResponse = ['status'=>'error', 'message' => 'Unable to reach Trackplus service. Please contact support if this persists.'];
+            if ($response) {
+                $jsonResponse['status'] = 'success';
+                $jsonResponse['message'] = 'Multiple Invoices created successfully';
+            } else {
+                $jsonResponse['status'] = 'error';
+                $jsonResponse['message'] = $invoiceAdapter->getLastErrorMessage();
+            }
+            exit(json_encode($jsonResponse));
+        }
+
+        return $this->redirect('/finance/invoice');
+    }
+
     /**
      * Generates a credit note
      * @author Adegoke Obasa <goke@cottacush.com>
