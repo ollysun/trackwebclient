@@ -1012,7 +1012,7 @@ class ShipmentsController extends BaseController
                     fputcsv($stream, $row);
                 }
                 $total_count += count($parcels);
-                if ($total_count == $data['total_count']) {
+                if ($total_count >= $data['total_count'] || count($parcels) == 0) {
                     break;
                 }
                 $offset += $count;
