@@ -230,7 +230,7 @@ $(document).ready(function () {
                 alert(jsonResponse.message);
                 window.location.reload();
             }catch(e){
-                alert("Expected response from service. Please refresh the page and try again. If this persists please contact support");
+                alert("Unexpected response from service. Please refresh the page and try again. If this persists please contact support");
             }
 
             $("#generate_Invoice_btn").removeAttr('disabled').html('Generate Invoice');
