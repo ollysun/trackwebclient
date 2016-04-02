@@ -209,6 +209,7 @@ class ServiceConstant
     const URL_CLONE_BILLING_PLAN = 'billingPlan/clonebillingplan';
 
     const URL_INVOICE_ADD = 'invoice/add';
+    const URL_BULK_INVOICE_ADD = 'invoice/createBulkInvoice';
     const URL_INVOICE_ALL = 'invoice/getAll';
     const URL_INVOICE_GET = 'invoice/get';
     const URL_INVOICE_PARCELS = 'invoice/getInvoiceParcels';
