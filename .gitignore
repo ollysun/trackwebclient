@@ -2,3 +2,4 @@
 runtime
 composer.lock
 vendor/
+deploy/servers.yml

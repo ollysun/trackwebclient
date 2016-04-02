@@ -1,0 +1,11 @@
+# app/config/servers.yml
+staging:
+    host:   ********
+    user:   *******
+    stage:  staging
+    identity_file:
+        public_key:  "~/.ssh/id_rsa.pub"
+        private_key: "~/.ssh/id_rsa"
+        password: "key-password"
+    deploy_path:   "/var/www/html/courierplusng"
+    branch:        develop
