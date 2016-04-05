@@ -591,6 +591,10 @@ class ShipmentsController extends BaseController
                             $response = $parcelData->moveToDelivered($record);
                             $success_msg = 'Shipments successfully delivered';
                         } elseif ($task == 'return') {
+                            $record['receiver_name'] = $fullName;
+                            $record['receiver_phone_number'] = $phoneNumber;
+                            $record['receiver_email'] = $email;
+                            $record['date_and_time_of_delivery'] = $date_and_time_timestamp;
                             $response = $parcelData->markAsReturned($record);
                             $success_msg = 'Shipments successfully returned';
                         }
