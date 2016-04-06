@@ -126,11 +126,11 @@ class CompanyAdapter extends BaseAdapter
      * @param $filters
      * @return array|mixed
      */
-    public function getAllCompanies($filters)
+    public function getAllCompanies($filters = [])
     {
 
         $filters = array_merge($filters, array(
-            'no_paginate' => 'true'));
+            'no_paginate' => 'true', 'filter_removed' => 1));
 
         $response = $this->request(ServiceConstant::URL_COMPANY_ALL,
             $filters, self::HTTP_GET);
@@ -144,7 +144,7 @@ class CompanyAdapter extends BaseAdapter
     }
 
     /**
-     * Get Companies
+     * Get Users
      * @author Adegoke Obasa <goke@cottacush.com>
      * @param $filters
      * @return array|mixed

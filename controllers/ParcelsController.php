@@ -21,6 +21,7 @@ use Adapter\ResponseHandler;
 use Adapter\UserAdapter;
 use Adapter\Util\Response;
 use Adapter\BranchAdapter;
+use Adapter\Util\Util;
 use app\services\ParcelService;
 use Adapter\Util\Calypso;
 use Yii;
@@ -101,12 +102,12 @@ class ParcelsController extends BaseController
         $centres_list = array_merge($centres_list, $hubs_list);
 
         $bilingPlanAdapter = new BillingPlanAdapter();
-        $billingPlans = $bilingPlanAdapter->getBillingPlans(['no_paginate' => '1', 'type' => BillingPlanAdapter::TYPE_WEIGHT_AND_ON_FORWARDING]);
+        $billingPlans = $bilingPlanAdapter->getBillingPlans(['no_paginate' => '1', 'type' => BillingPlanAdapter::TYPE_WEIGHT_AND_ON_FORWARDING, 'status' => ServiceConstant::ACTIVE]);
 
         $billingPlans = ArrayHelper::map($billingPlans, 'id', 'name', 'company_id');
 
         $companyAdapter = new CompanyAdapter();
-        $companies = $companyAdapter->getAllCompanies([]);
+        $companies = $companyAdapter->getAllCompanies(['status' => ServiceConstant::ACTIVE]);
 
         return $this->render('new', array(
             'Banks' => $banks,

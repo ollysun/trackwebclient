@@ -26,22 +26,22 @@ $this->params['breadcrumbs'] = array(
                     <h4 class="modal-title">Generate Invoice</h4>
                 </div>
                 <div class="modal-body">
-                    <table id="table" class="table table-hover dataTable">
-                        <thead>
-                        <tr>
-                            <th style="width: 20px">No.</th>
-                            <th>Waybill No.</th>
-                            <th>Company Name</th>
-                            <th>Amount</th>
-                            <th>Discount (%)</th>
-                            <th>Net Amount</th>
-                        </tr>
-                        </thead>
-                        <tbody id="invoice_parcels">
-                        </tbody>
-                    </table>
-
-                    <div class="clearfix">
+                    <span id="single_invoice" class="hidden">
+                        <table id="table" class="table table-hover dataTable">
+                            <thead>
+                            <tr>
+                                <th style="width: 20px">No.</th>
+                                <th>Waybill No.</th>
+                                <th>Company Name</th>
+                                <th>Amount</th>
+                                <th>Discount (%)</th>
+                                <th>Net Amount</th>
+                            </tr>
+                            </thead>
+                            <tbody id="invoice_parcels">
+                            </tbody>
+                        </table>
+                        <div class="clearfix">
                         <div class="col-xs-6">
                             <div class="form-group">
                                 <label>Invoice address</label>
@@ -87,6 +87,15 @@ $this->params['breadcrumbs'] = array(
                             </div>
                         </div>
                     </div>
+                    </span>
+                    <span id="multiple_invoice" class="hidden">
+                        <div class="panel-group" id="bulk_invoice">
+
+                        </div>
+                    </span>
+
+
+
 
                 </div>
                 <div class="modal-footer">
@@ -94,7 +103,7 @@ $this->params['breadcrumbs'] = array(
                     <input type="hidden" name="company_id" id="company_id" class="form-control">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                     <a href="#">
-                        <button type="submit" class="btn btn-primary">Generate Invoice</button>
+                        <button type="button" id="generate_Invoice_btn" class="btn btn-primary">Generate Invoice</button>
                     </a>
                 </div>
             </div>
@@ -276,6 +285,82 @@ $this->params['breadcrumbs'] = array(
         </form>
     </div>
 </div>
+    <script type="text/html" id="accordion_content">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" style="color: #ffffff" data-parent="#accordion" href="#collapse{{index}}">
+                        {{company_name}}
+                    </a>
+                </h4>
+            </div>
+            <div id="collapse{{index}}" class="panel-collapse collapse {{collapse_status}}">
+                <div class="panel-body">
+                    <table id="" class="table table-hover dataTable">
+                        <thead>
+                        <tr>
+                            <th style="width: 20px">No.</th>
+                            <th>Waybill No.</th>
+                            <th>Company Name</th>
+                            <th>Amount</th>
+                            <th>Discount (%)</th>
+                            <th>Net Amount</th>
+                        </tr>
+                        </thead>
+                        <tbody id="">
+                        {{invoiceList}}
+                        </tbody>
+                    </table>
+                    <div class="clearfix">
+                        <div class="col-xs-6">
+                            <div class="form-group">
+                                <label>Invoice address</label>
+                                <textarea disabled name="address" class="form-control validate required" rows="2">{{address}}</textarea>
+
+                                <div class="checkbox">
+                                    <label>
+                                        <input data-index="{{data_index}}" data-address="{{address}}" class="same_as_invoice_to" type="checkbox">
+                                        Same as Invoice To
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Invoice To</label>
+                                <textarea onkeyup="updateAddress(this,'to_address',{{data_index}})" id="to_address{{data_index}}" data-index="{{data_index}}" name="to_address" class="form-control validate required" rows="2"></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Reference</label>
+                                <textarea onkeyup="updateAddress(this,'reference',{{data_index}})" name="reference" class="form-control validate required" rows="3">{{reference}}</textarea>
+                            </div>
+
+                        </div>
+
+
+                        <div class="col-xs-6">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Accont Number</label>
+                                <input name="account_number" type="text" value="{{account_number}}" class="form-control">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Stamp Duty</label>
+                                <input name="stamp_duty" value="" type="text" class="form-control validate required number">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Currency</label> <br>
+                                <select name="currency" class="form-control">
+                                    <option selected>NGN</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </script>
 <script type="text/html" id="invoiceParcelTemplate">
     <tr>
         <td>{{index}}</td>

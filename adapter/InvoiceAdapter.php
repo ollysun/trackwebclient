@@ -39,6 +39,24 @@ class InvoiceAdapter extends BaseAdapter
     }
 
     /**
+     * @param $data
+     * @author Akindolani Akinboyewa Richard
+     * @return bool
+     */
+    public function createBulkInvoice($data)
+    {
+        $data = Json::encode($data);
+        $rawResponse = $this->request(ServiceConstant::URL_BULK_INVOICE_ADD, $data, self::HTTP_POST);
+        $response = new ResponseHandler($rawResponse);
+
+        if (!$response->isSuccess()) {
+            $this->lastErrorMessage = $response->getError();
+        }
+
+        return $response->isSuccess();
+    }
+
+    /**
      * Get's the details of an invoice
      * @author Adegoke Obasa <goke@cottacush.com>
      * @param $filters
