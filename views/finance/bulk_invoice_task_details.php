@@ -29,6 +29,7 @@ $this->params['breadcrumbs'] = array(
                     <th>Completed at</th>
                     <th>Status</th>
                     <th>Message</th>
+                    <th>Parcels</th>
                     <th>Action</th>
                 </tr>
                 </thead>
@@ -62,8 +63,9 @@ $this->params['breadcrumbs'] = array(
                             <?php endif; ?>
                         </td>
                         <td><?= Calypso::getDisplayValue($detail, 'error_message', '') ?></td>
+                        <td><a data-view-parcels href="#" class="btn btn-default" data-parcels='<?= \yii\helpers\Json::encode(Calypso::getValue($data, 'parcels', [])) ?>' data-toggle="modal" data-target="#parcelsModal">View</a> </td>
                         <?php if(is_null(Calypso::getDisplayValue($detail, 'invoice_number', 'N/A'))):?>
-                            <td><a class="btn btn-default" target="_blank" href="/finance/printinvoice?invoice_number=<?= Calypso::getDisplayValue($detail, 'invoice_number', '') ?>">Print</a></td>
+                            <td><a class="btn btn-primary" target="_blank" href="/finance/printinvoice?invoice_number=<?= Calypso::getDisplayValue($detail, 'invoice_number', '') ?>">Print</a></td>
                         <?php else: ?>
                             <td></td>
                         <?php endif; ?>
@@ -75,6 +77,25 @@ $this->params['breadcrumbs'] = array(
         </div>
     </div>
 </div>
+<div class="modal fade" id="parcelsModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Parcels</h4>
+            </div>
+            <div class="modal-body">
+                <ul id="parcels">
 
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 <?php $this->registerJsFile('@web/js/table.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/libs/jquery.dataTables.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
+<?php $this->registerJsFile('@web/js/finance/bulk_invoice_task_details.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
