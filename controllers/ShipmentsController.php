@@ -366,7 +366,7 @@ class ShipmentsController extends BaseController
                 if (!isset($records['waybill_numbers']) && !isset($records['comment'])) {
                     $this->flashError("Invalid parameter(s) sent!");
                 } else {
-                    $result = $parcel->sendReturnRequest($records['waybill_numbers'], $records['comment']);
+                    $result = $parcel->sendReturnRequest($records['waybill_numbers'], $records['comment'], $records['attempted_delivery']);
                     $response = new ResponseHandler($result);
 
                     if ($response->getStatus() == ResponseHandler::STATUS_OK) {

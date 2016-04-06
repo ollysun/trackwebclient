@@ -18,6 +18,7 @@ $("[data-return]").on('click', function (event) {
                     if ($.trim(comment).length > 0) {
                         $("#request-returns [name=waybill_numbers]").val($(self).data('return'));
                         $("#request-returns [name=comment]").val(comment);
+                        $("#request-returns [name=attempted_delivery]").val($(self).data('attempted_delivery'));
                         $("#request-returns").trigger('submit');
                     } else {
                         alert('Please enter a reason for returning parcel');

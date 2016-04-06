@@ -23,12 +23,16 @@ $this->title = 'Tracking Portal';
                         <strong id="status" title="Reason for return"
                                 data-content="<?= Calypso::getDisplayValue($tracking_info, 'parcel_return_comment.comment') ?>"
                                 data-placement="bottom"
-                                class="text-danger"><?= Calypso::getDisplayValue($current_state_info, 'description', 'N/A') ?></strong>
+                                class="text-danger">
+                            <?= (Calypso::getValue($tracking_info, 'parcel.return_status', 0) != 0 ) ? ServiceConstant::getStatus(null,Calypso::getValue($tracking_info, 'parcel.return_status')) :
+                                Calypso::getDisplayValue($current_state_info, 'description', 'N/A') ?></strong>
                         <?php $this->registerJsFile('@web/js/libs/bootstrap.min.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
                         <?php $this->registerJs('$("#status").popover("show")'); ?>
                     <?php else: ?>
                         <strong
-                            class="text-danger"><?= Calypso::getDisplayValue($current_state_info, 'description', 'N/A') ?></strong>
+                            class="text-danger">
+                            <?= (Calypso::getValue($tracking_info, 'parcel.return_status', 0) != 0 ) ? ServiceConstant::getStatus(null,Calypso::getValue($tracking_info, 'parcel.return_status')) :
+                                Calypso::getDisplayValue($current_state_info, 'description', 'N/A') ?></strong>
                     <?php endif; ?>
                 </h4>
             </div>

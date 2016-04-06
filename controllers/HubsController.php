@@ -62,11 +62,14 @@ class HubsController extends BaseController
             $branch = \Yii::$app->request->post('branch');
             $branch_type = \Yii::$app->request->post('branch_type');
             $waybill_numbers = \Yii::$app->request->post('waybills');
+            $return_to_origin = \Yii::$app->request->post('return_to_origin');
+
             if (!isset($branch) || empty($waybill_numbers)) {
                 $this->flashError('Please ensure you set destinations at least a (one) for the parcels');
             }
 
             $postParams['waybill_numbers'] = implode(',', $waybill_numbers);
+            $postParams['return_to_origin'] = $return_to_origin;
 
             if ($branch == $this->userData['branch_id']) {
                 $response = $parcelsAdapter->assignToGroundsMan($postParams);
