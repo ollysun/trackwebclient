@@ -262,6 +262,13 @@ class ServiceConstant
     const RETURNING_TO_ORIGIN = 2;
     const RETURN_READY_FOR_PICKUP = 3;
 
+    /**
+     * @author Boyewa Richrad
+     * @author Babatunde Otaru <tunde@cottacush.com>
+     * @param $status
+     * @param int $return_status
+     * @return string
+     */
     public static function getStatus($status, $return_status = 0)
     {
         if($return_status != 0){
