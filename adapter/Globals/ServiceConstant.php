@@ -199,6 +199,7 @@ class ServiceConstant
     const URL_LINK_EC_TO_COMPANY = 'company/linkEc';
     const URL_RELINK_EC_TO_COMPANY = 'company/relinkEc';
     const URL_COMPANY_GET_ALL_ACCOUNT_TYPES = 'company/getAllAccountTypes';
+    const URL_COMPANY_CHANGE_STATUS = 'company/changeStatus';
 
 
     const URL_BILLING_PLAN_GET_CITIES_WITH_CHARGE = 'billingPlan/getCitiesWithCharge';

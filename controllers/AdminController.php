@@ -19,6 +19,7 @@ use Adapter\Util\ResponseCodes;
 use Adapter\Util\ResponseMessages;
 use Adapter\ZoneAdapter;
 use Adapter\RequestHelper;
+use app\services\AdminService;
 use Yii;
 use Adapter\Util\Response;
 use Adapter\AdminAdapter;
@@ -381,6 +382,7 @@ class AdminController extends BaseController
         $totalCount = Calypso::getValue($companiesData, 'total_count', 0);
 
         $account_types = $companyAdapter->getAllAccountTypes();
+        $this->decorateWithStatus($companies);
 
         return $this->render('companies', [
             'locations' => ['states' => $states],
@@ -689,5 +691,56 @@ class AdminController extends BaseController
     public function actionAudittrail()
     {
         return $this->render('audit_trail');
+    }
+
+    public function actionActivation() {
+
+        $payload = json_decode(Yii::$app->request->getRawBody());
+        $companyId = Calypso::getValue($payload, 'company_id');
+        $status = Calypso::getValue($payload, 'status');
+        $status = $status == ServiceConstant::ACTIVE ? ServiceConstant::INACTIVE : ServiceConstant::ACTIVE;
+
+        if (is_null($companyId) || is_null($status)) {
+            $this->sendErrorResponse(ResponseMessages::INVALID_PARAMETERS, ResponseCodes::INVALID_PARAMETERS, null, 400);
+        }
+
+        $companyAdapter = new CompanyAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $response = $companyAdapter->changeStatus(['company_id' => $companyId, 'status' => $status]);
+        if(!is_null($response)) {
+            return $this->sendSuccessResponse($status);
+        } else {
+            return $this->sendErrorResponse($companyAdapter->getLastErrorMessage(), 200);
+        }
+    }
+
+    private function decorateWithStatus(&$companies)
+    {
+        $length = count($companies);
+        for($i = 0; $i < $length; $i++) {
+            $status = Calypso::getValue($companies[$i], 'status');
+            $companies[$i]['status_details'] = self::getStatusDetails($status);
+        }
+    }
+
+    private static function getStatusDetails($statusId)
+    {
+        if($statusId == ServiceConstant::ACTIVE) {
+
+            return [
+                'label' => 'Active',
+                'action' => 'Deactivate',
+                'class' => 'success',
+                'icon' => 'lock',
+            ];
+
+        } else {
+
+            return [
+                'label' => 'Inactive',
+                'action' => 'Activate',
+                'class' => 'danger',
+                'icon' => 'unlock',
+            ];
+        }
     }
 }
