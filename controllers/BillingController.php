@@ -4,6 +4,7 @@ namespace app\controllers;
 use Adapter\BillingAdapter;
 use Adapter\BillingPlanAdapter;
 use Adapter\CompanyAdapter;
+use Adapter\Globals\ServiceConstant;
 use Adapter\Util\Calypso;
 use Adapter\Util\Util;
 use Adapter\WeightRangeAdapter;
@@ -648,10 +649,11 @@ class BillingController extends BaseController
         $filters['offset'] = $offset;
         $filters['company_name'] = $search;
         $filters['count'] = $this->page_width;
+        $filters['status'] = ServiceConstant::ACTIVE;
 
         $companyAdapter = new CompanyAdapter();
 
-        $companies = $companyAdapter->getAllCompanies([]);
+        $companies = $companyAdapter->getAllCompanies(['status' => ServiceConstant::ACTIVE]);
 
         $billingPlanAdapter = new BillingPlanAdapter();
         $response = $billingPlanAdapter->getBillingPlans($filters);
