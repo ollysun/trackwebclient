@@ -19,6 +19,8 @@ $this->params['breadcrumbs'] = array(
                 <tr>
                     <th class="datatable-nosort">#</th>
                     <th>Company ID</th>
+                    <th>Company Name</th>
+                    <th>Invoice Number</th>
                     <th>Address</th>
                     <th>Address To</th>
                     <th>Reference</th>
@@ -27,6 +29,7 @@ $this->params['breadcrumbs'] = array(
                     <th>Completed at</th>
                     <th>Status</th>
                     <th>Message</th>
+                    <th>Action</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -38,7 +41,9 @@ $this->params['breadcrumbs'] = array(
                     ?>
                     <tr>
                         <td><?= ++$serial_number ?></td>
-                        <td><a target="_blank" href="http://courierplus.local/admin/viewcompany?id=<?= Calypso::getDisplayValue($data, 'company_id', '') ?>"><?= Calypso::getDisplayValue($data, 'company_id', 'N/A') ?></a></td>
+                        <td><a target="_blank" href="/admin/viewcompany?id=<?= Calypso::getDisplayValue($data, 'company_id', '') ?>"><?= Calypso::getDisplayValue($data, 'company_id', 'N/A') ?></a></td>
+                        <td><?= Calypso::getDisplayValue($detail, 'company_name', 'N/A') ?></td>
+                        <td><?= Calypso::getDisplayValue($detail, 'invoice_number', 'N/A') ?></td>
                         <td><?= Calypso::getDisplayValue($data, 'address', 'N/A') ?></td>
                         <td><?= Calypso::getDisplayValue($data, 'to_address', 'N/A') ?></td>
                         <td><?= Calypso::getDisplayValue($data, 'reference', 'N/A') ?></td>
@@ -57,6 +62,11 @@ $this->params['breadcrumbs'] = array(
                             <?php endif; ?>
                         </td>
                         <td><?= Calypso::getDisplayValue($detail, 'error_message', '') ?></td>
+                        <?php if(is_null(Calypso::getDisplayValue($detail, 'invoice_number', 'N/A'))):?>
+                            <td><a class="btn btn-default" target="_blank" href="/finance/printinvoice?invoice_number=<?= Calypso::getDisplayValue($detail, 'invoice_number', '') ?>">Print</a></td>
+                        <?php else: ?>
+                            <td></td>
+                        <?php endif; ?>
                     </tr>
                 <?php endforeach; ?>
                 </tbody>
@@ -65,7 +75,6 @@ $this->params['breadcrumbs'] = array(
         </div>
     </div>
 </div>
-
 
 <?php $this->registerJsFile('@web/js/table.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/libs/jquery.dataTables.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>

@@ -335,7 +335,7 @@ class FinanceController extends BaseController
      */
     public function actionPrintinvoice($invoice_number = null)
     {
-        if (is_null($invoice_number)) {
+        if (empty($invoice_number)) {
             return $this->redirect(Url::to("/finance/invoice"));
         }
 
