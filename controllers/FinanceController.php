@@ -109,19 +109,7 @@ class FinanceController extends BaseController
     public function actionCreateinvoice()
     {
         if (Yii::$app->request->isPost) {
-            $data = Yii::$app->getRequest()->post();
-
-            $parcels = [];
-            for ($i = 0; $i < count(Calypso::getValue($data, 'waybill_number', [])); $i++) {
-                $parcel = [];
-                $parcel['waybill_number'] = Calypso::getValue($data, "waybill_number.$i");
-                $parcel['discount'] = floatval(((int)Calypso::getValue($data, "discount.$i")) / 100);
-                $parcel['net_amount'] = Calypso::getValue($data, "net_amount.$i");
-
-                $parcels[] = $parcel;
-            }
-
-            $data['parcels'] = $parcels;
+            $data = Yii::$app->getRequest()->post('data');
 
             $invoiceAdapter = new InvoiceAdapter();
             $response = $invoiceAdapter->createInvoice($data);
@@ -146,16 +134,16 @@ class FinanceController extends BaseController
             $response = $invoiceAdapter->createBulkInvoice($data);
             $jsonResponse = ['status'=>'error', 'message' => 'Unable to reach Trackplus service. Please contact support if this persists.'];
             if ($response) {
-                $jsonResponse['status'] = 'success';
-                $jsonResponse['message'] = 'Multiple Invoices created successfully';
+               $this->flashSuccess('Bulk Invoice has been queued successfully');
             } else {
                 $jsonResponse['status'] = 'error';
                 $jsonResponse['message'] = $invoiceAdapter->getLastErrorMessage();
+                exit(json_encode($jsonResponse));
             }
-            exit(json_encode($jsonResponse));
+
         }
 
-        return $this->redirect('/finance/invoice');
+        return $this->redirect('/finance/bulkinvoicetasks');
     }
 
     /**
