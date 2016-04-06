@@ -54,11 +54,6 @@ var Invoice = {
             total += Number($(v).html());
         });
 
-        var stamp_duty = $(elem).closest(".invoice").find('input[name="stamp_duty"]').val();
-        if(typeof stamp_duty != "undefined"){
-            total += Number(stamp_duty);
-        }
-
         total = parseFloat(total).toFixed(2);
         $(elem).closest(".invoice_parcels").find(".net_total").html(total);
         $(elem).closest(".invoice_parcels").find(".net_total_field").val(total);
@@ -193,7 +188,6 @@ $(document).ready(function () {
 
     $('body').delegate('input[name="stamp_duty"]', 'keyup', function (e) {
         invoicePayload[$(this).closest(".invoice").data('index')]['stamp_duty'] = $(this).val();
-        $("input[data-waybill]").trigger('keyup');
     });
 
     $("#generate_Invoice_btn").unbind("click").on("click", function () {
