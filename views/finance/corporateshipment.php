@@ -99,7 +99,7 @@ $this->params['breadcrumbs'] = array(
 
                 </div>
                 <div class="modal-footer">
-                    <input type="hidden" name="total" id="net_total_field" class="form-control">
+                    <input type="hidden" name="total" class="form-control net_total_field">
                     <input type="hidden" name="company_id" id="company_id" class="form-control">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                     <a href="#">
@@ -286,7 +286,7 @@ $this->params['breadcrumbs'] = array(
     </div>
 </div>
     <script type="text/html" id="accordion_content">
-        <div class="panel panel-default">
+        <div class="panel panel-default invoice" data-index={{data_index}}>
             <div class="panel-heading">
                 <h4 class="panel-title">
                     <a data-toggle="collapse" style="color: #ffffff" data-parent="#accordion" href="#collapse{{index}}">
@@ -296,7 +296,7 @@ $this->params['breadcrumbs'] = array(
             </div>
             <div id="collapse{{index}}" class="panel-collapse collapse {{collapse_status}}">
                 <div class="panel-body">
-                    <table id="" class="table table-hover dataTable">
+                    <table id="" class="table table-hover dataTable invoice_parcels">
                         <thead>
                         <tr>
                             <th style="width: 20px">No.</th>
@@ -319,7 +319,7 @@ $this->params['breadcrumbs'] = array(
 
                                 <div class="checkbox">
                                     <label>
-                                        <input data-index="{{data_index}}" data-address="{{address}}" class="same_as_invoice_to" type="checkbox">
+                                        <input data-address="{{address}}" class="same_as_invoice_to" type="checkbox">
                                         Same as Invoice To
                                     </label>
                                 </div>
@@ -327,7 +327,7 @@ $this->params['breadcrumbs'] = array(
 
                             <div class="form-group">
                                 <label>Invoice To</label>
-                                <textarea onkeyup="updateAddress(this,'to_address',{{data_index}})" id="to_address{{data_index}}" data-index="{{data_index}}" name="to_address" class="form-control validate required" rows="2"></textarea>
+                                <textarea onkeyup="updateAddress(this,'to_address',{{data_index}})" name="to_address" class="to_address form-control validate required" rows="2"></textarea>
                             </div>
 
                             <div class="form-group">
@@ -363,13 +363,13 @@ $this->params['breadcrumbs'] = array(
     </script>
 <script type="text/html" id="invoiceParcelTemplate">
     <tr>
-        <td>{{index}}</td>
+        <td>{{serial_number}}</td>
         <td>{{waybill_number}}</td>
         <td>{{company_name}}</td>
         <td>{{amount}}</td>
         <td>
             <input type='text' name='discount[]' data-amount='{{amount}}' data-waybill='{{waybill_number}}'
-                   class='form-control' style='width:50px;' value='0'>
+                   class='form-control' style='width:50px;' value='0' data-index="{{index}}">
             <input type='hidden' name='waybill_number[]' value='{{waybill_number}}'>
             <input type='hidden' data-parcel_waybill='{{waybill_number}}' name='net_amount[]' value='{{amount}}'>
         </td>
@@ -383,7 +383,7 @@ $this->params['breadcrumbs'] = array(
         <td></td>
         <td></td>
         <td></td>
-        <td><b id='net_total'></b></td>
+        <td><b class='net_total'></b></td>
     </tr>
 </script>
 

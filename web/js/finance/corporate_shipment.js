@@ -20,7 +20,7 @@ var Invoice = {
         var html = $("#invoiceParcelTemplate").html();
 
         return html
-            .replaceAll('{{id}}', index)
+            .replaceAll('{{serial_number}}', index + 1)
             .replaceAll('{{index}}', index)
             .replaceAll('{{waybill_number}}', params.waybill_number)
             .replaceAll('{{company_name}}', params.company_name)
@@ -29,7 +29,7 @@ var Invoice = {
     getInvoiceParcelsHtml: function (parcels) {
         var html = '';
         $(parcels).each(function (i, v) {
-            html += Invoice.getInvoiceParcelHtml((i + 1), v);
+            html += Invoice.getInvoiceParcelHtml((i), v);
         });
 
         html += $("#invoiceTotal").html();
@@ -42,21 +42,25 @@ var Invoice = {
         if (discount > 0) {
             newAmount = parseFloat(amount - (amount * (discount / 100))).toFixed(2);
         }
-        $("#invoice_parcels").find("td[data-waybill='" + $(elem).data('waybill') + "']").html(newAmount);
-        $("#invoice_parcels").find("input[data-parcel_waybill='" + $(elem).data('waybill') + "']").val(newAmount);
+        $(elem).closest(".invoice_parcels").find("td[data-waybill='" + $(elem).data('waybill') + "']").html(newAmount);
+        $(elem).closest(".invoice_parcels").find("input[data-parcel_waybill='" + $(elem).data('waybill') + "']").val(newAmount);
+
+        invoicePayload[$(elem).closest(".invoice").data('index')]['parcels'][$(elem).data('index')]['net_amount'] = newAmount;
+        invoicePayload[$(elem).closest(".invoice").data('index')]['parcels'][$(elem).data('index')]['discount'] = discount;
     },
-    calculateTotalAmount: function () {
+    calculateTotalAmount: function (elem) {
         var total = 0;
-        $("#invoice_parcels").find("td[data-waybill]").each(function (i, v) {
+        $(elem).closest(".invoice_parcels").find("td[data-waybill]").each(function (i, v) {
             total += Number($(v).html());
         });
         total = parseFloat(total).toFixed(2);
-        $("#net_total").html(total);
-        $("#net_total_field").val(total);
+        $(elem).closest(".invoice_parcels").find(".net_total").html(total);
+        $(elem).closest(".invoice_parcels").find(".net_total_field").val(total);
+        invoicePayload[$(elem).closest(".invoice").data('index')]['total'] = total;
     }
 };
 
-function updateAddress(el, key, index){
+function updateAddress(el, key, index) {
     invoicePayload[index][key] = $(el).val();
 }
 
@@ -71,11 +75,11 @@ $(document).ready(function () {
         var companyId = _this.data('company_id');
         if (_this.is(':checked')) {
             /*$('.checkable').each(function (i, v) {
-                if ($(v).is(':checked') && companyId != $(v).data('company_id')) {
-                    e.preventDefault();
-                    return false;
-                }
-            });*/
+             if ($(v).is(':checked') && companyId != $(v).data('company_id')) {
+             e.preventDefault();
+             return false;
+             }
+             });*/
         }
     });
 
@@ -94,74 +98,68 @@ $(document).ready(function () {
             $('.checkable').each(function (i, v) {
                 if ($(v).is(':checked')) {
                     parcels.push(v.dataset);
-                    if(typeof packets[v.dataset.company_id] == 'undefined') {
+                    if (typeof packets[v.dataset.company_id] == 'undefined') {
                         packets[v.dataset.company_id] = [];
                     }
                     packets[v.dataset.company_id].push(v.dataset);
                 }
             });
             var company_count = (Object.keys(packets).length);
-            if(company_count > 1) {
+            if (company_count > 1) {
                 var holder = $("#bulk_invoice");
                 var __template = "";
-                var x = 1; var tmpObj = null;
+                var x = 1;
+                var tmpObj = null;
 
 
-                for(var d in packets) {
+                for (var d in packets) {
 
                     var address = (packets[d][0].company_address).replace(/([a-z])([A-Z])/g, '$1 $2');
-                    address = address.replace(/,/g,', ');
+                    address = address.replace(/,/g, ', ');
 
                     tmpObj = new InvoiceObject();
                     tmpObj.company_id = packets[d][0].company_id;
-                    tmpObj.address = packets[d][0].company_name + ',' +  "\n" + address;
+                    tmpObj.address = packets[d][0].company_name + ',' + "\n" + address;
                     tmpObj.to_address = tmpObj.address;
                     tmpObj.reference = packets[d][0].reference_number;
                     tmpObj.parcels = getParcelsWaybill(packets[d]);
-                    invoicePayload.push(tmpObj);
-                    tmpObj = null;
 
 
                     __template = getAccordionHTML();
 
-                    if(x==1){
-                        __template = replaceAll(__template,'{{collapse_status}}', 'in' );
-                    }else{
-                        __template = replaceAll(__template,'{{collapse_status}}', '' );
+                    if (x == 1) {
+                        __template = replaceAll(__template, '{{collapse_status}}', 'in');
+                    } else {
+                        __template = replaceAll(__template, '{{collapse_status}}', '');
                     }
-                    __template = replaceAll(__template,'{{index}}', x );
-                    __template = replaceAll(__template,'{{waybill_number}}', packets[d][0].waybill_number );
-                    __template = replaceAll(__template,'{{company_name}}', packets[d][0].company_name );
-                    __template = replaceAll(__template,'{{amount}}', packets[d][0].amount_due );
-                    __template = replaceAll(__template,'{{invoiceList}}', Invoice.getInvoiceParcelsHtml(packets[d]));
-                    __template = replaceAll(__template,'{{account_number}}', packets[d][0].account_number );
-                    __template = replaceAll(__template,'{{address}}', address );
-                    __template = replaceAll(__template,'{{reference}}', packets[d][0].reference_number );
-                    __template = replaceAll(__template,'{{data_index}}', (invoicePayload.length -1) );
+                    __template = replaceAll(__template, '{{index}}', x);
+                    __template = replaceAll(__template, '{{waybill_number}}', packets[d][0].waybill_number);
+                    __template = replaceAll(__template, '{{company_name}}', packets[d][0].company_name);
+                    __template = replaceAll(__template, '{{amount}}', packets[d][0].amount_due);
+                    __template = replaceAll(__template, '{{invoiceList}}', Invoice.getInvoiceParcelsHtml(packets[d]));
+                    __template = replaceAll(__template, '{{account_number}}', packets[d][0].account_number);
+                    __template = replaceAll(__template, '{{address}}', address);
+                    __template = replaceAll(__template, '{{reference}}', packets[d][0].reference_number);
+                    __template = replaceAll(__template, '{{data_index}}', (invoicePayload.length));
                     holder.append(__template);
                     x++;
                     __template = "";
+
+                    invoicePayload.push(tmpObj);
+                    tmpObj = null;
                 }
                 $("#generate_Invoice_btn").attr('type', 'button');
                 $("#single_invoice").addClass('hidden');
                 $("#multiple_invoice").removeClass('hidden');
-                $(".same_as_invoice_to").unbind('click').on('click', function(){
-                    var data_index = $(this).data('index');
 
-                    if($(this).is(':checked')) {
-                        var data_address = $(this).data('address');
-                        invoicePayload[data_index].to_address = data_address;
-                        $("#to_address" +data_index).val(data_address);
-                    }else{
-                        invoicePayload[data_index].to_address = "";
-                        $("#to_address" +data_index).val("");
-                    }
-
+                holder.find("input[data-waybill]").each(function (i, v) {
+                    $(v).trigger('keyup');
                 });
-            }else{
+
+            } else {
                 var address = (parcels[0].company_address).replace(/([a-z])([A-Z])/g, '$1 $2');
-                address = address.replace(/,/g,', ');
-                $('textarea[name=address]').val(parcels[0].company_name + ',' +  "\n" + address);
+                address = address.replace(/,/g, ', ');
+                $('textarea[name=address]').val(parcels[0].company_name + ',' + "\n" + address);
                 $('input[name=company_id]').val(parcels[0].company_id);
                 $('input[name=account_number]').val(parcels[0].account_number);
                 $('textarea[name=reference]').val(parcels[0].reference_number);
@@ -172,9 +170,6 @@ $(document).ready(function () {
                 $("#single_invoice").removeClass('hidden');
 
             }
-
-
-
         } else {
             e.preventDefault();
             e.stopPropagation();
@@ -184,14 +179,16 @@ $(document).ready(function () {
 
     function getParcelsWaybill(parcels) {
         var t = [];
-        for(var i =0; i < parcels.length; i++) {
-            if('undefined' == typeof parcels[i].waybill_number) {continue;}
-            t.push(parcels[i].waybill_number);
+        for (var i = 0; i < parcels.length; i++) {
+            if ('undefined' == typeof parcels[i].waybill_number) {
+                continue;
+            }
+            t.push({waybill_number: parcels[i].waybill_number, net_amount: parcels[i].amount_due, discount: 0});
         }
         return t;
     }
 
-    function getAccordionHTML(){
+    function getAccordionHTML() {
         return $("#accordion_content").html();
     }
 
@@ -204,41 +201,52 @@ $(document).ready(function () {
     }
 
 
-
-    $("#invoice_parcels").on("keypress", "input[data-waybill]", function (e) {
-        this.value = this.value.replace(/[^0-9\.]/g, '');
-    }).on('keyup', "input[data-waybill]", function () {
+    $('body').delegate('input[data-waybill]', 'keyup', function (e) {
         Invoice.calculateNetAmount(this);
-        Invoice.calculateTotalAmount();
+        Invoice.calculateTotalAmount(this);
     });
 
-    $("#generate_Invoice_btn").unbind("click").on("click", function(){
+    $("#generate_Invoice_btn").unbind("click").on("click", function () {
 
         $("#generate_Invoice_btn").attr('disabled', 'disabled').html('Processing... Please wait.');
-        $.post("/finance/createbulkinvoice",{data:invoicePayload}, function(response){
+        $.post("/finance/createbulkinvoice", {data: invoicePayload}, function (response) {
 
-            try{
-                var jsonResponse = JSON.parse(response);
-                alert(jsonResponse.message);
-                window.location.reload();
-            }catch(e){
-                alert("Unexpected response from service. Please refresh the page and try again. If this persists please contact support");
-            }
-
-            $("#generate_Invoice_btn").removeAttr('disabled').html('Generate Invoice');
+            //try {
+            //    var jsonResponse = JSON.parse(response);
+            //    alert(jsonResponse.message);
+            //    window.location.reload();
+            //} catch (e) {
+            //    alert("Unexpected response from service. Please refresh the page and try again. If this persists please contact support");
+            //}
+            //
+            //$("#generate_Invoice_btn").removeAttr('disabled').html('Generate Invoice');
+            console.log(invoicePayload);
         });
     });
-    
+
     $("#same_as_invoice_to").click(function () {
-       if($(this).is(":checked")) {
-           $("textarea[name=to_address]").val($("textarea[name=address]").val());
-       } else {
-           $("textarea[name=to_address]").val('');
-       }
+        if ($(this).is(":checked")) {
+            $("textarea[name=to_address]").val($("textarea[name=address]").val());
+        } else {
+            $("textarea[name=to_address]").val('');
+        }
     });
 
     $("select#page_width").on('change', function (event) {
         $("#records_filter").click();
+    });
+
+    $("body").delegate('.same_as_invoice_to', 'click', function () {
+        var invoice = $(this).closest('.invoice');
+
+        if ($(this).is(':checked')) {
+            var data_address = $(this).data('address');
+            invoicePayload[invoice.data('index')].to_address = data_address;
+            invoice.find('.to_address').val(data_address);
+        } else {
+            invoicePayload[invoice.data('index')].to_address = '';
+            invoice.find('.to_address').val('');
+        }
     });
 });
 
