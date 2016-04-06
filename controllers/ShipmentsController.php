@@ -557,7 +557,7 @@ class ShipmentsController extends BaseController
                 $email = $records['email'];
                 $date = $records['date'];
                 $time = $records['time'];
-                $date_and_time_timestamp = Util::getDateTimeFormatFromDateTimeFields($date, $time);
+                $dateAndTimeTimeStamp = Util::getDateTimeFormatFromDateTimeFields($date, $time);
                 $phoneNumber = $records['phone'];
                 $rawData = $records['waybills'];
                 $task = $records['task'];
@@ -587,14 +587,14 @@ class ShipmentsController extends BaseController
                             $record['receiver_name'] = $fullName;
                             $record['receiver_phone_number'] = $phoneNumber;
                             $record['receiver_email'] = $email;
-                            $record['date_and_time_of_delivery'] = $date_and_time_timestamp;
+                            $record['date_and_time_of_delivery'] = $dateAndTimeTimeStamp;
                             $response = $parcelData->moveToDelivered($record);
                             $success_msg = 'Shipments successfully delivered';
                         } elseif ($task == 'return') {
                             $record['receiver_name'] = $fullName;
                             $record['receiver_phone_number'] = $phoneNumber;
                             $record['receiver_email'] = $email;
-                            $record['date_and_time_of_delivery'] = $date_and_time_timestamp;
+                            $record['date_and_time_of_delivery'] = $dateAndTimeTimeStamp;
                             $response = $parcelData->markAsReturned($record);
                             $success_msg = 'Shipments successfully returned';
                         }
