@@ -43,7 +43,7 @@ $this->params['breadcrumbs'] = array(
                     <tr>
                         <td><?= ++$serial_number ?></td>
                         <td><a target="_blank" href="/admin/viewcompany?id=<?= Calypso::getDisplayValue($data, 'company_id', '') ?>"><?= Calypso::getDisplayValue($data, 'company_id', 'N/A') ?></a></td>
-                        <td><?= Calypso::getDisplayValue($detail, 'company_name', 'N/A') ?></td>
+                        <td><?= Calypso::getDisplayValue($data, 'company_name', 'N/A') ?></td>
                         <td><?= Calypso::getDisplayValue($detail, 'invoice_number', 'N/A') ?></td>
                         <td><?= Calypso::getDisplayValue($data, 'address', 'N/A') ?></td>
                         <td><?= Calypso::getDisplayValue($data, 'to_address', 'N/A') ?></td>
