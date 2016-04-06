@@ -3026,7 +3026,8 @@ svg {
   margin: 0 auto;
 }
 .in-transit .tracking-status,
-.arrived-in .tracking-status {
+.arrived-in .tracking-status,
+.returned .tracking-status {
   color: #333;
 }
 .in-transit .tracking-status {

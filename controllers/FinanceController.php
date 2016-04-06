@@ -109,19 +109,7 @@ class FinanceController extends BaseController
     public function actionCreateinvoice()
     {
         if (Yii::$app->request->isPost) {
-            $data = Yii::$app->getRequest()->post();
-
-            $parcels = [];
-            for ($i = 0; $i < count(Calypso::getValue($data, 'waybill_number', [])); $i++) {
-                $parcel = [];
-                $parcel['waybill_number'] = Calypso::getValue($data, "waybill_number.$i");
-                $parcel['discount'] = floatval(((int)Calypso::getValue($data, "discount.$i")) / 100);
-                $parcel['net_amount'] = Calypso::getValue($data, "net_amount.$i");
-
-                $parcels[] = $parcel;
-            }
-
-            $data['parcels'] = $parcels;
+            $data = Yii::$app->getRequest()->post('data');
 
             $invoiceAdapter = new InvoiceAdapter();
             $response = $invoiceAdapter->createInvoice($data);
@@ -135,6 +123,27 @@ class FinanceController extends BaseController
         }
 
         return $this->redirect('/finance/invoice');
+    }
+
+    public function actionCreatebulkinvoice()
+    {
+        if (Yii::$app->request->isPost) {
+            $data = Yii::$app->getRequest()->post();
+
+            $invoiceAdapter = new InvoiceAdapter();
+            $response = $invoiceAdapter->createBulkInvoice($data);
+            $jsonResponse = ['status'=>'error', 'message' => 'Unable to reach Trackplus service. Please contact support if this persists.'];
+            if ($response) {
+               $this->flashSuccess('Bulk Invoice has been queued successfully');
+            } else {
+                $jsonResponse['status'] = 'error';
+                $jsonResponse['message'] = $invoiceAdapter->getLastErrorMessage();
+                exit(json_encode($jsonResponse));
+            }
+
+        }
+
+        return $this->redirect('/finance/bulkinvoicetasks');
     }
 
     /**
@@ -253,6 +262,31 @@ class FinanceController extends BaseController
         ]);
     }
 
+    /**
+     * View All Bulk Invoice Tasks
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @return string
+     */
+    public function actionBulkinvoicetasks()
+    {
+        $invoiceAdapter = new InvoiceAdapter();
+        $tasks = $invoiceAdapter->getBulkInvoiceTasks();
+        return $this->render('bulk_invoice_tasks', ['tasks' => $tasks]);
+    }
+
+    /**
+     * View Details of Bulk Invoice Task
+     * @author Adegoke Obasa <goke@cottacush.com>
+     */
+    public function actionViewbulkinvoice()
+    {
+        $invoiceAdapter = new InvoiceAdapter();
+        $taskId = Yii::$app->getRequest()->get('task_id', false);
+        $task = $invoiceAdapter->getBulkInvoiceTask($taskId);
+        return $this->render('bulk_invoice_task_details', ['task_id' => $taskId, 'task' => $task]);
+    }
+
+
     public function actionMerchantspending()
     {
         return $this->render('merchants_pending');
@@ -289,7 +323,7 @@ class FinanceController extends BaseController
      */
     public function actionPrintinvoice($invoice_number = null)
     {
-        if (is_null($invoice_number)) {
+        if (empty($invoice_number)) {
             return $this->redirect(Url::to("/finance/invoice"));
         }
 

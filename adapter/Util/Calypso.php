@@ -166,6 +166,7 @@ class Calypso
                     'Credit Note' => ['base_link' => 'finance/creditnote', 'class' => ''],
                     'Customers' => ['base_link' => 'finance/customersall', 'class' => ''],
                     'Invoice' => ['base_link' => 'finance/invoice', 'class' => ''],
+                    'Bulk Invoice Tasks' => ['base_link' => 'finance/bulkinvoicetasks', 'class' => ''],
                     'Merchants' => ['base_link' => 'finance/merchantsdue', 'class' => ''],
                 ],
                 'branch' => [ServiceConstant::BRANCH_TYPE_HQ]

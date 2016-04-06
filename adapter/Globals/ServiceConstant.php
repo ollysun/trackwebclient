@@ -199,6 +199,7 @@ class ServiceConstant
     const URL_LINK_EC_TO_COMPANY = 'company/linkEc';
     const URL_RELINK_EC_TO_COMPANY = 'company/relinkEc';
     const URL_COMPANY_GET_ALL_ACCOUNT_TYPES = 'company/getAllAccountTypes';
+    const URL_COMPANY_CHANGE_STATUS = 'company/changeStatus';
 
 
     const URL_BILLING_PLAN_GET_CITIES_WITH_CHARGE = 'billingPlan/getCitiesWithCharge';
@@ -208,9 +209,12 @@ class ServiceConstant
     const URL_CLONE_BILLING_PLAN = 'billingPlan/clonebillingplan';
 
     const URL_INVOICE_ADD = 'invoice/add';
+    const URL_BULK_INVOICE_ADD = 'invoice/createBulkInvoice';
     const URL_INVOICE_ALL = 'invoice/getAll';
     const URL_INVOICE_GET = 'invoice/get';
     const URL_INVOICE_PARCELS = 'invoice/getInvoiceParcels';
+    const URL_INVOICE_GET_BULK_INVOICE_TASKS = 'invoice/getBulkInvoiceTasks';
+    const URL_INVOICE_GET_BULK_INVOICE_TASK = 'invoice/getBulkInvoiceTask';
 
     const URL_CREDIT_NOTE_ADD = 'creditNote/add';
     const URL_CREDIT_NOTE_ALL = 'creditNote/getAll';
@@ -258,8 +262,32 @@ class ServiceConstant
 
     const SHIPMENTS_SENDER_TYPE_CORPORATE = 'corporate';
 
-    public static function getStatus($status)
+    const DELIVERY_ATTEMPTED = 1;
+    const RETURNING_TO_ORIGIN = 2;
+    const RETURN_READY_FOR_PICKUP = 3;
+
+    /**
+     * @author Boyewa Richrad
+     * @author Babatunde Otaru <tunde@cottacush.com>
+     * @param $status
+     * @param int $return_status
+     * @return string
+     */
+    public static function getStatus($status, $return_status = 0)
     {
+        if($return_status != 0){
+            switch ($return_status){
+                case ServiceConstant::DELIVERY_ATTEMPTED:
+                    return 'Attempted Delivery';
+                    break;
+                case ServiceConstant::RETURNING_TO_ORIGIN:
+                    return 'Returning to Origin';
+                    break;
+                case ServiceConstant::RETURN_READY_FOR_PICKUP:
+                    return 'Return Ready for Pick up';
+                    break;
+            }
+        }
         switch ($status) {
             case ServiceConstant::ACTIVE:
                 return '<span class="label label-success">Active</span>';
