@@ -46,7 +46,7 @@ var Invoice = {
         $(elem).closest(".invoice_parcels").find("input[data-parcel_waybill='" + $(elem).data('waybill') + "']").val(newAmount);
 
         invoicePayload[$(elem).closest(".invoice").data('index')]['parcels'][$(elem).data('index')]['net_amount'] = newAmount;
-        invoicePayload[$(elem).closest(".invoice").data('index')]['parcels'][$(elem).data('index')]['discount'] = discount;
+        invoicePayload[$(elem).closest(".invoice").data('index')]['parcels'][$(elem).data('index')]['discount'] = (discount / 100);
     },
     calculateTotalAmount: function (elem) {
         var total = 0;
@@ -65,6 +65,8 @@ function updateAddress(el, key, index) {
 }
 
 $(document).ready(function () {
+
+    var companies_count = 0;
 
     $("#chbx_w_all").change(function () {
         $("input[name=parcel]").prop("checked", $(this).prop("checked"));
@@ -104,72 +106,61 @@ $(document).ready(function () {
                     packets[v.dataset.company_id].push(v.dataset);
                 }
             });
-            var company_count = (Object.keys(packets).length);
-            if (company_count > 1) {
-                var holder = $("#bulk_invoice");
-                var __template = "";
-                var x = 1;
-                var tmpObj = null;
+
+            companies_count = (Object.keys(packets).length);
+
+            var holder = $("#bulk_invoice");
+            var __template = "";
+            var x = 1;
+            var tmpObj = null;
 
 
-                for (var d in packets) {
+            for (var d in packets) {
 
-                    var address = (packets[d][0].company_address).replace(/([a-z])([A-Z])/g, '$1 $2');
-                    address = address.replace(/,/g, ', ');
-
-                    tmpObj = new InvoiceObject();
-                    tmpObj.company_id = packets[d][0].company_id;
-                    tmpObj.address = packets[d][0].company_name + ',' + "\n" + address;
-                    tmpObj.to_address = tmpObj.address;
-                    tmpObj.reference = packets[d][0].reference_number;
-                    tmpObj.parcels = getParcelsWaybill(packets[d]);
-
-
-                    __template = getAccordionHTML();
-
-                    if (x == 1) {
-                        __template = replaceAll(__template, '{{collapse_status}}', 'in');
-                    } else {
-                        __template = replaceAll(__template, '{{collapse_status}}', '');
-                    }
-                    __template = replaceAll(__template, '{{index}}', x);
-                    __template = replaceAll(__template, '{{waybill_number}}', packets[d][0].waybill_number);
-                    __template = replaceAll(__template, '{{company_name}}', packets[d][0].company_name);
-                    __template = replaceAll(__template, '{{amount}}', packets[d][0].amount_due);
-                    __template = replaceAll(__template, '{{invoiceList}}', Invoice.getInvoiceParcelsHtml(packets[d]));
-                    __template = replaceAll(__template, '{{account_number}}', packets[d][0].account_number);
-                    __template = replaceAll(__template, '{{address}}', address);
-                    __template = replaceAll(__template, '{{reference}}', packets[d][0].reference_number);
-                    __template = replaceAll(__template, '{{data_index}}', (invoicePayload.length));
-                    holder.append(__template);
-                    x++;
-                    __template = "";
-
-                    invoicePayload.push(tmpObj);
-                    tmpObj = null;
-                }
-                $("#generate_Invoice_btn").attr('type', 'button');
-                $("#single_invoice").addClass('hidden');
-                $("#multiple_invoice").removeClass('hidden');
-
-                holder.find("input[data-waybill]").each(function (i, v) {
-                    $(v).trigger('keyup');
-                });
-
-            } else {
-                var address = (parcels[0].company_address).replace(/([a-z])([A-Z])/g, '$1 $2');
+                var address = (packets[d][0].company_address).replace(/([a-z])([A-Z])/g, '$1 $2');
                 address = address.replace(/,/g, ', ');
-                $('textarea[name=address]').val(parcels[0].company_name + ',' + "\n" + address);
-                $('input[name=company_id]').val(parcels[0].company_id);
-                $('input[name=account_number]').val(parcels[0].account_number);
-                $('textarea[name=reference]').val(parcels[0].reference_number);
-                $("#invoice_parcels").html(Invoice.getInvoiceParcelsHtml(parcels))
-                    .find("input[data-waybill]").trigger('keyup');
-                $("#generate_Invoice_btn").attr('type', 'submit');
-                $("#multiple_invoice").addClass('hidden');
-                $("#single_invoice").removeClass('hidden');
 
+                tmpObj = new InvoiceObject();
+                tmpObj.company_id = packets[d][0].company_id;
+                tmpObj.address = packets[d][0].company_name + ',' + "\n" + address;
+                tmpObj.to_address = tmpObj.address;
+                tmpObj.reference = packets[d][0].reference_number;
+                tmpObj.parcels = getParcelsWaybill(packets[d]);
+                tmpObj.stamp_duty = 0;
+                tmpObj.account_number = packets[d][0].account_number;
+
+
+                __template = getAccordionHTML();
+
+                if (x == 1) {
+                    __template = replaceAll(__template, '{{collapse_status}}', 'in');
+                } else {
+                    __template = replaceAll(__template, '{{collapse_status}}', '');
+                }
+                __template = replaceAll(__template, '{{index}}', x);
+                __template = replaceAll(__template, '{{waybill_number}}', packets[d][0].waybill_number);
+                __template = replaceAll(__template, '{{company_name}}', packets[d][0].company_name);
+                __template = replaceAll(__template, '{{amount}}', packets[d][0].amount_due);
+                __template = replaceAll(__template, '{{invoiceList}}', Invoice.getInvoiceParcelsHtml(packets[d]));
+                __template = replaceAll(__template, '{{account_number}}', packets[d][0].account_number);
+                __template = replaceAll(__template, '{{address}}', address);
+                __template = replaceAll(__template, '{{reference}}', packets[d][0].reference_number);
+                __template = replaceAll(__template, '{{data_index}}', (invoicePayload.length));
+                holder.append(__template);
+                x++;
+                __template = "";
+
+                invoicePayload.push(tmpObj);
+                tmpObj = null;
             }
+            $("#generate_Invoice_btn").attr('type', 'button');
+            $("#single_invoice").addClass('hidden');
+            $("#multiple_invoice").removeClass('hidden');
+
+            holder.find("input[data-waybill]").each(function (i, v) {
+                $(v).trigger('keyup');
+            });
+
         } else {
             e.preventDefault();
             e.stopPropagation();
@@ -206,21 +197,24 @@ $(document).ready(function () {
         Invoice.calculateTotalAmount(this);
     });
 
+    $('body').delegate('input[name="stamp_duty"]', 'keyup', function (e) {
+        invoicePayload[$(this).closest(".invoice").data('index')]['stamp_duty'] = $(this).val();
+    });
+
     $("#generate_Invoice_btn").unbind("click").on("click", function () {
 
         $("#generate_Invoice_btn").attr('disabled', 'disabled').html('Processing... Please wait.');
-        $.post("/finance/createbulkinvoice", {data: invoicePayload}, function (response) {
 
-            //try {
-            //    var jsonResponse = JSON.parse(response);
-            //    alert(jsonResponse.message);
-            //    window.location.reload();
-            //} catch (e) {
-            //    alert("Unexpected response from service. Please refresh the page and try again. If this persists please contact support");
-            //}
-            //
-            //$("#generate_Invoice_btn").removeAttr('disabled').html('Generate Invoice');
-            console.log(invoicePayload);
+        $.post(getInvoiceCreationURL(), {data: getInvoicePayload()}, function (response) {
+            try {
+                var jsonResponse = JSON.parse(response);
+                alert(jsonResponse.message);
+                window.location.reload();
+            } catch (e) {
+                alert("Unexpected response from service. Please refresh the page and try again. If this persists please contact support");
+            }
+
+            $("#generate_Invoice_btn").removeAttr('disabled').html('Generate Invoice');
         });
     });
 
@@ -248,6 +242,22 @@ $(document).ready(function () {
             invoice.find('.to_address').val('');
         }
     });
+
+    function getInvoicePayload() {
+        if (companies_count == 1) {
+            return invoicePayload[0];
+        } else {
+            return invoicePayload;
+        }
+    }
+
+    function getInvoiceCreationURL() {
+        if (companies_count == 1) {
+            return '/finance/createinvoice';
+        } else {
+            return '/finance/createbulkinvoice';
+        }
+    }
 });
 
 
