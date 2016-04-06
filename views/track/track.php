@@ -5,6 +5,7 @@ use Adapter\Util\Calypso;
 use Adapter\Util\Util;
 use app\assets\TrackingAsset;
 
+
 /* @var $this yii\web\View */
 
 $this->title = 'Tracking Portal';
@@ -143,6 +144,8 @@ $this->title = 'Tracking Portal';
                         $class = 'in-transit';
                     } else if (Calypso::getValue($current_state_info, 'status') == ServiceConstant::DELIVERED) {
                         $class = 'arrived-in';
+                    } else if (Calypso::getValue($current_state_info, 'status') == ServiceConstant::RETURNED) {
+                        $class = 'returned';
                     } else {
                         $class = '';
                     }
@@ -156,13 +159,18 @@ $this->title = 'Tracking Portal';
                     <div class="tracking-bar"></div>
                     <div class="tracking-status">
                         <span><?= (Calypso::getValue($current_state_info, 'status') == ServiceConstant::BEING_DELIVERED) ? "On it's way to you" : '' ?></span>
-                        <?php if (Calypso::getValue($current_state_info, 'status') == ServiceConstant::DELIVERED && Calypso::getValue($tracking_info, 'delivery_receipt', false)): ?>
+                        <?php if (in_array(Calypso::getValue($current_state_info, 'status'), [ServiceConstant::DELIVERED, ServiceConstant::RETURNED]) && Calypso::getValue($tracking_info, 'delivery_receipt', false)): ?>
                             <span
                                 class="tracking-status-inner date"><?= Util::convertToTrackingDateFormat(Calypso::getValue($tracking_info, 'delivery_receipt.delivered_at', '')) ?></span>
                             <span
                                 class="tracking-status-inner time"><?= Util::convertDateTimeToTime(Calypso::getValue($tracking_info, 'delivery_receipt.delivered_at', '')) ?></span>
-                            <br><a class="btn btn-sm btn-success" tabindex="0" role="button" data-toggle="popover"
-                                   data-placement="left" title="Proof of Delivery Information">Proof of Delivery</a>
+                            <br><a
+                            <?= (Calypso::getValue($tracking_info, 'delivery_receipt.receipt_type') == 'returned') ? 'class="btn btn-sm btn-danger"' :
+                                    'class="btn btn-sm btn-success"'?>
+                            tabindex="0" role="button" data-toggle="popover"
+                                   data-placement="left"
+                                <?= (Calypso::getValue($tracking_info, 'delivery_receipt.receipt_type') == 'returned') ? 'data-title="Proof of Return Information">Proof of Return' :
+                                    'data-title="Proof of Delivery Information">Proof of Delivery'?></a>
                             <div id="pod" style="display:none;">
                                 <div class="form-group">
                                     <label>Received by</label>
