@@ -4,7 +4,7 @@ use Adapter\Util\Calypso;
 /* @var $this yii\web\View */
 $this->title = 'Bulk Invoice Task - #' . $task_id;
 $this->params['breadcrumbs'] = array(
-    array('label' => 'Bulk Invoice Tasks', 'url' => 'bulk'),
+    array('label' => 'Bulk Invoice Tasks', 'url' => 'bulkinvoicetasks'),
     array(
         'label' => 'Bulk Invoice Task - #' . $task_id
     )
