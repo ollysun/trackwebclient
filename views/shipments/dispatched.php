@@ -46,7 +46,9 @@ $user_data = $this->context->userData;
             <form class="table-search-form form-inline pull-right clearfix">
                 <div class="pull-left form-group">
                     <div class="input-group input-group-sm input-group-search">
-                        <input id="searchInput" type="text" name="search" placeholder="Search by Waybill number" class="search-box form-control">
+                        <input id="searchInput" type="text" name="search" placeholder="Search by Waybill number"
+                               class="search-box form-control">
+
                         <div class="input-group-btn">
                             <button class="btn btn-default" type="submit" formmethod="post">
                                 <i class="fa fa-search"></i>
@@ -107,7 +109,7 @@ $user_data = $this->context->userData;
                                 <td><?= ucwords($parcel['receiver']['firstname'] . ' ' . $parcel['receiver']['lastname']) ?></td>
                                 <td><?= $parcel['receiver']['phone'] ?></td>
                                 <td><?= ucwords($parcel['holder']['fullname']); ?></td>
-                                <td><?= ServiceConstant::getStatus($parcel['status']); ?></td>
+                                <td><?= ($parcel['for_return'] == 1) ? "Delivery Attempted" : ServiceConstant::getStatus($parcel['status']); ?></td>
                                 <td><?= $parcel['return_reason']['comment']; ?></td>
                                 <?php if ($user_data['role_id'] == ServiceConstant::USER_TYPE_ADMIN) { ?>
                                     <td><?= strtoupper(Calypso::getValue($parcel, "created_branch.name")) ?></td>

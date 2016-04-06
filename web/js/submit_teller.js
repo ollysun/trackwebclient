@@ -74,7 +74,6 @@ $(document).ready(function () {
                 data: JSON.stringify(params),
                 success: function (result) {
                     if (result.status == 'success' || result.status == 200) {
-                        console.log(params.waybill + ' has been cancelled!');
                         window.location = clone_url;
                     } else {
                         alert(result.message);
