@@ -76,6 +76,7 @@ $user_data = $this->context->userData;
                 <form method="post" id="table_form">
                     <input type="hidden" id="form_branch_type" name="branch_type"/>
                     <input type="hidden" id="form_branch_name" name="branch"/>
+                    <input type="hidden" name="return_to_origin" value="1"/>
                     <table id="next_dest" class="table table-hover next_dest dataTable">
                         <thead>
                         <tr>

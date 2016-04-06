@@ -46,7 +46,7 @@ class ServiceConstant
     const URL_GET_ONE_PARCEL = 'parcel/getone/';
     const URL_GET_BAG = 'parcel/getbag/';
     const URL_GET_ALL_PARCEL = 'parcel/getAll';
-    const URL_MOVE_TO_FOR_SWEEPER = '/parcel/moveToForSweeper/';
+    const URL_MOVE_TO_FOR_SWEEPER = '/parcel/moveToForSweeper/?XDEBUG_SESSION_START=PHPSTORM';
     const URL_ASSIGN_TO_GROUNDSMAN = '/parcel/assignToGroundsMan/';
     const URL_MOVE_TO_IN_TRANSIT = '/parcel/moveToInTransit/';
     const URL_MOVE_TO_ARRIVAL = '/parcel/moveToArrival/';
@@ -258,8 +258,25 @@ class ServiceConstant
 
     const SHIPMENTS_SENDER_TYPE_CORPORATE = 'corporate';
 
-    public static function getStatus($status)
+    const DELIVERY_ATTEMPTED = 1;
+    const RETURNING_TO_ORIGIN = 2;
+    const RETURN_READY_FOR_PICKUP = 3;
+
+    public static function getStatus($status, $return_status = 0)
     {
+        if($return_status != 0){
+            switch ($return_status){
+                case ServiceConstant::DELIVERY_ATTEMPTED:
+                    return 'Attempted Delivery';
+                    break;
+                case ServiceConstant::RETURNING_TO_ORIGIN:
+                    return 'Returning to Origin';
+                    break;
+                case ServiceConstant::RETURN_READY_FOR_PICKUP:
+                    return 'Return Ready for Pick up';
+                    break;
+            }
+        }
         switch ($status) {
             case ServiceConstant::ACTIVE:
                 return '<span class="label label-success">Active</span>';

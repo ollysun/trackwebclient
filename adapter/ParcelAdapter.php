@@ -409,11 +409,12 @@ class ParcelAdapter extends BaseAdapter
      * @author Olawale Lawal <wale@cottacush.com>
      * @param $waybill_numbers
      * @param $comment
+     * @param $attempted_delivery
      * @return array|mixed|string
      */
-    public function sendReturnRequest($waybill_numbers, $comment)
+    public function sendReturnRequest($waybill_numbers, $comment, $attempted_delivery)
     {
-        return $this->request(ServiceConstant::URL_SET_RETURN_FLAG, ['waybill_numbers' => $waybill_numbers, 'comment' => $comment], self::HTTP_POST);
+        return $this->request(ServiceConstant::URL_SET_RETURN_FLAG, ['waybill_numbers' => $waybill_numbers, 'comment' => $comment, 'attempted_delivery' => $attempted_delivery], self::HTTP_POST);
     }
 
     public function openBag($postData)
