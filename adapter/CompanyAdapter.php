@@ -126,7 +126,7 @@ class CompanyAdapter extends BaseAdapter
      * @param $filters
      * @return array|mixed
      */
-    public function getAllCompanies($filters)
+    public function getAllCompanies($filters = [])
     {
 
         $filters = array_merge($filters, array(
@@ -144,7 +144,7 @@ class CompanyAdapter extends BaseAdapter
     }
 
     /**
-     * Get Companies
+     * Get Users
      * @author Adegoke Obasa <goke@cottacush.com>
      * @param $filters
      * @return array|mixed
