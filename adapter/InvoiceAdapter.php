@@ -160,4 +160,37 @@ class InvoiceAdapter extends BaseAdapter
         return 'height:' . ($pageHeight * $no_of_pages) . 'px';
     }
 
+    /**
+     * Get bulk invoice tasks
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @return array|mixed|string
+     */
+    public function getBulkInvoiceTasks()
+    {
+        $response = $this->request(ServiceConstant::URL_INVOICE_GET_BULK_INVOICE_TASKS, [], self::HTTP_GET);
+        $response = new ResponseHandler($response);
+
+        if ($response->isSuccess()) {
+            return $response->getData();
+        }
+        return [];
+    }
+
+    /**
+     * Get bulk invoice task
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @param $task_id
+     * @return array|mixed|string
+     */
+    public function getBulkInvoiceTask($task_id)
+    {
+        $response = $this->request(ServiceConstant::URL_INVOICE_GET_BULK_INVOICE_TASK, ['task_id' => $task_id], self::HTTP_GET);
+        $response = new ResponseHandler($response);
+
+        if ($response->isSuccess()) {
+            return $response->getData();
+        }
+        return [];
+    }
+
 }
