@@ -46,7 +46,7 @@ class ServiceConstant
     const URL_GET_ONE_PARCEL = 'parcel/getone/';
     const URL_GET_BAG = 'parcel/getbag/';
     const URL_GET_ALL_PARCEL = 'parcel/getAll';
-    const URL_MOVE_TO_FOR_SWEEPER = '/parcel/moveToForSweeper/?XDEBUG_SESSION_START=PHPSTORM';
+    const URL_MOVE_TO_FOR_SWEEPER = '/parcel/moveToForSweeper/';
     const URL_ASSIGN_TO_GROUNDSMAN = '/parcel/assignToGroundsMan/';
     const URL_MOVE_TO_IN_TRANSIT = '/parcel/moveToInTransit/';
     const URL_MOVE_TO_ARRIVAL = '/parcel/moveToArrival/';
