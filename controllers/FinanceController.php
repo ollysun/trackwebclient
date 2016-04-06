@@ -134,8 +134,7 @@ class FinanceController extends BaseController
             $response = $invoiceAdapter->createBulkInvoice($data);
             $jsonResponse = ['status'=>'error', 'message' => 'Unable to reach Trackplus service. Please contact support if this persists.'];
             if ($response) {
-                $jsonResponse['status'] = 'success';
-                $jsonResponse['message'] = 'Multiple Invoices created successfully';
+               $this->flashSuccess('Bulk Invoice has been queued successfully');
             } else {
                 $jsonResponse['status'] = 'error';
                 $jsonResponse['message'] = $invoiceAdapter->getLastErrorMessage();
