@@ -412,7 +412,7 @@ class ParcelAdapter extends BaseAdapter
      * @param $attempted_delivery
      * @return array|mixed|string
      */
-    public function sendReturnRequest($waybill_numbers, $comment, $attempted_delivery)
+    public function sendReturnRequest($waybill_numbers, $comment, $attempted_delivery = 0)
     {
         return $this->request(ServiceConstant::URL_SET_RETURN_FLAG, ['waybill_numbers' => $waybill_numbers, 'comment' => $comment, 'attempted_delivery' => $attempted_delivery], self::HTTP_POST);
     }
