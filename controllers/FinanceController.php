@@ -139,11 +139,12 @@ class FinanceController extends BaseController
             } else {
                 $jsonResponse['status'] = 'error';
                 $jsonResponse['message'] = $invoiceAdapter->getLastErrorMessage();
+                exit(json_encode($jsonResponse));
             }
-            exit(json_encode($jsonResponse));
+
         }
 
-        return $this->redirect('/finance/invoice');
+        return $this->redirect('/finance/bulkinvoicetasks');
     }
 
     /**
