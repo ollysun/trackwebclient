@@ -332,7 +332,7 @@ $this->params['breadcrumbs'] = array(
 
                             <div class="form-group">
                                 <label>Reference</label>
-                                <textarea onkeyup="updateAddress(this,'reference',{{data_index}})" name="reference" class="form-control validate required" rows="3">{{reference}}</textarea>
+                                <textarea onkeyup="updateAddress(this,'reference',{{data_index}})" name="reference" class="reference_number form-control validate required" rows="3">{{reference}}</textarea>
                             </div>
 
                         </div>

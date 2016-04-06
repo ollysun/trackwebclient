@@ -53,6 +53,12 @@ var Invoice = {
         $(elem).closest(".invoice_parcels").find("td[data-waybill]").each(function (i, v) {
             total += Number($(v).html());
         });
+
+        var stamp_duty = $(elem).closest(".invoice").find('input[name="stamp_duty"]').val();
+        if(typeof stamp_duty != "undefined"){
+            total += Number(stamp_duty);
+        }
+
         total = parseFloat(total).toFixed(2);
         $(elem).closest(".invoice_parcels").find(".net_total").html(total);
         $(elem).closest(".invoice_parcels").find(".net_total_field").val(total);
@@ -128,6 +134,7 @@ $(document).ready(function () {
                 tmpObj.parcels = getParcelsWaybill(packets[d]);
                 tmpObj.stamp_duty = 0;
                 tmpObj.account_number = packets[d][0].account_number;
+                tmpObj.company_name = packets[d][0].company_name;
 
 
                 __template = getAccordionHTML();
@@ -199,9 +206,23 @@ $(document).ready(function () {
 
     $('body').delegate('input[name="stamp_duty"]', 'keyup', function (e) {
         invoicePayload[$(this).closest(".invoice").data('index')]['stamp_duty'] = $(this).val();
+        $("input[data-waybill]").trigger('keyup');
     });
 
     $("#generate_Invoice_btn").unbind("click").on("click", function () {
+        var isValid = true;
+        $(".reference_number").each(function (i, v) {
+            $(this).parent().removeClass('has-error');
+            if ($(this).val().trim().length == 0) {
+                $(this).focus().parent().addClass('has-error');
+                isValid = isValid && false;
+            }
+        });
+
+        if (!isValid) {
+            alert('Please fill all reference number fields');
+            return false;
+        }
 
         $("#generate_Invoice_btn").attr('disabled', 'disabled').html('Processing... Please wait.');
 
