@@ -351,7 +351,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                                     </select>
                                 </div>
                             </div>
-                            <div hidden>
+                            <div class="hidden">
                                 <label for="">Account Type</label>
                                 <input name="company[account_type_id]">
                             </div>
