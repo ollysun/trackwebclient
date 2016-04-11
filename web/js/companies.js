@@ -98,6 +98,11 @@
                     'field' : 'relations_officer_id',
                     'name' : 'company[relations_officer_id]',
                     'type' : 'input'
+                },
+                {
+                    'field': 'account_type_id',
+                    'name': 'company[account_type_id]',
+                    'type' : 'input'
                 }
             ];
 
