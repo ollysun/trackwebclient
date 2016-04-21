@@ -210,9 +210,8 @@ $this->title = 'Tracking Portal';
                 <p class="text-muted"> Sorry, You can't search for more than ten parcels </p>
             <?php elseif (is_array($tracking_info)): ?>
                 <h1>Waybill / Tracking Number <strong><?= $tracking_number ?></strong> not found</h1>
-                <p class="text-muted">The waybill / tracking number you entered could not be found on our
-                    system. Pleas
-                    search with another number</p>
+                <p class="text-muted">WayBill Number not recognized by the system please contact
+                    <a href=""> customerservice@courierplus-ng.com </a> for immediate resolution</p>
             <?php else: ?>
                 <h1>Error</h1>
                 <p class="text-muted">WayBill Number not recognized by the system please contact
