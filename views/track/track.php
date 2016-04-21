@@ -211,11 +211,13 @@ $this->title = 'Tracking Portal';
             <?php elseif (is_array($tracking_info)): ?>
                 <h1>Waybill / Tracking Number <strong><?= $tracking_number ?></strong> not found</h1>
                 <p class="text-muted">WayBill Number not recognized by the system please contact
-                    <a href=""> customerservice@courierplus-ng.com </a> for immediate resolution</p>
+                    <a href="mailto:customerservice@courierplus-ng.com"> customerservice@courierplus-ng.com </a>
+                    for immediate resolution</p>
             <?php else: ?>
                 <h1>Error</h1>
                 <p class="text-muted">WayBill Number not recognized by the system please contact
-                    <a href=""> customerservice@courierplus-ng.com </a> for immediate resolution</p>
+                    <a href="mailto:customerservice@courierplus-ng.com"> customerservice@courierplus-ng.com </a>
+                    for immediate resolution</p>
             <?php endif; ?>
         </div>
     </div>
