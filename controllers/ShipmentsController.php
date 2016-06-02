@@ -1086,19 +1086,29 @@ class ShipmentsController extends BaseController
      * @author Adeyemi Olaoye <yemi@cottacush.com>
      * @return string
      */
-    public function actionBulk()
+    public function actionBulk($page = 1)
     {
         $parcelAdapter = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $taskId = Yii::$app->getRequest()->get('task_id', false);
-        if (!$taskId) {
-            $tasks = $parcelAdapter->getBulkShipmentTasks();
-            $environment = getenv("APPLICATION_ENV") ? getenv("APPLICATION_ENV") : 'local';
-            $s3BaseUrl = '//s3-us-west-2.amazonaws.com/bulk-waybills/' . $environment . '/';
-            return $this->render('bulk_shipment_tasks', ['tasks' => $tasks, 's3_base_url' => $s3BaseUrl]);
+        
+        if ($taskId) {
+            $task = $parcelAdapter->getBulkShipmentTask($taskId);
+            return $this->render('bulk_shipment_task_details', ['task_id' => $taskId, 'task' => $task]);
         }
-
-        $task = $parcelAdapter->getBulkShipmentTask($taskId);
-        return $this->render('bulk_shipment_task_details', ['task_id' => $taskId, 'task' => $task]);
+        
+        $offset = ($page - 1) * $this->page_width;
+        $tasks = $parcelAdapter->getBulkShipmentTasks($offset, $this->page_width);
+        $environment = getenv("APPLICATION_ENV") ? getenv("APPLICATION_ENV") : 'local';
+        $s3BaseUrl = '//s3-us-west-2.amazonaws.com/bulk-waybills/' . $environment . '/';
+        return $this->render('bulk_shipment_tasks',
+            [
+                'tasks' => $tasks['tasks'],
+                'total_count' => $tasks['total_count'],
+                's3_base_url' => $s3BaseUrl,
+                'page_width' => $this->page_width,
+                'offset' => $offset
+            ]
+        );
     }
 
     /**
