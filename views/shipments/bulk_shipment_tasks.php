@@ -18,6 +18,7 @@ $this->params['breadcrumbs'] = array(
 <?php echo \Adapter\Util\Calypso::showFlashMessages(); ?>
 <div class="main-box">
     <div class="main-box-body">
+        <?php if ($tasks): ?>
         <div class="table-responsive">
             <table id="table" class="table table-hover dataTable">
                 <thead>
@@ -34,7 +35,10 @@ $this->params['breadcrumbs'] = array(
                 </tr>
                 </thead>
                 <tbody>
-                <?php foreach ($tasks as $task):
+                <?php
+                $i = $offset;
+                foreach ($tasks as $task):
+                    $i++;
                     $jobData = json_decode(Calypso::getValue($task, 'job_data', '{}'));
                     ?>
                     <tr>
@@ -78,8 +82,9 @@ $this->params['breadcrumbs'] = array(
                 <?php endforeach; ?>
                 </tbody>
             </table>
-
+        <?= $this->render('../elements/pagination_and_summary', ['first' => $offset, 'last' => $i, 'total_count' => $total_count, 'page_width' => $page_width]) ?>
         </div>
+        <?php endif; ?>
     </div>
 </div>
 
