@@ -711,11 +711,13 @@ class ParcelAdapter extends BaseAdapter
     /**
      * Get bulk shipment tasks
      * @author Adeyemi Olaoye <yemi@cottacush.com>
+     * @param $offset
+     * @param $count
      * @return array|mixed|string
      */
-    public function getBulkShipmentTasks()
+    public function getBulkShipmentTasks($offset, $count)
     {
-        $response = $this->request(ServiceConstant::URL_GET_BULK_SHIPMENT_TASKS, [], self::HTTP_GET);
+        $response = $this->request(ServiceConstant::URL_GET_BULK_SHIPMENT_TASKS, ['offset' => $offset, 'count' => $count], self::HTTP_GET);
         $response = new ResponseHandler($response);
 
         if ($response->isSuccess()) {
