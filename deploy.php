@@ -36,11 +36,47 @@ task('cleanup', function () {
 
 })->desc('Cleaning up old releases');
 
+task('tag_release', function () {
+    writeln('Tagging Release... ');
+    runLocally('cd ' . env('local_path'));
+    runLocally('git stash');
+    runLocally('git checkout master');
+    runLocally('git pull origin master');
+    $currentTag = end(run('git tag')->toArray());
+    $releaseVersion = '';
+
+    while (strlen(trim($releaseVersion)) == 0) {
+        $releaseVersion = ask('Enter Release Version (Current: ' . $currentTag . '): ');
+    }
+
+    $releaseMessage = ask('Enter Release Message: ');
+
+    runLocally('git tag -a ' . $releaseVersion . ' -m "' . $releaseMessage . '"');
+    runLocally('git push --tags');
+    runLocally('git checkout develop');
+    writeln('Release Tagged Successfully');
+
+})->onlyForStage('production');
+
+task('update_production', function () {
+    writeln('Updating Production Branch... ');
+    runLocally('cd ' . env('local_path'));
+    runLocally('git stash');
+    runLocally('git checkout master');
+    runLocally('git pull origin master');
+    runLocally('git checkout production');
+    runLocally('git pull origin production');
+    runLocally('git merge master');
+    runLocally('git push origin production');
+    runLocally('git checkout develop');
+    writeln('Production Branch Updated Successfully');
+})->onlyForStage('production');
 
 /**
  * Main task
  */
 task('deploy', [
+    'update_production',
     'deploy:prepare',
     'deploy:release',
     'deploy:update_code',
@@ -49,6 +85,7 @@ task('deploy', [
     'deploy:symlink',
     'deploy:writable',
     'cleanup',
+    'tag_release'
 ])->desc('Deploy Project');
 
 set('repository', 'git@bitbucket.org:cottacush/courierplusng.git');
