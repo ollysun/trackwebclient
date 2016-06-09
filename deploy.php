@@ -44,7 +44,7 @@ task('tag_release', function () {
     runLocally('git stash');
     runLocally('git checkout master');
     runLocally('git pull origin master');
-    $currentTag = end(run('git tag')->toArray());
+    $currentTag = end(runLocally('git tag')->toArray());
     $releaseVersion = '';
 
     while (strlen(trim($releaseVersion)) == 0) {
