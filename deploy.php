@@ -39,12 +39,23 @@ task('cleanup', function () {
 })->desc('Cleaning up old releases');
 
 task('tag_release', function () {
+
+    $promptAnswer = null;
+
+    while (!in_array(strtolower(trim($promptAnswer)), ['y', 'n', 'yes', 'no'])) {
+        $promptAnswer = ask('Tag Release? (y/n)');
+    }
+
+    if (!in_array($promptAnswer, ['y', 'yes'])) {
+        return;
+    }
+
     writeln('Tagging Release... ');
     runLocally('cd ' . env('local_path'));
     runLocally('git stash');
     runLocally('git checkout master');
     runLocally('git pull origin master');
-    $result  = runLocally('git for-each-ref --format="%(tag)" --sort=-taggerdate  refs/tags');
+    $result = runLocally('git for-each-ref --format="%(tag)" --sort=-taggerdate  refs/tags');
     $currentTag = current($result->toArray());
     $releaseVersion = '';
 
