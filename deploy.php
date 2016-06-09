@@ -13,6 +13,8 @@ set('writable_dirs', ['runtime', 'web/assets']);
 
 env('composer_options', 'install --verbose --prefer-dist --optimize-autoloader --no-progress --no-interaction');
 
+env('local_path', dirname(__FILE__));
+
 
 /**
  * Cleanup old releases.
