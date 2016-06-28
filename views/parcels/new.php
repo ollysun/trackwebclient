@@ -661,7 +661,7 @@ $is_admin = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HQ;
 <?php $this->registerJsFile('@web/js/validate.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/libs/select2.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/utils.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
-<?php $this->registerJsFile('@web/js/new_parcel_form.js?2.6.0', ['depends' => [\app\assets\AppAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/new_parcel_form.js?2.6.1', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php
 $this->registerJs('$(".alert").delay(5000).fadeOut(1500);', View::POS_READY);
 ?>

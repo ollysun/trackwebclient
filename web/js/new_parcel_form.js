@@ -465,13 +465,14 @@ var Parcel = {
                     $('input#corporate_amount').val(amount);
                 } else {
                     alert(result.message);
+                    $('.amount-due').html("Unable to calculate amount...");
                 }
             },
             error: function (err) {
                 console.log(err);
             },
             complete: function (jqXHR) {
-                if (!amount) {
+                if (amount != 0 && !amount) {
                     $('.amount-due').html("Unable to calculate amount...");
                 }
             }
