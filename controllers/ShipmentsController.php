@@ -456,6 +456,7 @@ class ShipmentsController extends BaseController
         $sender_location = [];
         $receiver_location = [];
         $sender_merchant = [];
+        $histories = [];
 
         if (isset(Calypso::getInstance()->get()->waybill_number)) {
             $waybill_number = trim(Calypso::getInstance()->get()->waybill_number);
@@ -492,6 +493,11 @@ class ShipmentsController extends BaseController
                     }
                 }
 
+                //get histories
+                $response = $parcel->getParcelHistories($waybill_number);
+                if($response['status'] == ResponseHandler::STATUS_OK){
+                    $histories = $response['data']['history'];
+                }
             }
         }
         $user_session = Calypso::getInstance()->session("user_session");
@@ -505,6 +511,7 @@ class ShipmentsController extends BaseController
             'senderLocation' => $sender_location,
             'receiverLocation' => $receiver_location,
             'senderMerchant' => $sender_merchant,
+            'histories' => $histories
         ));
     }
 
@@ -1153,5 +1160,26 @@ class ShipmentsController extends BaseController
 
         return $this->redirect(Yii::$app->request->referrer);
 
+    }
+
+
+    public function actionExceptions(){
+        $viewData = [];
+
+        $regionAdapter = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $exceptions = $regionAdapter->getShipmentExceptions(\Yii::$app->request->get());
+
+        $viewData['exceptions'] = $exceptions;
+
+        $branchAdapter = new BranchAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $allHubs = $branchAdapter->getAllHubs(false);
+
+
+        $viewData['branches'] = [];
+        if ($allHubs['status'] === ResponseHandler::STATUS_OK) {
+            $viewData['branches'] = $allHubs['data'];
+        }
+
+        return $this->render('exceptions', $viewData);
     }
 }

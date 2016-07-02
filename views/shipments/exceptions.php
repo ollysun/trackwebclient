@@ -7,7 +7,7 @@ use Adapter\ParcelAdapter;
 
 
 /* @var $this yii\web\View */
-$this->title = 'Audit Trail';
+$this->title = 'Shipment Exceptions';
 $this->params['breadcrumbs'] = array(
     array(
         'url' => ['admin/managebranches'],
@@ -26,7 +26,7 @@ $this->params['breadcrumbs'] = array(
     <div class="main-box-header table-search-form ">
         <div class="clearfix">
             <div class="pull-left">
-                <?= $this->render('../elements/admin/audit_trail_filter'); ?>
+                <?= $this->render('../elements/shipments/exception_filter', ['branches' => $branches]); ?>
             </div>
         </div>
     </div>
@@ -39,37 +39,28 @@ $this->params['breadcrumbs'] = array(
                     <thead>
                     <tr>
                         <th style="width: 20px">S/N</th>
-                        <th>Service</th>
-                        <th>Action Performed</th>
-                        <th>Performed By</th>
-                        <th>Date</th>
-                        <th>IP Address</th>
-                        <th>User Agent</th>
+                        <th>Waybill Number</th>
+                        <th>Defaulter Branch</th>
+                        <th>Detector Branch</th>
+                        <th>Action Description</th>
+                        <th>Date Detected</th>
                     </tr>
                     </thead>
                     <tbody>
                     <?php $sn = 0;
-                    foreach ($logs as $log) {?>
+                    foreach ($exceptions as $exception) {?>
                         <tr>
                             <td><?=(++$sn) ?></td>
-                            <td><?=$log['service'] ?></td>
-                            <td><?=$log['action_name'] ?></td>
-                            <td><?=$log['username'] ?></td>
-                            <td><?=$log['start_time'] ?></td>
-                            <td><?=$log['ip_address'] ?></td>
-                            <td><?=$log['client'] ?></td>
                             <td>
-                                <button type="button" class="btn btn-default btn-xs btnShowEditDetail" data-toggle="modal"
-                                        data-target="#auditDetailModal"
-                                        data-id="<?= Calypso::getValue($log, 'id'); ?>"
-                                        data-username="<?= Calypso::getValue($log, 'username'); ?>"
-                                        data-service="<?= Calypso::getValue($log, 'service'); ?>"
-                                        data-start-time="<?= Calypso::getValue($log, 'start_time'); ?>"
-                                        data-end-time="<?= Calypso::getValue($log, 'end_time'); ?>"
-                                        data-ip-address="<?= Calypso::getValue($log, 'ip_address'); ?>"
-                                        data-client="<?= Calypso::getValue($log, 'client'); ?>"
-                                        data-parameters="<?= Calypso::getValue($log, 'parameters'); ?>"
-                                        data-action-name="<?= Calypso::getValue($log, 'action_name'); ?>">
+                                <a href='/shipments/view?waybill_number=<?= Calypso::getValue($exception, 'waybill_number'); ?>'>
+                                    <?= Calypso::getValue($exception, 'waybill_number') ?></a>
+                            </td>
+                            <td><?=$exception['defaulter_branch_name'] ?></td>
+                            <td><?=$exception['detector_branch_name'] ?></td>
+                            <td><?=$exception['action_description'] ?></td>
+                            <td><?=$exception['creation_date'] ?></td>
+                            <td>
+                                <button type="button" class="btn btn-default btn-xs btnShowEditDetail">
                                     <i class="fa fa-search"></i> Detail
                                 </button>
                             </td>

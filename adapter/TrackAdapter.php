@@ -26,7 +26,8 @@ class TrackAdapter extends BaseAdapter
      */
     public function getTrackingInfo($tracking_number)
     {
-        $response = $this->request(ServiceConstant::URL_PARCEL_HISTORY, ['waybill_number' => $tracking_number, 'reference_number' => $tracking_number, 'with_parcel' => 1], self::HTTP_GET);
+        $response = $this->request(ServiceConstant::URL_PARCEL_HISTORY, ['waybill_number' => $tracking_number, 'reference_number' => $tracking_number,
+            'order_number' => $tracking_number, 'with_parcel' => 1], self::HTTP_GET);
         return $this->decodeResponse($response);
     }
 

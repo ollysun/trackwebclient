@@ -25,6 +25,7 @@ Hub.postToServer = function(url,data,callback){
 Hub.Resources = {
     getBranches:'getbranches',
     getArrivedParcel:'getarrivedparcel',
+    getParcel:'getparcel',
     validateStaff:'validatestaff',
     checkInParcel:'checkinparcel',
     moveToForDelivery:'movetofordelivery',
@@ -46,6 +47,7 @@ Hub.validateSweeper = function(staff_id,callback){
     });
 }
 Hub.sendParcelToArrival = function(data,callback){
+    console.log(data);
     Hub.postToServer(Hub.Resources.BASE_PATH + Hub.Resources.checkInParcel,data,function(response){
         if(typeof callback == "function"){
             callback(response);
@@ -61,6 +63,13 @@ Hub.sendParcelToForDelivery = function(data,callback){
 }
 Hub.getParcelsForArrival = function(staff_id,callback){
     Hub.sendToServer(Hub.Resources.BASE_PATH + Hub.Resources.getArrivedParcel,{staff_no:staff_id},function(response){
+        if(typeof callback == "function"){
+            callback(response);
+        }
+    });
+}
+Hub.getParcel = function (waybill_number, callback) {
+    Hub.sendToServer(Hub.Resources.BASE_PATH + Hub.Resources.getParcel,{waybill_number:waybill_number},function(response){
         if(typeof callback == "function"){
             callback(response);
         }
@@ -101,6 +110,8 @@ $(document).ready(function(){
             $("#loading_label").removeClass('text-success').removeClass('text-danger').addClass("text-info").html("Validating Staff ID...");
             Hub.validateSweeper(staff_no,function(response){
                 if(response.status == 'success'){
+                    //show the force receive btn
+                    $('#force-receive-btn-div').removeClass('hidden');
                     $("#sweeper_name").html(response.data.fullname.toUpperCase());
                     $("#role").html(response.data.role.name.toUpperCase());
                     $("#branch").html(response.data.branch.name.toUpperCase()+'('+response.data.branch.code.toUpperCase()+')');
@@ -110,13 +121,18 @@ $(document).ready(function(){
                         $("#parcel_arrival").html("");
                         if(response.status && response.data.length > 0){
                             response.data.forEach(function(v,i){
-                                $("#parcel_arrival").append("<tr id='"+ v.waybill_number+"' style='background-color: rgb(187, 255, 224);'><td>"+(i+1)+" <input name='"+ v.waybill_number+"' type='checkbox'></td><td>"+ v.waybill_number+"</td><td id='L"+v.waybill_number+"'>"+ (v.status == 5?'IN TRANSIT':'Not Intransit')+"</td></tr>");
+                                $("#parcel_arrival").append("<tr id='"+ v.waybill_number+"' style='background-color: rgb(187, 255, 224);'><td>"+(i+1)+
+                                    " <input name='"+ v.waybill_number+"' type='checkbox'></td><td>"+ v.waybill_number+"</td><td id='L"+v.waybill_number+"'>"+
+                                    (v.status == 5?'IN TRANSIT':'Not Intransit')+"</td></tr>");
                             });
+
                         }
                         $("#loading_label").removeClass('text-info').removeClass('text-danger').addClass("text-success").html("Loaded");
                         var payload = function(){
                             this.waybill_numbers = [];
                             this.held_by_id = 0;
+                            this.previous_branch = 0;
+                            this.force_receive = false;
                         }
                         $("#arrived_parcels_btn").unbind('click').on('click',function(d){
                             var me = $(this);
@@ -126,7 +142,12 @@ $(document).ready(function(){
                             for(var k in form){
                                 if(form[k].name == 'staff_user_id'){
                                     payloadObj.held_by_id = form[k].value;
-                                }else{
+                                }else if(form[k].name == 'force_receive'){
+                                    payloadObj.force_receive = form[k].value;
+                                }else if(form[k].name == 'previous_branch'){
+                                    payloadObj.previous_branch = form[k].value;
+                                }
+                                else{
                                     payloadObj.waybill_numbers.push(form[k].name);
                                 }
                             }
@@ -146,18 +167,18 @@ $(document).ready(function(){
                                                             $("#L"+payloadObj.waybill_numbers[waybill_number]).html("Parcel received").parent().attr("style","background-color:green");
                                                         }
                                                     }
-
                                                 }else{
                                                     window.location.reload();
                                                 }
                                             }else{
-                                                alert("Error.#157-68. Reason:"+response.message);
+                                                alert("Error.#157-68. Reason:" + response.message);
                                             }
                                             me.html("Accept").removeClass("disabled");
                                         });
                                         break;
                                     case 'hub':
-                                        Hub.sendParcelToArrival({held_by_id: payloadObj.held_by_id,waybill_numbers: payloadObj.waybill_numbers.join(',') },function(resp){
+                                        Hub.sendParcelToArrival({held_by_id: payloadObj.held_by_id,waybill_numbers: payloadObj.waybill_numbers.join(','),
+                                            force_receive:payloadObj.force_receive, previous_branch:payloadObj.previous_branch },function(resp){
 
                                             var response = JSON.parse(JSON.stringify (resp));
                                             if(response.status=='success'){
@@ -198,15 +219,46 @@ $(document).ready(function(){
             alert("Invalid Staff ID");
         }
     });
+
+    $('#force-receive-btn-div').unbind('click').on('click', function(event){
+        event.preventDefault();
+        $('#force-receive-div').removeClass('hidden');
+        $('#force-receive-btn-div').addClass('hidden');
+        $('#force_receive').val(true);
+        $('#staff_no').attr('readonly', 'readonly');
+        return false;
+    })
+
+    $("#get_parcel_by_number_btn").unbind('click').on('click', function () {
+        $("#get_parcel_by_number_loading_label").removeClass('text-success').removeClass('text-danger').addClass("text-info").html("Loading parcel...");
+        var waybill_number = $("#get_parcel_by_number_input").val();
+        Hub.getParcel(waybill_number, function (response) {
+            if(response.status == "success"){
+                response.data.forEach(function(v,i){
+                    $("#parcel_arrival").append("<tr id='"+ v.waybill_number+"' style='background-color: rgb(187, 255, 224);'><td>"+(i+1)+
+                        " <input name='"+ v.waybill_number+"' type='checkbox'></td><td>"+ v.waybill_number+"</td><td id='L"+v.waybill_number+"'>"+
+                        (v.status == 5?'IN TRANSIT':'Not Intransit')+"</td></tr>");
+                });
+            }else{
+                al('Unable to load parcel. Please try again later');
+            }
+            $("#get_parcel_by_number_loading_label").removeClass('text-info').html("");
+            $("#get_parcel_by_number_input").val('');
+            $("#get_parcel_by_number_input").focus();
+        });
+    });
+
     $("#role_filter").unbind('change').on('change',function(){
         var role = $(this).val();
         if(role.trim().length > 0){
             window.location.href = "/admin/managestaff?role="+role;
         }
     });
+
     $("#page_width").unbind('change').on('change',function(){
         document.cookie = "page_width="+$(this).val();
     });
+
     $('.modal').on('hide.bs.modal', function (e) {
         window.location.reload();
     });

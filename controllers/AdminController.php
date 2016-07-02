@@ -8,6 +8,7 @@
 
 namespace app\controllers;
 
+use Adapter\AuditAdapter;
 use Adapter\BranchAdapter;
 use Adapter\CompanyAdapter;
 use Adapter\Globals\ServiceConstant;
@@ -690,7 +691,9 @@ class AdminController extends BaseController
      */
     public function actionAudittrail()
     {
-        return $this->render('audit_trail');
+        $regionAdapter = new AuditAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $audit_trial = (new ResponseHandler($regionAdapter->getAllAudit(\Yii::$app->request->post())))->getData();
+        return $this->render('audit_trail', ['logs' => $audit_trial]);
     }
 
     public function actionActivation() {

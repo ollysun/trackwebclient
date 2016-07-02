@@ -29,6 +29,24 @@ $user_data = $this->context->userData;
 <div class="main-box">
     <div class="main-box-header table-search-form">
         <div class="clearfix">
+
+            <!--
+            <form class="table-search-form form-inline pull-right clearfix">
+                <div class="pull-left form-group">
+                    <label for="searchInput">Search</label><br>
+                    <div class="input-group input-group-sm input-group-search">
+                        <input id="searchInput" type="text" name="search" placeholder="Search by Waybill or Reference No."
+                               class="search-box form-control" value="<?php echo(isset($search)?$search:'') ?>">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" type="submit">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+          -->
+
             <form class="clearfix">
                 <div class="pull-left hidden">
                     <div class="pull-left form-group">
@@ -202,7 +220,56 @@ $user_data = $this->context->userData;
                         </div>
                     </form>
 
+                    <br/>
+                    <div class="row hidden" id="force-receive-btn-div">
+                        <div class="col-md-4">
+                            <button id="force-receive-btn" class="btn btn-danger btn-block">Force Receive Parcels</button>
+                        </div>
+                        <div class="col-md-8">
+                            <em style="font-size: 11px;">Click on this button to receive parcels that you cannot find on the system</em>
+                        </div>
+                    </div>
+                    <!-- force receiving parcels -->
+                    <div id="force-receive-div" class="row hidden">
+                        <input type="hidden" name="force_receive" id="force_receive" value="false">
+                        <div class="col-xs-4">
+                            <div class="form-group">
+                                <label>Previous Hub</label>
+
+                                <div class="input-group">
+                                    <select id="previous_branch" name="previous_branch" class="form-control">
+                                        <option>Select Previous Hub</option>
+                                        <?php foreach ($branches as $branch) { ?>
+                                            <option value="<?php echo $branch['id'];?>"><?php echo $branch['name']?></option>
+                                        <?php } ?>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-8">
+                            <div class="form-group">
+                                <label>Waybill Number</label>
+
+                                <div class="input-group">
+                                    <input id="get_parcel_by_number_input" class="form-control" placeholder="Enter a waybill number">
+
+                                    <div class="input-group-btn">
+                                        <button type="button" data-branch_type="hub" id="get_parcel_by_number_btn"
+                                                class="btn btn-default">Get Parcel
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="input-group">
+                                    <label id="get_parcel_by_number_loading_label"></label>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
                     <br>
+
                     <table class="table table-bordered table-condensed">
                         <thead>
                         <tr>

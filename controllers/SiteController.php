@@ -319,7 +319,9 @@ class SiteController extends BaseController
             $parcel = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
             $response = $parcel->moveToArrival([
                 'held_by_id' => Calypso::getInstance()->post()->held_by_id,
-                'waybill_numbers' => (Calypso::getInstance()->post()->waybill_numbers)
+                'waybill_numbers' => (Calypso::getInstance()->post()->waybill_numbers),
+                'force_receive' => Calypso::getInstance()->post()->force_receive,
+                'previous_branch' => (Calypso::getInstance()->post()->previous_branch)
             ]);
             $response = new ResponseHandler($response);
             if ($response->getStatus() == ResponseHandler::STATUS_OK) {
@@ -362,6 +364,22 @@ class SiteController extends BaseController
         }
         $parcel = new  ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $response = $parcel->getParcel($staff_no, ServiceConstant::IN_TRANSIT, $branch_id, true);
+
+        if ($response['status'] === ResponseHandler::STATUS_OK) {
+            return $this->sendSuccessResponse($response['data']);
+        } else {
+            return $this->sendErrorResponse($response['message'], null);
+        }
+    }
+
+
+    public function actionGetparcel(){
+        $waybill_number = \Yii::$app->request->get('waybill_number');
+
+
+        $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $response = $parcelsAdapter->getSearchParcels(null, $waybill_number);
+        //$response = $parcelsAdapter->getSearchParcels(null, $waybill_number, 0, 1, 1, null, 1);
 
         if ($response['status'] === ResponseHandler::STATUS_OK) {
             return $this->sendSuccessResponse($response['data']);

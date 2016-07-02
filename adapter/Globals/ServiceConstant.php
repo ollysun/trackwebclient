@@ -221,6 +221,12 @@ class ServiceConstant
     const URL_CREDIT_NOTE_PARCELS = 'creditnote/getparcels';
     const URL_CREDIT_NOTE_PRINTOUT_DETAILS = 'creditnote/getprintoutdetails';
 
+    const URL_AUDIT_GET_ALL = 'audit/getAllAudit';
+    const URL_AUDIT_GET_ONE = 'audit/getAudit';
+
+    const URL_GET_SHIPMENT_EXCEPTIONS = 'parcel/getShipmentExceptions';
+    const URL_GET_PARCEL_HISTORIES = 'parcel/getHistories';
+
     const DATE_TIME_FORMAT = 'd M Y H:i';
     const DATE_FORMAT = 'd M Y';
     const TIME_FORMAT = 'g:i A';

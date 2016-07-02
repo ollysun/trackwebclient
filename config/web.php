@@ -1,5 +1,8 @@
 <?php
-
+function dd($data, $message = ''){
+    var_dump($data);
+    die("<br/> $message");
+}
 $params = require(__DIR__ . '/params.php');
 
 $config = [

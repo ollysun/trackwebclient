@@ -760,4 +760,22 @@ class ParcelAdapter extends BaseAdapter
 
         return $response;
     }
+
+    /* Tony */
+
+    public function getParcelHistories($waybill_number){
+        return $this->request(ServiceConstant::URL_GET_PARCEL_HISTORIES, array('waybill_number' => $waybill_number), self::HTTP_GET);
+    }
+
+    public function getShipmentExceptions($filter){
+        $response = $this->request(ServiceConstant::URL_GET_SHIPMENT_EXCEPTIONS, $filter, self::HTTP_GET);
+
+        $response = new ResponseHandler($response);
+
+        if(!$response->isSuccess()){
+            $this->lastErrorMessage = $response->getError();
+        }
+
+        return $response->getData();
+    }
 }

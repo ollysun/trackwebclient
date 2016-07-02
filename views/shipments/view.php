@@ -174,6 +174,7 @@ if (!in_array(Calypso::getValue($sessionData, 'role_id'), [ServiceConstant::USER
                     </div>
                     <div class="col-xs-12 col-sm-6">
                         <div class="row form-group">
+
                             <div class="col-xs-6">
                                 <label>Sender is a Merchant?</label>
 
@@ -181,15 +182,28 @@ if (!in_array(Calypso::getValue($sessionData, 'role_id'), [ServiceConstant::USER
                                     <?= (empty($senderMerchant)) ? 'No' : 'Yes'; ?>
                                 </div>
                             </div>
-                            <?php if (!empty(Calypso::getValue($parcelData, 'reference_number', ''))): ?>
-                                <div class="col-xs-6">
-                                    <label>Reference Number(s)</label>
 
-                                    <div class="form-control-static">
-                                        REF:<?= Calypso::getValue($parcelData, 'reference_number', ''); ?>
-                                    </div>
-                                </div>
-                            <?php endif; ?>
+                           <div class="col-xs-6">
+                               <?php if (!empty(Calypso::getValue($parcelData, 'reference_number', ''))): ?>
+                                   <div class="row">
+                                       <label>Reference Number(s)</label>
+
+                                       <div class="form-control-static">
+                                           REF:<?= Calypso::getValue($parcelData, 'reference_number', ''); ?>
+                                       </div>
+                                   </div>
+                               <?php endif; ?>
+
+                               <?php if (!empty(Calypso::getValue($parcelData, 'order_number', ''))): ?>
+                                   <div class="row">
+                                       <label>Order Number</label>
+
+                                       <div class="form-control-static">
+                                           NO:<?= Calypso::getValue($parcelData, 'order_number', ''); ?>
+                                       </div>
+                                   </div>
+                               <?php endif; ?>
+                           </div>
                         </div>
                         <?php if (!empty($senderMerchant)) { ?>
                             <div class="row">
@@ -375,6 +389,43 @@ if (!in_array(Calypso::getValue($sessionData, 'role_id'), [ServiceConstant::USER
                     <div
                         class="form-control-static"><?= date(ServiceConstant::DATE_TIME_FORMAT, strtotime($parcelData['created_date'])); ?></div>
                 </div>
+            </fieldset>
+            <br><br>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="main-box no-header">
+    <div class="main-box-body row">
+        <div class="col-sm-12">
+            <fieldset>
+                <legend>Parcel History</legend>
+                <table class="table">
+                    <tr>
+                        <th>S/No</th>
+                        <th>From Branch</th>
+                        <th>To Branch</th>
+                        <th>Activity</th>
+                        <th>Actor</th>
+                        <th>Date</th>
+                    </tr>
+                    <?php
+                    $sn = 0;
+                    foreach ($histories as $history) {
+                        ?>
+                        <tr>
+                            <td style="text-align: left;"><?= (++$sn) ?></td>
+                            <td style="text-align: left;"><?= ucwords($history['from_branch']['name']) ?></td>
+                            <td style="text-align: left;"><?= ucwords($history['to_branch']['name']) ?></td>
+                            <td style="text-align: left;"><?= ucfirst($history['description']) ?></td>
+                            <td style="text-align: left;"><?= ucwords($history['sender_admin']['fullname']) ?></td>
+                            <td style="text-align: left;"><?= $history['created_date'] ?></td>
+                        </tr>
+                    <?php } ?>
+                </table>
+
             </fieldset>
             <br><br>
         </div>

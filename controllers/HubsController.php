@@ -136,6 +136,15 @@ class HubsController extends BaseController
         $viewData['offset'] = ($page - 1) * $viewData['page_width'];
 
         $user_session = Calypso::getInstance()->session("user_session");
+
+        $branchAdapter = new BranchAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $allHubs = $branchAdapter->getAllHubs(false);
+
+        $viewData['branches'] = [];
+        if ($allHubs['status'] === ResponseHandler::STATUS_OK) {
+            $viewData['branches'] = $allHubs['data'];
+        }
+
         $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $arrival_parcels = $parcelsAdapter->getParcelsForNextDestination(ServiceConstant::FOR_ARRIVAL, null, $this->branch_to_view, null, $viewData['offset'], $viewData['page_width'], 1);
         if ($arrival_parcels['status'] === ResponseHandler::STATUS_OK) {

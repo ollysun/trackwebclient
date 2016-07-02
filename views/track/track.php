@@ -29,10 +29,20 @@ $this->title = 'Tracking Portal';
                         <?php $this->registerJsFile('@web/js/libs/bootstrap.min.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
                         <?php $this->registerJs('$("#status").popover("show")'); ?>
                     <?php else: ?>
-                        <strong
-                            class="text-danger">
-                            <?= (Calypso::getValue($tracking_info, 'parcel.return_status', 0) != 0) ? ServiceConstant::getStatus(null, Calypso::getValue($tracking_info, 'parcel.return_status')) :
-                                Calypso::getDisplayValue($current_state_info, 'description', 'N/A') ?></strong>
+                        <strong class="text-danger">
+                            <!--
+
+                            <?= (Calypso::getValue($tracking_info, 'parcel.return_status', 0) != 0) ?
+                                ServiceConstant::getStatus(null, Calypso::getValue($tracking_info, 'parcel.return_status')) :
+                                Calypso::getDisplayValue($current_state_info, 'description', 'N/A') ?>
+                             -->
+
+
+                            <?= ($tracking_info['parcel']['status'] != 0) ?
+                                ServiceConstant::getStatus($tracking_info['parcel']['status']):
+                                Calypso::getDisplayValue($current_state_info, 'description', 'N/A') ?>
+
+                        </strong>
                     <?php endif; ?>
                 </h4>
             </div>
@@ -200,6 +210,7 @@ $this->title = 'Tracking Portal';
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 <?php else: ?>
