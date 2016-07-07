@@ -209,6 +209,19 @@ $this->params['content_header_button'] = '<button type="button" id="addNewStaffB
                         <input name="staff_id" class="form-control validate required">
                     </div>
                     <div class="row">
+
+                        <div class="col-xs-3">
+                            <div class="form-group">
+                                <label>Branch type</label>
+                                <select id="branch_type" name="branch_type" class="form-control validate required">
+                                    <option value="">Select ...</option>
+                                    <option value="1">HQ</option>
+                                    <option value="2">Hub</option>
+                                    <option value="4">EC</option>
+                                </select>
+                            </div>
+                        </div>
+
                         <div class="col-xs-4">
                             <div class="form-group">
                                 <label>State</label>
@@ -226,17 +239,7 @@ $this->params['content_header_button'] = '<button type="button" id="addNewStaffB
                                 </select>
                             </div>
                         </div>
-                        <div class="col-xs-3">
-                            <div class="form-group">
-                                <label>Branch type</label>
-                                <select id="branch_type" name="branch_type" class="form-control validate required">
-                                    <option value="">Select ...</option>
-                                    <option value="1">HQ</option>
-                                    <option value="2">Hub</option>
-                                    <option value="4">EC</option>
-                                </select>
-                            </div>
-                        </div>
+
                         <div class="col-xs-5">
                             <div class="form-group">
                                 <label>Branch</label>

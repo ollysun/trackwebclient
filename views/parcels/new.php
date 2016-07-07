@@ -322,6 +322,14 @@ $is_admin = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HQ;
 
                             <div class="row">
                                 <div class="col-xs-12 col-sm-12 col-lg-12 form-group">
+                                    <label>Waybill Number</label>
+                                    <input maxlength="13" name="waybill_number" class="form-control" id="waybill_number"
+                                           value="<?= Calypso::getValue($parcel, "info.waybill_number", ''); ?>">
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-12 col-lg-12 form-group">
                                     <label>Reference Number</label>
                                     <input name="reference_number" class="form-control" id="reference_number"
                                            value="<?= Calypso::getValue($parcel, "info.reference_number", ''); ?>">
@@ -365,7 +373,7 @@ $is_admin = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HQ;
                 <div class="clearfix main-box-body main-box-button-wrap">
                     <a href="#newParcelForm" data-slide="prev" class="btn btn-default pull-left"><i
                             class="fa fa-arrow-left"></i> Back</a>
-                    <a href="#newParcelForm" data-slide="next" class="btn btn-default pull-right"
+                    <a href="#newParcelForm" data-slide="next" class="btn btn-default pull-right" id="slide2Btn"
                        data-calculate-amount="true">Continue <i
                             class="fa fa-arrow-right"></i></a>
                 </div>

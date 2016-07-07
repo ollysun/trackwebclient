@@ -477,7 +477,8 @@ var Parcel = {
                 }
             }
         })
-    }
+    },
+
 };
 $(document).ready(function () {
 
@@ -561,6 +562,14 @@ $(document).ready(function () {
             $('select[name="to_branch_id"]').removeClass('validate required').removeClass('has-error').prop('disabled', 'disabled');
         }
     });
+
+    $('#waybill_number').on('blur', function () {
+        var number = $('#waybill_number').val();
+        if(number != '' && number.length != 13){
+            alert('Invalid waybill number');
+            $(this).focus();
+        }
+    })
 
     $('#merchantOld').on('click', function (event) {
         var owner_id = $('#id_shipper').val();

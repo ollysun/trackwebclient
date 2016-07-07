@@ -123,6 +123,7 @@ class HubsController extends BaseController
 
             $postParams['waybill_numbers'] = implode(',', $waybill_numbers);
             $postParams['to_branch_id'] = $branch;
+
             $response = $parcelsAdapter->moveToForSweeper($postParams);
             if ($response['status'] === ResponseHandler::STATUS_OK) {
                 $this->flashSuccess('Parcels have been successfully moved to the next destination. <a href="hubmovetodelivery">Generate Manifest</a>');
