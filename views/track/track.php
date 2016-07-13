@@ -211,6 +211,35 @@ $this->title = 'Tracking Portal';
                 </div>
             </div>
 
+
+            <br/><br/>
+
+            <div class="row">
+                <h3 class="text-center">Parcel History</h3>
+                <div class="col-md-6 col-md-offset-3" style="background-color: #ffffff; padding: 10px; border-radius: 10px; min-height: 130px;">
+                    <?php $histories = Calypso::getValue($tracking_info, 'history', []); ?>
+                    <p>Parcel created at <b><?= Calypso::getValue($histories[0], 'from_branch.name', '')?></b>.
+                        <em>
+                            <?= Util::convertToTrackingDateFormat(Calypso::getValue($tracking_info['parcel'], 'created_date', '')) ?>
+                            <?= Util::convertDateTimeToTime(Calypso::getValue($tracking_info['parcel'], 'created_date', '')) ?>
+                        </em> </p>
+                    <?php
+                    foreach($histories as $history){
+                        if('Parcel is in arrival' != Calypso::getValue($history, 'description', '')){
+                            continue;
+                        }
+                        ?>
+                        <p>Parcel arrived in <b><?= Calypso::getValue($history, 'to_branch.name', '')?></b>.
+                            <em>
+                                <?= Util::convertToTrackingDateFormat(Calypso::getValue($history, 'created_date', ''))?>
+                                <?= Util::convertDateTimeToTime(Calypso::getValue($history, 'created_date', ''))?>
+                            </em> </p>
+                        <?php }
+                    ?>
+                </div>
+
+            </div>
+
         </div>
     </div>
 <?php else: ?>

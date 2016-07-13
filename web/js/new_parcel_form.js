@@ -280,6 +280,7 @@ function FlyOutPanel(triggerSelector, evt) {
 
 var Parcel = {
     onFormErrorCallback: function (code, payload) {
+        console.log(payload);
         //Handler as sent from the server
         alert(payload.message);
     },

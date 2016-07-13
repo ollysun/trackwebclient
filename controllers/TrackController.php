@@ -43,7 +43,7 @@ class TrackController extends BaseController
         $tracking_number = str_replace(' ', '', $tracking_number);
         $tracking_number = rtrim($tracking_number,',');
         $count = count(explode(',', $tracking_number));
-        if ($count > 10) {
+        if ($count > 20) {
             return $this->render('track',
                 [
                     'tracking_info' => $trackingInfo = null,
@@ -66,6 +66,8 @@ class TrackController extends BaseController
                     return $this->render('track_search_details', ['tracking_infos' => $trackingInfo]);
                 }
             }
+            //dd($trackingInfo['history']);
+
             return $this->render('track',
                 [
                     'tracking_number' => Calypso::getValue($trackingInfo, 'parcel.waybill_number', $tracking_number),

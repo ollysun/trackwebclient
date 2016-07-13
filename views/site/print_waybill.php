@@ -3,7 +3,9 @@ use Adapter\Util\Calypso;
 use yii\helpers\Html;
 use Adapter\Globals\ServiceConstant;
 
-$copies = ["Sender's Copy", "EC Copy", "Ack. Copy", "Recipient's Copy"];
+$copies = $parcelData[''] == 0? ["Sender's Copy", "EC Copy", "Ack. Copy", "Recipient's Copy"]:
+    ["Sender's Copy", "EC Copy"];
+
 $this->title = 'Waybill '.$parcelData['waybill_number'];
 ?>
 <?= Html::cssFile('@web/css/compiled/print-waybill.css?v0.0.1') ?>

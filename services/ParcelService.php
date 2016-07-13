@@ -213,6 +213,10 @@ class ParcelService
         $parcel['reference_number'] = Calypso::getValue($data, 'reference_number', null);
         $parcel['order_number'] = Calypso::getValue($data, 'order_number', null);
         $parcel['waybill_number'] = Calypso::getValue($data, 'waybill_number', null);
+        $parcel['notification_status'] = Calypso::getValue($data, 'notification_status', null);
+
+        //pick up
+        $parcel['pickup_date'] = Calypso::getValue($data, 'pickup_date', null);
 
         $parcel['parcel_type'] = Calypso::getValue($data, 'parcel_type');
         $parcel['no_of_package'] = Calypso::getValue($data, 'no_of_packages');

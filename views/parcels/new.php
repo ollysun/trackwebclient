@@ -23,6 +23,7 @@ $is_admin = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HQ;
 
 <?= Html::cssFile('@web/css/libs/bootstrap-select.min.css') ?>
 <?= Html::cssFile('@web/css/libs/select2.css') ?>
+<?= Html::cssFile('@web/css/libs/datepicker.css') ?>
 
 <?php echo Calypso::showFlashMessages(); ?>
 
@@ -197,6 +198,7 @@ $is_admin = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HQ;
                                     </div>
                                 </div>
                             </div>
+
                             <div id="pickUpWrap" class="form-group hidden">
                                 <label for="">Pickup Centre</label>
                                 <select name="pickup_centres" id="" class="form-control">
@@ -213,21 +215,45 @@ $is_admin = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HQ;
                                     ?>
                                 </select>
                             </div>
-                            <div class="form-group">
-                                <label for="">Service Type</label>
-                                <select name="shipping_type" id="" class="form-control validate required">
-                                    <option value="">Please select</option>
-                                    <?php if (isset($ShipmentType) && is_array($ShipmentType['data'])) {
 
-                                        $shipment_id = Calypso::getValue($parcel, "info.shipping_type", '');
-                                        foreach ($ShipmentType['data'] as $item) {
-
-                                            $selected = ($shipment_id == $item['id']) ? "selected" : '';
-                                            echo "<option value='{$item['id']}' {$selected}>" . strtoupper($item['name']) . "</option>";
-                                        }
-                                    } ?>
-                                </select>
+                            <div class="form-group form-group-sm">
+                                <label for="pickup_date">Pickup Date</label><br>
+                                <div class="input-group input-group-date-range">
+                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                    <input name="pickup_date" id="pickup_date" class="form-control date-range"
+                                           value="<?= Calypso::getValue($parcel, "info.pickup_date", '')?>"
+                                           data-provide="datepicker" data-date-format="yyyy/mm/dd" data-date-end-date="0d">
+                                </div>
                             </div>
+
+                            <div class="row">
+                                <div class="form-group  col-xs-12 col-sm-6">
+                                    <label for="">Service Type</label>
+                                    <select name="shipping_type" id="" class="form-control validate required">
+                                        <option value="">Please select</option>
+                                        <?php if (isset($ShipmentType) && is_array($ShipmentType['data'])) {
+
+                                            $shipment_id = Calypso::getValue($parcel, "info.shipping_type", '');
+                                            foreach ($ShipmentType['data'] as $item) {
+
+                                                $selected = ($shipment_id == $item['id']) ? "selected" : '';
+                                                echo "<option value='{$item['id']}' {$selected}>" . strtoupper($item['name']) . "</option>";
+                                            }
+                                        } ?>
+                                    </select>
+                                </div>
+
+
+                                <div class="form-group col-xs-12 col-sm-6">
+                                    <label for="notification_status">Notification Status</label>
+                                    <select name="notification_status" id="notification_status" class="form-control validate required">
+                                        <option value="<?= ServiceConstant::INACTIVE ?>" selected="selected">Disabled</option>
+                                        <option value="<?= ServiceConstant::ACTIVE ?>">Enabled</option>
+                                    </select>
+                                </div>
+
+                            </div>
+
                         </div>
                     </div>
                     <div class="col-xs-12 col-sm-6">
@@ -678,6 +704,7 @@ $is_admin = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HQ;
 <?php $this->registerJsFile('@web/js/libs/select2.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/utils.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/new_parcel_form.js?2.6.0', ['depends' => [\app\assets\AppAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/libs/bootstrap-datepicker.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 <?php
 $this->registerJs('$(".alert").delay(5000).fadeOut(1500);', View::POS_READY);
 ?>
