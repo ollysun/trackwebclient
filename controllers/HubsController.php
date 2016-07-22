@@ -71,6 +71,7 @@ class HubsController extends BaseController
             $postParams['waybill_numbers'] = implode(',', $waybill_numbers);
             $postParams['return_to_origin'] = $return_to_origin;
 
+
             if ($branch == $this->userData['branch_id']) {
                 $response = $parcelsAdapter->assignToGroundsMan($postParams);
             } else {
@@ -288,6 +289,7 @@ class HubsController extends BaseController
         if (\Yii::$app->request->isPost) {
             $rawData = \Yii::$app->request->post('payload');
             $data = json_decode($rawData, true);
+
             $service = new HubService();
             $payloadData = $service->buildPostData($data);
             if (!isset($payloadData['waybill_numbers'], $payloadData['to_branch_id'], $payloadData['held_by_id'])) {

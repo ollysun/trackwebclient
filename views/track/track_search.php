@@ -34,12 +34,12 @@ $this->params['breadcrumbs'] = array(
 		<form id="track-search-form" class="row">
 			<div class="col-xs-10 col-xs-offset-1 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3 form-group">
 				<div class="input-group input-group-lg">
-					<input type="text" name="query" class="form-control" placeholder="Search by waybill or tracking number">
+					<textarea style="height: 120px;" name="query" class="form-control" placeholder="Search by waybill or tracking number"></textarea>
 					<div class="input-group-btn">
 						<button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> Search</button>
 					</div>
 				</div>
-				<span class="help-block">Search up to 10 waybill / tracking numbers at a go; separated by commas (,)</span>
+				<span class="help-block">Search up to 20 waybill / tracking numbers at a go; separated by commas (,) or newline</span>
 			</div>
 		</form>
 		<br><br>

@@ -11,6 +11,7 @@ use Adapter\Util\Calypso;
 /* @var $this \yii\web\View */
 /* @var $content string */
 
+
 AppAsset::register($this);
 $session_data = Calypso::getInstance()->session('user_session');
 ?>

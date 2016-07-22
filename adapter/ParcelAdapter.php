@@ -778,4 +778,18 @@ class ParcelAdapter extends BaseAdapter
 
         return $response->getData();
     }
+
+    public function getDelayedShipments($filter){
+        $response = $this->request(ServiceConstant::URL_GET_DELAYED_SHIPMENTS, $filter, self::HTTP_GET);
+
+        $response = new ResponseHandler($response);
+
+        if(!$response->isSuccess()){
+            $this->lastErrorMessage = $response->getError();
+        }
+
+        return $response->getData();
+    }
+
+    //getDelayedShipments
 }

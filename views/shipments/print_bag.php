@@ -15,17 +15,30 @@ $this->title = (empty($bag)) ? '' : 'Bag: #' . $waybill_number;
     <div class="manifest">
         <div class="manifest-header">
             <?= Html::img('@web/img/tnt-cp-logo.png', ['class' => 'big-logo']) ?>
-            <div class="clearfix">
-                <h3 class="pull-left manifest-title big-logo-title">BAG SHEET</h3>
 
-                <div class="pull-right clearfix">
-                    <span class="pull-left text-uppercase">Date: </span>
+            <table class="table">
+                <tr>
+                    <td><h3 class=" manifest-title big-logo-title">BAG SHEET</h3></td>
 
-                    <div class="inline-underline pull-right">
-                        <?= date(ServiceConstant::DATE_TIME_FORMAT, strtotime(Calypso::getValue($bag, 'created_date'))); ?>
-                    </div>
-                </div>
-            </div>
+                    <td align="center">
+                        <div class="waybill-barcode" style="margin-left: auto; margin-right: auto; width: 320px;">
+                            <div id="" class="barcode"></div>
+                        </div>
+                        <?= $waybill_number ?>
+                    </td>
+
+                    <td>
+                        <div class="">
+                            <span class="pull-left text-uppercase">Date:</span>
+
+                            <span class="inline-underline ">
+                                <?= date(ServiceConstant::DATE_TIME_FORMAT, strtotime(Calypso::getValue($bag, 'created_date'))); ?>
+                            </span>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+
         </div>
         <br>
 
@@ -91,5 +104,12 @@ $this->title = (empty($bag)) ? '' : 'Bag: #' . $waybill_number;
         </div>
         <br>
     </div>
-    <?php $this->registerJs("window.print();", View::POS_READY, 'print'); ?>
+    <?php //$this->registerJs("window.print();", View::POS_READY, 'print'); ?>
 <?php endif; ?>
+
+<script type="text/javascript">
+    var waybill = "<?= strtoupper($waybill_number); ?>";
+</script>
+<?php $this->registerJsFile('@web/js/libs/jquery-barcode.min.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
+<?php //$this->registerJsFile('@web/js/html2canvas.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/print.js?v0.0.1', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>

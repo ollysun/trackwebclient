@@ -66,6 +66,9 @@ class ServiceConstant
     const URL_REMOVE_FROM_BAG = '/parcel/removefrombag';
     const URL_UNSORT_PARCEL = '/parcel/unsort';
     const URL_RETURN_REASONS = '/parcel/getreturnreasons';
+    const URL_GET_SHIPMENT_EXCEPTIONS = 'parcel/getShipmentExceptions';
+    const URL_GET_PARCEL_HISTORIES = 'parcel/getHistories';
+    const URL_GET_DELAYED_SHIPMENTS = 'parcel/getDelayedShipments';
     const URL_AUDIT_TRAIL_LOG = '/admin/getaudittrail';
     const URL_AUDIT_ADDITIONAL_DATA = '/admin/getauditdetails';
     const URL_GET_ALL_BILLING_PLAN_NAMES = '/billingPlan/getallbillingplannames';
@@ -157,6 +160,9 @@ class ServiceConstant
     const URL_BILLING_EDIT = 'zone/editbilling';
     const URL_BILLING_DELETE = 'zone/removebilling';
     const URL_BILLING_FETCH_BY_ID = 'zone/fetchBillingById';
+    const URL_GET_TRANSIT_TIME = 'zone/getTransitTime';
+    const URL_SAVE_TRANSIT_TIME = 'zone/saveTransitTime';
+    const URL_REMOVE_TRANSIT_TIME = 'zone/removeTransitTime';
 
     const URL_TELLER_ADD = 'teller/add';
 
@@ -223,9 +229,6 @@ class ServiceConstant
 
     const URL_AUDIT_GET_ALL = 'audit/getAllAudit';
     const URL_AUDIT_GET_ONE = 'audit/getAudit';
-
-    const URL_GET_SHIPMENT_EXCEPTIONS = 'parcel/getShipmentExceptions';
-    const URL_GET_PARCEL_HISTORIES = 'parcel/getHistories';
 
     const DATE_TIME_FORMAT = 'd M Y H:i';
     const DATE_FORMAT = 'd M Y';

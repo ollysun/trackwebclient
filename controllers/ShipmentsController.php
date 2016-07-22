@@ -55,6 +55,7 @@ class ShipmentsController extends BaseController
         return parent::beforeAction($action);
     }
 
+
     public function actionAll($page = 1, $search = false, $page_width = null)
     {
         $from_date = date('Y-m-d');
@@ -866,6 +867,7 @@ class ShipmentsController extends BaseController
         $route_adapter = new RouteAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $routes = $route_adapter->getRoutes(null, null, null, null, null);
 
+
         $parcel = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $filtered_parcels = $parcel->getParcelsByFilters(array_filter($filters, 'strlen'));
         $response = new ResponseHandler($filtered_parcels);
@@ -1162,7 +1164,6 @@ class ShipmentsController extends BaseController
 
     }
 
-
     public function actionExceptions(){
         $viewData = [];
 
@@ -1181,5 +1182,24 @@ class ShipmentsController extends BaseController
         }
 
         return $this->render('exceptions', $viewData);
+    }
+
+    public function actionDelayedshipments(){
+        $viewData = [];
+
+        $regionAdapter = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $shipments = $regionAdapter->getDelayedShipments(\Yii::$app->request->get());
+
+        $viewData['shipments'] = $shipments;
+
+        $branchAdapter = new BranchAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $allHubs = $branchAdapter->getAllHubs(false);
+
+        $viewData['branches'] = [];
+        if ($allHubs['status'] === ResponseHandler::STATUS_OK) {
+            $viewData['branches'] = $allHubs['data'];
+        }
+
+        return $this->render('delayedShipments', $viewData);
     }
 }

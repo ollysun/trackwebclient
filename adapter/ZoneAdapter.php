@@ -40,4 +40,19 @@ class ZoneAdapter extends BaseAdapter
         $filter .= empty($other_branch_id)?'':'&other_branch_id='.$other_branch_id;
         return $this->request(ServiceConstant::URL_ZONES_MATRIX_SAVE.'?'.$filter, [], self::HTTP_GET);
     }
+
+
+    public function getTransitTime()
+    {
+        return $this->request(ServiceConstant::URL_GET_TRANSIT_TIME, [], self::HTTP_GET);
+    }
+
+    public function saveTransitTime($data)
+    {
+        return $this->request(ServiceConstant::URL_SAVE_TRANSIT_TIME, $data, self::HTTP_POST);
+    }
+
+    public function removerTransitTime($data){
+        return $this->request(ServiceConstant::URL_REMOVE_TRANSIT_TIME, $data, self::HTTP_POST);
+    }
 }

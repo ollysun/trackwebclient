@@ -38,14 +38,14 @@ TrackingAsset::register($this);
         <div id="logo" class="navbar-brand navbar-brand-transparent">
             <?= Html::img('@web/img/tnt-cp-logo-color.png', ['class' => 'normal-logo', 'alt' => 'CourierPlus Logo']) ?>
         </div>
-        <div class="navbar-text text-muted">TRACKING PORTAL</div>
+        <div class="navbar-text text-muted"><a href="track">TRACKING PORTAL</a></div>
         <?php if(!isset($this->params['hide-tracking-header-form'])): ?>
         <form id="track-search-form" class="navbar-right navbar-form">
             <div class="form-group" style="width: 500px;">
                 <span class="pull-right">
                     <input name="query" type="text" class="form-control header-track-no-search"
                            placeholder="Enter Waybill / Tracking no"
-                           value="<?= Yii::$app->request->getQueryParam('query', '') ?>">
+                           value="<?=  implode(',', preg_split('/\r\n|[\r\n]/', Yii::$app->request->getQueryParam('query', '')))  ?>">
                     <button type="submit" class="btn btn-primary btn-sm">Track</button>
                 </span>
                 <span class="clearfix"></span>

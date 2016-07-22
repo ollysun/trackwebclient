@@ -3,7 +3,7 @@ use Adapter\Util\Calypso;
 use yii\helpers\Html;
 use Adapter\Globals\ServiceConstant;
 
-$copies = $parcelData[''] == 0? ["Sender's Copy", "EC Copy", "Ack. Copy", "Recipient's Copy"]:
+$copies = $parcelData['is_bulk_shipment'] == 0? ["Sender's Copy", "EC Copy", "Ack. Copy", "Recipient's Copy"]:
     ["Sender's Copy", "EC Copy"];
 
 $this->title = 'Waybill '.$parcelData['waybill_number'];

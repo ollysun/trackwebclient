@@ -53,6 +53,12 @@ $config = [
         ],
     ],
     'modules' => [
+        'sales' => [
+            'class' => 'app\modules\sales\Module',
+        ],
+        'ecommerce' => [
+            'class' => 'app\modules\ecommerce\Module',
+        ],
         'corporate' => [
             'class' => 'app\modules\corporate\Module',
         ],

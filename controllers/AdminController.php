@@ -208,6 +208,73 @@ class AdminController extends BaseController
         return $this->render('manageecs', array('total_count' => $total_count, 'page_width' => $this->page_width, 'offset' => $offset, 'States' => $state_list, 'hubs' => $hub_list, 'centres' => $centres_list, 'filter_hub_id' => $filter_hub_id));
     }
 
+    public function actionManagetransittime(){
+        $branchAdp = new BranchAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $response = new ResponseHandler($branchAdp->getAllHubs(false));
+        $zoneAdapter = new ZoneAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $responseMatrix = new ResponseHandler($zoneAdapter->getTransitTime());
+        $hubs = [];
+        $hubsMatrix = [];
+        if ($response->getStatus() == ResponseHandler::STATUS_OK) {
+            $hubs = $response->getData();
+        }
+        if ($responseMatrix->getStatus() == ResponseHandler::STATUS_OK) {
+            $hubsMatrix = $responseMatrix->getData();
+        }
+        $mapList = [];
+        foreach ($hubsMatrix as $mapping) {
+            $mapList[$mapping['from_branch_id'] . '_' . $mapping['to_branch_id']] = $mapping;
+        }
+        return $this->render('manageTransitTime', ["hubs" => $hubs, "hubsMatrix" => $hubsMatrix, "matrixMap" => $mapList]);
+
+    }
+
+
+    public function actionUpdatemapping()
+    {
+        $entry = Yii::$app->request->post();
+        if (!empty($entry)) {
+            $zAdp = new ZoneAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+            $zones = $zAdp->saveTransitTime(json_encode([$entry]));
+            $zones = new ResponseHandler($zones);
+
+            if ($zones->getStatus() == ResponseHandler::STATUS_OK) {
+                $d = $zones->getData();
+                if (empty($d['bad_matrix_info'])) {
+                    Yii::$app->session->setFlash('success', 'Transit time has been edited successfully.');
+                } else {
+                    Yii::$app->session->setFlash('danger', 'There was a problem editing the transit time. Please ensure these hubs have been mapped');
+                }
+            } else {
+                Yii::$app->session->setFlash('danger', 'There was a problem editing the transit time. #Reason: Service refused request');
+            }
+            return $zones->getStatus() == ResponseHandler::STATUS_OK ? 1 : 0;
+        }
+        return 0;
+    }
+
+    public function actionRemovemapping()
+    {
+        $entry = Yii::$app->request->post();
+        if (!empty($entry)) {
+            $zAdp = new ZoneAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+            $response = $zAdp->removerTransitTime($entry);
+            $response = new ResponseHandler($response);
+            if ($response->getStatus() == ResponseHandler::STATUS_OK) {
+                $d = $response->getData();
+                if (empty($d['bad_matrix_info'])) {
+                    Yii::$app->session->setFlash('success', 'Transit time mapping removed successfully.');
+                } else {
+                    Yii::$app->session->setFlash('danger', 'There was a problem removing the transit time mapping. Please ensure these hubs have been mapped');
+                }
+            } else {
+                Yii::$app->session->setFlash('danger', 'There was a problem removing the transit time mapping. #Reason: Service refused request');
+            }
+            return $response->getStatus() == ResponseHandler::STATUS_OK ? 1 : 0;
+        }
+        return 0;
+    }
+
     /**
      * Manage Staff action
      * @author Adegoke Obasa <goke@cottacush.com>
@@ -347,6 +414,7 @@ class AdminController extends BaseController
         $companyAdapter = new CompanyAdapter();
         if (Yii::$app->request->isPost) {
             $data = Yii::$app->request->post();
+
 
             // Create Company
             $status = $companyAdapter->createCompany($data);

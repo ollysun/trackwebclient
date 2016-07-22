@@ -173,6 +173,7 @@ class SiteController extends BaseController
 
         if ($user_status == ServiceConstant::ACTIVE) {
             User::login($data);
+
             // Check Corporate User
             if (!is_null(Calypso::getValue(Calypso::getInstance()->session("user_session"), 'company'))) {
                 return $this->redirect('/corporate/request/shipments');

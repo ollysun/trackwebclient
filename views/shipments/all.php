@@ -31,7 +31,7 @@ $user_data = $this->context->userData;
     <div class="main-box-header table-search-form ">
         <div class="clearfix">
             <div class="pull-left">
-                <?= $this->render('../elements/parcels_filter',['from_date'=>$from_date,'to_date'=>$to_date,'page_width'=>$page_width,'filter'=>$filter, 'hideStatusFilter'=>true]) ?>
+                <?= $this->render('../elements/parcels_filter',['from_date'=>$from_date,'to_date'=>$to_date,'page_width'=>$page_width,'filter'=>$filter, 'hideStatusFilter'=>false]) ?>
             </div>
             <div class="pull-right clearfix">
 

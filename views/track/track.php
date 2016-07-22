@@ -11,12 +11,19 @@ use app\assets\TrackingAsset;
 $this->title = 'Tracking Portal';
 ?>
 
-<?php if ($tracking_info): ?>
+<?php if ($current_state_info_list):
+
+    ?>
     <div class="tracking-wrap">
-        <?php //Please wrap for loop around .tracking-item ?>
+        <?php //Please wrap for loop around .tracking-item
+        foreach ($tracking_info_list as $key => $value):
+            $tracking_info = $tracking_info_list[$key];
+            $current_state_info = $current_state_info_list[$key];
+        ?>
+
         <div class="tracking-item">
             <div class="clearfix">
-                <h1 class="pull-left">Tracking for #<?= ServiceConstant::humanizeWaybillNumber($tracking_number) ?></h1>
+                <h1 class="pull-left">Tracking for #<?= ServiceConstant::humanizeWaybillNumber(Calypso::getValue($tracking_info, 'parcel.waybill_number')) ?></h1>
                 <h4 class="pull-right text-muted">
                     Status:
                     <?php if (Calypso::getDisplayValue($tracking_info, 'parcel_return_comment.comment', false)): ?>
@@ -241,14 +248,16 @@ $this->title = 'Tracking Portal';
             </div>
 
         </div>
+
+        <?php endforeach;?>
     </div>
 <?php else: ?>
     <div class="row empty-tracking-no">
         <div class="col-xs-6 col-xs-offset-3 text-center">
-            <?php if ($count > 10): ?>
+            <?php if ($count > 20): ?>
                 <h1>Error</h1>
-                <p class="text-muted"> Sorry, You can't search for more than ten parcels </p>
-            <?php elseif (is_array($tracking_info)): ?>
+                <p class="text-muted"> Sorry, You can't search for more than twenty parcels </p>
+            <?php elseif (is_array($current_state_info_list)): ?>
                 <h1>Waybill / Tracking Number <strong><?= $tracking_number ?></strong> not found</h1>
                 <p class="text-muted" style="color:red;">WayBill Number not recognized by the system please contact
                     <a href="mailto:customerservice@courierplus-ng.com"> customerservice@courierplus-ng.com </a>

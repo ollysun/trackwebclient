@@ -46,33 +46,51 @@ class TrackController extends BaseController
         if ($count > 20) {
             return $this->render('track',
                 [
-                    'tracking_info' => $trackingInfo = null,
+                    'tracking_info' => $trackingInfoList = null,
                     'current_state_info' => $currentStateInfo = null,
                     'count' => $count
                 ]);
         }
         if (isset($tracking_number) && strlen($tracking_number) > 0) {
+            $tracking_number  = implode(',', preg_split('/\r\n|[\r\n]/', $tracking_number));
+
             $trackAdapter = new TrackAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-            $trackingInfo = $trackAdapter->getTrackingInfo($tracking_number);
+            $trackingInfoList = $trackAdapter->getTrackingInfo($tracking_number);
+
+
             $currentStateInfo = null;
-            if ($trackingInfo) {
-                if (count($trackingInfo) == 1) {
-                    $trackingInfo = array_values($trackingInfo)[0];
-                    $history = Calypso::getValue($trackingInfo, 'history', []);
+            if ($trackingInfoList) {
+                $currentStateInfo = [];
+
+                foreach ($trackingInfoList as $key => $value) {
+                    $history = Calypso::getValue($trackingInfoList[$key], 'history', []);
+                    $currentStateInfo[$key] = $history[count($history) - 1];
+                    $history = TrackAdapter::processHistory($history);
+
+                    $trackingInfoList[$key]['history'] = $history;
+                }
+
+                /*
+
+                if (count($trackingInfoList) == 1) {
+                    $trackingInfoList = array_values($trackingInfoList)[0];
+
+                    $history = Calypso::getValue($trackingInfoList, 'history', []);
                     $currentStateInfo = $history[count($history) - 1];
                     $history = TrackAdapter::processHistory($history);
-                    $trackingInfo['history'] = $history;
+
+                    $trackingInfoList['history'] = $history;
                 } else {
-                    return $this->render('track_search_details', ['tracking_infos' => $trackingInfo]);
+                    return $this->render('track_search_details', ['tracking_infos' => $trackingInfoList]);
                 }
+                */
             }
-            //dd($trackingInfo['history']);
 
             return $this->render('track',
                 [
-                    'tracking_number' => Calypso::getValue($trackingInfo, 'parcel.waybill_number', $tracking_number),
-                    'tracking_info' => $trackingInfo,
-                    'current_state_info' => $currentStateInfo,
+                    'tracking_number' => Calypso::getValue($trackingInfoList, 'parcel.waybill_number', $tracking_number),
+                    'tracking_info_list' => $trackingInfoList,
+                    'current_state_info_list' => $currentStateInfo,
                     'count' => $count
                 ]);
         }

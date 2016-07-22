@@ -114,6 +114,7 @@ class Calypso
 
     public static function isActiveMenu($menu){
         $curPage = \Yii::$app->controller->id.'/'.\Yii::$app->requestedAction->id;
+        $curPage = \Yii::$app->controller->module->id.'/'.\Yii::$app->controller->id.'/'.\Yii::$app->requestedAction->id;
         $isActiveMenu = false;
         if(!is_array($menu['base_link'])){
             $isActiveMenu = Url::toRoute($curPage) == Url::toRoute($menu['base_link']);
@@ -127,6 +128,18 @@ class Calypso
         }
         return $isActiveMenu;
     }
+
+    /*
+    static public function isActiveMenu($action = null, $controller = null, $module = null)
+    {
+        $action = empty($action)? \Yii::$app->controller->action->id:$action;
+        $controller = empty($controller)? \Yii::$app->controller->id:$controller;
+        $module = empty($module)? \Yii::$app->controller->module->id:$module;
+
+        return $action == \Yii::$app->controller->action->id && $controller == \Yii::$app->controller->id
+        && $module == \Yii::$app->controller->module->id;
+    }
+    */
 
     public static function getMenus()
     {
@@ -148,12 +161,14 @@ class Calypso
                 'Delivered' => ['base_link' => 'shipments/delivered', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_EC, ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
                 'Returned' => ['base_link' => 'shipments/returned', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_EC, ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
                 'All_Shipments' => ['base_link' => 'shipments/all', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_EC, ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
-                'Shipment_Exceptions' => ['base' => 'report', 'base_link' => 'shipments/exceptions', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_HQ, ServiceConstant::USER_TYPE_OFFICER]],
+                'Shipment_Exceptions' => ['base' => 'report', 'base_link' => 'shipments/exceptions', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_HQ]],
+                'Delayed_Shipments' => ['base' => 'report', 'base_link' => 'shipments/delayedshipments', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_HQ]],
                 'Report' => ['base' => 'report', 'base_link' => 'shipments/report', 'class' => 'fa fa-book', 'branch' => [ServiceConstant::BRANCH_TYPE_HQ, ServiceConstant::USER_TYPE_OFFICER]]
             ]],
 
             'Administrator' => ['base' => 'admin', 'class' => 'fa fa-user', 'base_link' => [
                 'Manage_branches' => ['base_link' => 'admin/managebranches', 'class' => ''],
+                'Manage_Transit_Time' => ['base_link' => 'admin/managetransittime', 'class' => ''],
                 'Manage_cities' => ['base_link' => 'admin/managecities', 'class' => ''],
                 'Manage_routes' => ['base_link' => 'admin/manageroutes', 'class' => ''],
                 'Manage_staff_accounts' => ['base_link' => 'admin/managestaff', 'class' => ''],
