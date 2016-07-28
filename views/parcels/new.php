@@ -16,8 +16,8 @@ $this->params['breadcrumbs'] = array(
     array('label' => $this->title),
 );
 
-$is_hub = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
-$is_admin = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HQ;
+$is_hub = isset($branch['branch_type']) && $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
+$is_admin = isset($branch['branch_type']) && $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HQ;
 ?>
 
 
@@ -44,7 +44,7 @@ $is_admin = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HQ;
                             <h2>Sender Information</h2>
                         </div>
                         <div class="main-box-body">
-                            <?= $this->render('../elements/new_parcel_user_information', ['prefix' => 'shipper', 'countries' => $countries, 'states' => $states, 'parcel' => $parcel, 'companies' => $companies]) ?>
+                            <?= $this->render('../elements/new_parcel_user_information', ['prefix' => 'shipper', 'countries' => $countries, 'states' => $states, 'parcel' => $parcel, 'companies' => Calypso::isCooperateUser()?[$company]:$companies]) ?>
                         </div>
                     </div>
                     <div class="col-xs-12 col-lg-6">
@@ -90,7 +90,7 @@ $is_admin = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HQ;
                                         </div>
                                     </div>
                                 </div>
-                                <?php if ($is_hub || $is_admin) {
+                                <?php if ($is_hub || $is_admin || Calypso::isCooperateUser()) {
                                     ?>
                                     <div class="col-xs-12 col-sm-6 form-group" id="hubsWrap">
                                         <label>Destination</label>
@@ -707,6 +707,10 @@ $is_admin = $branch['branch_type'] == ServiceConstant::BRANCH_TYPE_HQ;
 <?php $this->registerJsFile('@web/js/libs/bootstrap-datepicker.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 <?php
 $this->registerJs('$(".alert").delay(5000).fadeOut(1500);', View::POS_READY);
+if(Calypso::isCooperateUser()){
+   // $company_id = $company['id'];
+    //$this->registerJs("var this_company_id = $company_id; $('#corporate_shipment').attr('checked', true);", View::POS_READY);
+}
 ?>
 <script type="text/javascript">
     <?= "var billingPlans = " . Json::encode($billingPlans) . ";";?>

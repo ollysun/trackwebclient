@@ -65,15 +65,33 @@ class ParcelsController extends BaseController
         $edit = Yii::$app->request->get('edit');
         $pickupRequestId = Yii::$app->request->get('pickup_request_id');
         $shipmentRequestId = Yii::$app->request->get('shipment_request_id');
-        if (isset($id)) {
-            $parcel = ParcelService::getParcelDetails($id);
-        } else if (isset($pickupRequestId)) {
-            $pickupRequest = (new CompanyAdapter())->getPickupRequest($pickupRequestId);
-            $parcel = ParcelService::convertPickupRequest($pickupRequest);
-        } else if (isset($shipmentRequestId)) {
-            $shipmentRequest = (new CompanyAdapter())->getShipmentRequest($shipmentRequestId);
-            $parcel = ParcelService::convertShipmentRequest($shipmentRequest);
+
+
+        $companyAdapter = new CompanyAdapter();
+        $companies = $companyAdapter->getAllCompanies(['status' => ServiceConstant::ACTIVE]);
+
+
+        $this_company = null;
+        if(Calypso::isCooperateUser()){
+            $this_company_id = Calypso::getInstance()->session('user_session')['company']['id'];
+            foreach ($companies as $comp) {
+                if($comp['id'] == $this_company_id){
+                    $this_company = $comp;
+                }
+            }
+            $parcel = ParcelService::initializeCooperateShipment($this_company);
+        }else{
+            if (isset($id)) {
+                $parcel = ParcelService::getParcelDetails($id);
+            } else if (isset($pickupRequestId)) {
+                $pickupRequest = (new CompanyAdapter())->getPickupRequest($pickupRequestId);
+                $parcel = ParcelService::convertPickupRequest($pickupRequest);
+            } else if (isset($shipmentRequestId)) {
+                $shipmentRequest = (new CompanyAdapter())->getShipmentRequest($shipmentRequestId);
+                $parcel = ParcelService::convertShipmentRequest($shipmentRequest);
+            }
         }
+
 
         if (isset($edit)) {
             $parcel['info']['edit'] = true;
@@ -96,7 +114,7 @@ class ParcelsController extends BaseController
 
         $user = Calypso::getInstance()->session('user_session');
         $hubAdp = new BranchAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $centres = $hubAdp->getCentres($user['branch']['id'], 0, $this->page_width, false);
+        $centres = $hubAdp->getCentres(Calypso::isCooperateUser()?null:$user['branch']['id'], 0, $this->page_width, false);
         $centres = new ResponseHandler($centres);
         $centres_list = $centres->getStatus() == ResponseHandler::STATUS_OK ? $centres->getData() : [];
 
@@ -107,8 +125,6 @@ class ParcelsController extends BaseController
 
         $billingPlans = ArrayHelper::map($billingPlans, 'id', 'name', 'company_id');
 
-        $companyAdapter = new CompanyAdapter();
-        $companies = $companyAdapter->getAllCompanies(['status' => ServiceConstant::ACTIVE]);
 
         return $this->render('new', array(
             'Banks' => $banks,
@@ -119,7 +135,8 @@ class ParcelsController extends BaseController
             'states' => $states,
             'paymentMethod' => $paymentMethod,
             'centres' => $centres_list,
-            'branch' => $user['branch'],
+            'branch' => Calypso::isCooperateUser()?null:$user['branch'],
+            'company' => $this_company,
             'parcel' => $parcel,
             'companies' => $companies,
             'billingPlans' => $billingPlans

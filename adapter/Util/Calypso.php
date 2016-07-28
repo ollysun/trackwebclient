@@ -33,6 +33,20 @@ class Calypso
         }
     }
 
+    public static function getCurrentBranchType(){
+        $user = Calypso::getInstance()->session('user_session');
+        if(isset($user) && isset($user['branch'])){
+            return $user['branch']['branch_type'];
+        }
+        return null;
+    }
+
+    public static function isCooperateUser(){
+        $user = self::getInstance()->session('user_session');
+        return isset($user['company_id']);
+    }
+
+
     /**
      * Get's a value if it's non empty
      * @author Adegoke Obasa <goke@cottacush.com>
@@ -114,10 +128,16 @@ class Calypso
 
     public static function isActiveMenu($menu){
         $curPage = \Yii::$app->controller->id.'/'.\Yii::$app->requestedAction->id;
-        $curPage = \Yii::$app->controller->module->id.'/'.\Yii::$app->controller->id.'/'.\Yii::$app->requestedAction->id;
+        $curPageWithModule = \Yii::$app->controller->module->id.'/'.\Yii::$app->controller->id.'/'.\Yii::$app->requestedAction->id;
         $isActiveMenu = false;
         if(!is_array($menu['base_link'])){
-            $isActiveMenu = Url::toRoute($curPage) == Url::toRoute($menu['base_link']);
+            if(\Yii::$app->requestedAction->id == 'index'){
+                if(!endsWith($menu['base_link'], 'index')){
+                    $menu['base_link'] .= endsWith($menu['base_link'], '/')?'index': '/index';
+                }
+            }
+            $isActiveMenu = Url::toRoute($curPage) == Url::toRoute($menu['base_link']) ||
+                Url::toRoute($curPageWithModule) == Url::toRoute($menu['base_link']);
         }else{
             foreach ($menu['base_link'] as $item) {
                 if(self::isActiveMenu($item)){
@@ -146,7 +166,7 @@ class Calypso
         $menus = [
             'Dashboard' => ['base' => 'site', 'base_link' => 'site/index', 'class' => 'fa fa-dashboard'],
             'Shipments' => ['base' => 'shipments', 'class' => 'fa fa-car', 'base_link' => [
-                'New_Shipments' => ['base_link' => 'shipments/processed', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_EC, ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
+                'New_Shipments' => ['base_link' => 'shipments/processed', 'class' => ''],
                 'Receive_Shipments' => ['base_link' => 'hubs/hubarrival', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
                 'Ready_for_Sorting' => ['base_link' => 'hubs/destination', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
                 'Ready_for_Sorting_G-man' => ['base_link' => 'hubs/destination-groundsman', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_HUB]],
@@ -160,11 +180,11 @@ class Calypso
                 'Dispatched_to_Branches' => ['base_link' => 'hubs/hubdispatch', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
                 'Delivered' => ['base_link' => 'shipments/delivered', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_EC, ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
                 'Returned' => ['base_link' => 'shipments/returned', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_EC, ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
-                'All_Shipments' => ['base_link' => 'shipments/all', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_EC, ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
+                'All_Shipments' => ['base_link' => 'shipments/all', 'class' => ''],
                 'Shipment_Exceptions' => ['base' => 'report', 'base_link' => 'shipments/exceptions', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_HQ]],
                 'Delayed_Shipments' => ['base' => 'report', 'base_link' => 'shipments/delayedshipments', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_HQ]],
                 'Report' => ['base' => 'report', 'base_link' => 'shipments/report', 'class' => 'fa fa-book', 'branch' => [ServiceConstant::BRANCH_TYPE_HQ, ServiceConstant::USER_TYPE_OFFICER]]
-            ]],
+            ], 'corporate' => true],
 
             'Administrator' => ['base' => 'admin', 'class' => 'fa fa-user', 'base_link' => [
                 'Manage_branches' => ['base_link' => 'admin/managebranches', 'class' => ''],
@@ -209,6 +229,8 @@ class Calypso
             ],
             'Corporate' => [
                 'base' => 'request', 'class' => 'fa fa-gift', 'base_link' => [
+                    //'New_Shipment' => ['base_link' => 'corporate/shipments/new', 'class' => ''],
+                    //'Shipment_Report' => ['base_link' => 'corporate/shipments/all', 'class' => ''],
                     'Shipment_Requests' => ['base_link' => 'corporate/request/shipments', 'class' => ''],
                     'Pickup_Requests' => ['base_link' => 'corporate/request/pickups', 'class' => ''],
                     'Users' => ['base_link' => 'corporate/users', 'class' => ''],
@@ -291,7 +313,9 @@ class Calypso
         return [
             'corporate/request/shipments',
             'corporate/request/pickups',
-            'corporate/users',
+            'corporate/shipments/report',
+            //'corporate/shipments/new',
+            //'corporate/shipments/all',
         ];
     }
 

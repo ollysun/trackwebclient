@@ -170,6 +170,24 @@ class ParcelService
         return $parcel;
     }
 
+    public static function initializeCooperateShipment($company = null){
+        $company = $company == null ? Calypso::getInstance()->session('user_session')['company']:$company;
+
+        $parcel = [];
+        $parcel['info']['billing_type'] = 'corporate';
+        $parcel['info']['sender']['firstname'] = Calypso::getValue($company, 'name');
+        $parcel['info']['sender']['phone'] = Calypso::getValue($company, 'phone_number');
+        $parcel['sender_location']['country']['id'] = ServiceConstant::COUNTRY_NIGERIA;
+        $parcel['info']['sender_address']['street_address1'] = Calypso::getValue($company, 'address');
+        $parcel['sender_location']['id'] = Calypso::getValue($company, 'city_id');
+        $parcel['sender_location']['state']['id'] = Calypso::getValue($company, 'city.state_id');
+
+        $parcel['is_merchant'] = 1;
+        $parcel['company_id'] = Calypso::getValue($company, 'id');
+
+        return $parcel;
+    }
+
     public function buildPostData($data)
     {
 

@@ -195,6 +195,8 @@ abstract class BaseAdapter
         }
 
         $url .= join('&', $url_params);
+
+        //dd($url);
     }
 
 }

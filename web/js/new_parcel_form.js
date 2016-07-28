@@ -633,6 +633,7 @@ $(document).ready(function () {
         var companyId = $(this).val();
         $("#billing_plan").html("<option value='' selected>Select Company</option>");
         $(".amount-due").html("");
+
         if (typeof billingPlans != "undefined" && companyId != "") {
             if (!billingPlans.hasOwnProperty(companyId)) {
                 alert("This company does not have a billing plan");
