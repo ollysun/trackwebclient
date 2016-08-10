@@ -343,6 +343,7 @@ class AdminController extends BaseController
         $state_list = $states->getStatus() == ResponseHandler::STATUS_OK ? $states->getData() : [];
         $role_list = $roles->getStatus() == ResponseHandler::STATUS_OK ? $roles->getData() : [];
 
+
         $staffAdp = new AdminAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         if (isset(Calypso::getInstance()->get()->search) && strlen(Calypso::getInstance()->get()->search) > 0) {
             $is_email = !(filter_var(Calypso::getInstance()->get()->search, FILTER_VALIDATE_EMAIL) === false);

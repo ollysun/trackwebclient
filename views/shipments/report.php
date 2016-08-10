@@ -154,6 +154,7 @@ $this->params['content_header_button'] = "<a href='" . $downloadURL . "' class='
                                 <?php } ?>
                             </select>
                         </div>
+
                         <div class="pull-left form-group form-group-sm">
                             <label for="">Request Type</label><br>
                             <select name="request_type" id="" class="form-control  filter-status">
@@ -164,6 +165,11 @@ $this->params['content_header_button'] = "<a href='" . $downloadURL . "' class='
                                 <?php } ?>
                             </select>
                         </div>
+
+                        <?php if(Calypso::isCooperateUser()){?>
+                            <input type="hidden" name="company_id" value="<?= Calypso::getInstance()->session('user_session')['company']['id'] ?>">
+                        <?php }elseif(Calypso::getInstance()->session('user_session')['role_id'] != ServiceConstant::USER_TYPE_SALES_AGENT){?>
+
                         <div class="pull-left form-group form-group-sm">
                             <label for="">Branch Type</label><br>
                             <select name="branch_type" id="branch_type" class="form-control filter-status">
@@ -212,7 +218,6 @@ $this->params['content_header_button'] = "<a href='" . $downloadURL . "' class='
                             </select>
                             <input type="hidden" name="from_branch_id" value=""/>
                         </div>
-
                         <div class="pull-left form-group form-group-sm">
                             <label for="">Select Corporate</label><br>
                             <select name="company_id" id="current_branch_select" class="form-control  filter-status">
@@ -224,6 +229,8 @@ $this->params['content_header_button'] = "<a href='" . $downloadURL . "' class='
                                     <?php } ?>
                             </select>
                         </div>
+
+                        <?php } ?>
 
                         <div class="pull-left form-group form-group-sm">
                             <label for="">Select Negative Status</label><br>

@@ -116,7 +116,12 @@ $is_hub = $user['branch']['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
             <table id="table" class="table table-hover dataTable">
                 <thead>
                 <tr>
-                    <th style="width: 20px" class="datatable-nosort"><div class="checkbox-nice"><input id="chbx_w_all" type="checkbox"><label for="chbx_w_all"> </label></div></th>
+                    <th style="width: 20px" class="datatable-nosort">
+                        <div class="checkbox-nice">
+                            <input id="chbx_w_all" type="checkbox">
+                            <label for="chbx_w_all"> </label>
+                        </div>
+                    </th>
                     <th style="width: 20px">S/N</th>
                     <th>Waybill No.</th>
                     <th>Reference No.</th>
@@ -140,7 +145,9 @@ $is_hub = $user['branch']['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
                     foreach($parcels as $parcel){
                         ?>
                         <tr>
-                            <td><div class="checkbox-nice"><input id="chbx_w_<?= ++$i; ?>" class="checkable" data-waybill="<?= strtoupper($parcel['waybill_number']); ?>" type="checkbox"><label for="chbx_w_<?= $i; ?>"> </label></div></td>
+                            <td>
+                                <div class="checkbox-nice"><input id="chbx_w_<?= ++$i; ?>" class="checkable" data-waybill="<?= strtoupper($parcel['waybill_number']); ?>" type="checkbox">
+                                    <label for="chbx_w_<?= $i; ?>"> </label></div></td>
                             <td><?= $i ?></td>
                             <td><?= strtoupper($parcel['waybill_number']); ?></td>
                             <td><?= strtoupper($parcel['reference_number']); ?></td>
@@ -313,11 +320,10 @@ $is_hub = $user['branch']['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
 <?php
 $ex='
 $("#chbx_w_all").change(function () {
-    $("input:checkbox").prop("checked", $(this).prop("checked"));
+    $(".checkable:checkbox").prop("checked", $(this).prop("checked"));
 });
 
 ';
-
 
 $this->registerJs($ex,View::POS_READY);
 ?>

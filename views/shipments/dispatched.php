@@ -25,7 +25,7 @@ $user_data = $this->context->userData;
 
 <?php echo \Adapter\Util\Calypso::showFlashMessages(); ?>
 <div class="main-box">
-    <?php if (!empty($parcels)) { ?>
+    <?php if ( !empty($parcels) || (Calypso::userIsInRole(ServiceConstant::USER_TYPE_ADMIN) || Calypso::userIsInRole(ServiceConstant::USER_TYPE_OFFICER))) { ?>
         <div class="main-box-header clearfix">
             <div class="pull-left">
                 <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#opmodal"
@@ -46,7 +46,7 @@ $user_data = $this->context->userData;
             <form class="table-search-form form-inline pull-right clearfix">
                 <div class="pull-left form-group">
                     <div class="input-group input-group-sm input-group-search">
-                        <input id="searchInput" type="text" name="search" placeholder="Search by Waybill number"
+                        <input id="searchInput" type="text" name="search" placeholder="Search by Waybill numbers"
                                class="search-box form-control">
 
                         <div class="input-group-btn">
@@ -156,6 +156,16 @@ $user_data = $this->context->userData;
                         <label>Password</label>
                         <input type="password" class="form-control" name="password" required>
                     </div>
+
+                    <?php if(Calypso::userIsInRole(ServiceConstant::USER_TYPE_ADMIN) || Calypso::userIsInRole(ServiceConstant::USER_TYPE_OFFICER)):?>
+                    <div class="form-group">
+                        <div class="checkbox-nice">
+                            <input value="1" id="enforce_action" name="enforce_action" type="checkbox">
+                            <label for="enforce_action">Enforce Action</label>
+                        </div>
+                    </div>
+                    <?php endif;?>
+
                     <div class="form-group">
                         <label>Receiver's Name</label>
                         <input type="text" class="form-control" name="fullname" id="fullname" required>
@@ -206,7 +216,7 @@ $user_data = $this->context->userData;
                     <input type="hidden" name="waybills" id="waybills">
                     <input type="hidden" name="task" id="task">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Mark</button>
+                    <button id="btnMarkAsDelivered" type="submit" class="btn btn-primary">Mark</button>
                 </div>
             </div>
         </form>
@@ -294,4 +304,17 @@ $user_data = $this->context->userData;
 <?= $this->registerJsFile('@web/js/submit_teller.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?= $this->registerJsFile('@web/js/table.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
 <?= $this->registerJsFile('@web/js/libs/jquery.dataTables.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
+
+<?php
+$ex = "
+$('#btnMarkAsDelivered').click(function(){
+        if($('input[name=\"enforce_action\"]:checked').length > 0){
+            return confirm('Enforcing an action will lead to the system not guiding you against errors like moving a parcel to a wrong destination. You can click OK if you really know what you are doing');
+        }
+    });
+";
+
+
+$this->registerJs($ex,View::POS_READY);
+?>
 

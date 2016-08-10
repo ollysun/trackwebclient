@@ -16,6 +16,7 @@ class ServiceConstant
     const USER_TYPE_GROUNDSMAN = 5;
     const USER_TYPE_COMPANY_ADMIN = 6;
     const USER_TYPE_COMPANY_OFFICER = 7;
+    const USER_TYPE_SALES_AGENT = 9;
 
     const ENTITY_TYPE_NORMAL = 1;
     const ENTITY_TYPE_BAG = 2;
@@ -42,6 +43,7 @@ class ServiceConstant
     const MANIFEST_CANCELLED = 21;
     const MANIFEST_HAS_ISSUE = 22;
     const RETURNED = 23;
+    const CREATED_BUT_WITH_CUSTOMER = 24;
     const URL_ADD_PARCEL = 'parcel/add/';
     const URL_GET_ONE_PARCEL = 'parcel/getone/';
     const URL_GET_BAG = 'parcel/getbag/';
@@ -106,6 +108,7 @@ class ServiceConstant
 
     const URL_USER_BY_PHONE = '/user/getByPhone';
 
+    const BRANCH_TYPE_COMPANY = 5;
     const BRANCH_TYPE_EC = 4;
     const BRANCH_TYPE_HUB = 2;
     const BRANCH_TYPE_HQ = 1;
@@ -348,6 +351,9 @@ class ServiceConstant
                 break;
             case ServiceConstant::RETURNED:
                 return 'Returned to Shipper';
+                break;
+            case ServiceConstant::CREATED_BUT_WITH_CUSTOMER:
+                return 'Created But With Customer';
                 break;
         }
     }

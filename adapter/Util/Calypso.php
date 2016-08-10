@@ -46,6 +46,10 @@ class Calypso
         return isset($user['company_id']);
     }
 
+    public static function userIsInRole($role_id){
+        return self::getInstance()->session('user_session')['role']['id'] == $role_id;
+    }
+
 
     /**
      * Get's a value if it's non empty
@@ -166,7 +170,7 @@ class Calypso
         $menus = [
             'Dashboard' => ['base' => 'site', 'base_link' => 'site/index', 'class' => 'fa fa-dashboard'],
             'Shipments' => ['base' => 'shipments', 'class' => 'fa fa-car', 'base_link' => [
-                'New_Shipments' => ['base_link' => 'shipments/processed', 'class' => ''],
+                'New_Shipments' => ['base_link' => 'shipments/processed', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_EC, ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ, ServiceConstant::BRANCH_TYPE_COMPANY]],
                 'Receive_Shipments' => ['base_link' => 'hubs/hubarrival', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
                 'Ready_for_Sorting' => ['base_link' => 'hubs/destination', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
                 'Ready_for_Sorting_G-man' => ['base_link' => 'hubs/destination-groundsman', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_HUB]],
@@ -180,10 +184,10 @@ class Calypso
                 'Dispatched_to_Branches' => ['base_link' => 'hubs/hubdispatch', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
                 'Delivered' => ['base_link' => 'shipments/delivered', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_EC, ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
                 'Returned' => ['base_link' => 'shipments/returned', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_EC, ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
-                'All_Shipments' => ['base_link' => 'shipments/all', 'class' => ''],
+                'All_Shipments' => ['base_link' => 'shipments/all', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_EC, ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ, ServiceConstant::BRANCH_TYPE_COMPANY]],
                 'Shipment_Exceptions' => ['base' => 'report', 'base_link' => 'shipments/exceptions', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_HQ]],
                 'Delayed_Shipments' => ['base' => 'report', 'base_link' => 'shipments/delayedshipments', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_HQ]],
-                'Report' => ['base' => 'report', 'base_link' => 'shipments/report', 'class' => 'fa fa-book', 'branch' => [ServiceConstant::BRANCH_TYPE_HQ, ServiceConstant::USER_TYPE_OFFICER]]
+                'Report' => ['base' => 'report', 'base_link' => 'shipments/report', 'class' => 'fa fa-book', 'branch' => [ServiceConstant::BRANCH_TYPE_HQ, ServiceConstant::BRANCH_TYPE_COMPANY, ServiceConstant::USER_TYPE_OFFICER, ServiceConstant::USER_TYPE_COMPANY_ADMIN]]
             ], 'corporate' => true],
 
             'Administrator' => ['base' => 'admin', 'class' => 'fa fa-user', 'base_link' => [
@@ -299,7 +303,10 @@ class Calypso
                 'corporate/pending/shipments',
                 'corporate/pending/pickups',
                 'site/*'
-            ]
+            ],
+            ServiceConstant::USER_TYPE_SALES_AGENT => array_merge([
+                'finance/*', 'billing/*', 'admin/*', 'manifest/*', 'shipments/dispatched', 'shipments/delivered', 'shipments/returned', 'shipments/fordelivery', 'hubs/*', 'corporate/users'
+            ], self::getCorporateRoutes())
         ];
         return $permissionMap;
     }

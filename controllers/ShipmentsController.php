@@ -126,7 +126,11 @@ class ShipmentsController extends BaseController
             foreach ($data['waybills'] as $wb) {
                 $waybills[] = $wb;
             }
-            $record = array('waybill_numbers' => implode(",", $waybills), 'held_by_id' => Calypso::getValue($data, 'held_by_id', null));
+            $record = array(
+                'waybill_numbers' => implode(",", $waybills),
+                'held_by_id' => Calypso::getValue($data, 'held_by_id', null),
+                'enforce_action' => Calypso::getValue($data, 'enforce_action', 0)
+            );
 
             if (!isset($record['waybill_numbers'], $record['held_by_id'])) {
                 $this->flashError("Invalid parameter(s) sent!");
@@ -596,6 +600,8 @@ class ShipmentsController extends BaseController
                             $record['receiver_phone_number'] = $phoneNumber;
                             $record['receiver_email'] = $email;
                             $record['date_and_time_of_delivery'] = $dateAndTimeTimeStamp;
+                            $enforce_action = Calypso::getValue($records, 'enforce_action', 0);
+                            $record['enforce_action'] = $enforce_action;
                             $response = $parcelData->moveToDelivered($record);
                             $success_msg = 'Shipments successfully delivered';
                         } elseif ($task == 'return') {
@@ -638,6 +644,7 @@ class ShipmentsController extends BaseController
             $parcels = $data['parcels'];
             $total_count = $data['total_count'];
         }
+
 
         return $this->render('dispatched', array('reasons_list' => $reasons_list, 'todays_date' => $todays_date, 'parcels' => $parcels, 'total_count' => $total_count, 'offset' => $offset, 'page_width' => $page_width));
     }

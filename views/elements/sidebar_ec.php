@@ -20,6 +20,9 @@ use Adapter\Util\Calypso;
                     $menus = Calypso::getInstance()->getMenus();
                     $role = $session_data['role']['id'];
                     $branch = Calypso::getValue($session_data, 'branch.branch_type');
+                    if(empty($branch) && Calypso::isCooperateUser()){
+                        $branch = ServiceConstant::BRANCH_TYPE_COMPANY;
+                    }
 
                     foreach ($menus as $k => $v) {
                         if (isset($v['base']) && !Calypso::canAccess($role, $v['base'] . '/*')) {

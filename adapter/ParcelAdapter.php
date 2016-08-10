@@ -303,19 +303,34 @@ class ParcelAdapter extends BaseAdapter
 
     public function getECDispatchedParcels($branch_id, $offset = 0, $count = 50, $search = null)
     {
-        $filter = array(
-            'to_branch_id' => $branch_id,
-            'with_total_count' => 1,
-            'status' => ServiceConstant::BEING_DELIVERED,
-            'waybill_number' => $search,
-            'with_receiver' => 1,
-            'with_holder' => 1,
-            'with_to_branch' => 1,
-            'with_created_branch' => 1,
-            'with_parcel_comment' => 1,
-            'offset' => $offset,
-            'count' => $count
-        );
+        $filter = (Calypso::userIsInRole(ServiceConstant::USER_TYPE_ADMIN) ||
+            Calypso::userIsInRole(ServiceConstant::USER_TYPE_OFFICER)) && !empty($search)?
+            array(
+                'to_branch_id' => null,
+                'with_total_count' => 1,
+                'status' => null,
+                'waybill_number' => $search,
+                'with_receiver' => 1,
+                'with_holder' => 1,
+                'with_to_branch' => 1,
+                'with_created_branch' => 1,
+                'with_parcel_comment' => 1,
+                'offset' => $offset,
+                'count' => $count
+            ) :
+            array(
+                'to_branch_id' => $branch_id,
+                'with_total_count' => 1,
+                'status' => ServiceConstant::BEING_DELIVERED,
+                'waybill_number' => $search,
+                'with_receiver' => 1,
+                'with_holder' => 1,
+                'with_to_branch' => 1,
+                'with_created_branch' => 1,
+                'with_parcel_comment' => 1,
+                'offset' => $offset,
+                'count' => $count
+            );
         $filter = array_filter($filter, 'strlen');
         return $this->request(ServiceConstant::URL_GET_ALL_PARCEL, $filter, self::HTTP_GET);
     }
