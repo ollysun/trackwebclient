@@ -84,6 +84,7 @@ class BulkShipmentModel extends Model
     private function getShipmentFieldsMap()
     {
         return [
+            Util::getExcelColumnNumberFromName('F') => 'order_number',
             Util::getExcelColumnNumberFromName('G') => 'reference_number',
             Util::getExcelColumnNumberFromName('H') => 'receiver_name',
             Util::getExcelColumnNumberFromName('I') => 'receiver_address_1',

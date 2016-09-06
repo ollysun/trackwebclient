@@ -15,7 +15,9 @@ $this->title = 'Tracking Portal';
 
     ?>
     <div class="tracking-wrap">
-        <?php //Please wrap for loop around .tracking-item
+        <?php
+        //Please wrap for loop around .tracking-item
+        $is_first_parcel = true;
         foreach ($tracking_info_list as $key => $value):
             $tracking_info = $tracking_info_list[$key];
             $current_state_info = $current_state_info_list[$key];
@@ -23,7 +25,7 @@ $this->title = 'Tracking Portal';
 
         <div class="tracking-item">
             <div class="clearfix">
-                <h1 class="pull-left">Tracking for #<?= ServiceConstant::humanizeWaybillNumber(Calypso::getValue($tracking_info, 'parcel.waybill_number')) ?></h1>
+                <h1 class="pull-left"><a href="?query=<?= Calypso::getValue($tracking_info, 'parcel.waybill_number')?>">Tracking for #<?= ServiceConstant::humanizeWaybillNumber(Calypso::getValue($tracking_info, 'parcel.waybill_number')) ?></a> </h1>
                 <h4 class="pull-right text-muted">
                     Status:
                     <?php if (Calypso::getDisplayValue($tracking_info, 'parcel_return_comment.comment', false)): ?>
@@ -78,7 +80,7 @@ $this->title = 'Tracking Portal';
                 </div>
             </div>
 
-            <div class="tracking-location-wraps">
+            <div <?= ($is_first_parcel?'':'style="display: none;"') ?> class="tracking-location-wraps">
                 <?php $points[] = []; ?>
                 <?php foreach (Calypso::getValue($tracking_info, 'history', []) as $info): ?>
 
@@ -231,25 +233,101 @@ $this->title = 'Tracking Portal';
                             <?= Util::convertDateTimeToTime(Calypso::getValue($tracking_info['parcel'], 'created_date', '')) ?>
                         </em> </p>
                     <?php
+                    $i = 0;
                     foreach($histories as $history){
-                        if('Parcel is in arrival' != Calypso::getValue($history, 'description', '')){
-                            continue;
+                        $i++;
+                        $statusText = '';
+                        switch(Calypso::getValue($history, 'status')){
+                            case 5:
+                                //"IN-TRANSIT"
+                                $statusText = "Parcel is in transit";
+                                break;
+                            case 6:
+                                //"DELIVERED"
+                                $statusText = "Parcel delivered";
+                                break;
+                            case 7:
+                                //"CANCELED"
+                                $statusText = Calypso::getValue($history, 'description');
+                                break;
+                            case 8:
+                                //"PARCEL FOR SWEEPER"
+                                $statusText = "Parcel ready for sweeping";
+                                break;
+                            case 9:
+                                //"PARCEL ARRIVAL"
+                                $statusText = "Parcel is in arrival";
+                                break;
+                            case 10:
+                                //"PARCEL FOR DELIVERY"
+                                $statusText = "Parcel ready for delivery";
+                                break;
+                            case 11:
+                                //"PARCEL UNCLEARED"
+                                $statusText = Calypso::getValue($history, 'description');
+                                break;
+                            case 12:
+                                //"PARCEL CLEARED"
+                                $statusText = Calypso::getValue($history, 'description');
+                                break;
+                            case 13:
+                                //"PARCEL BEING DELIVERED"
+                                $statusText = "Parcel ready for delivery";
+                                break;
+                            default:
+                                $statusText = Calypso::getValue($history, 'description');
+                                break;
                         }
-                        ?>
-                        <p>Parcel arrived in <b><?= Calypso::getValue($history, 'to_branch.name', '')?></b>.
-                            <em>
-                                <?= Util::convertToTrackingDateFormat(Calypso::getValue($history, 'created_date', ''))?>
-                                <?= Util::convertDateTimeToTime(Calypso::getValue($history, 'created_date', ''))?>
-                            </em> </p>
-                        <?php }
-                    ?>
+
+                        if(isset($history['to_branch'])){?>
+                            <p><?= $statusText ?> FROM <b><?= Calypso::getValue($history, 'from_branch.name', '')?></b> To <b><?= Calypso::getValue($history, 'to_branch.name', '')?></b> On
+                                <em>
+                                    <?= Util::convertToTrackingDateFormat(Calypso::getValue($history, 'created_date', ''))?>
+                                    <?= Util::convertDateTimeToTime(Calypso::getValue($history, 'created_date', ''))?>
+                                </em> </p>
+                            <?php } else {
+
+
+                            if (Calypso::getValue($history, 'status') == 6) {
+                                $to = Calypso::getDisplayValue($tracking_info, 'delivery_receipt.name', 'You');
+                                $date = Calypso::getValue($tracking_info, 'delivery_receipt.delivered_at', '');
+                                ?>
+                                <p><?= $statusText ?> FROM
+                                    <b><?= Calypso::getValue($history, 'from_branch.name', '') ?></b> To You On
+                                    <em>
+                                        <?= Util::convertToTrackingDateFormat($date) ?>
+                                        <?= Util::convertDateTimeToTime($date) ?>
+                                    </em></p>
+                                <?php
+
+
+                            } else {
+
+
+                                ?>
+                                <p><?= $statusText ?> FROM
+                                    <b><?= Calypso::getValue($history, 'from_branch.name', '') ?></b> To On
+                                    <em>
+                                        <?= Util::convertToTrackingDateFormat(Calypso::getValue($history, 'created_date', '')) ?>
+                                        <?= Util::convertDateTimeToTime(Calypso::getValue($history, 'created_date', '')) ?>
+                                    </em></p>
+                            <?php }
+                        }?>
+
+
+
+                        <?php }?>
                 </div>
 
             </div>
 
         </div>
 
-        <?php endforeach;?>
+
+
+        <?php
+            $is_first_parcel = false;
+        endforeach;?>
     </div>
 <?php else: ?>
     <div class="row empty-tracking-no">

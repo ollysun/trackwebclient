@@ -4,7 +4,8 @@ use Adapter\Globals\ServiceConstant;
 use Adapter\Util\Calypso;
 
 //$user_type = Calypso::getInstance()->session('user_session')['branch']['branch_type'];
-if ($status != ServiceConstant::CANCELLED && Calypso::getCurrentBranchType() == ServiceConstant::BRANCH_TYPE_HQ):
+if (($status != ServiceConstant::CANCELLED && Calypso::getCurrentBranchType() == ServiceConstant::BRANCH_TYPE_HQ)
+    || ($status == ServiceConstant::CREATED_BUT_WITH_CUSTOMER)):
     ?>
 
     <button title="Cancel this shipment" type="button" data-waybill_number='<?= $waybill_number ?>'

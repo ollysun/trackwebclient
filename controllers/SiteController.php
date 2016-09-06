@@ -83,6 +83,10 @@ class SiteController extends BaseController
     {
         $user_data = Calypso::getInstance()->session('user_session');
 
+        if (in_array(Calypso::getValue($user_data, 'role_id'), [ServiceConstant::USER_TYPE_COMPANY_ADMIN, ServiceConstant::USER_TYPE_COMPANY_OFFICER])) {
+            return $this->redirect('/shipments/processed');
+        }
+
         $branch_type = $user_data['branch']['branch_type'];
         $alternative = $branch_type == ServiceConstant::BRANCH_TYPE_HQ ? null : $user_data['branch_id'];
         $branch_to_view = Calypso::getValue(Calypso::getInstance()->get(), 'branch', $alternative);
@@ -422,6 +426,7 @@ class SiteController extends BaseController
                     }
                 }
             }
+
             $refData = new RefAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
             $refResponse = new ResponseHandler($refData->getShipmentType());
             if ($refResponse->getStatus() == ResponseHandler::STATUS_OK) {

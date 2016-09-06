@@ -296,13 +296,17 @@ class Calypso
             ServiceConstant::USER_TYPE_COMPANY_ADMIN => [
                 'corporate/pending/shipments',
                 'corporate/pending/pickups',
-                'site/*'
+                'site',
+                'site/index',
+                'site/newparcel'
             ],
             ServiceConstant::USER_TYPE_COMPANY_OFFICER => [
                 'corporate/users',
                 'corporate/pending/shipments',
                 'corporate/pending/pickups',
-                'site/*'
+                'site',
+                'site/index',
+                'site/newparcel'
             ],
             ServiceConstant::USER_TYPE_SALES_AGENT => array_merge([
                 'finance/*', 'billing/*', 'admin/*', 'manifest/*', 'shipments/dispatched', 'shipments/delivered', 'shipments/returned', 'shipments/fordelivery', 'hubs/*', 'corporate/users'

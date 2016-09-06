@@ -53,6 +53,7 @@ if(!isset($filter)){$filter="-1";}
                     ?>
                 </select>
             </div>
+
             <div class="pull-left">
                 <label>&nbsp;</label><br>
                 <button id="records_filter" class="btn btn-default btn-sm"><i class="fa fa-search"></i></button>

@@ -38,7 +38,7 @@ $user_data = $this->context->userData;
                         data-action="return"><i class="fa fa-check"></i> Mark as Returned
                 </button>
 
-                <?= $this->render('../elements/parcel_records_filter', ['page_width' => $page_width]) ?>
+                <?= $this->render(Calypso::userIsInRole(ServiceConstant::USER_TYPE_ADMIN)?'../elements/parcel_direct_delivery_filter': '../elements/parcel_records_filter', ['page_width' => $page_width, 'filters' => $filters, 'shipping_types' => $shipping_types]) ?>
 
             </div>
 
@@ -108,7 +108,7 @@ $user_data = $this->context->userData;
                                 <td><?= $parcel['reference_number']; ?></td>
                                 <td><?= ucwords($parcel['receiver']['firstname'] . ' ' . $parcel['receiver']['lastname']) ?></td>
                                 <td><?= $parcel['receiver']['phone'] ?></td>
-                                <td><?= ucwords($parcel['holder']['fullname']); ?></td>
+                                <td><?= ucwords(isset($parcel['holder'])?$parcel['holder']['fullname']:''); ?></td>
                                 <td><?= ($parcel['for_return'] == 1) ? "Delivery Attempted" : ServiceConstant::getStatus($parcel['status']); ?></td>
                                 <td><?= $parcel['return_reason']['comment']; ?></td>
                                 <?php if ($user_data['role_id'] == ServiceConstant::USER_TYPE_ADMIN) { ?>

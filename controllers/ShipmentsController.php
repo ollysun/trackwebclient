@@ -75,7 +75,9 @@ class ShipmentsController extends BaseController
             $from_date = Calypso::getInstance()->get()->from;
             $to_date = Calypso::getInstance()->get()->to;
             $filter = null;
-            //  $filter = isset(Calypso::getInstance()->get()->date_filter) ? Calypso::getInstance()->get()->date_filter : '-1';
+            //$filter = Calypso::getInstance()->get()->date_filter;
+            $filter = isset(Calypso::getInstance()->get()->date_filter) && Calypso::getInstance()->get()->date_filter != '-1'
+                ? Calypso::getInstance()->get()->date_filter : null;
             $response = $parcel->getFilterParcelsByDateAndStatus($from_date . ' 00:00:00', $to_date . ' 23:59:59', $filter, $offset, $this->page_width, 1, null, null, true);
             $search_action = true;
 
@@ -556,9 +558,12 @@ class ShipmentsController extends BaseController
         $offset = ($page - 1) * $page_width;
         $search = null;
 
+
+
         if (isset(\Yii::$app->request->post()['password']) || !empty(\Yii::$app->request->post()['search'])) {
 
             $records = \Yii::$app->request->post();
+
 
             if (!empty($records['search'])) {
                 $search = $records['search'];
@@ -572,6 +577,7 @@ class ShipmentsController extends BaseController
                 $dateAndTimeTimeStamp = Util::getDateTimeFormatFromDateTimeFields($date, $time);
                 $phoneNumber = $records['phone'];
                 $rawData = $records['waybills'];
+                $enforce_action = Calypso::getValue($records, 'enforce_action', 0);
                 $task = $records['task'];
 
 
@@ -589,9 +595,11 @@ class ShipmentsController extends BaseController
                         }
                         $record = [];
                         $record['waybill_numbers'] = implode(",", $waybills);
+                        $record['enforce_action'] = $enforce_action;
 
                         $parcelData = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
                         $success_msg = '';
+
                         if ($task == 'receive') {
                             $response = $parcelData->receiveFromBeingDelivered($record);
                             $success_msg = 'Shipments successfully received';
@@ -630,9 +638,38 @@ class ShipmentsController extends BaseController
                         $this->flashError($temp->getError());
                     }
                 }
+
+
                 return $this->redirect('/shipments/dispatched?page=' . $page);
             }
         }
+
+
+        /** @author Ademu antohny filtering */
+        $filter_params = ['for_return', 'shipping_type', 'start_created_date', 'end_created_date', 'dispatcher'];
+        $extra_details = ['with_holder'];
+
+
+        $filters = [];
+        foreach ($filter_params as $param) {
+            $filters[$param] = Yii::$app->request->get($param);
+        }
+
+        foreach ($extra_details as $extra) {
+            $filters[$extra] = true;
+        }
+
+        $start_created_date = Yii::$app->request->get('start_created_date', Util::getToday('/'));
+        $end_created_date = Yii::$app->request->get('end_created_date', Util::getToday('/'));
+
+        $filters['start_created_date'] = $start_created_date . ' 00:00:00';
+        $filters['end_created_date'] = $end_created_date . ' 23:59:59';
+
+        $shipping_types = ServiceConstant::getShippingTypes();
+
+
+
+
         $user_session = Calypso::getInstance()->session("user_session");
         $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $dispatch_parcels = $parcelsAdapter->getECDispatchedParcels($this->branch_to_view, $offset, $page_width, $search);
@@ -646,7 +683,7 @@ class ShipmentsController extends BaseController
         }
 
 
-        return $this->render('dispatched', array('reasons_list' => $reasons_list, 'todays_date' => $todays_date, 'parcels' => $parcels, 'total_count' => $total_count, 'offset' => $offset, 'page_width' => $page_width));
+        return $this->render('dispatched', array('reasons_list' => $reasons_list, 'todays_date' => $todays_date, 'parcels' => $parcels, 'total_count' => $total_count, 'offset' => $offset, 'page_width' => $page_width, 'filters' => $filters, 'shipping_types' => $shipping_types));
     }
 
     public function actionDelivered($page = 1, $page_width = null)
@@ -891,6 +928,8 @@ class ShipmentsController extends BaseController
             $this->flashError('Could not load reports');
         }
 
+        //dd($parcels);
+
         $companies = (new CompanyAdapter())->getAllCompanies([]);
 
         return $this->render('report', array(
@@ -962,7 +1001,7 @@ class ShipmentsController extends BaseController
         $stream = fopen("php://output", "w");
 
 
-        $headers = array('SN', 'Waybill Number', 'Sender', 'Sender Email', 'Sender Phone', 'Sender Address', 'Sender City', 'Sender State', 'Receiver', 'Receiver Email', 'Receiver Phone', 'Receiver Address', 'Receiver City', 'Receiver State', 'Weight/Piece', 'Payment Method', 'Amount Due', 'Cash Amount', 'POS Amount', 'POS Transaction ID', 'Parcel Type', 'Cash on Delivery', 'Delivery Type', 'Package Value', '# of Package', 'Shipping Type', 'Created Date', 'Last Modified Date', 'Status', 'Reference Number', 'Originating Branch', 'Route', 'Request Type', 'For Return', 'Other Info', 'Company Reg No', 'Billing Plan Name', 'Created By', 'Amount due to Merchant', 'Insurance Charge', 'Storrage/Demurrage Charge', 'Handling Charge', 'Duty Charge', 'Cost of Crating', 'Other Charges');
+        $headers = array('SN', 'Waybill Number', 'Sender', 'Sender Email', 'Sender Phone', 'Sender Address', 'Sender City', 'Sender State', 'Receiver', 'Receiver Email', 'Receiver Phone', 'Receiver Address', 'Receiver City', 'Receiver State', 'Weight/Piece', 'Payment Method', 'Amount Due', 'Cash Amount', 'POS Amount', 'POS Transaction ID', 'Parcel Type', 'Cash on Delivery', 'Delivery Type', 'Package Value', '# of Package', 'Shipping Type', 'Created Date', 'Last Modified Date', 'Status', 'Reference Number', 'Originating Branch', 'Route', 'Request Type', 'For Return', 'Other Info', 'Company Reg No', 'Billing Plan Name', 'Created By', 'Amount due to Merchant', 'Insurance Charge', 'Storrage/Demurrage Charge', 'Handling Charge', 'Duty Charge', 'Cost of Crating', 'Other Charges', 'POD Name', 'POD Date');
         fputcsv($stream, $headers);
 
 
@@ -1025,6 +1064,9 @@ class ShipmentsController extends BaseController
                         $result['parcel_duty_charge'],
                         $result['parcel_cost_of_crating'],
                         $result['parcel_others'],
+
+                        $result['delivery_receipt_name'],
+                        $result['delivery_receipt_delivered_at'],
                     ];
                 }
 
@@ -1070,14 +1112,29 @@ class ShipmentsController extends BaseController
      */
     public function actionCreatebulkshipment()
     {
+
+        ///*
+
         if (!Yii::$app->getRequest()->isAjax) {
             return $this->redirect(Yii::$app->getRequest()->getReferrer());
         }
+        //*/
+
+
 
         $model = new BulkShipmentModel();
         $postData = Yii::$app->getRequest()->post();
+
+        /*
+        $postData['company_id'] = '55';
+        $postData['billing_plan_id'] = '3';
+        $postData['payment_type'] = '1';
+        */
+
+
         $model->load($postData, '');
         $model->dataFile = UploadedFile::getInstanceByName('dataFile');
+
 
         $response = $model->process();
 
@@ -1088,6 +1145,8 @@ class ShipmentsController extends BaseController
                 return $this->sendErrorResponse('Something went wrong while creating bulk shipment. Please try again', 200);
             }
         }
+
+
 
         if (!$response->isSuccess()) {
             return $this->sendErrorResponse($response->getError(), 200);
@@ -1114,8 +1173,10 @@ class ShipmentsController extends BaseController
         
         $offset = ($page - 1) * $this->page_width;
         $tasks = $parcelAdapter->getBulkShipmentTasks($offset, $this->page_width);
+        //$environment = 'local';
         $environment = getenv("APPLICATION_ENV") ? getenv("APPLICATION_ENV") : 'local';
         $s3BaseUrl = '//s3-us-west-2.amazonaws.com/bulk-waybills/' . $environment . '/';
+        //$s3BaseUrl = '//s3.amazonaws.com/tnt-bulk-waybills/' . $environment . '/';
         return $this->render('bulk_shipment_tasks',
             [
                 'tasks' => $tasks['tasks'],

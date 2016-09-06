@@ -100,9 +100,9 @@ $this->params['content_header_button'] = $this->render('../elements/content_head
                     $i = $offset;
                     if (isset($parcels) && is_array($parcels)) {
                         foreach ($parcels as $parcel) {
-                    ?>
+                            ?>
                             <tr data-waybill="<?= strtoupper($parcel['waybill_number']); ?>">
-                            <td>
+                                <td>
                                     <div class="checkbox-nice">
 
                                         <input id="chbx_w_<?= ++$i; ?>" class="checkable"
@@ -276,4 +276,3 @@ $this->params['content_header_button'] = $this->render('../elements/content_head
 <?php $this->registerJsFile('@web/js/validate.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/bootbox.min.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/submit_teller.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
-

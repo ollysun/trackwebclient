@@ -243,14 +243,8 @@ $is_admin = isset($branch['branch_type']) && $branch['branch_type'] == ServiceCo
                                     </select>
                                 </div>
 
+                                <input type="hidden" value="<?= ServiceConstant::INACTIVE ?>" name="notification_status">
 
-                                <div class="form-group col-xs-12 col-sm-6">
-                                    <label for="notification_status">Notification Status</label>
-                                    <select name="notification_status" id="notification_status" class="form-control validate required">
-                                        <option value="<?= ServiceConstant::INACTIVE ?>" selected="selected">Disabled</option>
-                                        <option value="<?= ServiceConstant::ACTIVE ?>">Enabled</option>
-                                    </select>
-                                </div>
 
                             </div>
 
@@ -703,7 +697,7 @@ $is_admin = isset($branch['branch_type']) && $branch['branch_type'] == ServiceCo
 <?php $this->registerJsFile('@web/js/validate.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/libs/select2.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/utils.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
-<?php $this->registerJsFile('@web/js/new_parcel_form.js?2.6.0', ['depends' => [\app\assets\AppAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/new_parcel_form.js?2.6.1', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/libs/bootstrap-datepicker.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 <?php
 $this->registerJs('$(".alert").delay(5000).fadeOut(1500);', View::POS_READY);

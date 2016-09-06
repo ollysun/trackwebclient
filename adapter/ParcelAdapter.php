@@ -212,6 +212,7 @@ class ParcelAdapter extends BaseAdapter
             'offset' => $offset,
             'count' => $count);
         $params = http_build_query($filter);
+
         return $this->request(ServiceConstant::URL_GET_ALL_PARCEL . '?' . $params, [], self::HTTP_GET);
     }
 
@@ -311,7 +312,7 @@ class ParcelAdapter extends BaseAdapter
                 'status' => null,
                 'waybill_number' => $search,
                 'with_receiver' => 1,
-                'with_holder' => 1,
+                //'with_holder' => 1,
                 'with_to_branch' => 1,
                 'with_created_branch' => 1,
                 'with_parcel_comment' => 1,
@@ -716,6 +717,7 @@ class ParcelAdapter extends BaseAdapter
     {
         $data = ['data' => $parcelsData, 'company_id' => $company_id, 'billing_plan_id' => $billing_plan_id];
         $rawResponse = $this->request(ServiceConstant::URL_CREATE_BULK_SHIPMENT_TASK, Json::encode($data), self::HTTP_POST);
+
         $response = new ResponseHandler($rawResponse);
         if (!$response->isSuccess()) {
             $this->lastErrorMessage = $response->getError();

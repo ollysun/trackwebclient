@@ -1,6 +1,7 @@
 $(document).ready(function () {
     $('.print_btn').click(function () {
         var print_url = $(this).data('print_url');
+        var status = $(this).data('status');
         var create_task_url = $(this).data('create_task_url');
         var externalWindow = window.open('', '_blank');
         externalWindow.document.write('Checking for waybills...');

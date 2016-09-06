@@ -72,6 +72,7 @@ $this->params['breadcrumbs'] = array(
                             </a>
                             <?php if(Calypso::getValue($task, 'status', '') == 'success'):?>
                             <button class="print_btn btn btn-primary"
+                                    data-status="<?= strtoupper(Calypso::getValue($task, 'status', '')) ?>"
                                     data-create_task_url="<?= '/shipments/printbulkshipment?task_id='. Calypso::getValue($task, 'id', '') ?>"
                                     data-print_url="<?= $s3_base_url . 'waybills_task_' . Calypso::getValue($task, 'id', '') . '.pdf' ?>">
                                 <i class="glyphicon glyphicon-print"></i> Print
