@@ -256,7 +256,7 @@ $this->title = 'Tracking Portal';
                                 break;
                             case 9:
                                 //"PARCEL ARRIVAL"
-                                $statusText = "Parcel is in arrival";
+                                $statusText = "Parcel received";
                                 break;
                             case 10:
                                 //"PARCEL FOR DELIVERY"

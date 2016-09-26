@@ -616,6 +616,8 @@ class ShipmentsController extends BaseController
                             $record['receiver_name'] = $fullName;
                             $record['receiver_phone_number'] = $phoneNumber;
                             $record['receiver_email'] = $email;
+                            $enforce_action = Calypso::getValue($records, 'enforce_action', 0);
+                            $record['enforce_action'] = $enforce_action;
                             $record['date_and_time_of_delivery'] = $dateAndTimeTimeStamp;
                             $response = $parcelData->markAsReturned($record);
                             $success_msg = 'Shipments successfully returned';
@@ -985,6 +987,7 @@ class ShipmentsController extends BaseController
         $filters['end_modified_date'] = (Util::checkEmpty($end_modified_date) ? null : $end_modified_date . ' 23:59:59');
 
         $parcel = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+
 
         $filters['report'] = 1;
         $filters['with_total_count'] = true;

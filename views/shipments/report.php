@@ -267,6 +267,7 @@ $this->params['content_header_button'] = "<a href='" . $downloadURL . "' class='
                         <th style="width: 20px">S/N</th>
                         <th>Waybill No.</th>
                         <th>Reference No.</th>
+                        <th>Order No.</th>
                         <th>Receiver</th>
                         <th>Receiver Phone</th>
                         <th>Created Date</th>
@@ -290,6 +291,7 @@ $this->params['content_header_button'] = "<a href='" . $downloadURL . "' class='
                                 <td><?= strtoupper(Calypso::getValue($parcel, 'parcel_reference_number')); ?></td>
                                 <td><?= strtoupper(Calypso::getValue($parcel, 'receiver_firstname') . ' ' . Calypso::getValue($parcel, 'receiver_lastname')) ?></td>
                                 <td><?= Calypso::getValue($parcel, 'parcel_reference_number') ?></td>
+                                <td><?= Calypso::getValue($parcel, 'parcel_order_number') ?></td>
                                 <td><?= Util::formatDate(ServiceConstant::DATE_TIME_FORMAT, Calypso::getValue($parcel, 'parcel_created_date')); ?></td>
                                 <td><?= Util::formatDate(ServiceConstant::DATE_TIME_FORMAT, Calypso::getValue($parcel, 'parcel_pickup_date')); ?></td>
                                 <td><?= Calypso::getValue($parcel, 'route_name'); ?></td>

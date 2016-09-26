@@ -111,6 +111,10 @@ class HubsController extends BaseController
         return $this->render('destination', $viewData);
     }
 
+    public function actionDirectmanifest($page = 1, $page_width = null, $type = null){
+
+    }
+
     public function actionHubarrival($page = 1, $page_width = null)
     {
         $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());

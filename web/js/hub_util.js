@@ -232,6 +232,13 @@ $(document).ready(function(){
     $("#get_parcel_by_number_btn").unbind('click').on('click', function () {
         $("#get_parcel_by_number_loading_label").removeClass('text-success').removeClass('text-danger').addClass("text-info").html("Loading parcel...");
         var waybill_number = $("#get_parcel_by_number_input").val();
+        if("" == waybill_number || '' == waybill_number.trim()){
+            al("Please enter waybill number");
+            $("#get_parcel_by_number_loading_label").removeClass('text-info').html("");
+            $("#get_parcel_by_number_input").val('');
+            $("#get_parcel_by_number_input").focus();
+            return;
+        }
         Hub.getParcel(waybill_number, function (response) {
             if(response.status == "success"){
                 response.data.forEach(function(v,i){
