@@ -133,6 +133,10 @@
             var action_text = data.status == 1 ? 'activate' : 'deactivate';
             data.company_id = $(this).attr('data-id');
 
+            if(!confirm("This company will be " + action_text + "d")){
+                return;
+            }
+
             $.ajax({
                 url: '/admin/activation',
                 type: 'POST',
@@ -150,6 +154,11 @@
                     alert('An error occurred when trying to ' + action_text + ' company. Please try again later');
                 }
             })
-        })
+        });
+
+        $(".resetPassword").click(function () {
+            var form = $("#resetCompanyAdminPasswordForm");
+            form.find("input[name=company_id]").val($(this).data('company-id'));
+        });
     });
 })();

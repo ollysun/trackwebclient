@@ -94,6 +94,28 @@ class UserAdapter extends BaseAdapter
     }
 
     /**
+     * Changes a user's password
+     * @author Ademu Anthony <ademuanthony@gmail.com>
+     * @param $company_id
+     * @param $password
+     * @return ResponseHandler
+     */
+    public function resetCompanyAdminPassword($company_id, $password)
+    {
+        $response = $this->request(ServiceConstant::URL_USER_RESET_COMPANY_ADMIN_PASSWORD, ['company_id' => $company_id, 'password' => $password], self::HTTP_POST);
+        $response = new ResponseHandler($response);
+        return $response;
+
+        if($response->getStatus() == ResponseHandler::STATUS_OK) {
+            return true;
+        } else {
+            return $response->getError();
+        }
+    }
+
+
+
+    /**
      * Initiates the forgot password process if email exists
      * @author Adegoke Obasa <goke@cottacush.com>
      * @param $email

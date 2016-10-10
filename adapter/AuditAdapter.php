@@ -24,10 +24,11 @@ class AuditAdapter extends BaseAdapter
         if(!is_null($filters)){
             $filter = '?';
             foreach ($filters as $key => $value) {
+                $value = urlencode($value);
                 $filter .= "$key=$value&";
             }
         }
-        $param =  [];
-        return $this->request(ServiceConstant::URL_AUDIT_GET_ALL . $filter, $param, self::HTTP_GET);
+        //die($filter);
+        return $this->request(ServiceConstant::URL_AUDIT_GET_ALL . $filter, [], self::HTTP_GET);
     }
 }

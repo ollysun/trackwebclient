@@ -379,6 +379,29 @@ class AdminController extends BaseController
         return $this->redirect('managestaff');
     }
 
+
+    public function actionResetcompanyadminpassword()
+    {
+        if (Yii::$app->getRequest()->isPost) {
+            $company_id = Yii::$app->getRequest()->post('company_id');
+            $password = Yii::$app->getRequest()->post('password');
+
+            if (!isset($company_id, $password)) {
+                $this->flashError('Required field(s) missing');
+            }
+
+            $user = new UserAdapter();
+            $outcome = $user->resetCompanyAdminPassword($company_id, $password);
+
+            if($outcome->getStatus() == ResponseHandler::STATUS_OK) {
+                $this->flashSuccess($outcome->getData());
+            } else {
+                $this->flashError($outcome->getError());
+            }
+
+        }
+        return $this->redirect('companies');
+    }
     /**
      * Edit Company Action
      * @author Adegoke Obasa <goke@cottacush.com>
@@ -758,11 +781,33 @@ class AdminController extends BaseController
      * Audit Trail
      * @author Olajide Oye <jide@cottacush.com>
      */
-    public function actionAudittrail()
+    public function actionAudittrail($page = 1, $page_width = null)
     {
+        if ($page_width != null) {
+            $this->page_width = $page_width;
+            Calypso::getInstance()->cookie('page_width', $page_width);
+        }
+
+        $page_width = is_null($page_width) ? $this->page_width : $page_width;
+        $offset = ($page - 1) * $page_width;
+
+        $filter = ['offset' => $offset, 'count' => $page_width, 'paginate' => true, 'username' => isset(Calypso::getInstance()->get()->username)?Calypso::getInstance()->get()->username:'', 'service' => isset(Calypso::getInstance()->get()->service)?Calypso::getInstance()->get()->service:'', 'action' => isset(Calypso::getInstance()->get()->action)?Calypso::getInstance()->get()->action:'', 'page_width' => $page_width];
+
+        $filter = array_merge($filter, Yii::$app->request->post());
+
+        $from_date = date('Y-m-d') . ' 00:00:00';
+        $to_date = date('Y-m-d') . ' 23:59:59';
+        if (isset(Calypso::getInstance()->get()->from, Calypso::getInstance()->get()->to)) {
+            $from_date = Calypso::getInstance()->get()->from . ' 00:00:00';
+            $to_date = Calypso::getInstance()->get()->to . ' 23:59:59';
+        }
+
+        $filter['start_time'] = $from_date;
+        $filter['end_time'] = $to_date;
+
         $regionAdapter = new AuditAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $audit_trial = (new ResponseHandler($regionAdapter->getAllAudit(\Yii::$app->request->post())))->getData();
-        return $this->render('audit_trail', ['logs' => $audit_trial]);
+        $result = (new ResponseHandler($regionAdapter->getAllAudit($filter)))->getData();
+        return $this->render('audit_trail', ['logs' => $result['audit_trails'], 'total_count' => $result['total_count'], 'filter' => $filter]);
     }
 
     public function actionActivation() {

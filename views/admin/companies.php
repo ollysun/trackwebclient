@@ -98,6 +98,13 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                                     <button data-status="<?php echo Calypso::getValue($company, 'status'); ?>" data-id="<?= Calypso::getValue($company, 'id'); ?>"
                                        class="btn btn-xs btn-default activation"><i
                                             class="fa fa-<?php echo $company['status_details']['icon']; ?>">&nbsp;</i><?php echo $company['status_details']['action']; ?></button>
+                                      <span data-toggle="tooltip" title="Reset company admin password">
+                                        <button
+                                            data-company-id="<?= Calypso::getValue($company, 'id'); ?>"
+                                            type="button" class="btn btn-default btn-xs resetPassword" data-toggle="modal"
+                                            data-target="#reset"><i class="fa fa-refresh"></i>
+                                        </button>
+                                    </span>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
@@ -397,6 +404,33 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="reset" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <form class="validate-form" method="post" id="resetCompanyAdminPasswordForm" action="resetcompanyadminpassword">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Company Admin Password Reset</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>Please fill the following information carefully. <strong>All fields are required.</strong></p>
+                        <div class="form-group">
+                            <label>New Password</label>
+                            <input name="password" type="password" class="form-control validate required">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input name="company_id" type="hidden"/>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Submit</button>
                     </div>
                 </div>
             </form>

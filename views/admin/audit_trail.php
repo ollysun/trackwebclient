@@ -26,14 +26,15 @@ $this->params['breadcrumbs'] = array(
     <div class="main-box-header table-search-form ">
         <div class="clearfix">
             <div class="pull-left">
-                <?= $this->render('../elements/admin/audit_trail_filter'); ?>
+                <?= $this->render('../elements/admin/audit_trail_filter', $filter); ?>
             </div>
         </div>
     </div>
 
 
     <div class="main-box-body">
-        <?php if(true) :  //count($auditTrail) ?>
+        <?php if(count($logs) > 0) :  //count($auditTrail)
+            $sn = $filter['offset'];?>
             <div class="table-responsive">
                 <table id="table" class="table table-hover dataTable">
                     <thead>
@@ -48,7 +49,7 @@ $this->params['breadcrumbs'] = array(
                     </tr>
                     </thead>
                     <tbody>
-                    <?php $sn = 0;
+                    <?php
                     foreach ($logs as $log) {?>
                         <tr>
                             <td><?=(++$sn) ?></td>
@@ -68,7 +69,7 @@ $this->params['breadcrumbs'] = array(
                                         data-end-time="<?= Calypso::getValue($log, 'end_time'); ?>"
                                         data-ip-address="<?= Calypso::getValue($log, 'ip_address'); ?>"
                                         data-client="<?= Calypso::getValue($log, 'client'); ?>"
-                                        data-parameters="<?= Calypso::getValue($log, 'parameters'); ?>"
+                                        data-parameters='<?= Calypso::getValue($log, 'parameters'); ?>'
                                         data-action-name="<?= Calypso::getValue($log, 'action_name'); ?>">
                                     <i class="fa fa-search"></i> Detail
                                 </button>
@@ -82,9 +83,10 @@ $this->params['breadcrumbs'] = array(
                     </tbody>
                 </table>
             </div>
-            <?php //= $this->render('../elements/pagination_and_summary', ['first' => $offset, 'last'=>$i, 'total_count'=> $total_count,'page_width'=>$page_width]) ?>
+            <?=
+                $this->render('../elements/pagination_and_summary', ['first' => $filter['offset'], 'last'=>$sn, 'total_count'=> $total_count,'page_width'=>$filter['page_width']]) ?>
         <?php else:  ?>
-            There are no parcels matching the specified criteria.
+            There are no logs matching the specified criteria.
         <?php endif;  ?>
     </div>
 </div>
