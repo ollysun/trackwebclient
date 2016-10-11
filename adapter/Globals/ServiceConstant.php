@@ -185,6 +185,7 @@ class ServiceConstant
     const URL_USER_CHANGE_STATUS = 'auth/changeStatus';
     const URL_USER_FORGOT_PASSWORD = 'auth/forgotPassword';
     const URL_USER_RESET_PASSWORD = 'auth/resetPassword';
+    const URL_USER_RESET_COMPANY_ADMIN_PASSWORD = 'auth/resetPassword';
     const URL_USER_VALIDATE_PASSWORD_RESET_TOKEN = 'auth/validatePasswordResetToken';
 
     const URL_COMPANY_ADD = 'company/createCompany';
@@ -194,7 +195,6 @@ class ServiceConstant
     const URL_COMPANY_USERS = 'company/getAllUsers';
     const URL_USER_ADD = 'company/createUser';
     const URL_USER_EDIT = 'company/editUser';
-    const URL_USER_RESET_COMPANY_ADMIN_PASSWORD = 'company/resetcompanyadminpassword';
     const URL_COMPANY_REQUESTS = 'company/getRequests';
     const URL_MAKE_SHIPMENT_REQUEST = 'company/makeShipmentRequest';
     const URL_MAKE_BULK_SHIPMENT_REQUEST = 'company/makeBulkShipmentRequest';
