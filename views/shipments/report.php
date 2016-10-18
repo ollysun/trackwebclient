@@ -44,6 +44,20 @@ $this->params['content_header_button'] = "<a href='" . $downloadURL . "' class='
                                    data-date-format="yyyy/mm/dd" data-date-end-date="0d"
                                    value="<?= $end_created_date; ?>">
                         </div>
+
+                        <div class="pull-left form-group form-group-sm">
+                            <label for="">Pickup Date</label><br>
+                            <input name="start_pickup_date" class="form-control date-range" data-provide="datepicker"
+                                   data-date-format="yyyy/mm/dd" data-date-end-date="0d"
+                                   value="<?= $start_pickup_date; ?>">
+                        </div>
+                        <div class="pull-left form-group form-group-sm">
+                            <label for=""></label><br>
+                            <input name="end_pickup_date" class="form-control date-range" data-provide="datepicker"
+                                   data-date-format="yyyy/mm/dd" data-date-end-date="0d"
+                                   value="<?= $end_pickup_date; ?>">
+                        </div>
+
                         <div class="pull-left form-group form-group-sm">
                             <label for="">Modified Date</label><br>
                             <input name="start_modified_date" class="form-control date-range" data-provide="datepicker"
@@ -293,7 +307,7 @@ $this->params['content_header_button'] = "<a href='" . $downloadURL . "' class='
                                 <td><?= Calypso::getValue($parcel, 'parcel_reference_number') ?></td>
                                 <td><?= Calypso::getValue($parcel, 'parcel_order_number') ?></td>
                                 <td><?= Util::formatDate(ServiceConstant::DATE_TIME_FORMAT, Calypso::getValue($parcel, 'parcel_created_date')); ?></td>
-                                <td><?= Util::formatDate(ServiceConstant::DATE_TIME_FORMAT, Calypso::getValue($parcel, 'parcel_pickup_date')); ?></td>
+                                <td><?= Util::formatDate(ServiceConstant::DATE_FORMAT, Calypso::getValue($parcel, 'parcel_pickup_date')); ?></td>
                                 <td><?= Calypso::getValue($parcel, 'route_name'); ?></td>
                                 <td><?= Calypso::getDisplayValue($parcel, 'parcel_comment_comment'); ?></td>
                                 <td><?= ServiceConstant::getStatus($parcel['parcel_status']); ?></td>

@@ -36,7 +36,7 @@ TrackingAsset::register($this);
 <header class="navbar" id="header-navbar">
     <div class="container">
         <div id="logo" class="navbar-brand navbar-brand-transparent">
-            <?= Html::img('@web/img/tnt-cp-logo-color.png', ['class' => 'normal-logo', 'alt' => 'CourierPlus Logo']) ?>
+            <?= Html::img('@web/img/courier-logo.png', ['class' => 'normal-logo', 'alt' => 'CourierPlus Logo']) ?>
         </div>
         <div class="navbar-text text-muted"><a href="track">TRACKING PORTAL</a></div>
         <?php if(!isset($this->params['hide-tracking-header-form'])): ?>

@@ -152,6 +152,26 @@ class ParcelAdapter extends BaseAdapter
         return $this->request(ServiceConstant::URL_GET_ALL_PARCEL . '?' . $params, array(), self::HTTP_GET);
     }
 
+
+    public function getParcelsForDirectManifest($branch_id = null, $offset = 0, $count = 50, $with_total = null)
+    {
+        $filter = array(
+            'status' => 9,
+            'to_branch_id' => $branch_id,
+            'with_total_count' => $with_total,
+            'with_from_branch' => 1,
+            'with_to_branch' => 1,
+            'with_city' => 1,
+            'with_sender_address' => 1,
+            'with_receiver_address' => 1,
+            'with_created_branch' => 1,
+            'with_parcel_comment' => 1,
+            'offset' => $offset,
+            'count' => $count);
+        $params = http_build_query($filter);
+        return $this->request(ServiceConstant::URL_GET_ALL_PARCEL . '?' . $params, array(), self::HTTP_GET);
+    }
+
     public function getSearchParcels($status, $waybill_number, $offset = 0, $count = 50, $with_total = null, $branch_id = null, $only_parents = null, $with_created_branch = true)
     {
         $filters = array(

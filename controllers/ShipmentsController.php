@@ -863,7 +863,7 @@ class ShipmentsController extends BaseController
         $page_width = is_null($page_width) ? $this->page_width : $page_width;
         $offset = ($page - 1) * $page_width;
 
-        $filter_params = ['company_id', 'start_modified_date', 'end_modified_date', 'for_return', 'parcel_type',
+        $filter_params = ['company_id', 'start_pickup_date', 'end_pickup_date', 'start_modified_date', 'end_modified_date', 'for_return', 'parcel_type',
             'status', 'min_weight', 'max_weight', 'min_amount_due', 'max_amount_due', 'cash_on_delivery', 'delivery_type',
             'payment_type', 'shipping_type', 'start_created_date', 'end_created_date', 'created_branch_id', 'route_id', 'request_type',
             'from_branch_id', 'branch_type', 'return_reason_comment'];
@@ -883,6 +883,12 @@ class ShipmentsController extends BaseController
         $end_modified_date = Yii::$app->request->get('end_modified_date', null);
         $filters['start_modified_date'] = (Util::checkEmpty($start_modified_date)) ? null : $start_modified_date . ' 00:00:00';
         $filters['end_modified_date'] = (Util::checkEmpty($end_modified_date)) ? null : $end_modified_date . ' 23:59:59';
+
+        $start_pickup_date = Yii::$app->request->get('start_pickup_date', null);
+        $end_pickup_date = Yii::$app->request->get('end_pickup_date', null);
+        $filters['start_pickup_date'] = (Util::checkEmpty($start_pickup_date)) ? null : $start_pickup_date . ' 00:00:00';
+        $filters['end_pickup_date'] = (Util::checkEmpty($end_pickup_date)) ? null : $end_pickup_date . ' 23:59:59';
+
 
         $start_created_date = Yii::$app->request->get('start_created_date', Util::getToday('/'));
         $end_created_date = Yii::$app->request->get('end_created_date', Util::getToday('/'));
@@ -948,6 +954,8 @@ class ShipmentsController extends BaseController
             'filters' => $filters,
             'start_modified_date' => $start_modified_date,
             'end_modified_date' => $end_modified_date,
+            'start_pickup_date' => $start_pickup_date,
+            'end_pickup_date' => $end_pickup_date,
             'start_created_date' => $start_created_date,
             'end_created_date' => $end_created_date,
             'offset' => $offset,
@@ -1004,7 +1012,7 @@ class ShipmentsController extends BaseController
         $stream = fopen("php://output", "w");
 
 
-        $headers = array('SN', 'Waybill Number', 'Sender', 'Sender Email', 'Sender Phone', 'Sender Address', 'Sender City', 'Sender State', 'Receiver', 'Receiver Email', 'Receiver Phone', 'Receiver Address', 'Receiver City', 'Receiver State', 'Weight/Piece', 'Payment Method', 'Amount Due', 'Cash Amount', 'POS Amount', 'POS Transaction ID', 'Parcel Type', 'Cash on Delivery', 'Delivery Type', 'Package Value', '# of Package', 'Shipping Type', 'Created Date', 'Last Modified Date', 'Status', 'Reference Number', 'Originating Branch', 'Route', 'Request Type', 'For Return', 'Other Info', 'Company Reg No', 'Billing Plan Name', 'Created By', 'Amount due to Merchant', 'Insurance Charge', 'Storrage/Demurrage Charge', 'Handling Charge', 'Duty Charge', 'Cost of Crating', 'Other Charges', 'POD Name', 'POD Date');
+        $headers = array('SN', 'Waybill Number', 'Sender', 'Sender Email', 'Sender Phone', 'Sender Address', 'Sender City', 'Sender State', 'Receiver', 'Receiver Email', 'Receiver Phone', 'Receiver Address', 'Receiver City', 'Receiver State', 'Weight/Piece', 'Payment Method', 'Amount Due', 'Cash Amount', 'POS Amount', 'POS Transaction ID', 'Parcel Type', 'Cash on Delivery', 'Delivery Type', 'Package Value', '# of Package', 'Shipping Type', 'Created Date', 'Pickup Date', 'Last Modified Date', 'Status', 'Reference Number', 'Originating Branch', 'Route', 'Request Type', 'For Return', 'Other Info', 'Company Reg No', 'Billing Plan Name', 'Created By', 'Amount due to Merchant', 'Insurance Charge', 'Storrage/Demurrage Charge', 'Handling Charge', 'Duty Charge', 'Cost of Crating', 'Other Charges', 'POD Name', 'POD Date');
         fputcsv($stream, $headers);
 
 
@@ -1049,6 +1057,7 @@ class ShipmentsController extends BaseController
                         $result['parcel_no_of_package'],
                         ServiceConstant::getShippingType($result['parcel_shipping_type']),
                         Util::convertToTrackingDateFormat($result['parcel_created_date']),
+                        Util::convertToTrackingDateFormat($result['parcel_pickup_date']),
                         Util::formatDate(ServiceConstant::DATE_TIME_FORMAT, $result['parcel_modified_date']),
                         strip_tags(ServiceConstant::getStatus($result['parcel_status'])),
                         $result['parcel_reference_number'],

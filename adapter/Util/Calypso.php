@@ -46,6 +46,10 @@ class Calypso
         return isset($user['company_id']);
     }
 
+    public static function isImportedTrackingNumber($tracking_number){
+        return strlen($tracking_number) == 5;
+    }
+
     public static function userIsInRole($role_id){
         return self::getInstance()->session('user_session')['role']['id'] == $role_id;
     }
@@ -173,7 +177,7 @@ class Calypso
                 'New_Shipments' => ['base_link' => 'shipments/processed', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_EC, ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ, ServiceConstant::BRANCH_TYPE_COMPANY]],
                 'Receive_Shipments' => ['base_link' => 'hubs/hubarrival', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
                 'Ready_for_Sorting' => ['base_link' => 'hubs/destination', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
-                'Direct_Manifest' => ['base_link' => 'hubs/directmanifest', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
+                'Direct_Manifest' => ['base_link' => 'hubs/directmanifest', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_HUB]],
                 'Ready_for_Sorting_G-man' => ['base_link' => 'hubs/destination-groundsman', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_HUB]],
                 'Expected_Shipments' => ['base_link' => 'hubs/expected', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_HUB]],
                 'Draft_Sortings' => ['base_link' => 'hubs/draftsortings', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_HUB]],

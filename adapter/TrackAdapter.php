@@ -32,6 +32,18 @@ class TrackAdapter extends BaseAdapter
     }
 
     /**
+     * Get Tracking Info
+     * @author Adeyemi Olaoye <yemi@cottacush.com>
+     * @param $tracking_number
+     * @return array|mixed|string
+     */
+    public function getImportedParcelTrackingInfo($tracking_number)
+    {
+        $response = $this->request(ServiceConstant::URL_IMPORTED_PARCEL_HISTORY, ['tracking_number' => $tracking_number], self::HTTP_GET);
+        return $this->decodeResponse($response);
+    }
+
+    /**
      * Process tracking history
      * @author Adeyemi Olaoye <yemi@cottacush.com>
      * @param $history

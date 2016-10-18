@@ -54,6 +54,7 @@ class ServiceConstant
     const URL_MOVE_TO_ARRIVAL = '/parcel/moveToArrival/';
     const URL_MOVE_FOR_DELIVERY = '/parcel/moveToForDelivery/';
     const URL_PARCEL_HISTORY = '/parcel/history/';
+    const URL_IMPORTED_PARCEL_HISTORY = 'parcel/importedParcelHistory';
     const URL_CALC_BILLING = 'zone/calcBilling';
     const URL_MOVE_TO_BEING_DELIVERED = '/parcel/moveToBeingDelivered/';
     const URL_MOVE_TO_DELIVERED = '/parcel/moveToDelivered/';

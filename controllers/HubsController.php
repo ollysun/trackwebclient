@@ -111,8 +111,70 @@ class HubsController extends BaseController
         return $this->render('destination', $viewData);
     }
 
-    public function actionDirectmanifest($page = 1, $page_width = null, $type = null){
+    public function actionDirectmanifest($page = 1, $page_width = null, $type = null)
+    {
+        $viewData['page_width'] = is_null($page_width) ? $this->page_width : $page_width;
+        $viewData['offset'] = ($page - 1) * $viewData['page_width'];
+        /**
+         * This is to allow an hub officer perform the function of a groundsman
+         */
+        $allowGroundsManFunctions = !is_null($type) && $type == 'groundsman';
+        $isGroundman = $this->userData['role_id'] == ServiceConstant::USER_TYPE_GROUNDSMAN || $allowGroundsManFunctions;
 
+        $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+
+        if (\Yii::$app->request->isPost) {
+            $branch = \Yii::$app->request->post('branch');
+            $branch_type = \Yii::$app->request->post('branch_type');
+            $waybill_numbers = \Yii::$app->request->post('waybills');
+            $return_to_origin = \Yii::$app->request->post('return_to_origin');
+
+            if (!isset($branch) || empty($waybill_numbers)) {
+                $this->flashError('Please ensure you set destinations at least a (one) for the parcels');
+            }
+
+            $postParams['waybill_numbers'] = implode(',', $waybill_numbers);
+            $postParams['return_to_origin'] = $return_to_origin;
+
+
+            if ($branch == $this->userData['branch_id']) {
+                $response = $parcelsAdapter->assignToGroundsMan($postParams);
+            } else {
+                if ($branch_type == 'route') {
+                    $postParams['route_id'] = $branch;
+                    $response = $parcelsAdapter->moveForDelivery($postParams);
+                } else {
+                    $postParams['to_branch_id'] = $branch;
+                    $response = $parcelsAdapter->moveToForSweeper($postParams);
+                }
+            }
+
+            if ($response['status'] === ResponseHandler::STATUS_OK) {
+
+                if ($branch_type != 'route' && ($this->userData['branch_id'] == $branch)) {
+                    $this->flashSuccess('Parcels have been successfully moved to the next destination.');
+                } else {
+                    $this->flashSuccess('Parcels have been successfully moved to the next destination. <a href="delivery">Generate Manifest</a>');
+                }
+            } else {
+                $this->flashError('An error occurred while trying to move parcels to next destination. Please try again.');
+            }
+        }
+
+        $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $arrival_parcels = $parcelsAdapter->getParcelsForDirectManifest($this->userData['branch_id'], $viewData['offset'], $viewData['page_width'], 1);
+
+
+        if ($arrival_parcels['status'] === ResponseHandler::STATUS_OK) {
+            $viewData['parcel_next'] = $arrival_parcels['data']['parcels'];
+            $viewData['total_count'] = $arrival_parcels['data']['total_count'];
+        } else {
+            $this->flashError('An error occurred while trying to fetch parcels. Please try again.');
+            $viewData['parcel_next'] = [];
+        }
+        $viewData['isGroundsman'] = $isGroundman;
+        $viewData['reasons_list'] = $parcelsAdapter->getParcelReturnReasons();
+        return $this->render('destination', $viewData);
     }
 
     public function actionHubarrival($page = 1, $page_width = null)
