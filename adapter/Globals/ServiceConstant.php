@@ -133,6 +133,10 @@ class ServiceConstant
     const URL_REGION_CITY_GET_ONE = 'region/getOneCity';
     const URL_REGION_CITY_GET_ALL = 'region/getAllCity';
 
+    const URL_BUSINESS_MANAGER_ADD = 'businessmanager/add';
+    const URL_BUSINESS_MANAGER_CHANGE_REGION = 'businessmanager/changeregion';
+    const URL_BUSINESS_MANAGER_GET_ALL = 'businessmanager/getall';
+
     const URL_ZONES_ADD = '/zone/add';
     const URL_ZONES_EDIT = '/zone/edit';
     const URL_ZONES_STATUS = '/zone/changeStatus';
@@ -215,6 +219,7 @@ class ServiceConstant
 
     const URL_BILLING_PLAN_GET_CITIES_WITH_CHARGE = 'billingPlan/getCitiesWithCharge';
     const URL_BILLING_PLAN_ADD = 'billingPlan/add';
+    const URL_BILLING_PLAN_UPDATE_DISCOUNT = 'billingPlan/updatediscount';
     const URL_BILLING_PLAN_GET_ALL = 'billingPlan/getAll';
     const URL_RESET_ONFORWARDING_CHARGES = 'billingPlan/resetOnforwardingChargesToZero';
     const URL_CLONE_BILLING_PLAN = 'billingPlan/clonebillingplan';

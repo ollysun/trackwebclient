@@ -866,7 +866,7 @@ class ShipmentsController extends BaseController
         $filter_params = ['company_id', 'start_pickup_date', 'end_pickup_date', 'start_modified_date', 'end_modified_date', 'for_return', 'parcel_type',
             'status', 'min_weight', 'max_weight', 'min_amount_due', 'max_amount_due', 'cash_on_delivery', 'delivery_type',
             'payment_type', 'shipping_type', 'start_created_date', 'end_created_date', 'created_branch_id', 'route_id', 'request_type',
-            'from_branch_id', 'branch_type', 'return_reason_comment'];
+            'from_branch_id', 'branch_type', 'return_reason_comment', 'business_manager_staff_id'];
         $extra_details = ['with_receiver', 'with_receiver_address', 'with_route'];
 
 
@@ -964,7 +964,8 @@ class ShipmentsController extends BaseController
             'companies' => $companies,
             'selected_company' => $filters['company_id'],
             'return_reasons' => $return_reasons,
-            'selected_return_reason' => $filters['return_reason_comment']
+            'selected_return_reason' => $filters['return_reason_comment'],
+            'business_manager_staff_id' => isset($filters['business_manager_staff_id'])?$filters['business_manager_staff_id']:''
         ));
     }
 

@@ -259,6 +259,11 @@ $this->params['content_header_button'] = "<a href='" . $downloadURL . "' class='
                             </select>
                         </div>
 
+                        <div class="pull-left form-group form-group-sm">
+                            <label for="">Business Manager</label><br>
+                            <input name="business_manager_staff_id" value="<?= $business_manager_staff_id ?>" class="form-control" id="business_manager_staff_id">
+                        </div>
+
                         <div class="pull-left">
                             <label>&nbsp;</label><br>
                             <button class="btn btn-default btn-sm" id="apply" type="submit"><i class="fa fa-filter"></i>

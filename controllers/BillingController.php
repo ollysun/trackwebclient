@@ -3,6 +3,7 @@ namespace app\controllers;
 
 use Adapter\BillingAdapter;
 use Adapter\BillingPlanAdapter;
+use Adapter\BusinessManagerAdapter;
 use Adapter\CompanyAdapter;
 use Adapter\Globals\ServiceConstant;
 use Adapter\Util\Calypso;
@@ -204,6 +205,7 @@ class BillingController extends BaseController
             $data['status'] = Calypso::getValue($entry, 'status');
             $data['active_fg'] = $data['status'];
             $data['country_id'] = Calypso::getValue($entry, 'country_id', 1); //Hard coded to Nigeria
+            $data['manager_id'] = Calypso::getValue($entry, 'manager_id');
 
             if (($task == 'create' || $task == 'edit') && (empty($data['name']) || empty($data['description']))) {
                 $error[] = "All details are required!";
@@ -233,7 +235,7 @@ class BillingController extends BaseController
 
         $filter_country = Calypso::getValue(Yii::$app->request->post(), 'filter_country', 1);
         $refAdp = new RefAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $regions = $refAdp->getRegions($filter_country);
+        $regions = $refAdp->getRegions($filter_country, 1);
         $regions = new ResponseHandler($regions);
 
         $refAdp = new RefAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
@@ -243,6 +245,75 @@ class BillingController extends BaseController
         $region_list = $regions->getStatus() == ResponseHandler::STATUS_OK ? $regions->getData() : [];
         $countries_list = $countries->getStatus() == ResponseHandler::STATUS_OK ? $countries->getData() : [];
         return $this->render('regions', array('regions' => $region_list, 'countries' => $countries_list,));
+    }
+
+    public function actionBusinessmanagers($page = 1, $page_width = null){
+        $bmAdapter = new BusinessManagerAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+
+        if(Yii::$app->request->isPost){
+            $entry = Yii::$app->request->post();
+            $task = Calypso::getValue(Yii::$app->request->post(), 'task', '');
+            $error = [];
+
+            $data = [];
+            $data['region_id'] = Calypso::getValue($entry, 'region_id', null);
+            $data['status'] = Calypso::getValue($entry, 'status');
+            $data['staff_id'] = Calypso::getValue($entry, 'staff_id');
+
+            if (($task == 'create' || $task == 'edit') && (empty($data['region_id']) || empty($data['staff_id']))) {
+                $error[] = "All details are required!";
+            }else{
+                if($task == 'create'){
+                    $response = $bmAdapter->addBusinessManager($data['region_id'], $data['staff_id']);
+                    if($response['status'] == ResponseHandler::STATUS_OK){
+                        $this->flashSuccess('BM added successfully');
+                    }else{
+                        Yii::$app->session->setFlash('danger', 'There was a problem creating the BM. ' . $response['message']);
+                    }
+                }elseif($task == 'edit'){
+                    $response = $bmAdapter->changeRegion($data['staff_id'], $data['region_id']);
+                    if($response['status'] == ResponseHandler::STATUS_OK){
+                        $this->flashSuccess('BM updated successfully');
+                    }else{
+                        $this->flashError('There was a problem updating the BM. ' . $response['message']);
+                    }
+                }
+            }
+        }
+
+
+        if ($page_width != null) {
+            $this->page_width = $page_width;
+            Calypso::getInstance()->cookie('page_width', $page_width);
+        }
+
+        $page_width = is_null($page_width) ? $this->page_width : $page_width;
+        $offset = ($page - 1) * $page_width;
+
+        $filter = ['offset' => $offset, 'count' => $page_width, 'paginate' => true];
+        if(isset(Calypso::getInstance()->get()->region_id)){
+            $filter['region_id'] = Calypso::getInstance()->get()->region_id;
+        }
+
+
+        $filter_country = Calypso::getValue(Yii::$app->request->post(), 'filter_country', 1);
+        $refAdp = new RefAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $regions = $refAdp->getRegions($filter_country);
+        $regions = new ResponseHandler($regions);
+        $region_list = $regions->getStatus() == ResponseHandler::STATUS_OK ? $regions->getData() : [];
+
+        $result = $bmAdapter->getAll();
+
+        if($result['status'] == ResponseHandler::STATUS_OK){
+            $business_managers = $result['data']['business_managers'];
+            $total_count = $result['data']['total_count'];
+        }else{
+            $business_managers = [];
+            $total_count = 0;
+
+        }
+
+        return $this->render('business_managers', array('regions' => $region_list, 'business_managers' => $business_managers, 'total_count' => $total_count));
     }
 
     public function actionStatemapping()
@@ -680,12 +751,27 @@ class BillingController extends BaseController
     {
         $billingAdapter = new BillingPlanAdapter();
         if (Yii::$app->request->isPost) {
+            if(Yii::$app->request->post('id')){
+                $id = Yii::$app->request->post('id');
+                $discount = Yii::$app->request->post('discount');
+                $status = $billingAdapter->updateBillingDiscount($id, $discount);
+
+                if ($status) {
+                    $this->flashSuccess("Billing plan updated successfully");
+                } else {
+                    $this->flashError($billingAdapter->getLastErrorMessage());
+                }
+                return $this->redirect(Url::to("/billing/corporate"));
+            }
+
             if (Yii::$app->request->post('clone_billing_plan') != null) {
+
                 $companyId = Yii::$app->request->post('company');
                 $baseBillingPlanId = Yii::$app->request->post('base_billing_plan_id');
                 $billingPlanName = Yii::$app->request->post('name');
+                $discount = Yii::$app->request->post('discount');
 
-                $status = $billingAdapter->cloneBillingPlan($baseBillingPlanId, $companyId, $billingPlanName);
+                $status = $billingAdapter->cloneBillingPlan($baseBillingPlanId, $companyId, $billingPlanName, $discount);
                 if ($status) {
                     $this->flashSuccess('Billing Plan cloned successfully');
                 } else {
@@ -696,8 +782,9 @@ class BillingController extends BaseController
                 $name = Yii::$app->request->post('name');
                 $type = Yii::$app->request->post('type');
                 $companyId = Yii::$app->request->post('company');
+                $discount = Yii::$app->request->post('discount');
 
-                $status = $billingAdapter->createBillingPlan($name, $type, $companyId);
+                $status = $billingAdapter->createBillingPlan($name, $type, $companyId, $discount);
 
                 if ($status) {
                     $this->flashSuccess("Billing plan created successfully");

@@ -15,7 +15,7 @@ class AuditAdapter extends BaseAdapter
 {
     public function getAudit($log_id)
     {
-        return $this->request(ServiceConstant::URL_REGION_CITY_GET_ONE  . '?log_id=' . $log_id, [], self::HTTP_POST);
+        return $this->request(ServiceConstant::URL_AUDIT_GET_ONE  . '?log_id=' . $log_id, [], self::HTTP_POST);
     }
 
     public function getAllAudit(array $filters = null)

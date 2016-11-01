@@ -33,6 +33,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                     <th style="width: 20px">S/N</th>
                     <th>Name</th>
                     <th>Description</th>
+                    <th>Business Manager</th>
                     <th>Status</th>
                     <th>Action</th>
                 </tr>
@@ -41,16 +42,20 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                 <?php
                 if (isset($regions) && is_array(($regions))):
                     $row = 1;
-                    foreach ($regions as $region) {
+                    foreach ($regions as $region_data) {
+                        $region = $region_data['region'];
+                        $manger = $region_data['admin'];
                         ?>
                         <tr>
                             <td><?= $row++; ?></td>
                             <td class="n<?= $region['id']; ?>"><?= $region['name']; ?></td>
                             <td class="d<?= $region['id']; ?>"><?= $region['description']; ?></td>
+                            <td><?= $manger['fullname'] ?> <?php if($manger['staff_id']):?> (<?= $manger['staff_id'] ?>) <?php endif;?></td>
+
                             <td><?= ($region['active_fg'] == ServiceConstant::ACTIVE ? 'Active' : 'Inactive'); ?></td>
                             <td>
                                 <button type="button" class="btn btn-default btn-xs" data-toggle="modal"
-                                        data-target="#region_editModal" data-id="<?= $region['id']; ?>"><i
+                                        data-target="#region_editModal" data-id="<?= $region['id']; ?>" data-manager-id="<?= $manger['staff_id'] ?>"><i
                                         class="fa fa-edit"></i> Edit
                                 </button>
                                 <button type="button" class="btn btn-default btn-xs hidden" data-toggle="modal"
@@ -101,6 +106,10 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                         <label>Description</label>
                         <textarea class="form-control" name="description"></textarea>
                     </div>
+                    <div class="form-group">
+                        <label>Manager Staff Id</label>
+                        <input class="form-control required" name="manager_id">
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <input type="hidden" name="task" value="create">
@@ -130,6 +139,11 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                     <div class="form-group">
                         <label>Description</label>
                         <textarea class="form-control" name="description"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Manager Staff Id</label>
+                        <input class="form-control required" name="manager_id">
                     </div>
                 </div>
                 <div class="modal-footer">

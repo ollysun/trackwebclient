@@ -140,14 +140,14 @@ $this->params['breadcrumbs'] = array(
 						<div class="form-group col-xs-3">
 							<label for="base_percent">Base Percentage</label>
 							<div class="input-group">
-								<input type="text" class="form-control validate required integer" id="base_percent">
+								<input type="text" class="form-control validate required decimal" id="base_percent">
 								<span class="input-group-addon">%</span>
 							</div>
 						</div>
 						<div class="form-group col-xs-3">
 							<label for="incr_percent">Incr. Percentage</label>
 							<div class="input-group">
-								<input type="text" class="form-control validate required integer" id="incr_percent">
+								<input type="text" class="form-control validate required decimal" id="incr_percent">
 								<span class="input-group-addon">%</span>
 							</div>
 						</div>

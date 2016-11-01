@@ -439,7 +439,6 @@ class AdminController extends BaseController
         if (Yii::$app->request->isPost) {
             $data = Yii::$app->request->post();
 
-
             // Create Company
             $status = $companyAdapter->createCompany($data);
 

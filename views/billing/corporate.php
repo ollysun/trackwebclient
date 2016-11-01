@@ -49,6 +49,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                         <th>Billing Name</th>
                         <th>Associated Company</th>
                         <th>Type</th>
+                        <th class="hidden">Discount</th>
                         <th>Actions</th>
                     </tr>
                     </thead>
@@ -61,15 +62,24 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                             <td><?= strtoupper(Calypso::getValue($billingPlan, 'name')) ?></td>
                             <td><?= strtoupper(Calypso::getValue($billingPlan, 'company.name', 'N/A')) ?></td>
                             <td><?= strtoupper(Calypso::getValue(BillingPlanAdapter::getTypes(), Calypso::getValue($billingPlan, 'type'))); ?></td>
+                            <td class="hidden"><?= Calypso::getValue($billingPlan, 'discount') ?></td>
                             <td>
+                                <a data-toggle="modal" data-target="#editModal"
+                                   data-discount="<?= Calypso::getValue($billingPlan, 'discount') ?>"
+                                   data-name="<?= Calypso::getValue($billingPlan, 'name') ?>"
+                                   data-id="<?= Calypso::getValue($billingPlan, 'id')?>"
+                                   data-company_id="<?= Calypso::getValue($billingPlan, 'company.id')?>"
+                                   data-type="<?= Calypso::getValue(BillingPlanAdapter::getTypes(), Calypso::getValue($billingPlan, 'type'))?>" href="#editModal"
+                                   class="btn btn-xs btn-primary editbtn hidden">Edit</a>
                                 <a href="<?= Url::to(["/billing/onforwarding", 'billing_plan_id' => Calypso::getValue($billingPlan, 'id')]) ?>"
-                                   class="btn btn-xs btn-default">Onforwarding Charges</a>
+                                   class="btn btn-xs btn-default">Onforwarding <br/> Charges</a>
                                 <a href="<?= Url::to(["/billing/citymapping", 'billing_plan_id' => Calypso::getValue($billingPlan, 'id')]) ?>"
                                    class="btn btn-xs btn-primary">City Mapping</a>
                                 <a href="<?= Url::to(["/billing/weightranges", 'billing_plan_id' => Calypso::getValue($billingPlan, 'id')]) ?>"
                                    class="btn btn-xs btn-default">Weight Ranges</a>
                                 <a href="<?= Url::to(["/billing/pricing", 'billing_plan_id' => Calypso::getValue($billingPlan, 'id')]) ?>"
                                    class="btn btn-xs btn-primary">Pricing</a>
+
                             </td>
                         </tr>
                     <?php endforeach; ?>
@@ -117,6 +127,12 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                         <div class="form-group" id="clone-details">
 
                         </div>
+
+
+                        <div class="form-group hidden">
+                            <label for="name">Discount</label>
+                            <input id="discount" value="0" class="form-control validate required" name="discount"/>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <input type="hidden" name="id">
@@ -130,6 +146,41 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
             </form>
         </div>
     </div>
+
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <form class="validate-form" method="post" action="<?= Url::to("/billing/savecorporate") ?>">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Edit Billing Plan</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input readonly id="edit_name" class="form-control validate required" name="name"/>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="name">Discount</label>
+                            <input id="edit_discount" value="0" class="form-control validate required" name="discount"/>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="hidden" name="id" id="edit_id">
+                        <input type="hidden" name="edit_type"
+                               value="<?= BillingPlanAdapter::TYPE_WEIGHT_AND_ON_FORWARDING; ?>">
+                        <input type="hidden" name="edit_task" value="status">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
     <!-- this page specific scripts -->
 <?php $this->registerJsFile('@web/js/finance/corporate_billing.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/validate.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>

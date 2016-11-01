@@ -47,7 +47,7 @@ class Calypso
     }
 
     public static function isImportedTrackingNumber($tracking_number){
-        return strlen($tracking_number) == 5;
+        return strlen($tracking_number) == 5 || strlen($tracking_number) == 6;
     }
 
     public static function userIsInRole($role_id){
@@ -207,6 +207,7 @@ class Calypso
                     'View_Matrix' => ['base_link' => 'billing/matrix', 'class' => ''],
                     'Zones' => ['base_link' => 'billing/zones', 'class' => ''],
                     'Regions' => ['base_link' => 'billing/regions', 'class' => ''],
+                    'Business_Managers' => ['base_link' => 'billing/businessmanagers', 'class' => ''],
                     'State_-_Region_Mapping' => ['base_link' => 'billing/statemapping', 'class' => ''],
                     'City_-_State Mapping' => ['base_link' => 'billing/citymapping', 'class' => ''],
                     'Weight_Ranges' => ['base_link' => 'billing/weightranges', 'class' => ''],
@@ -230,6 +231,7 @@ class Calypso
                     'Corporate Shipments' => ['base_link' => 'finance/corporateshipment', 'class' => ''],
                     'Credit Note' => ['base_link' => 'finance/creditnote', 'class' => ''],
                     'Customers' => ['base_link' => 'finance/customersall', 'class' => ''],
+                    'Get_Quote' => ['base_link' => 'finance/getquote', 'class' => ''],
                     'Invoice' => ['base_link' => 'finance/invoice', 'class' => ''],
                     'Bulk Invoice Tasks' => ['base_link' => 'finance/bulkinvoicetasks', 'class' => ''],
                     'Merchants' => ['base_link' => 'finance/merchantsdue', 'class' => ''],

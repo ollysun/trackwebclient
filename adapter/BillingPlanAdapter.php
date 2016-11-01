@@ -46,9 +46,20 @@ class BillingPlanAdapter extends BaseAdapter
      * @param $companyId
      * @return bool
      */
-    public function createBillingPlan($name, $type, $companyId)
+    public function createBillingPlan($name, $type, $companyId, $discount)
     {
-        $rawResponse = $this->request(ServiceConstant::URL_BILLING_PLAN_ADD, ['name' => $name, 'type' => $type, 'company_id' => $companyId], self::HTTP_POST);
+        $rawResponse = $this->request(ServiceConstant::URL_BILLING_PLAN_ADD, ['name' => $name, 'type' => $type, 'company_id' => $companyId, 'discount' => $discount], self::HTTP_POST);
+        $response = new ResponseHandler($rawResponse);
+
+        if (!$response->isSuccess()) {
+            $this->lastErrorMessage = $response->getError();
+        }
+
+        return $response->isSuccess();
+    }
+
+    public function updateBillingDiscount($plan_id, $discount){
+        $rawResponse = $this->request(ServiceConstant::URL_BILLING_PLAN_UPDATE_DISCOUNT, ['plan_id' => $plan_id, 'discount' => $discount], self::HTTP_POST);
         $response = new ResponseHandler($rawResponse);
 
         if (!$response->isSuccess()) {
@@ -134,11 +145,12 @@ class BillingPlanAdapter extends BaseAdapter
      * @param $billingPlanName
      * @return bool
      */
-    public function cloneBillingPlan($baseBillingPlanId,$companyId,$billingPlanName)
+    public function cloneBillingPlan($baseBillingPlanId,$companyId,$billingPlanName,$discount)
     {
         $params['base_billing_plan_id'] = $baseBillingPlanId;
         $params['company_id' ] = $companyId;
         $params['billing_plan_name'] = $billingPlanName;
+        $params['discount'] = $discount;
         $rawResponse = $this->request(ServiceConstant::URL_CLONE_BILLING_PLAN,$params,self::HTTP_POST);
         $response = new ResponseHandler($rawResponse);
 

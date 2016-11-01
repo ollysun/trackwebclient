@@ -21,7 +21,7 @@
                 });
             }
         });
-        
+
         $("[data-load_staff]").click(function () {
             var _this = $(this);
             var staff = $("#" + _this.data('staff')).val();
@@ -29,11 +29,19 @@
                 $.getJSON("/admin/getstaff?staff_id=" + staff, function (data) {
                     if(data.status == "success" && data.data && data.data.fullname && data.data.id) {
                         $("#" + _this.data('staff_name')).html(data.data.fullname.toUpperCase());
-                        $("#" + _this.data('staff_id')).val(data.data.id);
+                        if(_this.data('property') == 'staff_id'){
+                            $("#" + _this.data('staff_id')).val(data.data.staff_id);
+                        }else {
+                            $("#" + _this.data('staff_id')).val(data.data.id);
+                        }
+
+                    }else{
+                        alert('Invalid staff id');
                     }
                 });
             }
         });
+
         
         $("#enableSecondaryContact").change(function () {
             $("[data-secondary_contact]").attr("disabled", !($(this).prop("checked")));
@@ -100,8 +108,18 @@
                     'type' : 'input'
                 },
                 {
+                    'field' : 'business_manager_staff_id',
+                    'name' : 'company[business_manager_staff_id]',
+                    'type' : 'input'
+                },
+                {
                     'field': 'account_type_id',
                     'name': 'company[account_type_id]',
+                    'type' : 'input'
+                },
+                {
+                    'field': 'discount',
+                    'name': 'company[discount]',
                     'type' : 'input'
                 }
             ];

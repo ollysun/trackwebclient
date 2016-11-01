@@ -39,7 +39,7 @@ class TrackAdapter extends BaseAdapter
      */
     public function getImportedParcelTrackingInfo($tracking_number)
     {
-        $response = $this->request(ServiceConstant::URL_IMPORTED_PARCEL_HISTORY, ['tracking_number' => $tracking_number], self::HTTP_GET);
+        $response = $this->request(ServiceConstant::URL_PARCEL_HISTORY, ['imported_parcel' => 1, 'tracking_number' => $tracking_number], self::HTTP_GET);
         return $this->decodeResponse($response);
     }
 

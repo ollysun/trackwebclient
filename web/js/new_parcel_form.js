@@ -481,6 +481,7 @@ var Parcel = {
     },
 
 };
+
 $(document).ready(function () {
 
     //if initial data is set for cloning, run ajax calls for state and city on page load
@@ -605,7 +606,7 @@ $(document).ready(function () {
         var val = $(this).val();
         $('#' + val + '_billing').show();
         if (val == 'manual') {
-            $("input[name='manual_amount']").addClass('validate integer required');
+            $("input[name='manual_amount']").addClass('validate decimal required');
         } else if (val == 'auto') {
             if ($(this).is(':visible')) {
                 calculateBilling();
@@ -614,13 +615,13 @@ $(document).ready(function () {
             $(".amount-due").html("");
             $("#company").trigger("change");
         } else {
-            $("input[name='manual_amount']").removeClass('validate integer required');
+            $("input[name='manual_amount']").removeClass('validate decimal required');
         }
     });
 
     $("input[name='manual_amount']").keyup(function () {
         var _this = $(this);
-        _this.val(_this.val().replace(/[^\d]/g, ''));
+        _this.val(_this.val().replace(/[^\d.]/g, ''));
     });
 
     $("#billing_plan").change(function () {

@@ -74,9 +74,9 @@ class RefAdapter extends BaseAdapter
         return $this->request(ServiceConstant::URL_REF_PAYMENT_METHODS, [], self::HTTP_GET);
     }
 
-    public function getRegions($country_id)
+    public function getRegions($country_id, $with_manager = 0)
     {
-        return $this->request(ServiceConstant::URL_REF_REGIONS, ['country_id' => $country_id], self::HTTP_GET);
+        return $this->request(ServiceConstant::URL_REF_REGIONS, ['country_id' => $country_id, 'with_manager' => $with_manager], self::HTTP_GET);
     }
 
     /**

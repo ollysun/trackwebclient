@@ -26,6 +26,7 @@ var Region = {
                 ex.region_id = response.data.region_id;
                 ex.name = response.data.name;
                 ex.description = response.data.description;
+                ex.manager = response.data.manager_id;
                 self.setBranchDetails(ex, target);
             }
         });
@@ -36,6 +37,7 @@ var Region = {
         $(target+" input[name='name']").val(bObj.name);
         $(target+" select[name='status']").val(bObj.status);
         $(target+" textarea[name='description']").val(bObj.description);
+        $(target+" input[name='manager_id']").val(bObj.manager_id);
     },
 };
 $(document).ready(function () {
@@ -46,6 +48,7 @@ $(document).ready(function () {
         $(target+" input[name='name']").val($("td[class='n"+_id+"']").text());
         $(target+" textarea[name='description']").val($("td[class='d"+_id+"']").text());
         $(target+" select[name='status']").val($(this).attr('data-status'));
+        $(target+" input[name='manager_id']").val($(this).attr('data-manager-id'));
         $(target+" input[name='id']").val(_id);
     });
 

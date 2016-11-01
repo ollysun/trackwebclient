@@ -90,8 +90,10 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                                         data-city_id="<?= Calypso::getValue($company, 'city_id'); ?>"
                                         data-reg_no="<?= Calypso::getValue($company, 'reg_no'); ?>"
                                         data-relations_officer_staff_id="<?= Calypso::getValue($company, 'relations_officer.staff_id'); ?>"
+                                        data-business_manager_staff_id="<?= Calypso::getValue($company, 'business_manager_staff_id') == '0'?'':Calypso::getValue($company, 'business_manager_staff_id'); ?>"
                                         data-relations_officer_id="<?= Calypso::getValue($company, 'relations_officer_id'); ?>"
                                         data-account_type_id="<?= Calypso::getValue($company, 'account_type_id'); ?>"
+                                        data-discount="<?= Calypso::getValue($company, 'discount'); ?>"
                                         type="button" class="btn btn-default btn-xs editCompany" data-toggle="modal"
                                             data-target="#editModal"><i class="fa fa-edit"></i> Edit
                                     </button>
@@ -192,7 +194,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                         <br>
 
                         <div class="row">
-                            <fieldset class="col-xs-6">
+                            <fieldset class="col-xs-4">
                                 <legend>Relationship Officer</legend>
                                 <div class="row">
                                     <div class="col-xs-4 form-group">
@@ -211,16 +213,39 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                                     </div>
                                 </div>
                             </fieldset>
-                            <fieldset class="col-xs-6 hide">
+
+                            <fieldset class="col-xs-4">
+                                <legend>Business Manager</legend>
+                                <div class="row">
+                                    <div class="col-xs-4 form-group">
+                                        <label for="">Staff ID</label>
+                                        <input type="text" id="bmStaffIdInput" class="form-control validate required" name="business_manager_staff_id"
+                                               value="<?= Calypso::getDisplayValue($submitted_data,'business_manager_staff_id'); ?>">
+
+                                        <input id="bmStaffId" type="hidden" name="company[business_manager_staff_id]" value="<?= Calypso::getDisplayValue($submitted_data,'company.business_manager_staff_id'); ?>"/>
+                                    </div>
+                                    <div class="col-xs-4 form-group">
+                                        </br>
+                                        <button type="button" data-staff="bmStaffIdInput" data-property="staff_id" data-staff_id="bmStaffId" data-staff_name="bmStaffName" data-load_staff="true" class="btn btn-primary btn-xs">Load
+                                        </button>
+                                    </div>
+                                    <div class="col-xs-4 form-group">
+                                        </br>
+                                        <p id="bmStaffName"></p>
+                                    </div>
+                                </div>
+                            </fieldset>
+
+                            <fieldset class="col-xs-4">
                                 <legend>Business Offers</legend>
                                 <div class="row">
-                                    <div class="col-xs-6 form-group">
+                                    <div class="col-xs-6 form-group hide">
                                         <label for="">Credit Limit <span class="currency naira"></span></label>
-                                        <input type="text" class="form-control">
+                                        <input type="text" class="form-control" name="credit_limit">
                                     </div>
-                                    <div class="col-xs-6 form-group">
+                                    <div class="col-xs-12 form-group">
                                         <label for="">Discount (%)</label>
-                                        <input type="text" class="form-control">
+                                        <input type="text" class="form-control" name="discount">
                                     </div>
                                 </div>
                             </fieldset>
@@ -366,15 +391,15 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                         <br>
 
                         <div class="row">
-                            <fieldset class="col-xs-6">
+                            <fieldset class="col-xs-4">
                                 <legend>Relationship Officer</legend>
                                 <div class="row">
-                                    <div class="col-xs-4 form-group">
+                                    <div class="col-xs-6 form-group">
                                         <label for="">Staff ID</label>
                                         <input type="text" name="company[relations_officer_staff_id]" id="editStaff" class="form-control validate required">
                                         <input id="editStaffId" type="hidden" name="company[relations_officer_id]"/>
                                     </div>
-                                    <div class="col-xs-4 form-group">
+                                    <div class="col-xs-2 form-group">
                                         </br>
                                         <button type="button" data-staff="editStaff" data-staff_id="editStaffId" data-staff_name="editStaffName" data-load_staff="true" class="btn btn-primary btn-xs">Load
                                         </button>
@@ -385,16 +410,38 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                                     </div>
                                 </div>
                             </fieldset>
-                            <fieldset class="col-xs-6 hide">
-                                <legend>Business Offers</legend>
+
+
+                            <fieldset class="col-xs-4">
+                                <legend>Business Manager</legend>
                                 <div class="row">
                                     <div class="col-xs-6 form-group">
+                                        <label for="">Staff ID</label>
+                                        <input type="text" id="editBmStaffIdInput" class="form-control validate required" name="company[business_manager_staff_id]">
+
+                                    </div>
+                                    <div class="col-xs-2 form-group">
+                                        </br>
+                                        <button type="button" data-staff="editBmStaffIdInput" data-property="staff_id" data-staff_id="editBmStaffId" data-staff_name="editBmStaffName" data-load_staff="true" class="btn btn-primary btn-xs">Load
+                                        </button>
+                                    </div>
+                                    <div class="col-xs-4 form-group">
+                                        </br>
+                                        <p id="editBmStaffName"></p>
+                                    </div>
+                                </div>
+                            </fieldset>
+
+                            <fieldset class="col-xs-4">
+                                <legend>Business Offers</legend>
+                                <div class="row">
+                                    <div class="col-xs-6 form-group hide">
                                         <label for="">Credit Limit <span class="currency naira"></span></label>
                                         <input type="text" class="form-control number">
                                     </div>
-                                    <div class="col-xs-6 form-group">
+                                    <div class="col-xs-12 form-group">
                                         <label for="">Discount (%)</label>
-                                        <input type="text" class="form-control number">
+                                        <input type="text" class="form-control number" name="company[discount]">
                                     </div>
                                 </div>
                             </fieldset>
@@ -442,7 +489,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
         <?= "var previous_data = ". ($submitted_data ? 1: 0).";";?>
     </script>
 <?php $this->registerJsFile('@web/js/validate.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
-<?php $this->registerJsFile('@web/js/companies.js?v=1.0.0', ['depends' => [\app\assets\AppAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/companies.js?v=1.0.1', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/table.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/libs/jquery.dataTables.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 

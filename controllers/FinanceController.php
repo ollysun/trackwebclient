@@ -1,9 +1,12 @@
 <?php
 namespace app\controllers;
 
+use Adapter\BillingPlanAdapter;
+use Adapter\BranchAdapter;
 use Adapter\CompanyAdapter;
 use Adapter\CreditNoteAdapter;
 use Adapter\InvoiceAdapter;
+use Adapter\RefAdapter;
 use Adapter\Util\Util;
 use Yii;
 use Adapter\AdminAdapter;
@@ -15,6 +18,7 @@ use Adapter\ResponseHandler;
 use Adapter\Util\Calypso;
 use app\services\HubService;
 use yii\data\Pagination;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 
 class FinanceController extends BaseController
@@ -430,5 +434,45 @@ class FinanceController extends BaseController
         $responseHandler = new ResponseHandler($creditNoteParcelsResources);
         $creditNoteParcels = $responseHandler->getData();
         return $this->renderPartial('partial_credit_note_parcels', ['credit_note_parcels' => $creditNoteParcels, 'company_name' => $companyName, 'credit_note_no' => $creditNoteNo]);
+    }
+
+    public function actionGetquote(){
+        if(Yii::$app->request->isPost){
+            $discount = Yii::$app->request->post('discount');
+        }
+
+        $refData = new RefAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $countries = $refData->getCountries();
+        $states = (new ResponseHandler($refData->getStates(ServiceConstant::COUNTRY_NIGERIA)))->getData();
+
+        $companyAdapter = new CompanyAdapter();
+        $companies = $companyAdapter->getAllCompanies(['status' => ServiceConstant::ACTIVE]);
+
+        $hubAdp = new BranchAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $centres = $hubAdp->getAllHubs(false);
+        $centres = new ResponseHandler($centres);
+        $hubs_list = $centres->getStatus() == ResponseHandler::STATUS_OK ? $centres->getData() : [];
+
+        $user = Calypso::getInstance()->session('user_session');
+        $hubAdp = new BranchAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $centres = $hubAdp->getCentres(Calypso::isCooperateUser()?null:$user['branch']['id'], 0, $this->page_width, false);
+        $centres = new ResponseHandler($centres);
+        $centres_list = $centres->getStatus() == ResponseHandler::STATUS_OK ? $centres->getData() : [];
+
+        $centres_list = array_merge($centres_list, $hubs_list);
+
+        $bilingPlanAdapter = new BillingPlanAdapter();
+        $billingPlans = $bilingPlanAdapter->getBillingPlans(['no_paginate' => '1', 'type' => BillingPlanAdapter::TYPE_WEIGHT_AND_ON_FORWARDING, 'status' => ServiceConstant::ACTIVE]);
+
+        $billingPlans = ArrayHelper::map($billingPlans, 'id', 'name', 'company_id');
+
+        return $this->render('getquote', array(
+            'countries' => $countries,
+            'states' => $states,
+            'centres' => $centres_list,
+            'branch' => Calypso::isCooperateUser()?null:$user['branch'],
+            'companies' => $companies,
+            'billingPlans' => $billingPlans
+        ));
     }
 }

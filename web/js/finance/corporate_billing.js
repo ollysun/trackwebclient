@@ -13,3 +13,16 @@ cloneBillingPlan.click(function () {
 });
 
 
+$('.editbtn').click(function(){
+    var _this = $(this);
+    $('#edit_name').val($(this).attr('data-name'));
+    $('#edit_id').val($(this).attr('data-id'));
+
+    $("#edit_company option").prop('selected', false).filter(function() {
+        return $(this).val() == 1;
+    }).prop('selected', true);
+
+    $('#edit_discount').val($(this).attr('data-discount'));
+
+})
+
