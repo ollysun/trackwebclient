@@ -1,4 +1,30 @@
 (function () {
+
+    var nextIndex = 0;
+    var BillingPlan = {
+        addPlan: function(tableBodySelector, planId, isdefault){
+            var plan = _.find(billing_plans, function(billing_plan){
+                return billing_plan.id == planId;
+            });
+            var actionBtn = '<button type="button" class="btn btn-danger btn_remove" data-index="' + (planId) + '">Remove</button>';
+            var planIdInput = '<input type="hidden" name="company_billing_plan[' + planId + '][billing_plan_id]" value="' + plan.id + '"/>';
+            var isDefaultInput = '<input type="hidden" name="company_billing_plan[' + planId + '][is_default]" value="' + isdefault + '"/>';
+            var tr = '<tr data-index="' + planId + '">' +
+                        '<td>' + plan.name.toUpperCase() + '</td>' +
+                        '<td>' + (isdefault == 1?'Yes':'No') + '</td> ' +
+                        '<td>' + actionBtn + planIdInput + isDefaultInput + '</td>' +
+                     '</tr>';
+
+            $(tableBodySelector).append(tr);
+
+            nextIndex++;
+        },
+
+        removePlan:function(tableBodySelector, planId){
+            $(tableBodySelector).remove('tr[data-index="' + planId + '"]')
+        }
+    };
+
     $(document).ready(function () {
 
         var editCompanyForm = $("#editCompanyForm");
@@ -178,5 +204,109 @@
             var form = $("#resetCompanyAdminPasswordForm");
             form.find("input[name=company_id]").val($(this).data('company-id'));
         });
+
+        $('#new_btn_add_plaan').click(function () {
+            var is_default = $('#new_is_default').val();
+            var plan_id = $('#new_billing_plan_id').val();
+            BillingPlan.addPlan('#new_billing_plans_list', plan_id, is_default);
+        });
+
+        $('#edit_btn_add_plan').click(function () {
+            var is_default = $('#edit_is_default').val();
+            var plan_id = $('#edit_billing_plan_id').val();
+            BillingPlan.addPlan('#edit_billing_plans_list', plan_id, is_default);
+        });
+
+        $('.btn_remove').on('click', function(){
+            alert($(this).attr('data-index'));
+        });
+
+        $('.btn_remove').click(function () {
+           BillingPlan.removePlan('#new_billing_plans_list', $(this).attr('data-index'));
+        });
+
     });
 })();
+
+
+ko.observableArray.fn.find = function(prop, data) {
+    var valueToMatch = data[prop];
+    return ko.utils.arrayFirst(this(), function(item) {
+        return item[prop] === valueToMatch;
+    });
+};
+
+var ViewModel = function() {
+    var self = this;
+
+
+    self.plan_id = 0;
+    self.is_default_plan = 0;
+
+    self.all_plans = ko.observableArray(ko.utils.arrayMap(billing_plans, function (plan) {
+        return {id: plan.id, name: plan.name};
+    }));
+
+    self.is_default_options = ko.observableArray([{value:0, text:'No'}, {value: 1, text:'Yes'}]);
+
+    self.plans = ko.observableArray();
+
+    self.addPlan = function () {
+        if(self.plans.find("id", self.plan_id) != undefined){
+            alert('You have already added this plan');
+            return;
+        }
+
+        /*ko.utils.arrayForEach(self.plans, function (plan) {
+            if(plan.plan.id == self.plan_id){
+                alert('You have already added this plan');
+                return;
+            }
+        });*/
+
+        if(self.is_default_plan == 1){
+            ko.utils.arrayForEach(self.plans, function(plan){
+                plan.is_default_plan = 0;
+            });
+            /*
+            $.forEach(self.plans, function (index, plan) {
+                plan.is_default_plan = 0;
+            });*/
+        }
+
+        var plan = _.find(billing_plans, function(billing_plan){
+            return billing_plan.id == self.plan_id;
+        });
+        plan.is_default_plan = self.is_default_plan;
+        self.plans.push(plan);
+        //self.plans.push({'plan': plan, 'is_default_plan': self.is_default_plan});
+        self.plan_id = null;
+        self.is_default_plan = 0;
+    }
+
+    self.markAsDefaultPlan = function(plan_id){
+
+    }
+
+
+    self.removePlan = function (plan_id) {
+        $.ajax({
+            url: 'billing/removecompanyfromplan?billing_plan_id=' + self.currentBillingPlan + '&company_id=' + company_id,
+            type: 'GET',
+            success: function (result) {
+                if (result.status == 'success') {
+                    self.viewCompanies(self.currentBillingPlan);
+                    alert(result.data.message);
+                } else {
+                    alert('Unable to remove company');
+                }
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        });
+    }
+
+}
+
+ko.applyBindings(new ViewModel());

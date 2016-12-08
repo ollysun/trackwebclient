@@ -34,6 +34,8 @@ class AppAsset extends AssetBundle
         //theme scripts
         'js/libs/scripts.js',
         'js/libs/pace.min.js',
+        'js/libs/underscore-min.js',
+        'js/libs/knockout-3.4.0.js',
     ];
     public $depends = [
         'yii\web\YiiAsset',

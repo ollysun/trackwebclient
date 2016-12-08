@@ -38,6 +38,7 @@ class ParcelsController extends BaseController
 
     public function actionNew()
     {
+        //ini_set('memory_limit', '-1');//to be removed
 
         if (Yii::$app->request->isPost) {
 
@@ -55,7 +56,8 @@ class ParcelsController extends BaseController
                 if ($response['status'] === Response::STATUS_OK) {
                     $this->sendAsyncFormResponse(1, $response['data'], "Parcel.onFormSuccessCallback");
                 } else {
-                    $this->sendAsyncFormResponse(1, $response, "Parcel.onFormErrorCallback");
+                    $payload['response'] = $response;
+                    $this->sendAsyncFormResponse(1, /*$response*/ $payload, "Parcel.onFormErrorCallback");
                 }
             }
         }
@@ -120,11 +122,16 @@ class ParcelsController extends BaseController
 
         $centres_list = array_merge($centres_list, $hubs_list);
 
-        $bilingPlanAdapter = new BillingPlanAdapter();
-        $billingPlans = $bilingPlanAdapter->getBillingPlans(['no_paginate' => '1', 'type' => BillingPlanAdapter::TYPE_WEIGHT_AND_ON_FORWARDING, 'status' => ServiceConstant::ACTIVE]);
+        $billingPlanAdapter = new BillingPlanAdapter();
+        /*$billingPlans = $billingPlanAdapter->getBillingPlans(['no_paginate' => '1', 'type' => BillingPlanAdapter::TYPE_WEIGHT_AND_ON_FORWARDING, 'status' => ServiceConstant::ACTIVE]);*/
 
-        $billingPlans = ArrayHelper::map($billingPlans, 'id', 'name', 'company_id');
+        $billingPlans = $billingPlanAdapter->getCompanyBillingPlans();
 
+        //dd($billingPlans);
+
+        $billingPlans = ArrayHelper::map($billingPlans, 'id', 'name', 'company_id', 'p');
+
+        //dd($billingPlans);
 
         return $this->render('new', array(
             'Banks' => $banks,
@@ -272,5 +279,33 @@ class ParcelsController extends BaseController
             return $this->sendErrorResponse($error_message, null);
         }
 
+    }
+
+    public function actionQetquote(){
+        $rawData = \Yii::$app->request->getRawBody();
+        $postParams = json_decode($rawData, true);
+        $parcelSrv = new ParcelService();
+        $data = $parcelSrv->buildBillingCalculationData($postParams);
+
+        if (!empty($data['error'])) {
+            return $this->sendErrorResponse(implode($data['error']), null);
+        }
+
+        $parcelAdp = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $response = $parcelAdp->getQuote($data['payload']);
+
+        if ($response['status'] === ResponseHandler::STATUS_OK) {
+            $quote = $response['data'];
+            $quote['total_amount'] = number_format($quote['total_amount'], 2);
+            $quote['discount'] = number_format($quote['discount'], 2);
+            $quote['amount_due'] = number_format($quote['amount_due'], 2);
+            $quote['discount_percentage'] = number_format($quote['discount_percentage'], 2);
+            $quote['vat'] = number_format($quote['vat'], 2);
+            $quote['gross_amount'] = number_format($quote['gross_amount'], 2);
+            return $this->sendSuccessResponse($quote);
+        } else {
+            $error_message = $response['message'];
+            return $this->sendErrorResponse($error_message, null);
+        }
     }
 }

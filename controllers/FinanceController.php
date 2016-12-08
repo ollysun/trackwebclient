@@ -7,6 +7,7 @@ use Adapter\CompanyAdapter;
 use Adapter\CreditNoteAdapter;
 use Adapter\InvoiceAdapter;
 use Adapter\RefAdapter;
+use Adapter\TellerAdapter;
 use Adapter\Util\Util;
 use Yii;
 use Adapter\AdminAdapter;
@@ -436,43 +437,83 @@ class FinanceController extends BaseController
         return $this->renderPartial('partial_credit_note_parcels', ['credit_note_parcels' => $creditNoteParcels, 'company_name' => $companyName, 'credit_note_no' => $creditNoteNo]);
     }
 
-    public function actionGetquote(){
-        if(Yii::$app->request->isPost){
-            $discount = Yii::$app->request->post('discount');
+
+    //tellers
+    public function actionSalesteller($page = 1, $page_width = null){
+        $page_width = is_null($page_width) ? $this->page_width : $page_width;
+        $offset = ($page - 1) * $page_width;
+
+
+        $adapter = new TellerAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+
+        $filters = ['offset' => $offset, 'count' => $page_width, 'with_bank' => 1, 'with_payer' => 1, 'with_total_count' => 1];
+
+        $from_date = Yii::$app->request->get('start_created_date', date('Y/m/d'));
+        $end_date = Yii::$app->request->get('end_created_date', date('Y/m/d'));
+        $filters['start_created_date'] = $from_date . ' 00:00:00';
+        $filters['end_created_date'] = $end_date . ' 23:59:59';
+
+        $bank_id = Yii::$app->request->get('bank_id');
+        $teller_no = Yii::$app->request->get('teller_no');
+        $status = Yii::$app->request->get('status');
+
+        if($bank_id) $filters['bank_id'] = $bank_id;
+        if($teller_no) $filters['teller_no'] = $teller_no;
+        if($status) $filters['status'] = $status;
+
+        $response = new ResponseHandler($adapter->getSalesTellers($filters));
+
+        $viewData = [
+            'offset' => $offset,
+            'page_width' => $page_width,
+            'start_created_date' => $from_date,
+            'end_created_date' => $end_date,
+            'bank_id' => $bank_id,
+            'teller_no' => $teller_no,
+            'status' => $status,
+            'statuses' => [ServiceConstant::TELLER_AWAITING_APPROVAL, ServiceConstant::TELLER_APPROVED, ServiceConstant::TELLER_DECLINED]
+        ];
+
+        if($response->isSuccess()){
+            $data = $response->getData();
+            $viewData['tellers'] = $data['tellers'];
+            $viewData['total_count'] = $data['total_count'];
+        }else{
+            $viewData['tellers'] = [];
         }
-
-        $refData = new RefAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $countries = $refData->getCountries();
-        $states = (new ResponseHandler($refData->getStates(ServiceConstant::COUNTRY_NIGERIA)))->getData();
-
-        $companyAdapter = new CompanyAdapter();
-        $companies = $companyAdapter->getAllCompanies(['status' => ServiceConstant::ACTIVE]);
-
-        $hubAdp = new BranchAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $centres = $hubAdp->getAllHubs(false);
-        $centres = new ResponseHandler($centres);
-        $hubs_list = $centres->getStatus() == ResponseHandler::STATUS_OK ? $centres->getData() : [];
-
-        $user = Calypso::getInstance()->session('user_session');
-        $hubAdp = new BranchAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $centres = $hubAdp->getCentres(Calypso::isCooperateUser()?null:$user['branch']['id'], 0, $this->page_width, false);
-        $centres = new ResponseHandler($centres);
-        $centres_list = $centres->getStatus() == ResponseHandler::STATUS_OK ? $centres->getData() : [];
-
-        $centres_list = array_merge($centres_list, $hubs_list);
-
-        $bilingPlanAdapter = new BillingPlanAdapter();
-        $billingPlans = $bilingPlanAdapter->getBillingPlans(['no_paginate' => '1', 'type' => BillingPlanAdapter::TYPE_WEIGHT_AND_ON_FORWARDING, 'status' => ServiceConstant::ACTIVE]);
-
-        $billingPlans = ArrayHelper::map($billingPlans, 'id', 'name', 'company_id');
-
-        return $this->render('getquote', array(
-            'countries' => $countries,
-            'states' => $states,
-            'centres' => $centres_list,
-            'branch' => Calypso::isCooperateUser()?null:$user['branch'],
-            'companies' => $companies,
-            'billingPlans' => $billingPlans
-        ));
+        return $this->render('sales_teller', $viewData);
     }
+
+
+    public function actionApprovesalesteller($id){
+        $adapter = new TellerAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $response = new ResponseHandler($adapter->approveTeller($id));
+        if($response->isSuccess()){
+            $this->flashSuccess('Teller Approved');
+        }else{
+            $this->flashError($response->getError());
+        }
+        return $this->back();
+    }
+
+
+    public function actionDelinesalesteller($id){
+        $adapter = new TellerAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $response = new ResponseHandler($adapter->declineTeller($id));
+        if($response->isSuccess()){
+            $this->flashSuccess('Teller Declined');
+        }else{
+            $this->flashError($response->getError());
+        }
+        return $this->back();
+    }
+
+    public function actionEcommerceteller($page = 1, $page_width = null){
+        $viewData = [];
+
+
+        return $this->render('ecommerceteller', $viewData);
+
+    }
+
 }

@@ -60,4 +60,4 @@ use yii\helpers\Json;
 </div>
 
 <?= $this->registerJsFile('@web/js/libs/jquery.form.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
-<?php $this->registerJsFile('@web/js/bulk_shipment.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/bulk_shipment.js?v=1.0.1', ['depends' => [\app\assets\AppAsset::className()]]) ?>

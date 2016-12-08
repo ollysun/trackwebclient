@@ -108,6 +108,7 @@ $this->params['content_header_button'] = $this->render('../elements/content_head
                                         <input id="chbx_w_<?= ++$i; ?>" class="checkable"
                                                data-waybill="<?= strtoupper($parcel['waybill_number']); ?>"
                                                data-sender="<?= strtoupper($parcel['sender']['firstname'] . ' ' . $parcel['sender']['lastname']) ?>"
+                                               data-amount_due="<?= $parcel['amount_due']; ?>"
                                                type="checkbox"><label
                                             for="chbx_w_<?= $i; ?>"> </label>
                                     </div>
@@ -206,7 +207,7 @@ $this->params['content_header_button'] = $this->render('../elements/content_head
 
                             <div class="input-group">
                                 <span class="input-group-addon currency naira"></span>
-                                <input type="text" class="form-control validate required non-zero-number"
+                                <input id="amount_paid" type="text" class="form-control validate required non-zero-number"
                                        name="amount_paid">
                             </div>
                         </div>
@@ -232,7 +233,7 @@ $this->params['content_header_button'] = $this->render('../elements/content_head
                     <input type="hidden" name="task" value="submit_teller">
                     <input type="hidden" id="waybill_numbers" name="waybill_numbers">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary" id="btnGenerate">Submit</button>
+                    <button type="submit" class="btn btn-primary" id="btnSubmitTeller">Submit</button>
                 </div>
             </div>
         </form>
@@ -275,4 +276,4 @@ $this->params['content_header_button'] = $this->render('../elements/content_head
 <?php $this->registerJsFile('@web/js/form-watch-changes.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/validate.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/bootbox.min.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
-<?php $this->registerJsFile('@web/js/submit_teller.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/submit_teller.js?v=1.0.0', ['depends' => [\app\assets\AppAsset::className()]]) ?>

@@ -73,6 +73,9 @@ $config = [
         'corporate' => [
             'class' => 'app\modules\corporate\Module',
         ],
+        'api' => [
+            'class' => 'app\modules\api\Module',
+        ],
     ],
     'params' => $params,
 ];

@@ -43,6 +43,11 @@ class TrackAdapter extends BaseAdapter
         return $this->decodeResponse($response);
     }
 
+    public function isExportedParcel($waybill_number){
+        $parcelAdapter = new ParcelAdapter();
+        $response = $parcelAdapter->getOneParcel($waybill_number);
+    }
+
     /**
      * Process tracking history
      * @author Adeyemi Olaoye <yemi@cottacush.com>

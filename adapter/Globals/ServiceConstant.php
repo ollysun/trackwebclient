@@ -36,6 +36,9 @@ class ServiceConstant
     const UNCLEARED = 11;
     const CLEARED = 12;
     const BEING_DELIVERED = 13;
+    const TELLER_AWAITING_APPROVAL = 14;
+    const TELLER_APPROVED = 15;
+    const TELLER_DECLINED = 16;
     const ASSIGNED_TO_GROUNDSMAN = 17;
     const MANIFEST_PENDING = 18;
     const MANIFEST_IN_TRANSIT = 19;
@@ -45,32 +48,39 @@ class ServiceConstant
     const RETURNED = 23;
     const CREATED_BUT_WITH_CUSTOMER = 24;
     const URL_ADD_PARCEL = 'parcel/add/';
+    const URL_ADD_PARCEL_From_API = 'parcel/addFromApi/';
     const URL_GET_ONE_PARCEL = 'parcel/getone/';
     const URL_GET_BAG = 'parcel/getbag/';
     const URL_GET_ALL_PARCEL = 'parcel/getAll';
     const URL_MOVE_TO_FOR_SWEEPER = '/parcel/moveToForSweeper/';
     const URL_ASSIGN_TO_GROUNDSMAN = '/parcel/assignToGroundsMan/';
     const URL_MOVE_TO_IN_TRANSIT = '/parcel/moveToInTransit/';
+    const URL_CREATE_DIRECT_MANIFEST = '/parcel/createDirectManifest/';
     const URL_MOVE_TO_ARRIVAL = '/parcel/moveToArrival/';
     const URL_MOVE_FOR_DELIVERY = '/parcel/moveToForDelivery/';
     const URL_PARCEL_HISTORY = '/parcel/history/';
     const URL_IMPORTED_PARCEL_HISTORY = 'parcel/importedParcelHistory';
     const URL_CALC_BILLING = 'zone/calcBilling';
+    const URL_GET_QUOTE = 'zone/getQuote';
     const URL_MOVE_TO_BEING_DELIVERED = '/parcel/moveToBeingDelivered/';
     const URL_MOVE_TO_DELIVERED = '/parcel/moveToDelivered/';
     const URL_RECEIVE_RETURN = '/parcel/receiveFromDispatcher/';
     const URL_CREATE_BAG = '/parcel/bag';
     const URL_CANCEL_PARCEL = '/parcel/cancel';
     const URL_PARCEL_COUNT = 'parcel/count/';
+    const URL_PARCEL_GROUP_COUNT = 'parcel/groupCount/';
     const DEFAULT_UNBAG_REFERRER = '/shipments/processed';
     const URL_OPEN_BAG = '/parcel/openbag';
     const URL_MARK_AS_RETURNED = 'parcel/markAsReturned';
     const URL_SET_RETURN_FLAG = 'parcel/setReturnFlag';
+    const URL_REMOVE_NEGATIVE_FLAG = 'parcel/removeNegativeFlag';
     const URL_REMOVE_FROM_BAG = '/parcel/removefrombag';
     const URL_UNSORT_PARCEL = '/parcel/unsort';
     const URL_RETURN_REASONS = '/parcel/getreturnreasons';
     const URL_GET_SHIPMENT_EXCEPTIONS = 'parcel/getShipmentExceptions';
     const URL_GET_PARCEL_HISTORIES = 'parcel/getHistories';
+    const URL_GET_PARCEL_HISTORIES_FOR_API = 'parcel/getHistoryForApi';
+    const URL_GET_PARCEL_LAST_STATUS_FOR_API = 'parcel/getParcelLastStatusForApi';
     const URL_GET_DELAYED_SHIPMENTS = 'parcel/getDelayedShipments';
     const URL_AUDIT_TRAIL_LOG = '/admin/getaudittrail';
     const URL_AUDIT_ADDITIONAL_DATA = '/admin/getauditdetails';
@@ -133,9 +143,9 @@ class ServiceConstant
     const URL_REGION_CITY_GET_ONE = 'region/getOneCity';
     const URL_REGION_CITY_GET_ALL = 'region/getAllCity';
 
-    const URL_BUSINESS_MANAGER_ADD = 'businessmanager/add';
-    const URL_BUSINESS_MANAGER_CHANGE_REGION = 'businessmanager/changeregion';
-    const URL_BUSINESS_MANAGER_GET_ALL = 'businessmanager/getall';
+    const URL_BUSINESS_MANAGER_ADD = 'bm/add';
+    const URL_BUSINESS_MANAGER_CHANGE_REGION = 'bm/changeregion';
+    const URL_BUSINESS_MANAGER_GET_ALL = 'bm/getall';
 
     const URL_ZONES_ADD = '/zone/add';
     const URL_ZONES_EDIT = '/zone/edit';
@@ -173,6 +183,9 @@ class ServiceConstant
     const URL_REMOVE_TRANSIT_TIME = 'zone/removeTransitTime';
 
     const URL_TELLER_ADD = 'teller/add';
+    const URL_TELLER_GET_ALL = 'teller/getall';
+    const URL_TELLER_APPROVE = 'teller/approve';
+    const URL_TELLER_DECLINE = 'teller/decline';
 
     const URL_ROUTE_ADD = 'route/create';
     const URL_ROUTE_GET_ALL = 'route/getAll';
@@ -196,6 +209,9 @@ class ServiceConstant
     const URL_COMPANY_ADD = 'company/createCompany';
     const URL_COMPANY_EDIT = 'company/editCompany';
     const URL_GET_COMPANY = 'company/getCompany';
+    const URL_GET_COMPANY_ACCESS = 'company/getCompanyAccess';
+    const URL_SAVE_COMPANY_ACCESS = 'company/manageCompanyAccess';
+    const URL_GET_COMPANY_MANAGE_ACCESS = 'company/manageCompanyAccess';
     const URL_COMPANY_ALL = 'company/getAllCompany';
     const URL_COMPANY_USERS = 'company/getAllUsers';
     const URL_USER_ADD = 'company/createUser';
@@ -220,6 +236,11 @@ class ServiceConstant
     const URL_BILLING_PLAN_GET_CITIES_WITH_CHARGE = 'billingPlan/getCitiesWithCharge';
     const URL_BILLING_PLAN_ADD = 'billingPlan/add';
     const URL_BILLING_PLAN_UPDATE_DISCOUNT = 'billingPlan/updatediscount';
+    const URL_BILLING_PLAN_LINK_COMPANY = 'billingPlan/linkcompany';
+    const URL_BILLING_PLAN_REMOVE_COMPANY = 'billingPlan/removecompany';
+    const URL_BILLING_PLAN_MAKE_DEFAULT = 'billingPlan/makedefault';
+    const URL_BILLING_PLAN_GET_COMPANIES = 'billingPlan/getcompanies';
+    const URL_BILLING_PLAN_GET_COMPANY_PLANS = 'billingPlan/getCompanyPlans';
     const URL_BILLING_PLAN_GET_ALL = 'billingPlan/getAll';
     const URL_RESET_ONFORWARDING_CHARGES = 'billingPlan/resetOnforwardingChargesToZero';
     const URL_CLONE_BILLING_PLAN = 'billingPlan/clonebillingplan';
@@ -362,6 +383,15 @@ class ServiceConstant
             case ServiceConstant::CREATED_BUT_WITH_CUSTOMER:
                 return 'Created But With Customer';
                 break;
+            case ServiceConstant::TELLER_APPROVED:
+                return "Teller Approved";
+            break;
+            case ServiceConstant::TELLER_AWAITING_APPROVAL:
+                return 'Teller Awaiting Approval';
+            break;
+            case ServiceConstant::TELLER_DECLINED:
+                return 'Teller Declined';
+            break;
         }
     }
 

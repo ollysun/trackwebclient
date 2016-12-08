@@ -10,12 +10,8 @@ use yii\helpers\Html;
 use Adapter\Globals\ServiceConstant;
 
 /* @var $this yii\web\View */
-$this->title = 'Billing: Business Managers';
+$this->title = 'Admin: Business Managers';
 $this->params['breadcrumbs'] = array(
-    array(
-        'label' => 'Billing',
-        'url' => ['billing/']
-    ),
     array('label' => 'Business Managers')
 );
 ?>
@@ -38,8 +34,8 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                 <thead>
                 <tr>
                     <th style="width: 20px">S/N</th>
-                    <th>Name</th>
-                    <th>Region</th>
+                    <th style="text-align: left;">Name</th>
+                    <th style="text-align: left;">Region</th>
                     <th>Status</th>
                     <th>Action</th>
                 </tr>
@@ -52,8 +48,8 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                         ?>
                         <tr>
                             <td><?= $row++; ?></td>
-                            <td class="n<?= $business_manager['id']; ?>"><?= $business_manager['name']; ?></td>
-                            <td class="d<?= $business_manager['id']; ?>"><?= $business_manager['region_name']; ?></td>
+                            <td style="text-align: left;" class="n<?= $business_manager['id']; ?>"><?= ucwords($business_manager['name']); ?></td>
+                            <td style="text-align: left;" class="d<?= $business_manager['id']; ?>"><?= ucwords($business_manager['region_name']); ?></td>
 
                             <td><?= ($business_manager['status'] == ServiceConstant::ACTIVE ? 'Active' : 'Inactive'); ?></td>
                             <td>

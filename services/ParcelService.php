@@ -266,6 +266,7 @@ class ParcelService
         }
         $parcel['weight_billing_plan'] = Calypso::getDisplayValue($data, 'billing_plan', BillingPlanAdapter::DEFAULT_WEIGHT_RANGE_PLAN);
         $parcel['onforwarding_billing_plan'] = Calypso::getDisplayValue($data, 'billing_plan', BillingPlanAdapter::DEFAULT_ON_FORWARDING_PLAN);
+        $parcel['company_id'] = Calypso::getValue($data, 'company_id');
 
         $parcel['is_billing_overridden'] = $parcel['billing_method'] == 'manual' ? 1 : 0;
         if (is_null($parcel['amount_due'])) {

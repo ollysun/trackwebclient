@@ -9,7 +9,9 @@
 namespace app\controllers;
 
 use Adapter\AuditAdapter;
+use Adapter\BillingPlanAdapter;
 use Adapter\BranchAdapter;
+use Adapter\BusinessManagerAdapter;
 use Adapter\CompanyAdapter;
 use Adapter\Globals\ServiceConstant;
 use Adapter\RefAdapter;
@@ -358,6 +360,76 @@ class AdminController extends BaseController
         return $this->render('managestaff', ['states' => $state_list, 'roles' => $role_list, 'staffMembers' => $staffMembers, 'offset' => $offset, 'role' => $role, 'page_width' => $this->page_width]);
     }
 
+
+    public function actionBusinessmanagers($page = 1, $page_width = null){
+        $bmAdapter = new BusinessManagerAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+
+        if(Yii::$app->request->isPost){
+            $entry = Yii::$app->request->post();
+            $task = Calypso::getValue(Yii::$app->request->post(), 'task', '');
+            $error = [];
+
+            $data = [];
+            $data['region_id'] = Calypso::getValue($entry, 'region_id', null);
+            $data['status'] = Calypso::getValue($entry, 'status');
+            $data['staff_id'] = Calypso::getValue($entry, 'staff_id');
+
+            if (($task == 'create' || $task == 'edit') && (empty($data['region_id']) || empty($data['staff_id']))) {
+                $error[] = "All details are required!";
+            }else{
+                if($task == 'create'){
+                    $response = $bmAdapter->addBusinessManager($data['region_id'], $data['staff_id']);
+                    if($response['status'] == ResponseHandler::STATUS_OK){
+                        $this->flashSuccess('BM added successfully');
+                    }else{
+                        Yii::$app->session->setFlash('danger', 'There was a problem creating the BM. ' . $response['message']);
+                    }
+                }elseif($task == 'edit'){
+                    $response = $bmAdapter->changeRegion($data['staff_id'], $data['region_id']);
+                    if($response['status'] == ResponseHandler::STATUS_OK){
+                        $this->flashSuccess('BM updated successfully');
+                    }else{
+                        $this->flashError('There was a problem updating the BM. ' . $response['message']);
+                    }
+                }
+            }
+        }
+
+
+        if ($page_width != null) {
+            $this->page_width = $page_width;
+            Calypso::getInstance()->cookie('page_width', $page_width);
+        }
+
+        $page_width = is_null($page_width) ? $this->page_width : $page_width;
+        $offset = ($page - 1) * $page_width;
+
+        $filter = ['offset' => $offset, 'count' => $page_width, 'paginate' => true];
+        if(isset(Calypso::getInstance()->get()->region_id)){
+            $filter['region_id'] = Calypso::getInstance()->get()->region_id;
+        }
+
+
+        $filter_country = Calypso::getValue(Yii::$app->request->post(), 'filter_country', 1);
+        $refAdp = new RefAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $regions = $refAdp->getRegions($filter_country);
+        $regions = new ResponseHandler($regions);
+        $region_list = $regions->getStatus() == ResponseHandler::STATUS_OK ? $regions->getData() : [];
+
+        $result = $bmAdapter->getAll($filter);
+
+        if($result['status'] == ResponseHandler::STATUS_OK){
+            $business_managers = $result['data']['business_managers'];
+            $total_count = $result['data']['total_count'];
+        }else{
+            $business_managers = [];
+            $total_count = 0;
+
+        }
+
+        return $this->render('business_managers', array('regions' => $region_list, 'business_managers' => $business_managers, 'total_count' => $total_count));
+    }
+
     public function actionResetpassword()
     {
         if (Yii::$app->getRequest()->isPost) {
@@ -400,7 +472,7 @@ class AdminController extends BaseController
             }
 
         }
-        return $this->redirect('companies');
+        return $this->back();
     }
     /**
      * Edit Company Action
@@ -435,7 +507,7 @@ class AdminController extends BaseController
      */
     public function actionCompanies()
     {
-        $companyAdapter = new CompanyAdapter();
+        $companyAdapter = new CompanyAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         if (Yii::$app->request->isPost) {
             $data = Yii::$app->request->post();
 
@@ -469,20 +541,44 @@ class AdminController extends BaseController
         $filters['offset'] = $offset;
         $filters['count'] = $this->page_width;
 
-        $companiesData = $companyAdapter->getCompanies($filters);
+        $adapter = new CompanyAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $companiesData = $adapter->getCompanies($filters);
         $companies = Calypso::getValue($companiesData, 'companies', []);
         $totalCount = Calypso::getValue($companiesData, 'total_count', 0);
 
         $account_types = $companyAdapter->getAllAccountTypes();
         $this->decorateWithStatus($companies);
 
+
+        $billingPlanAdapter = new BillingPlanAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $billingPlans = $billingPlanAdapter->getBillingPlans(['no_paginate' => 1, 'status' => ServiceConstant::ACTIVE]);
+
+
+        $filter_country = Calypso::getValue(Yii::$app->request->post(), 'filter_country', 1);
+        $refAdp = new RefAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $regions = $refAdp->getRegions($filter_country);
+        $regions = new ResponseHandler($regions);
+        $region_list = $regions->getStatus() == ResponseHandler::STATUS_OK ? $regions->getData() : [];
+
+
+        $result = (new BusinessManagerAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken()))->getAll();
+
+        if($result['status'] == ResponseHandler::STATUS_OK){
+            $business_managers = $result['data']['business_managers'];
+        }else{
+            $business_managers = [];
+        }
+
         return $this->render('companies', [
-            'locations' => ['states' => $states],
-            'companies' => $companies,
-            'offset' => $offset,
-            'total_count' => $totalCount,
-            'page_width' => $this->page_width,
-            'account_types' => $account_types
+                'locations' => ['states' => $states],
+                'companies' => $companies,
+                'business_managers' => $business_managers,
+                'regions' => $region_list,
+                'offset' => $offset,
+                'total_count' => $totalCount,
+                'page_width' => $this->page_width,
+                'account_types' => $account_types,
+                'billing_plans' => $billingPlans
             ]
         );
     }
@@ -495,8 +591,39 @@ class AdminController extends BaseController
     {
         $company_id = Yii::$app->request->get('id');
 
-        $company = (new CompanyAdapter())->getCompany($company_id);
-        return $this->render('viewcompany', ['company' => $company]);
+        $adapter = new CompanyAdapter();
+        $company = $adapter->getCompany($company_id);
+
+        $companyEcsResponse = $adapter->getAllEcs(['company_id' => $company_id]);
+
+
+        $company_access = [];
+        if(isset($company['reg_no'])){
+            $company_access = $adapter->getCompanyAccess($company['reg_no']);
+
+        }
+
+        $billingAdapter = new BillingPlanAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $billingPlans = $billingAdapter->getCompanyBillingPlans(['company_id' => $company_id]);
+
+        $all_billing_plans = $billingAdapter->getBillingPlans();
+
+        return $this->render('viewcompany', ['company' => $company, 'billing_plans' => $billingPlans, 'all_billing_plans' => $all_billing_plans, 'company_access' => $company_access, 'ecs' => array_key_exists('ecs', $companyEcsResponse)? $companyEcsResponse['ecs']: []]);
+    }
+
+
+    public function actionManageapplicationaccess(){
+        $entry = Yii::$app->request->post();
+        $adapter = new CompanyAdapter();
+        $response = $adapter->saveCompanyAccess($entry);
+        if($response->isSuccess()){
+            $data = $response->getData();
+            $this->flashSuccess('Access information saved. Access Token: '.$data['token']);
+        }
+
+        else $this->flashError($response->getError());
+        return $this->back();
+
     }
 
     /**

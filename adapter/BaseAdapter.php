@@ -149,6 +149,7 @@ abstract class BaseAdapter
 
     protected function request($url, $params, $http_method)
     {
+        //$oriUrl = $url;
         if (is_null($this->_curlagent)) {
             $this->_curlagent = new CurlAgent('', true);
         }
@@ -167,9 +168,13 @@ abstract class BaseAdapter
         } else if ($http_method == BaseAdapter::HTTP_GET) {
             $this->injectUrlParams($url, $params);
         }
+
+        /*if($oriUrl == ServiceConstant::URL_GET_ALL_PARCEL)
+        dd($url);*/
+
         $this->_curlagent->createCurl($url);
-/*
-        if($url == ServiceConstant::URL_CREATE_BULK_SHIPMENT_TASK)*/
+
+        /*if($url == ServiceConstant::URL_CREATE_BULK_SHIPMENT_TASK)*/
         //dd($this->_curlagent->getResponse());
 
         if ($this->_curlagent->getHttpStatus() == BaseAdapter::HTTP_STATUS_OK) {

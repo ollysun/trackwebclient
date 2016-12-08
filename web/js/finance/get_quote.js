@@ -56,7 +56,8 @@ var Parcel = {
         'cities': '/parcels/getcities',
         'userdetails': '/parcels/userdetails',
         'accountdetails': '/parcels/accountdetails',
-        'calcbilling': '/parcels/calculatebilling'
+        'calcbilling': '/parcels/calculatebilling',
+        'qetquote': '/parcels/qetquote'
     },
 
     getStates: function (country_id, selectSelector, selectedValue) {
@@ -173,8 +174,6 @@ var Parcel = {
     },
 
     calculateAmount: function (params) {
-        console.log(params);
-
         $('.amount-due').html("calculating...");
         var amount = '';
         $('#amount').val(amount);
@@ -205,6 +204,49 @@ var Parcel = {
             }
         })
     },
+
+    qetQuote: function(params){
+        $('#quote').hide();
+        $('#calculating_info').show().html('calculating...');
+
+        var quote = null;
+
+        $.ajax({
+            url: this.Url.qetquote,
+            type: 'POST',
+            dataType: 'JSON',
+            data: JSON.stringify(params),
+            success: function (result) {
+                if (result.status == 'success') {
+                    quote = result.data;
+
+                    console.log(quote);
+
+                    $('#total_amount').text(quote.total_amount);
+                    $('#discount').text(quote.discount);
+                    $('#discount_percentage').text(quote.discount_percentage);
+                    $('#gross_amount').text(quote.gross_amount);
+                    $('#amount_due').text(quote.amount_due);
+                    $('#vat').text(quote.vat);
+                    $('#calculating_info').hide();
+                    $('#quote').show();
+                } else {
+                    alert(result.message);
+                    $('#calculating_info').show().html('Unable to calculate amount...');
+                    $('#quote').hide();
+                }
+            },
+            error: function (err) {
+                console.log(err);
+            },
+            complete: function (jqXHR) {
+                if (quote == null) {
+                    $('#calculating_info').html("Unable to calculate amount...").show();
+                    $('#quote').hide();
+                }
+            }
+        })
+    }
 
 };
 
@@ -253,5 +295,5 @@ $('#btncalculate').click(function(){
         params.weight_billing_plan_id = billingField.val();
         params.onforwarding_billing_plan_id = billingField.val();
     }
-    Parcel.calculateAmount(params);
+    Parcel.qetQuote(params);
 })

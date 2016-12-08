@@ -172,7 +172,7 @@ class Calypso
     public static function getMenus()
     {
         $menus = [
-            'Dashboard' => ['base' => 'site', 'base_link' => 'site/index', 'class' => 'fa fa-dashboard'],
+            'Dashboard' => ['base' => 'site', 'base_link' => 'site/index', 'class' => 'fa fa-dashboard', 'corporate' => true],
             'Shipments' => ['base' => 'shipments', 'class' => 'fa fa-car', 'base_link' => [
                 'New_Shipments' => ['base_link' => 'shipments/processed', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_EC, ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ, ServiceConstant::BRANCH_TYPE_COMPANY]],
                 'Receive_Shipments' => ['base_link' => 'hubs/hubarrival', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
@@ -201,19 +201,20 @@ class Calypso
                 'Manage_cities' => ['base_link' => 'admin/managecities', 'class' => ''],
                 'Manage_routes' => ['base_link' => 'admin/manageroutes', 'class' => ''],
                 'Manage_staff_accounts' => ['base_link' => 'admin/managestaff', 'class' => ''],
+                'Business_Managers' => ['base_link' => 'admin/businessmanagers', 'class' => ''],
                 'Company_Registration' => ['base_link' => 'admin/companies', 'class' => ''],
                 'Company_Express_Centre' => ['base_link' => 'admin/companyecs', 'class' => ''],
                 'Billing' => ['base' => 'billing', 'class' => '', 'base_link' => [
+                    'Billing_Plans' => ['base_link' => 'billing', 'class' => ''],
                     'View_Matrix' => ['base_link' => 'billing/matrix', 'class' => ''],
                     'Zones' => ['base_link' => 'billing/zones', 'class' => ''],
                     'Regions' => ['base_link' => 'billing/regions', 'class' => ''],
-                    'Business_Managers' => ['base_link' => 'billing/businessmanagers', 'class' => ''],
                     'State_-_Region_Mapping' => ['base_link' => 'billing/statemapping', 'class' => ''],
                     'City_-_State Mapping' => ['base_link' => 'billing/citymapping', 'class' => ''],
                     'Weight_Ranges' => ['base_link' => 'billing/weightranges', 'class' => ''],
                     'Pricing' => ['base_link' => 'billing/pricing', 'class' => ''],
                     'Onforwarding_Charges' => ['base_link' => 'billing/onforwarding', 'class' => ''],
-                    'Corporate_Billing' => ['base_link' => 'billing/corporate', 'class' => '']
+                    /*'Corporate_Billing' => ['base_link' => 'billing/corporate', 'class' => '']*/
                 ], 'branch' => [ServiceConstant::BRANCH_TYPE_HQ]],
                 'Audit_Trail' => ['base_link' => 'admin/audittrail', 'class' => ''],
             ], 'branch' => [ServiceConstant::BRANCH_TYPE_HQ]],
@@ -221,6 +222,11 @@ class Calypso
                 'base' => 'track',
                 'base_link' => 'track/',
                 'class' => 'fa fa-gift',
+                'corporate' => true
+            ],
+            'Get_Quote' => [
+                'base_link' => 'site/getquote',
+                'class' => 'fa fa-shopping-cart',
                 'corporate' => true
             ],
             'Manifests' => ['base' => 'manifest', 'base_link' => 'manifest/index', 'class' => 'fa fa-book'],
@@ -231,10 +237,11 @@ class Calypso
                     'Corporate Shipments' => ['base_link' => 'finance/corporateshipment', 'class' => ''],
                     'Credit Note' => ['base_link' => 'finance/creditnote', 'class' => ''],
                     'Customers' => ['base_link' => 'finance/customersall', 'class' => ''],
-                    'Get_Quote' => ['base_link' => 'finance/getquote', 'class' => ''],
                     'Invoice' => ['base_link' => 'finance/invoice', 'class' => ''],
                     'Bulk Invoice Tasks' => ['base_link' => 'finance/bulkinvoicetasks', 'class' => ''],
                     'Merchants' => ['base_link' => 'finance/merchantsdue', 'class' => ''],
+                    'Sale Tellers' => ['base_link' => 'finance/salesteller', 'class' => ''],
+                    'E-Commerce Tellers' => ['base_link' => 'finance/ecommerceteller', 'class' => ''],
                 ],
                 'branch' => [ServiceConstant::BRANCH_TYPE_HQ]
             ],
@@ -303,16 +310,16 @@ class Calypso
             ServiceConstant::USER_TYPE_COMPANY_ADMIN => [
                 'corporate/pending/shipments',
                 'corporate/pending/pickups',
-                'site',
-                'site/index',
+                //'site',
+                //'site/index',
                 'site/newparcel'
             ],
             ServiceConstant::USER_TYPE_COMPANY_OFFICER => [
                 'corporate/users',
                 'corporate/pending/shipments',
                 'corporate/pending/pickups',
-                'site',
-                'site/index',
+                //'site',
+                //'site/index',
                 'site/newparcel'
             ],
             ServiceConstant::USER_TYPE_SALES_AGENT => array_merge([

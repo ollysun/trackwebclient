@@ -61,6 +61,11 @@ class ParcelAdapter extends BaseAdapter
         return $this->request(ServiceConstant::URL_ADD_PARCEL, $postData, self::HTTP_POST);
     }
 
+    public function createNewParcelFromApi($postData){
+        //echo json_encode($postData);die();
+        return $this->request(ServiceConstant::URL_ADD_PARCEL_From_API, $postData, self::HTTP_POST);
+    }
+
     public function getOneParcel($id)
     {
         return $this->request(ServiceConstant::URL_GET_ONE_PARCEL, array('id' => $id), self::HTTP_GET);
@@ -268,6 +273,11 @@ class ParcelAdapter extends BaseAdapter
         return $this->request(ServiceConstant::URL_MOVE_TO_IN_TRANSIT, $postData, self::HTTP_POST);
     }
 
+    public function createDirectManifest($postData)
+    {
+        return $this->request(ServiceConstant::URL_CREATE_DIRECT_MANIFEST, $postData, self::HTTP_POST);
+    }
+
     public function moveToArrival($postData)
     {
         return $this->request(ServiceConstant::URL_MOVE_TO_ARRIVAL, $postData, self::HTTP_POST);
@@ -392,6 +402,11 @@ class ParcelAdapter extends BaseAdapter
         return $this->request(ServiceConstant::URL_CALC_BILLING, $postData, self::HTTP_POST);
     }
 
+    public function getQuote($postData)
+    {
+        return $this->request(ServiceConstant::URL_GET_QUOTE, $postData, self::HTTP_POST);
+    }
+
     public function cancel($postData)
     {
         return $this->request(ServiceConstant::URL_CANCEL_PARCEL, $postData, self::HTTP_POST);
@@ -440,17 +455,28 @@ class ParcelAdapter extends BaseAdapter
         }
     }
 
+    public function groupCount($filter_collection){
+        $response = $this->request(ServiceConstant::URL_PARCEL_GROUP_COUNT, $filter_collection, self::HTTP_POST);
+        $response = new ResponseHandler($response);
+        return $response;
+    }
+
     /**
      * Send the return request
      * @author Olawale Lawal <wale@cottacush.com>
      * @param $waybill_numbers
      * @param $comment
      * @param $attempted_delivery
+     * @param $extra_note
      * @return array|mixed|string
      */
-    public function sendReturnRequest($waybill_numbers, $comment, $attempted_delivery = 0)
+    public function sendReturnRequest($waybill_numbers, $comment, $attempted_delivery = 0, $extra_note = '')
     {
-        return $this->request(ServiceConstant::URL_SET_RETURN_FLAG, ['waybill_numbers' => $waybill_numbers, 'comment' => $comment, 'attempted_delivery' => $attempted_delivery], self::HTTP_POST);
+        return $this->request(ServiceConstant::URL_SET_RETURN_FLAG, ['waybill_numbers' => $waybill_numbers, 'comment' => $comment, 'attempted_delivery' => $attempted_delivery, 'extra_note' => $extra_note], self::HTTP_POST);
+    }
+
+    public function removeNegativeStatus($waybill_number){
+        return $this->request(ServiceConstant::URL_REMOVE_NEGATIVE_FLAG, ['waybill_number' => $waybill_number], self::HTTP_POST);
     }
 
     public function openBag($postData)
@@ -552,6 +578,8 @@ class ParcelAdapter extends BaseAdapter
             'with_company' => 1,
             'with_parcel_comment' => 1,
         ]);
+
+        //dd($filters);
 
         return $this->request(ServiceConstant::URL_GET_ALL_PARCEL, $filters, self::HTTP_GET);
     }
@@ -757,6 +785,7 @@ class ParcelAdapter extends BaseAdapter
     public function getBulkShipmentTasks($offset, $count)
     {
         $response = $this->request(ServiceConstant::URL_GET_BULK_SHIPMENT_TASKS, ['offset' => $offset, 'count' => $count], self::HTTP_GET);
+
         $response = new ResponseHandler($response);
 
         if ($response->isSuccess()) {
@@ -805,6 +834,16 @@ class ParcelAdapter extends BaseAdapter
     public function getParcelHistories($waybill_number){
         return $this->request(ServiceConstant::URL_GET_PARCEL_HISTORIES, array('waybill_number' => $waybill_number), self::HTTP_GET);
     }
+
+    public function getParcelHistoriesForApi($waybill_number){
+        return $this->request(ServiceConstant::URL_GET_PARCEL_HISTORIES_FOR_API, array('waybill_number' => $waybill_number), self::HTTP_GET);
+    }
+
+    public function getParcelStatusForApi($waybill_number){
+        return $this->request(ServiceConstant::URL_GET_PARCEL_LAST_STATUS_FOR_API, array('waybill_number' => $waybill_number), self::HTTP_GET);
+    }
+
+
 
     public function getShipmentExceptions($filter){
         $response = $this->request(ServiceConstant::URL_GET_SHIPMENT_EXCEPTIONS, $filter, self::HTTP_GET);

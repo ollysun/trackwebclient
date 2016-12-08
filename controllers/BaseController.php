@@ -29,8 +29,23 @@ class BaseController extends Controller
 
     public function beforeAction($action)
     {
-        $access_denied_msg = "You are not eligible to access this system, kindly contact your administrator";
+        /*$this->redirect('http://trackplus.courierplus-ng.com');
+
+        return false;*/
+
+        $access_denied_msg = "You are not eligible to access this page, kindly contact your administrator";
         if (!in_array($action->id, array('logout', 'login', 'gerraout', 'site', 'accessdenied', 'forgotpassword', 'resetpassword', 'passwordresetsuccess'))) {
+
+
+            /*$is_admin = \Yii::$app->request->get('is_admin');
+            if($is_admin){
+                Calypso::getInstance()->session('is_admin', $is_admin);
+            }
+            if(!Calypso::getInstance()->session('is_admin')){
+                Calypso::getInstance()->setPageData('Upgrade is going on. Please try again later');
+                return $this->redirect(['site/login']);
+            }*/
+
             $this->setPermissionMap();
             $s = Calypso::getInstance()->session('user_session');
             if (!$s) {
@@ -136,6 +151,9 @@ class BaseController extends Controller
         ];
     }
 
+    public function back(){
+        return $this->redirect(\Yii::$app->request->referrer);
+    }
     /**
      * This flashes error message and sends to the view
      * @param $message

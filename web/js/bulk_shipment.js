@@ -111,7 +111,7 @@ BulkShipment = {
     populateBillingPlansDropDown: function (billing_plans) {
         var selectOptions = '';
         for (var billing_plan_id in billing_plans) {
-            selectOptions += '<option value="' + billing_plan_id + '">' + billing_plans[billing_plan_id].toUpperCase() + '</option>';
+            selectOptions += '<option value="' + billing_plan_id.substring(1) + '">' + billing_plans[billing_plan_id].toUpperCase() + '</option>';
         }
         this.Constants.company_billing_plan_select.html(selectOptions);
     },

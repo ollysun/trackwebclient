@@ -51,6 +51,10 @@ var Invoice = {
     }
 };
 $(document).ready(function () {
+    $("#chbx_w_all").change(function () {
+        $("input:checkbox.checkable").prop("checked", $(this).prop("checked"));
+    });
+
     $("button[data-generate_credit_note]").click(function () {
         var companyName = $(this).data('company_name');
         var invoiceNumber = $(this).data('invoice_number');
@@ -86,6 +90,7 @@ $(document).ready(function () {
     });
 
     $("button[data-view_invoice='true']").unbind('click').click(function () {
+
         var invoice = JSON.parse($(this).prev().html());
         Invoice.Constants.view_invoiceNumber.html(invoice.invoice_number);
         Invoice.Constants.view_accountNumber.val(invoice.account_number);

@@ -214,15 +214,15 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                                 </div>
                             </fieldset>
 
-                            <fieldset class="col-xs-4">
+                           <!-- <fieldset class="col-xs-4 hide">
                                 <legend>Business Manager</legend>
                                 <div class="row">
                                     <div class="col-xs-4 form-group">
                                         <label for="">Staff ID</label>
                                         <input type="text" id="bmStaffIdInput" class="form-control validate required" name="business_manager_staff_id"
-                                               value="<?= Calypso::getDisplayValue($submitted_data,'business_manager_staff_id'); ?>">
+                                               value="<?/*= Calypso::getDisplayValue($submitted_data,'business_manager_staff_id'); */?>">
 
-                                        <input id="bmStaffId" type="hidden" name="company[business_manager_staff_id]" value="<?= Calypso::getDisplayValue($submitted_data,'company.business_manager_staff_id'); ?>"/>
+                                        <input id="bmStaffId" type="hidden" name="company[business_manager_staff_id]" value="<?/*= Calypso::getDisplayValue($submitted_data,'company.business_manager_staff_id'); */?>"/>
                                     </div>
                                     <div class="col-xs-4 form-group">
                                         </br>
@@ -234,7 +234,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                                         <p id="bmStaffName"></p>
                                     </div>
                                 </div>
-                            </fieldset>
+                            </fieldset>-->
 
                             <fieldset class="col-xs-4">
                                 <legend>Business Offers</legend>
@@ -251,6 +251,62 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                             </fieldset>
                         </div>
                         <br>
+
+
+                        <div class="row hide">
+                            <fieldset class="col-xs-6">
+                                <legend>Billing Plans</legend>
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th>Plan name</th>
+                                        <th>Is Default</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="new_billing_plans_list" data-bind="foreach: plans">
+                                        <tr>
+                                            <td><span data-bind="text: name"></span></td>
+                                            <td><span data-bind="text: is_default_plan"></span></td>
+                                            <td>
+                                                <button class="btn btn-primary btn-xs" data-bind="click: function(){$root.markAsDefaultPlan(id)}">Make Default</button>
+                                                <button class="btn btn-danger btn-xs" data-bind="click function(){$root.romvePlan(id)}">Remove</button>
+                                            </td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </fieldset>
+                            <fieldset class="col-xs-6">
+                                <legend>New Billing Plan</legend>
+                                <div class="row">
+                                    <div class="col-xs-5 form-group">
+                                        <select data-bind="options: all_plans, optionsValue:'id', optionsText:'name', value: plan_id"
+                                                id="new_billing_plan_id" class="form-control validate required">
+                                            <option value="">Select Billing Plan</option>
+                                            <?php foreach ($billing_plans as $billing_plan): ?>
+                                                <option
+                                                    value="<?= Calypso::getValue($billing_plan, 'id'); ?>"><?= strtoupper(Calypso::getValue($billing_plan, 'name')) ?></option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-xs-5 form-group">
+
+                                        <select data-model="value: is_default_plan" id="new_is_default" class="form-control validate required">
+                                            <option>Set as Default Plan</option>
+                                            <option value="0">No</option>
+                                            <option value="1">Yes</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-xs-2">
+                                        <button data-bind="click: addPlan" type="button" class="btn btn-danger" id="new_btn_add_plan">Add</button>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+                        <br/>
 
                         <div class="row">
                             <fieldset class="col-xs-6">
@@ -412,7 +468,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                             </fieldset>
 
 
-                            <fieldset class="col-xs-4">
+                           <!-- <fieldset class="col-xs-4 hide">
                                 <legend>Business Manager</legend>
                                 <div class="row">
                                     <div class="col-xs-6 form-group">
@@ -431,6 +487,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                                     </div>
                                 </div>
                             </fieldset>
+-->
 
                             <fieldset class="col-xs-4">
                                 <legend>Business Offers</legend>
@@ -446,6 +503,52 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                                 </div>
                             </fieldset>
                         </div>
+
+                        <div class="row hide">
+                            <fieldset class="col-xs-6">
+                                <legend>Billing Plans</legend>
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Plan name</th>
+                                            <th>Is Default</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="billing_plans_list">
+
+                                    </tbody>
+                                </table>
+                            </fieldset>
+                            <fieldset class="col-xs-6">
+                                <legend>New Billing Plan</legend>
+                                <div class="row">
+                                    <div class="col-xs-5 form-group">
+                                        <select id="edit_billing_plan_id" class="form-control validate required">
+                                            <option value="">Select Billing Plan</option>
+                                            <?php foreach ($billing_plans as $billing_plan): ?>
+                                                <option
+                                                    value="<?= Calypso::getValue($billing_plan, 'id'); ?>"><?= strtoupper(Calypso::getValue($billing_plan, 'name')) ?></option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-xs-5 form-group">
+                                        <select id="edit_is_default" class="form-control validate required">
+                                            <option>Set as Default Plan</option>
+                                            <option value="0">No</option>
+                                            <option value="1">Yes</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-xs-2">
+                                        <button type="button" class="btn btn-danger" id="edit_btn_add_plan">Add</button>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+
                         <br>
                     </div>
                     <div class="modal-footer">
@@ -488,9 +591,16 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
     <script type="text/javascript">
         <?= "var previous_data = ". ($submitted_data ? 1: 0).";";?>
     </script>
+
+<script type="text/javascript">
+    <?= "var billing_plans = " . Json::encode($billing_plans) . ";";?>
+</script>
+
 <?php $this->registerJsFile('@web/js/validate.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/companies.js?v=1.0.1', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/table.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/libs/jquery.dataTables.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
+
+
 
 

@@ -361,6 +361,8 @@ class ShipmentsController extends BaseController
         $refData = new RefAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $banks = $refData->getBanks(); // get all the banks
         $reasons_list = $parcel->getParcelReturnReasons(); // get all reason
+
+
         return $this->render('processed', array('reasons_list' => $reasons_list, 'filter' => $filter, 'parcels' => $data, 'from_date' => $from_date, 'to_date' => $to_date, 'offset' => $offset, 'page_width' => $this->page_width, 'search' => $search_action, 'total_count' => $total_count, 'banks' => $banks));
     }
 
@@ -373,13 +375,13 @@ class ShipmentsController extends BaseController
                 if (!isset($records['waybill_numbers']) && !isset($records['comment'])) {
                     $this->flashError("Invalid parameter(s) sent!");
                 } else {
-                    $result = $parcel->sendReturnRequest($records['waybill_numbers'], $records['comment'], $records['attempted_delivery']);
+                    $result = $parcel->sendReturnRequest($records['waybill_numbers'], $records['comment'], $records['attempted_delivery'], $records['extra_note']);
                     $response = new ResponseHandler($result);
 
                     if ($response->getStatus() == ResponseHandler::STATUS_OK) {
                         $data = $response->getData();
                         if (empty($data['bad_parcels']))
-                            $this->flashSuccess('Return request sent');
+                            $this->flashSuccess('Negative status added');
                         else {
                             $bad_parcels = $data['bad_parcels'];
                             foreach ($bad_parcels as $key => $bad_parcel) {
@@ -392,6 +394,30 @@ class ShipmentsController extends BaseController
                 }
             }
 
+        }
+        return $this->redirect(Yii::$app->request->referrer);
+    }
+
+    public function actionRemovenegativestatus(){
+        $parcel = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $waybill_number = Yii::$app->request->get('waybill_number');
+        if(empty($waybill_number)){
+            $this->flashError('Waybill number is required');
+        }else{
+            $result = $parcel->removeNegativeStatus($waybill_number);
+            $response = new ResponseHandler($result);
+
+            if ($response->getStatus() == ResponseHandler::STATUS_OK) {
+                $data = $response->getData();
+                if (empty($data['bad_parcels']))
+                    $this->flashSuccess('Negative status removed');
+                else {
+                    $bad_parcels = $data['bad_parcels'];
+                    foreach ($bad_parcels as $key => $bad_parcel) {
+                        $this->flashError($key . ' - ' . $bad_parcel);
+                    }
+                }
+            }
         }
         return $this->redirect(Yii::$app->request->referrer);
     }
@@ -866,13 +892,13 @@ class ShipmentsController extends BaseController
         $filter_params = ['company_id', 'start_pickup_date', 'end_pickup_date', 'start_modified_date', 'end_modified_date', 'for_return', 'parcel_type',
             'status', 'min_weight', 'max_weight', 'min_amount_due', 'max_amount_due', 'cash_on_delivery', 'delivery_type',
             'payment_type', 'shipping_type', 'start_created_date', 'end_created_date', 'created_branch_id', 'route_id', 'request_type',
-            'from_branch_id', 'branch_type', 'return_reason_comment', 'business_manager_staff_id'];
+            'from_branch_id', 'branch_type', 'return_reason_comment', 'business_manager_staff_id', 'delivery_branch_id'];
         $extra_details = ['with_receiver', 'with_receiver_address', 'with_route'];
 
 
         $filters = [];
         foreach ($filter_params as $param) {
-            $filters[$param] = Yii::$app->request->get($param);
+            $filters[$param] = trim(Yii::$app->request->get($param));
         }
 
         foreach ($extra_details as $extra) {
@@ -920,10 +946,11 @@ class ShipmentsController extends BaseController
         $routes = $route_adapter->getRoutes(null, null, null, null, null);
 
 
-        $parcel = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $filtered_parcels = $parcel->getParcelsByFilters(array_filter($filters, 'strlen'));
+        $parcelAdapter = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $filtered_parcels = $parcelAdapter->getParcelsByFilters(array_filter($filters, 'strlen'));
+
         $response = new ResponseHandler($filtered_parcels);
-        $return_reasons = $parcel->getParcelReturnReasons();
+        $return_reasons = $parcelAdapter->getParcelReturnReasons();
 
 
         $parcels = [];
@@ -1005,6 +1032,12 @@ class ShipmentsController extends BaseController
         $offset = 0;
         $count = 500;
 
+        $filters['count'] = $count;
+        $filters['offset'] = $offset;
+        $filtered_parcels = $parcel->getParcelsByFilters(array_filter($filters, 'strlen'));
+        $response = new ResponseHandler($filtered_parcels);
+        //dd($response);
+
         $name = 'report_' . date(ServiceConstant::DATE_TIME_FORMAT) . '.csv';
         header('Content-Type: text/csv');
         header('Content-Disposition: attachment; filename=' . $name);
@@ -1013,7 +1046,7 @@ class ShipmentsController extends BaseController
         $stream = fopen("php://output", "w");
 
 
-        $headers = array('SN', 'Waybill Number', 'Sender', 'Sender Email', 'Sender Phone', 'Sender Address', 'Sender City', 'Sender State', 'Receiver', 'Receiver Email', 'Receiver Phone', 'Receiver Address', 'Receiver City', 'Receiver State', 'Weight/Piece', 'Payment Method', 'Amount Due', 'Cash Amount', 'POS Amount', 'POS Transaction ID', 'Parcel Type', 'Cash on Delivery', 'Delivery Type', 'Package Value', '# of Package', 'Shipping Type', 'Created Date', 'Pickup Date', 'Last Modified Date', 'Status', 'Reference Number', 'Originating Branch', 'Route', 'Request Type', 'For Return', 'Other Info', 'Company Reg No', 'Billing Plan Name', 'Created By', 'Amount due to Merchant', 'Insurance Charge', 'Storrage/Demurrage Charge', 'Handling Charge', 'Duty Charge', 'Cost of Crating', 'Other Charges', 'POD Name', 'POD Date');
+        $headers = array('SN', 'Waybill Number', 'Sender', 'Sender Email', 'Sender Phone', 'Sender Address', 'Sender City', 'Sender State', 'Receiver', 'Receiver Email', 'Receiver Phone', 'Receiver Address', 'Receiver City', 'Receiver State', 'Weight/Piece', 'Payment Method', 'Amount Due', 'Cash Amount', 'POS Amount', 'POS Transaction ID', 'Parcel Type', 'Cash on Delivery', 'Delivery Type', 'Package Value', '# of Package', 'Shipping Type', 'Created Date', 'Pickup Date', 'Last Modified Date', 'Status', 'Reference Number', 'Originating Branch', 'Route', 'Request Type', 'For Return', 'Other Info', 'Company Reg No', 'Billing Plan Name', 'Created By', 'Amount due to Merchant', 'Insurance Charge', 'Storrage/Demurrage Charge', 'Handling Charge', 'Duty Charge', 'Cost of Crating', 'Other Charges', 'POD Name', 'POD Date', 'Bank', 'Bank Account', 'Teller No');
         fputcsv($stream, $headers);
 
 
@@ -1027,6 +1060,7 @@ class ShipmentsController extends BaseController
             if ($response->isSuccess()) {
                 $data = $response->getData();
                 $parcels = $data['parcels'];
+
 
                 $exportData = [];
                 foreach ($parcels as $key => $result) {
@@ -1078,8 +1112,11 @@ class ShipmentsController extends BaseController
                         $result['parcel_cost_of_crating'],
                         $result['parcel_others'],
 
-                        $result['delivery_receipt_name'],
-                        $result['delivery_receipt_delivered_at'],
+                        (array_key_exists('delivery_receipt_name', $result)?$result['delivery_receipt_name']:''),
+                        (array_key_exists('delivery_receipt_delivered_at', $result)?$result['delivery_receipt_delivered_at']:''),
+                        Calypso::getValue($result, 'teller_bank_name'),
+                        Calypso::getValue($result, 'teller_account_no'),
+                        Calypso::getValue($result, 'teller_teller_no'),
                     ];
                 }
 
@@ -1110,9 +1147,11 @@ class ShipmentsController extends BaseController
         $companyAdapter = new CompanyAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $companies = $companyAdapter->getAllCompanies([]);
         $billingPlanAdapter = new BillingPlanAdapter();
-        $billingPlans = $billingPlanAdapter->getBillingPlans(['no_paginate' => '1', 'type' => BillingPlanAdapter::TYPE_WEIGHT_AND_ON_FORWARDING]);
-        $billingPlans = ArrayHelper::map($billingPlans, 'id', 'name', 'company_id');
+        /*$billingPlans = $billingPlanAdapter->getBillingPlans(['no_paginate' => '1', 'type' => BillingPlanAdapter::TYPE_WEIGHT_AND_ON_FORWARDING]);*/
 
+        $billingPlans = $billingPlanAdapter->getCompanyBillingPlans();
+
+        $billingPlans = ArrayHelper::map($billingPlans, 'id', 'name', 'company_id', 'p');
         $refData = new RefAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $paymentMethods = Calypso::getValue($refData->getPaymentMethods(), 'data', []);
 
@@ -1144,12 +1183,17 @@ class ShipmentsController extends BaseController
         $postData['payment_type'] = '1';
         */
 
+        //return $this->sendErrorResponse($postData, 200);
+
 
         $model->load($postData, '');
         $model->dataFile = UploadedFile::getInstanceByName('dataFile');
 
 
         $response = $model->process();
+
+
+        //return $this->sendErrorResponse($response, 200);
 
         if (!($response instanceof ResponseHandler)) {
             if ($model->hasErrors()) {
@@ -1186,8 +1230,8 @@ class ShipmentsController extends BaseController
         
         $offset = ($page - 1) * $this->page_width;
         $tasks = $parcelAdapter->getBulkShipmentTasks($offset, $this->page_width);
-        //$environment = 'local';
-        $environment = getenv("APPLICATION_ENV") ? getenv("APPLICATION_ENV") : 'local';
+        $environment = 'local';
+        //$environment = getenv("APPLICATION_ENV") ? getenv("APPLICATION_ENV") : 'local';
         $s3BaseUrl = '//s3-us-west-2.amazonaws.com/bulk-waybills/' . $environment . '/';
         //$s3BaseUrl = '//s3.amazonaws.com/tnt-bulk-waybills/' . $environment . '/';
         return $this->render('bulk_shipment_tasks',

@@ -8,6 +8,7 @@ function al(msg){
     alert(msg);
 }
 Hub.sendToServer = function(url,data,callback){
+    console.log(data);
     $.getJSON(url,data,function(response){ // Could have done it directly .... but you can do more before calling the callback :-)
         if(typeof callback == "function"){
             callback(response);

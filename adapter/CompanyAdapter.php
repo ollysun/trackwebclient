@@ -112,6 +112,7 @@ class CompanyAdapter extends BaseAdapter
         $response = $this->request(ServiceConstant::URL_COMPANY_ALL,
             $filters, self::HTTP_GET);
 
+
         $response = new ResponseHandler($response);
 
         if ($response->isSuccess()) {
@@ -141,6 +142,30 @@ class CompanyAdapter extends BaseAdapter
             return $response->getData();
         }
         return [];
+    }
+
+    /**
+     * @param $registration_number
+     * @return array|mixed
+     */
+    public function getCompanyAccess($registration_number){
+        $response = $this->request(ServiceConstant::URL_GET_COMPANY_ACCESS, ['registration_number' => $registration_number], self::HTTP_GET);
+        $response = new ResponseHandler($response);
+
+        if($response->isSuccess()){
+            return $response->getData();
+        }
+        return [];
+    }
+
+    /**
+     * @param $data
+     * @return ResponseHandler
+     */
+    public function saveCompanyAccess($data){
+        $response = new ResponseHandler($this->request(ServiceConstant::URL_SAVE_COMPANY_ACCESS, $data, self::HTTP_POST));
+
+        return $response;
     }
 
     /**

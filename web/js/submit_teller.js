@@ -13,8 +13,10 @@ $(document).ready(function () {
             return false;
         }
         var shipments = {};
+        var amount_due = 0;
         $.each(chkboxes, function (i, chk) {
             shipments[$(this).data("waybill")] = $(this).data("sender");
+            amount_due += parseFloat($(this).data('amount_due'));
         });
         var html = "";
         var i = 1;
@@ -25,9 +27,17 @@ $(document).ready(function () {
             html += "<td>" + sender + "</td>";
             html += "</tr>";
         });
+        $('#amount_paid').val(amount_due);
         $("#teller-modal-table>tbody").html(html);
         $("input#waybill_numbers").val(Object.keys(shipments).toString());
     });
+
+    $("button[id='btnSubmitTeller']").on("click", function (event) {
+        if(amount_due - 49 > parseFloat($("#amount_paid"))){
+            alert('Invalid amount entered');
+            return false;
+        }
+    })
 
     $('.btnClone').on('click', function (event) {
 

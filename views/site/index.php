@@ -37,6 +37,7 @@ if($branch_type != ServiceConstant::BRANCH_TYPE_EC && $user_type == ServiceConst
 
 </form>
 
+
 <!-- EC STAFF  -->
 <div class="main-box">
     <div class="clearfix">
@@ -108,6 +109,12 @@ if($branch_type != ServiceConstant::BRANCH_TYPE_EC && $user_type == ServiceConst
     </div>
 </div>
 <?php endif; ?>
+
+
+
+    <!--<p><?/*= $stats['start_time'] */?></p>
+    <p><?/*= $stats['end_time'] */?></p>-->
+
 <script type="text/javascript">
     var filter_date = '<?= $date; ?>',
         filter_from = new Date('<?= $from_date; ?>'),

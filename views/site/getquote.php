@@ -124,9 +124,39 @@ $this->params['breadcrumbs'] = array(
         <div class="clearfix main-box-body main-box-button-wrap">
 
             <div id="auto_billing" class="form-group amount-due-wrap">
-                <label for="">Amount Due</label>
+                <div id="calculating_info" class="hide">calculating</div>
 
-                <div id="amount" class="amount-due currency naira">0.00</div>
+                <div class="row" id="quote">
+                    <div class="col-md-2">
+                        <label for="">Amount</label>
+
+                        <div id="total_amount" class="amount-due currency naira">0.00</div>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="">Discount (<span id="discount_percentage">0.00</span>%)</label>
+
+                        <div id="discount" class="amount-due currency naira">0.00</div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label for="">Gross Amount</label>
+
+                        <div id="gross_amount" class="amount-due currency naira">0.00</div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <label for="">VAT</label>
+
+                        <div id="vat" class="amount-due currency naira">0.00</div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label for="">Amount Due</label>
+
+                        <div id="amount_due" class="amount-due currency naira">0.00</div>
+                    </div>
+                </div>
+
             </div>
 
             <button id="btncalculate" class="pull-right btn btn-default">Get Quote <i
@@ -145,7 +175,7 @@ $this->params['breadcrumbs'] = array(
 <?php $this->registerJsFile('@web/js/validate.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/libs/select2.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/utils.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
-<?php $this->registerJsFile('@web/js/finance/get_quote.js?1.0.0', ['depends' => [\app\assets\AppAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/finance/get_quote.js?1.0.1', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/libs/bootstrap-datepicker.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 
 <script type="text/javascript">

@@ -198,6 +198,10 @@ $this->params['breadcrumbs'] = array(
                 <table id="table" class="table table-hover dataTable">
                     <thead>
                     <tr>
+                        <th style="width: 20px" class="datatable-nosort">
+                            <div class="checkbox-nice"><input id="chbx_w_all" type="checkbox"><label
+                                    for="chbx_w_all"> </label></div>
+                        </th>
                         <th style="width: 20px">No.</th>
                         <th>Invoice Doc. No.</th>
                         <th>Company Name</th>
@@ -211,6 +215,15 @@ $this->params['breadcrumbs'] = array(
                     <?php $i = $offset;
                     foreach ($invoices as $invoice): ?>
                         <tr>
+                            <td>
+                                <div class="checkbox-nice">
+
+                                    <input id="chbx_w_<?= ++$i; ?>" class="checkable"
+                                           data-invoice_number="<?= strtoupper(Calypso::getValue($invoice, 'invoice_number')); ?>"
+                                           type="checkbox"><label
+                                        for="chbx_w_<?= $i; ?>"> </label>
+                                </div>
+                            </td>
                             <td><?= ++$i; ?></td>
                             <td><?= Calypso::getValue($invoice, 'invoice_number'); ?></td>
                             <td><?= strtoupper(Calypso::getValue($invoice, 'company.name')); ?></td>
@@ -219,7 +232,13 @@ $this->params['breadcrumbs'] = array(
                             <td>
                                 <?php
                                 ?>
+                                <button
+                                    data-approve_invoice="true" class="btn btn-primary btn-xs" data-toggle="modal">
+                                    Approve
+                                </button>
+
                                 <span class="hide"><?= json_encode($invoice)?></span>
+
                                 <button
                                     data-view_invoice="true" class="btn btn-primary btn-xs" data-toggle="modal"
                                     data-target="#viewInvoice">
@@ -330,8 +349,9 @@ $this->params['breadcrumbs'] = array(
 <?php $this->registerJsFile('@web/js/keyboardFormSubmit.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/form-watch-changes.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/validate.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
-<?php $this->registerJsFile('@web/js/finance/invoice.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/finance/invoice.js?v=1.0.2', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/response_handler.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/table.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/table_util.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/libs/jquery.dataTables.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 

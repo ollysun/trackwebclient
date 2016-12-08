@@ -69,6 +69,10 @@ class BillingPlanAdapter extends BaseAdapter
         return $response->isSuccess();
     }
 
+    public function linkCompany($billing_plan_id, $company_id, $is_default){
+        return $this->request(ServiceConstant::URL_BILLING_PLAN_LINK_COMPANY, ['company_id' => $company_id, 'billing_plan_id' => $billing_plan_id, 'is_default' => $is_default], self::HTTP_POST);
+    }
+
     /**
      * Get's all on forwarding charges for a billing plan
      * @author Adegoke Obasa <goke@cottacush.com>
@@ -104,8 +108,9 @@ class BillingPlanAdapter extends BaseAdapter
     public function getBillingPlans($filters = [])
     {
         $filters = array_merge([
-            'company_only' => '1',
-            'with_company' => '1',
+            'linked_companies_count' => 1,
+            /*'company_only' => '1',
+            'with_company' => '1',*/
             'filter_removed' => 1
         ], $filters);
 
@@ -118,6 +123,35 @@ class BillingPlanAdapter extends BaseAdapter
             return $response->getData();
         }
         return [];
+    }
+
+    public function getCompaniesByPlan($plan_id){
+        $response = new ResponseHandler($this->request(ServiceConstant::URL_BILLING_PLAN_GET_COMPANIES, ['billing_plan_id' => $plan_id], self::HTTP_GET));
+        if($response->isSuccess()){
+            return $response->getData();
+        }
+        return [];
+    }
+
+    public function getCompanyBillingPlans($filters = array()){
+        $response = $this->request(ServiceConstant::URL_BILLING_PLAN_GET_COMPANY_PLANS,
+            $filters, self::HTTP_GET);
+
+
+        $response = new ResponseHandler($response);
+
+        if ($response->isSuccess()) {
+            return $response->getData();
+        }
+        return [];
+    }
+
+    public function removeCompanyFromPlan($plan_id, $company_id){
+        return $this->request(ServiceConstant::URL_BILLING_PLAN_REMOVE_COMPANY, ['billing_plan_id' => $plan_id, 'company_id' => $company_id], self::HTTP_POST);
+    }
+
+    public function markPlanAsDefault($plan_id, $company_id){
+        return $this->request(ServiceConstant::URL_BILLING_PLAN_MAKE_DEFAULT, ['billing_plan_id' => $plan_id, 'company_id' => $company_id], self::HTTP_POST);
     }
 
     /**
@@ -151,6 +185,7 @@ class BillingPlanAdapter extends BaseAdapter
         $params['company_id' ] = $companyId;
         $params['billing_plan_name'] = $billingPlanName;
         $params['discount'] = $discount;
+        //dd($params);
         $rawResponse = $this->request(ServiceConstant::URL_CLONE_BILLING_PLAN,$params,self::HTTP_POST);
         $response = new ResponseHandler($rawResponse);
 

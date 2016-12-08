@@ -129,7 +129,7 @@ $is_hub = $user['branch']['branch_type'] == ServiceConstant::BRANCH_TYPE_HUB;
                     <th>Receiver Phone</th>
                     <th>Created Date</th>
                     <th>Delivery Route</th>
-                    <th>Return Status</th>
+                    <th>Negative Status</th>
                     <th>Delivery Status</th>
                     <?php if($user['role_id'] == ServiceConstant::USER_TYPE_ADMIN) { ?>
                         <th>Originating Branch</th>

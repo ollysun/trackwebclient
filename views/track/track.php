@@ -29,8 +29,8 @@ $this->title = 'Tracking Portal';
                 <h4 class="pull-right text-muted">
                     Status:
                     <?php if (Calypso::getDisplayValue($tracking_info, 'parcel_return_comment.comment', false)): ?>
-                        <strong id="status" title="Reason for return"
-                                data-content="<?= Calypso::getDisplayValue($tracking_info, 'parcel_return_comment.comment') ?>"
+                        <strong id="status" title="Negative status"
+                                data-content="<?= Calypso::getDisplayValue($tracking_info, 'parcel_return_comment.comment'). (empty(Calypso::getDisplayValue($tracking_info, 'parcel_return_comment.extra_note'))?"": (": ".Calypso::getDisplayValue($tracking_info, 'parcel_return_comment.extra_note'))) ?>"
                                 data-placement="bottom"
                                 class="text-danger">
                             <?= (Calypso::getValue($tracking_info, 'parcel.return_status', 0) != 0) ? ServiceConstant::getStatus(null, Calypso::getValue($tracking_info, 'parcel.return_status')) :

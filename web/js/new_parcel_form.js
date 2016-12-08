@@ -285,7 +285,6 @@ var Parcel = {
         alert(payload.message);
     },
     onFormSuccessCallback: function (code, payload) {
-        $(window).trigger('success.CP.Form.watchChanges');
         var waybill_number;
         if (Array.isArray(payload.waybill_number)) {
             var split_waybill_number = payload.waybill_number[0];
@@ -644,7 +643,7 @@ $(document).ready(function () {
             var selectedBillingPlans = billingPlans[companyId];
             var html = "";
             for (var planId in selectedBillingPlans) {
-                html += new Option(selectedBillingPlans[planId].toUpperCase(), planId).outerHTML;
+                html += new Option(selectedBillingPlans[planId].toUpperCase(), planId.substring(1)).outerHTML;
             }
             $("#billing_plan").html(html);
             $("#billing_plan").trigger("change");

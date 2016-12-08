@@ -24,6 +24,9 @@ use Adapter\Util\Calypso;
 use Adapter\Globals\ServiceConstant;
 use Adapter\Util\Response;
 use Adapter\Util\Util;
+use Adapter\CompanyAdapter;
+use Adapter\BillingPlanAdapter;
+use yii\helpers\ArrayHelper;
 
 class SiteController extends BaseController
 {
@@ -65,7 +68,9 @@ class SiteController extends BaseController
 
     public function beforeAction($action)
     {
+
         if (!in_array($action->id, array('logout', 'changepassword', 'login', 'gerraout', 'site', 'track', 'tracksearchdetails', 'forgotpassword', 'resetpassword', 'passwordresetsuccess'))) {
+
             $s = Calypso::getInstance()->session('user_session');
             if (!$s) {
                 // Calypso::getInstance()->AppRedirect('site','login');
@@ -81,10 +86,11 @@ class SiteController extends BaseController
 
     public function actionIndex()
     {
+        $request_start = date(ServiceConstant::DATE_FORMAT);
         $user_data = Calypso::getInstance()->session('user_session');
 
         if (in_array(Calypso::getValue($user_data, 'role_id'), [ServiceConstant::USER_TYPE_COMPANY_ADMIN, ServiceConstant::USER_TYPE_COMPANY_OFFICER])) {
-            return $this->redirect('/shipments/processed');
+            return $this->corporateDashboard();
         }
 
         $branch_type = $user_data['branch']['branch_type'];
@@ -138,7 +144,140 @@ class SiteController extends BaseController
             $stats['delivered'] = $parcel->getParcelCount($filters);
         }
 
-        return $this->render('index', array('date' => $date, 'from_date' => $from_date, 'to_date' => $to_date, 'stats' => $stats, 'branch_type' => $branch_type, 'user_type' => $user_type, 'branch' => $branch_to_view));
+        $request_end = date(ServiceConstant::DATE_FORMAT);
+
+        return $this->render('index', array('date' => $date, 'from_date' => $from_date, 'to_date' => $to_date, 'stats' => $stats, 'branch_type' => $branch_type, 'user_type' => $user_type, 'branch' => $branch_to_view, 'request_start' => $request_start, 'request_end' => $request_end));
+    }
+
+
+    public function actionIndex1()
+    {
+        $request_start = date('d M Y H:i:s');
+        $user_data = Calypso::getInstance()->session('user_session');
+
+        if (in_array(Calypso::getValue($user_data, 'role_id'), [ServiceConstant::USER_TYPE_COMPANY_ADMIN, ServiceConstant::USER_TYPE_COMPANY_OFFICER])) {
+            return $this->corporateDashboard();
+        }
+
+        $branch_type = $user_data['branch']['branch_type'];
+        $alternative = $branch_type == ServiceConstant::BRANCH_TYPE_HQ ? null : $user_data['branch_id'];
+        $branch_to_view = Calypso::getValue(Calypso::getInstance()->get(), 'branch', $alternative);
+        $user_type = $user_data['role_id'];
+
+        $from_date = Util::getToday();
+        $to_date = Util::getToday();
+        $date = '0d';
+
+        if (isset(Calypso::getInstance()->get()->from, Calypso::getInstance()->get()->to, Calypso::getInstance()->get()->date)) {
+            $from_date = Calypso::getInstance()->get()->from;
+            $to_date = Calypso::getInstance()->get()->to;
+            $date = Calypso::getInstance()->get()->date;
+        }
+
+        $parcel = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $filters = array('created_branch_id' => $branch_to_view, 'start_created_date' => $from_date . ' 00:00:00', 'end_created_date' => $to_date . ' 23:59:59');
+        $stats['created'] = $filters;// $parcel->getParcelCount($filters);
+
+        $filters = array('request_type' => ServiceConstant::REQUEST_OTHERS, 'history_from_branch_id' => $branch_to_view, 'history_status' => ServiceConstant::FOR_SWEEPER, 'history_start_created_date' => $from_date . ' 00:00:00', 'history_end_created_date' => $to_date . ' 23:59:59');
+        $stats['for_sweep'] = $filters;// $parcel->getParcelCount($filters);
+
+        $filters = array('request_type' => ServiceConstant::REQUEST_ECOMMERCE, 'history_from_branch_id' => $branch_to_view, 'history_status' => ServiceConstant::FOR_SWEEPER, 'history_start_created_date' => $from_date . ' 00:00:00', 'history_end_created_date' => $to_date . ' 23:59:59');
+        $stats['for_sweep_ecommerce'] = $filters;// $parcel->getParcelCount($filters);
+
+        $filters = array('from_branch_id' => $branch_to_view, 'status' => ServiceConstant::FOR_DELIVERY);
+        $stats['for_delivery'] = $filters;// $parcel->getParcelCount($filters);
+
+        if ($branch_type != ServiceConstant::BRANCH_TYPE_EC) {
+            $filters = array('history_to_branch_id' => $branch_to_view, 'history_status' => ServiceConstant::FOR_ARRIVAL, 'history_start_created_date' => $from_date . ' 00:00:00', 'history_end_created_date' => $to_date . ' 23:59:59');
+            $stats['received'] = $filters;// $parcel->getParcelCount($filters);
+
+            $filters = array('to_branch_id' => $branch_to_view, 'status' => ServiceConstant::FOR_ARRIVAL);
+            $stats['ready_for_sorting'] = $filters;// $parcel->getParcelCount($filters);
+
+            $filters = array('from_branch_id' => $branch_to_view, 'status' => ServiceConstant::ASSIGNED_TO_GROUNDSMAN);
+            $stats['groundsman'] = $filters;// $parcel->getParcelCount($filters);
+
+            $filters = array('from_branch_id' => $branch_to_view, 'status' => ServiceConstant::FOR_SWEEPER);
+            $stats['sorted'] = $filters;// $parcel->getParcelCount($filters);
+
+            $filters = array('from_branch_id' => $branch_to_view, 'status' => ServiceConstant::BEING_DELIVERED);
+            $stats['transit_to_customer'] = $filters;// $parcel->getParcelCount($filters);
+
+            $filters = array('from_branch_id' => $branch_to_view, 'status' => ServiceConstant::FOR_SWEEPER, 'history_start_created_date' => $from_date . ' 00:00:00', 'history_end_created_date' => $to_date . ' 23:59:59');
+            $stats['sorted_still_at_hub'] = $filters;// $parcel->getParcelCount($filters);
+
+            $filters = array('history_from_branch_id' => $branch_to_view, 'history_status' => ServiceConstant::DELIVERED, 'history_start_created_date' => $from_date . ' 00:00:00', 'history_end_created_date' => $to_date . ' 23:59:59');
+            $stats['delivered'] = $filters;// $parcel->getParcelCount($filters);
+        }
+
+        foreach ($stats as $key => $filters) {
+            $stats[$key] = json_encode($filters);
+        }
+
+        $response = $parcel->groupCount($stats);
+        if($response->isSuccess()){
+            $data = $response->getData();
+            foreach ($data as $key => $value) {
+                $stats[$key] = $value;
+            }
+        }else{
+            foreach($stats as $key=>$value){
+                $stats[$key] = 0;
+            }
+        }
+
+        $request_end = date('d M Y H:i:s');
+
+        return $this->render('index', array('date' => $date, 'from_date' => $from_date, 'to_date' => $to_date, 'stats' => $stats,
+            'branch_type' => $branch_type, 'user_type' => $user_type, 'branch' => $branch_to_view,
+            'request_start' => $request_start, 'request_end' => $request_end));
+
+    }
+
+    public function corporateDashboard(){
+        $user_data = Calypso::getInstance()->session('user_session');
+
+        $from_date = Util::getToday();
+        $to_date = Util::getToday();
+        $date = '0d';
+
+        $stats = [];
+
+        $parcel = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $filters = array('company_id' => $user_data['company_id'], 'start_created_date' => $from_date . ' 00:00:00', 'end_created_date' => $to_date . ' 23:59:59');
+        $stats['created'] = $filters;// $parcel->getParcelCount($filters);
+
+        $filters = array('company_id' => $user_data['company_id'], 'status' => ServiceConstant::FOR_DELIVERY);
+        $stats['for_delivery'] = $filters;// $parcel->getParcelCount($filters);
+
+        $filters = array('company_id' => $user_data['company_id'], 'status' => ServiceConstant::BEING_DELIVERED);
+        $stats['transit_to_customer'] = $filters;
+
+        $filters = array('company_id' => $user_data['company_id'], 'history_status' => ServiceConstant::DELIVERED, 'history_start_created_date' => $from_date . ' 00:00:00', 'history_end_created_date' => $to_date . ' 23:59:59');
+
+        $stats['delivered'] = $filters;
+
+        foreach ($stats as $key => $filters) {
+            $stats[$key] = json_encode($filters);
+        }
+
+        $response = $parcel->groupCount($stats);
+        if($response->isSuccess()){
+            $data = $response->getData();
+            foreach ($data as $key => $value) {
+                $stats[$key] = $value;
+            }
+        }else{
+            foreach($stats as $key=>$value){
+                $stats[$key] = 0;
+            }
+        }
+
+        //dd($stats);
+
+        $view_bag = ['stats' => $stats, 'date' => $date, 'from_date' => $from_date, 'to_date' => $to_date];
+
+        return $this->render('corporate_dashboard', $view_bag);
     }
 
     public function actionGerraout()
@@ -179,9 +318,9 @@ class SiteController extends BaseController
             User::login($data);
 
             // Check Corporate User
-            if (!is_null(Calypso::getValue(Calypso::getInstance()->session("user_session"), 'company'))) {
+            /*if (!is_null(Calypso::getValue(Calypso::getInstance()->session("user_session"), 'company'))) {
                 return $this->redirect('/shipments/processed');
-            }
+            }*/
             return $this->redirect('/site');
 
         } else if ($user_status == ServiceConstant::INACTIVE && Calypso::getValue($data, 'last_login_time') == 0) {
@@ -405,6 +544,8 @@ class SiteController extends BaseController
             $parcel = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
             $response = $parcel->getOneParcel($id);
             $response = new ResponseHandler($response);
+
+            dd($response);
             if ($response->getStatus() == ResponseHandler::STATUS_OK) {
                 $data = $response->getData();
                 if (isset($data['sender_address']) && isset($data['sender_address']['city_id'])) {
@@ -437,6 +578,7 @@ class SiteController extends BaseController
                 $parcelType = $parcelTypeResponse->getData();
             }
         }
+        dd($data);
         $this->layout = 'print';
 
         return $this->render('print_waybill', array(
@@ -648,6 +790,59 @@ class SiteController extends BaseController
     public function actionTracksearch()
     {
         return $this->render('track_search');
+    }
+
+
+    public function actionGetquote(){
+        if(Yii::$app->request->isPost){
+            $discount = Yii::$app->request->post('discount');
+        }
+
+        $refData = new RefAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $countries = $refData->getCountries();
+        $states = (new ResponseHandler($refData->getStates(ServiceConstant::COUNTRY_NIGERIA)))->getData();
+
+        $companyAdapter = new CompanyAdapter();
+        $companies = $companyAdapter->getAllCompanies(['status' => ServiceConstant::ACTIVE]);
+
+        if(Calypso::isCooperateUser()){
+            $this_company = null;
+            $this_company_id = Calypso::getInstance()->session('user_session')['company']['id'];
+            foreach ($companies as $comp) {
+                if($comp['id'] == $this_company_id){
+                    $this_company = $comp;
+                }
+            }
+            $companies = [$this_company];
+        }
+
+        $hubAdp = new BranchAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $centres = $hubAdp->getAllHubs(false);
+        $centres = new ResponseHandler($centres);
+        $hubs_list = $centres->getStatus() == ResponseHandler::STATUS_OK ? $centres->getData() : [];
+
+        $user = Calypso::getInstance()->session('user_session');
+        $hubAdp = new BranchAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $centres = $hubAdp->getCentres(Calypso::isCooperateUser()?null:$user['branch']['id'], 0, $this->page_width, false);
+        $centres = new ResponseHandler($centres);
+        $centres_list = $centres->getStatus() == ResponseHandler::STATUS_OK ? $centres->getData() : [];
+
+        $centres_list = array_merge($centres_list, $hubs_list);
+
+        $bilingPlanAdapter = new BillingPlanAdapter();
+        /*$billingPlans = $bilingPlanAdapter->getBillingPlans(['no_paginate' => '1', 'type' => BillingPlanAdapter::TYPE_WEIGHT_AND_ON_FORWARDING, 'status' => ServiceConstant::ACTIVE]);*/
+        $billingPlans = $bilingPlanAdapter->getCompanyBillingPlans();
+
+        $billingPlans = ArrayHelper::map($billingPlans, 'id', 'name', 'company_id');
+
+        return $this->render('getquote', array(
+            'countries' => $countries,
+            'states' => $states,
+            'centres' => $centres_list,
+            'branch' => Calypso::isCooperateUser()?null:$user['branch'],
+            'companies' => $companies,
+            'billingPlans' => $billingPlans
+        ));
     }
 
     /**

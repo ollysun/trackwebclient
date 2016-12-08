@@ -402,6 +402,7 @@ $is_admin = isset($branch['branch_type']) && $branch['branch_type'] == ServiceCo
                 </div>
 
             </div>
+
             <div class="item">
                 <div class="row">
                     <div class="col-xs-12 col-sm-6 col-sm-push-3">
@@ -425,7 +426,7 @@ $is_admin = isset($branch['branch_type']) && $branch['branch_type'] == ServiceCo
                                     <div class="row">
                                         <div class="col-md-6 col-xs-12">
                                             <label>Company</label>
-                                            <select id="company" class="form-control billing_plan">
+                                            <select name="company_id" id="company" class="form-control billing_plan">
                                                 <option value="" selected>Select Company</option>
                                                 <?php foreach ($companies as $company): ?>
                                                     <option
@@ -700,7 +701,7 @@ $is_admin = isset($branch['branch_type']) && $branch['branch_type'] == ServiceCo
 <?php $this->registerJsFile('@web/js/validate.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/libs/select2.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/utils.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
-<?php $this->registerJsFile('@web/js/new_parcel_form.js?2.6.2', ['depends' => [\app\assets\AppAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/new_parcel_form.js?2.6.3.0', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/libs/bootstrap-datepicker.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 <?php
 $this->registerJs('$(".alert").delay(5000).fadeOut(1500);', View::POS_READY);

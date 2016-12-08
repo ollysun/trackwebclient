@@ -13,6 +13,15 @@ class AdminAdapter extends BaseAdapter{
             'password' => $password
         ),self::HTTP_POST);
     }
+
+    public function apiLogin($registration_number, $private_key){
+        return $this->request(ServiceConstant::URL_ADMIN_LOGIN,array(
+            'registration_number' => $registration_number,
+            'private_key' => $private_key,
+            'api_login' => 1
+        ),self::HTTP_POST);
+    }
+
     public function getStaffMembers($offset,$count,$role='-1'){
         $role_filter = $role == '-1'?'':'&role_id='.$role;
         return  $this->request(ServiceConstant::URL_GET_USERS.'&offset='.$offset.'&count='.$count.$role_filter, [], self::HTTP_GET);

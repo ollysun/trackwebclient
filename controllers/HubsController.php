@@ -119,45 +119,34 @@ class HubsController extends BaseController
          * This is to allow an hub officer perform the function of a groundsman
          */
         $allowGroundsManFunctions = !is_null($type) && $type == 'groundsman';
-        $isGroundman = $this->userData['role_id'] == ServiceConstant::USER_TYPE_GROUNDSMAN || $allowGroundsManFunctions;
+        $isGroundsman = $this->userData['role_id'] == ServiceConstant::USER_TYPE_GROUNDSMAN || $allowGroundsManFunctions;
 
         $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
 
         if (\Yii::$app->request->isPost) {
-            $branch = \Yii::$app->request->post('branch');
-            $branch_type = \Yii::$app->request->post('branch_type');
-            $waybill_numbers = \Yii::$app->request->post('waybills');
-            $return_to_origin = \Yii::$app->request->post('return_to_origin');
+            $entry = Yii::$app->request->post();
+            $entry['admin_id'] = $this->userData['id'];
 
-            if (!isset($branch) || empty($waybill_numbers)) {
-                $this->flashError('Please ensure you set destinations at least a (one) for the parcels');
-            }
+            $response = new ResponseHandler($parcelsAdapter->createDirectManifest($entry));
+            if($response->isSuccess()){
+                $data = $response->getData();
 
-            $postParams['waybill_numbers'] = implode(',', $waybill_numbers);
-            $postParams['return_to_origin'] = $return_to_origin;
+                if(isset($data['bad_parcels']) &&count($data['bad_parcels'])){
+                    $message = [];
+                    foreach ($data['bad_parcels'] as $waybill => $error) {
+                        $message[] = "$waybill $error";
+                    }
 
-
-            if ($branch == $this->userData['branch_id']) {
-                $response = $parcelsAdapter->assignToGroundsMan($postParams);
-            } else {
-                if ($branch_type == 'route') {
-                    $postParams['route_id'] = $branch;
-                    $response = $parcelsAdapter->moveForDelivery($postParams);
-                } else {
-                    $postParams['to_branch_id'] = $branch;
-                    $response = $parcelsAdapter->moveToForSweeper($postParams);
+                    $this->flashError(implode(',', $message));
                 }
-            }
 
-            if ($response['status'] === ResponseHandler::STATUS_OK) {
-
-                if ($branch_type != 'route' && ($this->userData['branch_id'] == $branch)) {
-                    $this->flashSuccess('Parcels have been successfully moved to the next destination.');
-                } else {
-                    $this->flashSuccess('Parcels have been successfully moved to the next destination. <a href="delivery">Generate Manifest</a>');
+                if(isset($data['manifest_id']) && $data['manifest_id']){
+                    $this->flashSuccess("Manifest generated! Manifest number: ".$data['manifest_id']);
+                    return $this->redirect("/manifest/view?id=".$data['manifest_id']);
                 }
-            } else {
-                $this->flashError('An error occurred while trying to move parcels to next destination. Please try again.');
+            }else{
+                $this->flashError($response->getError());
+                return $this->back();
             }
         }
 
@@ -172,9 +161,16 @@ class HubsController extends BaseController
             $this->flashError('An error occurred while trying to fetch parcels. Please try again.');
             $viewData['parcel_next'] = [];
         }
-        $viewData['isGroundsman'] = $isGroundman;
+
+        $branchAdapter = new BranchAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $response = new ResponseHandler($branchAdapter->getAllHubs());
+        if($response->isSuccess()){
+            $viewData['branches'] = $response->getData();
+        }else $viewData['branches'] = [];
+
+        $viewData['isGroundsman'] = $isGroundsman;
         $viewData['reasons_list'] = $parcelsAdapter->getParcelReturnReasons();
-        return $this->render('destination', $viewData);
+        return $this->render('direct_manifest', $viewData);
     }
 
     public function actionHubarrival($page = 1, $page_width = null)

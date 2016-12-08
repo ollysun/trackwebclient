@@ -79,7 +79,7 @@ $user_data = $this->context->userData;
                         <th>Receiver Phone</th>
                         <th>Dispatcher</th>
                         <th>Status</th>
-                        <th>Return Status</th>
+                        <th>Negative Status</th>
                         <?php if ($user_data['role_id'] == ServiceConstant::USER_TYPE_ADMIN) { ?>
                             <th>Originating Branch</th>
                             <th>Current Location</th>

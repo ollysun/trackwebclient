@@ -218,20 +218,36 @@ $this->params['content_header_button'] = "<a href='" . $downloadURL . "' class='
                             </select>
                             <input type="hidden" name="created_branch_id" value=""/>
                         </div>
-                        <div class="pull-left form-group form-group-sm">
-                            <label for="">Current Branch</label><br>
-                            <select id="current_branch_select" class="form-control  filter-status" multiple="true>
+                            <div class="pull-left form-group form-group-sm">
+                                <label for="">Current Branch</label><br>
+                                <select id="current_branch_select" class="form-control  filter-status" multiple="true">
                                 <?php
 
-                            foreach ($branches as $branch) { ?>
+                                foreach ($branches as $branch) { ?>
                                     <option
                                         value="<?= $branch['id']; ?>
-                            " <?= $filters['from_branch_id'] == $branch['id'] ? 'selected' : '' ?>
-                            ><?= strtoupper($branch['name']); ?></option>
-                            <?php } ?>
-                            </select>
-                            <input type="hidden" name="from_branch_id" value=""/>
-                        </div>
+                                " <?= $filters['from_branch_id'] == $branch['id'] ? 'selected' : '' ?>
+                                ><?= strtoupper($branch['name']); ?></option>
+                                <?php } ?>
+                                </select>
+                                <input type="hidden" name="from_branch_id" value=""/>
+                            </div>
+
+                            <div class="pull-left form-group form-group-sm">
+                                <label for="">Delivery Branch</label><br>
+                                <select name="delivery_branch_id" id="delivery_branch_select" class="form-control  filter-status" <!--multiple="true"-->>
+                                <option value="">Not Applicable</option>
+                                <?php
+
+                                foreach ($branches as $branch) { ?>
+                                    <option
+                                        value="<?= $branch['id']; ?>
+                                " <?= $filters['delivery_branch_id'] == $branch['id'] ? 'selected' : '' ?>
+                                ><?= strtoupper($branch['name']); ?></option>
+                                <?php } ?>
+                                </select>
+                            </div>
+
                         <div class="pull-left form-group form-group-sm">
                             <label for="">Select Corporate</label><br>
                             <select name="company_id" id="current_branch_select" class="form-control  filter-status">
@@ -296,6 +312,9 @@ $this->params['content_header_button'] = "<a href='" . $downloadURL . "' class='
                         <th>Current Status</th>
                         <th>Last Modified</th>
                         <th>Delivery Type</th>
+                        <th>Bank</th>
+                        <th>Bank Account</th>
+                        <th>Teller No</th>
                         <th>Action</th>
                     </tr>
                     </thead>
@@ -320,6 +339,12 @@ $this->params['content_header_button'] = "<a href='" . $downloadURL . "' class='
                                     (<?= Util::ago(Calypso::getValue($parcel, 'parcel_modified_date')); ?>)
                                 </td>
                                 <td><?= ucwords(ServiceConstant::getDeliveryType(Calypso::getValue($parcel, 'parcel_delivery_type'))); ?></td>
+
+
+                                <td><?= ucwords(Calypso::getValue($parcel, 'teller_bank_name')); ?></td>
+                                <td><?= ucwords(Calypso::getValue($parcel, 'teller_account_no')); ?></td>
+                                <td><?= ucwords(Calypso::getValue($parcel, 'teller_teller_no')); ?></td>
+
                                 <td>
                                     <a href="<?= Url::toRoute(['/shipments/view?waybill_number=' . Calypso::getValue($parcel, 'parcel_waybill_number')]) ?>"
                                        class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i></a>
@@ -343,6 +368,6 @@ $this->params['content_header_button'] = "<a href='" . $downloadURL . "' class='
 <?php $this->registerJsFile('@web/js/libs/select2.js', ['depends' => [AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/utils.js', ['depends' => [JqueryAsset::className()]]) ?>
 <?php $this->registerJs('var ecs = ' . Json::encode($ecs) . '; var hubs = ' . Json::encode($hubs) . '; var filters = ' . Json::encode($filters) . ';', View::POS_HEAD); ?>
-<?php $this->registerJsFile('@web/js/report.js', ['depends' => [JqueryAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/report.js?v=1.0.1', ['depends' => [JqueryAsset::className()]]) ?>
 
 

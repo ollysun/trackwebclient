@@ -36,10 +36,101 @@ class BillingController extends BaseController
         return parent::beforeAction($action);
     }
 
-    public function actionIndex()
-    {
-        //redirect to the appropriate 'default' page
-        return $this->redirect('billing/weightranges');
+    public function actionIndex(){
+
+        if(Yii::$app->request->isPost){
+            $entry = Yii::$app->request->post();
+            if($entry['task'] == 'link_company'){
+                $company_id = $entry['company_id'];
+                $balling_plan_id = $entry['billing_plan_id'];
+                $is_default = $entry['is_default'];
+                if(in_array(null, [$is_default, $company_id, $balling_plan_id])){
+                    $this->flashError('All details are required!');
+                }else{
+
+                    $adp = new BillingPlanAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+                    $response = $adp->linkCompany($balling_plan_id, $company_id, $is_default);
+                    if ($response['status'] === Response::STATUS_OK) {
+                        Yii::$app->session->setFlash('success', 'Link has been created successfully.');
+                    } else {
+                        Yii::$app->session->setFlash('danger', 'There was a problem creating the link. ' . $response['message']);
+                    }
+                }
+                return $this->back();
+            }
+        }
+
+        $page = \Yii::$app->getRequest()->get('page', 1);
+        $search = \Yii::$app->getRequest()->get('search', null);
+
+        // Add Offset and Count
+        $offset = ($page - 1) * $this->page_width;
+        $filters['with_total_count'] = '1';
+        $filters['offset'] = $offset;
+        $filters['plan_name'] = $search;
+        $filters['count'] = $this->page_width;
+        $filters['status'] = ServiceConstant::ACTIVE;
+
+        $companyAdapter = new CompanyAdapter();
+        $companies = $companyAdapter->getAllCompanies(['status' => ServiceConstant::ACTIVE]);
+
+        $billingPlanAdapter = new BillingPlanAdapter();
+        $response = $billingPlanAdapter->getBillingPlans($filters);
+        $totalCount = Calypso::getValue($response, 'total_count');
+        $billingPlans = Calypso::getValue($response, 'plans');
+
+        $billingPlanTypes = BillingPlanAdapter::getTypes();
+        return $this->render("billing_plans", [
+            'companies' => $companies,
+            'billingPlans' => $billingPlans,
+            'billingPlanTypes' => $billingPlanTypes,
+            'offset' => $offset,
+            'total_count' => $totalCount,
+            'page_width' => $this->page_width,
+            'search' => $search
+        ]);
+    }
+
+    public function actionGetcompaniesbyplan($billing_plan_id){
+        $billingPlanAdapter = new BillingPlanAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $companies = $billingPlanAdapter->getCompaniesByPlan($billing_plan_id);
+        return $this->sendSuccessResponse($companies);
+    }
+
+    public function actionRemovecompanyfromplan($billing_plan_id, $company_id){
+        $billingPlanAdapter = new BillingPlanAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $response = new ResponseHandler($billingPlanAdapter->removeCompanyFromPlan($billing_plan_id, $company_id));
+
+        if($response->isSuccess()){
+            $message = 'Company removed from plan';
+            if(Yii::$app->request->isAjax)
+                return $this->sendSuccessResponse(['message' => $message, 'success' => true]);
+            $this->flashSuccess($message);
+        }else{
+            $message = 'Unable to remove company from plan '.$response->getError();
+            if(Yii::$app->request->isAjax)
+                return $this->sendSuccessResponse(['message' => $message, 'success' => false]);
+            $this->flashError($message);
+        }
+        return $this->back();
+    }
+
+    public function actionMarkplanasdefault($billing_plan_id, $company_id){
+        $billingPlanAdapter = new BillingPlanAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $response = new ResponseHandler($billingPlanAdapter->markPlanasDefault($billing_plan_id, $company_id));
+
+        if($response->isSuccess()){
+            $message = 'Plan marked as default';
+            if(Yii::$app->request->isAjax)
+                return $this->sendSuccessResponse(['message' => $message, 'success' => true]);
+            $this->flashSuccess($message);
+        }else{
+            $message = 'Unable to mark plan as default. '.$response->getError();
+            if(Yii::$app->request->isAjax)
+                return $this->sendSuccessResponse(['message' => $message, 'success' => false]);
+            $this->flashError($message);
+        }
+        return $this->back();
     }
 
     public function getRegion()
@@ -245,75 +336,6 @@ class BillingController extends BaseController
         $region_list = $regions->getStatus() == ResponseHandler::STATUS_OK ? $regions->getData() : [];
         $countries_list = $countries->getStatus() == ResponseHandler::STATUS_OK ? $countries->getData() : [];
         return $this->render('regions', array('regions' => $region_list, 'countries' => $countries_list,));
-    }
-
-    public function actionBusinessmanagers($page = 1, $page_width = null){
-        $bmAdapter = new BusinessManagerAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-
-        if(Yii::$app->request->isPost){
-            $entry = Yii::$app->request->post();
-            $task = Calypso::getValue(Yii::$app->request->post(), 'task', '');
-            $error = [];
-
-            $data = [];
-            $data['region_id'] = Calypso::getValue($entry, 'region_id', null);
-            $data['status'] = Calypso::getValue($entry, 'status');
-            $data['staff_id'] = Calypso::getValue($entry, 'staff_id');
-
-            if (($task == 'create' || $task == 'edit') && (empty($data['region_id']) || empty($data['staff_id']))) {
-                $error[] = "All details are required!";
-            }else{
-                if($task == 'create'){
-                    $response = $bmAdapter->addBusinessManager($data['region_id'], $data['staff_id']);
-                    if($response['status'] == ResponseHandler::STATUS_OK){
-                        $this->flashSuccess('BM added successfully');
-                    }else{
-                        Yii::$app->session->setFlash('danger', 'There was a problem creating the BM. ' . $response['message']);
-                    }
-                }elseif($task == 'edit'){
-                    $response = $bmAdapter->changeRegion($data['staff_id'], $data['region_id']);
-                    if($response['status'] == ResponseHandler::STATUS_OK){
-                        $this->flashSuccess('BM updated successfully');
-                    }else{
-                        $this->flashError('There was a problem updating the BM. ' . $response['message']);
-                    }
-                }
-            }
-        }
-
-
-        if ($page_width != null) {
-            $this->page_width = $page_width;
-            Calypso::getInstance()->cookie('page_width', $page_width);
-        }
-
-        $page_width = is_null($page_width) ? $this->page_width : $page_width;
-        $offset = ($page - 1) * $page_width;
-
-        $filter = ['offset' => $offset, 'count' => $page_width, 'paginate' => true];
-        if(isset(Calypso::getInstance()->get()->region_id)){
-            $filter['region_id'] = Calypso::getInstance()->get()->region_id;
-        }
-
-
-        $filter_country = Calypso::getValue(Yii::$app->request->post(), 'filter_country', 1);
-        $refAdp = new RefAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $regions = $refAdp->getRegions($filter_country);
-        $regions = new ResponseHandler($regions);
-        $region_list = $regions->getStatus() == ResponseHandler::STATUS_OK ? $regions->getData() : [];
-
-        $result = $bmAdapter->getAll();
-
-        if($result['status'] == ResponseHandler::STATUS_OK){
-            $business_managers = $result['data']['business_managers'];
-            $total_count = $result['data']['total_count'];
-        }else{
-            $business_managers = [];
-            $total_count = 0;
-
-        }
-
-        return $this->render('business_managers', array('regions' => $region_list, 'business_managers' => $business_managers, 'total_count' => $total_count));
     }
 
     public function actionStatemapping()
@@ -705,6 +727,7 @@ class BillingController extends BaseController
         return 0;
     }
 
+
     /**
      * Corporate Billing View
      * @author Adegoke Obasa <goke@cottacush.com>
@@ -761,7 +784,8 @@ class BillingController extends BaseController
                 } else {
                     $this->flashError($billingAdapter->getLastErrorMessage());
                 }
-                return $this->redirect(Url::to("/billing/corporate"));
+                return $this->back();
+                //return $this->redirect(Url::to("/billing/corporate"));
             }
 
             if (Yii::$app->request->post('clone_billing_plan') != null) {
@@ -793,7 +817,7 @@ class BillingController extends BaseController
                 }
             }
         }
-        return $this->redirect(Url::to("/billing/corporate"));
+        return $this->back();// $this->redirect(Url::to("/billing/corporate"));
     }
 
     /**
