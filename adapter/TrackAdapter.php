@@ -10,6 +10,7 @@ namespace Adapter;
 
 
 use Adapter\Globals\ServiceConstant;
+use Adapter\Util\Calypso;
 
 /**
  * Class TrackAdapter
@@ -18,6 +19,11 @@ use Adapter\Globals\ServiceConstant;
  */
 class TrackAdapter extends BaseAdapter
 {
+    const TRACKPLUS = 0;
+    const KANGAROO = 1;
+    const ARAMEX = 2;
+    const UNIVERSAL = 3;
+
     /**
      * Get Tracking Info
      * @author Adeyemi Olaoye <yemi@cottacush.com>
@@ -78,6 +84,77 @@ class TrackAdapter extends BaseAdapter
         }
 
         return array_values($processedHistory);
+    }
+
+
+    public static function getHistoryProvider($waybill_number){
+        if(preg_match('/^\d[A-Z](\d|\-)+[\d]$/i', $waybill_number)) return self::TRACKPLUS;
+        if(strlen($waybill_number) == 5 || strlen($waybill_number) == 6) return self::KANGAROO;
+        if(preg_match('/^[0-9]{10}$/', $waybill_number)) return self::ARAMEX;
+
+        return self::TRACKPLUS;
+    }
+
+
+
+    public function trackAramex($tracking_numbers){
+        $soapClient = new \SoapClient('http://ws.aramex.net/shippingapi/tracking/service_1_0.svc?WSDL');
+        /*echo '<pre>';
+        // shows the methods coming from the service
+        print_r($soapClient->__getFunctions());*/
+
+        /*
+            parameters needed for the trackShipments method , client info, Transaction, and Shipments' Numbers.
+            Note: Shipments array can be more than one shipment.
+        */
+        $params = array(
+            'ClientInfo'  			=> array(
+                'AccountCountryCode'	=> 'NG',
+                'AccountEntity'		 	=> 'LOS',
+                'AccountNumber'		 	=> '118602',
+                'AccountPin'		 	=> '543643',
+                'UserName'			 	=> 'itsupport@courierplus-ng.com',
+                'Password'			 	=> 'Courierplus1',
+                'Version'			 	=> 'v1.0'
+            ),
+
+            'Transaction' 			=> array(
+                'Reference1'			=> '001'
+            ),
+            'Shipments'				=> [$tracking_numbers]
+        );
+
+        // calling the method and printing results
+        try {
+            $result = $soapClient->TrackShipments($params);
+            $histories = Calypso::getValue($result, 'TrackingResults.KeyValueOfstringArrayOfTrackingResultmFAkxlpY.Value.TrackingResult');
+            return $histories;
+        } catch (\SoapFault $fault) {
+            return false;
+        }
+    }
+
+    public function trackUniversal($tracking_number){
+        $soapClient = new \SoapClient('http://www.wsdl.integraontrack.com/ServiceUniversal.asmx?WSDL');
+        echo '<pre>';
+        // shows the methods coming from the service
+        print_r($soapClient->__getFunctions());
+
+        /*
+            parameters needed for the trackShipments method , client info, Transaction, and Shipments' Numbers.
+            Note: Shipments array can be more than one shipment.
+        */
+        $params = array(
+            'argAwbNo'				=> $tracking_number
+        );
+
+        // calling the method and printing results
+        try {
+            $auth_call = $soapClient->TrackDetailsList($params);
+            print_r($auth_call);
+        } catch (\SoapFault $fault) {
+            die('Error : ' . $fault->faultstring);
+        }
     }
 
 }

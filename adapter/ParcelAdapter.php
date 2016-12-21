@@ -87,7 +87,7 @@ class ParcelAdapter extends BaseAdapter
         return $this->request(ServiceConstant::URL_GET_ALL_PARCEL, $filter, self::HTTP_GET);
     }
 
-    public function getParcels($start_created_date, $end_created_date, $status, $branch_id = null, $offset = 0, $count = 50, $with_from = null, $with_total = null, $only_parents = null, $with_created_branch = null)
+    public function getParcels($start_created_date, $end_created_date, $status, $branch_id = null, $offset = 0, $count = 50, $with_from = null, $with_total = null, $only_parents = null, $with_created_branch = null, $cash_on_delivery = ServiceConstant::FALSE)
     {
         $filters = array(
             'status' => $status,
@@ -106,6 +106,9 @@ class ParcelAdapter extends BaseAdapter
             'offset' => $offset,
             'count' => $count
         );
+        if($cash_on_delivery){
+            $filters['cash_on_delivery'] = $cash_on_delivery;
+        }
         $params = http_build_query($filters);
         return $this->request(ServiceConstant::URL_GET_ALL_PARCEL . '?' . $params, array(), self::HTTP_GET);
     }
@@ -197,7 +200,7 @@ class ParcelAdapter extends BaseAdapter
         return $this->request(ServiceConstant::URL_GET_ALL_PARCEL, array_filter($filters), self::HTTP_GET);
     }
 
-    public function getFilterParcelsByDateAndStatus($start_created_date, $end_created_date, $status, $offset = 0, $count = 50, $with_total = null, $branch_id = null, $only_parents = null, $with_created_branch = true)
+    public function getFilterParcelsByDateAndStatus($start_created_date, $end_created_date, $status, $offset = 0, $count = 50, $with_total = null, $branch_id = null, $only_parents = null, $with_created_branch = true, $cash_on_delivery = ServiceConstant::FALSE)
     {
         $filters = array(
             'status' => $status,
@@ -216,6 +219,9 @@ class ParcelAdapter extends BaseAdapter
             'offset' => $offset,
             'count' => $count
         );
+        if($cash_on_delivery){
+            $filters['cash_on_delivery'] = $cash_on_delivery;
+        }
         $params = http_build_query($filters);
         return $this->request(ServiceConstant::URL_GET_ALL_PARCEL . '?' . $params, [], self::HTTP_GET);
     }

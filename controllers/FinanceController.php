@@ -3,6 +3,7 @@ namespace app\controllers;
 
 use Adapter\BillingPlanAdapter;
 use Adapter\BranchAdapter;
+use Adapter\CodTellerAdapter;
 use Adapter\CompanyAdapter;
 use Adapter\CreditNoteAdapter;
 use Adapter\InvoiceAdapter;
@@ -461,7 +462,7 @@ class FinanceController extends BaseController
         if($teller_no) $filters['teller_no'] = $teller_no;
         if($status) $filters['status'] = $status;
 
-        $response = new ResponseHandler($adapter->getSalesTellers($filters));
+        $response = new ResponseHandler($adapter->getTellers($filters));
 
         $viewData = [
             'offset' => $offset,
@@ -508,12 +509,74 @@ class FinanceController extends BaseController
         return $this->back();
     }
 
-    public function actionEcommerceteller($page = 1, $page_width = null){
-        $viewData = [];
+
+    //tellers
+    public function actionCodteller($page = 1, $page_width = null){
+        $page_width = is_null($page_width) ? $this->page_width : $page_width;
+        $offset = ($page - 1) * $page_width;
 
 
-        return $this->render('ecommerceteller', $viewData);
+        $adapter = new CodTellerAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
 
+        $filters = ['offset' => $offset, 'count' => $page_width, 'with_bank' => 1, 'with_payer' => 1, 'with_total_count' => 1];
+
+        $from_date = Yii::$app->request->get('start_created_date', date('Y/m/d'));
+        $end_date = Yii::$app->request->get('end_created_date', date('Y/m/d'));
+        $filters['start_created_date'] = $from_date . ' 00:00:00';
+        $filters['end_created_date'] = $end_date . ' 23:59:59';
+
+        $bank_id = Yii::$app->request->get('bank_id');
+        $teller_no = Yii::$app->request->get('teller_no');
+        $status = Yii::$app->request->get('status');
+
+        if($bank_id) $filters['bank_id'] = $bank_id;
+        if($teller_no) $filters['teller_no'] = $teller_no;
+        if($status) $filters['status'] = $status;
+
+        $response = new ResponseHandler($adapter->getTellers($filters));
+
+        $viewData = [
+            'offset' => $offset,
+            'page_width' => $page_width,
+            'start_created_date' => $from_date,
+            'end_created_date' => $end_date,
+            'bank_id' => $bank_id,
+            'teller_no' => $teller_no,
+            'status' => $status,
+            'statuses' => [ServiceConstant::TELLER_AWAITING_APPROVAL, ServiceConstant::TELLER_APPROVED, ServiceConstant::TELLER_DECLINED]
+        ];
+
+        if($response->isSuccess()){
+            $data = $response->getData();
+            $viewData['tellers'] = $data['tellers'];
+            $viewData['total_count'] = $data['total_count'];
+        }else{
+            $viewData['tellers'] = [];
+        }
+        return $this->render('cod_teller', $viewData);
     }
 
+
+    public function actionApprovecodteller($id){
+        $adapter = new CodTellerAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $response = new ResponseHandler($adapter->approveTeller($id));
+        if($response->isSuccess()){
+            $this->flashSuccess('Teller Approved');
+        }else{
+            $this->flashError($response->getError());
+        }
+        return $this->back();
+    }
+
+
+    public function actionDelinecodteller($id){
+        $adapter = new CodTellerAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $response = new ResponseHandler($adapter->declineTeller($id));
+        if($response->isSuccess()){
+            $this->flashSuccess('Teller Declined');
+        }else{
+            $this->flashError($response->getError());
+        }
+        return $this->back();
+    }
 }

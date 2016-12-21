@@ -47,6 +47,8 @@ class ParcelsController extends BaseController
             $parcelService = new ParcelService();
             $payload = $parcelService->buildPostData($data);
 
+            $this->sendAsyncFormResponse(1, $payload, "Parcel.onFormErrorCallback");
+
             if (isset($payload['status'])) {
                 $this->sendAsyncFormResponse(1, array('message' => implode('<br />', $payload['messages'])), "Parcel.onFormErrorCallback");
 
@@ -69,7 +71,7 @@ class ParcelsController extends BaseController
         $shipmentRequestId = Yii::$app->request->get('shipment_request_id');
 
 
-        $companyAdapter = new CompanyAdapter();
+        $companyAdapter = new CompanyAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $companies = $companyAdapter->getAllCompanies(['status' => ServiceConstant::ACTIVE]);
 
 
@@ -86,10 +88,10 @@ class ParcelsController extends BaseController
             if (isset($id)) {
                 $parcel = ParcelService::getParcelDetails($id);
             } else if (isset($pickupRequestId)) {
-                $pickupRequest = (new CompanyAdapter())->getPickupRequest($pickupRequestId);
+                $pickupRequest = $companyAdapter->getPickupRequest($pickupRequestId);
                 $parcel = ParcelService::convertPickupRequest($pickupRequest);
             } else if (isset($shipmentRequestId)) {
-                $shipmentRequest = (new CompanyAdapter())->getShipmentRequest($shipmentRequestId);
+                $shipmentRequest = $companyAdapter->getShipmentRequest($shipmentRequestId);
                 $parcel = ParcelService::convertShipmentRequest($shipmentRequest);
             }
         }

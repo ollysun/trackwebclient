@@ -137,15 +137,10 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                                 <td><?= ParcelAdapter::getCurrentLocation($parcel); ?></td>
                             <?php } ?>
                             <td><?= ParcelAdapter::getAgeAnalysis($parcel); ?></td>
-                            <td>
-                                <a href="<?= Url::toRoute(['/shipments/view?waybill_number='.$parcel['waybill_number']]) ?>" class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i> View</a>
+                            <td><a href="<?= Url::toRoute(['/shipments/view?waybill_number='.$parcel['waybill_number']]) ?>" class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i> View</a>
 
                                 <?= $this->render('../elements/partial_edit_button', ['parcel' => $parcel]) ?>
                                 <?= $this->render('../elements/parcel/partial_cancel_button', ['waybill_number' => $parcel['waybill_number'], 'status' => $parcel['status']]) ?>
-                                <?php if($parcel['status'] == ServiceConstant::DELIVERED):?>
-                                <button data-toggle="modal" data-target="#pod-modal" class="btn btn-xs btn-default" data-waybill-number="<?= $parcel['waybill_number'] ?>" title="Edit POD">POD</button>
-
-                                <?php endif; ?>
                             </td>
                         </tr>
                     <?php
@@ -225,27 +220,6 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                         </tr>
                         </thead>
                         <tbody></tbody>
-
-                        <tfoot>
-                        <tr>
-                            <td colspan="2" style="text-align: right;">Add Waybill</td>
-                            <td>
-                                <div class=" form-group">
-
-                                    <div class="input-group input-group-sm input-group-search">
-                                        <input id="addWaybillNumber" type="text" name="waybill_number" placeholder="Search by Waybill or Reference No."
-                                               class="search-box form-control">
-
-                                        <div class="input-group-btn">
-                                            <button class="btn btn-default" type="button" id="btnAddWaybill">
-                                                <i class="fa fa-plus"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        </tfoot>
                     </table>
                 </div>
                 <div class="modal-footer">
@@ -253,62 +227,6 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                     <input type="hidden" id="waybill_numbers" name="waybill_numbers">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary" id="btnSubmitTeller">Submit</button>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
-
-<div class="modal fade" id="pod-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
-        <form method="post" action="" class="validate-form">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                            aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">POD</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-xs-12 form-group">
-                            <label for="">Waybill Number</label>
-                            <input id="pod_waybill_number" readonly type="text" class="form-control validate required" name="waybill_number">
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-12 form-group">
-                            <label for="">Receiver</label>
-                            <input type="text" class="form-control required" name="receiver">
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-6 form-group">
-                            <label for="">Date</label>
-                            <input type="date" class="form-control required" name="date">
-                        </div>
-                        <div class="col-xs-3 form-group">
-                            <label for="">Hour</label>
-
-                            <div class="input-group">
-                                <input id="pod_hour" type="text" class="form-control validate required non-zero-number"
-                                       name="hour">
-                            </div>
-                        </div>
-                        <div class="col-xs-3 form-group">
-                            <label for="">Minute</label>
-
-                            <div class="input-group">
-                                <input id="pod_minute" type="text" class="form-control validate required non-zero-number"
-                                       name="minute">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <input type="hidden" name="task" value="update_pod">
-                    <input type="hidden" id="pod_waybill_number" name="waybill_number">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary" id="btnUpdatePod">Update</button>
                 </div>
             </div>
         </form>
@@ -324,6 +242,5 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
 <?php $this->registerJsFile('@web/js/table.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/validate.js', ['depends' => [\app\assets\AppAsset::className()]])?>
 
-<?php $this->registerJsFile('@web/js/submit_teller.js?v=1.0.1', ['depends' => [\app\assets\AppAsset::className()]]) ?>
-<?php $this->registerJsFile('@web/js/parcel_pod.js?v=1.0.0', ['depends' => [\app\assets\AppAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/submit_teller.js?v=1.0.0', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 

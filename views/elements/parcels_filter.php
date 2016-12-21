@@ -41,6 +41,23 @@ if(!isset($filter)){$filter="-1";}
                 </select>
             </div>
 
+            <?php if(isset($cash_on_delivery)):?>
+            <div class="pull-left form-group form-group-sm">
+                <label for="">Cash on Delivery</label><br>
+                <select name="cash_on_delivery" id="" class="form-control  filter-status">
+                    <option value="">All</option>
+                    <option
+                        value="<?= ServiceConstant::TRUE; ?>" <?= $cash_on_delivery == ServiceConstant::TRUE ? 'selected' : '' ?>>
+                        Yes
+                    </option>
+                    <option
+                        value="<?= ServiceConstant::FALSE; ?>" <?= ($cash_on_delivery == ServiceConstant::FALSE && strlen($cash_on_delivery)) ? 'selected' : '' ?>>
+                        No
+                    </option>
+                </select>
+            </div>
+            <?php endif;?>
+
             <div class="pull-left form-group form-group-sm hidden">
                 <label for="">Records</label><br>
                 <select name="page_width" id="page_width" class="form-control ">

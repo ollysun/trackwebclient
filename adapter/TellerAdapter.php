@@ -10,7 +10,7 @@ class TellerAdapter extends BaseAdapter{
         return $this->request(ServiceConstant::URL_TELLER_ADD, $data,self::HTTP_POST);
     }
 
-    public function getSalesTellers($filter){
+    public function getTellers($filter){
         return $this->request(ServiceConstant::URL_TELLER_GET_ALL, $filter, self::HTTP_GET);
     }
 

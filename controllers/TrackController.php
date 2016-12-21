@@ -37,9 +37,8 @@ class TrackController extends BaseController
      */
     public function actionIndex()
     {
-        //$this->trackAramex(array('50821918'));
+
         //handle imported parcel tracking
-        $is_imported_parcel = \Yii::$app->request->getQueryParam('is_imported', '');
         $tracking_number = \Yii::$app->request->getQueryParam('query', '');
         $tracking_number = HtmlPurifier::process($tracking_number);
         $tracking_number = trim($tracking_number);
@@ -55,6 +54,12 @@ class TrackController extends BaseController
                 ]);
         }
 
+        $trackAdapter = new TrackAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+
+        if($trackAdapter->getHistoryProvider($tracking_number) == TrackAdapter::ARAMEX){
+            return $this->trackAramex($tracking_number);
+        }
+
         //handle imported parcel
         if(Calypso::isImportedTrackingNumber($tracking_number)){
             return $this->trackImportedParcel($tracking_number);
@@ -63,7 +68,6 @@ class TrackController extends BaseController
         if (isset($tracking_number) && strlen($tracking_number) > 0) {
             $tracking_number  = implode(',', preg_split('/\r\n|[\r\n]/', $tracking_number));
 
-            $trackAdapter = new TrackAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
 
             $trackingInfoList = $trackAdapter->getTrackingInfo($tracking_number);
 
@@ -166,63 +170,11 @@ class TrackController extends BaseController
         return $this->render('track_exported_parcel', ['tracking_number' => $tracking_number]);
     }
 
-    public function trackAramex(array $tracking_numbers){
-        $soapClient = new \SoapClient('http://ws.aramex.net/shippingapi/tracking/service_1_0.svc?WSDL');
-        /*echo '<pre>';
-        // shows the methods coming from the service
-        print_r($soapClient->__getFunctions());*/
+    public function trackAramex($tracking_number){
+        $trackAdapter = new TrackAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $tracking_info = $trackAdapter->trackAramex($tracking_number);
 
-        /*
-            parameters needed for the trackShipments method , client info, Transaction, and Shipments' Numbers.
-            Note: Shipments array can be more than one shipment.
-        */
-        $params = array(
-            'ClientInfo'  			=> array(
-                'AccountCountryCode'	=> 'NG',
-                'AccountEntity'		 	=> 'LOS',
-                'AccountNumber'		 	=> '118602',
-                'AccountPin'		 	=> '543643',
-                'UserName'			 	=> 'itsupport@courierplus-ng.com',
-                'Password'			 	=> 'Courierplus1',
-                'Version'			 	=> 'v1.0'
-            ),
-
-            'Transaction' 			=> array(
-                'Reference1'			=> '001'
-            ),
-            'Shipments'				=> $tracking_numbers
-        );
-
-        // calling the method and printing results
-        try {
-            $auth_call = $soapClient->TrackShipments($params);
-            dd($auth_call);
-        } catch (\SoapFault $fault) {
-            die('Error : ' . $fault->faultstring);
-        }
-    }
-
-    public function trackUniversal($tracking_number){
-        $soapClient = new \SoapClient('http://www.wsdl.integraontrack.com/ServiceUniversal.asmx?WSDL');
-        echo '<pre>';
-        // shows the methods coming from the service
-        print_r($soapClient->__getFunctions());
-
-        /*
-            parameters needed for the trackShipments method , client info, Transaction, and Shipments' Numbers.
-            Note: Shipments array can be more than one shipment.
-        */
-        $params = array(
-            'argAwbNo'				=> $tracking_number
-        );
-
-        // calling the method and printing results
-        try {
-            $auth_call = $soapClient->TrackDetailsList($params);
-            print_r($auth_call);
-        } catch (\SoapFault $fault) {
-            die('Error : ' . $fault->faultstring);
-        }
+        return $this->render('track_aramex', ['tracking_info' => $tracking_info, 'tracking_number' => $tracking_number]);
     }
 
 }

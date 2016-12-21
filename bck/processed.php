@@ -227,26 +227,6 @@ $this->params['content_header_button'] = $this->render('../elements/content_head
                         </tr>
                         </thead>
                         <tbody></tbody>
-                        <tfoot>
-                            <tr>
-                                <td colspan="2" style="text-align: right;">Add Waybill</td>
-                                <td>
-                                    <div class=" form-group">
-
-                                        <div class="input-group input-group-sm input-group-search">
-                                            <input id="addWaybillNumber" type="text" name="waybill_number" placeholder="Search by Waybill or Reference No."
-                                                   class="search-box form-control">
-
-                                            <div class="input-group-btn">
-                                                <button class="btn btn-default" type="button" id="btnAddWaybill">
-                                                    <i class="fa fa-plus"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tfoot>
                     </table>
                 </div>
                 <div class="modal-footer">
@@ -296,4 +276,4 @@ $this->params['content_header_button'] = $this->render('../elements/content_head
 <?php $this->registerJsFile('@web/js/form-watch-changes.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/validate.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/bootbox.min.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
-<?php $this->registerJsFile('@web/js/submit_teller.js?v=1.0.1', ['depends' => [\app\assets\AppAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/submit_teller.js?v=1.0.0', ['depends' => [\app\assets\AppAsset::className()]]) ?>

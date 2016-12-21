@@ -187,6 +187,11 @@ class ServiceConstant
     const URL_TELLER_APPROVE = 'teller/approve';
     const URL_TELLER_DECLINE = 'teller/decline';
 
+    const URL_COD_TELLER_ADD = 'codteller/add';
+    const URL_COD_TELLER_GET_ALL = 'codteller/getall';
+    const URL_COD_TELLER_APPROVE = 'codteller/approve';
+    const URL_COD_TELLER_DECLINE = 'codteller/decline';
+
     const URL_ROUTE_ADD = 'route/create';
     const URL_ROUTE_GET_ALL = 'route/getAll';
     const URL_ROUTE_EDIT = 'route/edit';

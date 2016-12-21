@@ -4,6 +4,8 @@ $(document).ready(function () {
         $("input:checkbox").prop("checked", $(this).prop("checked"));
     });
 
+    var teller_last_sn = 0;
+
     $("button[data-target='#teller-modal']").on("click", function (event) {
         var chkboxes = $(".checkable:checked");
 
@@ -27,9 +29,27 @@ $(document).ready(function () {
             html += "<td>" + sender + "</td>";
             html += "</tr>";
         });
+        teller_last_sn = i;
         $('#amount_paid').val(amount_due);
         $("#teller-modal-table>tbody").html(html);
         $("input#waybill_numbers").val(Object.keys(shipments).toString());
+    });
+
+    $("button[id='btnAddWaybill']").on("click", function(event){
+        var waybill_number = $("input[id='addWaybillNumber']").val();
+        var waybill_numbers = $("input#waybill_numbers").val();
+        if(waybill_numbers.toLowerCase().indexOf(waybill_number.toLowerCase()) > 0){
+            alert(waybill_number + " has already been added");
+            return false;
+        }
+        var html = "";
+        html += "<tr>";
+        html += "<td>" + (teller_last_sn++) + "</td>";
+        html += "<td>" + waybill_number + "</td>";
+        html += "<td>Unknown</td>";
+        html += "</tr>";
+        $("#teller-modal-table>tbody").append(html);
+        $("input#waybill_numbers").val(waybill_numbers + "," + waybill_number);
     });
 
     $("button[id='btnSubmitTeller']").on("click", function (event) {

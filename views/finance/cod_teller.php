@@ -15,7 +15,7 @@ use Adapter\Globals\ServiceConstant;
 use yii\helpers\Url;
 
 
-$this->title = 'Sales Tellers';
+$this->title = 'COD Tellers';
 $this->params['breadcrumbs'] = array(
     array('label' => 'Finance')
 );
@@ -104,12 +104,12 @@ $this->params['breadcrumbs'] = array(
 
                                 <td>
                                     <?php if(Calypso::getValue($teller, 'status') != ServiceConstant::TELLER_APPROVED) :?>
-                                    <a title="Approve teller" href="<?= Url::toRoute(['/finance/approvesalesteller?id=' . Calypso::getValue($teller, 'id')]) ?>"
+                                    <a title="Approve teller" href="<?= Url::toRoute(['/finance/approvecodteller?id=' . Calypso::getValue($teller, 'id')]) ?>"
                                        class="btn btn-xs btn-success">Approve</a>
                                     <?php endif;?>
 
                             <?php if(Calypso::getValue($teller, 'status') != ServiceConstant::TELLER_DECLINED) :?>
-                                <a title="Reject teller" href="<?= Url::toRoute(['/finance/delinesalesteller?id=' . Calypso::getValue($teller, 'id')]) ?>"
+                                <a title="Reject teller" href="<?= Url::toRoute(['/finance/delinecodteller?id=' . Calypso::getValue($teller, 'id')]) ?>"
                                        class="btn btn-xs btn-danger">Decline</a>
                             <?php endif;?>
                                 </td>

@@ -169,8 +169,8 @@ abstract class BaseAdapter
             $this->injectUrlParams($url, $params);
         }
 
-        /*if($oriUrl == ServiceConstant::URL_GET_ALL_PARCEL)
-        dd($url);*/
+        //if($oriUrl == ServiceConstant::URL_GET_ALL_PARCEL)
+        //dd($url);
 
         $this->_curlagent->createCurl($url);
 

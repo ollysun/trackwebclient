@@ -13,6 +13,6 @@ use yii\helpers\Html;
         </address>
     </div>
     <div class="pull-right">
-        <?= Html::img('@web/img/courier-logo.png', ['class' => 'invoice-logo']) ?>
+        <?= Html::img('@web/img/courier-logo.png?v=1.0.0', ['class' => 'invoice-logo']) ?>
     </div>
 </div>

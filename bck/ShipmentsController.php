@@ -82,20 +82,9 @@ class ShipmentsController extends BaseController
                     if ($response->getStatus() == ResponseHandler::STATUS_OK) {
                         $this->flashSuccess('Teller successfully added');
                     } else {
-                        $messages = '';
-                        $errors = $response->getError();
-                        if(is_array($errors)){
-                            foreach ($errors as $key => $message) {
-                                $messages .= "$key: $message<br/>";
-                            }
-                        }else $messages = $errors;
-                        $this->flashError($messages);
+                        $this->flashError($response->getError());
                     }
                 }
-            }
-
-            if($records['task'] == 'update_pod'){
-
             }
         }
 
@@ -362,14 +351,7 @@ class ShipmentsController extends BaseController
                     if ($response->getStatus() == ResponseHandler::STATUS_OK) {
                         $this->flashSuccess('Teller successfully added');
                     } else {
-                        $messages = '';
-                        $errors = $response->getError();
-                        if(is_array($errors)){
-                            foreach ($errors as $key => $message) {
-                                $messages .= "$key: $message<br/>";
-                            }
-                        }else $messages = $errors;
-                        $this->flashError($messages);
+                        $this->flashError($response->getError());
                     }
                 }
             }

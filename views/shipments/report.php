@@ -262,6 +262,7 @@ $this->params['content_header_button'] = "<a href='" . $downloadURL . "' class='
 
                         <?php } ?>
 
+
                         <div class="pull-left form-group form-group-sm">
                             <label for="">Select Negative Status</label><br>
                             <select name="return_reason_comment" id="current_branch_select" class="form-control  filter-status">
@@ -279,6 +280,39 @@ $this->params['content_header_button'] = "<a href='" . $downloadURL . "' class='
                             <label for="">Business Manager</label><br>
                             <input name="business_manager_staff_id" value="<?= $business_manager_staff_id ?>" class="form-control" id="business_manager_staff_id">
                         </div>
+
+
+                        <?php if(Calypso::userIsInRole(ServiceConstant::USER_TYPE_ADMIN)): ?>
+
+                            <div class="pull-left form-group form-group-sm hide">
+                                <label for="">With Sales Teller</label><br>
+                                <select name="with_sales_teller" class="form-control filter-status">
+                                    <option
+                                        value="0" <?= (Calypso::getValue($filters, 'with_sales_teller', '0') == '0') ? ' selected="selected"' : '' ?>>
+                                        No
+                                    </option>
+                                    <option
+                                        value="1" <?= (Calypso::getValue($filters, 'with_sales_teller', '0') == '1') ? ' selected="selected"' : '' ?>>
+                                        Yes
+                                    </option>
+                                </select>
+                            </div>
+
+                            <div class="pull-left form-group form-group-sm hide">
+                                <label for="">With COD Teller</label><br>
+                                <select name="with_cod_teller" class="form-control filter-status">
+                                    <option
+                                        value="0" <?= (Calypso::getValue($filters, 'with_cod_teller', '0') == '0') ? ' selected="selected"' : '' ?>>
+                                        No
+                                    </option>
+                                    <option
+                                        value="1" <?= (Calypso::getValue($filters, 'with_cod_teller', '0') == '1') ? ' selected="selected"' : '' ?>>
+                                        Yes
+                                    </option>
+                                </select>
+                            </div>
+
+                        <?php endif; ?>
 
                         <div class="pull-left">
                             <label>&nbsp;</label><br>
@@ -312,9 +346,16 @@ $this->params['content_header_button'] = "<a href='" . $downloadURL . "' class='
                         <th>Current Status</th>
                         <th>Last Modified</th>
                         <th>Delivery Type</th>
-                        <th>Bank</th>
-                        <th>Bank Account</th>
-                        <th>Teller No</th>
+                        <?php if(Calypso::getValue($filters, 'with_sales_teller', '0') == '1'): ?>
+                            <th>Sales Bank</th>
+                            <th>Sales Bank Account</th>
+                            <th>Sales Teller No</th>
+                        <?php endif; ?>
+                        <?php if(Calypso::getValue($filters, 'with_cod_teller', '0') == '1'): ?>
+                            <th>COD Sales Bank</th>
+                            <th>COD Sales Bank Account</th>
+                            <th>COD Sales Teller No</th>
+                        <?php endif; ?>
                         <th>Action</th>
                     </tr>
                     </thead>
@@ -340,10 +381,17 @@ $this->params['content_header_button'] = "<a href='" . $downloadURL . "' class='
                                 </td>
                                 <td><?= ucwords(ServiceConstant::getDeliveryType(Calypso::getValue($parcel, 'parcel_delivery_type'))); ?></td>
 
+                                <?php if(Calypso::getValue($filters, 'with_sales_teller', '0') == '1'): ?>
+                                    <td><?= ucwords(Calypso::getValue($parcel, 'teller_bank_name')); ?></td>
+                                    <td><?= ucwords(Calypso::getValue($parcel, 'teller_account_no')); ?></td>
+                                    <td><?= ucwords(Calypso::getValue($parcel, 'teller_teller_no')); ?></td>
+                                <?php endif; ?>
 
-                                <td><?= ucwords(Calypso::getValue($parcel, 'teller_bank_name')); ?></td>
-                                <td><?= ucwords(Calypso::getValue($parcel, 'teller_account_no')); ?></td>
-                                <td><?= ucwords(Calypso::getValue($parcel, 'teller_teller_no')); ?></td>
+                                <?php if(Calypso::getValue($filters, 'with_cod_teller', '0') == '1'): ?>
+                                    <td><?= ucwords(Calypso::getValue($parcel, 'cod_teller_bank_name')); ?></td>
+                                    <td><?= ucwords(Calypso::getValue($parcel, 'cod_teller_account_no')); ?></td>
+                                    <td><?= ucwords(Calypso::getValue($parcel, 'cod_teller_teller_no')); ?></td>
+                                <?php endif; ?>
 
                                 <td>
                                     <a href="<?= Url::toRoute(['/shipments/view?waybill_number=' . Calypso::getValue($parcel, 'parcel_waybill_number')]) ?>"
