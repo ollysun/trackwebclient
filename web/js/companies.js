@@ -29,6 +29,34 @@
 
         var editCompanyForm = $("#editCompanyForm");
 
+        $('#newRegionId').change(function(){
+            var selectedRegionId = $(this).val();
+            $('#newBusinessZoneId').html('<option>Loading...</option>');
+            var html  = '';
+            var newZones = _.filter(businessZones, function(zone){
+                return zone.region_id == selectedRegionId;
+            })
+            $(newZones).each(function (i, v) {
+                var option = new Option(v.name.toUpperCase(), v.id);
+                html += option.outerHTML;
+            });
+            $('#newBusinessZoneId').html(html);
+        });
+
+        $('#editRegionId').change(function () {
+            var selectedRegionId = $(this).val();
+            $('#editBusinessZoneId').html('<option>Loading</option>');
+            var html = '';
+            var newZones = _.filter(businessZones, function(zone){
+                return zone.region_id == selectedRegionId;
+            })
+            $(newZones).each(function (i, v) {
+                var option = new Option(v.name.toUpperCase(), v.id, false, v.id == currentbusinesId);
+                html += option.outerHTML;
+            });
+            $('#editBusinessZoneId').html(html);
+        })
+
         $("[data-state]").change(function () {
             var target = $(this).data('target');
             var targetElem = $("#" + target);
@@ -79,8 +107,38 @@
             }
         });
 
+        var business_zone_id = undefined;
         $(".editCompany").click(function () {
             var data = this.dataset;
+            business_zone_id = $(this).attr('data-business_zone_id');
+
+            var zone = _.find(businessZones, function(i, v){
+               return v.id = business_zone_id;
+            });
+            console.log(regions);
+            console.log(zone);
+
+            $('#editRegonId').html('');
+            var html = new Option('Select Region', '', true).outerHTML;
+            $(regions).each(function (i, v) {
+                var selected = zone != undefined && v.id == zone.region_id? 'selected="selected"':'';
+                var option = '<option value="' + v.id + '" ' + selected + '>' + v.name.toUpperCase() + '</option>';
+                html += option;
+            });
+            $('#editRegonId').html(html);
+
+            if(zone != undefined) {
+                $('#editBusinessZoneId').html('<option>Loading</option>');
+                var html = '';
+                var newZones = _.filter(businessZones, function (zone) {
+                    return zone.region_id == zone.region_id;
+                })
+                $(newZones).each(function (i, v) {
+                    var option = new Option(v.name.toUpperCase(), v.id, false, v.id == zone.id);
+                    html += option.outerHTML;
+                });
+                $('#editBusinessZoneId').html(html);
+            }
 
             var fieldsMap = [
                 {
@@ -137,6 +195,11 @@
                     'field' : 'business_manager_staff_id',
                     'name' : 'company[business_manager_staff_id]',
                     'type' : 'input'
+                },
+                {
+                    'field' : 'business_zone_id',
+                    'name' : 'company[business_zone_id]',
+                    'type' : 'select'
                 },
                 {
                     'field': 'account_type_id',
@@ -306,6 +369,25 @@ var ViewModel = function() {
             }
         });
     }
+
+    self.regionId = null;
+    self.regions = ko.observableArray(ko.utils.arrayMap(regions, function(region){
+        return {id: region.id, name: region.name};
+    }));
+
+    self.zoneId = null;
+    self.zones = ko.observableArray(ko.utils.arrayMap(businessZones, function(zone){
+        return {id: zone.id, regionId:zone.region_id, name:zone.name};
+    }));
+
+
+
+    self.filteredZones = function(){
+        return self.zones().filter(function(zone){
+            return zone.regionId == self.regionId;
+        });
+    }
+
 
 }
 

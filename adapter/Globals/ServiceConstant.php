@@ -147,6 +147,10 @@ class ServiceConstant
     const URL_BUSINESS_MANAGER_CHANGE_REGION = 'bm/changeregion';
     const URL_BUSINESS_MANAGER_GET_ALL = 'bm/getall';
 
+    const URL_BUSINESS_ZONE_ADD = 'businesszone/add';
+    const URL_BUSINESS_ZONE_GET_ALL = 'businesszone/getall';
+    const URL_BUSINESS_ZONE_DELETE = 'businesszone/delete';
+
     const URL_ZONES_ADD = '/zone/add';
     const URL_ZONES_EDIT = '/zone/edit';
     const URL_ZONES_STATUS = '/zone/changeStatus';

@@ -201,6 +201,7 @@ class Calypso
                 'Manage_cities' => ['base_link' => 'admin/managecities', 'class' => ''],
                 'Manage_routes' => ['base_link' => 'admin/manageroutes', 'class' => ''],
                 'Manage_staff_accounts' => ['base_link' => 'admin/managestaff', 'class' => ''],
+                'Business_Zones' => ['base_link' => 'admin/busineszones', 'class' => ''],
                 'Business_Managers' => ['base_link' => 'admin/businessmanagers', 'class' => ''],
                 'Company_Registration' => ['base_link' => 'admin/companies', 'class' => ''],
                 'Company_Express_Centre' => ['base_link' => 'admin/companyecs', 'class' => ''],

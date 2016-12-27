@@ -91,6 +91,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                                         data-reg_no="<?= Calypso::getValue($company, 'reg_no'); ?>"
                                         data-relations_officer_staff_id="<?= Calypso::getValue($company, 'relations_officer.staff_id'); ?>"
                                         data-business_manager_staff_id="<?= Calypso::getValue($company, 'business_manager_staff_id') == '0'?'':Calypso::getValue($company, 'business_manager_staff_id'); ?>"
+                                        data-business_zone_id="<?= !Calypso::getValue($company, 'business_zone_id')?'':Calypso::getValue($company, 'business_zone_id'); ?>"
                                         data-relations_officer_id="<?= Calypso::getValue($company, 'relations_officer_id'); ?>"
                                         data-account_type_id="<?= Calypso::getValue($company, 'account_type_id'); ?>"
                                         data-discount="<?= Calypso::getValue($company, 'discount'); ?>"
@@ -214,27 +215,29 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                                 </div>
                             </fieldset>
 
-                           <!-- <fieldset class="col-xs-4 hide">
-                                <legend>Business Manager</legend>
-                                <div class="row">
-                                    <div class="col-xs-4 form-group">
-                                        <label for="">Staff ID</label>
-                                        <input type="text" id="bmStaffIdInput" class="form-control validate required" name="business_manager_staff_id"
-                                               value="<?/*= Calypso::getDisplayValue($submitted_data,'business_manager_staff_id'); */?>">
 
-                                        <input id="bmStaffId" type="hidden" name="company[business_manager_staff_id]" value="<?/*= Calypso::getDisplayValue($submitted_data,'company.business_manager_staff_id'); */?>"/>
+                            <fieldset class="col-xs-4">
+                                <legend>Business Zone</legend>
+                                <div class="row">
+                                    <div class="col-xs-6 form-group">
+                                        <label for="">Region</label>
+                                        <select id="newRegionId" class="form-control">
+                                            <option>Select Region</option>
+                                            <?php foreach($regions as $region){?>
+                                                <option value="<?= $region['id'] ?>"><?= $region['name']?></option>
+                                            <?php }?>
+                                            
+                                        </select>
+
                                     </div>
-                                    <div class="col-xs-4 form-group">
-                                        </br>
-                                        <button type="button" data-staff="bmStaffIdInput" data-property="staff_id" data-staff_id="bmStaffId" data-staff_name="bmStaffName" data-load_staff="true" class="btn btn-primary btn-xs">Load
-                                        </button>
-                                    </div>
-                                    <div class="col-xs-4 form-group">
-                                        </br>
-                                        <p id="bmStaffName"></p>
+                                    <div class="col-xs-6 form-group">
+                                        <label for="">Zone</label>
+
+                                        <select id="newBusinessZoneId" name="company[business_zone_id]" class="form-control"></select>
+
                                     </div>
                                 </div>
-                            </fieldset>-->
+                            </fieldset>
 
                             <fieldset class="col-xs-4">
                                 <legend>Business Offers</legend>
@@ -467,27 +470,28 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                                 </div>
                             </fieldset>
 
-
-                           <!-- <fieldset class="col-xs-4 hide">
-                                <legend>Business Manager</legend>
+                            <fieldset class="col-xs-4">
+                                <legend>Business Zone</legend>
                                 <div class="row">
                                     <div class="col-xs-6 form-group">
-                                        <label for="">Staff ID</label>
-                                        <input type="text" id="editBmStaffIdInput" class="form-control validate required" name="company[business_manager_staff_id]">
+                                        <label for="">Region</label>
+                                        <select id="editRegonId" class="form-control">
+                                            <option>Select Region</option>
+                                            <?php foreach($regions as $region){?>
+                                            <option value="<?=$region['id']?>"><?= $region['name'] ?></option>
+                                            <?php } ?>
+                                        </select>
+
 
                                     </div>
-                                    <div class="col-xs-2 form-group">
-                                        </br>
-                                        <button type="button" data-staff="editBmStaffIdInput" data-property="staff_id" data-staff_id="editBmStaffId" data-staff_name="editBmStaffName" data-load_staff="true" class="btn btn-primary btn-xs">Load
-                                        </button>
-                                    </div>
-                                    <div class="col-xs-4 form-group">
-                                        </br>
-                                        <p id="editBmStaffName"></p>
+                                    <div class="col-xs-6 form-group">
+                                        <label for="">Zone</label>
+
+                                        <select name="company[business_zone_id]" id="editBusinessZoneId" class="form-control"></select>
+
                                     </div>
                                 </div>
                             </fieldset>
--->
 
                             <fieldset class="col-xs-4">
                                 <legend>Business Offers</legend>
@@ -596,11 +600,13 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
     <?= "var billing_plans = " . Json::encode($billing_plans) . ";";?>
 </script>
 
+
+<script>
+    var regions = <?= Json::encode($regions) ?>;
+    var businessZones = <?= Json::encode($business_zones) ?>;
+</script>
+
 <?php $this->registerJsFile('@web/js/validate.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
-<?php $this->registerJsFile('@web/js/companies.js?v=1.0.1', ['depends' => [\app\assets\AppAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/companies.js?v=1.0.2', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/table.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/libs/jquery.dataTables.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
-
-
-
-

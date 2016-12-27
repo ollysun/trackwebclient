@@ -739,12 +739,40 @@ class ShipmentsController extends BaseController
 
         $shipping_types = ServiceConstant::getShippingTypes();
 
-
-
+        $filters = array_merge($filters, (Calypso::userIsInRole(ServiceConstant::USER_TYPE_ADMIN) ||
+            Calypso::userIsInRole(ServiceConstant::USER_TYPE_OFFICER)) && !empty($search)?
+            array(
+                'to_branch_id' => null,
+                'with_total_count' => 1,
+                'status' => null,
+                'waybill_number' => $search,
+                'with_receiver' => 1,
+                //'with_holder' => 1,
+                'with_to_branch' => 1,
+                'with_created_branch' => 1,
+                'with_parcel_comment' => 1,
+                'offset' => $offset,
+                'count' => $page_width
+            ) :
+            array(
+                'to_branch_id' => $this->branch_to_view,
+                'with_total_count' => 1,
+                'status' => ServiceConstant::BEING_DELIVERED,
+                'waybill_number' => $search,
+                'with_receiver' => 1,
+                'with_holder' => 1,
+                'with_to_branch' => 1,
+                'with_created_branch' => 1,
+                'with_parcel_comment' => 1,
+                'offset' => $offset,
+                'count' => $page_width
+            ));
 
         $user_session = Calypso::getInstance()->session("user_session");
         $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        if($search)
         $dispatch_parcels = $parcelsAdapter->getECDispatchedParcels($this->branch_to_view, $offset, $page_width, $search);
+        else $dispatch_parcels = $parcelsAdapter->getParcelsByFilters($filters);
         $reasons_list = $parcelsAdapter->getParcelReturnReasons();
         $parcels = new ResponseHandler($dispatch_parcels);
         $total_count = 0;

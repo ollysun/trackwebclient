@@ -47,7 +47,7 @@ class ParcelsController extends BaseController
             $parcelService = new ParcelService();
             $payload = $parcelService->buildPostData($data);
 
-            $this->sendAsyncFormResponse(1, $payload, "Parcel.onFormErrorCallback");
+            //$this->sendAsyncFormResponse(1, $payload, "Parcel.onFormErrorCallback");
 
             if (isset($payload['status'])) {
                 $this->sendAsyncFormResponse(1, array('message' => implode('<br />', $payload['messages'])), "Parcel.onFormErrorCallback");

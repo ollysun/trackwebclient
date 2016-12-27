@@ -12,6 +12,7 @@ use Adapter\AuditAdapter;
 use Adapter\BillingPlanAdapter;
 use Adapter\BranchAdapter;
 use Adapter\BusinessManagerAdapter;
+use Adapter\BusinessZoneAdapter;
 use Adapter\CompanyAdapter;
 use Adapter\Globals\ServiceConstant;
 use Adapter\RefAdapter;
@@ -361,6 +362,69 @@ class AdminController extends BaseController
     }
 
 
+    public function actionBusineszones($page = 1, $page_width = null){
+        $adapter = new BusinessZoneAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+
+        if(Yii::$app->request->isPost){
+            $entry = Yii::$app->request->post();
+            $task = Calypso::getValue(Yii::$app->request->post(), 'task', '');
+            $error = [];
+
+            $data = [];
+            $data['region_id'] = Calypso::getValue($entry, 'region_id', null);
+            $data['name'] = Calypso::getValue($entry, 'name');
+            $data['description'] = Calypso::getValue($entry, 'description');
+
+            if (($task == 'create' || $task == 'edit') && (empty($data['region_id']) || empty($data['name']))) {
+                $error[] = "All details are required!";
+            }else{
+                if($task == 'create'){
+                    $response = $adapter->addBusinessZone($data['name'], $data['region_id'], $data['description']);
+                    if($response['status'] == ResponseHandler::STATUS_OK){
+                        $this->flashSuccess('Zone added successfully');
+                    }else{
+                        Yii::$app->session->setFlash('danger', 'There was a problem creating the Zone: ' . $response['message']);
+                    }
+                }
+            }
+        }
+
+
+        if ($page_width != null) {
+            $this->page_width = $page_width;
+            Calypso::getInstance()->cookie('page_width', $page_width);
+        }
+
+        $page_width = is_null($page_width) ? $this->page_width : $page_width;
+        $offset = ($page - 1) * $page_width;
+
+        $filter = ['offset' => $offset, 'count' => $page_width, 'paginate' => true, 'with_region' => 1];
+        if(isset(Calypso::getInstance()->get()->region_id)){
+            $filter['region_id'] = Calypso::getInstance()->get()->region_id;
+        }
+
+
+        $filter_country = Calypso::getValue(Yii::$app->request->post(), 'filter_country', 1);
+        $refAdp = new RefAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $regions = $refAdp->getRegions($filter_country);
+        $regions = new ResponseHandler($regions);
+        $region_list = $regions->getStatus() == ResponseHandler::STATUS_OK ? $regions->getData() : [];
+
+        $result = $adapter->getAll($filter);
+
+        if($result['status'] == ResponseHandler::STATUS_OK){
+            $business_zones = $result['data']['business_zones'];
+            $total_count = $result['data']['total_count'];
+        }else{
+            $business_zones = [];
+            $total_count = 0;
+
+        }
+
+        return $this->render('business_zones', array('regions' => $region_list, 'business_zones' => $business_zones, 'total_count' => $total_count));
+    }
+
+
     public function actionBusinessmanagers($page = 1, $page_width = null){
         $bmAdapter = new BusinessManagerAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
 
@@ -561,6 +625,13 @@ class AdminController extends BaseController
         $region_list = $regions->getStatus() == ResponseHandler::STATUS_OK ? $regions->getData() : [];
 
 
+        $result = (new BusinessZoneAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken()))->getAll(['send_all']);
+        if($result['status'] == ResponseHandler::STATUS_OK){
+            $business_zones = $result['data']['business_zones'];
+        }else{
+            $business_zones = [];
+        }
+
         $result = (new BusinessManagerAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken()))->getAll();
 
         if($result['status'] == ResponseHandler::STATUS_OK){
@@ -572,6 +643,7 @@ class AdminController extends BaseController
         return $this->render('companies', [
                 'locations' => ['states' => $states],
                 'companies' => $companies,
+                'business_zones' => $business_zones,
                 'business_managers' => $business_managers,
                 'regions' => $region_list,
                 'offset' => $offset,
