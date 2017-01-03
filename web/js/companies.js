@@ -46,12 +46,12 @@
         $('#editRegionId').change(function () {
             var selectedRegionId = $(this).val();
             $('#editBusinessZoneId').html('<option>Loading</option>');
-            var html = '';
+            var html = '<option>Select Business Zone</option>';
             var newZones = _.filter(businessZones, function(zone){
                 return zone.region_id == selectedRegionId;
             })
             $(newZones).each(function (i, v) {
-                var option = new Option(v.name.toUpperCase(), v.id, false, v.id == currentbusinesId);
+                var option = new Option(v.name.toUpperCase(), v.id, false, v.id == business_zone_id);
                 html += option.outerHTML;
             });
             $('#editBusinessZoneId').html(html);
@@ -115,14 +115,13 @@
             var zone = _.find(businessZones, function(i, v){
                return v.id = business_zone_id;
             });
-            console.log(regions);
-            console.log(zone);
 
             $('#editRegonId').html('');
             var html = new Option('Select Region', '', true).outerHTML;
             $(regions).each(function (i, v) {
-                var selected = zone != undefined && v.id == zone.region_id? 'selected="selected"':'';
-                var option = '<option value="' + v.id + '" ' + selected + '>' + v.name.toUpperCase() + '</option>';
+                var selected = zone != undefined && v.id == zone.region_id;
+                console.log(selected);
+                var option = new Option(v.name, v.id, false, v.id == zone.region_id).outerHTML;
                 html += option;
             });
             $('#editRegonId').html(html);
@@ -210,8 +209,14 @@
                     'field': 'discount',
                     'name': 'company[discount]',
                     'type' : 'input'
+                },
+                {
+                    'field': 'extra_info',
+                    'name': 'company[extra_info]',
+                    'type' : 'textarea'
                 }
             ];
+            //
 
             $(fieldsMap).each(function (i, v) {
                 if(v.type == 'select'){

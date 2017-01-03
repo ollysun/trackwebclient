@@ -47,6 +47,7 @@ class ServiceConstant
     const MANIFEST_HAS_ISSUE = 22;
     const RETURNED = 23;
     const CREATED_BUT_WITH_CUSTOMER = 24;
+
     const URL_ADD_PARCEL = 'parcel/add/';
     const URL_ADD_PARCEL_From_API = 'parcel/addFromApi/';
     const URL_GET_ONE_PARCEL = 'parcel/getone/';

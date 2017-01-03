@@ -95,6 +95,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                                         data-relations_officer_id="<?= Calypso::getValue($company, 'relations_officer_id'); ?>"
                                         data-account_type_id="<?= Calypso::getValue($company, 'account_type_id'); ?>"
                                         data-discount="<?= Calypso::getValue($company, 'discount'); ?>"
+                                        data-extra_info="<?= Calypso::getValue($company, 'extra_info'); ?>"
                                         type="button" class="btn btn-default btn-xs editCompany" data-toggle="modal"
                                             data-target="#editModal"><i class="fa fa-edit"></i> Edit
                                     </button>
@@ -251,6 +252,13 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                                         <input type="text" class="form-control" name="discount">
                                     </div>
                                 </div>
+                            </fieldset>
+
+
+
+                            <fieldset class="col-xs-4">
+                                <legend>Extra Info</legend>
+                                <textarea class="form-control" name="company[extra_info]" id="extra_info"></textarea>
                             </fieldset>
                         </div>
                         <br>
@@ -475,7 +483,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                                 <div class="row">
                                     <div class="col-xs-6 form-group">
                                         <label for="">Region</label>
-                                        <select id="editRegonId" class="form-control">
+                                        <select id="editRegionId" class="form-control">
                                             <option>Select Region</option>
                                             <?php foreach($regions as $region){?>
                                             <option value="<?=$region['id']?>"><?= $region['name'] ?></option>
@@ -505,6 +513,11 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                                         <input type="text" class="form-control number" name="company[discount]">
                                     </div>
                                 </div>
+                            </fieldset>
+
+                            <fieldset class="col-xs-4">
+                                <legend>Extra Info</legend>
+                                <textarea class="form-control" name="company[extra_info]" id="extra_info"></textarea>
                             </fieldset>
                         </div>
 
@@ -607,6 +620,6 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
 </script>
 
 <?php $this->registerJsFile('@web/js/validate.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
-<?php $this->registerJsFile('@web/js/companies.js?v=1.0.2', ['depends' => [\app\assets\AppAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/companies.js?v=1.0.3', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/table.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/libs/jquery.dataTables.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
