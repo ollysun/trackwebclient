@@ -50,4 +50,25 @@ class WeightRangeAdapter extends BaseAdapter
 
         return $response->isSuccess();
     }
+
+    /**
+     * Delete's a weight range
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @param $weightRangeId
+     * @return bool
+     */
+    public function deleteRanges($weightRangeIds, $force_delete = '0')
+    {
+        $rawResponse = $this->request(ServiceConstant::URL_WEIGHT_DELETE,
+            ['weight_range_ids' => $weightRangeIds, 'force_delete' => $force_delete], self::HTTP_POST);
+        $response = new ResponseHandler($rawResponse);
+
+        if (!$response->isSuccess()) {
+            $this->lastErrorMessage = $response->getError();
+        }
+
+        return $response->isSuccess();
+    }
+
+
 }

@@ -26,13 +26,28 @@ class ApiBaseController extends BaseController
     const AccessDeniedCode = 401;
     const InternalError = 500;
 
+    protected $private_key;
+    protected $registration_number;
+
+    /**
+     * @return mixed
+     */
+    public function getPrivateKey()
+    {
+        return empty($this->private_key)?$this->get('private_key'):$this->private_key;
+    }
+
     private function login()
     {
         $registration_number = Yii::$app->request->get('registration_number');
         $private_key = Yii::$app->request->get('private_key');
-        if(empty($registration_number) || empty($private_key)){
-            return $this->sendErrorResponse('You must enter your registration number and private key', self::EmptyCredential);
+        if(!$registration_number || !$private_key){
+            return false;
+            //return $this->sendErrorResponse('You must enter your registration number and private key', self::EmptyCredential);
         }
+        $this->private_key = $private_key;
+        $this->registration_number = $registration_number;
+
         $admin = new AdminAdapter();
         $response = $admin->apiLogin(Yii::$app->request->get('registration_number', null), Yii::$app->request->get('private_key', null));
         $response = new ResponseHandler($response);

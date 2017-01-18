@@ -17,6 +17,10 @@ class ServiceConstant
     const USER_TYPE_COMPANY_ADMIN = 6;
     const USER_TYPE_COMPANY_OFFICER = 7;
     const USER_TYPE_SALES_AGENT = 9;
+    const USER_TYPE_BUSINESS_MANAGER = 10;
+    const USER_TYPE_REGIONAL_MANAGER = 11;
+    const USER_TYPE_FINANCE = 12;
+    const USER_TYPE_BILLING = 13;
 
     const ENTITY_TYPE_NORMAL = 1;
     const ENTITY_TYPE_BAG = 2;
@@ -124,6 +128,7 @@ class ServiceConstant
     const BRANCH_TYPE_EC = 4;
     const BRANCH_TYPE_HUB = 2;
     const BRANCH_TYPE_HQ = 1;
+    const BRANCH_TYPE_REGIONAL_HQ = 6;
 
     const URL_BRANCH_ADD = '/branch/add';
     const URL_BRANCH_EDIT = '/branch/editDetails';
@@ -183,9 +188,14 @@ class ServiceConstant
     const URL_BILLING_EDIT = 'zone/editbilling';
     const URL_BILLING_DELETE = 'zone/removebilling';
     const URL_BILLING_FETCH_BY_ID = 'zone/fetchBillingById';
+    //transit time
     const URL_GET_TRANSIT_TIME = 'zone/getTransitTime';
     const URL_SAVE_TRANSIT_TIME = 'zone/saveTransitTime';
     const URL_REMOVE_TRANSIT_TIME = 'zone/removeTransitTime';
+    //distance
+    const URL_GET_DISTANCE = 'zone/getDistance';
+    const URL_SAVE_DISTANCE = 'zone/saveDistance';
+    const URL_REMOVE_DISTANCE = 'zone/removeDistance';
 
     const URL_TELLER_ADD = 'teller/add';
     const URL_TELLER_GET_ALL = 'teller/getall';

@@ -15,7 +15,28 @@ $this->params['breadcrumbs'] = array(
 
 
 <?php
-	$this->params['content_header_button'] = '<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i> Add a Weight Range</button>';
+	$this->params['content_header_button'] =
+        '<div class="col-md-4">
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+                <i class="fa fa-plus"></i> Add Range
+            </button>
+        </div>
+        <div class="col-md-8">
+            <form method="post" action="/billing/deleteweightranges">
+                <input type="hidden" name="range_ids" id="rangeIds">
+                <div class="col-md-4">
+                    <input value="1" name="force_delete" type="checkbox"><label
+                                        for="force_delete"> Force </label>
+                </div>
+                
+                <div class="col-md-8">
+                    <button id="deleteRangeBtn" type="submit" class="btn btn-danger">
+                        <i class="fa fa-times"></i> Delete Ranges
+                    </button>
+                </div>
+            </form>
+        </div>  
+        ';
 ?>
 
 <?php echo \Adapter\Util\Calypso::showFlashMessages(); ?>
@@ -27,7 +48,12 @@ $this->params['breadcrumbs'] = array(
 			<table id="table" class="table table-hover dataTable">
 				<thead>
 					<tr>
+                        <th style="width: 20px" class="datatable-nosort">
+                            <div class="checkbox-nice"><input id="chbx_w_all" type="checkbox"><label
+                                        for="chbx_w_all"> </label></div>
+                        </th>
 						<th style="width: 20px">S/N</th>
+
 						<th>Minimum Weight (Kg)</th>
 						<th>Incremental Weight (Kg)</th>
 						<th>Maximum Weight (Kg)</th>
@@ -41,7 +67,18 @@ $this->params['breadcrumbs'] = array(
 					foreach ($ranges as $range) {
 						?>
 						<tr>
+                            <td>
+                                <div class="checkbox-nice">
+
+                                    <input id="chbx_w_<?= $row; ?>" class="checkable"
+                                           data-id="<?= $range['id']; ?>"
+                                           type="checkbox"><label
+                                            for="chbx_w_<?= $row; ?>"> </label>
+                                </div>
+                            </td>
+
 							<td><?= $row++; ?></td>
+
 							<td class="l<?=$range['id'];?>"><?= $range['min_weight']; ?></td>
 							<td class="i<?=$range['id'];?>"><?= $range['increment_weight']; ?></td>
 							<td class="m<?=$range['id'];?>"><?= $range['max_weight']; ?></td>

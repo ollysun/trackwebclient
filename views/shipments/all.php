@@ -324,6 +324,6 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
 <?php $this->registerJsFile('@web/js/table.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/validate.js', ['depends' => [\app\assets\AppAsset::className()]])?>
 
-<?php $this->registerJsFile('@web/js/submit_teller.js?v=1.0.1', ['depends' => [\app\assets\AppAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/submit_teller.js?v=1.0.2', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/parcel_pod.js?v=1.0.0', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 

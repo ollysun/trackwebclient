@@ -29,7 +29,7 @@ class BaseController extends Controller
 
     public function beforeAction($action)
     {
-       /* $this->redirect('http://trackplus.courierplus-ng.com');
+        /*$this->redirect('http://trackplus.courierplus-ng.com');
 
         return false;*/
 
@@ -190,13 +190,5 @@ class BaseController extends Controller
      */
     public function sendAsyncFormResponse( $code, array $payload, $callback=""){
         die("<script type='text/javascript'>window.top.getAsyncResponse(".$code.",".json_encode($payload).",'".$callback."');</script>");
-    }
-
-    protected function get($name, $default = null){
-        return \Yii::$app->request->get($name, $default);
-    }
-
-    protected function post($name, $default = null){
-        return \Yii::$app->request->post($name, $default);
     }
 }

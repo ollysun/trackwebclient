@@ -211,6 +211,7 @@ class AdminController extends BaseController
         return $this->render('manageecs', array('total_count' => $total_count, 'page_width' => $this->page_width, 'offset' => $offset, 'States' => $state_list, 'hubs' => $hub_list, 'centres' => $centres_list, 'filter_hub_id' => $filter_hub_id));
     }
 
+    //transit time
     public function actionManagetransittime(){
         $branchAdp = new BranchAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $response = new ResponseHandler($branchAdp->getAllHubs(false));
@@ -231,7 +232,6 @@ class AdminController extends BaseController
         return $this->render('manageTransitTime', ["hubs" => $hubs, "hubsMatrix" => $hubsMatrix, "matrixMap" => $mapList]);
 
     }
-
 
     public function actionUpdatemapping()
     {
@@ -261,7 +261,7 @@ class AdminController extends BaseController
         $entry = Yii::$app->request->post();
         if (!empty($entry)) {
             $zAdp = new ZoneAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-            $response = $zAdp->removerTransitTime($entry);
+            $response = $zAdp->removeTransitTime($entry);
             $response = new ResponseHandler($response);
             if ($response->getStatus() == ResponseHandler::STATUS_OK) {
                 $d = $response->getData();
@@ -277,6 +277,75 @@ class AdminController extends BaseController
         }
         return 0;
     }
+
+    //distance
+    public function actionDistancetable(){
+        $branchAdp = new BranchAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $response = new ResponseHandler($branchAdp->getAllHubs(false));
+        $zoneAdapter = new ZoneAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $responseMatrix = new ResponseHandler($zoneAdapter->getDistanceTable());
+        $hubs = [];
+        $hubsMatrix = [];
+        if ($response->getStatus() == ResponseHandler::STATUS_OK) {
+            $hubs = $response->getData();
+        }
+        if ($responseMatrix->getStatus() == ResponseHandler::STATUS_OK) {
+            $hubsMatrix = $responseMatrix->getData();
+        }
+        $mapList = [];
+        foreach ($hubsMatrix as $mapping) {
+            $mapList[$mapping['from_branch_id'] . '_' . $mapping['to_branch_id']] = $mapping;
+        }
+
+        return $this->render('distanceTable', ["hubs" => $hubs, "hubsMatrix" => $hubsMatrix, "matrixMap" => $mapList]);
+
+    }
+
+    public function actionUpdatedistancemapping()
+    {
+        $entry = Yii::$app->request->post();
+        if (!empty($entry)) {
+            $zAdp = new ZoneAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+            $zones = $zAdp->saveDistance(json_encode([$entry]));
+            $zones = new ResponseHandler($zones);
+
+            if ($zones->getStatus() == ResponseHandler::STATUS_OK) {
+                $d = $zones->getData();
+                if (empty($d['bad_matrix_info'])) {
+                    Yii::$app->session->setFlash('success', 'Distance table has been edited successfully.');
+                } else {
+                    Yii::$app->session->setFlash('danger', 'There was a problem editing the distance table. Please ensure these hubs have been mapped');
+                }
+            } else {
+                Yii::$app->session->setFlash('danger', 'There was a problem editing the distance table. #Reason: Service refused request');
+            }
+            return $zones->getStatus() == ResponseHandler::STATUS_OK ? 1 : 0;
+        }
+        return 0;
+    }
+
+    public function actionRemovedistancemapping()
+    {
+        $entry = Yii::$app->request->post();
+        if (!empty($entry)) {
+            $zAdp = new ZoneAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+            $response = $zAdp->removeDistance($entry);
+            $response = new ResponseHandler($response);
+            if ($response->getStatus() == ResponseHandler::STATUS_OK) {
+                $d = $response->getData();
+                if (empty($d['bad_matrix_info'])) {
+                    Yii::$app->session->setFlash('success', 'Distance mapping removed successfully.');
+                } else {
+                    Yii::$app->session->setFlash('danger', 'There was a problem removing the distance mapping. Please ensure these hubs have been mapped');
+                }
+            } else {
+                Yii::$app->session->setFlash('danger', 'There was a problem removing the transit distance. #Reason: Service refused request');
+            }
+            return $response->getStatus() == ResponseHandler::STATUS_OK ? 1 : 0;
+        }
+        return 0;
+    }
+
 
     /**
      * Manage Staff action

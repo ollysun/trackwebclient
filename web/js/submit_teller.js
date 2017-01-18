@@ -37,6 +37,11 @@ $(document).ready(function () {
 
     $("button[id='btnAddWaybill']").on("click", function(event){
         var waybill_number = $("input[id='addWaybillNumber']").val();
+        //validate number
+        if(!/^\d[A-Z](\d|\-)+[\d]$/i.test(waybill_number) && !/^[0-9]{8}$/.test(waybill_number)){
+            alert('Invalid waybill number');
+            return;
+        }
         var waybill_numbers = $("input#waybill_numbers").val();
         if(waybill_numbers.toLowerCase().indexOf(waybill_number.toLowerCase()) > 0){
             alert(waybill_number + " has already been added");

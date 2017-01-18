@@ -842,6 +842,30 @@ class BillingController extends BaseController
     }
 
     /**
+     * Delete Weight Range Action
+     * @author Adegoke Obasa <goke@cottacush.com>
+     */
+    public function actionDeleteweightranges()
+    {
+        if (Yii::$app->request->isPost) {
+            $weightRangeIds = Yii::$app->request->post('range_ids');
+            $force_delete = Yii::$app->request->post('force_delete');
+
+            $weightRangeAdapter = new WeightRangeAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+            $status = $weightRangeAdapter->deleteRanges($weightRangeIds, $force_delete);
+
+            if ($status) {
+                $this->flashSuccess("Weight ranges were deleted successfully");
+            } else {
+                $this->flashError($weightRangeAdapter->getLastErrorMessage());
+            }
+        }
+        return $this->redirect(Yii::$app->request->getReferrer());
+    }
+
+    //deleteweightranges
+
+    /**
      * @author Babatunde Otaru <tunde@cottacush.com>
      * @return string
      */

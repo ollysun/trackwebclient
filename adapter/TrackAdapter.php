@@ -34,6 +34,7 @@ class TrackAdapter extends BaseAdapter
     {
         $response = $this->request(ServiceConstant::URL_PARCEL_HISTORY, ['waybill_number' => $tracking_number, 'reference_number' => $tracking_number,
             'order_number' => $tracking_number, 'with_parcel' => 1], self::HTTP_GET);
+
         return $this->decodeResponse($response);
     }
 

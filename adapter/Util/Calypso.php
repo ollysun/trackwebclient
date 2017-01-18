@@ -195,30 +195,23 @@ class Calypso
                 'Report' => ['base' => 'report', 'base_link' => 'shipments/report', 'class' => 'fa fa-book', 'branch' => [ServiceConstant::BRANCH_TYPE_HQ, ServiceConstant::BRANCH_TYPE_COMPANY, ServiceConstant::USER_TYPE_OFFICER, ServiceConstant::USER_TYPE_COMPANY_ADMIN]]
             ], 'corporate' => true],
 
-            'Administrator' => ['base' => 'admin', 'class' => 'fa fa-user', 'base_link' => [
-                'Manage_branches' => ['base_link' => 'admin/managebranches', 'class' => ''],
-                'Manage_Transit_Time' => ['base_link' => 'admin/managetransittime', 'class' => ''],
-                'Manage_cities' => ['base_link' => 'admin/managecities', 'class' => ''],
-                'Manage_routes' => ['base_link' => 'admin/manageroutes', 'class' => ''],
-                'Manage_staff_accounts' => ['base_link' => 'admin/managestaff', 'class' => ''],
-                'Business_Zones' => ['base_link' => 'admin/busineszones', 'class' => ''],
-                'Business_Managers' => ['base_link' => 'admin/businessmanagers', 'class' => ''],
-                'Company_Registration' => ['base_link' => 'admin/companies', 'class' => ''],
-                'Company_Express_Centre' => ['base_link' => 'admin/companyecs', 'class' => ''],
-                'Billing' => ['base' => 'billing', 'class' => '', 'base_link' => [
-                    'Billing_Plans' => ['base_link' => 'billing', 'class' => ''],
-                    'View_Matrix' => ['base_link' => 'billing/matrix', 'class' => ''],
-                    'Zones' => ['base_link' => 'billing/zones', 'class' => ''],
-                    'Regions' => ['base_link' => 'billing/regions', 'class' => ''],
-                    'State_-_Region_Mapping' => ['base_link' => 'billing/statemapping', 'class' => ''],
-                    'City_-_State Mapping' => ['base_link' => 'billing/citymapping', 'class' => ''],
-                    'Weight_Ranges' => ['base_link' => 'billing/weightranges', 'class' => ''],
-                    'Pricing' => ['base_link' => 'billing/pricing', 'class' => ''],
-                    'Onforwarding_Charges' => ['base_link' => 'billing/onforwarding', 'class' => ''],
-                    /*'Corporate_Billing' => ['base_link' => 'billing/corporate', 'class' => '']*/
-                ], 'branch' => [ServiceConstant::BRANCH_TYPE_HQ]],
-                'Audit_Trail' => ['base_link' => 'admin/audittrail', 'class' => ''],
-            ], 'branch' => [ServiceConstant::BRANCH_TYPE_HQ]],
+            'Administrator' => ['base' => 'admin', 'class' => 'fa fa-user',
+                'base_link' => [
+                    'Manage_branches' => ['base_link' => 'admin/managebranches', 'class' => '', 'user_type' => [ServiceConstant::USER_TYPE_ADMIN]],
+                    'Manage_Transit_Time' => ['base_link' => 'admin/managetransittime', 'class' => '', 'user_type' => [ServiceConstant::USER_TYPE_ADMIN]],
+                    'Distance_Table' => ['base_link' => 'admin/distancetable', 'class' => '', 'user_type' => [ServiceConstant::USER_TYPE_ADMIN]],
+                    'Manage_cities' => ['base_link' => 'admin/managecities', 'class' => '', 'user_type' => [ServiceConstant::USER_TYPE_ADMIN]],
+                    'Manage_routes' => ['base_link' => 'admin/manageroutes', 'class' => '', 'user_type' => [ServiceConstant::USER_TYPE_ADMIN]],
+                    'Manage_staff_accounts' => ['base_link' => 'admin/managestaff', 'class' => '', 'user_type' => [ServiceConstant::USER_TYPE_ADMIN]],
+                    'Business_Zones' => ['base_link' => 'admin/busineszones', 'class' => '', 'user_type' => [ServiceConstant::USER_TYPE_ADMIN]],
+                    'Business_Managers' => ['base_link' => 'admin/businessmanagers', 'class' => '', 'user_type' => [ServiceConstant::USER_TYPE_ADMIN]],
+                    'Company_Registration' => ['base_link' => 'admin/companies', 'class' => '', 'user_type' => [ServiceConstant::USER_TYPE_BILLING]],
+                    'Company_Express_Centre' => ['base_link' => 'admin/companyecs', 'class' => ''],
+                    'Audit_Trail' => ['base_link' => 'admin/audittrail', 'class' => '', 'user_type' => [ServiceConstant::USER_TYPE_ADMIN]],
+                ],
+                'branch' => [ServiceConstant::BRANCH_TYPE_HQ],
+                'user_type' => [ServiceConstant::USER_TYPE_ADMIN, ServiceConstant::USER_TYPE_BILLING]
+            ],
             'Parcel History' => [
                 'base' => 'track',
                 'base_link' => 'track/',
@@ -244,7 +237,33 @@ class Calypso
                     'Sales Tellers' => ['base_link' => 'finance/salesteller', 'class' => ''],
                     'COD Tellers' => ['base_link' => 'finance/codteller', 'class' => ''],
                 ],
-                'branch' => [ServiceConstant::BRANCH_TYPE_HQ]
+                'branch' => [ServiceConstant::BRANCH_TYPE_HQ],
+                'user_type' => [ServiceConstant::USER_TYPE_ADMIN, ServiceConstant::USER_TYPE_FINANCE]
+            ],
+
+            'Billing' => ['base' => 'billing', 'class' => 'fa fa-money', 'base_link' => [
+                    'Billing_Plans' => ['base_link' => 'billing', 'class' => ''],
+                    'View_Matrix' => ['base_link' => 'billing/matrix', 'class' => ''],
+                    'Zones' => ['base_link' => 'billing/zones', 'class' => ''],
+                    'Regions' => ['base_link' => 'billing/regions', 'class' => ''],
+                    'State_-_Region_Mapping' => ['base_link' => 'billing/statemapping', 'class' => ''],
+                    'City_-_State Mapping' => ['base_link' => 'billing/citymapping', 'class' => ''],
+                    'Weight_Ranges' => ['base_link' => 'billing/weightranges', 'class' => ''],
+                    'Pricing' => ['base_link' => 'billing/pricing', 'class' => ''],
+                    'Onforwarding_Charges' => ['base_link' => 'billing/onforwarding', 'class' => ''],
+                    /*'Corporate_Billing' => ['base_link' => 'billing/corporate', 'class' => '']*/
+                ],
+                'branch' => [ServiceConstant::BRANCH_TYPE_HQ],
+                'user_type' => [ServiceConstant::USER_TYPE_ADMIN, ServiceConstant::USER_TYPE_BILLING]
+            ],
+
+            'Remitance' => [
+                'base' => 'finance', 'class' => 'fa fa-money', 'base_link' => [
+                    'Sales Tellers' => ['base_link' => 'finance/salesteller', 'class' => ''],
+                    'COD Tellers' => ['base_link' => 'finance/codteller', 'class' => ''],
+                ],
+                'branch' => [ServiceConstant::BRANCH_TYPE_HQ],
+                'user_type' => [ServiceConstant::USER_TYPE_ADMIN, ServiceConstant::USER_TYPE_REGIONAL_MANAGER, ServiceConstant::USER_TYPE_FINANCE]
             ],
             'Corporate' => [
                 'base' => 'request', 'class' => 'fa fa-gift', 'base_link' => [
@@ -256,6 +275,8 @@ class Calypso
                     'Pending Shipments' => ['base_link' => 'corporate/pending/shipments', 'class' => ''],
                     'Pending Pickups' => ['base_link' => 'corporate/pending/pickups', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]]
                 ],
+                //added user type to menu definition so that roles can control their visibility
+                'user_type' => [ServiceConstant::USER_TYPE_COMPANY_ADMIN, ServiceConstant::USER_TYPE_COMPANY_OFFICER],
                 'corporate' => true
             ]
         ];
@@ -276,6 +297,7 @@ class Calypso
         if (in_array($link, $current_user_permission)) {
             return false;
         }
+
         return true;
     }
 
@@ -325,7 +347,11 @@ class Calypso
             ],
             ServiceConstant::USER_TYPE_SALES_AGENT => array_merge([
                 'finance/*', 'billing/*', 'admin/*', 'manifest/*', 'shipments/dispatched', 'shipments/delivered', 'shipments/returned', 'shipments/fordelivery', 'hubs/*', 'corporate/users'
-            ], self::getCorporateRoutes())
+            ], self::getCorporateRoutes()),
+
+            ServiceConstant::USER_TYPE_REGIONAL_MANAGER => self::getCorporateRoutes(),
+            ServiceConstant::USER_TYPE_BILLING => self::getCorporateRoutes(),
+            ServiceConstant::USER_TYPE_FINANCE => self::getCorporateRoutes()
         ];
         return $permissionMap;
     }

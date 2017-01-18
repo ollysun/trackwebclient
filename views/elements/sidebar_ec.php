@@ -31,6 +31,11 @@ use Adapter\Util\Calypso;
                         if (isset($v['branch']) && !in_array($branch, $v['branch'])) {
                             continue;
                         }
+
+                        //check user type
+                        if(isset($v['user_type']) && !in_array($role, $v['user_type'])){
+                            continue;
+                        }
                         if (in_array($role, [ServiceConstant::USER_TYPE_COMPANY_OFFICER, ServiceConstant::USER_TYPE_COMPANY_ADMIN]) && !(Calypso::getValue($v, 'corporate', false))){
                             continue;
                         }
@@ -73,6 +78,10 @@ use Adapter\Util\Calypso;
                                             continue;
                                         }
                                         if (isset($value['branch']) && !in_array($branch, $value['branch'])) {
+                                            continue;
+                                        }
+                                        //check user type
+                                        if(isset($value['user_type']) && !in_array($role, $value['user_type'])){
                                             continue;
                                         }
 
@@ -118,6 +127,10 @@ use Adapter\Util\Calypso;
                                                                 continue;
                                                             }
                                                             if (isset($subvalue['branch']) && !in_array($branch, $subvalue['branch'])) {
+                                                                continue;
+                                                            }
+                                                            //check user type
+                                                            if(isset($subvalue['user_type']) && !in_array($role, $subvalue['user_type'])){
                                                                 continue;
                                                             }
                                                             if (isset($subvalue['base_link']) && !is_array($subvalue['base_link'])) {

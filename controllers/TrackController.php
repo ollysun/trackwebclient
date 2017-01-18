@@ -57,7 +57,7 @@ class TrackController extends BaseController
         $trackAdapter = new TrackAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
 
         if($trackAdapter->getHistoryProvider($tracking_number) == TrackAdapter::ARAMEX){
-            return $this->trackAramex($tracking_number);
+            return $this->trackAramex($tracking_number, $tracking_number);
         }
 
         //handle imported parcel
@@ -71,13 +71,18 @@ class TrackController extends BaseController
 
             $trackingInfoList = $trackAdapter->getTrackingInfo($tracking_number);
 
-            //dd($trackingInfoList);
-
-            if($tracking_number != '2N20600855946' &&  count($trackingInfoList) === 1){
-                if(isset($trackingInfoList[$tracking_number]['is_exported']) && $trackingInfoList[$tracking_number]['is_exported']){
-                    return $this->trackExportParcel($tracking_number);
+            //get the history by loop because of manual waybill number
+            if(is_array($trackingInfoList)){
+                $first_history = $trackingInfoList[array_keys($trackingInfoList)[0]];
+                if($tracking_number != '2N20600855946' &&  count($trackingInfoList) === 1){
+                    if(isset($first_history['is_exported']) && $first_history['is_exported']){
+                        return $this->trackExportParcel($tracking_number);
+                    }elseif (isset($first_history['is_aramex_exported']) && $first_history['is_aramex_exported']){
+                        return $this->trackAramex($first_history['parcel']['order_number'], $tracking_number);
+                    }
                 }
             }
+
 
             $currentStateInfo = null;
             if ($trackingInfoList) {
@@ -128,8 +133,6 @@ class TrackController extends BaseController
 
                     $trackingInfoList[$key]['history'] = $history;
                 }
-
-
                 /*
 
                 if (count($trackingInfoList) == 1) {
@@ -170,9 +173,9 @@ class TrackController extends BaseController
         return $this->render('track_exported_parcel', ['tracking_number' => $tracking_number]);
     }
 
-    public function trackAramex($tracking_number){
+    public function trackAramex($aramex_number, $tracking_number){
         $trackAdapter = new TrackAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $tracking_info = $trackAdapter->trackAramex($tracking_number);
+        $tracking_info = $trackAdapter->trackAramex($aramex_number);
 
         return $this->render('track_aramex', ['tracking_info' => $tracking_info, 'tracking_number' => $tracking_number]);
     }

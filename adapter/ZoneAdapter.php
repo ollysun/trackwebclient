@@ -42,6 +42,7 @@ class ZoneAdapter extends BaseAdapter
     }
 
 
+    //transit time
     public function getTransitTime()
     {
         return $this->request(ServiceConstant::URL_GET_TRANSIT_TIME, [], self::HTTP_GET);
@@ -52,7 +53,22 @@ class ZoneAdapter extends BaseAdapter
         return $this->request(ServiceConstant::URL_SAVE_TRANSIT_TIME, $data, self::HTTP_POST);
     }
 
-    public function removerTransitTime($data){
+    public function removeTransitTime($data){
         return $this->request(ServiceConstant::URL_REMOVE_TRANSIT_TIME, $data, self::HTTP_POST);
+    }
+
+    //distance
+    public function getDistanceTable()
+    {
+        return $this->request(ServiceConstant::URL_GET_DISTANCE, [], self::HTTP_GET);
+    }
+
+    public function saveDistance($data)
+    {
+        return $this->request(ServiceConstant::URL_SAVE_DISTANCE, $data, self::HTTP_POST);
+    }
+
+    public function removeDistance($data){
+        return $this->request(ServiceConstant::URL_REMOVE_DISTANCE, $data, self::HTTP_POST);
     }
 }
