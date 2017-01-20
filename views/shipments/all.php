@@ -27,7 +27,9 @@ $user_data = $this->context->userData;
 <?= Html::cssFile('@web/css/libs/dataTables.tableTools.css') ?>
 
 <?php
-$this->params['content_header_button'] = '<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#teller-modal">Submit COD Teller</button>';
+$this->params['content_header_button'] = '<button type="button" class="btn btn-primary" data-toggle="modal"
+ data-target="#teller-modal">Submit COD Teller</button> <button type="button" class="btn btn-primary" data-toggle="modal"
+ data-target="#rtd-teller-modal">Submit Rtd Teller</button>';
 ?>
 
 
@@ -309,6 +311,102 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                     <input type="hidden" id="pod_waybill_number" name="waybill_number">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary" id="btnUpdatePod">Update</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="modal fade" id="rtd-teller-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <form method="post" action="" class="validate-form">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Submit Teller Details</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xs-6 form-group">
+                            <label for="">Bank</label>
+                            <select class="form-control validate required" name="bank_id" id="rtd_bank_id">
+                                <?php
+                                if (isset($banks) && is_array($banks['data'])) {
+                                    foreach ($banks['data'] as $item) {
+                                        ?>
+                                        <option
+                                                value="<?= $item['id'] ?>"><?= strtoupper($item['name']); ?></option>
+                                        <?php
+                                    }
+                                }
+                                ?>
+                            </select>
+                        </div>
+                        <div class="col-xs-6 form-group">
+                            <label for="">Account no</label>
+                            <input type="text" class="form-control validate required non-zero-integer"
+                                   name="account_no">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-6 form-group">
+                            <label for="">Teller no</label>
+                            <input type="text" class="form-control validate required non-zero-integer" name="teller_no">
+                        </div>
+                        <div class="col-xs-6 form-group">
+                            <label for="">Amount paid</label>
+
+                            <div class="input-group">
+                                <span class="input-group-addon currency naira"></span>
+                                <input id="rtd_amount_paid" type="text" class="form-control validate required non-zero-number"
+                                       name="amount_paid">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group hidden">
+                        <label>Teller Snapshot (optional)</label>
+                        <input type="file" class="form-control">
+                    </div>
+
+                    <hr/>
+                    <table class="table table-bordered table-condensed" id="rtd-teller-modal-table">
+                        <thead>
+                        <tr>
+                            <th>S/N</th>
+                            <th>Waybill No.</th>
+                            <th>Sender name</th>
+                        </tr>
+                        </thead>
+                        <tbody></tbody>
+
+                        <tfoot>
+                        <tr>
+                            <td colspan="2" style="text-align: right;">Add Waybill</td>
+                            <td>
+                                <div class="form-group">
+
+                                    <div class="input-group input-group-sm input-group-search">
+                                        <input id="rtd_addWaybillNumber" type="text" name="waybill_number" placeholder="Search by Waybill or Reference No."
+                                               class="search-box form-control">
+
+                                        <div class="input-group-btn">
+                                            <button class="btn btn-default" type="button" id="rtd_btnAddWaybill">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <input type="hidden" name="task" value="submit_rtd_teller">
+                    <input type="hidden" id="rtd_waybill_numbers" name="waybill_numbers">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" id="rtd_btnSubmitTeller">Submit</button>
                 </div>
             </div>
         </form>

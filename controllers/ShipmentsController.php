@@ -18,6 +18,7 @@ use Adapter\CompanyAdapter;
 use Adapter\Globals\HttpStatusCodes;
 use Adapter\Globals\ServiceConstant;
 use Adapter\ParcelAdapter;
+use Adapter\RtdTellerAdapter;
 use Adapter\UserAdapter;
 use Adapter\RefAdapter;
 use Adapter\RegionAdapter;
@@ -76,6 +77,30 @@ class ShipmentsController extends BaseController
                     $this->flashError("Invalid parameter(s) sent!");
                 } else {
                     $teller = new CodTellerAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+                    $teller = $teller->addTeller($records);
+                    $response = new ResponseHandler($teller);
+
+                    if ($response->getStatus() == ResponseHandler::STATUS_OK) {
+                        $this->flashSuccess('Teller successfully added');
+                    } else {
+                        $messages = '';
+                        $errors = $response->getError();
+                        if(is_array($errors)){
+                            foreach ($errors as $key => $message) {
+                                $messages .= "$key: $message<br/>";
+                            }
+                        }else $messages = $errors;
+                        $this->flashError($messages);
+                    }
+                }
+            }
+
+            if ($records['task'] == 'submit_rtd_teller') {
+                if (!isset($records['bank_id'], $records['account_no'], $records['amount_paid'],
+                    $records['teller_no'], $records['waybill_numbers'])) {
+                    $this->flashError("Invalid parameter(s) sent!");
+                } else {
+                    $teller = new RtdTellerAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
                     $teller = $teller->addTeller($records);
                     $response = new ResponseHandler($teller);
 
@@ -1081,6 +1106,7 @@ class ShipmentsController extends BaseController
 
         $filters['with_sales_teller'] = ServiceConstant::TRUE;
         $filters['with_cod_teller'] = ServiceConstant::TRUE;
+        $filters['with_rtd_teller'] = ServiceConstant::TRUE;
 
         foreach ($extra_details as $extra) {
             $filters[$extra] = true;
@@ -1121,7 +1147,19 @@ class ShipmentsController extends BaseController
         $stream = fopen("php://output", "w");
 
 
-        $headers = array('SN', 'Waybill Number', 'Sender', 'Sender Email', 'Sender Phone', 'Sender Address', 'Sender City', 'Sender State', 'Receiver', 'Receiver Email', 'Receiver Phone', 'Receiver Address', 'Receiver City', 'Receiver State', 'Weight/Piece', 'Payment Method', 'Amount Due', 'Cash Amount', 'POS Amount', 'POS Transaction ID', 'Parcel Type', 'Cash on Delivery', 'Delivery Type', 'Package Value', '# of Package', 'Shipping Type', 'Created Date', 'Pickup Date', 'Last Modified Date', 'Status', 'Reference Number', 'Originating Branch', 'Route', 'Request Type', 'For Return', 'Other Info', 'Company Reg No', 'Billing Plan Name', 'Created By', 'Amount due to Merchant', 'Insurance Charge', 'Storrage/Demurrage Charge', 'Handling Charge', 'Duty Charge', 'Cost of Crating', 'Other Charges', 'POD Name', 'POD Date', 'Sales Banks', 'Sales Account No.', 'Sales Teller No.', 'COD Banks', 'COD Account No.', 'COD Teller No.');
+        $headers = array('SN', 'Waybill Number', 'Sender', 'Sender Email', 'Sender Phone', 'Sender Address',
+            'Sender City', 'Sender State', 'Receiver', 'Receiver Email', 'Receiver Phone', 'Receiver Address',
+            'Receiver City', 'Receiver State', 'Weight/Piece', 'Payment Method', 'Amount Due', 'Cash Amount',
+            'POS Amount', 'POS Transaction ID', 'Parcel Type', 'Cash on Delivery', 'Delivery Type', 'Package Value',
+            '# of Package', 'Shipping Type', 'Created Date', 'Pickup Date', 'Last Modified Date', 'Status',
+            'Reference Number', 'Originating Branch', 'Route', 'Request Type', 'For Return', 'Other Info',
+            'Company Reg No', 'Billing Plan Name', 'Created By', 'Amount due to Merchant', 'Insurance Charge',
+            'Storrage/Demurrage Charge', 'Handling Charge', 'Duty Charge', 'Cost of Crating', 'Other Charges',
+            'POD Name', 'POD Date', 'Sales Banks',
+            'Sales Account No.', 'Sales Teller No.', 'Sales Teller Amount', 'Sales Teller Date',
+            'COD Banks', 'COD Account No.', 'COD Teller No.', 'COD Teller Amount.', 'COD Teller Date',
+            'Rtd Teller Banks', 'Rtd Teller Account No.', 'Rtd Teller No.', 'Rtd Teller Amount.', 'Rtd Teller Date');
+
         /*if(array_key_exists('with_sales_teller', $filters) && $filters['with_sales_teller'] == '1'){
             $headers[] = 'Sales Banks';
             $headers[] = 'Sales Account No.';
@@ -1203,10 +1241,20 @@ class ShipmentsController extends BaseController
                         $result['teller_bank_name'],
                         $result['teller_account_no'],
                         $result['teller_teller_no'],
+                        $result['teller_amount_paid'],
+                        $result['teller_created_date'],
 
                         $result['cod_teller_bank_name'],
                         $result['cod_teller_account_no'],
                         $result['cod_teller_teller_no'],
+                        $result['cod_teller_amount_paid'],
+                        $result['cod_teller_created_date'],
+
+                        $result['rtd_teller_bank_name'],
+                        $result['rtd_teller_account_no'],
+                        $result['rtd_teller_teller_no'],
+                        $result['rtd_teller_amount_paid'],
+                        $result['rtd_teller_created_date']
                     ];
 
                     /*if(array_key_exists('with_sales_teller', $filters) && $filters['with_sales_teller'] == '1'){
