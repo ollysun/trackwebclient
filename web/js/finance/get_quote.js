@@ -59,7 +59,7 @@ var Parcel = {
         'calcbilling': '/parcels/calculatebilling',
         'qetquote': '/parcels/getquote'
     },
-
+    //get states
     getStates: function (country_id, selectSelector, selectedValue) {
         $.get(Parcel.Url.states, {id: country_id}, function (response) {
             if (response.status === 'success') {
