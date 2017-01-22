@@ -35,6 +35,10 @@ $(document).ready(function () {
         $("input#waybill_numbers").val(Object.keys(shipments).toString());
     });
 
+    $(".view-parcels").on("click", function(){
+
+    });
+
     $("button[id='btnAddWaybill']").on("click", function(event){
         var waybill_number = $("input[id='addWaybillNumber']").val();
         //validate number

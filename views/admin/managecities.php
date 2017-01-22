@@ -52,9 +52,14 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                         <td><?= strtoupper("{$city['branch']['name']} ({$city['branch']['code']})"); ?></td>
                         <td class="t<?=$city['id'];?>"><?= ucwords(Calypso::getValue($city, 'transit_time')); ?></td>
                         <td>
-                            <button type="button" class="btn btn-default btn-xs" data-toggle="modal"
-                                    data-target="#editModal" data-id="<?= Calypso::getValue($city, 'id'); ?>"
-                                    data-state-id="<?= Calypso::getValue($city, 'state.id'); ?>" data-branch-id="<?= Calypso::getValue($city, 'branch_id'); ?>"><i class="fa fa-edit"></i> Edit
+                            <button type="button" class="btn btn-default btn-xs edit-city" data-toggle="modal"
+                                    data-target="#editModal"
+                                    data-id="<?= Calypso::getValue($city, 'id'); ?>"
+                                    data-name="<?= Calypso::getValue($city, 'name'); ?>"
+                                    data-state-id="<?= Calypso::getValue($city, 'state.id'); ?>"
+                                    data-branch-id="<?= Calypso::getValue($city, 'branch_id'); ?>"
+                                    data-transit-time="<?= ucwords(Calypso::getValue($city, 'transit_time')); ?>">
+                                <i class="fa fa-edit"></i> Edit
                             </button>
                         </td>
                         </tr><?php
@@ -147,13 +152,13 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                 <div class="modal-body">
                     <div class="form-group">
                         <label>City Name</label>
-                        <input class="form-control required" name="city_name">
+                        <input class="form-control required" name="city_name" id="city_name">
                     </div>
                     <div class="row">
                         <div class="col-xs-4">
                             <div class="form-group">
                                 <label>State</label>
-                                <select class="form-control" name="state">
+                                <select class="form-control" name="state" id="state">
                                     <?php
                                     if (isset($states) && is_array(($states))):
                                         foreach ($states as $state) {
@@ -169,7 +174,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                         <div class="col-xs-4">
                             <div class="form-group">
                                 <label>Hub</label>
-                                <select class="form-control" name="branch_id">
+                                <select class="form-control" name="branch_id" id="branch_id">
                                     <?php
                                     if (isset($hubs) && is_array(($hubs))):
                                         foreach ($hubs as $hub) {
@@ -185,14 +190,14 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                         <div class="col-xs-4">
                             <div class="form-group">
                                 <label>Transit Time</label>
-                                <input type="text" class="form-control" name="transit_time">
+                                <input type="text" class="form-control" name="transit_time" id="transit_time">
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <input type="hidden" name="task" value="edit">
-                    <input type="hidden" name="id" value="">
+                    <input type="hidden" name="id" value="" id="id">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary">Save changes</button>
                 </div>
@@ -206,6 +211,6 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
 <?php $this->registerJsFile('@web/js/libs/dataTables.fixedHeader.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/libs/dataTables.tableTools.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/libs/jquery.dataTables.bootstrap.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
-<?php $this->registerJsFile('@web/js/city.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
+<?php $this->registerJsFile('@web/js/city.js?v=1', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/table.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
 

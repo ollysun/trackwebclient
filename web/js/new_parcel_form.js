@@ -447,7 +447,6 @@ var Parcel = {
     },
 
     calculateAmount: function (params) {
-
         $('.amount-due').html("calculating...");
         var amount = '';
         $('#amount').val(amount);

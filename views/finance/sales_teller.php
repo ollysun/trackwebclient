@@ -112,6 +112,7 @@ $this->params['breadcrumbs'] = array(
                                 <a title="Reject teller" href="<?= Url::toRoute(['/finance/delinesalesteller?id=' . Calypso::getValue($teller, 'id')]) ?>"
                                        class="btn btn-xs btn-danger">Decline</a>
                             <?php endif;?>
+                                    <a href="?id=<?= Calypso::getValue($teller, 'id') ?>" class="btn btn-xs btn-primary">View</a>
                                 </td>
                             </tr>
                             <?php
@@ -127,6 +128,7 @@ $this->params['breadcrumbs'] = array(
         <?php endif; ?>
     </div>
 </div>
+
 <?php $this->registerJsFile('@web/js/libs/bootstrap-datepicker.js', ['depends' => [JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/jquery.dataTables.min.js', ['depends' => [JqueryAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/libs/select2.js', ['depends' => [AppAsset::className()]]) ?>

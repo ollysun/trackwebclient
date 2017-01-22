@@ -283,7 +283,7 @@ class ParcelsController extends BaseController
 
     }
 
-    public function actionQetquote(){
+    public function actionGetquote(){
         $rawData = \Yii::$app->request->getRawBody();
         $postParams = json_decode($rawData, true);
         $parcelSrv = new ParcelService();
@@ -292,6 +292,8 @@ class ParcelsController extends BaseController
         if (!empty($data['error'])) {
             return $this->sendErrorResponse(implode($data['error']), null);
         }
+
+        //return $this->sendSuccessResponse($data['payload']);
 
         $parcelAdp = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $response = $parcelAdp->getQuote($data['payload']);

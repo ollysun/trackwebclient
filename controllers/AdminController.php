@@ -997,11 +997,11 @@ class AdminController extends BaseController
                 Yii::$app->session->setFlash('danger', $errorMessages);
             } else {
                 $city = new RegionAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-                $response = $city->editCity($data);
-                if ($response['status'] === Response::STATUS_OK) {
+                $response = new ResponseHandler($city->editCity($data));
+                if ($response->isSuccess()) {
                     Yii::$app->session->setFlash('success', 'City has been edited successfully.');
                 } else {
-                    Yii::$app->session->setFlash('danger', 'There was a problem editing the city. ' . $response['messsage']);
+                    Yii::$app->session->setFlash('danger', 'There was a problem editing the city. ' .$response->getData());
                 }
             }
         }

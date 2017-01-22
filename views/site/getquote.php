@@ -139,7 +139,7 @@ $this->params['breadcrumbs'] = array(
                     </div>
 
                     <div class="col-md-3">
-                        <label for="">Gross Amount</label>
+                        <label for="">Net Amount</label>
 
                         <div id="gross_amount" class="amount-due currency naira">0.00</div>
                     </div>

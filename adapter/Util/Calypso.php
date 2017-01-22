@@ -234,8 +234,8 @@ class Calypso
                     'Invoice' => ['base_link' => 'finance/invoice', 'class' => ''],
                     'Bulk Invoice Tasks' => ['base_link' => 'finance/bulkinvoicetasks', 'class' => ''],
                     'Merchants' => ['base_link' => 'finance/merchantsdue', 'class' => ''],
-                    'Sales Tellers' => ['base_link' => 'finance/salesteller', 'class' => ''],
-                    'COD Tellers' => ['base_link' => 'finance/codteller', 'class' => ''],
+                    /*'Sales Tellers' => ['base_link' => 'finance/salesteller', 'class' => ''],
+                    'COD Tellers' => ['base_link' => 'finance/codteller', 'class' => ''],*/
                 ],
                 'branch' => [ServiceConstant::BRANCH_TYPE_HQ],
                 'user_type' => [ServiceConstant::USER_TYPE_ADMIN, ServiceConstant::USER_TYPE_FINANCE]

@@ -57,7 +57,7 @@ var Parcel = {
         'userdetails': '/parcels/userdetails',
         'accountdetails': '/parcels/accountdetails',
         'calcbilling': '/parcels/calculatebilling',
-        'qetquote': '/parcels/qetquote'
+        'qetquote': '/parcels/getquote'
     },
 
     getStates: function (country_id, selectSelector, selectedValue) {
@@ -210,6 +210,7 @@ var Parcel = {
         $('#calculating_info').show().html('calculating...');
 
         var quote = null;
+
 
         $.ajax({
             url: this.Url.qetquote,

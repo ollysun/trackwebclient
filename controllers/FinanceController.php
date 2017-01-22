@@ -447,6 +447,16 @@ class FinanceController extends BaseController
 
         $adapter = new TellerAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
 
+        $id = Yii::$app->request->get('id');
+        if($id){
+            $teller = new ResponseHandler($adapter->getTeller($id));
+            if($teller->isSuccess()){
+                $data = $teller->getData();
+            }else $data = [];
+
+            return $this->render('teller_details', $data);
+        }
+
         $filters = ['offset' => $offset, 'count' => $page_width, 'with_bank' => 1, 'with_payer' => 1, 'with_total_count' => 1];
 
         $from_date = Yii::$app->request->get('start_created_date', date('Y/m/d'));
@@ -510,13 +520,24 @@ class FinanceController extends BaseController
     }
 
 
-    //tellers
+    //cod tellers
     public function actionCodteller($page = 1, $page_width = null){
         $page_width = is_null($page_width) ? $this->page_width : $page_width;
         $offset = ($page - 1) * $page_width;
 
 
         $adapter = new CodTellerAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+
+        $id = Yii::$app->request->get('id');
+        if($id){
+            $teller = new ResponseHandler($adapter->getTeller($id));
+            if($teller->isSuccess()){
+                $data = $teller->getData();
+            }else $data = [];
+
+
+            return $this->render('cod_teller_detail', $data);
+        }
 
         $filters = ['offset' => $offset, 'count' => $page_width, 'with_bank' => 1, 'with_payer' => 1, 'with_total_count' => 1];
 

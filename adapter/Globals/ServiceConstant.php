@@ -199,16 +199,19 @@ class ServiceConstant
 
     const URL_TELLER_ADD = 'teller/add';
     const URL_TELLER_GET_ALL = 'teller/getall';
+    const URL_TELLER_GET = 'teller/getOne';
     const URL_TELLER_APPROVE = 'teller/approve';
     const URL_TELLER_DECLINE = 'teller/decline';
 
     const URL_COD_TELLER_ADD = 'codteller/add';
     const URL_COD_TELLER_GET_ALL = 'codteller/getall';
+    const URL_COD_TELLER_GET = 'codteller/getOne';
     const URL_COD_TELLER_APPROVE = 'codteller/approve';
     const URL_COD_TELLER_DECLINE = 'codteller/decline';
 
     const URL_RTD_TELLER_ADD = 'rtdteller/add';
     const URL_RTD_TELLER_GET_ALL = 'rtdteller/getall';
+    const URL_RTD_TELLER_GET = 'rtdteller/get';
     const URL_RTD_TELLER_APPROVE = 'rtdteller/approve';
     const URL_RTD_TELLER_DECLINE = 'rtdteller/decline';
 

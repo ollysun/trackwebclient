@@ -14,6 +14,10 @@ class CodTellerAdapter extends BaseAdapter{
         return $this->request(ServiceConstant::URL_COD_TELLER_GET_ALL, $filter, self::HTTP_GET);
     }
 
+    public function getTeller($id){
+        return $this->request(ServiceConstant::URL_COD_TELLER_GET, ['id' => $id], self::HTTP_GET);
+    }
+
     public function approveTeller($id){
         return $this->request(ServiceConstant::URL_COD_TELLER_APPROVE, ['id' => $id], self::HTTP_POST);
     }
