@@ -210,6 +210,7 @@ var Parcel = {
         $('#calculating_info').show().html('calculating...');
 
         var quote = null;
+        console.log(params);
 
 
         $.ajax({
