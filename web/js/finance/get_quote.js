@@ -210,8 +210,6 @@ var Parcel = {
         $('#calculating_info').show().html('calculating...');
 
         var quote = null;
-        console.log(params);
-
 
         $.ajax({
             url: this.Url.qetquote,
@@ -221,8 +219,6 @@ var Parcel = {
             success: function (result) {
                 if (result.status == 'success') {
                     quote = result.data;
-
-                    console.log(quote);
 
                     $('#total_amount').text(quote.total_amount);
                     $('#discount').text(quote.discount);
