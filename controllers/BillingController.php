@@ -49,11 +49,11 @@ class BillingController extends BaseController
                 }else{
 
                     $adp = new BillingPlanAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-                    $response = $adp->linkCompany($balling_plan_id, $company_id, $is_default);
-                    if ($response['status'] === Response::STATUS_OK) {
+                    $response = new ResponseHandler($adp->linkCompany($balling_plan_id, $company_id, $is_default));
+                    if ($response->isSuccess()) {
                         Yii::$app->session->setFlash('success', 'Link has been created successfully.');
                     } else {
-                        Yii::$app->session->setFlash('danger', 'There was a problem creating the link. ' . $response['message']);
+                        Yii::$app->session->setFlash('danger', 'There was a problem creating the link. ' . $response->getError());
                     }
                 }
                 return $this->back();
