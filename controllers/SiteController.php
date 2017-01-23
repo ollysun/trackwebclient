@@ -545,7 +545,6 @@ class SiteController extends BaseController
             $response = $parcel->getOneParcel($id);
             $response = new ResponseHandler($response);
 
-            dd($response);
             if ($response->getStatus() == ResponseHandler::STATUS_OK) {
                 $data = $response->getData();
                 if (isset($data['sender_address']) && isset($data['sender_address']['city_id'])) {

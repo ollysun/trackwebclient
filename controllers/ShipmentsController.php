@@ -1042,7 +1042,6 @@ class ShipmentsController extends BaseController
         $route_adapter = new RouteAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $routes = $route_adapter->getRoutes(null, null, null, null, null);
 
-
         $parcelAdapter = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $filtered_parcels = $parcelAdapter->getParcelsByFilters(array_filter($filters, 'strlen'));
 

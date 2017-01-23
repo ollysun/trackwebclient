@@ -59,7 +59,7 @@ class ParcelsController extends BaseController
                     $this->sendAsyncFormResponse(1, $response['data'], "Parcel.onFormSuccessCallback");
                 } else {
                     $payload['response'] = $response;
-                    $this->sendAsyncFormResponse(1, /*$response*/ $payload, "Parcel.onFormErrorCallback");
+                    $this->sendAsyncFormResponse(1, $response, "Parcel.onFormErrorCallback");
                 }
             }
         }
@@ -272,12 +272,12 @@ class ParcelsController extends BaseController
         }
 
         $parcelAdp = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $response = $parcelAdp->calcBilling($data['payload']);
+        $response = new ResponseHandler($parcelAdp->calcBilling($data['payload']));
 
-        if ($response['status'] === ResponseHandler::STATUS_OK) {
-            return $this->sendSuccessResponse($response['data']);
+        if ($response->isSuccess()) {
+            return $this->sendSuccessResponse($response->getData());
         } else {
-            $error_message = $response['message'];
+            $error_message = $response->getError();
             return $this->sendErrorResponse($error_message, null);
         }
 
@@ -296,10 +296,10 @@ class ParcelsController extends BaseController
         //return $this->sendSuccessResponse($data['payload']);
 
         $parcelAdp = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $response = $parcelAdp->getQuote($data['payload']);
+        $response = new ResponseHandler($parcelAdp->getQuote($data['payload']));
 
-        if ($response['status'] === ResponseHandler::STATUS_OK) {
-            $quote = $response['data'];
+        if ($response->isSuccess()) {
+            $quote = $response->getData();
             $quote['total_amount'] = number_format($quote['total_amount'], 2);
             $quote['discount'] = number_format($quote['discount'], 2);
             $quote['amount_due'] = number_format($quote['amount_due'], 2);
@@ -308,7 +308,7 @@ class ParcelsController extends BaseController
             $quote['gross_amount'] = number_format($quote['gross_amount'], 2);
             return $this->sendSuccessResponse($quote);
         } else {
-            $error_message = $response['message'];
+            $error_message = $response->getError();
             return $this->sendErrorResponse($error_message, null);
         }
     }
