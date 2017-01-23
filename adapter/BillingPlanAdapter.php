@@ -70,7 +70,9 @@ class BillingPlanAdapter extends BaseAdapter
     }
 
     public function linkCompany($billing_plan_id, $company_id, $is_default){
-        return $this->request(ServiceConstant::URL_BILLING_PLAN_LINK_COMPANY, ['company_id' => $company_id, 'billing_plan_id' => $billing_plan_id, 'is_default' => $is_default], self::HTTP_POST);
+        return $this->request(ServiceConstant::URL_BILLING_PLAN_LINK_COMPANY,
+            ['company_id' => $company_id, 'billing_plan_id' => $billing_plan_id, 'is_default' => $is_default],
+            self::HTTP_POST);
     }
 
     /**
@@ -108,7 +110,7 @@ class BillingPlanAdapter extends BaseAdapter
     public function getBillingPlans($filters = [])
     {
         $filters = array_merge([
-            'linked_companies_count' => 1,
+            'linked_companies_count' => '1',
             /*'company_only' => '1',
             'with_company' => '1',*/
             'filter_removed' => 1
