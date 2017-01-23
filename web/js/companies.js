@@ -121,7 +121,7 @@
             $(regions).each(function (i, v) {
                 var selected = zone != undefined && v.id == zone.region_id;
                 console.log(selected);
-                var option = new Option(v.name, v.id, false, v.id == zone.region_id).outerHTML;
+                var option = new Option(v.name, v.id, false, selected).outerHTML;
                 html += option;
             });
             $('#editRegonId').html(html);

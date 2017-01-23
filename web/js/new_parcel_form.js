@@ -66,9 +66,11 @@ function getServerResponse(statusCode, message) {
         params.city_id = $('#city_receiver').find('option:selected').attr('data-city_id');
         params.weight = $('#weight').val();
         var billingField = $("#billing_plan");
+        var companyField = $("#company");
         if ($("input[name='billing_method']:checked").val() == 'corporate') {
             params.weight_billing_plan_id = billingField.val();
             params.onforwarding_billing_plan_id = billingField.val();
+            params.company_id = companyField.val();
         }
         Parcel.calculateAmount(params);
     }

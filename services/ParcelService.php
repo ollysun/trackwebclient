@@ -345,6 +345,7 @@ class ParcelService
         $response['payload']['weight'] = $data['weight'];
         $response['payload']['weight_billing_plan_id'] = Calypso::getValue($data, 'weight_billing_plan_id', BillingPlanAdapter::DEFAULT_WEIGHT_RANGE_PLAN);
         $response['payload']['onforwarding_billing_plan_id'] = Calypso::getValue($data, 'onforwarding_billing_plan_id', BillingPlanAdapter::DEFAULT_ON_FORWARDING_PLAN);
+        if(isset($data['company_id'])) $response['payload']['company_id'] = Calypso::getValue($data, 'company_id');
         return $response;
     }
 }

@@ -289,9 +289,11 @@ $('#btncalculate').click(function(){
     params.city_id = $('#destination_city').find('option:selected').attr('data-city_id');
     params.weight = $('#weight').val();
     var billingField = $("#billing_plan");
+    var companyField = $("#company");
     if (billingField.val() != '') {
         params.weight_billing_plan_id = billingField.val();
         params.onforwarding_billing_plan_id = billingField.val();
+        params.company_id = companyField.val();
     }
     Parcel.qetQuote(params);
 })
