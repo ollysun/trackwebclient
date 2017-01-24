@@ -215,6 +215,10 @@ class ServiceConstant
     const URL_RTD_TELLER_APPROVE = 'rtdteller/approve';
     const URL_RTD_TELLER_DECLINE = 'rtdteller/decline';
 
+    const URL_REMITTANCE_GET_ALL = 'remittance/getall';
+    const URL_REMITTANCE_GET_ONE = 'remittance/getone';
+    const URL_REMITTANCE_SAVE = 'remittance/save';
+
     const URL_ROUTE_ADD = 'route/create';
     const URL_ROUTE_GET_ALL = 'route/getAll';
     const URL_ROUTE_EDIT = 'route/edit';

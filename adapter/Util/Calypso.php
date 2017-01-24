@@ -258,7 +258,7 @@ class Calypso
                 'user_type' => [ServiceConstant::USER_TYPE_ADMIN, ServiceConstant::USER_TYPE_BILLING]
             ],
 
-            'Remitance' => [
+            'Remittance' => [
                 'base' => 'finance', 'class' => 'fa fa-money', 'base_link' => [
                     'Sales Tellers' => ['base_link' => 'finance/salesteller', 'class' => ''],
                     'COD Tellers' => ['base_link' => 'finance/codteller', 'class' => ''],
