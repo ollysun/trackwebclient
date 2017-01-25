@@ -42,7 +42,7 @@ $(document).ready(function () {
     $("button[id='btnAddWaybill']").on("click", function(event){
         var waybill_number = $("input[id='addWaybillNumber']").val();
         //validate number
-        if(!(/^\d[A-Z](\d|\-)+[\d]$/i.test(waybill_number)) && !(/^[0-9]{8}$/.test(waybill_number))){
+        if(!(/^[\d]?[A-Z](\d|\-)+[\d]$/i.test(waybill_number)) && !(/^[0-9]{8}$/.test(waybill_number))){
             alert('Invalid waybill number');
             return;
         }
