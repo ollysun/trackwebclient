@@ -21,8 +21,20 @@ class RemittanceAdapter extends BaseAdapter
         return $this->request(ServiceConstant::URL_REMITTANCE_GET_ONE, $filter, self::HTTP_GET);
     }
 
-    public function save($filter){
-        return $this->request(ServiceConstant::URL_REMITTANCE_SAVE, $filter, self::HTTP_POST);
+    public function getDueParcels($filter){
+        return $this->request(ServiceConstant::URL_REMITTANCE_GET_DUE_PARCELS, $filter, self::HTTP_GET);
     }
 
+    public function save($company_ids){
+        $company_ids = implode(',', $company_ids);
+        return $this->request(ServiceConstant::URL_REMITTANCE_SAVE, ['company_ids' => $company_ids], self::HTTP_POST);
+    }
+
+    public function getPendingPayments($filter){
+        return $this->request(ServiceConstant::URL_GET_PENDING_PAYMENTS, $filter, self::HTTP_GET);
+    }
+
+    public function getAdviceForDownload($filter){
+        return $this->request(ServiceConstant::URL_REMITTANCE_GET_ADVICE_FOR_DOWNLOAD, $filter, self::HTTP_GET);
+    }
 }
