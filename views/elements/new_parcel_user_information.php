@@ -16,10 +16,10 @@ $prefix_map = [ 'shipper' => 'sender', 'receiver' => 'receiver' ];
 		<select class="form-control" id="<?= $prefix; ?>_corporate_select">
 			<option>Choose a Company</option>
 			<?php $sender_name = Calypso::getValue($parcel,'info.sender.firstname');?>
-			<?php foreach($companies as $company):?>
-				<option data-company='<?=Json::encode($company)?>' value="<?= Calypso::getValue($company, 'id')?>"
-						<?= $sender_name == Calypso::getValue($company, 'name') ? 'selected' : '';?>><?= strtoupper(Calypso::getValue($company, 'name'))?></option>
-			<?php endforeach;?>
+			<?php /*foreach($companies as $company):*/?><!--
+				<option data-company='<?/*=Json::encode($company)*/?>' value="<?/*= Calypso::getValue($company, 'id')*/?>"
+						<?/*= $sender_name == Calypso::getValue($company, 'name') ? 'selected' : '';*/?>><?/*= strtoupper(Calypso::getValue($company, 'name'))*/?></option>
+			--><?php /*endforeach;*/?>
 		</select>
 	</div>
 	<div>
