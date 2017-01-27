@@ -135,7 +135,7 @@ class ParcelsController extends BaseController
 
         //dd($billingPlans);
 
-        return $this->render('new', array(
+        $viewBag = array(
             'Banks' => $banks,
             'ShipmentType' => $shipmentType,
             'deliveryType' => $deliveryType,
@@ -149,7 +149,8 @@ class ParcelsController extends BaseController
             'parcel' => $parcel,
             'companies' => $companies,
             'billingPlans' => $billingPlans
-        ));
+        );
+        return $this->render('new', $viewBag);
     }
 
     /**
