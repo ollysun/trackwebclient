@@ -17,7 +17,7 @@ $prefix_map = [ 'shipper' => 'sender', 'receiver' => 'receiver' ];
 			<option>Choose a Company</option>
 			<?php $sender_name = Calypso::getValue($parcel,'info.sender.firstname');?>
 			<?php foreach($companies as $company):?>
-				<option data-company='<?=''//Json::encode($company)?>' value="<?= Calypso::getValue($company, 'id')?>"
+				<option data-company='<?=Json::encode($company)?>' value="<?= Calypso::getValue($company, 'id')?>"
 						<?= $sender_name == Calypso::getValue($company, 'name') ? 'selected' : '';?>>
                     <?= strtoupper(Calypso::getValue($company, 'name'))?></option>
 			<?php endforeach;?>
