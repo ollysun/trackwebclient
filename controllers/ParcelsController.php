@@ -150,7 +150,7 @@ class ParcelsController extends BaseController
             'companies' => $companies,
             'billingPlans' => $billingPlans
         );
-        dd($viewBag);
+
         return $this->render('new', $viewBag);
     }
 
