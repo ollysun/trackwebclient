@@ -134,9 +134,6 @@ class ParcelsController extends BaseController
         $billingPlans = ArrayHelper::map($billingPlans, 'id', 'name', 'company_id', 'p');
 
         //dd($billingPlans);
-        foreach ($companies as $company) {
-            dd($company);
-        }
 
         $viewBag = array(
             'Banks' => $banks,
