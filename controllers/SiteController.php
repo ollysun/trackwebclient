@@ -606,6 +606,13 @@ class SiteController extends BaseController
         }
     }
 
+    public function actionCompanies(){
+        $adapter = new CompanyAdapter(RequestHelper::getClientID(). RequestHelper::getAccessToken());
+        $response = new ResponseHandler($adapter->getCompanies(['status' => ServiceConstant::ACTIVE]));
+        if($response->isSuccess()) $this->sendSuccessResponse($response->getData());
+        $this->sendErrorResponse($response->getError(), null);
+    }
+
     public function actionHubnextdestination()
     {
         $parcelsAdapter = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());

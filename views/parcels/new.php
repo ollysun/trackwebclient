@@ -44,7 +44,9 @@ $is_admin = isset($branch['branch_type']) && $branch['branch_type'] == ServiceCo
                             <h2>Sender Information</h2>
                         </div>
                         <div class="main-box-body">
-                            <?= $this->render('../elements/new_parcel_user_information', ['prefix' => 'shipper', 'countries' => $countries, 'states' => $states, 'parcel' => $parcel, 'companies' => Calypso::isCooperateUser()?[$company]:$companies]) ?>
+                            <?= $this->render('../elements/new_parcel_user_information',
+                                ['prefix' => 'shipper', 'countries' => $countries, 'states' => $states,
+                                    'parcel' => $parcel, 'companies' => Calypso::isCooperateUser()?[$company]:$companies]) ?>
                         </div>
                     </div>
                     <div class="col-xs-12 col-lg-6">
@@ -701,7 +703,7 @@ $is_admin = isset($branch['branch_type']) && $branch['branch_type'] == ServiceCo
 <?php $this->registerJsFile('@web/js/validate.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/libs/select2.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/utils.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
-<?php $this->registerJsFile('@web/js/new_parcel_form.js?2.6.3.0', ['depends' => [\app\assets\AppAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/new_parcel_form.js?2.6.3.1', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/libs/bootstrap-datepicker.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 <?php
 $this->registerJs('$(".alert").delay(5000).fadeOut(1500);', View::POS_READY);
@@ -712,4 +714,5 @@ if(Calypso::isCooperateUser()){
 ?>
 <script type="text/javascript">
     <?= "var billingPlans = " . Json::encode($billingPlans) . ";";?>
+    <?= "var companies = " . Json::encode(Calypso::isCooperateUser()?[$company]:$companies) . ";";?>
 </script>

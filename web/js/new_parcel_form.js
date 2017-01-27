@@ -695,8 +695,12 @@ $(document).ready(function () {
             if ($(this).val() == "") {
                 return true;
             }
-            var option = $(this).find(':selected');
-            var company = option.data('company');
+            var company_id = $(this).val();
+            //var option = $(this).find(':selected');
+            //var company = option.data('company');
+            var company = _.find(companies, function(c){
+                return c.id == company_id;
+            });
             $('#firstname_' + contact_type).val(company.name.toUpperCase());
             $('#email_' + contact_type).val(company.email.toLowerCase());
             $('#phone_' + contact_type).val(company.phone_number);
