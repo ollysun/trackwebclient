@@ -472,6 +472,7 @@ class FinanceController extends BaseController
         if($bank_id) $filters['bank_id'] = $bank_id;
         if($teller_no) $filters['teller_no'] = $teller_no;
         if($status) $filters['status'] = $status;
+        if($branch_id) $filters['branch_id'] = $branch_id;
 
         $response = new ResponseHandler($adapter->getTellers($filters));
 
