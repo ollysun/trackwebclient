@@ -47,12 +47,25 @@ $this->params['breadcrumbs'] = array(
                         </div>
 
                         <div class="pull-left form-group form-group-sm">
+                            <label for="">Branch</label><br>
+                            <select name="branch_id" id="" class="form-control filter-status">
+                                <option value="">All</option>
+                                <?php foreach ($branches as $branch) { ?>
+                                    <option
+                                            value="<?= Calypso::getValue($branch, 'id'); ?>"
+                                        <?= $branch_id == Calypso::getValue($branch, 'id') ? 'selected' : '' ?>>
+                                        <?= strtoupper(Calypso::getValue($branch, 'name')); ?></option>
+                                <?php } ?>
+                            </select>
+                        </div>
+
+                        <div class="pull-left form-group form-group-sm">
                             <label for="">Status</label><br>
                             <select name="status" id="" class="form-control filter-status">
                                 <option value="">All</option>
                                 <?php foreach ($statuses as $sta) { ?>
                                     <option
-                                        value="<?= $sta; ?>" <?= $status == $sta ? 'selected' : '' ?>><?= ServiceConstant::getStatus($sta); ?></option>
+                                            value="<?= $sta; ?>" <?= $status == $sta ? 'selected' : '' ?>><?= ServiceConstant::getStatus($sta); ?></option>
                                 <?php } ?>
                             </select>
                         </div>

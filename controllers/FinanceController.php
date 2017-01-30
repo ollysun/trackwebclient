@@ -525,7 +525,6 @@ class FinanceController extends BaseController
         $page_width = is_null($page_width) ? $this->page_width : $page_width;
         $offset = ($page - 1) * $page_width;
 
-
         $adapter = new CodTellerAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
 
         $id = Yii::$app->request->get('id');
@@ -545,6 +544,7 @@ class FinanceController extends BaseController
         $end_date = Yii::$app->request->get('end_created_date', date('Y/m/d'));
         $filters['start_created_date'] = $from_date . ' 00:00:00';
         $filters['end_created_date'] = $end_date . ' 23:59:59';
+        $branch_id = Yii::$app->request->get('branch_id');
 
         $bank_id = Yii::$app->request->get('bank_id');
         $teller_no = Yii::$app->request->get('teller_no');
@@ -553,8 +553,15 @@ class FinanceController extends BaseController
         if($bank_id) $filters['bank_id'] = $bank_id;
         if($teller_no) $filters['teller_no'] = $teller_no;
         if($status) $filters['status'] = $status;
+        if($branch_id) $filters['branch_id'] = $branch_id;
 
         $response = new ResponseHandler($adapter->getTellers($filters));
+
+        $branch_adapter = new BranchAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $branches = Calypso::getValue($branch_adapter->getAll(), 'data', []);
+        if (!$branches) {
+            $branches = [];
+        }
 
         $viewData = [
             'offset' => $offset,
@@ -564,7 +571,9 @@ class FinanceController extends BaseController
             'bank_id' => $bank_id,
             'teller_no' => $teller_no,
             'status' => $status,
-            'statuses' => [ServiceConstant::TELLER_AWAITING_APPROVAL, ServiceConstant::TELLER_APPROVED, ServiceConstant::TELLER_DECLINED]
+            'branches' => $branches, 'branch_id' => $branch_id,
+            'statuses' => [ServiceConstant::TELLER_AWAITING_APPROVAL, ServiceConstant::TELLER_APPROVED,
+                ServiceConstant::TELLER_DECLINED]
         ];
 
         if($response->isSuccess()){
