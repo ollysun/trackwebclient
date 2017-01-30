@@ -260,7 +260,7 @@ class Calypso
 
             'Remittance' => [
                 'base' => 'finance', 'class' => 'fa fa-money', 'base_link' => [
-                    'Payouts' => ['base_link' => 'remittance', 'class' => ''],
+                    /*'Payouts' => ['base_link' => 'remittance', 'class' => ''],*/
                     'Due_Payments' => ['base_link' => 'remittance/pending', 'class' => ''],
                     'Sales Tellers' => ['base_link' => 'finance/salesteller', 'class' => ''],
                     'COD Tellers' => ['base_link' => 'finance/codteller', 'class' => ''],

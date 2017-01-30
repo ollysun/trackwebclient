@@ -22,11 +22,11 @@ class RemittanceController extends BaseController
         $offset = ($page - 1) * $page_width;
         $adapter = new RemittanceAdapter();
 
-        $company_registration_number = \Yii::$app->get('company_registration_number');
-        $start_date = \Yii::$app->get('start_date');
-        $end_date = \Yii::$app->get('end_date');
-        $min_amount = \Yii::$app->get('min_amount');
-        $max_amount = \Yii::$app->get('max_amount');
+        $company_registration_number = \Yii::$app->request->get('company_registration_number');
+        $start_date = \Yii::$app->request->get('start_date');
+        $end_date = \Yii::$app->request->get('end_date');
+        $min_amount = \Yii::$app->request->get('min_amount');
+        $max_amount = \Yii::$app->request->get('max_amount');
 
         $filters = [
             'send_all' => 1, 'with_total_count' => 1,
