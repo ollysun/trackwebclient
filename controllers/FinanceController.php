@@ -465,6 +465,7 @@ class FinanceController extends BaseController
         $filters['end_created_date'] = $end_date . ' 23:59:59';
 
         $bank_id = Yii::$app->request->get('bank_id');
+        $branch_id = Yii::$app->request->get('branch_id');
         $teller_no = Yii::$app->request->get('teller_no');
         $status = Yii::$app->request->get('status');
 
@@ -474,6 +475,12 @@ class FinanceController extends BaseController
 
         $response = new ResponseHandler($adapter->getTellers($filters));
 
+        $branch_adapter = new BranchAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $branches = Calypso::getValue($branch_adapter->getAll(), 'data', []);
+        if (!$branches) {
+            $branches = [];
+        }
+
         $viewData = [
             'offset' => $offset,
             'page_width' => $page_width,
@@ -481,7 +488,7 @@ class FinanceController extends BaseController
             'end_created_date' => $end_date,
             'bank_id' => $bank_id,
             'teller_no' => $teller_no,
-            'status' => $status,
+            'status' => $status, 'branches' => $branches, 'branch_id' => $branch_id,
             'statuses' => [ServiceConstant::TELLER_AWAITING_APPROVAL, ServiceConstant::TELLER_APPROVED, ServiceConstant::TELLER_DECLINED]
         ];
 
