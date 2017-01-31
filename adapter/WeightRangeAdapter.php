@@ -27,7 +27,7 @@ class WeightRangeAdapter extends BaseAdapter
     public function getRange($billingPlan = null)
     {
         $filters = [
-            'billing_plan_id' => $billingPlan
+            'billing_plan_id' => $billingPlan, 'offset' => 0, 'count' => 50
         ];
         $filters = array_filter($filters);
         return $this->request(ServiceConstant::URL_WEIGHT_FETCH_ALL, $filters, self::HTTP_GET);
