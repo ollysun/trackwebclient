@@ -8,5 +8,7 @@ $(document).ready(function () {
 
     $('#submit_btn').click(function () {
         $('#form').submit();
-    })
+    });
+
+    //view details
 });

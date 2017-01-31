@@ -219,6 +219,7 @@ class ServiceConstant
     const URL_REMITTANCE_GET_DUE_PARCELS = 'remittance/getDueParcels';
     const URL_REMITTANCE_GET_ONE = 'remittance/getone';
     const URL_REMITTANCE_SAVE = 'remittance/save';
+    const URL_REMITTANCE_PAYMENT_ADVICE = 'remittance/getPaymentAdvice';
     const URL_GET_PENDING_PAYMENTS = 'remittance/getPendingPayments';
     const URL_REMITTANCE_GET_ADVICE_FOR_DOWNLOAD = 'remittance/getPaymentAdviceForDownload';
     const URL_REMITTANCE_GET_PAYMENTS = 'remittance/getPayments';

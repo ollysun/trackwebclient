@@ -17,7 +17,7 @@ use Adapter\Util\Calypso;
 
 class RemittanceController extends BaseController
 {
-    public function actionIndex($page = 1, $page_width = null){
+    public function actionIndex1($page = 1, $page_width = null){
         $page_width = is_null($page_width) ? $this->page_width : $page_width;
         $offset = ($page - 1) * $page_width;
         $adapter = new RemittanceAdapter();
@@ -47,7 +47,7 @@ class RemittanceController extends BaseController
         return $this->render('index', ['filters' => $filters, 'remittance' => $remittance]);
     }
 
-    public function actionPending($page = 1, $page_width = null){
+    public function actionIndex($page = 1, $page_width = null){
         $page_width = is_null($page_width) ? $this->page_width : $page_width;
         $offset = ($page - 1) * $page_width;
         $adapter = new RemittanceAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
@@ -56,8 +56,9 @@ class RemittanceController extends BaseController
         if($ref) return $this->downloadAdvice($ref);
 
         if(\Yii::$app->request->isPost){
+            $status = \Yii::$app->request->post()['current_status'];
             $company_ids = \Yii::$app->request->post()['companies'];
-            $response = new ResponseHandler($adapter->save($company_ids));
+            $response = new ResponseHandler($adapter->save($company_ids, $status));
             if(!$response->isSuccess()){
                 $this->flashError($response->getError());
             }else{
@@ -66,6 +67,7 @@ class RemittanceController extends BaseController
             }
         }
 
+        $status = \Yii::$app->request->get('status');
         $registration_number = \Yii::$app->request->get('registration_number');
         $start_delivery_date = \Yii::$app->request->get('start_delivery_date');
         $end_delivery_date = \Yii::$app->request->get('end_delivery_date');
@@ -73,9 +75,9 @@ class RemittanceController extends BaseController
         $filters = ['registration_number' => $registration_number,
             'start_delivery_date' => $start_delivery_date,
             'end_delivery_date' => $end_delivery_date,
-            'with_total_count' => 1, 'offset' => $offset, 'count' => $page_width];
+            'with_total_count' => 1, 'offset' => $offset, 'count' => $page_width, 'status' => $status ? $status : 25];
 
-        $response = new ResponseHandler($adapter->getPendingPayments($filters));
+        $response = new ResponseHandler($adapter->getPaymentAdvice($filters));
         if($response->isSuccess()){
             $payments = $response->getData()['payments'];
             $total = $response->getData()['total_count'];
@@ -85,8 +87,25 @@ class RemittanceController extends BaseController
             $total = 0;
         }
 
-        return $this->render('pending', array_merge(['payments' => $payments, 'total_count' => $total,
+        return $this->render('index', array_merge(['payments' => $payments, 'total_count' => $total,
             'page_width' => $page_width], $filters));
+    }
+
+    public function actionDetails(){
+        $company_registration_number = \Yii::$app->request->get('reg_no');
+        $ref = \Yii::$app->request->get('ref');
+        $status = \Yii::$app->request->get('status');
+
+        $filter_by = ['company_registration_number' => $company_registration_number, 'ref' => $ref, 'status' => $status];
+        $adapter = new RemittanceAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $response = new ResponseHandler($adapter->getAll($filter_by));
+        $parcels = [];
+        if($response->isSuccess()){
+            $parcels = $response->getData();
+        }else{
+            $this->flashError($response->getError());
+        }
+        return $this->render('remittance_parcels', ['parcels' => $parcels]);
     }
 
     public function downloadAdvice($ref){
@@ -97,7 +116,7 @@ class RemittanceController extends BaseController
             $payments = $response->getData();
             if(count($payments) < 1){
                 $this->flashError('No record found');
-                return $this->redirect(\Yii::$app->getRequest()->getReferrer());
+                return $this->redirect('index' /*\Yii::$app->getRequest()->getReferrer()*/);
             }
         }else{
             $this->flashError($response->getError());

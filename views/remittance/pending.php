@@ -102,7 +102,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
             </div>
             <?= $this->render('../elements/pagination_and_summary', ['first' => $offset, 'last'=>$i, 'total_count'=> $total_count,'page_width'=>$page_width]) ?>
         <?php else:  ?>
-            There are no parcels matching the specified criteria.
+            No record found
         <?php endif;  ?>
     </div>
 </div>
