@@ -13,7 +13,7 @@ use yii\helpers\Url;
 ?>
 
 <?php
-$this->params['content_header_button'] = '<button type="button" class="btn btn-primary" id="submit_btn">Pay Selected</button>';
+$this->params['content_header_button'] = $status == 27?'': '<button type="button" class="btn btn-primary" id="submit_btn">Pay Selected</button>';
 ?>
 
 
