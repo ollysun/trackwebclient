@@ -1477,4 +1477,59 @@ class ShipmentsController extends BaseController
 
         return $this->render('delayedShipments', $viewData);
     }
+
+    public function actionValidateparcels(){
+
+        if(Yii::$app->request->isPost){
+            $adapter = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+            $waybill_numbers = Yii::$app->request->post()['numbers'];
+            $by = Yii::$app->request->post()['by'];
+
+            $response = new ResponseHandler($adapter->validateNumbers($waybill_numbers, $by));
+            if(!$response->isSuccess()){
+                $this->flashError($response->getError());
+                return $this->render('validateparcels', ['numbers' => $waybill_numbers, 'by' => $by]);
+            }
+            $results = $response->getData();
+
+
+
+            $name = 'report_' . date(ServiceConstant::DATE_TIME_FORMAT) . '.csv';
+            header('Content-Type: text/csv');
+            header('Content-Disposition: attachment; filename=' . $name);
+            header('Pragma: no-cache');
+            header("Expires: 0");
+            $stream = fopen("php://output", "w");
+
+
+            $headers = array('SN', 'Number', 'Status');
+
+            fputcsv($stream, $headers);
+
+
+            $total_count = 0;
+            $serial_number = 1;
+
+            $exportData = [];
+            foreach ($results as $key => $result) {
+                $exportData[] = [
+                    $serial_number++,
+                    $result['number'],
+                    $result['status'],
+                ];
+
+            }
+
+
+            foreach ($exportData as $row) {
+                fputcsv($stream, $row);
+            }
+
+            fclose($stream);
+            exit;
+
+        }
+
+        return $this->render('validateparcels', ['numbers' => '', 'by' => 'reference number']);
+    }
 }

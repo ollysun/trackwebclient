@@ -73,6 +73,7 @@ class ServiceConstant
     const URL_CREATE_BAG = '/parcel/bag';
     const URL_CANCEL_PARCEL = '/parcel/cancel';
     const URL_PARCEL_COUNT = 'parcel/count/';
+    const URL_PARCEL_VALIDATE_NUMBERS = 'parcel/validateNumbers/';
     const URL_PARCEL_GROUP_COUNT = 'parcel/groupCount/';
     const DEFAULT_UNBAG_REFERRER = '/shipments/processed';
     const URL_OPEN_BAG = '/parcel/openbag';

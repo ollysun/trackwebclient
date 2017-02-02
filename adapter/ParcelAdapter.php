@@ -875,5 +875,8 @@ class ParcelAdapter extends BaseAdapter
         return $response->getData();
     }
 
-    //getDelayedShipments
+    public function validateNumbers($csvNumbers, $by){
+        return $this->request(ServiceConstant::URL_PARCEL_VALIDATE_NUMBERS,
+            ['numbers' => $csvNumbers, 'by' => $by], self::HTTP_POST);
+    }
 }
