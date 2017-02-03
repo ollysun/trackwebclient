@@ -88,7 +88,8 @@ class RefAdapter extends BaseAdapter
      */
     public function getWeightRanges($billingPlanId)
     {
-        return $this->request(ServiceConstant::URL_WEIGHT_FETCH_ALL, ['billing_plan_id' => $billingPlanId], self::HTTP_GET);
+        return $this->request(ServiceConstant::URL_WEIGHT_FETCH_ALL,
+            ['billing_plan_id' => $billingPlanId, 'offset' => 0, 'count' => 50], self::HTTP_GET);
     }
 
     public function getOnforwardingCharges($billingPlanId = null, $status = null, $offset = null, $count = null, $with_total_count = null, $send_all = null)

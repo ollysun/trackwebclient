@@ -530,6 +530,7 @@ class FinanceController extends BaseController
 
     //cod tellers
     public function actionCodteller($page = 1, $page_width = null){
+
         $page_width = is_null($page_width) ? $this->page_width : $page_width;
         $offset = ($page - 1) * $page_width;
 
