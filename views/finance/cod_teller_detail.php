@@ -12,6 +12,8 @@ use Adapter\Util\Util;
 use yii\helpers\Url;
 ?>
 
+<?php echo \Adapter\Util\Calypso::showFlashMessages(); ?>
+
 <div class="box-main">
     <div class="main-box-header table-search-form ">
         <div class="clearfix">
