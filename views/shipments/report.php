@@ -314,6 +314,25 @@ $this->params['content_header_button'] = "<a href='" . $downloadURL . "' class='
 
                         <?php endif; ?>
 
+
+                        <div class="pull-left form-group form-group-sm">
+                            <label for="">COD Teller</label><br>
+                            <select name="no_cod_teller" id="" class="form-control  filter-status">
+                                <option value="">All</option>
+
+                                <option
+                                        value="<?= ServiceConstant::FALSE; ?>" <?= ($filters['no_cod_teller'] ==
+                                    ServiceConstant::FALSE && strlen($filters['cash_on_delivery'])) ? 'selected' : '' ?>>
+                                    Not Submitted
+                                </option>
+                                <option
+                                        value="<?= ServiceConstant::TRUE; ?>" <?= $filters['no_cod_teller']
+                                == ServiceConstant::TRUE ? 'selected' : '' ?>>
+                                    Submitted
+                                </option>
+                            </select>
+                        </div>
+
                         <div class="pull-left">
                             <label>&nbsp;</label><br>
                             <button class="btn btn-default btn-sm" id="apply" type="submit"><i class="fa fa-filter"></i>

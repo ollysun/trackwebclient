@@ -989,7 +989,8 @@ class ShipmentsController extends BaseController
         $filter_params = ['company_id', 'start_pickup_date', 'end_pickup_date', 'start_modified_date', 'end_modified_date', 'for_return', 'parcel_type',
             'status', 'min_weight', 'max_weight', 'min_amount_due', 'max_amount_due', 'cash_on_delivery', 'delivery_type',
             'payment_type', 'shipping_type', 'start_created_date', 'end_created_date', 'created_branch_id', 'route_id', 'request_type',
-            'from_branch_id', 'branch_type', 'return_reason_comment', 'business_manager_staff_id', 'delivery_branch_id', 'with_sales_teller', 'with_cod_teller'];
+            'from_branch_id', 'branch_type', 'return_reason_comment', 'business_manager_staff_id',
+            'delivery_branch_id', 'with_sales_teller', 'with_cod_teller', 'no_cod_teller'];
         $extra_details = ['with_receiver', 'with_receiver_address', 'with_route'];
 
 
@@ -1099,7 +1100,9 @@ class ShipmentsController extends BaseController
     public function actionDownloadreport()
     {
         set_time_limit(0);
-        $extra_details = ['with_to_branch', 'with_created_by', 'with_from_branch', 'with_sender', 'with_sender_address', 'with_receiver', 'with_receiver_address', 'with_bank_account', 'with_created_branch', 'with_route', 'with_created_by', 'with_company'];
+        $extra_details = ['with_to_branch', 'with_created_by', 'with_from_branch', 'with_sender',
+            'with_sender_address', 'with_receiver', 'with_receiver_address', 'with_bank_account',
+            'with_created_branch', 'with_route', 'with_created_by', 'with_company'];
 
         $filters = Yii::$app->request->get();
 
@@ -1128,6 +1131,8 @@ class ShipmentsController extends BaseController
         $filters['report'] = 1;
         $filters['with_total_count'] = true;
         $filters['show_both_parent_and_splits'] = 1;
+
+        $filters['no_cod_teller'] = Yii::$app->request->get('no_cod_teller');
 
         $offset = 0;
         $count = 500;

@@ -178,4 +178,8 @@ class RemittanceController extends BaseController
         fclose($stream);
         exit;
     }
+
+    public function actionPendingparcels(){
+
+    }
 }

@@ -264,6 +264,7 @@ class Calypso
                     'Sales Tellers' => ['base_link' => 'finance/salesteller', 'class' => ''],
                     'COD Tellers' => ['base_link' => 'finance/codteller', 'class' => ''],
                     'COD_Payments' => ['base_link' => 'remittance', 'class' => ''],
+                    'Pending_Parcels' => ['base_link' => 'remittance/pendingparcels', 'class' => ''],
                 ],
                 'branch' => [ServiceConstant::BRANCH_TYPE_HQ],
                 'user_type' => [ServiceConstant::USER_TYPE_ADMIN, ServiceConstant::USER_TYPE_REGIONAL_MANAGER, ServiceConstant::USER_TYPE_FINANCE]

@@ -8,6 +8,7 @@
 
 use yii\helpers\Html;
 use Adapter\Globals\ServiceConstant;
+use Adapter\Util\Calypso;
 
 /* @var $this yii\web\View */
 $this->title = 'Admin: Business Managers';
@@ -36,6 +37,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                     <th style="width: 20px">S/N</th>
                     <th style="text-align: left;">Name</th>
                     <th style="text-align: left;">Region</th>
+                    <th>Link ECs</th>
                     <th>Status</th>
                     <th>Action</th>
                 </tr>
@@ -50,6 +52,19 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                             <td><?= $row++; ?></td>
                             <td style="text-align: left;" class="n<?= $business_manager['id']; ?>"><?= ucwords($business_manager['name']); ?></td>
                             <td style="text-align: left;" class="d<?= $business_manager['id']; ?>"><?= ucwords($business_manager['region_name']); ?></td>
+
+                            <td>
+                                <?= strtoupper(Calypso::getValue($business_manager, 'linked_companies_count', '0')) ?> ECs<br/>
+
+                                <a style="margin-top: 5px;" class="btn btn-xs btn-primary linkEc" data-toggle="modal" data-target="#linkEc"
+                                   data-plan_id="<?= Calypso::getValue($business_manager, 'id')?>"
+                                   data-plan_name="<?= Calypso::getValue($business_manager, 'name')?>">Add</a>
+
+
+                                <a  data-bind='click: function () { viewCompanies(<?= Calypso::getValue($business_manager, 'id') ?>); }'
+                                    style="margin-top: 5px;" class="btn btn-xs btn-primary linkCompany" data-toggle="modal"
+                                    data-target="#linkEcs">View</a>
+                            </td>
 
                             <td><?= ($business_manager['status'] == ServiceConstant::ACTIVE ? 'Active' : 'Inactive'); ?></td>
                             <td>
@@ -160,5 +175,5 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
 <?php $this->registerJsFile('@web/js/libs/dataTables.fixedHeader.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/libs/dataTables.tableTools.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/libs/jquery.dataTables.bootstrap.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
-<?php $this->registerJsFile('@web/js/business_manager.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/business_manager.js?v=1', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/table.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
