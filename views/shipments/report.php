@@ -318,7 +318,7 @@ $this->params['content_header_button'] = "<a href='" . $downloadURL . "' class='
                         <div class="pull-left form-group form-group-sm">
                             <label for="">COD Teller</label><br>
                             <select name="no_cod_teller" id="" class="form-control  filter-status">
-                                <option value="">All</option>
+                                <option value="">Not Applicable</option>
 
                                 <option
                                         value="<?= ServiceConstant::FALSE; ?>" <?= ($filters['no_cod_teller'] ==

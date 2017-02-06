@@ -1060,7 +1060,7 @@ class ShipmentsController extends BaseController
             $this->flashError('Could not load reports');
         }
 
-        //dd($parcels);
+        dd($parcels);
 
         $companies = (new CompanyAdapter())->getAllCompanies([]);
 
