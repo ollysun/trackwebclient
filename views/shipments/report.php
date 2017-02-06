@@ -321,13 +321,13 @@ $this->params['content_header_button'] = "<a href='" . $downloadURL . "' class='
                                 <option value="">Not Applicable</option>
 
                                 <option
-                                        value="<?= ServiceConstant::FALSE; ?>" <?= ($filters['no_cod_teller'] ==
-                                    ServiceConstant::FALSE && strlen($filters['cash_on_delivery'])) ? 'selected' : '' ?>>
+                                        value="<?= ServiceConstant::TRUE; ?>" <?= ($filters['no_cod_teller'] ==
+                                    ServiceConstant::TRUE && strlen($filters['no_cod_teller'])) ? 'selected' : '' ?>>
                                     Not Submitted
                                 </option>
                                 <option
-                                        value="<?= ServiceConstant::TRUE; ?>" <?= $filters['no_cod_teller']
-                                == ServiceConstant::TRUE ? 'selected' : '' ?>>
+                                        value="<?= ServiceConstant::FALSE; ?>" <?= $filters['no_cod_teller']
+                                == ServiceConstant::FALSE ? 'selected' : '' ?>>
                                     Submitted
                                 </option>
                             </select>
