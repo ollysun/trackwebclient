@@ -2,11 +2,13 @@ $(document).ready(function () {
     $("button[data-target='#editModal']").on('click', function (event) {
         target = $(this).attr('data-target');
         _id = $(this).attr('data-id');
+        _plan_id = $(this).attr('data-billing-plan-id');
         $(target + " input[name='onforward_name']").val($("td[class='n" + _id + "']").text());
         $(target + " input[name='onforward_code']").val($("td[class='c" + _id + "']").text());
         $(target + " textarea[name='onforward_desc']").val($("td[class='d" + _id + "']").text());
         $(target + " input[name='onforward_percentage']").val(parseFloat($("td[class='p" + _id + "']").text()));
         $(target + " input[name='onforward_amount']").val($("td[class='a" + _id + "']").text());
+        $(target + " input[name='billing_plan_id']").val(_plan_id);
         $(target + " input[name='id']").val(_id);
         calculateAmount('#editModal', '[name="onforward_amount"]', '[name="onforward_percentage"]', '[readonly]');
     });

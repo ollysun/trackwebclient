@@ -56,7 +56,8 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                         <td class="h<?= $charge['id']; ?>"><?= number_format((float)$charge['amount'] * (1 + floatval($charge['percentage'])), 2, '.', ''); ?></td>
                         <td>
                             <button type="button" class="btn btn-default btn-xs" data-toggle="modal"
-                                    data-target="#editModal" data-id="<?= $charge['id']; ?>"><i class="fa fa-edit"></i>
+                                    data-target="#editModal" data-id="<?= $charge['id']; ?>"
+                                    data-billing-plan-id="<?= $charge['billing_plan_id'] ?>"><i class="fa fa-edit"></i>
                                 Edit
                             </button>
                         </td>
@@ -168,6 +169,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                     </div>
                     <div class="modal-footer">
                         <input type="hidden" name="id" value="">
+                        <input type="hidden" name="billing_plan_id" value="">
                         <input type="hidden" name="task" value="edit">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary">Save changes</button>
