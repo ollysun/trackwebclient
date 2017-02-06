@@ -151,7 +151,7 @@ abstract class BaseAdapter
     {
         try{
 
-        //$oriUrl = $url;
+        $oriUrl = $url;
         if (is_null($this->_curlagent)) {
             $this->_curlagent = new CurlAgent('', true);
         }
@@ -171,13 +171,13 @@ abstract class BaseAdapter
             $this->injectUrlParams($url, $params);
         }
 
-        //if($oriUrl == ServiceConstant::URL_GET_ALL_PARCEL)
-        //dd($url);
+        /*if($oriUrl == ServiceConstant::URL_GET_ALL_PARCEL)
+        dd($url);*/
 
         $this->_curlagent->createCurl($url);
 
-        /*if($url == ServiceConstant::URL_CREATE_BULK_SHIPMENT_TASK)*/
-       //dd($this->_curlagent->getResponse());
+        /*if($oriUrl == ServiceConstant::URL_GET_ALL_PARCEL)
+       dd($this->_curlagent->getResponse());*/
 
         if ($this->_curlagent->getHttpStatus() == BaseAdapter::HTTP_STATUS_OK) {
             return Response::direct($this->_curlagent->getResponse(), $this->_response_as_json);
@@ -186,7 +186,8 @@ abstract class BaseAdapter
         }
 
         }catch (\Exception $exception){
-            dd($exception);
+            return false;
+            //dd($exception);
         }
     }
 
