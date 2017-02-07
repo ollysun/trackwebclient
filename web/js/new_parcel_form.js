@@ -534,7 +534,7 @@ $(document).ready(function () {
     $('#city_receiver').on('change', function (evt) {//to be removed. just a hark for allow manual amount entry for export
         if($(this).val() == 1700 || $(this).val() == 1703){
             $('#divManualBillingMethod').show();
-            $('#manual_billing').show();
+            //$('#manual_billing').show();
         }else{
             $('#divManualBillingMethod').hide();
             $('#manual_billing').hide();
