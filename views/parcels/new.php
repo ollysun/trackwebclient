@@ -446,11 +446,15 @@ $is_admin = isset($branch['branch_type']) && $branch['branch_type'] == ServiceCo
                                     </div>
                                     <input type="hidden" name="corporate_amount" id="corporate_amount"/>
                                 </div>
+
+                                <?php if(Calypso::userIsInRole(ServiceConstant::USER_TYPE_ADMIN)):?>
                                 <div id="manual_billing" class="form-group amount-due-wrap" style="display: none;">
                                     <label for="">Amount Due</label>
                                     <input type="text" class="form-control" name="manual_amount"
                                            id="manual_amount"/>
                                 </div>
+                                <?php endif;?>
+
                                 <div class="form-group">
                                     <label for="">Billing Method</label>
 
@@ -461,11 +465,15 @@ $is_admin = isset($branch['branch_type']) && $branch['branch_type'] == ServiceCo
                                                    checked="checked"> <label for="autoBillingMethod"
                                                                              class="">Auto</label>
                                         </div>
+
+                                        <?php if(Calypso::userIsInRole(ServiceConstant::USER_TYPE_ADMIN)):?>
                                         <div class="radio-inline">
                                             <input id="manualBillingMethod" type="radio" name="billing_method"
                                                    value="manual">
                                             <label for="manualBillingMethod" class="">Manual</label>
                                         </div>
+                                        <?php endif;?>
+
                                         <div class="radio-inline">
                                             <input id="corporateBillingMethod" type="radio" name="billing_method"
                                                    value="corporate">
