@@ -447,13 +447,11 @@ $is_admin = isset($branch['branch_type']) && $branch['branch_type'] == ServiceCo
                                     <input type="hidden" name="corporate_amount" id="corporate_amount"/>
                                 </div>
 
-                                <?php if(Calypso::userIsInRole(ServiceConstant::USER_TYPE_ADMIN)):?>
                                 <div id="manual_billing" class="form-group amount-due-wrap" style="display: none;">
                                     <label for="">Amount Due</label>
                                     <input type="text" class="form-control" name="manual_amount"
                                            id="manual_amount"/>
                                 </div>
-                                <?php endif;?>
 
                                 <div class="form-group">
                                     <label for="">Billing Method</label>
@@ -466,13 +464,11 @@ $is_admin = isset($branch['branch_type']) && $branch['branch_type'] == ServiceCo
                                                                              class="">Auto</label>
                                         </div>
 
-                                        <?php if(Calypso::userIsInRole(ServiceConstant::USER_TYPE_ADMIN)):?>
-                                        <div class="radio-inline">
+                                        <div class="radio-inline" id="divManualBillingMethod">
                                             <input id="manualBillingMethod" type="radio" name="billing_method"
                                                    value="manual">
                                             <label for="manualBillingMethod" class="">Manual</label>
                                         </div>
-                                        <?php endif;?>
 
                                         <div class="radio-inline">
                                             <input id="corporateBillingMethod" type="radio" name="billing_method"
@@ -504,7 +500,7 @@ $is_admin = isset($branch['branch_type']) && $branch['branch_type'] == ServiceCo
                                                 <?= (Calypso::getValue($parcel, "info.payment_type", '') == '3') ? 'checked="checked"' : ""; ?>>
                                             <label for="paymentMethodCashPOS" class="">Cash &amp; POS</label>
                                         </div>
-                                        <div class="radio-inline">
+                                        <div class="radio-inline" id="divDeferredPayment">
                                             <input id="paymentMethodDeferred" type="radio" name="payment_method"
                                                    value="4"
                                                 <?= (Calypso::getValue($parcel, "info.payment_type", '') == '4') ? 'checked="checked"' : ""; ?>>
@@ -711,7 +707,7 @@ $is_admin = isset($branch['branch_type']) && $branch['branch_type'] == ServiceCo
 <?php $this->registerJsFile('@web/js/validate.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/libs/select2.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/utils.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
-<?php $this->registerJsFile('@web/js/new_parcel_form.js?2.6.3.1', ['depends' => [\app\assets\AppAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/new_parcel_form.js?2.6.3.2.3', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/libs/bootstrap-datepicker.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 <?php
 $this->registerJs('$(".alert").delay(5000).fadeOut(1500);', View::POS_READY);

@@ -339,6 +339,8 @@ class ParcelService
 
     public function buildBillingCalculationData($data)
     {
+        $response['payload']['from_country_id'] = $data['from_country_id'];
+        $response['payload']['to_country_id'] = $data['to_country_id'];
         $response['payload']['from_branch_id'] = $data['from_branch_id'];
         $response['payload']['to_branch_id'] = $data['to_branch_id'];
         $response['payload']['city_id'] = $data['city_id'];

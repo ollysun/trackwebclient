@@ -61,6 +61,8 @@ function getServerResponse(statusCode, message) {
 
     function calculateAmount() {
         var params = {};
+        params.from_country_id = $('#country_shipper').val();
+        params.to_country_id = $('#country_receiver').val();
         params.from_branch_id = $('#city_shipper').find('option:selected').attr('data-branch-id');
         params.to_branch_id = $('#city_receiver').find('option:selected').attr('data-branch-id');
         params.city_id = $('#city_receiver').find('option:selected').attr('data-city_id');
@@ -449,6 +451,7 @@ var Parcel = {
     },
 
     calculateAmount: function (params) {
+        console.log(params);
         $('.amount-due').html("calculating...");
         var amount = '';
         $('#amount').val(amount);
@@ -483,6 +486,9 @@ var Parcel = {
 };
 
 $(document).ready(function () {
+
+    //hide manual billing
+    $('#divManualBillingMethod').hide();
 
     //if initial data is set for cloning, run ajax calls for state and city on page load
     initializeState('shipper');
@@ -524,6 +530,18 @@ $(document).ready(function () {
         var selector = elementName.indexOf('shipper') !== -1 ? '#city_shipper' : '#city_receiver';
         Parcel.getCities(state_id, $(selector));
     });
+
+    $('#city_receiver').on('change', function (evt) {//to be removed. just a hark for allow manual amount entry for export
+        if($(this).val() == 1700 || $(this).val() == 1703){
+            $('#divManualBillingMethod').show();
+            $('#manual_billing').show();
+        }else{
+            $('#divManualBillingMethod').hide();
+            $('#manual_billing').hide();
+        }
+    });
+
+    // if($('#city_receiver') != 1700 && $('#city_receiver') != 1703)
 
     $('#btn_Search_shipper, #btn_Search_receiver').on('click', function (event) {
 
@@ -584,10 +602,13 @@ $(document).ready(function () {
 
     var calculateBilling = function () {
         var params = {};
+        params.from_country_id = $('#country_shipper').val();
+        params.to_country_id = $('#country_receiver').val();
         params.from_branch_id = $('#city_shipper').find('option:selected').attr('data-branch-id');
         params.to_branch_id = $('#city_receiver').find('option:selected').attr('data-branch-id');
         params.city_id = $('#city_receiver').find('option:selected').attr('data-city_id');
         params.weight = $('#weight').val();
+        console.log(params);
         var billingField = $("#billing_plan");
         if (billingField.is(":visible")) {
             params.weight_billing_plan_id = billingField.val();
@@ -602,9 +623,13 @@ $(document).ready(function () {
      */
     $("input[name='billing_method']").click(function () {
 
+
         $(".amount-due-wrap").hide();
         var val = $(this).val();
         $('#' + val + '_billing').show();
+
+        $('#divDeferredPayment').hide();//hide deferred as payment method for all
+
         if (val == 'manual') {
             $("input[name='manual_amount']").addClass('validate decimal required');
         } else if (val == 'auto') {
@@ -612,6 +637,7 @@ $(document).ready(function () {
                 calculateBilling();
             }
         } else if (val == 'corporate') {
+            $('#divDeferredPayment').show();//show defferred for corporate
             $(".amount-due").html("");
             $("#company").trigger("change");
         } else {
