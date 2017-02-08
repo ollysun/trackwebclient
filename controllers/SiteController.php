@@ -7,6 +7,7 @@ use Adapter\BranchAdapter;
 use Adapter\ParcelAdapter;
 use Adapter\RegionAdapter;
 use Adapter\RefAdapter;
+use Adapter\RemittanceAdapter;
 use Adapter\UserAdapter;
 use app\models\User;
 use app\services\ParcelService;
@@ -108,6 +109,7 @@ class SiteController extends BaseController
             $date = Calypso::getInstance()->get()->date;
         }
 
+
         $parcel = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $filters = array('created_branch_id' => $branch_to_view, 'start_created_date' => $from_date . ' 00:00:00', 'end_created_date' => $to_date . ' 23:59:59');
         $stats['created'] = $parcel->getParcelCount($filters);
@@ -148,7 +150,6 @@ class SiteController extends BaseController
 
         return $this->render('index', array('date' => $date, 'from_date' => $from_date, 'to_date' => $to_date, 'stats' => $stats, 'branch_type' => $branch_type, 'user_type' => $user_type, 'branch' => $branch_to_view, 'request_start' => $request_start, 'request_end' => $request_end));
     }
-
 
     public function actionIndex1()
     {
@@ -274,6 +275,17 @@ class SiteController extends BaseController
         }
 
         //dd($stats);
+        //remittance
+        $remittanceAdapter = new RemittanceAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $response = new ResponseHandler($remittanceAdapter->getPaymentAdvice(
+            ['registration_number' => $user_data['company']['reg_no'], 'status' => 25]
+        ));
+        if($response->isSuccess()){
+            if(count($response->getData()) > 0)
+                $stats['remittance'] = $response->getData()[0]['amount'];
+            else $stats['remittance'] = 0;
+        }else $stats['remittance'] = 'UNKNOWN';
+
 
         $view_bag = ['stats' => $stats, 'date' => $date, 'from_date' => $from_date, 'to_date' => $to_date];
 

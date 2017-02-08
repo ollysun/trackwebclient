@@ -49,10 +49,16 @@ $this->params['breadcrumbs'][] = $this->title;
                 <span class="headline">SHIPMENTS CREATED</span>
             </a>
 
-            <a href="<?= '#'//Url::toRoute('shipments/fordelivery');?>" class="infographic-box merged merged-right pull-left">
+            <!--<a href="<?/*= '#'//Url::toRoute('shipments/fordelivery');*/?>" class="infographic-box merged merged-right pull-left">
                 <i class="fa fa-truck red-bg"></i>
-                <span class="value red"><?= $stats['for_delivery'];?></span>
+                <span class="value red"><?/*= $stats['for_delivery'];*/?></span>
                 <span class="headline">FOR DELIVERY</span>
+            </a>-->
+
+            <a href="<?= '#'//Url::toRoute('shipments/fordelivery');?>" class="infographic-box merged merged-right pull-left">
+                <i class="fa fa-gift red-bg"></i>
+                <span class="value red"><?= $stats['remittance'];?></span>
+                <span class="headline">Escrow Balance</span>
             </a>
         </div>
     </div>
