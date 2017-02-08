@@ -284,6 +284,8 @@ $('#destination_state').on('change', function (evt) {
 
 $('#btncalculate').click(function(){
     var params = {};
+    params.from_country_id = 1;
+    params.to_country_id = 1;
     params.from_branch_id = $('#originating_city').find('option:selected').attr('data-branch-id');
     params.to_branch_id = $('#destination_city').find('option:selected').attr('data-branch-id');
     params.city_id = $('#destination_city').find('option:selected').attr('data-city_id');

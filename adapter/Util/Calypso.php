@@ -204,7 +204,7 @@ class Calypso
                     'Manage_cities' => ['base_link' => 'admin/managecities', 'class' => '', 'user_type' => [ServiceConstant::USER_TYPE_ADMIN]],
                     'Manage_routes' => ['base_link' => 'admin/manageroutes', 'class' => '', 'user_type' => [ServiceConstant::USER_TYPE_ADMIN]],
                     'Manage_staff_accounts' => ['base_link' => 'admin/managestaff', 'class' => '', 'user_type' => [ServiceConstant::USER_TYPE_ADMIN]],
-                    'Business_Zones' => ['base_link' => 'admin/busineszones', 'class' => '', 'user_type' => [ServiceConstant::USER_TYPE_ADMIN]],
+                    'Business_Territories' => ['base_link' => 'admin/busineszones', 'class' => '', 'user_type' => [ServiceConstant::USER_TYPE_ADMIN]],
                     'Business_Managers' => ['base_link' => 'admin/businessmanagers', 'class' => '', 'user_type' => [ServiceConstant::USER_TYPE_ADMIN]],
                     'Company_Registration' => ['base_link' => 'admin/companies', 'class' => '',
                         'user_type' => [ServiceConstant::USER_TYPE_BILLING, ServiceConstant::USER_TYPE_ADMIN]],
@@ -267,7 +267,8 @@ class Calypso
                     'Pending_Parcels' => ['base_link' => 'remittance/pendingparcels', 'class' => ''],
                 ],
                 'branch' => [ServiceConstant::BRANCH_TYPE_HQ],
-                'user_type' => [ServiceConstant::USER_TYPE_ADMIN, ServiceConstant::USER_TYPE_REGIONAL_MANAGER, ServiceConstant::USER_TYPE_FINANCE]
+                'user_type' => [ServiceConstant::USER_TYPE_ADMIN, ServiceConstant::USER_TYPE_REGIONAL_MANAGER,
+                    ServiceConstant::USER_TYPE_FINANCE]
             ],
             'Corporate' => [
                 'base' => 'request', 'class' => 'fa fa-gift', 'base_link' => [
@@ -277,7 +278,8 @@ class Calypso
                     'Pickup_Requests' => ['base_link' => 'corporate/request/pickups', 'class' => ''],
                     'Users' => ['base_link' => 'corporate/users', 'class' => ''],
                     'Pending Shipments' => ['base_link' => 'corporate/pending/shipments', 'class' => ''],
-                    'Pending Pickups' => ['base_link' => 'corporate/pending/pickups', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]]
+                    'Pending Pickups' => ['base_link' => 'corporate/pending/pickups', 'class' => '',
+                        'branch' => [ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]]
                 ],
                 //added user type to menu definition so that roles can control their visibility
                 'user_type' => [ServiceConstant::USER_TYPE_COMPANY_ADMIN, ServiceConstant::USER_TYPE_COMPANY_OFFICER],

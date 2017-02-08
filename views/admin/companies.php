@@ -17,7 +17,10 @@ $submitted_data = Calypso::getInstance()->getPageData();
 
 
 <?php
-$this->params['content_header_button'] = '<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i> Add Company</button>';
+$this->params['content_header_button'] = '<button type="button" class="btn btn-primary btn-sm"
+data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i> Add Company</button>
+<button type="button" class="btn btn-success btn-sm"
+data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i> Download Company</button>';
 ?>
 
 <?= Html::cssFile('@web/css/libs/bootstrap-select.min.css') ?>
