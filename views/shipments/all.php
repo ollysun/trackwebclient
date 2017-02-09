@@ -178,7 +178,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                     <div class="row">
                         <div class="col-xs-6 form-group">
                             <label for="">Bank</label>
-                            <input name="bank_id" value="9"/>
+                            <input name="bank_id" type="hidden" value="9"/>
                             <input value="First Bank Of Nig PLC" readonly class="form-control">
                             <!--<select class="form-control validate required" name="bank_id" id="bank_id">
                                 <?php
