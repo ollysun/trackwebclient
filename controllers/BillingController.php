@@ -91,6 +91,18 @@ class BillingController extends BaseController
         ]);
     }
 
+    public function actionIntl($section = "zones"){
+        switch($section){
+            case "zones": return $this->intlZones();
+        }
+    }
+
+    private function intlZones(){
+
+
+    }
+
+
     public function actionGetcompaniesbyplan($billing_plan_id){
         $billingPlanAdapter = new BillingPlanAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $companies = $billingPlanAdapter->getCompaniesByPlan($billing_plan_id);

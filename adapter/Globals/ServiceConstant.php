@@ -165,6 +165,9 @@ class ServiceConstant
     const URL_ZONES_GET_BY_CODE = '/zone/fetchByCode';
     const URL_ZONES_GET_BY_ID = '/zone/fetchByID';
 
+    //intl billing
+    const URL_INTL_ZONES_GET_ALL = 'intl/getzones';
+
     const URL_ZONES_MATRIX_GET = 'zone/getMatrix';
     const URL_ZONES_MATRIX_SAVE = 'zone/saveMatrix';
     const URL_ZONES_MATRIX_REMOVE = 'zone/removeMatrix';
@@ -189,6 +192,17 @@ class ServiceConstant
     const URL_BILLING_EDIT = 'zone/editbilling';
     const URL_BILLING_DELETE = 'zone/removebilling';
     const URL_BILLING_FETCH_BY_ID = 'zone/fetchBillingById';
+
+    //intl
+    const URL_INTL_GET_ZONES = "intl/getZones";
+    const URL_INTL_ADD_ZONE = 'intl/addZone';
+    const URL_INTL_ADD_COUNTRY_TO_ZONE = 'intl/mapCountryToZone';
+    const URL_INTL_GET_COUNTRIES_BY_ZONE = 'intl/getCountriesByZone';
+    const URL_MAP_COUNTY_TO_ZONE = 'intl/mapCountryToZone';
+    const URL_INTL_ADD_WEIGHT_RANGE = 'intl/addWeightRange';
+    const URL_INTL_ = '';
+
+
     //transit time
     const URL_GET_TRANSIT_TIME = 'zone/getTransitTime';
     const URL_SAVE_TRANSIT_TIME = 'zone/saveTransitTime';

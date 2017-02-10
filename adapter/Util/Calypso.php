@@ -243,8 +243,10 @@ class Calypso
                 'user_type' => [ServiceConstant::USER_TYPE_ADMIN, ServiceConstant::USER_TYPE_FINANCE]
             ],
 
-            'Billing' => ['base' => 'billing', 'class' => 'fa fa-money', 'base_link' => [
+            'Billing' => ['base' => 'billing', 'class' => 'fa fa-money',
+                'base_link' => [
                     'Billing_Plans' => ['base_link' => 'billing', 'class' => ''],
+                    'Intl_Billing' => ['base_link' => 'billing/intl', 'class' => ''],
                     'View_Matrix' => ['base_link' => 'billing/matrix', 'class' => ''],
                     'Zones' => ['base_link' => 'billing/zones', 'class' => ''],
                     'Regions' => ['base_link' => 'billing/regions', 'class' => ''],
