@@ -268,7 +268,7 @@ class Calypso
                     'COD_Payments' => ['base_link' => 'remittance', 'class' => ''],
                     'Pending_Parcels' => ['base_link' => 'remittance/pendingparcels', 'class' => ''],
                 ],
-                //'branch' => [ServiceConstant::BRANCH_TYPE_HQ],
+                'branch' => [ServiceConstant::BRANCH_TYPE_HQ, ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_EC],
                 'user_type' => [ServiceConstant::USER_TYPE_ADMIN, ServiceConstant::USER_TYPE_REGIONAL_MANAGER,
                     ServiceConstant::USER_TYPE_FINANCE, ServiceConstant::USER_TYPE_BUSINESS_MANAGER]
             ],
@@ -358,6 +358,7 @@ class Calypso
             ], self::getCorporateRoutes()),
 
             ServiceConstant::USER_TYPE_REGIONAL_MANAGER => self::getCorporateRoutes(),
+            ServiceConstant::USER_TYPE_BUSINESS_MANAGER => self::getCorporateRoutes(),
             ServiceConstant::USER_TYPE_BILLING => self::getCorporateRoutes(),
             ServiceConstant::USER_TYPE_FINANCE => self::getCorporateRoutes()
         ];
