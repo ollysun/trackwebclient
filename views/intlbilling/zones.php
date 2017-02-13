@@ -52,6 +52,11 @@ $this->params['breadcrumbs'] = array(
 										data-target="#addCountryModel" data-id="<?= $zone['id']; ?>"><i
 										class="fa fa-edit"></i> Add Country
 								</button>
+								<button data-bind="click: function(){viewcountries(<?= $zone['id']; ?>)}"
+										type="button" class="btn btn-default btn-xs" data-toggle="modal"
+										data-target="#getCountriesModel" data-id="<?= $zone['id']; ?>"><i
+										class="fa fa-search"></i> Get Countries
+								</button>
 							</td>
 						</tr>
 						<?php
@@ -130,11 +135,46 @@ $this->params['breadcrumbs'] = array(
 	</div>
 </div>
 
+<div class="modal fade" id="getCountriesModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+						aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="myModalLabel">Countries By Zone</h4>
+			</div>
+			<div class="modal-body">
+				<table class="table">
+					<thead>
+					<tr>
+						<th>
+							S/No
+						</th>
+						<th>
+							Countries
+						</th>
+					</tr>
+					</thead>
+
+					<tbody data-bind="foreach: countries">
+					<tr>
+						<td><span class="user-box-name" data-bind="text: ($index() + 1)"></span></td>
+						<td><span class="user-box-name" data-bind="text: name"></span></td>
+					</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+
+
 <!-- this page specific scripts -->
 <?php $this->registerJsFile('@web/js/libs/jquery.dataTables.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/libs/dataTables.fixedHeader.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/libs/dataTables.tableTools.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/libs/jquery.dataTables.bootstrap.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/country-to-zone.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
+<?php $this->registerJsFile('@web/js/countries-by-zone.js', ['depends' => [\yii\web\JqueryAsset::className(), \app\assets\AppAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/table.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
 
