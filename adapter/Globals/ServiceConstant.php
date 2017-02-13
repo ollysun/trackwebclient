@@ -200,6 +200,7 @@ class ServiceConstant
     const URL_INTL_GET_COUNTRIES_BY_ZONE = 'intl/getCountriesByZone';
     const URL_MAP_COUNTY_TO_ZONE = 'intl/mapCountryToZone';
     const URL_INTL_ADD_WEIGHT_RANGE = 'intl/addWeightRange';
+    const URL_INTL_GET_WEIGHT_RANGE = 'intl/addWeightRange';
 
 
     //transit time
