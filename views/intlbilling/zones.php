@@ -1,12 +1,13 @@
 <?php
 use yii\helpers\Html;
+use Adapter\Util\Calypso;
 use yii\helpers\Url;
 
 /* @var $this yii\web\View */
-$this->title = 'IntlBilling: Zones';
+$this->title = 'Intlbilling: Zones';
 $this->params['breadcrumbs'] = array(
 	array(
-		'label' => 'IntlBilling',
+		'label' => 'Intlbilling',
 		'url' => ['intlbilling/']
 	),
 	array('label'=> 'Zones')
@@ -48,8 +49,8 @@ $this->params['breadcrumbs'] = array(
 							<td class="d<?= $zone['id']; ?>"><?= $zone['description']; ?></td>
 							<td>
 								<button type="button" class="btn btn-default btn-xs" data-toggle="modal"
-										data-target="#editModal" data-id="<?= $zone['id']; ?>"><i
-										class="fa fa-edit"></i> Edit
+										data-target="#addCountryModel" data-id="<?= $zone['id']; ?>"><i
+										class="fa fa-edit"></i> Add Country
 								</button>
 							</td>
 						</tr>
@@ -73,10 +74,6 @@ $this->params['breadcrumbs'] = array(
 	      </div>
 	      <div class="modal-body">
 				<div class="form-group">
-					<label for="">Name</label>
-					<input type="text" class="form-control" name="zone_name">
-				</div>
-				<div class="form-group">
 					<label for="">Code</label>
 					<input type="text" class="form-control" name="zone_code">
 				</div>
@@ -95,37 +92,42 @@ $this->params['breadcrumbs'] = array(
   </div>
 </div>
 
-<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document">
-	  	<form class="" method="post">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	        <h4 class="modal-title" id="myModalLabel">Edit Zone</h4>
-	      </div>
-			<div class="modal-body">
-				<div class="form-group">
-					<label for="">Name</label>
-					<input type="text" class="form-control" name="zone_name">
+<div class="modal fade" id="addCountryModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document">
+		<form class="" method="post">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+							aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="myModalLabel">Add Country to Zone (Mapping)</h4>
 				</div>
-				<div class="form-group">
-					<label for="">Code</label>
-					<input type="text" class="form-control" name="zone_code">
+				<div class="modal-body">
+					<div class="form-group">
+						<label for="name">Zone Description</label>
+						<input readonly id="zone_desc" class="form-control validate" name="zone_desc"/>
+					</div>
+
+					<div class="form-group">
+						<label for="">Country</label>
+						<select name="country_id" class="form-control validate required">
+							<option value="">Select Country</option>
+							<?php foreach ($countries as $country): ?>
+								<option
+									value="<?= Calypso::getValue($country, 'id'); ?>"><?= strtoupper(Calypso::getValue($country, 'name')) ?></option>
+							<?php endforeach; ?>
+						</select>
+					</div>
+
 				</div>
-				<div class="form-group">
-					<label for="">Description</label>
-					<textarea class="form-control" name="zone_desc"></textarea>
+				<div class="modal-footer">
+					<input type="hidden" name="zone_id" id="zone_id">
+					<input type="hidden" name="task" value="addcountry">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button type="submit" class="btn btn-primary">Add Country to Zone</button>
 				</div>
 			</div>
-	      <div class="modal-footer">
-			  <input type="hidden" name="task" value="edit">
-			  <input type="hidden" name="id" value="">
-	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-	        <button type="submit" class="btn btn-primary">Save changes</button>
-	      </div>
-	    </div>
-	  	</form>
-  </div>
+		</form>
+	</div>
 </div>
 
 <!-- this page specific scripts -->
@@ -133,6 +135,6 @@ $this->params['breadcrumbs'] = array(
 <?php $this->registerJsFile('@web/js/libs/dataTables.fixedHeader.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/libs/dataTables.tableTools.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/libs/jquery.dataTables.bootstrap.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
-<?php $this->registerJsFile('@web/js/zone.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
+<?php $this->registerJsFile('@web/js/country-to-zone.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/table.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
 
