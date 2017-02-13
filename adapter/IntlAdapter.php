@@ -30,4 +30,12 @@ class IntlAdapter extends BaseAdapter
         return $this->request(ServiceConstant::URL_INTL_GET_COUNTRIES_BY_ZONE, ['zone_id' => $zone_id], self::HTTP_GET);
     }
 
+    public function getWeightRange(){
+        return $this->request(ServiceConstant::URL_INTL_GET_WEIGHT_RANGE, [], self::HTTP_GET);
+    }
+
+    public function addWeightRanges($data){
+        return $this->request(ServiceConstant::URL_INTL_ADD_WEIGHT_RANGE, $data, self::HTTP_POST);
+    }
+
 }
