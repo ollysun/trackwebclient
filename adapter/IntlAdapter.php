@@ -26,4 +26,8 @@ class IntlAdapter extends BaseAdapter
             ['zone_id' => $zone_id, 'country_id' => $country_id], self::HTTP_POST);
     }
 
+    public function getCountriesByZoneId($zone_id){
+        return $this->request(ServiceConstant::URL_INTL_GET_COUNTRIES_BY_ZONE, ['zone_id' => $zone_id], self::HTTP_GET);
+    }
+
 }
