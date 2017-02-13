@@ -268,9 +268,9 @@ class Calypso
                     'COD_Payments' => ['base_link' => 'remittance', 'class' => ''],
                     'Pending_Parcels' => ['base_link' => 'remittance/pendingparcels', 'class' => ''],
                 ],
-                'branch' => [ServiceConstant::BRANCH_TYPE_HQ],
+                //'branch' => [ServiceConstant::BRANCH_TYPE_HQ],
                 'user_type' => [ServiceConstant::USER_TYPE_ADMIN, ServiceConstant::USER_TYPE_REGIONAL_MANAGER,
-                    ServiceConstant::USER_TYPE_FINANCE]
+                    ServiceConstant::USER_TYPE_FINANCE, ServiceConstant::USER_TYPE_BUSINESS_MANAGER]
             ],
             'Corporate' => [
                 'base' => 'request', 'class' => 'fa fa-gift', 'base_link' => [
