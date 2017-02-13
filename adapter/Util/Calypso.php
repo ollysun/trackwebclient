@@ -265,7 +265,7 @@ class Calypso
                 'base' => 'finance', 'class' => 'fa fa-money', 'base_link' => [
                     'Sales Tellers' => ['base_link' => 'finance/salesteller', 'class' => ''],
                     'COD Tellers' => ['base_link' => 'finance/codteller', 'class' => ''],
-                    'COD_Payments' => ['base_link' => 'remittance', 'class' => ''],
+                    'COD_Payments' => ['base_link' => 'remittance', 'class' => '', 'user_type' => [ServiceConstant::USER_TYPE_FINANCE]],
                     'Pending_Parcels' => ['base_link' => 'remittance/pendingparcels', 'class' => ''],
                 ],
                 'branch' => [ServiceConstant::BRANCH_TYPE_HQ, ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_EC],
