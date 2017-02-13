@@ -1064,7 +1064,6 @@ class ShipmentsController extends BaseController
 
         $companies = (new CompanyAdapter())->getAllCompanies([]);
 
-        dd($filters);
 
         return $this->render('report', array(
             'parcels' => $parcels,
