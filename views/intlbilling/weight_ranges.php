@@ -3,11 +3,11 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 
 /* @var $this yii\web\View */
-$this->title = 'Billing: Weight Ranges';
+$this->title = 'Intlbilling: Weight Ranges';
 $this->params['breadcrumbs'] = array(
 	array(
-		'label' => 'Billing',
-		'url' => ['billing/']
+		'label' => 'Intlbilling',
+		'url' => ['intlbilling/']
 	),
 	array('label'=> 'Weight Ranges')
 );
@@ -55,7 +55,6 @@ $this->params['breadcrumbs'] = array(
 						<th style="width: 20px">S/N</th>
 
 						<th>Minimum Weight (Kg)</th>
-						<th>Incremental Weight (Kg)</th>
 						<th>Maximum Weight (Kg)</th>
 						<th>Action</th>
 					</tr>
@@ -80,11 +79,10 @@ $this->params['breadcrumbs'] = array(
 							<td><?= $row++; ?></td>
 
 							<td class="l<?=$range['id'];?>"><?= $range['min_weight']; ?></td>
-							<td class="i<?=$range['id'];?>"><?= $range['increment_weight']; ?></td>
 							<td class="m<?=$range['id'];?>"><?= $range['max_weight']; ?></td>
 							<td>
 								<button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#editModal" data-id="<?= $range['id']; ?>"><i class="fa fa-edit"></i> Edit</button>
-								<form method="post" action="<?= Url::to("/billing/deleteweightrange");?>">
+								<form method="post" action="<?= Url::to("/intlbilling/deleteweightrange");?>">
 									<input type="hidden" value="<?= $range['id']; ?>" name="range_id" />
 									<button type="button" class="btn btn-danger btn-xs deleteWeightRange"><i class="fa fa-trash-o"></i> Delete</button>
 								</form>
@@ -133,7 +131,6 @@ $this->params['breadcrumbs'] = array(
 				</div>
 	      </div>
 	      <div class="modal-footer">
-			  <input type="hidden" name="billing_plan_id" value="<?= $billingPlanId?>">
 			  <input type="hidden" name="task" value="create">
 	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 	        <button type="submit" class="btn btn-primary">Add Weight Range</button>

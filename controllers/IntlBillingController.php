@@ -152,7 +152,7 @@ class IntlbillingController extends BaseController
 
     public function actionWeightranges()
     {
-        $billingPlanId = Yii::$app->request->get('billing_plan_id', BillingPlanAdapter::DEFAULT_WEIGHT_RANGE_PLAN);
+        $get_ranges = Yii::$app->request->get();
         if (Yii::$app->request->isPost) {
             $entry = Yii::$app->request->post();
             $task = Calypso::getValue(Yii::$app->request->post(), 'task', '');
@@ -192,12 +192,15 @@ class IntlbillingController extends BaseController
 
             return $this->refresh();
         }
-        $data_source = new RefAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $ranges = $data_source->getWeightRanges($billingPlanId);
+        $data_source = new IntlAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $ranges = $data_source->getWeightRange();
         $ranges = new ResponseHandler($ranges);
+        /*if($ranges->isSuccess()) $wranges = $ranges->getData();
+        else $wranges = [];*/
+
         $ranges_list = $ranges->getStatus() == ResponseHandler::STATUS_OK ? $ranges->getData() : [];
 
-        return $this->render('weight_ranges', array('ranges' => $ranges_list, 'billingPlanId' => $billingPlanId));
+        return $this->render('weight_ranges', array('ranges' => $ranges_list));
     }
 
 }
