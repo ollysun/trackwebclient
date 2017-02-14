@@ -80,6 +80,7 @@ class BillingController extends BaseController
         $billingPlans = Calypso::getValue($response, 'plans');
 
         $billingPlanTypes = BillingPlanAdapter::getTypes();
+        //dd($companies);
         return $this->render("billing_plans", [
             'companies' => $companies,
             'billingPlans' => $billingPlans,
@@ -90,6 +91,18 @@ class BillingController extends BaseController
             'search' => $search
         ]);
     }
+
+    public function actionIntl($section = "zones"){
+        switch($section){
+            case "zones": return $this->intlZones();
+        }
+    }
+
+    private function intlZones(){
+
+
+    }
+
 
     public function actionGetcompaniesbyplan($billing_plan_id){
         $billingPlanAdapter = new BillingPlanAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());

@@ -243,8 +243,10 @@ class Calypso
                 'user_type' => [ServiceConstant::USER_TYPE_ADMIN, ServiceConstant::USER_TYPE_FINANCE]
             ],
 
-            'Billing' => ['base' => 'billing', 'class' => 'fa fa-money', 'base_link' => [
+            'Billing' => ['base' => 'billing', 'class' => 'fa fa-money',
+                'base_link' => [
                     'Billing_Plans' => ['base_link' => 'billing', 'class' => ''],
+                    'Intl_Billing' => ['base_link' => 'billing/intl', 'class' => ''],
                     'View_Matrix' => ['base_link' => 'billing/matrix', 'class' => ''],
                     'Zones' => ['base_link' => 'billing/zones', 'class' => ''],
                     'Regions' => ['base_link' => 'billing/regions', 'class' => ''],
@@ -263,12 +265,12 @@ class Calypso
                 'base' => 'finance', 'class' => 'fa fa-money', 'base_link' => [
                     'Sales Tellers' => ['base_link' => 'finance/salesteller', 'class' => ''],
                     'COD Tellers' => ['base_link' => 'finance/codteller', 'class' => ''],
-                    'COD_Payments' => ['base_link' => 'remittance', 'class' => ''],
+                    'COD_Payments' => ['base_link' => 'remittance', 'class' => '', 'user_type' => [ServiceConstant::USER_TYPE_FINANCE]],
                     'Pending_Parcels' => ['base_link' => 'remittance/pendingparcels', 'class' => ''],
                 ],
-                'branch' => [ServiceConstant::BRANCH_TYPE_HQ],
+                'branch' => [ServiceConstant::BRANCH_TYPE_HQ, ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_EC],
                 'user_type' => [ServiceConstant::USER_TYPE_ADMIN, ServiceConstant::USER_TYPE_REGIONAL_MANAGER,
-                    ServiceConstant::USER_TYPE_FINANCE]
+                    ServiceConstant::USER_TYPE_FINANCE, ServiceConstant::USER_TYPE_BUSINESS_MANAGER]
             ],
             'Corporate' => [
                 'base' => 'request', 'class' => 'fa fa-gift', 'base_link' => [
@@ -356,6 +358,7 @@ class Calypso
             ], self::getCorporateRoutes()),
 
             ServiceConstant::USER_TYPE_REGIONAL_MANAGER => self::getCorporateRoutes(),
+            ServiceConstant::USER_TYPE_BUSINESS_MANAGER => self::getCorporateRoutes(),
             ServiceConstant::USER_TYPE_BILLING => self::getCorporateRoutes(),
             ServiceConstant::USER_TYPE_FINANCE => self::getCorporateRoutes()
         ];
