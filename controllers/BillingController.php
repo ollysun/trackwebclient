@@ -80,6 +80,7 @@ class BillingController extends BaseController
         $billingPlans = Calypso::getValue($response, 'plans');
 
         $billingPlanTypes = BillingPlanAdapter::getTypes();
+        //dd($companies);
         return $this->render("billing_plans", [
             'companies' => $companies,
             'billingPlans' => $billingPlans,

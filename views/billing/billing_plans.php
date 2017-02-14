@@ -64,7 +64,8 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                             <td>
                                 <?= strtoupper(Calypso::getValue($billingPlan, 'linked_companies_count', '0')) ?> Companies<br/>
 
-                                 <a style="margin-top: 5px;" class="btn btn-xs btn-primary linkCompany" data-toggle="modal" data-target="#linkCompany"
+                                 <a style="margin-top: 5px;" class="btn btn-xs btn-primary linkCompany" data-toggle="modal"
+                                    data-target="#linkCompany"
                                    data-plan_id="<?= Calypso::getValue($billingPlan, 'id')?>" data-plan_name="<?= Calypso::getValue($billingPlan, 'name')?>">Add</a>
 
 

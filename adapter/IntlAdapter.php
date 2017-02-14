@@ -6,7 +6,7 @@
  * Time: 3:46 PM
  */
 
-namespace adapter;
+namespace Adapter;
 
 
 use Adapter\Globals\ServiceConstant;
