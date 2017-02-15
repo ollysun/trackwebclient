@@ -165,23 +165,23 @@ class IntlbillingController extends BaseController
             $data['weight_range_id'] = Calypso::getValue($entry, 'id', null);
             $data['billing_plan_id'] = Calypso::getValue($entry, 'billing_plan_id', BillingPlanAdapter::DEFAULT_WEIGHT_RANGE_PLAN);
 
-            if (($task == 'create' || $task == 'edit') && (Util::checkEmpty($data['min_weight']) || Util::checkEmpty($data['max_weight']) || Util::checkEmpty($data['increment_weight']))) {
+            if (($task == 'create' || $task == 'edit') && (Util::checkEmpty($data['min_weight']) || Util::checkEmpty($data['max_weight']))) {
                 $error[] = "All details are required!";
             }
             if (!empty($error)) {
                 $errorMessages = implode('<br />', $error);
                 Yii::$app->session->setFlash('danger', $errorMessages);
             } else {
-                $adp = new WeightRangeAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+                $adp = new IntlAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
                 if ($task == 'create') {
-                    $response = $adp->createRange($data);
+                    $response = $adp->addWeightRange($data);
                     if ($response['status'] === Response::STATUS_OK) {
                         Yii::$app->session->setFlash('success', 'Weight range has been created successfully.');
                     } else {
                         Yii::$app->session->setFlash('danger', 'There was a problem creating the weight range. ' . $response['message']);
                     }
                 } else {
-                    $response = $adp->editRange($data, $task);
+                    $response = $adp->editRange($data);
                     if ($response['status'] === Response::STATUS_OK) {
                         Yii::$app->session->setFlash('success', 'Weight range has been edited successfully.');
                     } else {
@@ -193,12 +193,15 @@ class IntlbillingController extends BaseController
             return $this->refresh();
         }
         $data_source = new IntlAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $ranges = $data_source->getWeightRange();
-        $ranges = new ResponseHandler($ranges);
+        $response = $data_source->getWeightRange();
+        $response = new ResponseHandler($response);
+
+        if(!$response->isSuccess()) $this->flashError($response->getError());
         /*if($ranges->isSuccess()) $wranges = $ranges->getData();
         else $wranges = [];*/
 
-        $ranges_list = $ranges->getStatus() == ResponseHandler::STATUS_OK ? $ranges->getData() : [];
+        $ranges_list = $response->getStatus() == ResponseHandler::STATUS_OK ? $response->getData() : [];
+
 
         return $this->render('weight_ranges', array('ranges' => $ranges_list));
     }

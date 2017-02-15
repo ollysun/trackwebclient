@@ -246,7 +246,8 @@ class Calypso
             'Billing' => ['base' => 'billing', 'class' => 'fa fa-money',
                 'base_link' => [
                     'Billing_Plans' => ['base_link' => 'billing', 'class' => ''],
-                    'Intl_Zones' => ['base_link' => 'billing/intl', 'class' => ''],
+                    'Intl_Zones' => ['base_link' => 'intlbilling/zones', 'class' => ''],
+                    'Intl_Weight_Ranges' => ['base_link' => 'intlbilling/weightranges', 'class' => ''],
                     'View_Matrix' => ['base_link' => 'billing/matrix', 'class' => ''],
                     'Zones' => ['base_link' => 'billing/zones', 'class' => ''],
                     'Regions' => ['base_link' => 'billing/regions', 'class' => ''],

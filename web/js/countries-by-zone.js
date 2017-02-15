@@ -7,7 +7,7 @@ var ViewModel = function() {
     self.viewcountries = function (zone_id) {
         self.countries([]);
         $.ajax({
-            url: 'countriesbyzone?zone_id=' + zone_id,
+            url: '/intlbilling/countriesbyzone?zone_id=' + zone_id,
             type: 'GET',
             success: function (result) {
                 if (result.status == 'success') {

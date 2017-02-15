@@ -34,8 +34,12 @@ class IntlAdapter extends BaseAdapter
         return $this->request(ServiceConstant::URL_INTL_GET_WEIGHT_RANGE, [], self::HTTP_GET);
     }
 
-    public function addWeightRanges(array $data){
+    public function addWeightRange(array $data){
         return $this->request(ServiceConstant::URL_INTL_ADD_WEIGHT_RANGE, $data, self::HTTP_POST);
+    }
+
+    public function editRange(array $data){
+        return $this->request(ServiceConstant::URL_INTL_EDIT_WEIGHT_RANGE, $data, self::HTTP_POST);
     }
 
     public function saveTariff(array $data){

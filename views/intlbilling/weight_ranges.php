@@ -49,8 +49,10 @@ $this->params['breadcrumbs'] = array(
 				<thead>
 					<tr>
                         <th style="width: 20px" class="datatable-nosort">
-                            <div class="checkbox-nice"><input id="chbx_w_all" type="checkbox"><label
-                                        for="chbx_w_all"> </label></div>
+                            <div class="checkbox-nice">
+								<input id="chbx_w_all" type="checkbox"><label
+                                        for="chbx_w_all"> </label>
+							</div>
                         </th>
 						<th style="width: 20px">S/N</th>
 
@@ -107,21 +109,14 @@ $this->params['breadcrumbs'] = array(
 	      </div>
 	      <div class="modal-body">
 				<div class="row">
-					<div class="form-group col-xs-4">
+					<div class="form-group col-xs-6">
 						<label for="">Min Weight</label>
 						<div class="input-group">
 							<input type="text" class="form-control validate required number" name="min_weight">
 							<span class="input-group-addon">Kg</span>
 						</div>
 					</div>
-					<div class="form-group col-xs-4">
-						<label for="">Incremental Weight</label>
-						<div class="input-group">
-							<input type="text" class="form-control validate required number" name="increment_weight">
-							<span class="input-group-addon">Kg</span>
-						</div>
-					</div>
-					<div class="form-group col-xs-4">
+					<div class="form-group col-xs-6">
 						<label for="">Max Weight</label>
 						<div class="input-group">
 							<input type="text" class="form-control validate required number" name="max_weight">
@@ -154,13 +149,6 @@ $this->params['breadcrumbs'] = array(
 						<label for="">Min Weight</label>
 						<div class="input-group">
 							<input type="text" class="form-control validate required number" name="min_weight">
-							<span class="input-group-addon">Kg</span>
-						</div>
-					</div>
-					<div class="form-group col-xs-4">
-						<label for="">Incremental Weight</label>
-						<div class="input-group">
-							<input type="text" class="form-control validate required number" name="increment_weight">
 							<span class="input-group-addon">Kg</span>
 						</div>
 					</div>
