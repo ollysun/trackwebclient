@@ -309,7 +309,8 @@ class ParcelService
                 $error[] = "POS and cash amount must sum up to the amount due.";
             }
         }
-        $parcel['request_type'] = (Calypso::getValue($data, 'merchant') === 'yes') ? ServiceConstant::REQUEST_ECOMMERCE : ServiceConstant::REQUEST_OTHERS;
+        $parcel['request_type'] = (Calypso::getValue($data, 'merchant') === 'yes') ?
+            ServiceConstant::REQUEST_ECOMMERCE : ServiceConstant::REQUEST_OTHERS;
 
 
         $parcel['insurance'] = Calypso::getValue($data, 'insurance', null);
@@ -344,6 +345,7 @@ class ParcelService
         $response['payload']['from_branch_id'] = $data['from_branch_id'];
         $response['payload']['to_branch_id'] = $data['to_branch_id'];
         $response['payload']['city_id'] = $data['city_id'];
+        $response['payload']['parcel_type_id'] = Calypso::getValue($data, 'parcel_type_id');
         $response['payload']['weight'] = $data['weight'];
         $response['payload']['weight_billing_plan_id'] = Calypso::getValue($data, 'weight_billing_plan_id', BillingPlanAdapter::DEFAULT_WEIGHT_RANGE_PLAN);
         $response['payload']['onforwarding_billing_plan_id'] = Calypso::getValue($data, 'onforwarding_billing_plan_id', BillingPlanAdapter::DEFAULT_ON_FORWARDING_PLAN);

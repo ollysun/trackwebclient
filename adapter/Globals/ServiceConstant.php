@@ -204,6 +204,10 @@ class ServiceConstant
     const URL_INTL_GET_WEIGHT_RANGE = 'intl/getWeightRanges';
     const URL_INTL_SAVE_TARIFF = 'intl/saveTariff';
     const URL_INTL_GET_TARIFFS = 'intl/gettariffs';
+    const URL_INTL_PRICING = 'intl/getTariffs';
+    const URL_INTL_EDIT_PRICE = 'intl/editprice';
+    const URL_INTL_ADD_PRICE = 'intl/saveTariff';
+    const URL_INTL_DELETE_TARIFF = 'intl/deletetariff';
 
 
     //transit time

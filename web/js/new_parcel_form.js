@@ -66,6 +66,7 @@ function getServerResponse(statusCode, message) {
         params.from_branch_id = $('#city_shipper').find('option:selected').attr('data-branch-id');
         params.to_branch_id = $('#city_receiver').find('option:selected').attr('data-branch-id');
         params.city_id = $('#city_receiver').find('option:selected').attr('data-city_id');
+        params.parcel_type_id = $('#shipping_type').val();
         params.weight = $('#weight').val();
         var billingField = $("#billing_plan");
         var companyField = $("#company");
@@ -607,6 +608,7 @@ $(document).ready(function () {
         params.from_branch_id = $('#city_shipper').find('option:selected').attr('data-branch-id');
         params.to_branch_id = $('#city_receiver').find('option:selected').attr('data-branch-id');
         params.city_id = $('#city_receiver').find('option:selected').attr('data-city_id');
+        params.parcel_type_id = $('#shipping_type').val();
         params.weight = $('#weight').val();
         console.log(params);
         var billingField = $("#billing_plan");

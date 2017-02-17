@@ -234,7 +234,7 @@ $is_admin = isset($branch['branch_type']) && $branch['branch_type'] == ServiceCo
                             <div class="row">
                                 <div class="form-group  col-xs-12 col-sm-6">
                                     <label for="">Service Type</label>
-                                    <select name="shipping_type" id="" class="form-control validate required">
+                                    <select name="shipping_type" id="shipping_type" class="form-control validate required">
                                         <option value="">Please select</option>
                                         <?php if (isset($ShipmentType) && is_array($ShipmentType['data'])) {
 
@@ -707,7 +707,7 @@ $is_admin = isset($branch['branch_type']) && $branch['branch_type'] == ServiceCo
 <?php $this->registerJsFile('@web/js/validate.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/libs/select2.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/utils.js', ['depends' => [\app\assets\AppAsset::className()]]) ?>
-<?php $this->registerJsFile('@web/js/new_parcel_form.js?2.6.3.2.3', ['depends' => [\app\assets\AppAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/new_parcel_form.js?2.6.3.2.4', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/libs/bootstrap-datepicker.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 <?php
 $this->registerJs('$(".alert").delay(5000).fadeOut(1500);', View::POS_READY);

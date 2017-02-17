@@ -43,4 +43,27 @@ class BillingService {
 
         return $response;
     }
+
+    /**
+     * Builds post data for creating and updating billing
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @author Rotimi Akintewe <akintewe.rotimi@gmail.com>
+     * @param $data
+     * @return array
+     */
+    public function buildIntlPostData($data) {
+
+        $response = [];
+
+        if(isset($data['id'])) {
+            $response['payload']['id'] = $data['id'];
+        }
+        $response['payload']['zone_id'] = $data['zone_id'];
+        $response['payload']['weight_range_id'] = $data['weight_range_id'];
+        $response['payload']['parcel_type_id'] = $data['parcel_type_id'];
+        $response['payload']['base_amount'] = $data['base_cost'];
+        $response['payload']['increment'] = $data['increment_cost'];
+
+        return $response;
+    }
 }

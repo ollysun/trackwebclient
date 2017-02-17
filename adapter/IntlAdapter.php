@@ -46,4 +46,22 @@ class IntlAdapter extends BaseAdapter
         return $this->request(ServiceConstant::URL_INTL_SAVE_TARIFF, $data, self::HTTP_POST);
     }
 
+    public function fetchAllBilling(){
+        return $this->request(ServiceConstant::URL_INTL_PRICING, ['with_zone' => 1,
+            'with_parcel_type' => 1, 'with_weight_range' => 1], self::HTTP_GET);
+    }
+
+    public function fetchBilling($id){
+        return $this->request(ServiceConstant::URL_INTL_PRICING, ['with_zone' => 1,
+            'with_parcel_type' => 1, 'with_weight_range' => 1, 'id' => $id], self::HTTP_GET);
+    }
+
+    public function editBilling(array $data){
+        return $this->request(ServiceConstant::URL_INTL_EDIT_PRICE, $data, self::HTTP_POST);
+    }
+
+    public function deleteTariff(array $data){
+        return $this->request(ServiceConstant::URL_INTL_DELETE_TARIFF, $data, self::HTTP_POST);
+    }
+
 }

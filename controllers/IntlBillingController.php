@@ -206,4 +206,124 @@ class IntlbillingController extends BaseController
         return $this->render('weight_ranges', array('ranges' => $ranges_list));
     }
 
+
+    /**
+     * Pricing View
+     * @author Rotimi Akintewe <akintewe.rotimi@gmail.com>
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @return string
+     */
+    public function actionPricing()
+    {
+        $viewBag = [
+            'billings' => [],
+            'zones' => [],
+            'weightRanges' => []
+        ];
+
+        $billingAdp = new IntlAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $billings = $billingAdp->fetchAllBilling();
+        if ($billings['status'] == ResponseHandler::STATUS_OK) {
+            $viewBag['billings'] = $billings['data'];
+        }
+        $response = new ResponseHandler($billingAdp->getZones([]));
+        if($response->isSuccess()){
+            $viewBag['zones'] = $response->getData();
+        }
+
+        $response = new ResponseHandler($billingAdp->getWeightRange());
+        if($response->isSuccess()){
+            $viewBag['weightRanges'] = $response->getData();
+        }
+
+        $billingMatrix = $this->buildPricingTable($viewBag);
+
+
+        return $this->render('pricing',
+            [
+                'billingMatrix' => $billingMatrix,
+                'weightRanges' => $viewBag['weightRanges'],
+                'zones' => $viewBag['zones']
+            ]);
+    }
+
+    private function buildPricingTable($pricingData)
+    {
+        $matrix = [];
+        $zones = [];
+        foreach ($pricingData['zones'] as $zone) {
+            $zones[$zone['id']] = $zone;
+        }
+
+        $weightRanges = [];
+        foreach ($pricingData['weightRanges'] as $weightRange) {
+            $weightRanges[$weightRange['id']] = $weightRange;
+        }
+
+        foreach ($pricingData['billings'] as $billing) {
+            $matrix[$billing['weight_range_id']]['weight'] = $weightRanges[$billing['weight_range_id']];
+            $matrix[$billing['weight_range_id']]['billing'][] = $billing;
+        }
+
+        return $matrix;
+    }
+
+    public function actionSave()
+    {
+        $rawData = \Yii::$app->request->getRawBody();
+        $postParams = json_decode($rawData, true);
+        $billingSrv = new BillingService();
+        $data = $billingSrv->buildIntlPostData($postParams);
+
+        if (!empty($data['error'])) {
+            return $this->sendErrorResponse(implode($data['error']), null);
+        }
+
+        $billingAdp = new IntlAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $response = $billingAdp->saveTariff($data['payload']);
+        $response = new ResponseHandler($response);
+        if ($response->isSuccess()) {
+            if (isset($response->getData()['id'])) {
+                $data['payload']['id'] = $response->getData()['id'];
+            }
+            return $this->sendSuccessResponse($data['payload']);
+        } else {
+            return $this->sendErrorResponse($response->getError(), null);
+        }
+    }
+
+    public function actionDelete()
+    {
+
+        $id = \Yii::$app->request->get('id');
+        if (empty($id)) {
+            return $this->sendErrorResponse('Invalid ', null);
+        }
+
+        $billingAdp = new IntlAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $response = $billingAdp->deleteTariff(['id' => $id]);
+        if ($response['status'] === ResponseHandler::STATUS_OK) {
+            return $this->sendSuccessResponse($response['data']);
+        } else {
+            return $this->sendErrorResponse($response['message'], null);
+        }
+    }
+
+    public function actionFetchbyid()
+    {
+
+        $id = \Yii::$app->request->get('id');
+        if (empty($id)) {
+            return $this->sendErrorResponse('Invalid ', null);
+        }
+
+        $billingAdp = new IntlAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $response = $billingAdp->fetchBilling($id);
+        if ($response['status'] === ResponseHandler::STATUS_OK) {
+            return $this->sendSuccessResponse($response['data']);
+        } else {
+            return $this->sendErrorResponse($response['message'], null);
+        }
+    }
+
 }

@@ -12,7 +12,15 @@ use yii\helpers\Json;
 class BillingPlanAdapter extends BaseAdapter
 {
     const DEFAULT_ON_FORWARDING_PLAN = 2;
-    const DEFAULT_WEIGHT_RANGE_PLAN = 2600;// 4; // 2600;// 2565;
+    const DEFAULT_WEIGHT_RANGE_PLAN = 1; // 2600;// 2565;
+
+    public static function getDefaultBillingPlan(){
+        return getenv('DEFAULT_WEIGHT_RANGE_PLAN') !== false ? getenv('DEFAULT_WEIGHT_RANGE_PLAN') : self::DEFAULT_WEIGHT_RANGE_PLAN;
+    }
+
+    public static function getOnforwardingBillingPlan(){
+        return getenv('DEFAULT_ON_FORWARDING_PLAN') !== false ? getenv('DEFAULT_ON_FORWARDING_PLAN') : self::DEFAULT_ON_FORWARDING_PLAN;
+    }
 
     const TYPE_WEIGHT = 1;
     const TYPE_ON_FORWARDING = 2;
