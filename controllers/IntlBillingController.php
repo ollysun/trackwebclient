@@ -87,6 +87,12 @@ class IntlbillingController extends BaseController
         return $this->render('zones', array('zones' => $zones_list, 'countries' => $countries));
     }
 
+    /**
+     * Zones View
+     * @author Rotimi Akintewe <akintewe.rotimi@gmail.com>
+     * @author Adegoke Obasa <goke@cottacush.com>
+     * @return string
+     */
     public function actionZones()
     {
         if (Yii::$app->request->isPost) {
