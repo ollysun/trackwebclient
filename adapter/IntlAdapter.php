@@ -34,8 +34,34 @@ class IntlAdapter extends BaseAdapter
         return $this->request(ServiceConstant::URL_INTL_GET_WEIGHT_RANGE, [], self::HTTP_GET);
     }
 
-    public function addWeightRanges($data){
+    public function addWeightRange(array $data){
         return $this->request(ServiceConstant::URL_INTL_ADD_WEIGHT_RANGE, $data, self::HTTP_POST);
+    }
+
+    public function editRange(array $data){
+        return $this->request(ServiceConstant::URL_INTL_EDIT_WEIGHT_RANGE, $data, self::HTTP_POST);
+    }
+
+    public function saveTariff(array $data){
+        return $this->request(ServiceConstant::URL_INTL_SAVE_TARIFF, $data, self::HTTP_POST);
+    }
+
+    public function fetchAllBilling(){
+        return $this->request(ServiceConstant::URL_INTL_PRICING, ['with_zone' => 1,
+            'with_parcel_type' => 1, 'with_weight_range' => 1], self::HTTP_GET);
+    }
+
+    public function fetchBilling($id){
+        return $this->request(ServiceConstant::URL_INTL_PRICING, ['with_zone' => 1,
+            'with_parcel_type' => 1, 'with_weight_range' => 1, 'id' => $id], self::HTTP_GET);
+    }
+
+    public function editBilling(array $data){
+        return $this->request(ServiceConstant::URL_INTL_EDIT_PRICE, $data, self::HTTP_POST);
+    }
+
+    public function deleteTariff(array $data){
+        return $this->request(ServiceConstant::URL_INTL_DELETE_TARIFF, $data, self::HTTP_POST);
     }
 
 }

@@ -54,6 +54,15 @@ class Calypso
         return self::getInstance()->session('user_session')['role']['id'] == $role_id;
     }
 
+    public static function getIntlServiceType($service_type){
+        switch ($service_type){
+            case 1: return 'Express Documents';
+            case 2: return 'Express Non-Documents';
+            case 3: return 'Economy Express';
+        }
+        return '';
+    }
+
 
     /**
      * Get's a value if it's non empty
@@ -246,7 +255,9 @@ class Calypso
             'Billing' => ['base' => 'billing', 'class' => 'fa fa-money',
                 'base_link' => [
                     'Billing_Plans' => ['base_link' => 'billing', 'class' => ''],
-                    'Intl_Billing' => ['base_link' => 'billing/intl', 'class' => ''],
+                    'Intl_Zones' => ['base_link' => 'intlbilling/zones', 'class' => ''],
+                    'Intl_Weight_Ranges' => ['base_link' => 'intlbilling/weightranges', 'class' => ''],
+                    'Intl_Pricing' => ['base_link' => 'intlbilling/pricing', 'class' => ''],
                     'View_Matrix' => ['base_link' => 'billing/matrix', 'class' => ''],
                     'Zones' => ['base_link' => 'billing/zones', 'class' => ''],
                     'Regions' => ['base_link' => 'billing/regions', 'class' => ''],
