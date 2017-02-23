@@ -504,6 +504,109 @@ class FinanceController extends BaseController
     }
 
 
+    public function actionDownloadteller(){
+
+        $adapter = new TellerAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+
+
+        $filters = ['send_all' => 1, 'with_bank' => 1, 'with_payer' => 1, 'with_total_count' => 1];
+
+        $from_date = Yii::$app->request->get('start_created_date', date('Y/m/d'));
+        $end_date = Yii::$app->request->get('end_created_date', date('Y/m/d'));
+        $filters['start_created_date'] = $from_date . ' 00:00:00';
+        $filters['end_created_date'] = $end_date . ' 23:59:59';
+        $branch_id = Yii::$app->request->get('branch_id');
+
+        $bank_id = Yii::$app->request->get('bank_id');
+        $teller_no = Yii::$app->request->get('teller_no');
+        $status = Yii::$app->request->get('status');
+
+        if($bank_id) $filters['bank_id'] = $bank_id;
+        if($teller_no) $filters['teller_no'] = $teller_no;
+        if($status) $filters['status'] = $status;
+        if($branch_id) $filters['branch_id'] = $branch_id;
+
+
+        $offset = 0;
+        $count = 500;
+
+        $filters['count'] = $count;
+        $filters['offset'] = $offset;
+        //$response = new ResponseHandler($adapter->getTellers($filters));
+        //dd($response);
+
+        $name = 'report_' . date(ServiceConstant::DATE_TIME_FORMAT) . '.csv';
+        header('Content-Type: text/csv');
+        header('Content-Disposition: attachment; filename=' . $name);
+        header('Pragma: no-cache');
+        header("Expires: 0");
+        $stream = fopen("php://output", "w");
+
+
+        $headers = array('SN',
+            'Banks', 'Account No.', 'Teller No.', 'Teller Amount.', 'Teller Date', 'Payer', 'Status');
+
+        /*if(array_key_exists('with_sales_teller', $filters) && $filters['with_sales_teller'] == '1'){
+            $headers[] = 'Sales Banks';
+            $headers[] = 'Sales Account No.';
+            $headers[] = 'Sales Teller No.';
+        }
+        if(array_key_exists('with_cod_teller', $filters) && $filters['with_cod_teller'] == '1'){
+            $headers[] = 'COD Banks';
+            $headers[] = 'COD Account No.';
+            $headers[] = 'COD Teller No.';
+        }*/
+        fputcsv($stream, $headers);
+
+
+        $filters['count'] = $count;
+        $total_count = 0;
+        $serial_number = 1;
+        while (true) {
+            $filters['offset'] = $offset;
+            $response = new ResponseHandler($adapter->getTellers($filters));
+            if ($response->isSuccess()) {
+                $data = $response->getData();
+                $tellers = $data['tellers'];
+
+
+                $exportData = [];
+                foreach ($tellers as $key => $teller) {
+                    $exportData[] = [
+                        $serial_number++,
+
+                        strtoupper(Calypso::getValue($teller, 'bank.name')),
+                        strtoupper(Calypso::getValue($teller, 'account_no')),
+                        strtoupper(Calypso::getValue($teller, 'teller_no')),
+                        Calypso::getValue($teller, 'amount_paid'),
+                        Util::formatDate(ServiceConstant::DATE_FORMAT, Calypso::getValue($teller, 'created_date')),
+                        Calypso::getValue($teller, 'payer.fullname'),
+                        ServiceConstant::getStatus(Calypso::getValue($teller, 'status'))
+                    ];
+
+                }
+
+
+                foreach ($exportData as $row) {
+                    fputcsv($stream, $row);
+                }
+
+                $total_count += count($tellers);
+                if ($total_count >= $data['total_count'] || count($tellers) == 0) {
+                    break;
+                }
+                $offset += $count;
+            } else {
+                $this->flashError('An error occurred while trying to download report: Reason: ' . $response->getError());
+                return $this->redirect(Yii::$app->getRequest()->getReferrer());
+            }
+        }
+
+        fclose($stream);
+        exit;
+
+    }
+
     public function actionApprovesalesteller($id){
         $adapter = new TellerAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $response = new ResponseHandler($adapter->approveTeller($id));
@@ -595,6 +698,108 @@ class FinanceController extends BaseController
         return $this->render('cod_teller', $viewData);
     }
 
+    public function actionDownloadcodteller(){
+
+        $adapter = new CodTellerAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+
+
+        $filters = ['send_all' => 1, 'with_bank' => 1, 'with_payer' => 1, 'with_total_count' => 1];
+
+        $from_date = Yii::$app->request->get('start_created_date', date('Y/m/d'));
+        $end_date = Yii::$app->request->get('end_created_date', date('Y/m/d'));
+        $filters['start_created_date'] = $from_date . ' 00:00:00';
+        $filters['end_created_date'] = $end_date . ' 23:59:59';
+        $branch_id = Yii::$app->request->get('branch_id');
+
+        $bank_id = Yii::$app->request->get('bank_id');
+        $teller_no = Yii::$app->request->get('teller_no');
+        $status = Yii::$app->request->get('status');
+
+        if($bank_id) $filters['bank_id'] = $bank_id;
+        if($teller_no) $filters['teller_no'] = $teller_no;
+        if($status) $filters['status'] = $status;
+        if($branch_id) $filters['branch_id'] = $branch_id;
+
+
+        $offset = 0;
+        $count = 500;
+
+        $filters['count'] = $count;
+        $filters['offset'] = $offset;
+        //$response = new ResponseHandler($adapter->getTellers($filters));
+        //dd($response);
+
+        $name = 'report_' . date(ServiceConstant::DATE_TIME_FORMAT) . '.csv';
+        header('Content-Type: text/csv');
+        header('Content-Disposition: attachment; filename=' . $name);
+        header('Pragma: no-cache');
+        header("Expires: 0");
+        $stream = fopen("php://output", "w");
+
+
+        $headers = array('SN',
+            'Banks', 'Account No.', 'Teller No.', 'Teller Amount.', 'Teller Date', 'Payer', 'Status');
+
+        /*if(array_key_exists('with_sales_teller', $filters) && $filters['with_sales_teller'] == '1'){
+            $headers[] = 'Sales Banks';
+            $headers[] = 'Sales Account No.';
+            $headers[] = 'Sales Teller No.';
+        }
+        if(array_key_exists('with_cod_teller', $filters) && $filters['with_cod_teller'] == '1'){
+            $headers[] = 'COD Banks';
+            $headers[] = 'COD Account No.';
+            $headers[] = 'COD Teller No.';
+        }*/
+        fputcsv($stream, $headers);
+
+
+        $filters['count'] = $count;
+        $total_count = 0;
+        $serial_number = 1;
+        while (true) {
+            $filters['offset'] = $offset;
+            $response = new ResponseHandler($adapter->getTellers($filters));
+            if ($response->isSuccess()) {
+                $data = $response->getData();
+                $tellers = $data['tellers'];
+
+
+                $exportData = [];
+                foreach ($tellers as $key => $teller) {
+                    $exportData[] = [
+                        $serial_number++,
+
+                        strtoupper(Calypso::getValue($teller, 'bank.name')),
+                        strtoupper(Calypso::getValue($teller, 'account_no')),
+                        strtoupper(Calypso::getValue($teller, 'teller_no')),
+                        Calypso::getValue($teller, 'amount_paid'),
+                        Util::formatDate(ServiceConstant::DATE_FORMAT, Calypso::getValue($teller, 'created_date')),
+                        Calypso::getValue($teller, 'payer.fullname'),
+                        ServiceConstant::getStatus(Calypso::getValue($teller, 'status'))
+                    ];
+
+                }
+
+
+                foreach ($exportData as $row) {
+                    fputcsv($stream, $row);
+                }
+
+                $total_count += count($tellers);
+                if ($total_count >= $data['total_count'] || count($tellers) == 0) {
+                    break;
+                }
+                $offset += $count;
+            } else {
+                $this->flashError('An error occurred while trying to download report: Reason: ' . $response->getError());
+                return $this->redirect(Yii::$app->getRequest()->getReferrer());
+            }
+        }
+
+        fclose($stream);
+        exit;
+
+    }
 
     public function actionApprovecodteller($id){
         $adapter = new CodTellerAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
