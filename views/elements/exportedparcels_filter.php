@@ -25,38 +25,42 @@ if(!isset($filter)){$filter="-1";}
                 </div>
             </div>
 
-            <div class="pull-left form-group form-group-sm<?= (!empty($hideStatusFilter) && $hideStatusFilter)? ' hidden' : '' ?>">
-                <label for="">Filter status</label><br>
-                <select name="date_filter" id="" class="form-control  filter-status">
-                    <option value="-1">NOT APPLICABLE</option>
-                    <?php
-                    $statuses = ServiceConstant::getStatusRef();
-                    for($i=0;$i < count($statuses);$i++){
-                        if($statuses[$i]==4){continue;}
-                        ?>
-                        <option <?= $statuses[$i]==$filter?'selected':'' ?> value="<?= $statuses[$i] ?>"><?= strtoupper(ServiceConstant::getStatus($statuses[$i])); ?></option>
-                    <?php
-                    }
-                    ?>
-                </select>
-            </div>
 
-            <?php if(isset($cash_on_delivery)):?>
+
+
             <div class="pull-left form-group form-group-sm">
-                <label for="">Cash on Delivery</label><br>
-                <select name="cash_on_delivery" id="" class="form-control  filter-status">
+                <label for="">Agents</label><br>
+                <select name="agent_id" id="" class="form-control  filter-status">
                     <option value="">All</option>
-                    <option
-                        value="<?= ServiceConstant::TRUE; ?>" <?= $cash_on_delivery == ServiceConstant::TRUE ? 'selected' : '' ?>>
-                        Yes
-                    </option>
-                    <option
-                        value="<?= ServiceConstant::FALSE; ?>" <?= ($cash_on_delivery == ServiceConstant::FALSE && strlen($cash_on_delivery)) ? 'selected' : '' ?>>
-                        No
-                    </option>
+                    <?php
+                       if (isset($agents) && is_array($agents)) {
+                            foreach ($agents as $agent) {
+                                ?>
+                                <option
+                                        value="<?= $agent['id'] ?>"><?= strtoupper($agent['name']); ?></option>
+                                <?php
+                            }
+                        }
+                        ?>
+                    </select>
                 </select>
             </div>
-            <?php endif;?>
+                <div class="pull-left form-group form-group-sm">
+                    <label for="">Agents Assignmet</label><br>
+                    <select name="agent_assignment" id="" class="form-control  filter-status">
+                        <!--                    <option value="">All</option>-->
+
+                        <option
+                                value="Assigned" <?= $agent_assignment == 'Assigned'?'selected':'' ?>>
+                            Assigned
+                        </option>
+                        <option
+                                value="Unassigned" <?= $agent_assignment == 'Unassigned'?'selected':'' ?>>
+                            Unassigned
+                        </option>
+                    </select>
+                </div>
+
 
             <div class="pull-left form-group form-group-sm hidden">
                 <label for="">Records</label><br>
