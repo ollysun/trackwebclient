@@ -320,6 +320,14 @@ class ServiceConstant
     const URL_AUDIT_GET_ALL = 'audit/getAllAudit';
     const URL_AUDIT_GET_ONE = 'audit/getAudit';
 
+    //ExportedParcel URL
+    const URL_EXPORTED_GET_ALL = 'exportedparcel/getAll';
+    const URL_EXPORTED_GET_ALL_UNASSIGNED = 'exportedparcel/getAllUnassigned';
+
+    //ExportAgent URL
+    const URL_EXPORTED_GET_ALL_AGENT = 'exportagent/getall';
+    const URL_EXPORTED_ASSIGN_AGENT = 'exportedparcel/add';
+
     const DATE_TIME_FORMAT = 'd M Y H:i';
     const DATE_FORMAT = 'd M Y';
     const TIME_FORMAT = 'g:i A';

@@ -1,6 +1,7 @@
 <?php
 set_time_limit(120);
 function dd($data, $message = ''){
+    echo '<pre>';
     var_dump($data);
     die("<br/> $message");
 }
