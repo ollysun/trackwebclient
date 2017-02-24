@@ -180,7 +180,7 @@ $user_data = $this->context->userData;
                     <input type="hidden" name="task" value="assign_agent">
                     <input type="hidden" name="parcel_id" id="parcelId" value=""/>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button id="arrived_parcels_btn" type="submit" class="btn btn-primary">Accept</button>
+                    <button id="arrived_parcels_btn" type="submit" class="btn btn-primary">Assign</button>
                 </div>
             </div>
         </form>
