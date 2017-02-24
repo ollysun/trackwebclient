@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use Adapter\ExportedParcelAdapter;
 use Adapter\Globals\ServiceConstant;
 use Adapter\RequestHelper;
 use Adapter\TrackAdapter;
@@ -65,11 +66,23 @@ class TrackController extends BaseController
             return $this->trackImportedParcel($tracking_number);
         }
 
+
         if (isset($tracking_number) && strlen($tracking_number) > 0) {
             $tracking_number  = implode(',', preg_split('/\r\n|[\r\n]/', $tracking_number));
 
 
             $trackingInfoList = $trackAdapter->getTrackingInfo($tracking_number);
+            //check if this is an exported parcel
+            $export_agent_id = Calypso::getValue($trackingInfoList, 'export_agent_id');
+            if($export_agent_id){
+                $agent_tracking_number = Calypso::getValue($trackingInfoList, 'agent_tracking_number');
+                switch($export_agent_id){
+                    case ExportedParcelAdapter::AGENT_ARAMEX:
+                        return $this->trackAramex($agent_tracking_number, $tracking_number);
+                    default:
+                        return $this->trackExportParcel($tracking_number);
+                }
+            }
 
             //get the history by loop because of manual waybill number
             if(is_array($trackingInfoList)){

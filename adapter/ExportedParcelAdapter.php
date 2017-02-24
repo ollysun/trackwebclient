@@ -18,6 +18,9 @@ use Adapter\Util\Util;
 
 class ExportedParcelAdapter extends BaseAdapter
 {
+    const AGENT_ARAMEX = 1;
+    const AGENT_GMC = 2;
+
     public function getAll(array $data)
     {
         return $this->request(ServiceConstant::URL_EXPORTED_GET_ALL, $data, self::HTTP_GET);
