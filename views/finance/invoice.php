@@ -320,6 +320,7 @@ $this->params['breadcrumbs'] = array(
         <td><b>{{total}}</b></td>
     </tr>
 </script>
+
 <div class="modal fade" id="teller-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <form method="post" action="" class="validate-form">

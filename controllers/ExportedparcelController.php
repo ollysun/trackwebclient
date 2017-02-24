@@ -141,6 +141,7 @@ class ExportedparcelController extends BaseController
         ;
 
         $response = new ResponseHandler($response);
+        //dd($response);
         if($response->isSuccess()){
             $data = $response->getData();
 
@@ -148,7 +149,7 @@ class ExportedparcelController extends BaseController
             $data = $data['parcels'];
 
         }else{
-            $this->flashError('Error in loading parcel');
+            $this->flashError('Error in loading parcels');
             $data = [];
             $total_count = null;
         }
@@ -161,7 +162,7 @@ class ExportedparcelController extends BaseController
         if($response->isSuccess()){
             $agents = $response->getData();
         }else{
-            $this->flashError('Error in loading parcel');
+            $this->flashError('Error in loading agents');
             $agents = [];
             $total_count = null;
         }

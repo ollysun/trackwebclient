@@ -184,6 +184,8 @@ class Calypso
             'Dashboard' => ['base' => 'site', 'base_link' => 'site/index', 'class' => 'fa fa-dashboard', 'corporate' => true],
             'Shipments' => ['base' => 'shipments', 'class' => 'fa fa-car', 'base_link' => [
                 'New_Shipments' => ['base_link' => 'shipments/processed', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_EC, ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ, ServiceConstant::BRANCH_TYPE_COMPANY]],
+                'Exported_Shipments' => ['base_link' => 'exportedparcel/allparcel', 'class' => '',
+                    'branch' => [ServiceConstant::BRANCH_TYPE_EC, ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ, ServiceConstant::BRANCH_TYPE_COMPANY]],
                 'Receive_Shipments' => ['base_link' => 'hubs/hubarrival', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
                 'Ready_for_Sorting' => ['base_link' => 'hubs/destination', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
                 'Direct_Manifest' => ['base_link' => 'hubs/directmanifest', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_HUB]],

@@ -732,6 +732,7 @@ class ParcelAdapter extends BaseAdapter
         $response = $this->request(ServiceConstant::URL_GET_ALL_PARCEL, $filters, self::HTTP_GET);
         $response = new ResponseHandler($response);
 
+
         if ($response->isSuccess()) {
             return $response->getData();
         }

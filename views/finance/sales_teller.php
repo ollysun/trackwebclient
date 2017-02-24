@@ -19,12 +19,16 @@ $this->title = 'Sales Tellers';
 $this->params['breadcrumbs'] = array(
     array('label' => 'Finance')
 );
+$downloadURL = Url::to('downloadteller?') . parse_url(Url::to(), PHP_URL_QUERY);
 ?>
 
 <?= Html::cssFile('@web/css/libs/select2.css') ?>
 
 <?php echo \Adapter\Util\Calypso::showFlashMessages(); ?>
-
+<?php
+$this->params['content_header_button'] = "<a href='" . $downloadURL .
+    "' class='btn btn-primary'><i class='fa fa-download'></i> Download as CSV</a>";
+?>
 
 <div class="main-box">
     <div class="main-box-header table-search-form ">
