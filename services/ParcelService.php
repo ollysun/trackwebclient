@@ -264,8 +264,8 @@ class ParcelService
         if ($senderInfo['sender_type'] == ServiceConstant::SHIPMENTS_SENDER_TYPE_CORPORATE) {
             $parcel['billing_type'] = ServiceConstant::SHIPMENTS_SENDER_TYPE_CORPORATE;
         }
-        $parcel['weight_billing_plan'] = Calypso::getDisplayValue($data, 'billing_plan', BillingPlanAdapter::DEFAULT_WEIGHT_RANGE_PLAN);
-        $parcel['onforwarding_billing_plan'] = Calypso::getDisplayValue($data, 'billing_plan', BillingPlanAdapter::DEFAULT_ON_FORWARDING_PLAN);
+        $parcel['weight_billing_plan'] = Calypso::getDisplayValue($data, 'billing_plan', BillingPlanAdapter::getDefaultBillingPlan());
+        $parcel['onforwarding_billing_plan'] = Calypso::getDisplayValue($data, 'billing_plan', BillingPlanAdapter::getOnforwardingBillingPlan());
         $parcel['company_id'] = Calypso::getValue($data, 'company_id');
 
         $parcel['is_billing_overridden'] = $parcel['billing_method'] == 'manual' ? 1 : 0;
@@ -347,8 +347,8 @@ class ParcelService
         $response['payload']['city_id'] = $data['city_id'];
         $response['payload']['parcel_type_id'] = Calypso::getValue($data, 'parcel_type_id');
         $response['payload']['weight'] = $data['weight'];
-        $response['payload']['weight_billing_plan_id'] = Calypso::getValue($data, 'weight_billing_plan_id', BillingPlanAdapter::DEFAULT_WEIGHT_RANGE_PLAN);
-        $response['payload']['onforwarding_billing_plan_id'] = Calypso::getValue($data, 'onforwarding_billing_plan_id', BillingPlanAdapter::DEFAULT_ON_FORWARDING_PLAN);
+        $response['payload']['weight_billing_plan_id'] = Calypso::getValue($data, 'weight_billing_plan_id', BillingPlanAdapter::getDefaultBillingPlan());
+        $response['payload']['onforwarding_billing_plan_id'] = Calypso::getValue($data, 'onforwarding_billing_plan_id', BillingPlanAdapter::getOnforwardingBillingPlan());
         if(isset($data['company_id'])) $response['payload']['company_id'] = Calypso::getValue($data, 'company_id');
         return $response;
     }

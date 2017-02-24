@@ -169,7 +169,7 @@ class BillingController extends BaseController
      */
     public function actionWeightranges()
     {
-        $billingPlanId = Yii::$app->request->get('billing_plan_id', BillingPlanAdapter::DEFAULT_WEIGHT_RANGE_PLAN);
+        $billingPlanId = Yii::$app->request->get('billing_plan_id', BillingPlanAdapter::getDefaultBillingPlan());
         if (Yii::$app->request->isPost) {
             $entry = Yii::$app->request->post();
             $task = Calypso::getValue(Yii::$app->request->post(), 'task', '');
@@ -180,7 +180,7 @@ class BillingController extends BaseController
             $data['increment_weight'] = Calypso::getValue($entry, 'increment_weight', null);
             $data['max_weight'] = Calypso::getValue($entry, 'max_weight', null);
             $data['weight_range_id'] = Calypso::getValue($entry, 'id', null);
-            $data['billing_plan_id'] = Calypso::getValue($entry, 'billing_plan_id', BillingPlanAdapter::DEFAULT_WEIGHT_RANGE_PLAN);
+            $data['billing_plan_id'] = Calypso::getValue($entry, 'billing_plan_id', BillingPlanAdapter::getDefaultBillingPlan());
 
             if (($task == 'create' || $task == 'edit') && (Util::checkEmpty($data['min_weight']) || Util::checkEmpty($data['max_weight']) || Util::checkEmpty($data['increment_weight']))) {
                 $error[] = "All details are required!";
@@ -449,7 +449,7 @@ class BillingController extends BaseController
 
     public function actionCitymapping()
     {
-        $billingPlanId = Yii::$app->request->get('billing_plan_id', BillingPlanAdapter::DEFAULT_ON_FORWARDING_PLAN);
+        $billingPlanId = Yii::$app->request->get('billing_plan_id', BillingPlanAdapter::getOnforwardingBillingPlan());
         if (Yii::$app->request->isPost) {
             $entry = Yii::$app->request->post();
             $task = Calypso::getValue(Yii::$app->request->post(), 'task', '');
@@ -514,7 +514,7 @@ class BillingController extends BaseController
      */
     public function actionOnforwarding($page = 1)
     {
-        $billingPlanId = Yii::$app->request->get('billing_plan_id', BillingPlanAdapter::DEFAULT_ON_FORWARDING_PLAN);
+        $billingPlanId = Yii::$app->request->get('billing_plan_id', BillingPlanAdapter::getOnforwardingBillingPlan());
         if (Yii::$app->request->isPost) {
             $entry = Yii::$app->request->post();
             $task = Calypso::getValue(Yii::$app->request->post(), 'task', '');
@@ -528,7 +528,7 @@ class BillingController extends BaseController
             $data['percentage'] = Calypso::getValue($entry, 'onforward_percentage', 0) / 100;
             $data['status'] = Calypso::getValue($entry, 'status');
             $data['charge_id'] = Calypso::getValue($entry, 'id', null);
-            $data['billing_plan_id'] = Calypso::getValue($entry, 'billing_plan_id', BillingPlanAdapter::DEFAULT_ON_FORWARDING_PLAN);
+            $data['billing_plan_id'] = Calypso::getValue($entry, 'billing_plan_id', BillingPlanAdapter::getOnforwardingBillingPlan());
 
             if (($task == 'create' || $task == 'edit') && in_array(null, [$data['name'], $data['code'], $data['amount']])) {
                 $error[] = "All details are required!";
@@ -586,7 +586,7 @@ class BillingController extends BaseController
             'weightRanges' => []
         ];
 
-        $billingPlanId = Yii::$app->request->get('billing_plan_id', BillingPlanAdapter::DEFAULT_WEIGHT_RANGE_PLAN);
+        $billingPlanId = Yii::$app->request->get('billing_plan_id', BillingPlanAdapter::getDefaultBillingPlan());
         $billingAdp = new BillingAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $billings = $billingAdp->fetchAllBilling($billingPlanId, true);
         if ($billings['status'] == ResponseHandler::STATUS_OK) {

@@ -169,7 +169,7 @@ class IntlbillingController extends BaseController
             $data['increment_weight'] = Calypso::getValue($entry, 'increment_weight', null);
             $data['max_weight'] = Calypso::getValue($entry, 'max_weight', null);
             $data['weight_range_id'] = Calypso::getValue($entry, 'id', null);
-            $data['billing_plan_id'] = Calypso::getValue($entry, 'billing_plan_id', BillingPlanAdapter::DEFAULT_WEIGHT_RANGE_PLAN);
+            $data['billing_plan_id'] = Calypso::getValue($entry, 'billing_plan_id', BillingPlanAdapter::getDefaultBillingPlan());
 
             if (($task == 'create' || $task == 'edit') && (Util::checkEmpty($data['min_weight']) || Util::checkEmpty($data['max_weight']))) {
                 $error[] = "All details are required!";
