@@ -38,8 +38,4 @@ class ExportedParcelAdapter extends BaseAdapter
         return $this->request(ServiceConstant::URL_EXPORTED_GET_ALL_AGENT, [], self::HTTP_GET);
     }
 
-
-
-
-
 }
