@@ -1158,13 +1158,13 @@ class ShipmentsController extends BaseController
             'POS Amount', 'POS Transaction ID', 'Parcel Type', 'Cash on Delivery', 'Delivery Type', 'Package Value',
             '# of Package', 'Shipping Type', 'Created Date', 'Pickup Date', 'Last Modified Date', 'Status',
             'Reference Number', 'Originating Branch', 'Route', 'Request Type', 'For Return', 'Other Info',
-            'Company Reg No', 'Billing Plan Name', 'Created By', 'Amount due to Merchant', 'Insurance Charge',
+            'Company Reg No', 'Region', 'Business Manager', 'Territory', 'Billing Plan Name', 'Created By', 'Amount due to Merchant', 'Insurance Charge',
             'Storrage/Demurrage Charge', 'Handling Charge', 'Duty Charge', 'Cost of Crating', 'Other Charges',
             'POD Name', 'POD Date', 'Sales Banks',
             'Sales Account No.', 'Sales Teller No.', 'Sales Teller Amount', 'Sales Teller Date',
             'COD Banks', 'COD Account No.', 'COD Teller No.', 'COD Teller Amount.', 'COD Teller Date',
             'Rtd Teller Banks', 'Rtd Teller Account No.', 'Rtd Teller No.', 'Rtd Teller Amount.', 'Rtd Teller Date',
-            'Region', 'Business Manager', 'Territory');
+            );
 
         /*if(array_key_exists('with_sales_teller', $filters) && $filters['with_sales_teller'] == '1'){
             $headers[] = 'Sales Banks';
@@ -1231,6 +1231,11 @@ class ShipmentsController extends BaseController
                         $result['parcel_for_return'] ? 'Yes' : 'No',
                         $result['parcel_other_info'],
                         $result['company_reg_no'],
+
+                        $result['company_region'],
+                        $result['company_business_manager'],
+                        $result['company_territory'],
+
                         $result['billing_plan_name'],
                         $result['created_by_fullname'],
                         $result['parcel_cash_on_delivery_amount'],
@@ -1261,9 +1266,7 @@ class ShipmentsController extends BaseController
                         $result['rtd_teller_teller_no'],
                         $result['rtd_teller_amount_paid'],
                         $result['rtd_teller_created_date'],
-                        $result['company_region'],
-                        $result['company_business_manager'],
-                        $result['company_territory'],
+
                     ];
 
                     /*if(array_key_exists('with_sales_teller', $filters) && $filters['with_sales_teller'] == '1'){
