@@ -16,6 +16,7 @@ use Adapter\BranchAdapter;
 use Adapter\CodTellerAdapter;
 use Adapter\CompanyAdapter;
 use Adapter\ExportedParcelAdapter;
+use Adapter\ExportedParcelTrackingAdapter;
 use Adapter\Globals\HttpStatusCodes;
 use Adapter\Globals\ServiceConstant;
 use Adapter\ParcelAdapter;
@@ -88,6 +89,34 @@ class ExportedparcelController extends BaseController
                   //  dd($response->getData());
                     if ($response->getStatus() == ResponseHandler::STATUS_OK) {
                         $this->flashSuccess('Agent successfully assigned');
+                    } else {
+                        $messages = '';
+                        $errors = $response->getError();
+                        if(is_array($errors)){
+                            foreach ($errors as $key => $message) {
+                                $messages .= "$key: $message<br/>";
+                            }
+                        }else $messages = $errors;
+                        $this->flashError($messages);
+                    }
+                }
+            }
+        }
+        if(Yii::$app->request->isPost){
+            $records = \Yii::$app->request->post();
+
+            if ($records['task'] == 'track_entering') {
+
+                if (!isset($records['commentdate'], $records['exportedparcel_id'], $records['comment'])) {
+                    $this->flashError("Invalid parameter(s) sent!");
+                } else {
+                    $records['commentdate'] = $records['commentdate']."  ".$records['commenttime'];
+                    $track_adapter  = new ExportedParcelTrackingAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+                    $track_adapter = $track_adapter->addTrackAssigned($records);
+                    $response = new ResponseHandler($track_adapter);
+                    //  dd($response->getData());
+                    if ($response->getStatus() == ResponseHandler::STATUS_OK) {
+                        $this->flashSuccess('Tracking details submit successfully');
                     } else {
                         $messages = '';
                         $errors = $response->getError();

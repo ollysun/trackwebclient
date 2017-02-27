@@ -89,11 +89,13 @@ $user_data = $this->context->userData;
                 </thead>
                 <tbody>
                 <?php
+
                 if(isset($parcels) && is_array($parcels)){
-                //dd($parcels);
+
                     $i = $offset;
                     foreach($parcels as $parcel){
-                      //  dd($parcel["exportedParcel"]["parcel_id"]);
+                        //dd($parcel['exportedParcel']['id']);
+                        //dd($parcel['reference_number']);
                         ?>
                         <tr>
                             <td><?= ++$i; ?></td>
@@ -105,13 +107,22 @@ $user_data = $this->context->userData;
                             <td><?= Calypso::getValue($parcel, 'country.name') ?></td>
                             <td><?php if((isset($parcel["exportedParcel"]["parcel_id"]) && $parcel["exportedParcel"]["parcel_id"]==$parcel["id"])):?>
                                 <?= Calypso::getValue($parcel, 'agent.name') ?>
+
                             <?php endif;?>
+
                                 <?php if(!(isset($parcel["exportedParcel"]["parcel_id"]) && $parcel["exportedParcel"]["parcel_id"]==$parcel["id"])):?>
 
                                     <button type="button" class="OpenDialog btn btn-sx btn-danger" data-toggle="modal" data-target="#myModal" data-id="<?= $parcel['id']; ?>" data-ref_no="<?= $parcel['reference_number']; ?>"><i class="fa fa-user">&nbsp;</i>Assign</button>
+
                                 <?php endif;?>
+
                             </td>
                             <td>
+                                <?php if((isset($parcel["exportedParcel"]["parcel_id"]) && $parcel["exportedParcel"]["parcel_id"]==$parcel["id"])):?>
+
+                                    <button type="button" class="OpenDialogTrack btn btn-sx btn-danger" data-toggle="modal" data-target="#myModalTrack" data-id="<?= $parcel['exportedParcel']['id']; ?>" data-ref_no="<?= $parcel['reference_number']; ?>"><i class="fa fa-user">&nbsp;</i>Update status</button>
+
+                                <?php endif;?>
                                 <a href="<?= Url::toRoute(['/shipments/view?waybill_number='.$parcel['waybill_number']]) ?>" class="btn btn-xs btn-default"><i class="fa fa-eye">&nbsp;</i> View</a>
                             </td>
                         </tr>
@@ -187,7 +198,74 @@ $user_data = $this->context->userData;
     </div>
 </div>
 
-<?= $this->render('../elements/parcel/partial_cancel_shipment_form') ?>
+<div class="modal fade" id="myModalTrack" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <form class="form-horizontal" method="post" action="allparcel">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Status Information. <span style="font-weight: bold;font-size: 14px;">Reference No.: <span id="parcel-number"></span></span></h4>
+                </div>
+
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-xs-1"></div>
+                            <div class="col-xs-5">
+                                <div class="pull-left form-group form-group-sm">
+                                    <label for="">Date:</label><span style="font-size: 10px">(supply date)</span><br>
+                                    <div class="input-group input-group-date-range">
+                                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                        <input type="text" name="commentdate" id="" class="form-control date-range" value="<?=  date('Y/m/d', strtotime($to_date));?>" placeholder="DD/MM/YYYY">
+                                    </div>
+                                </div>
+                                <div class="input-group">
+                                    <label id="loading_label"></label>
+                                </div>
+                            </div>
+                            <div class="col-xs-6">
+                                <div class="pull-left form-group form-group-sm">
+                                    <label for="">Time:</label><span style="font-size: 10px">(supply time)</span><br>
+                                    <div class="input-group input-group-date-range">
+                                        <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+                                        <?php date_default_timezone_set('Africa/Lagos'); ?>
+                                        <input type="text" name="commenttime" id="" class="form-control" value="<?=  date('g:i a');?>" placeholder="HH:MM:am/pm">
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-xs-1"></div>
+                            <div class="col-xs-11">
+                                <div class="pull-left form-group form-group-sm">
+                                    <label for="">Comment:</label><br>
+                                    <div class="input-group">
+                                        <textarea class="form-control" cols="50" rows="3" name="comment"></textarea>
+                                    </div>
+                                </div>
+                                <div class="input-group">
+                                    <label id="loading_label"></label>
+                                </div>
+                            </div>
+                            </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <input type="hidden" name="task" value="track_entering">
+                    <input type="hidden" name="exportedparcel_id" id="exportparcelId" value=""/>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button id="arrived_parcels_btn" type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
 
 <!-- this page specific scripts -->
 <?php $this->registerJsFile('@web/js/hub_util.js', ['depends' => [\app\assets\AppAsset::className()]])?>
@@ -199,4 +277,3 @@ $user_data = $this->context->userData;
 <?php $this->registerJsFile('@web/js/submit_teller.js?v=1.0.3', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/get_parcel_id.js?v=1.0.3', ['depends' => [\app\assets\AppAsset::className()]]) ?>
 <?php $this->registerJsFile('@web/js/parcel_pod.js?v=1.0.0', ['depends' => [\app\assets\AppAsset::className()]]) ?>
-

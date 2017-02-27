@@ -328,6 +328,9 @@ class ServiceConstant
     const URL_EXPORTED_GET_ALL_AGENT = 'exportagent/getall';
     const URL_EXPORTED_ASSIGN_AGENT = 'exportedparcel/add';
 
+    //ExportedParcelTracking URL
+    const URL_EXPORTED_PARCEL_TRACKING = 'exportedparceltracking/add';
+
     const DATE_TIME_FORMAT = 'd M Y H:i';
     const DATE_FORMAT = 'd M Y';
     const TIME_FORMAT = 'g:i A';
