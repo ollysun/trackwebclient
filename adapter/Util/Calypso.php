@@ -241,17 +241,22 @@ class Calypso
                 , 'branch' => [ServiceConstant::BRANCH_TYPE_EC, ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_HQ]],
             'Finance' => [
                 'base' => 'finance', 'class' => 'fa fa-money', 'base_link' => [
-                    'Corporate Shipments' => ['base_link' => 'finance/corporateshipment', 'class' => ''],
-                    'Credit Note' => ['base_link' => 'finance/creditnote', 'class' => ''],
-                    'Customers' => ['base_link' => 'finance/customersall', 'class' => ''],
+                    'Corporate Shipments' => ['base_link' => 'finance/corporateshipment', 'class' => '',
+                        'user_type' => [ServiceConstant::USER_TYPE_FINANCE], 'branch' => [ServiceConstant::BRANCH_TYPE_HQ]],
+                    'Credit Note' => ['base_link' => 'finance/creditnote', 'class' => '',
+                        'user_type' => [ServiceConstant::USER_TYPE_FINANCE], 'branch' => [ServiceConstant::BRANCH_TYPE_HQ]],
+                    'Customers' => ['base_link' => 'finance/customersall', 'class' => '',
+                        'user_type' => [ServiceConstant::USER_TYPE_FINANCE], 'branch' => [ServiceConstant::BRANCH_TYPE_HQ]],
                     'Invoice' => ['base_link' => 'finance/invoice', 'class' => ''],
-                    'Bulk Invoice Tasks' => ['base_link' => 'finance/bulkinvoicetasks', 'class' => ''],
-                    'Merchants' => ['base_link' => 'finance/merchantsdue', 'class' => ''],
-                    /*'Sales Tellers' => ['base_link' => 'finance/salesteller', 'class' => ''],
-                    'COD Tellers' => ['base_link' => 'finance/codteller', 'class' => ''],*/
+                    'Bulk Invoice Tasks' => ['base_link' => 'finance/bulkinvoicetasks', 'class' => '',
+                        'user_type' => [ServiceConstant::USER_TYPE_FINANCE], 'branch' => [ServiceConstant::BRANCH_TYPE_HQ]],
+                    'Merchants' => ['base_link' => 'finance/merchantsdue', 'class' => '',
+                        'user_type' => [ServiceConstant::USER_TYPE_FINANCE], ],
+                    /*'Sales Tellers' => ['base_link' => 'finance/salesteller', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_HQ]],
+                    'COD Tellers' => ['base_link' => 'finance/codteller', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_HQ]],*/
                 ],
-                'branch' => [ServiceConstant::BRANCH_TYPE_HQ],
-                'user_type' => [ServiceConstant::USER_TYPE_ADMIN, ServiceConstant::USER_TYPE_FINANCE]
+                'user_type' => [ServiceConstant::USER_TYPE_ADMIN, ServiceConstant::USER_TYPE_FINANCE,
+                    ServiceConstant::USER_TYPE_BUSINESS_MANAGER, ServiceConstant::USER_TYPE_REGIONAL_MANAGER]
             ],
 
             'Billing' => ['base' => 'billing', 'class' => 'fa fa-money',
