@@ -247,7 +247,7 @@ class Calypso
                         'user_type' => [ServiceConstant::USER_TYPE_FINANCE], 'branch' => [ServiceConstant::BRANCH_TYPE_HQ]],
                     'Customers' => ['base_link' => 'finance/customersall', 'class' => '',
                         'user_type' => [ServiceConstant::USER_TYPE_FINANCE], 'branch' => [ServiceConstant::BRANCH_TYPE_HQ]],
-                    'Invoice' => ['base_link' => 'finance/invoice', 'class' => ''],
+                    //'Invoice' => ['base_link' => 'finance/invoice', 'class' => ''],
                     'Bulk Invoice Tasks' => ['base_link' => 'finance/bulkinvoicetasks', 'class' => '',
                         'user_type' => [ServiceConstant::USER_TYPE_FINANCE], 'branch' => [ServiceConstant::BRANCH_TYPE_HQ]],
                     'Merchants' => ['base_link' => 'finance/merchantsdue', 'class' => '',
