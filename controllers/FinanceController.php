@@ -237,9 +237,9 @@ class FinanceController extends BaseController
     {
         $offset = ($page - 1) * $this->page_width;
 
-        $fromDate = Yii::$app->request->get('from', Util::getToday('/'));
+        $fromDate = "2017/03/01";// Yii::$app->request->get('from', Util::getToday('/'));
         $toDate = Yii::$app->request->get('to', Util::getToday('/'));
-        $filters['from_created_at'] = "2017/03/01";// $fromDate;
+        $filters['from_created_at'] =$fromDate;
         $filters['to_created_at'] = $toDate;
         $filters['company_id'] = Yii::$app->request->get('company');
         $filters['status'] = Yii::$app->request->get('status');
