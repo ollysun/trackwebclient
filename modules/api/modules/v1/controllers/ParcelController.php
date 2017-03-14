@@ -133,6 +133,7 @@ class ParcelController extends ApiBaseController
             'shipment_description_1' => 'description_1', 'shipment_description_2' => 'description_2', 'shipment_sender_name' => 'sender_name', 'shipment_sender_country' => 'sender_country', 'shipment_sender_state' => 'sender_state', 'shipment_sender_city' => 'sender_city', 'shipment_sender_address_1' => 'sender_address_1', 'shipment_sender_address_2' => 'sender_address_2', 'is_cash_on_delivery' => 'cash_on_delivery', 'cash_on_delivery_amount' => 'cash_on_delivery_amount'];
 
         $data = [];
+        $data['registration_number'] = $this->registration_number;
 
         $postedData = json_decode(Yii::$app->request->rawBody, true);
         foreach ($parameters as $key => $value) {
