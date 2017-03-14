@@ -128,10 +128,10 @@ class ParcelController extends ApiBaseController
 
     public function actionCreate()
     {
-        $parameters = ['registration_number', 'shipment_order_number' => 'order_number', 'shipment_customer_reference' => 'reference_number', 'shipment_consignee_name' => ['required' => true, 'key' => 'receiver_name'], 'shipment_consignee_address1' => ['required' => true, 'key' => 'receiver_address_1'], 'shipment_consignee_address2' => 'receiver_address_2', 'shipment_consignee_city' => ['required' => true, 'key' => 'receiver_city'], 'shipment_consignee_state' => 'receiver_state', 'shipment_consignee_country' => 'receiver_country', 'shipment_consignee_email' => 'receiver_email', 'shipment_consignee_tel' => ['key' => 'receiver_phone_number', 'required' => true], 'shipment_weight' => ['required' => true, 'key' => 'weight'], 'shipment_pieces' => ['required' => true, 'key' => 'no_of_package'], 'shipment_value' => 'package_value',
+        $parameters = ['shipment_order_number' => 'order_number', 'shipment_customer_reference' => 'reference_number', 'shipment_consignee_name' => ['required' => true, 'key' => 'receiver_name'], 'shipment_consignee_address1' => ['required' => true, 'key' => 'receiver_address_1'], 'shipment_consignee_address2' => 'receiver_address_2', 'shipment_consignee_city' => ['required' => true, 'key' => 'receiver_city'], 'shipment_consignee_state' => 'receiver_state', 'shipment_consignee_country' => 'receiver_country', 'shipment_consignee_email' => 'receiver_email', 'shipment_consignee_tel' => ['key' => 'receiver_phone_number', 'required' => true], 'shipment_weight' => ['required' => true, 'key' => 'weight'], 'shipment_pieces' => ['required' => true, 'key' => 'no_of_package'], 'shipment_value' => 'package_value',
             'shipment_description_1' => 'description_1', 'shipment_description_2' => 'description_2', 'shipment_sender_name' => 'sender_name', 'shipment_sender_country' => 'sender_country', 'shipment_sender_state' => 'sender_state', 'shipment_sender_city' => 'sender_city', 'shipment_sender_address_1' => 'sender_address_1', 'shipment_sender_address_2' => 'sender_address_2', 'is_cash_on_delivery' => 'cash_on_delivery', 'cash_on_delivery_amount' => 'cash_on_delivery_amount'];
 
-        $data = [];
+        $data = ['registration_number' => $this->registration_number];
 
         $postedData = json_decode(Yii::$app->request->rawBody, true);
         foreach ($parameters as $key => $value) {
