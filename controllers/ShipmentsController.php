@@ -1041,7 +1041,7 @@ class ShipmentsController extends BaseController
         $hubs = Calypso::getValue($branch_adapter->getAllHubs(), 'data', []);
 
         $route_adapter = new RouteAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $routes = $route_adapter->getRoutes(null, null, null, null, null);
+        $routes = new ResponseHandler($route_adapter->getRoutes(null, null, null, null, null));
 
         $parcelAdapter = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $filtered_parcels = $parcelAdapter->getParcelsByFilters(array_filter($filters, 'strlen'));
@@ -1070,7 +1070,7 @@ class ShipmentsController extends BaseController
             'branches' => $branches,
             'ecs' => $ecs,
             'hubs' => $hubs,
-            'routes' => $routes['data'],
+            'routes' => $routes->getData(),
             'statuses' => $status,
             'payment_methods' => $payment_methods,
             'request_types' => $request_types,
@@ -1110,6 +1110,7 @@ class ShipmentsController extends BaseController
         $filters['with_sales_teller'] = ServiceConstant::TRUE;
         $filters['with_cod_teller'] = ServiceConstant::TRUE;
         $filters['with_rtd_teller'] = ServiceConstant::TRUE;
+        $filters['with_invoice_parcel'] = ServiceConstant::TRUE;
 
         foreach ($extra_details as $extra) {
             $filters[$extra] = true;
@@ -1164,7 +1165,7 @@ class ShipmentsController extends BaseController
             'POD Name', 'POD Date', 'Sales Banks',
             'Sales Account No.', 'Sales Teller No.', 'Sales Teller Amount', 'Sales Teller Date',
             'COD Banks', 'COD Account No.', 'COD Teller No.', 'COD Teller Amount.', 'COD Teller Date',
-            'Rtd Teller Banks', 'Rtd Teller Account No.', 'Rtd Teller No.', 'Rtd Teller Amount.', 'Rtd Teller Date',
+            'Rtd Teller Banks', 'Rtd Teller Account No.', 'Rtd Teller No.', 'Rtd Teller Amount.', 'Rtd Teller Date', 'Invoice Number'
             );
 
         /*if(array_key_exists('with_sales_teller', $filters) && $filters['with_sales_teller'] == '1'){
@@ -1267,6 +1268,7 @@ class ShipmentsController extends BaseController
                         $result['rtd_teller_teller_no'],
                         $result['rtd_teller_amount_paid'],
                         $result['rtd_teller_created_date'],
+                        $result['invoice_parcel_invoice_number']
 
                     ];
 
