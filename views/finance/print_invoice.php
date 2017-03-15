@@ -8,7 +8,7 @@ use yii\helpers\Url;
 $this->title = 'Invoices';
 ?>
 
-<?= Html::cssFile('@web/css/compiled/print-invoice.css') ?>
+<?/*= Html::cssFile('@web/css/compiled/print-invoice.css?v=1.0') */?>
 
     <div class="invoice-page">
         <?= $this->render('../elements/finance/print_header'); ?>

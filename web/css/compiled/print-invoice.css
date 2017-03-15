@@ -13,7 +13,7 @@
   height: 1000px;
 }
 .invoice-page.landscape.continuous {
-  height: auto;
+  height: 2150px;
 }
 @media print {
   .invoice-page {

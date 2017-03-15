@@ -154,7 +154,7 @@ class InvoiceAdapter extends BaseAdapter
      */
     function getPageHeight($no_of_pages)
     {
-        $pageHeight = 1000;
+        $pageHeight = 1100;
         $no_of_pages = (int)$no_of_pages;
 
         return 'height:' . ($pageHeight * $no_of_pages) . 'px';
