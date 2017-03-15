@@ -326,7 +326,7 @@ $this->title = 'Invoices';
 ?>
     <div class="invoice-page continuous" style="<?= $page_height ?>">
         <h4 class="text-center">Other Charges for Invoice</h4>
-        <table class="table table-bordered">
+        <table class="table table-bordered" style="font-size: 9px;">
             <thead>
             <tr>
                 <th rowspan="2">S/N</th>
