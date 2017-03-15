@@ -7,7 +7,7 @@ use yii\helpers\Url;
 /* @var $this yii\web\View */
 $this->title = 'Invoices';
 ?>
-<?= Html::cssFile('@web/css/compiled/print-invoice.css') ?>
+<?= Html::cssFile('@web/css/compiled/print-invoice.css?v=1') ?>
 
     <div class="invoice-page continuous" style="<?= $template_header_page_height ?>">
         <?= $this->render('../elements/finance/print_header'); ?>
