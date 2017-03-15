@@ -9,7 +9,7 @@ $this->title = 'Invoices';
 ?>
 <?= Html::cssFile('@web/css/compiled/print-invoice.css') ?>
 
-    <div class="invoice-page landscape continuous" style="<?= $template_header_page_height ?>">
+    <div class="invoice-page continuous" style="<?= $template_header_page_height ?>">
         <?= $this->render('../elements/finance/print_header'); ?>
         <div class="text-center"><h4>INVOICE - ORIGINAL</h4></div>
         <table class="table table-bordered">
@@ -240,10 +240,10 @@ $this->title = 'Invoices';
 <?php
 
 ?>
-    <div class="invoice-page landscape continuous" style="<?= $parcelPages ?>">
+    <div class="invoice-page continuous" style="<?= $parcelPages ?>">
         <div class="">
             <h4 class="text-center">Invoice No: <?= Calypso::getValue($invoice, 'invoice_number'); ?></h4>
-            <table class="table table-bordered is-double-bordered">
+            <table class="table table-bordered is-double-bordered" style="font-size: 9px;">
                 <thead>
                 <tr class="is-double-bordered">
                     <th>S/N</th>
@@ -324,7 +324,7 @@ $this->title = 'Invoices';
 <?php
 
 ?>
-    <div class="invoice-page landscape continuous" style="<?= $page_height ?>">
+    <div class="invoice-page continuous" style="<?= $page_height ?>">
         <h4 class="text-center">Other Charges for Invoice</h4>
         <table class="table table-bordered">
             <thead>
