@@ -242,6 +242,9 @@ class FinanceController extends BaseController
         $filters['from_created_at'] =$fromDate;
         $filters['to_created_at'] = $toDate;
         $filters['company_id'] = Yii::$app->request->get('company');
+        if($filters['company_id'] == 296){
+            $fromDate = "2017/02/01";
+        }
         $filters['status'] = Yii::$app->request->get('status');
         $filters['offset'] = $offset;
         $filters['count'] = $this->page_width;
