@@ -248,6 +248,7 @@ $this->title = 'Invoices';
                 <tr class="is-double-bordered">
                     <th>S/N</th>
                     <th>HAWB</th>
+                    <th>Credit Note ID</th>
                     <th>PU Date</th>
                     <th>Consignee</th>
                     <th>Address</th>
@@ -262,22 +263,21 @@ $this->title = 'Invoices';
                     <th class="invoice-total-amt-cell is-double-bordered">Total</th>
                 </tr>
                 </thead>
-                <tbody> <!--dsafad-->
+                <tbody>
                 <?php
                 for ($i = 0; $i < count($invoiceParcels); $i++):
                     $invoiceParcel = Calypso::getValue($invoiceParcels, "$i");
                     ?>
                     <tr style="height: 45px;">
                         <td><?= $i + 1; ?></td>
-                        <td>
-                            <?= Calypso::getValue($invoiceParcel, 'waybill_number'); ?><br/>
-                            <?= Calypso::getValue($invoiceParcel, 'parcel.reference_number'); ?>
-                        </td>
+                        <td><?= Calypso::getValue($invoiceParcel, 'waybill_number'); ?></td>
+                        <td><?= !is_null($invoiceParcel) ? Calypso::getValue($invoice, 'credit_note.credit_note_number') : '<br/><br/>'; ?></td>
                         <td><?= Util::formatDate(\Adapter\Globals\ServiceConstant::DATE_FORMAT, Calypso::getValue($invoiceParcel, 'parcel.created_date')); ?></td>
                         <td><?= strtoupper(Calypso::getValue($invoiceParcel, 'receiver.firstname') . ' ' . Calypso::getValue($invoiceParcel, 'receiver.lastname')); ?></td>
                         <td style="height: 000px;"><?= strtoupper(mb_strimwidth(Calypso::getValue($invoiceParcel, 'receiver_address.street_address1', ""), 0, 25, "...")); ?></td>
                         <td><?= strtoupper(Calypso::getValue($invoiceParcel, 'sender_city.name')) ?></td>
                         <td><?= strtoupper(Calypso::getValue($invoiceParcel, 'receiver_city.name')) ?></td>
+                        <td></td>
                         <td><?= Calypso::getValue($invoiceParcel, 'parcel.weight'); ?></td>
                         <td><?= Calypso::getValue($invoiceParcel, 'delivery_receipt.name'); ?></td>
                         <td><?= Calypso::getValue($invoiceParcel, 'delivery_receipt.delivered_at'); ?></td>
