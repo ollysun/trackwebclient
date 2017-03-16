@@ -322,7 +322,7 @@ $this->title = 'Invoices';
     </div>
 
 <?php
-
+ if(false):
 ?>
     <div class="invoice-page continuous" style="<?= $page_height ?>">
         <h4 class="text-center">Other Charges for Invoice</h4>
@@ -376,3 +376,5 @@ $this->title = 'Invoices';
             </tbody>
         </table>
     </div>
+
+<? endif;?>
