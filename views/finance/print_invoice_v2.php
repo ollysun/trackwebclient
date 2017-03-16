@@ -262,7 +262,7 @@ $this->title = 'Invoices';
                     <th class="invoice-total-amt-cell is-double-bordered">Total</th>
                 </tr>
                 </thead>
-                <tbody>
+                <tbody> <!--dsafad-->
                 <?php
                 for ($i = 0; $i < count($invoiceParcels); $i++):
                     $invoiceParcel = Calypso::getValue($invoiceParcels, "$i");
