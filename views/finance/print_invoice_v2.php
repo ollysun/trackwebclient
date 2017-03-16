@@ -248,13 +248,11 @@ $this->title = 'Invoices';
                 <tr class="is-double-bordered">
                     <th>S/N</th>
                     <th>HAWB</th>
-                    <th>Credit Note ID</th>
                     <th>PU Date</th>
                     <th>Consignee</th>
                     <th>Address</th>
                     <th>Origin</th>
                     <th>Town</th>
-                    <th>Credit note description</th>
                     <th>Weight/Pcs</th>
                     <th class="invoice-total-amt-cell" style="text-align: left">Name of Receiver</th>
                     <th>Date/Time Received</th>
@@ -271,13 +269,11 @@ $this->title = 'Invoices';
                     <tr style="height: 45px;">
                         <td><?= $i + 1; ?></td>
                         <td><?= Calypso::getValue($invoiceParcel, 'waybill_number'); ?></td>
-                        <td><?= !is_null($invoiceParcel) ? Calypso::getValue($invoice, 'credit_note.credit_note_number') : '<br/><br/>'; ?></td>
                         <td><?= Util::formatDate(\Adapter\Globals\ServiceConstant::DATE_FORMAT, Calypso::getValue($invoiceParcel, 'parcel.created_date')); ?></td>
                         <td><?= strtoupper(Calypso::getValue($invoiceParcel, 'receiver.firstname') . ' ' . Calypso::getValue($invoiceParcel, 'receiver.lastname')); ?></td>
                         <td style="height: 000px;"><?= strtoupper(mb_strimwidth(Calypso::getValue($invoiceParcel, 'receiver_address.street_address1', ""), 0, 25, "...")); ?></td>
                         <td><?= strtoupper(Calypso::getValue($invoiceParcel, 'sender_city.name')) ?></td>
                         <td><?= strtoupper(Calypso::getValue($invoiceParcel, 'receiver_city.name')) ?></td>
-                        <td></td>
                         <td><?= Calypso::getValue($invoiceParcel, 'parcel.weight'); ?></td>
                         <td><?= Calypso::getValue($invoiceParcel, 'delivery_receipt.name'); ?></td>
                         <td><?= Calypso::getValue($invoiceParcel, 'delivery_receipt.delivered_at'); ?></td>
@@ -297,22 +293,22 @@ $this->title = 'Invoices';
                     </tr>
                 <?php endfor; ?>
                 <tr>
-                    <td colspan="13">INVOICE VALUE</td>
+                    <td colspan="11">INVOICE VALUE</td>
                     <td></td>
                     <td class="invoice-total-amt-cell is-double-bordered"><?= number_format(Calypso::getValue($invoice, 'total_excluding_vat'), 2) ?></td>
                 </tr>
                 <tr>
-                    <td colspan="13">Add 5% VAT</td>
+                    <td colspan="11">Add 5% VAT</td>
                     <td></td>
                     <td class="invoice-total-amt-cell is-double-bordered"><?= number_format(Calypso::getValue($invoice, 'st_standard_vat'), 2) ?></td>
                 </tr>
                 <tr>
-                    <td colspan="13">Stamp Duty Charge</td>
+                    <td colspan="11">Stamp Duty Charge</td>
                     <td></td>
                     <td class="invoice-total-amt-cell is-double-bordered"><?= number_format(Calypso::getValue($invoice, 'stamp_duty'), 2) ?></td>
                 </tr>
                 <tr class="double-border">
-                    <td colspan="13"><strong>AMOUNT DUE</strong></td>
+                    <td colspan="11"><strong>AMOUNT DUE</strong></td>
                     <td></td>
                     <td class="invoice-total-amt-cell is-double-bordered"><?= number_format(Calypso::getValue($invoice, 'total_to_pay'), 2) ?></td>
                 </tr>
