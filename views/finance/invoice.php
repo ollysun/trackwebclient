@@ -254,6 +254,12 @@ $this->params['breadcrumbs'] = array(
                                         Note
                                     </button>
                                 <?php endif; ?>
+
+                                <?php
+                                if(Calypso::userIsInRole(ServiceConstant::USER_TYPE_ADMIN)):
+                                ?>
+                                    <a href="/finance/recreateinvoice?invoice_number=<?= Calypso::getValue($invoice, 'invoice_number'); ?>"
+                                    <?php endif;?>
                             </td>
                         </tr>
                     <?php endforeach; ?>

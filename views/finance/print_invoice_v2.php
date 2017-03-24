@@ -268,7 +268,10 @@ $this->title = 'Invoices';
                     ?>
                     <tr style="height: 45px;">
                         <td><?= $i + 1; ?></td>
-                        <td><?= Calypso::getValue($invoiceParcel, 'waybill_number'); ?></td>
+                        <td>
+                            <?= Calypso::getValue($invoiceParcel, 'waybill_number'); ?>
+                            <?= Calypso::getValue($invoiceParcel, 'parcel.reference_number'); ?>
+                        </td>
                         <td><?= Util::formatDate(\Adapter\Globals\ServiceConstant::DATE_FORMAT, Calypso::getValue($invoiceParcel, 'parcel.created_date')); ?></td>
                         <td><?= strtoupper(Calypso::getValue($invoiceParcel, 'receiver.firstname') . ' ' . Calypso::getValue($invoiceParcel, 'receiver.lastname')); ?></td>
                         <td style="height: 000px;"><?= strtoupper(mb_strimwidth(Calypso::getValue($invoiceParcel, 'receiver_address.street_address1', ""), 0, 25, "...")); ?></td>

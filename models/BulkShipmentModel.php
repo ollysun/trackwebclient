@@ -219,8 +219,8 @@ class BulkShipmentModel extends Model
             return false;
         }
 
-        $this->currentRow['sender_country'] = ServiceConstant::COUNTRY_NIGERIA;
-        $this->currentRow['receiver_country'] = ServiceConstant::COUNTRY_NIGERIA;
+        $this->currentRow['sender_country'] = ServiceConstant::DEFAULT_COUNTRY;
+        $this->currentRow['receiver_country'] = ServiceConstant::DEFAULT_COUNTRY;
         $this->currentRow['sender_phone_number'] = $this->company['phone_number'];
         $this->currentRow['sender_email'] = $this->company['email'];
         $this->currentRow['payment_type'] = $this->payment_type;

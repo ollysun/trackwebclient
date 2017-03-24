@@ -109,7 +109,7 @@ class ParcelsController extends BaseController
         $parcelType = $refData->getparcelType();
         $paymentMethod = $refData->getPaymentMethods();
         $countries = $refData->getCountries();
-        $states = (new ResponseHandler($refData->getStates(ServiceConstant::COUNTRY_NIGERIA)))->getData();
+        $states = (new ResponseHandler($refData->getStates(ServiceConstant::DEFAULT_COUNTRY)))->getData();
 
         $hubAdp = new BranchAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $centres = $hubAdp->getAllHubs(false);

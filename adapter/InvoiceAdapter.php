@@ -38,6 +38,18 @@ class InvoiceAdapter extends BaseAdapter
         return $response->isSuccess();
     }
 
+    public function recreateInvoice($invoice_number){
+        $data = ['invoice_number' => $invoice_number];
+        $rawResponse = $this->request(ServiceConstant::URL_RECREATE_INVOICE, $data, self::HTTP_POST);
+        $response = new ResponseHandler($rawResponse);
+
+        if (!$response->isSuccess()) {
+            $this->lastErrorMessage = $response->getError();
+        }
+
+        return $response->isSuccess();
+    }
+
     /**
      * @param $data
      * @author Akindolani Akinboyewa Richard

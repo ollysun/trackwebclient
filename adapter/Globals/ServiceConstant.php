@@ -305,6 +305,7 @@ class ServiceConstant
     const URL_CLONE_BILLING_PLAN = 'billingPlan/clonebillingplan';
 
     const URL_INVOICE_ADD = 'invoice/add';
+    const URL_RECREATE_INVOICE = 'invoice/recreateInvoice';
     const URL_BULK_INVOICE_ADD = 'invoice/createBulkInvoice';
     const URL_INVOICE_ALL = 'invoice/getAll';
     const URL_INVOICE_GET = 'invoice/get';
@@ -347,7 +348,7 @@ class ServiceConstant
 
     const DELIVERY_DISPATCH = 2;
     const DELIVERY_PICKUP = 1;
-    const COUNTRY_NIGERIA = 1;
+    const DEFAULT_COUNTRY = 2;
 
     const REQUEST_OTHERS = 1;
     const REQUEST_ECOMMERCE = 2;

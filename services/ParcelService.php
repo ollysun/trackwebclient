@@ -91,13 +91,13 @@ class ParcelService
         $parcel['pickup_request_id'] = Calypso::getValue($pickupRequest, 'id');
         $parcel['info']['sender']['firstname'] = Calypso::getValue($pickupRequest, 'pickup_name');
         $parcel['info']['sender']['phone'] = Calypso::getValue($pickupRequest, 'pickup_phone_number');
-        $parcel['sender_location']['country']['id'] = ServiceConstant::COUNTRY_NIGERIA;
+        $parcel['sender_location']['country']['id'] = ServiceConstant::DEFAULT_COUNTRY;
         $parcel['sender_location']['state']['id'] = Calypso::getValue($pickupRequest, 'pickup_state_id');
         $parcel['sender_location']['id'] = Calypso::getValue($pickupRequest, 'pickup_city_id');
         $parcel['info']['sender_address']['street_address1'] = Calypso::getValue($pickupRequest, 'pickup_address');
         $parcel['info']['receiver']['firstname'] = Calypso::getValue($pickupRequest, 'destination_name');
         $parcel['info']['receiver']['phone'] = Calypso::getValue($pickupRequest, 'destination_phone_number');
-        $parcel['receiver_location']['country']['id'] = ServiceConstant::COUNTRY_NIGERIA;
+        $parcel['receiver_location']['country']['id'] = ServiceConstant::DEFAULT_COUNTRY;
         $parcel['receiver_location']['state']['id'] = Calypso::getValue($pickupRequest, 'destination_state_id');
         $parcel['receiver_location']['id'] = Calypso::getValue($pickupRequest, 'destination_city_id');
         $parcel['info']['receiver_address']['street_address1'] = Calypso::getValue($pickupRequest, 'destination_address');
@@ -139,7 +139,7 @@ class ParcelService
         $parcel['shipment_request_id'] = Calypso::getValue($shipmentRequest, 'id');
         $parcel['info']['sender']['firstname'] = Calypso::getValue($shipmentRequest, 'company.name');
         $parcel['info']['sender']['phone'] = Calypso::getValue($shipmentRequest, 'company.phone_number');
-        $parcel['sender_location']['country']['id'] = ServiceConstant::COUNTRY_NIGERIA;
+        $parcel['sender_location']['country']['id'] = ServiceConstant::DEFAULT_COUNTRY;
         $parcel['info']['sender_address']['street_address1'] = Calypso::getValue($shipmentRequest, 'company.address');
         $parcel['sender_location']['id'] = Calypso::getValue($shipmentRequest, 'company.city_id');
         $parcel['sender_location']['state']['id'] = Calypso::getValue($shipmentRequest, 'company_city.state_id');
@@ -177,7 +177,7 @@ class ParcelService
         $parcel['info']['billing_type'] = 'corporate';
         $parcel['info']['sender']['firstname'] = Calypso::getValue($company, 'name');
         $parcel['info']['sender']['phone'] = Calypso::getValue($company, 'phone_number');
-        $parcel['sender_location']['country']['id'] = ServiceConstant::COUNTRY_NIGERIA;
+        $parcel['sender_location']['country']['id'] = ServiceConstant::DEFAULT_COUNTRY;
         $parcel['info']['sender_address']['street_address1'] = Calypso::getValue($company, 'address');
         $parcel['sender_location']['id'] = Calypso::getValue($company, 'city_id');
         $parcel['sender_location']['state']['id'] = Calypso::getValue($company, 'city.state_id');
@@ -190,7 +190,6 @@ class ParcelService
 
     public function buildPostData($data)
     {
-
         $error = [];
         $senderInfo = [];
         $senderAddress = [];

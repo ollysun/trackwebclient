@@ -129,7 +129,7 @@ class AdminController extends BaseController
         }
 
         $refAdp = new RefAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $states = $refAdp->getStates(ServiceConstant::COUNTRY_NIGERIA); // Hardcoded Nigeria for now
+        $states = $refAdp->getStates(ServiceConstant::DEFAULT_COUNTRY); // Hardcoded Nigeria for now
         $states = new ResponseHandler($states);
 
         $filter_state_id = Yii::$app->request->get('filter_state_id', null);
@@ -191,7 +191,7 @@ class AdminController extends BaseController
             return $this->refresh();
         }
         $refAdp = new RefAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $states = $refAdp->getStates(ServiceConstant::COUNTRY_NIGERIA); // Hardcoded Nigeria for now
+        $states = $refAdp->getStates(ServiceConstant::DEFAULT_COUNTRY); // Hardcoded Nigeria for now
         $states = new ResponseHandler($states);
 
         $branchAdapter = new BranchAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
@@ -956,7 +956,7 @@ class AdminController extends BaseController
     public function actionManagecities()
     {
         $refAdp = new RefAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $states = new ResponseHandler($refAdp->getStates(ServiceConstant::COUNTRY_NIGERIA)); // Hardcoded Nigeria for now
+        $states = new ResponseHandler($refAdp->getStates(ServiceConstant::DEFAULT_COUNTRY)); // Hardcoded Nigeria for now
         $states_list = $states->getStatus() == ResponseHandler::STATUS_OK ? $states->getData() : [];
 
         $zoneAdapter = new RegionAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());

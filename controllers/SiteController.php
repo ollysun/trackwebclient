@@ -817,7 +817,7 @@ class SiteController extends BaseController
 
         $refData = new RefAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $countries = $refData->getCountries();
-        $states = (new ResponseHandler($refData->getStates(ServiceConstant::COUNTRY_NIGERIA)))->getData();
+        $states = (new ResponseHandler($refData->getStates(ServiceConstant::DEFAULT_COUNTRY)))->getData();
 
         $companyAdapter = new CompanyAdapter();
         $companies = $companyAdapter->getAllCompanies(['status' => ServiceConstant::ACTIVE]);

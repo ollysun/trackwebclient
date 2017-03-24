@@ -160,7 +160,7 @@ $prefix_map = [ 'shipper' => 'sender', 'receiver' => 'receiver' ];
     $country_id = Calypso::getValue($parcel, "{$prefix_map[$prefix]}_location.country.id", '');
     if (isset($countries) && is_array($countries['data'])) {
 	    foreach ($countries['data'] as $item) {
-            $selected = ($country_id == $item['id'] || $item['id'] == 1) ? "selected" : '';
+            $selected = ($country_id == $item['id'] || $item['id'] == \Adapter\Globals\ServiceConstant::DEFAULT_COUNTRY) ? "selected" : '';
 ?>
             <option value="<?=$item['id']?>" <?=$selected?> ><?=strtoupper($item['name']);?></option>
 <?php

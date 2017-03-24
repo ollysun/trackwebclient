@@ -37,7 +37,7 @@ class BulkShipment
         $dataSheet = $phpExcelObj->setActiveSheetIndex(1);
         $dataSheet->setTitle('Data Sheet');
 
-        $response = $refAdapter->getStates(ServiceConstant::COUNTRY_NIGERIA);
+        $response = $refAdapter->getStates(ServiceConstant::DEFAULT_COUNTRY);
         $response = new ResponseHandler($response);
         if ($response->isSuccess()) {
             $states = $response->getData();

@@ -131,6 +131,18 @@ class FinanceController extends BaseController
         return $this->redirect('/finance/invoice');
     }
 
+    public function actionRecreateinvoice(){
+        $invoice_number = Yii::$app->get('invoice_number');
+        $adapter = new InvoiceAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $success = $adapter->recreateInvoice($invoice_number);
+        if(!$success){
+            $this->flashError($adapter->getLastErrorMessage());
+        }else{
+            $this->flashSuccess('Invoice regenerated');
+        }
+        return $this->back();
+    }
+
     public function actionCreatebulkinvoice()
     {
         if (Yii::$app->request->isPost) {

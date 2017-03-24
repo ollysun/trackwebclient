@@ -157,7 +157,7 @@ class BulkShipmentRequestForm extends Model
      */
     private function getStates($refAdapter)
     {
-        $response = $refAdapter->getStates(ServiceConstant::COUNTRY_NIGERIA);
+        $response = $refAdapter->getStates(ServiceConstant::DEFAULT_COUNTRY);
         $response = new ResponseHandler($response);
         if ($response->isSuccess()) {
             $states = $response->getData();
