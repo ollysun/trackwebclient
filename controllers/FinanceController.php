@@ -132,7 +132,7 @@ class FinanceController extends BaseController
     }
 
     public function actionRecreateinvoice(){
-        $invoice_number = Yii::$app->get('invoice_number');
+        $invoice_number = Yii::$app->request->get('invoice_number');
         $adapter = new InvoiceAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $success = $adapter->recreateInvoice($invoice_number);
         if(!$success){
