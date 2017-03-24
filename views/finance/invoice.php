@@ -255,11 +255,9 @@ $this->params['breadcrumbs'] = array(
                                     </button>
                                 <?php endif; ?>
 
-                                <?php
-                                if(Calypso::userIsInRole(ServiceConstant::USER_TYPE_ADMIN)):
-                                ?>
-                                    <a href="/finance/recreateinvoice?invoice_number=<?= Calypso::getValue($invoice, 'invoice_number'); ?>"
-                                    <?php endif;?>
+                                <?php if(Calypso::userIsInRole(ServiceConstant::USER_TYPE_ADMIN)): ?>
+                                    <a onclick="return confirm('Are you sure you want to recreate this invoice?')" class="btn btn-success btn-xs" href="/finance/recreateinvoice?invoice_number=<?= Calypso::getValue($invoice, 'invoice_number'); ?>">Recreate</a>
+                                <?php endif;?>
                             </td>
                         </tr>
                     <?php endforeach; ?>
