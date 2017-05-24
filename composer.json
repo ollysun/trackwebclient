@@ -13,7 +13,9 @@
         "phpoffice/phpexcel": "^1.8",
         "fightbulc/moment": "*",
         "namshi/jose": "^7.2",
-        "phpseclib/phpseclib": "^2.0"
+        "phpseclib/phpseclib": "^2.0",
+        "picqer/php-barcode-generator": "^0.1.0",
+        "mikehaertl/phpwkhtmltopdf": "^2.1"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",

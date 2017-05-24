@@ -15,12 +15,15 @@ $this->params['breadcrumbs'] = array(
     array('label' => 'Shipments')
 );
 $downloadURL = Url::to('downloadreport?') . parse_url(Url::to(), PHP_URL_QUERY);
+$printall = Url::to('/print/printall?') . parse_url(Url::to(), PHP_URL_QUERY);
 ?>
 
 <?= Html::cssFile('@web/css/libs/select2.css') ?>
 
 <?php
-$this->params['content_header_button'] = "<a href='" . $downloadURL . "' class='btn btn-primary'><i class='fa fa-download'></i> Download as CSV</a>";
+$this->params['content_header_button'] =
+    "<a href='" . $downloadURL . "' class='btn btn-primary'><i class='fa fa-download'></i> Download as CSV</a> ".
+    "<a target='_blank' href='" . $printall . "' class='btn btn-success'><i class='fa fa-print'></i> Print All</a>";
 ?>
 
 <?php echo \Adapter\Util\Calypso::showFlashMessages(); ?>
