@@ -29,6 +29,12 @@ class ComposerStaticInit96d33b30fc3b51268723801f0fcb6cb3
         array (
             'phpseclib\\' => 10,
         ),
+        'm' => 
+        array (
+            'mikehaertl\\wkhtmlto\\' => 20,
+            'mikehaertl\\tmp\\' => 15,
+            'mikehaertl\\shellcommand\\' => 24,
+        ),
         'c' => 
         array (
             'cebe\\markdown\\' => 14,
@@ -37,6 +43,10 @@ class ComposerStaticInit96d33b30fc3b51268723801f0fcb6cb3
         array (
             'Symfony\\Polyfill\\Util\\' => 22,
             'Symfony\\Polyfill\\Php56\\' => 23,
+        ),
+        'P' => 
+        array (
+            'Picqer\\Barcode\\' => 15,
         ),
         'N' => 
         array (
@@ -90,6 +100,18 @@ class ComposerStaticInit96d33b30fc3b51268723801f0fcb6cb3
         array (
             0 => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib',
         ),
+        'mikehaertl\\wkhtmlto\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/mikehaertl/phpwkhtmltopdf/src',
+        ),
+        'mikehaertl\\tmp\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/mikehaertl/php-tmpfile/src',
+        ),
+        'mikehaertl\\shellcommand\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/mikehaertl/php-shellcommand/src',
+        ),
         'cebe\\markdown\\' => 
         array (
             0 => __DIR__ . '/..' . '/cebe/markdown',
@@ -101,6 +123,10 @@ class ComposerStaticInit96d33b30fc3b51268723801f0fcb6cb3
         'Symfony\\Polyfill\\Php56\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-php56',
+        ),
+        'Picqer\\Barcode\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/picqer/php-barcode-generator/src',
         ),
         'Namshi\\JOSE\\' => 
         array (

@@ -129,7 +129,7 @@ class TrackAdapter extends BaseAdapter
         try {
             $result = $soapClient->TrackShipments($params);
             $histories = Calypso::getValue($result, 'TrackingResults.KeyValueOfstringArrayOfTrackingResultmFAkxlpY.Value.TrackingResult');
-            return $histories;
+			return $histories;
         } catch (\SoapFault $fault) {
             return false;
         }

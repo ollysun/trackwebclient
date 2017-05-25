@@ -14,8 +14,8 @@
         "fightbulc/moment": "*",
         "namshi/jose": "^7.2",
         "phpseclib/phpseclib": "^2.0",
-        "picqer/php-barcode-generator": "^0.1.0",
-        "mikehaertl/phpwkhtmltopdf": "^2.1"
+        "picqer/php-barcode-generator": "^0.2.1",
+        "mikehaertl/phpwkhtmltopdf": "^2.2"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",

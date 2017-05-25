@@ -7,7 +7,34 @@
  * Based on TCPDF Barcode Generator
  */
 
+// Copyright (C) 2002-2015 Nicola Asuni - Tecnick.com LTD
+//
+// This file is part of TCPDF software library.
+//
+// TCPDF is free software: you can redistribute it and/or modify it
+// under the terms of the GNU Lesser General Public License as
+// published by the Free Software Foundation, either version 3 of the
+// License, or (at your option) any later version.
+//
+// TCPDF is distributed in the hope that it will be useful, but
+// WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+// See the GNU Lesser General Public License for more details.
+//
+// You should have received a copy of the License
+// along with TCPDF. If not, see
+// <http://www.tecnick.com/pagefiles/tcpdf/LICENSE.TXT>.
+//
+// See LICENSE.TXT file for more information.
+
 namespace Picqer\Barcode;
+
+use Picqer\Barcode\Exceptions\BarcodeException;
+use Picqer\Barcode\Exceptions\InvalidCharacterException;
+use Picqer\Barcode\Exceptions\InvalidCheckDigitException;
+use Picqer\Barcode\Exceptions\InvalidFormatException;
+use Picqer\Barcode\Exceptions\InvalidLengthException;
+use Picqer\Barcode\Exceptions\UnknownTypeException;
 
 abstract class BarcodeGenerator
 {
@@ -15,7 +42,7 @@ abstract class BarcodeGenerator
     const TYPE_CODE_39_CHECKSUM = 'C39+';
     const TYPE_CODE_39E = 'C39E';
     const TYPE_CODE_39E_CHECKSUM = 'C39E+';
-    const TYPE_CODE_93 = 'C39';
+    const TYPE_CODE_93 = 'C93';
     const TYPE_STANDARD_2_5 = 'S25';
     const TYPE_STANDARD_2_5_CHECKSUM = 'S25+';
     const TYPE_INTERLEAVED_2_5 = 'I25';
@@ -29,7 +56,7 @@ abstract class BarcodeGenerator
     const TYPE_EAN_8 = 'EAN8';
     const TYPE_EAN_13 = 'EAN13';
     const TYPE_UPC_A = 'UPCA';
-    const TYPE_UPC_E = 'UPCA';
+    const TYPE_UPC_E = 'UPCE';
     const TYPE_MSI = 'MSI';
     const TYPE_MSI_CHECKSUM = 'MSI+';
     const TYPE_POSTNET = 'POSTNET';
@@ -174,12 +201,14 @@ abstract class BarcodeGenerator
                 break;
             }
             default: {
-                $arrcode = false;
+                throw new UnknownTypeException();
                 break;
             }
         }
 
-        $arrcode = $this->convertBarcodeArrayToNewStyle($arrcode);
+        if ( ! isset($arrcode['maxWidth'])) {
+            $arrcode = $this->convertBarcodeArrayToNewStyle($arrcode);
+        }
 
         return $arrcode;
     }
@@ -249,10 +278,6 @@ abstract class BarcodeGenerator
             $code = $this->encode_code39_ext($code);
         }
 
-        if ($code === false) {
-            return false;
-        }
-
         if ($checksum) {
             // checksum
             $code .= $this->checksum_code39($code);
@@ -267,8 +292,7 @@ abstract class BarcodeGenerator
         for ($i = 0; $i < $clen; ++$i) {
             $char = $code{$i};
             if ( ! isset($chr[$char])) {
-                // invalid character
-                return false;
+                throw new InvalidCharacterException('Char ' . $char . ' is unsupported');
             }
             for ($j = 0; $j < 9; ++$j) {
                 if (($j % 2) == 0) {
@@ -433,7 +457,7 @@ abstract class BarcodeGenerator
         $clen = strlen($code);
         for ($i = 0; $i < $clen; ++$i) {
             if (ord($code{$i}) > 127) {
-                return false;
+                throw new InvalidCharacterException('Only supports till char 127');
             }
             $code_ext .= $encode[$code{$i}];
         }
@@ -496,8 +520,8 @@ abstract class BarcodeGenerator
             '%'
         );
         $sum = 0;
-        $clen = strlen($code);
-        for ($i = 0; $i < $clen; ++$i) {
+        $codelength = strlen($code);
+        for ($i = 0; $i < $codelength; ++$i) {
             $k = array_keys($chars, $code{$i});
             $sum += $k[0];
         }
@@ -700,7 +724,7 @@ abstract class BarcodeGenerator
         $clen = strlen($code);
         for ($i = 0; $i < $clen; ++$i) {
             if (ord($code{$i}) > 127) {
-                return false;
+                throw new InvalidCharacterException('Only supports till char 127');
             }
             $code_ext .= $encode[$code{$i}];
         }
@@ -714,8 +738,7 @@ abstract class BarcodeGenerator
         for ($i = 0; $i < $clen; ++$i) {
             $char = ord($code{$i});
             if ( ! isset($chr[$char])) {
-                // invalid character
-                return false;
+                throw new InvalidCharacterException('Char ' . $char . ' is unsupported');
             }
             for ($j = 0; $j < 6; ++$j) {
                 if (($j % 2) == 0) {
@@ -907,8 +930,7 @@ abstract class BarcodeGenerator
         for ($i = 0; $i < $clen; ++$i) {
             $digit = $code{$i};
             if ( ! isset($chr[$digit])) {
-                // invalid character
-                return false;
+                throw new InvalidCharacterException('Char ' . $digit . ' is unsupported');
             }
             $seq .= $chr[$digit];
         }
@@ -953,8 +975,7 @@ abstract class BarcodeGenerator
         for ($i = 0; $i < $clen; ++$i) {
             $digit = $code{$i};
             if ( ! isset($chr[$digit])) {
-                // invalid character
-                return false;
+                throw new InvalidCharacterException('Char ' . $digit . ' is unsupported');
             }
             $seq .= $chr[$digit];
         }
@@ -1037,9 +1058,8 @@ abstract class BarcodeGenerator
         for ($i = 0; $i < $clen; $i = ($i + 2)) {
             $char_bar = $code{$i};
             $char_space = $code{$i + 1};
-            if (( ! isset($chr[$char_bar])) OR ( ! isset($chr[$char_space]))) {
-                // invalid character
-                return false;
+            if ( ! isset($chr[$char_bar]) || ! isset($chr[$char_space])) {
+                throw new InvalidCharacterException();
             }
             // create a bar-space sequence
             $seq = '';
@@ -1211,7 +1231,7 @@ abstract class BarcodeGenerator
                     } elseif (($char_id >= 0) AND ($char_id <= 95)) {
                         $code_data[] = strpos($keys_a, $char);
                     } else {
-                        return false;
+                        throw new InvalidCharacterException('Char ' . $char . ' is unsupported');
                     }
                 }
                 break;
@@ -1226,7 +1246,7 @@ abstract class BarcodeGenerator
                     } elseif (($char_id >= 32) AND ($char_id <= 127)) {
                         $code_data[] = strpos($keys_b, $char);
                     } else {
-                        return false;
+                        throw new InvalidCharacterException('Char ' . $char . ' is unsupported');
                     }
                 }
                 break;
@@ -1239,15 +1259,14 @@ abstract class BarcodeGenerator
                     --$len;
                 }
                 if (($len % 2) != 0) {
-                    // the length must be even
-                    return false;
+                    throw new InvalidLengthException('Length must be even');
                 }
                 for ($i = 0; $i < $len; $i += 2) {
                     $chrnum = $code{$i} . $code{$i + 1};
                     if (preg_match('/([0-9]{2})/', $chrnum) > 0) {
                         $code_data[] = intval($chrnum);
                     } else {
-                        return false;
+                        throw new InvalidCharacterException();
                     }
                 }
                 break;
@@ -1413,7 +1432,7 @@ abstract class BarcodeGenerator
         $sequence = array();
         // get A sequences (if any)
         $numseq = array();
-        preg_match_all('/([\0-\31])/', $code, $numseq, PREG_OFFSET_CAPTURE);
+        preg_match_all('/([\x00-\x1f])/', $code, $numseq, PREG_OFFSET_CAPTURE);
         if (isset($numseq[1]) AND ! empty($numseq[1])) {
             $end_offset = 0;
             foreach ($numseq[1] as $val) {
@@ -1487,8 +1506,7 @@ abstract class BarcodeGenerator
             // add check digit
             $code .= $r;
         } elseif ($r !== intval($code{$data_len})) {
-            // wrong checkdigit
-            return false;
+            throw new InvalidCheckDigitException();
         }
         if ($len == 12) {
             // UPC-A
@@ -1618,6 +1636,9 @@ abstract class BarcodeGenerator
             }
             $seq .= '01010'; // center guard bar
             for ($i = $half_len; $i < $len; ++$i) {
+                if ( ! isset($codes['C'][$code{$i}])) {
+                    throw new InvalidCharacterException('Char ' . $code{$i} . ' not allowed');
+                }
                 $seq .= $codes['C'][$code{$i}];
             }
             $seq .= '101'; // right guard bar
@@ -1663,7 +1684,7 @@ abstract class BarcodeGenerator
             $r = (3 * ($code[0] + $code[2] + $code[4])) + (9 * ($code[1] + $code[3]));
             $r %= 10;
         } else {
-            return false;
+            throw new InvalidCheckDigitException();
         }
         //Convert digits to bars
         $codes = array(
@@ -1996,7 +2017,7 @@ abstract class BarcodeGenerator
         $len = strlen($code);
         for ($i = 0; $i < $len; ++$i) {
             if ( ! isset($chr[$code{$i}])) {
-                return false;
+                throw new InvalidCharacterException('Char ' . $code{$i} . ' is unsupported');
             }
             $seq = $chr[$code{$i}];
             for ($j = 0; $j < 8; ++$j) {
@@ -2090,7 +2111,7 @@ abstract class BarcodeGenerator
         $len += 3;
         for ($i = 0; $i < $len; ++$i) {
             if ( ! isset($chr[$code{$i}])) {
-                return false;
+                throw new InvalidCharacterException('Char ' . $code{$i} . ' is unsupported');
             }
             $seq = $chr[$code{$i}];
             for ($j = 0; $j < 6; ++$j) {
@@ -2524,7 +2545,7 @@ abstract class BarcodeGenerator
                 break;
             }
             default: {
-                return false;
+                throw new BarcodeException('Routing code unknown');
                 break;
             }
         }
@@ -2622,7 +2643,7 @@ abstract class BarcodeGenerator
     protected function barcode_imb_pre($code)
     {
         if ( ! preg_match('/^[fadtFADT]{65}$/', $code) == 1) {
-            return false;
+            throw new InvalidFormatException();
         }
         $characters = str_split(strtolower($code), 1);
         // build bars
@@ -2672,19 +2693,17 @@ abstract class BarcodeGenerator
      * @param $number (string) number to convert specified as a string
      * @return string hexadecimal representation
      */
-    public function dec_to_hex($number)
+    protected function dec_to_hex($number)
     {
-        $hex = array();
         if ($number == 0) {
             return '00';
         }
+
+        $hex = [];
+
         while ($number > 0) {
-            if ($number == 0) {
-                array_push($hex, '0');
-            } else {
-                array_push($hex, strtoupper(dechex(bcmod($number, '16'))));
-                $number = bcdiv($number, '16', 0);
-            }
+            array_push($hex, strtoupper(dechex(bcmod($number, '16'))));
+            $number = bcdiv($number, '16', 0);
         }
         $hex = array_reverse($hex);
 
@@ -2698,7 +2717,7 @@ abstract class BarcodeGenerator
      * @param $hex (string) hexadecimal number to convert specified as a string
      * @return string hexadecimal representation
      */
-    public function hex_to_dec($hex)
+    protected function hex_to_dec($hex)
     {
         $dec = 0;
         $bitval = 1;
