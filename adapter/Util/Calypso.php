@@ -204,7 +204,7 @@ class Calypso
                 'Shipment_Exceptions' => ['base' => 'report', 'base_link' => 'shipments/exceptions', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_HQ]],
                 'Delayed_Shipments' => ['base' => 'report', 'base_link' => 'shipments/delayedshipments', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_HQ]],
                 'Validate_Parcels' => ['base' => 'validate', 'base_link' => 'shipments/validateparcels', 'class' => '', 'branch' => [ServiceConstant::BRANCH_TYPE_HQ]],
-                'Report' => ['base' => 'report', 'base_link' => 'shipments/report', 'class' => 'fa fa-book', 'branch' => [ServiceConstant::BRANCH_TYPE_HQ, ServiceConstant::BRANCH_TYPE_COMPANY, ServiceConstant::USER_TYPE_OFFICER, ServiceConstant::USER_TYPE_COMPANY_ADMIN]]
+                'Report' => ['base' => 'report', 'base_link' => 'shipments/report', 'class' => 'fa fa-book', 'branch' => [ServiceConstant::BRANCH_TYPE_HQ, ServiceConstant::BRANCH_TYPE_HUB, ServiceConstant::BRANCH_TYPE_COMPANY, ServiceConstant::USER_TYPE_OFFICER, ServiceConstant::USER_TYPE_COMPANY_ADMIN]]
             ], 'corporate' => true],
 
             'Administrator' => ['base' => 'admin', 'class' => 'fa fa-user',
