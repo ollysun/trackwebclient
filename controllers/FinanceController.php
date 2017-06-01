@@ -248,8 +248,8 @@ class FinanceController extends BaseController
     public function actionInvoice($page = 1)
     {
         $offset = ($page - 1) * $this->page_width;
-
-        $fromDate = Yii::$app->request->get('from', "2017/03/01" /*Util::getToday('/')*/);
+		
+		$fromDate = Yii::$app->request->get('from', Util::getFirstOfThisMonth('/'));
         $toDate = Yii::$app->request->get('to', Util::getToday('/'));
         $filters['from_created_at'] =$fromDate;
         $filters['to_created_at'] = $toDate;
