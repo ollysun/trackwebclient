@@ -195,6 +195,7 @@ class ServiceConstant
 
     //intl
     const URL_INTL_GET_ZONES = "intl/getZones";
+    const URL_INTL_EDIT_ZONE = 'intl/updateZone';
     const URL_INTL_ADD_ZONE = 'intl/addZone';
     const URL_INTL_ADD_COUNTRY_TO_ZONE = 'intl/mapCountryToZone';
     const URL_INTL_GET_COUNTRIES_BY_ZONE = 'intl/getCountriesByZone';
