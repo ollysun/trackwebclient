@@ -196,7 +196,12 @@ foreach ($zones as $zon) {
                         <textarea class="form-control" name="zone_desc"> <?= $zon['description']; ?></textarea>
                     </div>
                     <div class="form-group">
-                        <label for="">Percentage Increase on Import</label>
+                        <label for="">Percentage
+                            <select name="sign">
+                                <option value="1">Increase</option>
+                                <option value="0">Decrease</option>
+                            </select>
+                                on Import</label>
                         <input type="text" class="form-control" name="extra_percent_on_import"  value="<?= $zon['extra_percent_on_import']; ?>">
                     </div>
                 </div>

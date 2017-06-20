@@ -21,8 +21,8 @@ class IntlAdapter extends BaseAdapter
         return $this->request(ServiceConstant::URL_INTL_ADD_ZONE, ['code' => $code, 'description' => $description], self::HTTP_POST);
     }
 
-    public function updateZone($zone,$code, $description,$percent){
-        return $this->request(ServiceConstant::URL_INTL_EDIT_ZONE, ['zone'=>$zone,'code' => $code, 'description' => $description, 'percent'=>$percent], self::HTTP_POST);
+    public function updateZone($zone,$code, $description,$percent,$sign){
+        return $this->request(ServiceConstant::URL_INTL_EDIT_ZONE, ['zone'=>$zone,'code' => $code, 'description' => $description, 'percent'=>$percent, 'sign'=>$sign], self::HTTP_POST);
     }
 
     public function addCountryToZone($country_id, $zone_id){

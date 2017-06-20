@@ -106,6 +106,7 @@ class IntlbillingController extends BaseController
             $data['extra'] = Calypso::getValue($entry, 'extra_percent_on_import');
             $data['zone'] = Calypso::getValue($entry, 'zone_id');
             $data['country_'] = Calypso::getValue($entry, 'country_id');
+            $data['sign'] = Calypso::getValue($entry, 'sign');
 
 
             if ((($task == 'create' || $task == 'edit') && (empty($data['description']) || empty($data['code']))) || (($task == 'addcountry') &&
@@ -126,7 +127,7 @@ class IntlbillingController extends BaseController
                         Yii::$app->session->setFlash('danger', 'There was a problem creating the zone.' . $response['message']);
                     }
                 }elseif ($task == 'edit'){
-                   $response=$zone->updateZone($data['zone'],$data['code'],$data['description'],$data['extra']);
+                   $response=$zone->updateZone($data['zone'],$data['code'],$data['description'],$data['extra'],$data['sign']);
                     if ($response['status'] === Response::STATUS_OK) {
                         Yii::$app->session->setFlash('success', 'Intl. Zone has been edited successfully.');
                     } else {
