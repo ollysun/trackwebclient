@@ -319,7 +319,7 @@ class ServiceConstant
     const URL_CREDIT_NOTE_PARCELS = 'creditnote/getparcels';
     const URL_CREDIT_NOTE_PRINTOUT_DETAILS = 'creditnote/getprintoutdetails';
 
-    const URL_BATCH_DISCOUNT = "parcel/appliedDiscount";
+    const URL_BATCH_DISCOUNT = "parcel/applyDiscount";
 
     const URL_AUDIT_GET_ALL = 'audit/getAllAudit';
     const URL_AUDIT_GET_ONE = 'audit/getAudit';
