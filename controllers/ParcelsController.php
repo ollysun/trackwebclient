@@ -357,7 +357,7 @@ class ParcelsController extends BaseController
                 if ($response['status'] == Response::STATUS_OK) {
                     Yii::$app->session->setFlash('success', 'Awesome, All Done!.');
                 } else {
-                    Yii::$app->session->setFlash('danger', 'There was a problem executing the full batch discounting. '.$response['message']);
+                    Yii::$app->session->setFlash('danger', 'There was a problem executing the full batch discounting. ');
                 }
             }
             else
