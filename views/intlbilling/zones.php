@@ -198,8 +198,8 @@ foreach ($zones as $zon) {
                     <div class="form-group">
                         <label for="">Percentage
                             <select name="sign">
-                                <option value="1">Increase</option>
-                                <option value="0">Decrease</option>
+                                <option value="1" <?php print($zon['sign'] ? 'selected' : '') ?> >Increase</option>
+                                <option value="0" <?php print(!$zon['sign'] ? 'selected' : '') ?> >Decrease</option>
                             </select>
                                 on Import</label>
                         <input type="text" class="form-control" name="extra_percent_on_import"  value="<?= $zon['extra_percent_on_import']; ?>">

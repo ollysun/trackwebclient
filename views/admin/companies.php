@@ -257,12 +257,23 @@ data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i> Download C
                                 </div>
                             </fieldset>
 
-
+                             <fieldset class="col-xs-4">
+                                <legend>Credit Limit</legend>
+                                    <div class="form-group  form-inline">
+                                        <div class="col-xs-3">
+                                            <span class="currency naira"></span>
+                                        </div>
+                                        <div class="col-xs-9 pull-left">
+                                            <input type="text" class="form-control number" name="company[credit_limit]">
+                                        </div>
+                                    </div>
+                            </fieldset>
 
                             <fieldset class="col-xs-4">
                                 <legend>Extra Info</legend>
                                 <textarea class="form-control" name="company[extra_info]" id="extra_info"></textarea>
                             </fieldset>
+
                         </div>
                         <br>
 
