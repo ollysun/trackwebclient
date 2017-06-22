@@ -19,6 +19,12 @@ use Adapter\Util\Util;
  */
 class ParcelAdapter extends BaseAdapter
 {
+
+    public function __construct()
+    {
+        parent::__construct(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+    }
+
     const BILLING_METHOD_CORPORATE = 'corporate';
 
     /**
