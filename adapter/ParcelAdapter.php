@@ -880,4 +880,15 @@ class ParcelAdapter extends BaseAdapter
         return $this->request(ServiceConstant::URL_PARCEL_VALIDATE_NUMBERS,
             ['numbers' => $csvNumbers, 'by' => $by], self::HTTP_POST);
     }
+
+    public function batchDiscount($params){
+        $rawResponse = $this->request(ServiceConstant::URL_BATCH_DISCOUNT, Json::encode($params), self::HTTP_POST);
+        $response = new ResponseHandler($rawResponse);
+
+        if (!$response->isSuccess()) {
+            $this->lastErrorMessage = $response->getError();
+        }
+
+        return $response->isSuccess();
+    }
 }
