@@ -366,6 +366,11 @@ class ParcelsController extends BaseController
         return $this->render('batch_discount');
     }
 
+    /**
+     * This function generates a sample CSV file format that the system has been
+     * designed to work with. This is done so as to standardize the data format
+     * The CSV is expected to be filled and uploaded with the header (title row)
+     */
     public function actionSamplecsv(){
         // Headings and rows
         $headings = array('WayBill Number', 'Percentage Discount', 'Fixed Discount');
