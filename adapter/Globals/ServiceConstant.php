@@ -257,6 +257,7 @@ class ServiceConstant
     const URL_CREATE_USER = 'admin/register';
     const URL_EDIT_USER = 'admin/edit';
     const URL_GET_USERS = '/admin/getAll';
+    const URL_GET_STATUS = '/admin/getStatus';
     const URL_GET_USER = '/admin/getone';
     const URL_USER_VALIDATE = '/auth/validate';
     const URL_USER_CHANGE_PASSWORD = 'auth/changePassword';

@@ -1127,4 +1127,20 @@ class AdminController extends BaseController
             ];
         }
     }
+
+    /**
+     * @return string
+     * Function to render notification settings page for each status along the parcel
+     * tracking process.
+     */
+    public function actionNotification(){
+        $data=Yii::$app->request->post();
+        $notify = new AdminAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $statuses = $notify->getStatus($data);
+        $statuses = new ResponseHandler($statuses);
+        $statuses = $statuses->getStatus() == ResponseHandler::STATUS_OK ? $statuses->getData() : [];
+
+        return $this->render('notification',['statuses'=>$statuses]);
+
+    }
 }

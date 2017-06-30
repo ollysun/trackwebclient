@@ -221,6 +221,7 @@ class Calypso
                         'user_type' => [ServiceConstant::USER_TYPE_BILLING, ServiceConstant::USER_TYPE_ADMIN]],
                     'Company_Express_Centre' => ['base_link' => 'admin/companyecs', 'class' => ''],
                     'Audit_Trail' => ['base_link' => 'admin/audittrail', 'class' => '', 'user_type' => [ServiceConstant::USER_TYPE_ADMIN]],
+                    'Notifications' => ['base_link' => 'admin/notification', 'class' => '', 'user_type' => [ServiceConstant::USER_TYPE_ADMIN]],
                 ],
                 'branch' => [ServiceConstant::BRANCH_TYPE_HQ],
                 'user_type' => [ServiceConstant::USER_TYPE_ADMIN, ServiceConstant::USER_TYPE_BILLING]

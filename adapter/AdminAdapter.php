@@ -44,4 +44,8 @@ class AdminAdapter extends BaseAdapter{
         return  $this->request(ServiceConstant::URL_USER_VALIDATE.'?'.$filter, [], self::HTTP_POST);
     }
 
+    public function getStatus($data) {
+        return  $this->request(ServiceConstant::URL_GET_STATUS, $data, self::HTTP_POST);
+    }
+
 }
