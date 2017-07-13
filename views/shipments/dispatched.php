@@ -209,7 +209,8 @@ $user_data = $this->context->userData;
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> 
+					
                 </div>
 
                 <div class="modal-footer">

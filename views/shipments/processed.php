@@ -200,7 +200,7 @@ $this->params['content_header_button'] = $this->render('../elements/content_head
                     <div class="row">
                         <div class="col-xs-6 form-group">
                             <label for="">Teller no</label>
-                            <input type="text" class="form-control validate required non-zero-integer" name="teller_no">
+                            <input type="text" class="form-control validate required" name="teller_no">
                         </div>
                         <div class="col-xs-6 form-group">
                             <label for="">Amount paid</label>
