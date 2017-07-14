@@ -217,7 +217,9 @@ $this->params['breadcrumbs'] = array(
                     </thead>
                     <tbody>
                     <?php $i = $offset;
-                    foreach ($corporateParcels as $corporateParcel): ?>
+                    foreach ($corporateParcels as $corporateParcel):
+                        $amountDue = !empty($corporateParcel['discounted_amount_due']) ? $corporateParcel['discounted_amount_due'] : $corporateParcel['amount_due'];
+                        ?>
                         <tr>
                             <td>
                                 <div class="checkbox-nice">
@@ -225,7 +227,7 @@ $this->params['breadcrumbs'] = array(
                                         <input name="parcel"
                                                data-company_id="<?= Calypso::getValue($corporateParcel, 'company.id') ?>"
                                                data-company_address="<?= Calypso::getValue($corporateParcel, 'company.address') ?>"
-                                               data-amount_due="<?= Calypso::getValue($corporateParcel, 'amount_due') ?>"
+                                               data-amount_due="<?= $amountDue ?>"
                                                data-company_name="<?= Calypso::getValue($corporateParcel, 'company.name') ?>"
                                                data-waybill_number="<?= Calypso::getValue($corporateParcel, 'waybill_number') ?>"
                                                data-account_number="<?= Calypso::getValue($corporateParcel, 'company.reg_no') ?>"
@@ -242,7 +244,7 @@ $this->params['breadcrumbs'] = array(
                             <td><?= strtoupper(Calypso::getValue($corporateParcel, 'payment_type.name', '')); ?></td>
                             <td><?= strtoupper(Calypso::getValue($corporateParcel, 'billing_type', '')); ?></td>
                             <td><?= ServiceConstant::getStatus(Calypso::getValue($corporateParcel, 'status')); ?></td>
-                            <td><?= Calypso::getValue($corporateParcel, 'amount_due') ?></td>
+                            <td><?= $amountDue ?></td>
                             <td><?= Calypso::getValue($corporateParcel, 'invoice_parcel.invoice_number', 'N/A'); ?></td>
                             <td>n/a</td>
                             <td>
