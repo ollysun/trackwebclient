@@ -265,7 +265,7 @@ $this->params['content_header_button'] = $status . ' <button onclick="javascript
                     <label>Discount</label>
 
                     <div class="form-control-static">
-                        <?php if($parcelData['base_price']-$parcelData['discounted_amount_due']>0){ ?>
+                        <?php if($parcelData['base_price']-$parcelData['discounted_amount_due']>0 && $parcelData['discounted_amount_due']!=0){ ?>
                         <span class="currency naira"></span><?= $parcelData['base_price']-$parcelData['discounted_amount_due']; ?>
                         (<?= 100*(($parcelData['base_price']-$parcelData['discounted_amount_due'])/$parcelData['base_price']); ?>%)
                         <?php } else echo "No Discount Applied" ?>
