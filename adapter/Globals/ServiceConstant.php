@@ -257,7 +257,6 @@ class ServiceConstant
     const URL_CREATE_USER = 'admin/register';
     const URL_EDIT_USER = 'admin/edit';
     const URL_GET_USERS = '/admin/getAll';
-    const URL_GET_STATUS = '/admin/getStatus';
     const URL_GET_USER = '/admin/getone';
     const URL_USER_VALIDATE = '/auth/validate';
     const URL_USER_CHANGE_PASSWORD = 'auth/changePassword';
@@ -292,6 +291,10 @@ class ServiceConstant
     const URL_RELINK_EC_TO_COMPANY = 'company/relinkEc';
     const URL_COMPANY_GET_ALL_ACCOUNT_TYPES = 'company/getAllAccountTypes';
     const URL_COMPANY_CHANGE_STATUS = 'company/changeStatus';
+
+    const URL_GET_STATUS = '/statusnotificationmessage/getStatus';
+    const URL_SAVE_STATUSNOTIFICATION = '/statusnotificationmessage/savestatusNotification';
+    const URL_GET_STATUSNOTIFICATION = '/statusnotificationmessage/get';
 
 
     const URL_BILLING_PLAN_GET_CITIES_WITH_CHARGE = 'billingPlan/getCitiesWithCharge';

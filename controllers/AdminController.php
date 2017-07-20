@@ -1136,6 +1136,13 @@ class AdminController extends BaseController
     public function actionNotification(){
         $data=Yii::$app->request->post();
         $notify = new AdminAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        if (count($data)>0){
+            $saveData = $notify->setStatusNotification($data);
+            $saveData = new ResponseHandler($saveData);
+            $saveData = $saveData->getStatus() == ResponseHandler::STATUS_OK ? $saveData->getData() : [];
+
+            //return $this->render('notification',['statuses'=>$statuses]);
+        }
         $statuses = $notify->getStatus($data);
         $statuses = new ResponseHandler($statuses);
         $statuses = $statuses->getStatus() == ResponseHandler::STATUS_OK ? $statuses->getData() : [];

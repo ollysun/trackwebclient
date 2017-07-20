@@ -32,20 +32,26 @@ $this->params['breadcrumbs'][] = 'Notification';
                         foreach ($statuses as $status) {
                             ?>
                             <tr>
-                                <td><?= $status["name"]; ?></td>
+                                <td><?= isset($status["name"])?ucfirst(implode(' ',explode('_',$status["name"]))):''; ?></td>
                                 <td>
                                     <button class="btn <?= !empty($status["email"])?"btn-primary":""; ?>  btn-xs" data-toggle="modal"
-                                            data-target="#editModal<?= $status["id"]; ?>"
-                                            data-id="<?= $status["id"]; ?>">
+                                            data-target="#editModal<?= isset($status["id"])?$status["id"]:''; ?>"
+                                            data-id="<?= isset($status["id"])?$status["id"]:''; ?>">
                                         <i class="fa fa-envelope-o"> </i> Email Setup
                                     </button>
                                 </td>
                                 <td>
                                     <button class="btn <?= !empty($status["text"])?"btn-primary":""; ?>  btn-xs" data-toggle="modal"
-                                            data-target="#editModaltext<?= $status["id"]; ?>"
-                                            data-id="<?= $status["id"]; ?>"> <i class="fa fa-file-text-o"> </i>  Text Message
-                                            Setup</button>
+                                            data-target="#editModaltext<?= isset($status["id"])?$status["id"]:''; ?>"
+                                            data-id="<?=isset($status["id"])?$status["id"]:''; ?>"> <i class="fa fa-file-text-o"> </i>  Text Message Setup</button>
                                 </td>
+
+                                <td>
+                                    <button class="btn <?= !empty($status["text"])?"btn-primary":""; ?>  btn-xs" data-toggle="modal"
+                                            data-target="#editModaltext<?= isset($status["id"])?$status["id"]:''; ?>"
+                                            data-id="<?= isset($status["id"])?$status["id"]:''; ?>"> <i class="fa fa-file-text-o"> </i>  Sub-Notification</button>
+                                </td>
+
                             </tr>
                             <?php
                         }
@@ -58,10 +64,9 @@ $this->params['breadcrumbs'][] = 'Notification';
     </div>
 
         <?php
-       // var_dump($statuses); die;
         foreach ($statuses as $status) {
         ?>
-            <div class="modal fade" id="editModal<?= $status["id"]; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal fade" id="editModal<?= isset($status["id"])?$status["id"]:''; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                 <div class="modal-dialog" role="document">
                     <form class="" method="post">
                         <div class="modal-content">
@@ -73,18 +78,36 @@ $this->params['breadcrumbs'][] = 'Notification';
                             <div class="modal-body">
                                 <div class="form-group">
                                     <label for="">Status</label>
-                                    <input type="text" class="form-control" name="status" value="<?= $status["name"]; ?>">
+                                    <input type="text" class="form-control" disabled name="status" value="<?= isset($status["name"])?ucfirst(implode(' ',explode('_',$status["name"]))):''; ?>">
+                                </div>
+                                <div class="form-group">
+                                    <label for="">Subject</label>
+                                    <input type="text" class="form-control" name="subject" value="<?= isset($status["subject"])?$status["subject"]:''; ?>">
                                 </div>
                                 <div class="form-group">
 
-                                    <textarea name="emaildata"><?= $status["email"]; ?></textarea>
+                                    <textarea name="emaildata"><?= isset($status["email"])?$status["email"]:''; ?></textarea>
 
                                 </div>
 
+                                <p class="text text-info" style="font-size:small; color: #0b0b0b; border: 1px solid #777; padding: 5px; background: #eef; border-radius: 5px;">
+                                    <frameset>
+                                        Insert the square brackets code where you want the relevant information to show <br>
+                                        <table style="font-size: 10px; color: #8F44AD; width: 100%">
+                                            <tr><td>Sender Name {{sender_name}} </td><td> Receiver Name {{receiver_name}} </td>
+                                            <td>Receiver Email {{receiver_email}} </td><tr><td> Sender Email {{sender_email}} </td>
+                                            <td>Receiver Number {{receiver_number}} </td><td> Sender Number {{sender_number}} </td></tr>
+                                            <tr><td>Waybill Number {{waybill_number}} </td><td> Trace Link {{tracelink}} </td>
+                                            <td>Amount Due {{amount_due}} </td></tr>
+                                        </table>
+
+                                    </frameset>
+
+                                </p>
                             </div>
                             <div class="modal-footer">
                                 <input type="hidden" name="task" value="email">
-                                <input type="hidden" name="status_id" value="<?= $status["id"]; ?>">
+                                <input type="hidden" name="status_id" value="<?= isset($status["id"])?$status["id"]:''; ?>">
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                 <input type="submit" class="btn btn-primary" value="Save changes">
                             </div>
@@ -93,7 +116,7 @@ $this->params['breadcrumbs'][] = 'Notification';
                 </div>
             </div>
 
-        <div class="modal fade" id="editModaltext<?= $status["id"]; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal fade" id="editModaltext<?= isset($status["id"])?$status["id"]:''; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
             <div class="modal-dialog" role="document">
                 <form class="" method="post">
                     <div class="modal-content">
@@ -104,20 +127,24 @@ $this->params['breadcrumbs'][] = 'Notification';
                         <div class="modal-body">
                             <div class="form-group">
                                 <label for="">Status</label>
-                                <input type="text" class="form-control" name="status" value="<?= $status["name"]; ?>">
+                                <input type="text" class="form-control" disabled name="status" value="<?= isset($status["name"])?ucfirst(implode(' ',explode('_',$status["name"]))):''; ?>">
                             </div>
                             <div class="form-group">
                                 <label for="">Test Message</label>
-                                <input type="text" style="height: 70px" class="form-control" name="textdata" value="<?= $status["text"]; ?>">
+                                <input type="text" style="height: 70px" class="form-control" name="textdata" value="<?= isset($status["text"])?$status["text"]:''; ?>">
                                 <hr>
                                 <p class="text text-info" style="font-size:small; color: #0b0b0b; border: 1px solid #777; padding: 5px; background: #eef; border-radius: 5px;">
                                     <frameset>
                                     <legend style="font-size: small; color: #0b0b0b;">Legend</legend>
                                     Insert the square brackets code where you want the relevant information to show <br>
-                                    Name as [name] <br>
-                                    Email as [email] <br>
-                                    Waybill Number as [waynum] <br>
-                                    Trace Link as [tracelink] <br>
+                                        <table>
+                                            <tr><td>Sender Name as {{sender_phone}} </td><td> Receiver Name as {{receiver_phone}} </td></tr>
+                                            <tr><td>Receiver Email as {{receiver_email}} </td><td> Sender Email as {{sender_phone}} </td></tr>
+                                            <tr><td>Receiver Number {{receiver_phone}} </td><td> Sender Number {{sender_phone}} </td></tr>
+                                            <tr><td>Waybill Number as {{waybill_number}} </td><td> Trace Link as {{tracelink}} </td></tr>
+                                            <tr><td>Amount Due as {{amount_due}} </td><td></td></tr>
+                                        </table>
+
                                     </frameset>
 
                                 </p>
@@ -126,7 +153,7 @@ $this->params['breadcrumbs'][] = 'Notification';
                         </div>
                         <div class="modal-footer">
                             <input type="hidden" name="task" value="text">
-                            <input type="hidden" name="status_id"  value="<?= $status["id"]; ?>">
+                            <input type="hidden" name="status_id"  value="<?= isset($status["id"])?$status["id"]:''; ?>">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                             <input type="submit" class="btn btn-primary" value="Save changes">
                         </div>
