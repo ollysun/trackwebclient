@@ -46,11 +46,11 @@ $this->params['breadcrumbs'][] = 'Notification';
                                             data-id="<?=isset($status["id"])?$status["id"]:''; ?>"> <i class="fa fa-file-text-o"> </i>  Text Message Setup</button>
                                 </td>
 
-                                <td>
-                                    <button class="btn <?= !empty($status["text"])?"btn-primary":""; ?>  btn-xs" data-toggle="modal"
-                                            data-target="#editModaltext<?= isset($status["id"])?$status["id"]:''; ?>"
-                                            data-id="<?= isset($status["id"])?$status["id"]:''; ?>"> <i class="fa fa-file-text-o"> </i>  Sub-Notification</button>
-                                </td>
+<!--                                <td>-->
+<!--                                    <button class="btn --><?//= !empty($status["text"])?"btn-primary":""; ?><!--  btn-xs" data-toggle="modal"-->
+<!--                                            data-target="#editModaltext--><?//= isset($status["id"])?$status["id"]:''; ?><!--"-->
+<!--                                            data-id="--><?//= isset($status["id"])?$status["id"]:''; ?><!--"> <i class="fa fa-file-text-o"> </i>  Sub-Notification</button>-->
+<!--                                </td>-->
 
                             </tr>
                             <?php
