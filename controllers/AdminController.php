@@ -1140,8 +1140,6 @@ class AdminController extends BaseController
             $saveData = $notify->setStatusNotification($data);
             $saveData = new ResponseHandler($saveData);
             $saveData = $saveData->getStatus() == ResponseHandler::STATUS_OK ? $saveData->getData() : [];
-
-            //return $this->render('notification',['statuses'=>$statuses]);
         }
         $statuses = $notify->getStatus($data);
         $statuses = new ResponseHandler($statuses);
@@ -1149,5 +1147,9 @@ class AdminController extends BaseController
 
         return $this->render('notification',['statuses'=>$statuses]);
 
+    }
+    public function actionSettings()
+    {
+        return $this->render('settings');
     }
 }

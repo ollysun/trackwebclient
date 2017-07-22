@@ -209,6 +209,7 @@ class Calypso
 
             'Administrator' => ['base' => 'admin', 'class' => 'fa fa-user',
                 'base_link' => [
+                    'Admin_Settings' => ['base_link' => 'admin/settings', 'class' => '', 'user_type' => [ServiceConstant::USER_TYPE_ADMIN]],
                     'Manage_branches' => ['base_link' => 'admin/managebranches', 'class' => '', 'user_type' => [ServiceConstant::USER_TYPE_ADMIN]],
                     'Manage_Transit_Time' => ['base_link' => 'admin/managetransittime', 'class' => '', 'user_type' => [ServiceConstant::USER_TYPE_ADMIN]],
                     'Distance_Table' => ['base_link' => 'admin/distancetable', 'class' => '', 'user_type' => [ServiceConstant::USER_TYPE_ADMIN]],

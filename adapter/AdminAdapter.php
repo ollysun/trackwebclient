@@ -48,4 +48,8 @@ class AdminAdapter extends BaseAdapter{
         return  $this->request(ServiceConstant::URL_GET_STATUS, $data, self::HTTP_POST);
     }
 
+    public function setStatusNotification($data) {
+        return  $this->request(ServiceConstant::URL_SAVE_STATUSNOTIFICATION, $data, self::HTTP_POST);
+    }
+
 }
