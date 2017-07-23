@@ -296,6 +296,8 @@ class ServiceConstant
     const URL_SAVE_STATUSNOTIFICATION = '/statusnotificationmessage/savestatusNotification';
     const URL_GET_STATUSNOTIFICATION = '/statusnotificationmessage/get';
 
+    const URL_SAVE_SETTING = '/setting/save';
+    const URL_GET_SETTINGS = '/setting/get';
 
     const URL_BILLING_PLAN_GET_CITIES_WITH_CHARGE = 'billingPlan/getCitiesWithCharge';
     const URL_BILLING_PLAN_ADD = 'billingPlan/add';

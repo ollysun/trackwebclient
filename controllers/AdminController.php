@@ -1150,6 +1150,20 @@ class AdminController extends BaseController
     }
     public function actionSettings()
     {
-        return $this->render('settings');
+        $data=Yii::$app->request->post();
+        $access = new AdminAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        if (count($data)>0){
+            $saveData = $access->setSetting($data);
+            $saveData = new ResponseHandler($saveData);
+            $saveData = $saveData->getStatus() == ResponseHandler::STATUS_OK ? $saveData->getData() : [];
+        }
+
+        $settings = $access->getSettings($data);
+        $settings = new ResponseHandler($settings);
+        $settings = $settings->getStatus() == ResponseHandler::STATUS_OK ? $settings->getData() : [];
+        foreach($settings as $setting)
+            $sets[$setting['name']]=json_decode($setting['value']);
+
+        return $this->render('settings',['sets'=>$sets]);
     }
 }
