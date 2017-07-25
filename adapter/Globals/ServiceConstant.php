@@ -195,6 +195,7 @@ class ServiceConstant
 
     //intl
     const URL_INTL_GET_ZONES = "intl/getZones";
+    const URL_INTL_EDIT_ZONE = 'intl/updateZone';
     const URL_INTL_ADD_ZONE = 'intl/addZone';
     const URL_INTL_ADD_COUNTRY_TO_ZONE = 'intl/mapCountryToZone';
     const URL_INTL_GET_COUNTRIES_BY_ZONE = 'intl/getCountriesByZone';
@@ -317,6 +318,8 @@ class ServiceConstant
     const URL_CREDIT_NOTE_ALL = 'creditNote/getAll';
     const URL_CREDIT_NOTE_PARCELS = 'creditnote/getparcels';
     const URL_CREDIT_NOTE_PRINTOUT_DETAILS = 'creditnote/getprintoutdetails';
+
+    const URL_BATCH_DISCOUNT = "parcel/applyDiscount";
 
     const URL_AUDIT_GET_ALL = 'audit/getAllAudit';
     const URL_AUDIT_GET_ONE = 'audit/getAudit';

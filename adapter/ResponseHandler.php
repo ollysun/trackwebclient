@@ -43,6 +43,7 @@ class ResponseHandler
 
     public function __construct($response)
     {
+		//var_dump($response);die();
         if (is_null($response) || !is_array($response)) {
             $this->status = self::STATUS_INVALID;
             $this->error = self::INVALID_JSON;

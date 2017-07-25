@@ -17,6 +17,7 @@ use Adapter\ParcelAdapter;
 use Adapter\UserAdapter;
 use Adapter\RequestHelper;
 use Adapter\ResponseHandler;
+use Adapter\Util\Response;
 use Adapter\Util\Calypso;
 use app\services\HubService;
 use yii\data\Pagination;
@@ -372,7 +373,7 @@ class FinanceController extends BaseController
             $discount += floatval(Calypso::getValue($invoiceParcel, 'parcel.amount_due')) - floatval(Calypso::getValue($invoiceParcel, 'net_amount'));
         }
 
-        $totalExcludingVat = $base - $discount;
+        $totalExcludingVat = $base;
         $newTotalNet = Calypso::getValue($invoice, 'stamp_duty', 0) + $totalExcludingVat;
 
         $invoice['current_date'] = Util::getCurrentDate();
@@ -839,4 +840,6 @@ class FinanceController extends BaseController
         }
         return $this->back();
     }
+
+
 }
