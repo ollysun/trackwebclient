@@ -35,13 +35,6 @@ $this->params['breadcrumbs'][] = 'Settings';
                                 <input name="email_subject" type="text" class="form-control" value="<?= isset($sets["credit_limit"]->email_subject)?$sets["credit_limit"]->email_subject:''; ?>">
                             </div>
 
-                            <div class="form-group">
-
-                                <textarea name="email_body"><?= isset($sets["credit_limit"]->email_body)?$sets["credit_limit"]->email_body:''; ?></textarea>
-
-                            </div>
-
-
 
                         </div>
                         <div class="col-md-4">
@@ -52,25 +45,16 @@ $this->params['breadcrumbs'][] = 'Settings';
                                                 value="<?= isset($sets["credit_limit"]->limit_percentage)?$sets["credit_limit"]->limit_percentage:''; ?>"> <br>
                             </div>
                             <input type="checkbox" checked name="send_to_client"
-                                   value="<?= isset($sets["credit_limit"]->send_to_client)?'checkbox':''; ?>"> Check to Alert Clients Also
+                                   value="<?= isset($sets["credit_limit"]->send_to_rm)?'checkbox':''; ?>"> Check to Alert Relationship Manager<br>
+                            <input type="checkbox" checked name="send_to_client"
+                                   value="<?= isset($sets["credit_limit"]->send_to_client)?'checkbox':''; ?>"> Check to Alert Client
                         </div>
                         <div class="col-md-4">
-                            <p class="text text-info" style="font-size:small; color: #0b0b0b; border: 1px solid #777; padding: 5px; background: #eef; border-radius: 5px;">
-                                <frameset>
-                                    Insert the square brackets code where you want the relevant information to show <br>
-                                    <table style="font-size: 10px; color: #8F44AD; width: 100%">
-                                        <tr><td>Sender Name </td><td> {{sender_name}} </td></tr><tr><td> Receiver Name </td><td> {{receiver_name}} </td></tr>
-                                        <tr><td>Receiver Email </td><td> {{receiver_email}} </td></tr><tr><td> Sender Email </td><td> {{sender_email}} </td></tr>
-                                        <tr><td>Receiver Number </td><td> {{receiver_number}} </td></tr><tr><td> Sender Number </td><td> {{sender_number}} </td></tr>
-                                        <tr><td>Waybill Number  </td><td>{{waybill_number}} </td></tr><tr><td> Trace Link </td><td> {{tracelink}} </td></tr>
-                                        <tr> <td>Amount Due </td><td> {{amount_due}} </td></tr><tr><td></td></tr>
-                                    </table>
-
-                                </frameset>
-
-                            </p>
-
-
+                            <label data-toggle="mail" title="Compose mail to be sent to everyone">
+                                Compose Alert Mail <i class="fa fa-question-circle"> </i>
+                            <div class="form-group">
+                                <textarea name="email_body"><?= isset($sets["credit_limit"]->email_body)?$sets["credit_limit"]->email_body:''; ?></textarea>
+                            </div>
                         </div>
 
 

@@ -1,5 +1,4 @@
 (function () {
-
     var nextIndex = 0;
     var BillingPlan = {
         addPlan: function(tableBodySelector, planId, isdefault){
@@ -26,7 +25,6 @@
     };
 
     $(document).ready(function () {
-
         var editCompanyForm = $("#editCompanyForm");
 
         $('#newRegionId').change(function(){
@@ -96,7 +94,7 @@
             }
         });
 
-        
+
         $("#enableSecondaryContact").change(function () {
             $("[data-secondary_contact]").attr("disabled", !($(this).prop("checked")));
 
@@ -211,18 +209,35 @@
                     'type' : 'input'
                 },
                 {
+                    'field': 'credit_limit',
+                    'name': 'company[credit_limit]',
+                    'type' : 'input'
+                },
+                {
+                    'field': 'credit_balance',
+                    'name': 'company[credit_balance]',
+                    'type' : 'input'
+                },
+                {
+                    'field': 'override_credit',
+                    'name': 'company[override_credit]',
+                    'type' : 'input'
+                },
+                {
                     'field': 'extra_info',
                     'name': 'company[extra_info]',
                     'type' : 'textarea'
                 }
             ];
             //
-
             $(fieldsMap).each(function (i, v) {
                 if(v.type == 'select'){
                     editCompanyForm.find(v.type + "[name='" + v.name + "']").data('selected', data[v.field]);
                     editCompanyForm.find(v.type + "[name='" + v.name + "']").val(data[v.field]).trigger('change');
                 } else {
+                    if(data[v.field] != 'NULL' && data[v.field]=='checked'){
+                        editCompanyForm.find(v.type + "[name='" + v.name + "']").attr('checked',data[v.field])
+                    }
                     if(data[v.field] != 'NULL') {
                         editCompanyForm.find(v.type + "[name='" + v.name + "']").val(data[v.field]);
                     }
@@ -238,6 +253,35 @@
             });
             $('#myModal').modal('show');
         }
+
+        $('#resetLimit').on('click', function() {
+            var data = {};
+            data.company_id = $('#cid')
+            console.log(data.company_id)
+            if(!confirm("This company's credit balance is about to be reset")){
+                return;
+            }
+
+            $.ajax({
+                url: '/admin/creditReset',
+                type: 'POST',
+                dataType: 'JSON',
+                data: JSON.stringify(data),
+                success: function (response) {
+                    if (response.status == 'success') {
+                        alert('Company successfully ' + action_text + 'd !');
+                        location.reload();
+                    } else {
+                        alert('An error occurred when trying to ' + action_text + ' company. Please try again later');
+                    }
+                },
+                error: function (err) {
+                    alert('An error occurred when trying to ' + action_text + ' company. Please try again later');
+                }
+            })
+
+            return false
+        })
 
         $('.activation').on('click', function() {
             var data = {};
