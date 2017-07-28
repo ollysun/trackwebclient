@@ -291,6 +291,7 @@ class ServiceConstant
     const URL_RELINK_EC_TO_COMPANY = 'company/relinkEc';
     const URL_COMPANY_GET_ALL_ACCOUNT_TYPES = 'company/getAllAccountTypes';
     const URL_COMPANY_CHANGE_STATUS = 'company/changeStatus';
+    const URL_COMPANY_RESET_CREDIT = 'company/resetCredit';
 
     const URL_GET_STATUS = '/statusnotificationmessage/getStatus';
     const URL_SAVE_STATUSNOTIFICATION = '/statusnotificationmessage/savestatusNotification';

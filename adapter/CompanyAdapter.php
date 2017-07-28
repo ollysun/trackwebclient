@@ -557,4 +557,16 @@ class CompanyAdapter extends BaseAdapter
 
         $this->lastErrorMessage = $response->getError();
     }
+
+    public function creditReset($postData)
+    {
+        $rawResponse = $this->request(ServiceConstant::URL_COMPANY_RESET_CREDIT, json_encode($postData), self::HTTP_POST);
+        $response = new ResponseHandler($rawResponse);
+
+        if ($response->isSuccess()) {
+            return $response->getData();
+        }
+
+        $this->lastErrorMessage = $response->getError();
+    }
 }

@@ -535,7 +535,7 @@ data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i> Download C
                                 <div class="row">
                                     <div class="col-xs-12 form-group form-inline">
                                        <div> <label for="">Credit Balance (<span class="currency naira"></span>)</label></div>
-                                        <input name="company[credit_balance]" type="text" class="form-control number" disabled style="width: 150px">
+                                        <input name="company[credit_balance]" type="text" id="creditRemaining" class="form-control number" disabled style="width: 150px">
                                         <button class="btn btn-warning" id="resetLimit">Reset Limit</button>
                                     </div>
                                     <div class="col-xs-12 form-group">

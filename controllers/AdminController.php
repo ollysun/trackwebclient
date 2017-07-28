@@ -1166,4 +1166,23 @@ class AdminController extends BaseController
 
         return $this->render('settings',['sets'=>$sets]);
     }
+
+    public function actionCreditreset (){
+        $payload = json_decode(Yii::$app->request->getRawBody());
+        $companyId = Calypso::getValue($payload, 'company_id');
+        $status = Calypso::getValue($payload, 'status');
+
+        if (is_null($companyId) || is_null($status)) {
+            $this->sendErrorResponse(ResponseMessages::INVALID_PARAMETERS, ResponseCodes::INVALID_PARAMETERS, null, 400);
+        }
+
+        $companyAdapter = new CompanyAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $response = $companyAdapter->creditReset(['company_id' => $companyId, 'status' => $status]);
+        $response=NULL;
+        if(!is_null($response)) {
+            return $this->sendSuccessResponse($status);
+        } else {
+            return $this->sendErrorResponse($companyAdapter->getLastErrorMessage(), 200);
+        }
+    }
 }

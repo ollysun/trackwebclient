@@ -256,27 +256,27 @@
 
         $('#resetLimit').on('click', function() {
             var data = {};
-            data.company_id = $('#cid')
-            console.log(data.company_id)
+            data.company_id = document.getElementById('cid').value;
+            data.status = 'resetLimit';
             if(!confirm("This company's credit balance is about to be reset")){
                 return;
             }
 
             $.ajax({
-                url: '/admin/creditReset',
+                url: '/admin/creditreset',
                 type: 'POST',
                 dataType: 'JSON',
                 data: JSON.stringify(data),
                 success: function (response) {
-                    if (response.status == 'success') {
-                        alert('Company successfully ' + action_text + 'd !');
-                        location.reload();
+                    if (response.message) {
+                        alert('Reset was successful ' + response.message);
+                        document.getElementById('creditRemaining').value=response.message
                     } else {
-                        alert('An error occurred when trying to ' + action_text + ' company. Please try again later');
+                        location.reload();
                     }
                 },
                 error: function (err) {
-                    alert('An error occurred when trying to ' + action_text + ' company. Please try again later');
+                    alert('An error occurred when trying Reset company Credit Limit. Please try again later later');
                 }
             })
 
