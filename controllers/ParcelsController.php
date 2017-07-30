@@ -59,7 +59,9 @@ class ParcelsController extends BaseController
                     $this->sendAsyncFormResponse(1, $response['data'], "Parcel.onFormSuccessCallback");
                 } else {
                     $payload['response'] = $response;
+
                     $this->sendAsyncFormResponse(1, $response, "Parcel.onFormErrorCallback");
+                    //$this->sendAsyncFormResponse(1, $response, "Parcel.onFormErrorCallback");
                 }
             }
         }
@@ -313,5 +315,83 @@ class ParcelsController extends BaseController
             $error_message = $response->getError();
             return $this->sendErrorResponse($error_message, null);
         }
+    }
+
+    /**
+     * @return string
+     * This function gets posted value as 'set' and also gets an uploaded csv with maximum of 1000 entries
+     * It removes the title which enforces also that the right format is followed
+     * It then sends it to the middleware for further processing
+     */
+    public function actionDiscount()
+    {
+        $setting = Yii::$app->getRequest()->post('set');
+
+        if(!empty($_FILES['batchcsv']['name'])) {
+
+            $fileName=$_FILES['batchcsv']['name'];
+            if( stristr($fileName,'.csv')==".csv"){
+                $fh = fopen($_FILES['batchcsv']['tmp_name'], 'r') or die($this->flashError("Unable to open file!"));
+
+                if (count($fh) > 1000) {
+                    $this->flashError("Waybill Batching is not allowed to exceed 1000, please check as required");
+                }
+                else
+                    while(! feof($fh))
+                        $theArray[]=fgetcsv($fh,200);
+                $titles=$theArray[0];
+                if($titles[0]=='WayBill Number' && $titles[1]=='Percentage Discount' && $titles[2]=='Fixed Discount'){
+                    array_shift($theArray);
+                    //var_dump($theArray);die;
+                }
+                else {
+                    $this->flashError("Please use the standard Formatted Sample. You can download it <a href='samplecsv'><i class=\"fa fa-hand-o-right\" aria-hidden=\"true\"></i> here</a>");
+                    return $this->render('batch_discount');
+                }
+                $param['override']=$setting;
+                $param['data']=$theArray;
+                fclose($fh);
+                $batching = new ParcelAdapter();
+                $response['status']=$batching->batchDiscount($param);
+                // var_dump($param);die();
+                if ($response['status'] == Response::STATUS_OK) {
+                    Yii::$app->session->setFlash('success', 'Awesome, All Done!.');
+                } else {
+                    Yii::$app->session->setFlash('danger', 'There was a problem executing the full batch discounting. ');
+                }
+            }
+            else
+                $this->flashError("Only CSV Documents are accepted");
+        }
+        return $this->render('batch_discount');
+    }
+
+    public function actionSamplecsv(){
+        // Headings and rows
+        $headings = array('WayBill Number', 'Percentage Discount', 'Fixed Discount');
+        $array = array(
+        );
+        $fh = fopen('php://output', 'w');
+        ob_start();
+        fputcsv($fh, $headings);
+// Future System creation of data code
+//        if (! empty($array)) {
+//            foreach ($array as $item) {
+//                fputcsv($fh, $item);
+//            }
+//        }
+
+        $string = ob_get_clean();
+        $filename='samplecsv';
+
+// Output CSV-specific headers
+        header("Pragma: public");
+        header("Expires: 0");
+        header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+        header("Cache-Control: private",false);
+        header("Content-Type: application/octet-stream");
+        header("Content-Disposition: attachment; filename=\"$filename.csv\";" );
+        header("Content-Transfer-Encoding: binary");
+        exit($string);
     }
 }

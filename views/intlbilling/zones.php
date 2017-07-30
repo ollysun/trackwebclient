@@ -58,6 +58,12 @@ $this->params['breadcrumbs'] = array(
 										class="fa fa-search"></i> Get Countries
 								</button>
 							</td>
+                            <td>
+                                <button type="button" class="btn btn-default btn-xs" data-toggle="modal"
+                                        data-target="#editModal<?= $zone['id']; ?>" data-id="<?= $zone['id']; ?>"><i
+                                            class="fa fa-cog"></i> Zone Settings
+                                </button>
+                            </td>
 						</tr>
 						<?php
 					}
@@ -167,7 +173,52 @@ $this->params['breadcrumbs'] = array(
 		</div>
 	</div>
 </div>
+<?php
+if (isset($zones) && is_array(($zones))){
 
+foreach ($zones as $zon) {
+?>
+<div class="modal fade" id="editModal<?= $zon['id']; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <form class="" method="post">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Edit Zone</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="">Code</label>
+                        <input type="text" class="form-control" name="zone_code" value="<?= $zon['code']; ?>">
+                    </div>
+                    <div class="form-group">
+                        <label for="">Description</label>
+                        <textarea class="form-control" name="zone_desc"> <?= $zon['description']; ?></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="">Percentage
+                            <select name="sign">
+                                <option value="1" <?php print($zon['sign'] ? 'selected' : '') ?> >Increase</option>
+                                <option value="0" <?php print(!$zon['sign'] ? 'selected' : '') ?> >Decrease</option>
+                            </select>
+                                on Import</label>
+                        <input type="text" class="form-control" name="extra_percent_on_import"  value="<?= $zon['extra_percent_on_import']; ?>">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="hidden" name="task" value="edit">
+                    <input type="hidden" name="zone_id"  value="<?= $zon['id']; ?>">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <input type="submit" class="btn btn-primary" value="Save changes">
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+    <?php
+}
+}
+?>
 
 <!-- this page specific scripts -->
 <?php $this->registerJsFile('@web/js/libs/jquery.dataTables.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
@@ -177,4 +228,6 @@ $this->params['breadcrumbs'] = array(
 <?php $this->registerJsFile('@web/js/country-to-zone.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/countries-by-zone.js', ['depends' => [\yii\web\JqueryAsset::className(), \app\assets\AppAsset::className()]]); ?>
 <?php $this->registerJsFile('@web/js/table.js', ['depends' => [\yii\web\JqueryAsset::className()]]) ?>
+<?php $this->registerJsFile('@web/js/zone_settings.js', ['depends' => [\yii\web\JqueryAsset::className(), \app\assets\AppAsset::className()]]); ?>
+
 

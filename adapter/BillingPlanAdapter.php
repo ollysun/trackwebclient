@@ -205,4 +205,5 @@ class BillingPlanAdapter extends BaseAdapter
 
         return $response->isSuccess();
     }
+
 }
