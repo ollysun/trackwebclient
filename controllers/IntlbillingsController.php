@@ -101,15 +101,12 @@ class IntlbillingController extends BaseController
             $error = [];
 
             $data = [];
-            $data['code'] = Calypso::getValue($entry, 'zone_code');
             $data['description'] = Calypso::getValue($entry, 'zone_desc');
-            $data['extra'] = Calypso::getValue($entry, 'extra_percent_on_import');
-            $data['zone'] = Calypso::getValue($entry, 'zone_id');
+            $data['code'] = Calypso::getValue($entry, 'zone_code');
+            $data['zone_'] = Calypso::getValue($entry, 'zone_id');
             $data['country_'] = Calypso::getValue($entry, 'country_id');
-            $data['sign'] = Calypso::getValue($entry, 'sign');
 
-
-            if ((($task == 'create' || $task == 'edit') && (empty($data['description']) || empty($data['code']))) || (($task == 'addcountry') &&
+            if ((($task == 'create') && (empty($data['description']) || empty($data['code']))) || (($task == 'addcountry') &&
                         (empty($data['zone_']) || empty($data['country_'])))) {
                 $error[] = "All details are required!";
             }
@@ -126,15 +123,7 @@ class IntlbillingController extends BaseController
                     } else {
                         Yii::$app->session->setFlash('danger', 'There was a problem creating the zone.' . $response['message']);
                     }
-                }elseif ($task == 'edit'){
-                   $response=$zone->updateZone($data['zone'],$data['code'],$data['description'],$data['extra'],$data['sign']);
-                    if ($response['status'] === Response::STATUS_OK) {
-                        Yii::$app->session->setFlash('success', 'Intl. Zone has been edited successfully.');
-                    } else {
-                        Yii::$app->session->setFlash('danger', 'There was a problem editing the zone.' . $response['message']);
-                    }
-                }
-                else {
+                } else {
                     $response = $zone->addCountryToZone($data['country_'],$data['zone_']);
                     if ($response['status'] === Response::STATUS_OK) {
                         Yii::$app->session->setFlash('success', 'Country added to Zone successfully.');
@@ -165,15 +154,6 @@ class IntlbillingController extends BaseController
         if($response->isSuccess()) $countries = $response->getData();
         else $countries = [];
         return $this->sendSuccessResponse($countries);
-    }
-
-    public function actionGetzones(){
-        $entry = Yii::$app->request->get();
-        $data = [];
-        $data['id']=Calypso::getValue($entry, 'id', null);
-        $zon = new IntlAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $response=$zon->getZones($data);
-        return $response;
     }
 
     public function actionWeightranges()
