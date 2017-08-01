@@ -55,6 +55,17 @@ $this->params['breadcrumbs'][] = 'Settings';
                             <div class="form-group">
                                 <textarea name="email_body"><?= isset($sets["credit_limit"]->email_body)?$sets["credit_limit"]->email_body:''; ?></textarea>
                             </div>
+                                <p class="text text-info" style="font-size:small; color: #0b0b0b; border: 1px solid #777; padding: 5px; background: #eef; border-radius: 5px;">
+                                    <frameset>
+                                        Insert the square brackets code where you want the relevant information to show <br>
+                                        <table style="font-size: 10px; color: #8F44AD; width: 100%">
+                                            <tr><td>Client Name {{client_name}} </td><td> Credit Limit {{credit_limit}} </td></tr>
+                                               <tr> <td>Credit Balance {{credit_balance}} </td><td>Amount Due {{amount_due}} </td></tr>
+                                        </table>
+
+                                    </frameset>
+
+                                </p>
                         </div>
 
 
