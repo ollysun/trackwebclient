@@ -206,6 +206,7 @@ var Parcel = {
     },
 
     qetQuote: function(params){
+		console.log(params);
         $('#quote').hide();
         $('#calculating_info').show().html('calculating...');
 

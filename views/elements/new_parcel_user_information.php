@@ -82,7 +82,7 @@ $prefix_map = [ 'shipper' => 'sender', 'receiver' => 'receiver' ];
 				<input name="phone[<?=$prefix?>]" id="phone_<?=$prefix?>" type="text" class="form-control <?php echo $prefix;?>SearchFlyOutPanelTrigger" data-target="#<?php echo $prefix;?>SearchFlyOutPanel"
                     value="<?php echo Calypso::getValue($parcel, "info.{$prefix_map[$prefix]}.phone", ''); ?>">
 			<?php } else { ?>
-				<input name="phone[<?=$prefix?>]" id="phone_<?=$prefix?>" type="text" class="form-control <?php echo $prefix;?>SearchFlyOutPanelTrigger validate active-validate required phone" data-target="#<?php echo $prefix;?>SearchFlyOutPanel"
+				<input name="phone[<?=$prefix?>]" id="phone_<?=$prefix?>" type="text" class="form-control" data-target="#<?php echo $prefix;?>SearchFlyOutPanel"
 				value="<?php echo Calypso::getValue($parcel, "info.{$prefix_map[$prefix]}.phone", ''); ?>">
 			<?php } ?>
 			<span class="help-block">Format: 234xxxxxxxxxx</span>

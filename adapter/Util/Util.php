@@ -83,6 +83,10 @@ class Util
     {
         return date("Y{$separator}m{$separator}d");
     }
+	
+	public static function getFirstOfThisMonth($separator = '-'){
+        return date("Y{$separator}m{$separator}01");
+    }
 
     /**
      * Get's current date in specified format
