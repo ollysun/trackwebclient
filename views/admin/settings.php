@@ -44,10 +44,10 @@ $this->params['breadcrumbs'][] = 'Settings';
                                 </label> <input name="limit_percentage" type="number" maxlength="3" max="100" min="0" class="form-control" required
                                                 value="<?= isset($sets["credit_limit"]->limit_percentage)?$sets["credit_limit"]->limit_percentage:''; ?>"> <br>
                             </div>
-                            <input type="checkbox" checked name="send_to_client"
-                                   value="<?= isset($sets["credit_limit"]->send_to_rm)?'checkbox':''; ?>"> Check to Alert Relationship Manager<br>
-                            <input type="checkbox" checked name="send_to_client"
-                                   value="<?= isset($sets["credit_limit"]->send_to_client)?'checkbox':''; ?>"> Check to Alert Client
+                            <input type="checkbox" name="send_to_client"
+                                   <?= isset($sets["credit_limit"]->send_to_rm)?'checked':''; ?> > Check to Alert Relationship Manager<br>
+                            <input type="checkbox" name="send_to_client"
+                                   <?= isset($sets["credit_limit"]->send_to_client)?'checked':''; ?> > Check to Alert Client
                         </div>
                         <div class="col-md-4">
                             <label data-toggle="mail" title="Compose mail to be sent to everyone">

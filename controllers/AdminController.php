@@ -1150,6 +1150,9 @@ class AdminController extends BaseController
     }
     public function actionSettings()
     {
+        $alphaData=[
+            'credit_limit',
+        ];
         $data=Yii::$app->request->post();
         $access = new AdminAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         if (count($data)>0){
@@ -1161,8 +1164,12 @@ class AdminController extends BaseController
         $settings = $access->getSettings($data);
         $settings = new ResponseHandler($settings);
         $settings = $settings->getStatus() == ResponseHandler::STATUS_OK ? $settings->getData() : [];
-        foreach($settings as $setting)
-            $sets[$setting['name']]=json_decode($setting['value']);
+        if(count($settings)>0)
+            foreach($settings as $setting)
+                $sets[$setting['name']]=json_decode($setting['value']);
+        else
+            foreach($alphaData as $datum)
+                $sets[$datum]=[];
 
         return $this->render('settings',['sets'=>$sets]);
     }
