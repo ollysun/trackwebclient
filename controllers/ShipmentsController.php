@@ -667,8 +667,8 @@ class ShipmentsController extends BaseController
                 $password = $records['password'];
                 $fullName = $records['fullname'];
                 $email = $records['email'];
-                $date = $records['date'];
-                $time = $records['time'];
+                $date = $records['date']; // date('Y-m-d H:i:s');
+                $time = $records['time']; // date('H:i:s');
                 $dateAndTimeTimeStamp = Util::getDateTimeFormatFromDateTimeFields($date, $time);
                 $phoneNumber = $records['phone'];
                 $rawData = $records['waybills'];
@@ -1308,7 +1308,7 @@ class ShipmentsController extends BaseController
      * Bulk Shipment
      * @author Adeyemi Olaoye <yemi@cottacush.com>
      */
-    public function actionBulkshipment()
+    public function actionBulkshipment1()
     {
         $companyAdapter = new CompanyAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $companies = $companyAdapter->getAllCompanies([]);
@@ -1320,6 +1320,35 @@ class ShipmentsController extends BaseController
         $billingPlans = ArrayHelper::map($billingPlans, 'id', 'name', 'company_id', 'p');
         $refData = new RefAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $paymentMethods = Calypso::getValue($refData->getPaymentMethods(), 'data', []);
+
+        return $this->renderAjax('partial_bulk_shipment', ['companies' => $companies, 'billing_plans' => $billingPlans, 'payment_methods' => $paymentMethods]);
+    }
+	
+    public function actionBulkshipment()
+    {
+        $companyAdapter = new CompanyAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $companies = $companyAdapter->getAllCompanies([]);
+        $billingPlanAdapter = new BillingPlanAdapter();
+        /*$billingPlans = $billingPlanAdapter->getBillingPlans(['no_paginate' => '1', 'type' => BillingPlanAdapter::TYPE_WEIGHT_AND_ON_FORWARDING]);*/
+
+        $refData = new RefAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $paymentMethods = Calypso::getValue($refData->getPaymentMethods(), 'data', []);
+        $billingPlans = $billingPlanAdapter->getCompanyBillingPlans();
+
+        // if this is a corporate user, show only his company and payment method should be deferred
+        if(Calypso::userIsInRole(ServiceConstant::USER_TYPE_COMPANY_OFFICER) ||
+            Calypso::userIsInRole(ServiceConstant::USER_TYPE_COMPANY_ADMIN)){
+            $this_company = [];
+            $this_company_id = Calypso::getInstance()->session('user_session')['company']['id'];
+            foreach ($companies as $comp) {
+                if($comp['id'] == $this_company_id){
+                    $this_company = $comp;
+                }
+            }
+            $companies = [$this_company];
+            $paymentMethods = [['name' => 'DEFERRED'], ['id' => 4]];
+        }
+        $billingPlans = ArrayHelper::map($billingPlans, 'id', 'name', 'company_id', 'p');
 
         return $this->renderAjax('partial_bulk_shipment', ['companies' => $companies, 'billing_plans' => $billingPlans, 'payment_methods' => $paymentMethods]);
     }
