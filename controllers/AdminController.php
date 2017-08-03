@@ -1148,6 +1148,12 @@ class AdminController extends BaseController
         return $this->render('notification',['statuses'=>$statuses]);
 
     }
+
+    /**
+     * Action to handle admin settings on which a number of the application settings will be
+     * hinged on
+     * @return string
+     */
     public function actionSettings()
     {
         $alphaData=[

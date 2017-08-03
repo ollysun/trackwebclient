@@ -100,7 +100,7 @@ data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i> Download C
                                         data-discount="<?= Calypso::getValue($company, 'discount'); ?>"
                                         data-extra_info="<?= Calypso::getValue($company, 'extra_info'); ?>"
                                         data-credit_limit="<?= Calypso::getValue($company, 'credit_limit'); ?>"
-                                        data-override_credit="<?= (Calypso::getValue($company, 'override_credit')==1)?NULL:"checked"; ?>"
+                                        data-override_credit="<?= Calypso::getValue($company, 'override_credit'); ?>"
                                         data-credit_balance="<?= Calypso::getValue($company, 'credit_balance'); ?>"
                                         type="button" class="btn btn-default btn-xs editCompany" data-toggle="modal"
                                             data-target="#editModal"><i class="fa fa-edit"></i> Edit
@@ -543,8 +543,11 @@ data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i> Download C
                                         <input name="company[credit_limit]" type="text" class="form-control number">
                                     </div>
                                     <div class="col-xs-12 form-group">
-                                        <input name="company[override_credit]" type="checkbox" class="" >
-                                        <label for="">Override Credit Limit</label>
+                                        <label for="">Override Credit Limit</label>:
+                                        <select name="company[override_credit]" id="overrideLimit">
+                                            <option value="0" >No</option>
+                                            <option value="1" >Yes</option>
+                                        </select>
                                     </div>
                                 </div>
 

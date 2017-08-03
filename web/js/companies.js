@@ -26,7 +26,6 @@
 
     $(document).ready(function () {
         var editCompanyForm = $("#editCompanyForm");
-
         $('#newRegionId').change(function(){
             var selectedRegionId = $(this).val();
             $('#newBusinessZoneId').html('<option>Loading...</option>');
@@ -113,6 +112,7 @@
             var zone = _.find(businessZones, function(i, v){
                return v.id = business_zone_id;
             });
+
 
             $('#editRegonId').html('');
             var html = new Option('Select Region', '', true).outerHTML;
@@ -221,7 +221,7 @@
                 {
                     'field': 'override_credit',
                     'name': 'company[override_credit]',
-                    'type' : 'input'
+                    'type' : 'select'
                 },
                 {
                     'field': 'extra_info',
@@ -234,10 +234,9 @@
                 if(v.type == 'select'){
                     editCompanyForm.find(v.type + "[name='" + v.name + "']").data('selected', data[v.field]);
                     editCompanyForm.find(v.type + "[name='" + v.name + "']").val(data[v.field]).trigger('change');
+                if(v.field == 'override_credit')
+                    $('#overrideLimit option:eq(' + data[v.field] + ')').prop('selected', true)
                 } else {
-                    if(data[v.field] != 'NULL' && data[v.field]=='checked'){
-                        editCompanyForm.find(v.type + "[name='" + v.name + "']").attr('checked',data[v.field])
-                    }
                     if(data[v.field] != 'NULL') {
                         editCompanyForm.find(v.type + "[name='" + v.name + "']").val(data[v.field]);
                     }
