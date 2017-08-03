@@ -44,7 +44,7 @@ $this->params['breadcrumbs'][] = 'Settings';
                                 </label> <input name="limit_percentage" type="number" maxlength="3" max="100" min="0" class="form-control" required
                                                 value="<?= isset($sets["credit_limit"]->limit_percentage)?$sets["credit_limit"]->limit_percentage:''; ?>"> <br>
                             </div>
-                            <input type="checkbox" name="send_to_client"
+                            <input type="checkbox" name="send_to_rm"
                                    <?= isset($sets["credit_limit"]->send_to_rm)?'checked':''; ?> > Check to Alert Relationship Manager<br>
                             <input type="checkbox" name="send_to_client"
                                    <?= isset($sets["credit_limit"]->send_to_client)?'checked':''; ?> > Check to Alert Client
