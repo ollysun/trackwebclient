@@ -44,10 +44,10 @@ $this->params['breadcrumbs'][] = 'Settings';
                                 </label> <input name="limit_percentage" type="number" maxlength="3" max="100" min="0" class="form-control" required
                                                 value="<?= isset($sets["credit_limit"]->limit_percentage)?$sets["credit_limit"]->limit_percentage:''; ?>"> <br>
                             </div>
-                            <input type="checkbox" name="send_to_rm"
-                                   <?= isset($sets["credit_limit"]->send_to_rm)?'checked':''; ?> > Check to Alert Relationship Manager<br>
-                            <input type="checkbox" name="send_to_client"
-                                   <?= isset($sets["credit_limit"]->send_to_client)?'checked':''; ?> > Check to Alert Client
+                            <input type="checkbox" name="send_to_rm" id="send_to_rm"
+                                   <?= ($sets["credit_limit"]->send_to_rm == 1)?'checked value=1':'value=0'; ?> > Check to Alert Relationship Manager<br>
+                            <input type="checkbox" name="send_to_client" id="send_to_client"
+                                   <?= ($sets["credit_limit"]->send_to_client) == 1?'checked value=1':'value=0'; ?> > Check to Alert Client
                         </div>
                         <div class="col-md-4">
                             <label data-toggle="mail" title="Compose mail to be sent to everyone">
@@ -80,7 +80,14 @@ $this->params['breadcrumbs'][] = 'Settings';
     </div>
 </div>
 
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://cloud.tinymce.com/stable/tinymce.min.js?apiKey=l5jy597tw71uifpxxpvl3h7bnd9x2zyh6ckpkbvz58sbx13n"></script>
 
 <script>tinymce.init({selector: 'textarea'});</script>
+
+<script>
+    $('input[type="checkbox"]').change(function(){
+        this.value = this.checked ? 1 : 0;
+    });
+
+</script>
