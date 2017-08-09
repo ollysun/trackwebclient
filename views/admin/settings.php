@@ -27,7 +27,7 @@ $this->params['breadcrumbs'][] = 'Settings';
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>Admin Emails (Separate by comma)</label>
-                                <input name="alert_emails" type="email" class="form-control" value="<?= isset($sets["credit_limit"]->alert_emails)?$sets["credit_limit"]->alert_emails:''; ?>" >
+                                <input name="alert_emails" type="text" class="form-control" value="<?= isset($sets["credit_limit"]->alert_emails)?$sets["credit_limit"]->alert_emails:''; ?>" >
                             </div>
 
                             <div class="form-group">
