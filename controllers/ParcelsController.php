@@ -327,6 +327,8 @@ class ParcelsController extends BaseController
     {
         $setting = Yii::$app->getRequest()->post('set');
 
+        $update_invoice = Yii::$app->getRequest()->post('update_invoice');
+
         if(!empty($_FILES['batchcsv']['name'])) {
 
             $fileName=$_FILES['batchcsv']['name'];
@@ -342,7 +344,6 @@ class ParcelsController extends BaseController
                 $titles=$theArray[0];
                 if($titles[0]=='WayBill Number' && $titles[1]=='Percentage Discount' && $titles[2]=='Fixed Discount'){
                     array_shift($theArray);
-                    //var_dump($theArray);die;
                 }
                 else {
                     $this->flashError("Please use the standard Formatted Sample. You can download it <a href='samplecsv'><i class=\"fa fa-hand-o-right\" aria-hidden=\"true\"></i> here</a>");
@@ -350,10 +351,11 @@ class ParcelsController extends BaseController
                 }
                 $param['override']=$setting;
                 $param['data']=$theArray;
+                $param['update_invoice']=$update_invoice;
                 fclose($fh);
                 $batching = new ParcelAdapter();
                 $response['status']=$batching->batchDiscount($param);
-                // var_dump($param);die();
+
                 if ($response['status'] == Response::STATUS_OK) {
                     Yii::$app->session->setFlash('success', 'Awesome, All Done!.');
                 } else {
