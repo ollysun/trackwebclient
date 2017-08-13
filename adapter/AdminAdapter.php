@@ -44,4 +44,20 @@ class AdminAdapter extends BaseAdapter{
         return  $this->request(ServiceConstant::URL_USER_VALIDATE.'?'.$filter, [], self::HTTP_POST);
     }
 
+    public function getStatus($data) {
+        return  $this->request(ServiceConstant::URL_GET_STATUS, $data, self::HTTP_POST);
+    }
+
+    public function setStatusNotification($data) {
+        return  $this->request(ServiceConstant::URL_SAVE_STATUSNOTIFICATION, $data, self::HTTP_POST);
+    }
+
+    public function setSetting($data) {
+        return  $this->request(ServiceConstant::URL_SAVE_SETTING, $data, self::HTTP_POST);
+    }
+
+    public function getSettings($data) {
+        return  $this->request(ServiceConstant::URL_GET_SETTINGS, $data, self::HTTP_POST);
+    }
+
 }

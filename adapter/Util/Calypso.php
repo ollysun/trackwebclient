@@ -210,6 +210,7 @@ class Calypso
 
             'Administrator' => ['base' => 'admin', 'class' => 'fa fa-user',
                 'base_link' => [
+                    'Admin_Settings' => ['base_link' => 'admin/settings', 'class' => '', 'user_type' => [ServiceConstant::USER_TYPE_ADMIN]],
                     'Manage_branches' => ['base_link' => 'admin/managebranches', 'class' => '', 'user_type' => [ServiceConstant::USER_TYPE_ADMIN]],
                     'Manage_Transit_Time' => ['base_link' => 'admin/managetransittime', 'class' => '', 'user_type' => [ServiceConstant::USER_TYPE_ADMIN]],
                     'Distance_Table' => ['base_link' => 'admin/distancetable', 'class' => '', 'user_type' => [ServiceConstant::USER_TYPE_ADMIN]],
@@ -222,6 +223,7 @@ class Calypso
                         'user_type' => [ServiceConstant::USER_TYPE_BILLING, ServiceConstant::USER_TYPE_ADMIN]],
                     'Company_Express_Centre' => ['base_link' => 'admin/companyecs', 'class' => ''],
                     'Audit_Trail' => ['base_link' => 'admin/audittrail', 'class' => '', 'user_type' => [ServiceConstant::USER_TYPE_ADMIN]],
+                    'Notifications' => ['base_link' => 'admin/notification', 'class' => '', 'user_type' => [ServiceConstant::USER_TYPE_ADMIN]],
                 ],
                 'branch' => [ServiceConstant::BRANCH_TYPE_HQ],
                 'user_type' => [ServiceConstant::USER_TYPE_ADMIN, ServiceConstant::USER_TYPE_BILLING]

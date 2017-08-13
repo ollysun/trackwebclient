@@ -1127,4 +1127,75 @@ class AdminController extends BaseController
             ];
         }
     }
+
+    /**
+     * @return string
+     * Function to render notification settings page for each status along the parcel
+     * tracking process.
+     */
+    public function actionNotification(){
+        $data=Yii::$app->request->post();
+        $notify = new AdminAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        if (count($data)>0){
+            $saveData = $notify->setStatusNotification($data);
+            $saveData = new ResponseHandler($saveData);
+            $saveData = $saveData->getStatus() == ResponseHandler::STATUS_OK ? $saveData->getData() : [];
+        }
+        $statuses = $notify->getStatus($data);
+        $statuses = new ResponseHandler($statuses);
+        $statuses = $statuses->getStatus() == ResponseHandler::STATUS_OK ? $statuses->getData() : [];
+
+        return $this->render('notification',['statuses'=>$statuses]);
+
+    }
+
+    /**
+     * Action to handle admin settings on which a number of the application settings will be
+     * hinged on
+     * @return string
+     */
+    public function actionSettings()
+    {
+        $alphaData=[
+            'credit_limit',
+        ];
+        $data=Yii::$app->request->post();
+        $access = new AdminAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        if (count($data)>0){
+            $saveData = $access->setSetting($data);
+            $saveData = new ResponseHandler($saveData);
+            $saveData = $saveData->getStatus() == ResponseHandler::STATUS_OK ? $saveData->getData() : [];
+        }
+
+        $settings = $access->getSettings($data);
+        $settings = new ResponseHandler($settings);
+        $settings = $settings->getStatus() == ResponseHandler::STATUS_OK ? $settings->getData() : [];
+        if(count($settings)>0)
+            foreach($settings as $setting)
+                $sets[$setting['name']]=json_decode($setting['value']);
+        else
+            foreach($alphaData as $datum)
+                $sets[$datum]=[];
+
+        return $this->render('settings',['sets'=>$sets]);
+    }
+
+    public function actionCreditreset (){
+        $payload = json_decode(Yii::$app->request->getRawBody());
+        $companyId = Calypso::getValue($payload, 'company_id');
+        $status = Calypso::getValue($payload, 'status');
+
+        if (is_null($companyId) || is_null($status)) {
+            $this->sendErrorResponse(ResponseMessages::INVALID_PARAMETERS, ResponseCodes::INVALID_PARAMETERS, null, 400);
+        }
+
+        $companyAdapter = new CompanyAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $response = $companyAdapter->creditReset(['company_id' => $companyId, 'status' => $status]);
+        $response=NULL;
+        if(!is_null($response)) {
+            return $this->sendSuccessResponse($status);
+        } else {
+            return $this->sendErrorResponse($companyAdapter->getLastErrorMessage(), 200);
+        }
+    }
 }

@@ -99,6 +99,9 @@ data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i> Download C
                                         data-account_type_id="<?= Calypso::getValue($company, 'account_type_id'); ?>"
                                         data-discount="<?= Calypso::getValue($company, 'discount'); ?>"
                                         data-extra_info="<?= Calypso::getValue($company, 'extra_info'); ?>"
+                                        data-credit_limit="<?= Calypso::getValue($company, 'credit_limit'); ?>"
+                                        data-override_credit="<?= Calypso::getValue($company, 'override_credit'); ?>"
+                                        data-credit_balance="<?= Calypso::getValue($company, 'credit_balance'); ?>"
                                         type="button" class="btn btn-default btn-xs editCompany" data-toggle="modal"
                                             data-target="#editModal"><i class="fa fa-edit"></i> Edit
                                     </button>
@@ -258,13 +261,11 @@ data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i> Download C
                             </fieldset>
 
                              <fieldset class="col-xs-4">
-                                <legend>Credit Limit</legend>
+                                <legend>Credit</legend>
                                     <div class="form-group  form-inline">
-                                        <div class="col-xs-3">
-                                            <span class="currency naira"></span>
-                                        </div>
-                                        <div class="col-xs-9 pull-left">
-                                            <input type="text" class="form-control number" name="company[credit_limit]">
+                                        <label for="">Credit Limit (<span class="currency naira"></span>)</label>
+                                        <div class="col-xs-12">
+                                            <input type="text" class="form-control number" name="company[credit_limit]" min="0" placeholder="Maximum Credit Amount">
                                         </div>
                                     </div>
                             </fieldset>
@@ -422,7 +423,7 @@ data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i> Download C
                         <fieldset>
                             <legend>Company Details</legend>
                             <div class="row">
-                                <input type="hidden" name="company[id]"/>
+                                <input type="hidden" name="company[id]" id="cid"/>
                                 <div class="col-xs-6 form-group">
                                     <label for="">Name</label>
                                     <input name="company[name]" type="text" class="form-control validate required name">
@@ -527,6 +528,29 @@ data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i> Download C
                                         <input type="text" class="form-control number" name="company[discount]">
                                     </div>
                                 </div>
+                            </fieldset>
+
+                            <fieldset class="col-xs-4">
+                                <legend>Credit</legend>
+                                <div class="row">
+                                    <div class="col-xs-12 form-group form-inline">
+                                       <div> <label for="">Credit Balance (<span class="currency naira"></span>)</label></div>
+                                        <input name="company[credit_balance]" type="text" id="creditRemaining" class="form-control number" disabled style="width: 150px">
+                                        <button class="btn btn-warning" id="resetLimit">Reset Limit</button>
+                                    </div>
+                                    <div class="col-xs-12 form-group">
+                                        <label for="">Maximum Credit Limit (<span class="currency naira"></span>)</label>
+                                        <input name="company[credit_limit]" type="text" class="form-control number">
+                                    </div>
+                                    <div class="col-xs-12 form-group">
+                                        <label for="">Override Credit Limit</label>:
+                                        <select name="company[override_credit]" id="overrideLimit">
+                                            <option value="0" >No</option>
+                                            <option value="1" >Yes</option>
+                                        </select>
+                                    </div>
+                                </div>
+
                             </fieldset>
 
                             <fieldset class="col-xs-4">
