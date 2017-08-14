@@ -240,7 +240,9 @@ data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i> Download C
                                     <div class="col-xs-6 form-group">
                                         <label for="">Zone</label>
 
-                                        <select id="newBusinessZoneId" name="company[business_zone_id]" class="form-control"></select>
+                                        <select id="newBusinessZoneId" name="company[business_zone_id]" class="form-control">
+                                            <option value=""></option>
+                                        </select>
 
                                     </div>
                                 </div>
