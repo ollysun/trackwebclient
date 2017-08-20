@@ -148,20 +148,7 @@ class TrackController extends BaseController
 
                     $trackingInfoList[$key]['history'] = $history;
                 }
-                /*
 
-                if (count($trackingInfoList) == 1) {
-                    $trackingInfoList = array_values($trackingInfoList)[0];
-
-                    $history = Calypso::getValue($trackingInfoList, 'history', []);
-                    $currentStateInfo = $history[count($history) - 1];
-                    $history = TrackAdapter::processHistory($history);
-
-                    $trackingInfoList['history'] = $history;
-                } else {
-                    return $this->render('track_search_details', ['tracking_infos' => $trackingInfoList]);
-                }
-                */
             }
 
 
