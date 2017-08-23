@@ -113,6 +113,8 @@ class ParcelController extends ApiBaseController
         $parcelAdapter = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $filtered_parcels = $parcelAdapter->getParcelsByFilters(array_filter($filters, 'strlen'));
 
+        //dd($filtered_parcels);
+
         $response = new ResponseHandler($filtered_parcels);
 
         if ($response->getStatus() == ResponseHandler::STATUS_OK) {

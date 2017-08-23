@@ -176,8 +176,8 @@ abstract class BaseAdapter
 
         $this->_curlagent->createCurl($url);
 
-        //if($oriUrl == ServiceConstant::URL_GET_PARCEL_LAST_STATUS_FOR_API)
-        //dd($this->_curlagent->getResponse());
+        /*if($oriUrl == ServiceConstant::URL_GET_ALL_PARCEL)
+        dd($this->_curlagent->getResponse());*/
 
         if ($this->_curlagent->getHttpStatus() == BaseAdapter::HTTP_STATUS_OK) {
             return Response::direct($this->_curlagent->getResponse(), $this->_response_as_json);
