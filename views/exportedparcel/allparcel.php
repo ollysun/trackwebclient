@@ -84,6 +84,7 @@ $user_data = $this->context->userData;
                         Agent
                     <?php endif?>
                     </th>
+                    <th>Agent Number</th>
                     <th>Action</th>
                 </tr>
                 </thead>
@@ -105,7 +106,8 @@ $user_data = $this->context->userData;
                             <td><?= date(ServiceConstant::DATE_TIME_FORMAT,strtotime($parcel['created_date'])); ?></td>
                             <td><?= $parcel['no_of_package']; ?></td>
                             <td><?= Calypso::getValue($parcel, 'country.name') ?></td>
-                            <td><?php if((isset($parcel["exportedParcel"]["parcel_id"]) && $parcel["exportedParcel"]["parcel_id"]==$parcel["id"])):?>
+                            <td>
+                                <?php if((isset($parcel["exportedParcel"]["parcel_id"]) && $parcel["exportedParcel"]["parcel_id"]==$parcel["id"])):?>
                                 <?= Calypso::getValue($parcel, 'agent.name') ?>
 
                             <?php endif;?>
@@ -117,6 +119,7 @@ $user_data = $this->context->userData;
                                 <?php endif;?>
 
                             </td>
+                            <td><?= Calypso::getValue($parcel, 'exportedParcel.agent_tracking_number')?></td>
                             <td>
                                 <?php if((isset($parcel["exportedParcel"]["parcel_id"]) && $parcel["exportedParcel"]["parcel_id"]==$parcel["id"])):?>
 

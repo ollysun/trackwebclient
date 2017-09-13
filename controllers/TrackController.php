@@ -185,6 +185,7 @@ class TrackController extends BaseController
     public function trackUpsParcel($ups_number, $tracking_number){
         $trackAdapter = new TrackAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $tracking_info = $trackAdapter->trackUps($ups_number);
+        //dd($tracking_info);
         //dd($tracking_info['TrackResponse']['Shipment']['Package']['Activity']);
 
         return $this->render('track_ups', ['tracking_info' => $tracking_info, 'tracking_number' => $tracking_number]);
