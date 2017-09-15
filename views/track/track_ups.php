@@ -44,7 +44,7 @@ $this->title = 'Tracking Portal';
 
                             <tr>
                                 <td style="text-align: left;">
-                                    <p><?=  Calypso::getValue($history, 'Status.Description') ?></p>
+                                    <p><?=  str_replace('UPS', 'Courierplus', Calypso::getValue($history, 'Status.Description')) ?></p>
                                 </td>
                                 <td style="text-align: left;">
                                     <p><?=  \Adapter\TrackAdapter::GetUpsLocation($history) ?></p>
