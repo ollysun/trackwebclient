@@ -12,6 +12,7 @@ namespace app\modules\api\controllers;
 use Adapter\ParcelAdapter;
 use Adapter\RequestHelper;
 use Adapter\ResponseHandler;
+use Adapter\Util\Calypso;
 use Yii;
 use Adapter\Util\Util;
 
@@ -107,9 +108,12 @@ class ParcelController extends ApiBaseController
         $filters['with_total_count'] = true;
         //$filters['report'] = 1;
         $filters['show_both_parent_and_splits'] = 1;
+        $filters['company_id'] = Calypso::getValue(Calypso::getInstance()->session('user_session'), 'company_id');
 
         $parcelAdapter = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $filtered_parcels = $parcelAdapter->getParcelsByFilters(array_filter($filters, 'strlen'));
+
+        //dd($filtered_parcels);
 
         $response = new ResponseHandler($filtered_parcels);
 

@@ -158,4 +158,44 @@ class TrackAdapter extends BaseAdapter
         }
     }
 
+    public function trackUps($tracking_number){
+        $json = '
+        {
+            "UPSSecurity": { 
+                "UsernameToken": {
+                "Username": "Courierplus",
+                "Password": "Welcome@1" 
+                },
+                "ServiceAccessToken": { 
+                    "AccessLicenseNumber": "9D2F49959EB3892D"
+                } 
+            },
+            "TrackRequest": { 
+                "Request": {
+                    "RequestOption": "1",
+                    "TransactionReference": { 
+                        "CustomerContext": "Your Test Case Summary Description"
+                    } 
+                },
+                "InquiryNumber": "'. $tracking_number .'" 
+            }
+        }
+        ';
+        $this->_use_root_path = false;
+        $response = $this->request('https://wwwcie.ups.com/rest/Track', $json, self::HTTP_POST);
+
+        return $response;
+    }
+
+    public static function GetUpsLocation($activity){
+        $activityLocation = Calypso::getValue($activity, 'ActivityLocation');
+        if (!$activityLocation){
+            return '';
+        }
+        $address = Calypso::getValue($activityLocation, 'Address');
+        $address = Calypso::getValue($address,'City').', '. Calypso::getValue($address,'StateProvinceCode').
+            ', '.Calypso::getValue($address,'CountryCode');
+        return $address;
+
+    }
 }

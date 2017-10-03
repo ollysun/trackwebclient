@@ -79,6 +79,8 @@ class TrackController extends BaseController
                 switch($export_agent_id){
                     case ExportedParcelAdapter::AGENT_ARAMEX:
                         return $this->trackAramex($agent_tracking_number, $tracking_number);
+                    case ExportedParcelAdapter::AGENT_UPS:
+                        return $this->trackUpsParcel($agent_tracking_number, $tracking_number);
                     default:
                         return $this->trackExportParcel($tracking_number);
                 }
@@ -146,20 +148,7 @@ class TrackController extends BaseController
 
                     $trackingInfoList[$key]['history'] = $history;
                 }
-                /*
 
-                if (count($trackingInfoList) == 1) {
-                    $trackingInfoList = array_values($trackingInfoList)[0];
-
-                    $history = Calypso::getValue($trackingInfoList, 'history', []);
-                    $currentStateInfo = $history[count($history) - 1];
-                    $history = TrackAdapter::processHistory($history);
-
-                    $trackingInfoList['history'] = $history;
-                } else {
-                    return $this->render('track_search_details', ['tracking_infos' => $trackingInfoList]);
-                }
-                */
             }
 
 
@@ -192,5 +181,15 @@ class TrackController extends BaseController
 
         return $this->render('track_aramex', ['tracking_info' => $tracking_info, 'tracking_number' => $tracking_number]);
     }
+
+    public function trackUpsParcel($ups_number, $tracking_number){
+        $trackAdapter = new TrackAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $tracking_info = $trackAdapter->trackUps($ups_number);
+        //dd($tracking_info);
+        //dd($tracking_info['TrackResponse']['Shipment']['Package']['Activity']);
+
+        return $this->render('track_ups', ['tracking_info' => $tracking_info, 'tracking_number' => $tracking_number]);
+    }
+
 
 }

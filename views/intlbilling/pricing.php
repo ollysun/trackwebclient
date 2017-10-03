@@ -123,9 +123,15 @@ $this->params['breadcrumbs'] = array(
 						<label for="zone">Service Type</label>
 						<select name="parcel_type" id="parcel_type" class="form-control validate required">
 							<option value="">Select a Parcel Type</option>
-							<option value="5">Express Documents</option>
-							<option value="6">Express Non-Documents</option>
-							<option value="7">Economy Express</option>
+
+                            <option value="5">Express Documents Exp</option>
+                            <option value="6">Express Non-Documents Exp</option>
+                            <option value="7">Economy Express Exp</option>
+
+                            <option value="8">Express Documents Imp</option>
+                            <option value="9">Express Non-Documents Imp</option>
+                            <option value="10">Economy Express Imp</option>
+
 						</select>
 					</div>
 				</div>

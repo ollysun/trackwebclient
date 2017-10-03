@@ -20,6 +20,7 @@ class ExportedParcelAdapter extends BaseAdapter
 {
     const AGENT_ARAMEX = 1;
     const AGENT_GMC = 2;
+    const AGENT_UPS = 3;
 
     public function getAll(array $data)
     {
