@@ -569,8 +569,8 @@ class AdminController extends BaseController
             $total_count = 0;
         }
 
-        $bmCentersObj=new BusinessManagerAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $bmCenters=$bmCentersObj->centersForBm();
+//        $bmCentersObj=new BusinessManagerAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+//        $bmCenters=$bmCentersObj->centersForBm();
 
         $allECsObj=new BranchAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $allECs=$allECsObj->getAllEcs();
