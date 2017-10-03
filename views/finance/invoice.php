@@ -115,7 +115,7 @@ $this->params['breadcrumbs'] = array(
 
                         <div class="col-xs-6">
                             <div class="form-group">
-                                <label for="exampleInputEmail1">Accont Number</label>
+                                <label for="exampleInputEmail1">Account Number</label>
                                 <input disabled id="view_accountNumber" type="text" class="form-control">
                             </div>
 
@@ -135,8 +135,11 @@ $this->params['breadcrumbs'] = array(
 
                 </div>
                 <div class="modal-footer">
-                    <a id="viewPrintInvoice" href="#" class="btn btn-primary">
+                    <a id="viewPrintInvoice" href="#" class="btn btn-success">
                         Print
+                    </a>
+                    <a id="viewDownloadCSVInvoice" href="#" class="btn btn-primary">
+                        Download CSV
                     </a>
                 </div>
             </div>
@@ -149,7 +152,7 @@ $this->params['breadcrumbs'] = array(
     <div class="main-box-header table-search-form clearfix">
         <div class=" clearfix">
             <div class="pull-left">
-                <form>
+                <form id="mainform">
                     <div class="clearfix">
                         <div class="pull-left form-group form-group-sm">
                             <label for="">From:</label><br>
@@ -179,8 +182,11 @@ $this->params['breadcrumbs'] = array(
 
                         <div class="pull-left">
                             <label>&nbsp;</label><br>
-                            <button class="btn btn-default btn-sm"><i class="fa fa-search"></i></button>
-                        </div>
+                            <input type="checkbox" name="download">
+                            <input type="submit" class="btn btn-primary btn-sm" value="Download CSV" >
+                            <button class="btn btn-default btn-sm"><i class="fa fa-search"></i> View</button>
+                        </input>
+
                     </div>
                 </form>
                 <?php

@@ -1060,7 +1060,7 @@ class ShipmentsController extends BaseController
             $this->flashError('Could not load reports');
         }
 
-        //dd($parcels);
+        //dd($routes);
 
         $companies = (new CompanyAdapter())->getAllCompanies([]);
 
@@ -1156,16 +1156,17 @@ class ShipmentsController extends BaseController
 
         $headers = array('SN', 'Waybill Number', 'Sender', 'Sender Email', 'Sender Phone', 'Sender Address',
             'Sender City', 'Sender State', 'Receiver', 'Receiver Email', 'Receiver Phone', 'Receiver Address',
-            'Receiver City', 'Receiver State', 'Weight/Piece', 'Payment Method', 'Amount Due', 'Cash Amount',
+            'Receiver City', 'Receiver State', 'Weight/Piece', 'Payment Method', 'Amount Due', 'Discounted Amount Due', 'Cash Amount',
             'POS Amount', 'POS Transaction ID', 'Parcel Type', 'Cash on Delivery', 'Delivery Type', 'Package Value',
             '# of Package', 'Shipping Type', 'Created Date', 'Pickup Date', 'Last Modified Date', 'Status',
             'Reference Number', 'Originating Branch', 'Route', 'Request Type', 'For Return', 'Other Info',
             'Company Reg No', 'Region', 'Business Manager', 'Territory', 'Billing Plan Name', 'Created By', 'Amount due to Merchant', 'Insurance Charge',
-            'Storrage/Demurrage Charge', 'Handling Charge', 'Duty Charge', 'Cost of Crating', 'Other Charges',
+            'Storage/Demurage Charge', 'Handling Charge', 'Duty Charge', 'Cost of Crating', 'Other Charges',
             'POD Name', 'POD Date', 'Sales Banks',
             'Sales Account No.', 'Sales Teller No.', 'Sales Teller Amount', 'Sales Teller Date',
             'COD Banks', 'COD Account No.', 'COD Teller No.', 'COD Teller Amount.', 'COD Teller Date',
-            'Rtd Teller Banks', 'Rtd Teller Account No.', 'Rtd Teller No.', 'Rtd Teller Amount.', 'Rtd Teller Date', 'Invoice Number'
+            'Rtd Teller Banks', 'Rtd Teller Account No.', 'Rtd Teller No.', 'Rtd Teller Amount.', 'Rtd Teller Date',
+            'Invoice Number'
             );
 
         /*if(array_key_exists('with_sales_teller', $filters) && $filters['with_sales_teller'] == '1'){
@@ -1213,6 +1214,7 @@ class ShipmentsController extends BaseController
                         $result['parcel_weight'],
                         ServiceConstant::getPaymentMethod($result['parcel_payment_type']),
                         $result['parcel_amount_due'],
+                        $result['parcel_discounted_amount_due'],
                         $result['parcel_cash_amount'],
                         $result['parcel_pos_amount'],
                         $result['parcel_pos_trans_id'],
@@ -1268,8 +1270,7 @@ class ShipmentsController extends BaseController
                         $result['rtd_teller_teller_no'],
                         $result['rtd_teller_amount_paid'],
                         $result['rtd_teller_created_date'],
-                        $result['invoice_parcel_invoice_number']
-
+                        $result['invoice_parcel_invoice_number'],
                     ];
 
                     /*if(array_key_exists('with_sales_teller', $filters) && $filters['with_sales_teller'] == '1'){

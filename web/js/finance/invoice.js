@@ -24,6 +24,7 @@ var Invoice = {
         viewInvoiceLoading : $("#viewInvoiceLoading"),
         viewInvoiceTable : $("#viewInvoiceTable"),
         viewPrintInvoice : $("#viewPrintInvoice"),
+        viewDownloadCSVInvoice : $("#viewDownloadCSVInvoice"),
     },
     Templates : {
         invoiceParcel : $("#invoiceParcelTmpl").html(),
@@ -54,6 +55,11 @@ $(document).ready(function () {
     $("#chbx_w_all").change(function () {
         $("input:checkbox.checkable").prop("checked", $(this).prop("checked"));
     });
+
+    $("#downloadCSV").click(function () {
+            var mainform=document.getElementById('mainform')
+            console.log(mainform)
+    })
 
     $("button[data-generate_credit_note]").click(function () {
         var companyName = $(this).data('company_name');
@@ -100,6 +106,7 @@ $(document).ready(function () {
         Invoice.Constants.view_invoiceAddress.val(invoice.address);
         Invoice.Constants.view_stampDuty.val(invoice.stamp_duty);
         Invoice.Constants.viewPrintInvoice.prop('href', '/finance/printinvoice?invoice_number=' + invoice.invoice_number);
+        Invoice.Constants.viewDownloadCSVInvoice.prop('href', '/finance/downloadinvoicecsv?invoice_number=' + invoice.invoice_number);
 
         Invoice.getInvoiceParcels(invoice.invoice_number, function (data) {
             Invoice.Constants.viewInvoiceLoading.addClass('hide');
@@ -134,4 +141,6 @@ $(document).ready(function () {
         Invoice.calculateNetAmount(this);
         Invoice.calculateTotalAmount();
     });
+
 });
+

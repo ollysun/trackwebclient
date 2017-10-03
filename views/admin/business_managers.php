@@ -56,12 +56,13 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                             <td>
                                 <?= strtoupper(Calypso::getValue($business_manager, 'linked_companies_count', '0')) ?> ECs<br/>
 
-                                <a style="margin-top: 5px;" class="btn btn-xs btn-primary linkEc" data-toggle="modal" data-target="#linkEc"
+                                <a  data-bind=''
+                                    style="margin-top: 5px;" class="btn btn-xs btn-primary linkEc" data-toggle="modal" data-target="#linkEc<?= $business_manager['id']; ?>"
                                    data-plan_id="<?= Calypso::getValue($business_manager, 'id')?>"
                                    data-plan_name="<?= Calypso::getValue($business_manager, 'name')?>">Add</a>
 
 
-                                <a  data-bind='click: function () { viewCompanies(<?= Calypso::getValue($business_manager, 'id') ?>); }'
+                                <a data-bind='click: function () { viewCompanies(<?= Calypso::getValue($business_manager, 'id') ?>); }'
                                     style="margin-top: 5px;" class="btn btn-xs btn-primary linkCompany" data-toggle="modal"
                                     data-target="#linkEcs">View</a>
                             </td>
@@ -74,6 +75,47 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                                 </button>
                             </td>
                         </tr>
+
+                        <div class="modal fade" id="linkEc<?= $business_manager['id']; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                            <div class="modal-dialog" role="document">
+                                <form class="validate" method="post" action="">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                                        aria-hidden="true">&times;</span></button>
+                                            <h4 class="modal-title" id="myModalLabel">Link Express Center to BM</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="form-group">
+                                                <label>Staff Id</label>
+                                                <input class="form-control required" readonly name="add_id" value="<?= ucwords($business_manager['staff_id']); ?>">
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label>Staff Name</label>
+                                                <input class="form-control" readonly name="add_name" value="<?= ucwords($business_manager['name']); ?>">
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label>Express Center</label>
+                                                <select class="form-control" name="add_ecs" >
+                                                    <?php foreach ($allECs as $allEC):?>
+                                                        <option value="<?=$allEC['id']?>"><?= $allEC['name']?> (<?= $allEC['code']?>)</option>
+                                                    <?php endforeach;?>
+                                                </select>
+                                            </div>
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <input type="hidden" name="task" value="add">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                            <input type="submit" class="btn btn-primary" value="Add EC to BM">
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
                         <?php
                     }
                 endif;
@@ -168,6 +210,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
         </form>
     </div>
 </div>
+
 
 
     <!-- this page specific scripts -->

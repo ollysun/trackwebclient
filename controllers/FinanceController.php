@@ -250,6 +250,7 @@ class FinanceController extends BaseController
     {
         $offset = ($page - 1) * $this->page_width;
 
+        $download=Yii::$app->request->get('download');
         $fromDate = Yii::$app->request->get('from', Util::getFirstOfThisMonth('/'));
         $toDate = Yii::$app->request->get('to', Util::getToday('/'));
         $filters['from_created_at'] =$fromDate;
@@ -270,7 +271,18 @@ class FinanceController extends BaseController
 
         $companies = (new CompanyAdapter())->getAllCompanies([]);
         $statuses = ServiceConstant::getStatusRef();
-
+        $header=array('Invoice Doc No','Company Name','Currency','Amount Invoiced');
+        if($download=="on"){
+            dd($invoices);
+            foreach ($invoices as $invoice)
+                $bodyData[]=[
+                    $invoice['invoice_number'],
+                    $invoice['company']['name'],
+                    $invoice['currency'],
+                    $invoice['total']
+                ];
+            Util::exportToCSV('invoices.csv',$header,$bodyData);
+        }
         return $this->render('invoice', [
             'fromDate' => $fromDate,
             'toDate' => $toDate,
@@ -400,6 +412,62 @@ class FinanceController extends BaseController
         $this->layout = 'print';
         return $this->render('print_invoice_v2', ['template_header_page_height' => $template_header_page_height, 'page_height' => $page_height, 'parcelPages' => $no_of_pages, 'invoice' => $invoice, 'invoiceParcels' => $invoiceParcels]);
     }
+
+    public function actionDownloadinvoicecsv($invoice_number = null)
+    {
+        if (empty($invoice_number)) {
+            return $this->redirect(Url::to("/finance/invoice"));
+        }
+
+        $invoiceAdapter = new InvoiceAdapter();
+        $filters = ['invoice_number' => $invoice_number];
+        $invoice = $invoiceAdapter->getInvoice($filters);
+        $invoiceParcels = $invoiceAdapter->getInvoiceParcels(array_merge($filters, [
+            'with_delivery_receipt' => 1,
+            'with_receiver_address' => 1,
+            'with_receiver' => 1,
+            'with_receiver_city' => 1,
+            'with_sender_address' => 1,
+            'with_sender_city' => 1,
+            'with_company' => 1
+        ]));
+
+        $totalWeight = 0;
+        $totalPieces = 0;
+        $base = 0;
+        $discount = 0;
+        foreach ($invoiceParcels as $invoiceParcel) {
+            $totalWeight += (float)Calypso::getValue($invoiceParcel, 'parcel.weight');
+            $totalPieces += (int)Calypso::getValue($invoiceParcel, 'parcel.no_of_package');
+            $base += (float)Calypso::getValue($invoiceParcel, 'net_amount');
+            $discount += floatval(Calypso::getValue($invoiceParcel, 'parcel.amount_due')) - floatval(Calypso::getValue($invoiceParcel, 'net_amount'));
+        }
+
+        $totalExcludingVat = $base;
+        $newTotalNet = Calypso::getValue($invoice, 'stamp_duty', 0) + $totalExcludingVat;
+
+        $invoice['current_date'] = Util::getCurrentDate();
+        $invoice['total_weight'] = $totalWeight;
+        $invoice['total_pieces'] = $totalPieces;
+        $invoice['base'] = $base;
+        $invoice['discount'] = $discount;
+        $invoice['total_excluding_vat'] = $totalExcludingVat;
+        $invoice['st_standard_vat'] = $totalExcludingVat * (ServiceConstant::DEFAULT_VAT_RATE / 100);
+        $invoice['new_total_net'] = $newTotalNet;
+        $invoice['total_shipments'] = count($invoiceParcels);
+        $invoice['total_to_pay'] = $invoice['st_standard_vat'] + $newTotalNet;
+        $invoice['total_to_pay_naira'] = (int)($invoice['st_standard_vat'] + $newTotalNet);
+        $koboValue = $invoice['total_to_pay'] - floatval($invoice['total_to_pay_naira']);
+        $invoice['total_to_pay_kobo'] = round($koboValue * 100);
+
+        foreach($invoiceParcels as $invoiceParcel) {
+            $dataArr[] = [$invoiceParcel['waybill_number'], $invoiceParcel['parcel']['company_id'], $invoiceParcel['parcel']['amount_due'], $invoiceParcel['discount'], $invoiceParcel['net_amount']];
+        }
+            $headerArr=array('WayBill Number','Company Name','Amount','Discount(%)','Net Amount');
+        $name= $invoice_number.'.csv';
+        Util::exportToCSV($name,$headerArr,$dataArr);
+    }
+
 
     /**
      * Print Credit Note page
