@@ -173,7 +173,8 @@ $this->params['breadcrumbs'] = array(
                         <div class="pull-left form-group form-group-sm">
                             <label>Company</label> <br>
                             <select name="company" class="form-control" style="width: 150px">
-                                <?= $this->render('../elements/finance/company_filter', ['companies' => $companies, 'selectedCompany' => $selectedCompany]) ?>
+                                <?= $this->render('../elements/finance/company_filter',
+                                    ['companies' => $companies, 'selectedCompany' => $selectedCompany]) ?>
                             </select>
                         </div>
 
