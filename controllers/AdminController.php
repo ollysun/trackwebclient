@@ -563,20 +563,26 @@ class AdminController extends BaseController
 
         if($result['status'] == ResponseHandler::STATUS_OK){
             $business_managers = $result['data']['business_managers'];
+            $bmc = $result['data']['bmc'];
             $total_count = $result['data']['total_count'];
         }else{
             $business_managers = [];
             $total_count = 0;
         }
 
-//        $bmCentersObj=new BusinessManagerAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-//        $bmCenters=$bmCentersObj->centersForBm();
-
         $allECsObj=new BranchAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $allECs=$allECsObj->getAllEcs();
-       // $allECs= new ResponseHandler($allECs);
-        //$allECs_list= $allECs->getStatus() == ResponseHandler::STATUS_OK ? $allECs->getData() : [];
-        return $this->render('business_managers', array('allECs'=>$allECs, 'regions' => $region_list, 'business_managers' => $business_managers, 'total_count' => $total_count));
+
+        return $this->render('business_managers', array(
+            'bmcs'=>$bmc,
+            'allECs'=>$allECs, 'regions' => $region_list, 'business_managers' => $business_managers, 'total_count' => $total_count));
+    }
+
+    public function ActionBmToCenter()
+    {
+        $staffId=Calypso::getValue(Yii::$app->request->post(), 'staffId', '');;
+        $bmCentersObj=new BusinessManagerAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $bmCenters=$bmCentersObj->centersForBm($staffId);
     }
 
     public function actionResetpassword()

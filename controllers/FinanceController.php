@@ -273,7 +273,6 @@ class FinanceController extends BaseController
         $statuses = ServiceConstant::getStatusRef();
         $header=array('Invoice Doc No','Company Name','Currency','Amount Invoiced');
         if($download=="on"){
-            dd($invoices);
             foreach ($invoices as $invoice)
                 $bodyData[]=[
                     $invoice['invoice_number'],

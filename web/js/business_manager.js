@@ -17,5 +17,9 @@ $(document).ready(function () {
         $("input[name='staff_id']").val($(this).attr('data-staff-id'));
         $("input[name='id']").val(_id);
     });
-    
+
+    var viewCompanies = function () {
+        alert('yes')
+    }
+
 });
