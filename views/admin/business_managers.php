@@ -54,7 +54,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                             <td style="text-align: left;" class="d<?= $business_manager['id']; ?>"><?= ucwords($business_manager['region_name']); ?></td>
 
                             <td>
-                                <?= $count=count($bmcs[ Calypso::getValue($business_manager, 'staff_id')]) ?><br>
+                                <?= $count=count($bmcs[ Calypso::getValue($business_manager, 'staff_id')]) ?> ECs<br>
                                 <a  data-bind=''
                                     style="margin-top: 5px;" class="btn btn-xs btn-primary linkEc" data-toggle="modal" data-target="#linkEc<?= $business_manager['id']; ?>"
                                    data-plan_id="<?= Calypso::getValue($business_manager, 'id')?>"
@@ -174,8 +174,8 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
 <div class="modal fade" id="bm_myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <form class="validate" method="post" action="">
-            <div class="modal-content">
-                <div class="modal-header">
+            <div class="modal-content panel panel-default">
+                <div class="modal-header panel-heading">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title" id="myModalLabel">Add a New BM</h4>
