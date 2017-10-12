@@ -73,7 +73,8 @@ class ShipmentsController extends BaseController
         if(Yii::$app->request->isPost){
             $records = \Yii::$app->request->post();
             if ($records['task'] == 'submit_teller') {
-                if (!isset($records['bank_id'], $records['account_no'], $records['amount_paid'], $records['teller_no'], $records['waybill_numbers'])) {
+                if (!isset($records['bank_id'], $records['account_no'],
+                    $records['amount_paid'], $records['teller_no'], $records['waybill_numbers'])) {
                     $this->flashError("Invalid parameter(s) sent!");
                 } else {
                     $teller = new CodTellerAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
@@ -134,29 +135,37 @@ class ShipmentsController extends BaseController
             $to_date = Calypso::getInstance()->get()->to;
             $filter = null;
             //$filter = Calypso::getInstance()->get()->date_filter;
-            $filter = isset(Calypso::getInstance()->get()->date_filter) && Calypso::getInstance()->get()->date_filter != '-1'
+            $filter = isset(Calypso::getInstance()->get()->date_filter)
+            && Calypso::getInstance()->get()->date_filter != '-1'
                 ? Calypso::getInstance()->get()->date_filter : null;
-            $response = $parcel->getFilterParcelsByDateAndStatus($from_date . ' 00:00:00', $to_date . ' 23:59:59', $filter, $offset, $this->page_width, 1, null, null, true, $cash_on_delivery);
+            $response = $parcel->getFilterParcelsByDateAndStatus($from_date . ' 00:00:00',
+                $to_date . ' 23:59:59', $filter, $offset, $this->page_width,
+                1, null, null, true, $cash_on_delivery);
+            //dd($response);
             $search_action = true;
 
         } elseif (!empty(Calypso::getInstance()->get()->search)) { //check if not empty criteria
             $search = Calypso::getInstance()->get()->search;
-            $response = $parcel->getSearchParcels(null, $search, $offset, $this->page_width, 1, $this->branch_to_view, 1, null);
+            $response = $parcel->getSearchParcels(null, $search, $offset, $this->page_width,
+                1, $this->branch_to_view, 1, null);
             $search_action = true;
             $filter = null;
 
         } else {
-            $response = $parcel->getParcels($from_date . ' 00:00:00', $to_date . ' 23:59:59', null, $this->branch_to_view, $offset, $this->page_width, 1, 1, 1, true, $cash_on_delivery);
+            $response = $parcel->getParcels($from_date . ' 00:00:00',
+                $to_date . ' 23:59:59', null, $this->branch_to_view, $offset, $this->page_width, 1, 1, 1, true, $cash_on_delivery);
             //$response = $parcel->getParcels(null,null,$offset,$this->page_width);
             //$response = $parcel->getNewParcelsByDate(date('Y-m-d', strtotime('now')).' 00:00:00',$offset,$this->page_width, 1,$this->userData['branch_id']);
             $search_action = false;
             $filter = null;
         }
+        //dd($response);
         $response = new ResponseHandler($response);
         $data = [];
         $total_count = 0;
         if ($response->getStatus() == ResponseHandler::STATUS_OK) {
             $data = $response->getData();
+            //dd($data);
             $total_count = 0;// $data['total_count'];
             if (isset($data['total_count'])) {
                 $total_count = $data['total_count'];
@@ -1577,4 +1586,33 @@ class ShipmentsController extends BaseController
 
         return $this->render('validateparcels', ['numbers' => '', 'by' => 'reference number']);
     }
+
+    public function actionCanceltransactions()
+    {
+        $parcel = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        if (Yii::$app->request->isPost) {
+            $data = Yii::$app->request->post();
+            $accountId = Calypso::getValue($data, 'accountName');
+            $waybill = Calypso::getValue($data, 'waybills');
+            $waybills = explode("; ", $waybill);
+            foreach ($waybills as $wb)
+            {
+                $response = $parcel.getParcelByWayBillNumber($wb);
+                $response = new ResponseHandler($response);
+                if ($response->getStatus() == ResponseHandler::STATUS_OK) {
+                    $data = $response->getData();
+                    $data->setCompanyId($accountId);
+                    $data->save();
+                }
+            }
+        }
+            $companyAdapter = new CompanyAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $companies = $companyAdapter->getAllCompanies(['status' => ServiceConstant::ACTIVE]);
+        $viewBag = [
+            'companies' => $companies
+        ];
+        return $this->render('cancelTransactions', $viewBag);
+    }
+
+
 }

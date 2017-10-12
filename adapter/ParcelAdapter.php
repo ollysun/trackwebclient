@@ -206,7 +206,12 @@ class ParcelAdapter extends BaseAdapter
         return $this->request(ServiceConstant::URL_GET_ALL_PARCEL, array_filter($filters), self::HTTP_GET);
     }
 
-    public function getFilterParcelsByDateAndStatus($start_created_date, $end_created_date, $status, $offset = 0, $count = 50, $with_total = null, $branch_id = null, $only_parents = null, $with_created_branch = true, $cash_on_delivery = ServiceConstant::FALSE)
+    public function getFilterParcelsByDateAndStatus($start_created_date,
+                                                    $end_created_date,
+                                                    $status, $offset = 0, $count = 50,
+                                                    $with_total = null, $branch_id = null,
+                                                    $only_parents = null, $with_created_branch = true,
+                                                    $cash_on_delivery = ServiceConstant::FALSE)
     {
         $filters = array(
             'status' => $status,

@@ -388,7 +388,8 @@ $is_admin = isset($branch['branch_type']) && $branch['branch_type'] == ServiceCo
                                 <label>Parcel Description</label>
                                 <textarea name="other_info" class="form-control validate length"
                                           data-validate-length-type='word'
-                                          data-validate-max-length="50"><?= Calypso::getValue($parcel, "info.other_info", ''); ?></textarea>
+                                          data-validate-max-length="50">
+                                    <?= Calypso::getValue($parcel, "info.other_info", ''); ?></textarea>
                             </div>
                         </div>
                     </div>
