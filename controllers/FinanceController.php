@@ -264,6 +264,7 @@ class FinanceController extends BaseController
         $filters['count'] = $this->page_width;
 
 
+        $invoices = [];
         $invoiceAdapter = new InvoiceAdapter();
         $invoicesResponse = $invoiceAdapter->getInvoices($filters);
         $invoices = Calypso::getValue($invoicesResponse, 'invoices');
@@ -273,6 +274,7 @@ class FinanceController extends BaseController
         $statuses = ServiceConstant::getStatusRef();
         $header=array('Invoice Doc No','Company Name','Currency','Amount Invoiced');
         if($download=="on"){
+            if(!empty($invoices))
             foreach ($invoices as $invoice)
                 $bodyData[]=[
                     $invoice['invoice_number'],
@@ -280,6 +282,8 @@ class FinanceController extends BaseController
                     $invoice['currency'],
                     $invoice['total']
                 ];
+            else
+                $bodyData=[];
             Util::exportToCSV('invoices.csv',$header,$bodyData);
         }
         return $this->render('invoice', [
