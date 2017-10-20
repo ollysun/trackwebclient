@@ -1182,6 +1182,7 @@ class ShipmentsController extends BaseController
         fputcsv($stream, $headers);
 
 
+
         $filters['count'] = $count;
         $total_count = 0;
         $serial_number = 1;
@@ -1192,7 +1193,6 @@ class ShipmentsController extends BaseController
             if ($response->isSuccess()) {
                 $data = $response->getData();
                 $parcels = $data['parcels'];
-
 
                 $exportData = [];
                 foreach ($parcels as $key => $result) {
@@ -1236,9 +1236,9 @@ class ShipmentsController extends BaseController
                         $result['parcel_other_info'],
                         $result['company_reg_no'],
 
-                        $result['company_region'],
-                        $result['company_business_manager'],
-                        $result['company_territory'],
+                        $result['company_region']='',
+                        $result['company_business_manager']='',
+                        $result['company_territory']='',
 
                         $result['billing_plan_name'],
                         $result['created_by_fullname'],
