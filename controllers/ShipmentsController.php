@@ -1236,9 +1236,9 @@ class ShipmentsController extends BaseController
                         $result['parcel_other_info'],
                         $result['company_reg_no'],
 
-                        $result['company_region']='',
-                        $result['company_business_manager']='',
-                        $result['company_territory']='',
+                        $result['company_region'],
+                        $result['company_business_manager'],
+                        $result['company_territory'],
 
                         $result['billing_plan_name'],
                         $result['created_by_fullname'],
