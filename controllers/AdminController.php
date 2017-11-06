@@ -1247,7 +1247,7 @@ class AdminController extends BaseController
                           'company_id' => $toCompanyId
                         ];
                         $editParcelResponse = $parcel->updateParcelByCompanyId(json_encode($postData));
-                         if ($editParcelResponse['status'] === Response::STATUS_OK) {
+                        if ($editParcelResponse['status'] === Response::STATUS_OK) {
                                 $wayb .= $wb . '&nbsp';
                         }else{
                              $wayb = null;
@@ -1257,6 +1257,7 @@ class AdminController extends BaseController
                     Yii::$app->session->setFlash('success', 'Transaction move successfully for  waybill '. $wayb );
                 } else {
                     Yii::$app->session->setFlash('danger', 'There was a problem move the transaction. ' . $editParcelResponse['data']);
+
                 }
             }
             $companyAdapter = new CompanyAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
@@ -1269,7 +1270,6 @@ class AdminController extends BaseController
         }catch (\Exception $e)
         {
             $this->flashError($e->getLastErrorMessage());
-
             //dd($e->getTraceAsString());
         }
     }
@@ -1307,7 +1307,6 @@ class AdminController extends BaseController
         }catch (\Exception $e)
         {
             $this->flashError($e->getLastErrorMessage());
-
             //dd($e->getTraceAsString());
         }
 
