@@ -1210,6 +1210,7 @@ class AdminController extends BaseController
         try {
             $parcel = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
             if (Yii::$app->request->isPost) {
+                $wayb = '';
                 $postData = Yii::$app->request->post();
                 $waybill = Calypso::getInstance()->getValue($postData, 'waybills');
                 $toCompanyId = Calypso::getInstance()->getValue($postData, 'companyId');
@@ -1224,11 +1225,16 @@ class AdminController extends BaseController
                           'company_id' => $toCompanyId
                         ];
                         $editParcelResponse = $parcel->updateParcelByCompanyId(json_encode($postData));
-                        if ($editParcelResponse['status'] === Response::STATUS_OK) {
-                            Yii::$app->session->setFlash('success', 'Transaction move successfully.');
-                        } else {
-                            Yii::$app->session->setFlash('danger', 'There was a problem move the transaction. ' .$editParcelResponse);
-                        }
+                         if ($editParcelResponse['status'] === Response::STATUS_OK) {
+                                $wayb .= $wb . '&nbsp';
+                        }else{
+                             $wayb = null;
+                         }
+                }
+                if (!is_null($wayb)) {
+                    Yii::$app->session->setFlash('success', 'Transaction move successfully for  waybill '. $wayb );
+                } else {
+                    Yii::$app->session->setFlash('danger', 'There was a problem move the transaction. ' . $editParcelResponse['data']);
                 }
             }
             $companyAdapter = new CompanyAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
