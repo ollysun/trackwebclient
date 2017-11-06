@@ -1240,7 +1240,9 @@ class AdminController extends BaseController
 
         }catch (\Exception $e)
         {
-            dd($e->getTraceAsString());
+            $this->flashError($e->getLastErrorMessage());
+
+            //dd($e->getTraceAsString());
         }
     }
 
@@ -1276,7 +1278,9 @@ class AdminController extends BaseController
 
         }catch (\Exception $e)
         {
-            dd($e->getTraceAsString());
+            $this->flashError($e->getLastErrorMessage());
+
+            //dd($e->getTraceAsString());
         }
 
         $viewBag = [
