@@ -39,14 +39,12 @@ class ParcelsController extends BaseController
     public function actionNew()
     {
         //ini_set('memory_limit', '-1');//to be removed
-
         if (Yii::$app->request->isPost) {
 
             $data = Yii::$app->request->post();
 
             $parcelService = new ParcelService();
             $payload = $parcelService->buildPostData($data);
-
             //$this->sendAsyncFormResponse(1, $payload, "Parcel.onFormErrorCallback");
 
             if (isset($payload['status'])) {

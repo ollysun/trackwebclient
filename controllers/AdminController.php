@@ -30,10 +30,13 @@ use Adapter\AdminAdapter;
 use Adapter\UserAdapter;
 use Adapter\RouteAdapter;
 use yii\helpers\Url;
+use Adapter\ParcelAdapter;
+
 
 
 class AdminController extends BaseController
 {
+
     public function beforeAction($action)
     {
         $this->enableCsrfValidation = false;
@@ -1197,5 +1200,103 @@ class AdminController extends BaseController
         } else {
             return $this->sendErrorResponse($companyAdapter->getLastErrorMessage(), 200);
         }
+    }
+
+    /**
+     * @author Moses Olalere moses_olalere@superfluxnigeria.com
+     */
+    public function actionMovetransactions()
+    {
+        try {
+            $parcel = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+            if (Yii::$app->request->isPost) {
+                $postData = Yii::$app->request->post();
+                $waybill = Calypso::getInstance()->getValue($postData, 'waybills');
+                $toCompanyId = Calypso::getInstance()->getValue($postData, 'companyId');
+                $waybillNumberArr = $parcel->sanitizeWaybillNumbers(trim($waybill));
+               // $companyBillingPlan = $billingPlan->getCompanyBillingPlans(['company_id' => $toCompanyId]);
+                foreach ($waybillNumberArr as $wb) {
+                    $parcelResponse = $parcel->getParcelByWayBillNumber($wb);
+                    $response = new ResponseHandler($parcelResponse);
+                        $data = $response->getData();
+                        $postData = [
+                          'id' => $data['id'],
+                          'company_id' => $toCompanyId
+                        ];
+                        $editParcelResponse = $parcel->updateParcelByCompanyId(json_encode($postData));
+                        if ($editParcelResponse['status'] === Response::STATUS_OK) {
+                            Yii::$app->session->setFlash('success', 'Transaction move successfully.');
+                        } else {
+                            Yii::$app->session->setFlash('danger', 'There was a problem move the transaction. ' .$editParcelResponse);
+                        }
+                }
+            }
+            $companyAdapter = new CompanyAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+            $companies = $companyAdapter->getAllCompanies(['status' => ServiceConstant::ACTIVE]);
+            $viewBag = [
+                'companies' => $companies
+            ];
+            return $this->render('moveTransactions', $viewBag);
+
+        }catch (\Exception $e)
+        {
+            dd($e->getTraceAsString());
+        }
+    }
+
+    /**
+     * @return string
+     *
+     * @author Moses Olalere moses_olalere@superfluxnigeria.com
+     */
+    public function actionRepriceparcels()
+    {
+        $from_date = date('Y-m-d H:i:s');
+        $to_date = date('Y-m-d H:i:s');
+        try{
+            $parcel = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+            if (Yii::$app->request->isPost) {
+                $postData = Yii::$app->request->post();
+                $regNo = Calypso::getInstance()->getValue($postData, 'regNo');
+                $fromDate = Calypso::getInstance()->getValue($postData, 'from_date');
+                $toDate = Calypso::getInstance()->getValue($postData, 'to_date');
+                $getData = [
+                    'regNo' => trim($regNo),
+                    'from' => $fromDate,
+                    'to' => $toDate
+                ];
+                //dd($getData);
+                $repriceResponse = $parcel->repriceCompany($getData);
+                if ($repriceResponse['status'] === Response::STATUS_OK) {
+                    Yii::$app->session->setFlash('success', 'Reprice done  successfully.');
+                } else {
+                    Yii::$app->session->setFlash('danger', 'There was a problem doing repricing. ' . $repriceResponse);
+                }
+            }
+
+        }catch (\Exception $e)
+        {
+            dd($e->getTraceAsString());
+        }
+
+        $viewBag = [
+            'from_date' => $from_date,
+            'to_date' => $to_date
+        ];
+
+        return $this->render('repriceParcels', $viewBag);
+    }
+
+    public function  getTypeValue($data)
+    {
+        foreach ($data as $key => $value)
+        {
+            if ($key === 'no_of_package' || $key === 'weight' || $key === 'amount_due')
+            {
+                $data[$key]= (integer) $value;
+            }
+        }
+
+        return $data;
     }
 }

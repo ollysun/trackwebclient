@@ -1597,7 +1597,7 @@ class ShipmentsController extends BaseController
             $waybills = explode("; ", $waybill);
             foreach ($waybills as $wb)
             {
-                $response = $parcel.getParcelByWayBillNumber($wb);
+                $response = $parcel->getParcelByWayBillNumber($wb);
                 $response = new ResponseHandler($response);
                 if ($response->getStatus() == ResponseHandler::STATUS_OK) {
                     $data = $response->getData();
