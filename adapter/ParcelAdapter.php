@@ -924,7 +924,7 @@ class ParcelAdapter extends BaseAdapter
      */
     public static function sanitizeWaybillNumbers($waybill_numbers)
     {
-        $waybill_number_arr = explode(',', $waybill_numbers);
+        $waybill_number_arr = explode(';', $waybill_numbers);
 
         $clean_arr = [];
         foreach ($waybill_number_arr as $number) {
