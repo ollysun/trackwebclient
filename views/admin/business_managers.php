@@ -54,16 +54,15 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                             <td style="text-align: left;" class="d<?= $business_manager['id']; ?>"><?= ucwords($business_manager['region_name']); ?></td>
 
                             <td>
-                                <?= strtoupper(Calypso::getValue($business_manager, 'linked_companies_count', '0')) ?> ECs<br/>
-
-                                <a style="margin-top: 5px;" class="btn btn-xs btn-primary linkEc" data-toggle="modal" data-target="#linkEc"
+                                <?= $count=count($bmcs[ Calypso::getValue($business_manager, 'staff_id')]) ?> ECs<br>
+                                <a  data-bind=''
+                                    style="margin-top: 5px;" class="btn btn-xs btn-primary linkEc" data-toggle="modal" data-target="#linkEc<?= $business_manager['id']; ?>"
                                    data-plan_id="<?= Calypso::getValue($business_manager, 'id')?>"
                                    data-plan_name="<?= Calypso::getValue($business_manager, 'name')?>">Add</a>
 
 
-                                <a  data-bind='click: function () { viewCompanies(<?= Calypso::getValue($business_manager, 'id') ?>); }'
-                                    style="margin-top: 5px;" class="btn btn-xs btn-primary linkCompany" data-toggle="modal"
-                                    data-target="#linkEcs">View</a>
+                                <a style="margin-top: 5px;" class="btn btn-xs btn-primary linkCompany" data-toggle="modal"
+                                    data-target="#linkEcs<?= $business_manager['id']; ?>">View</a>
                             </td>
 
                             <td><?= ($business_manager['status'] == ServiceConstant::ACTIVE ? 'Active' : 'Inactive'); ?></td>
@@ -74,6 +73,81 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
                                 </button>
                             </td>
                         </tr>
+
+                        <div class="modal fade" id="linkEc<?= $business_manager['id']; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                            <div class="modal-dialog" role="document">
+                                <form class="validate" method="post" action="">
+                                    <div class="modal-content panel-default panel">
+                                        <div class="modal-header panel-heading">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                                        aria-hidden="true">&times;</span></button>
+                                            <h4 class="modal-title" id="myModalLabel">Link Express Center to BM</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="form-group">
+                                                <label>Staff Id</label>
+                                                <input class="form-control required" readonly name="add_id" value="<?= ucwords($business_manager['staff_id']); ?>">
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label>Staff Name</label>
+                                                <input class="form-control" readonly name="add_name" value="<?= ucwords($business_manager['name']); ?>">
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label>Express Center</label>
+                                                <select class="form-control" name="add_ecs" >
+                                                    <?php foreach ($allECs as $allEC):?>
+                                                        <option value="<?=$allEC['id']?>"><?= $allEC['name']?> (<?= $allEC['code']?>)</option>
+                                                    <?php endforeach;?>
+                                                </select>
+                                            </div>
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <input type="hidden" name="task" value="add">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                            <input type="submit" class="btn btn-primary" value="Add EC to BM">
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="modal fade" id="linkEcs<?= $business_manager['id']; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                            <div class="modal-dialog" role="document">
+                                <form class="validate" method="post" action="">
+                                    <div class="modal-content panel panel-default">
+                                        <div class="modal-header panel-heading">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                                        aria-hidden="true">&times;</span></button>
+                                            <h4 class="modal-title" id="myModalLabel">Currently Linked Express Center to BM(<?= ucwords($business_manager['staff_id']); ?>)</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="form-group">
+                                                <label>Staff Name</label>
+                                                <?= ucwords($business_manager['name']); ?>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label>List of EC Centers</label><br>
+                                                    <?php if($count>0)
+                                                        foreach($bmcs[ Calypso::getValue($business_manager, 'staff_id')] as $value){ ?>
+                                                        <b><?= ucfirst($value['branch']['name']); ?> </b>
+                                                        <?= $value['branch']['address']; ?>
+                                                        <br>
+                                                    <?php } ?>
+
+                                            </div>
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
                         <?php
                     }
                 endif;
@@ -100,8 +174,8 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
 <div class="modal fade" id="bm_myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <form class="validate" method="post" action="">
-            <div class="modal-content">
-                <div class="modal-header">
+            <div class="modal-content panel panel-default">
+                <div class="modal-header panel-heading">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title" id="myModalLabel">Add a New BM</h4>
@@ -168,6 +242,7 @@ $this->params['content_header_button'] = '<button type="button" class="btn btn-p
         </form>
     </div>
 </div>
+
 
 
     <!-- this page specific scripts -->

@@ -506,6 +506,9 @@ class AdminController extends BaseController
             $data['region_id'] = Calypso::getValue($entry, 'region_id', null);
             $data['status'] = Calypso::getValue($entry, 'status');
             $data['staff_id'] = Calypso::getValue($entry, 'staff_id');
+            $data['add_id']= Calypso::getValue($entry, 'add_id', null);
+            $data['add_ecs']= Calypso::getValue($entry, 'add_ecs', null);
+            $data['add_name']= Calypso::getValue($entry, 'add_name', null);
 
             if (($task == 'create' || $task == 'edit') && (empty($data['region_id']) || empty($data['staff_id']))) {
                 $error[] = "All details are required!";
@@ -519,6 +522,13 @@ class AdminController extends BaseController
                     }
                 }elseif($task == 'edit'){
                     $response = $bmAdapter->changeRegion($data['staff_id'], $data['region_id']);
+                    if($response['status'] == ResponseHandler::STATUS_OK){
+                        $this->flashSuccess('BM updated successfully');
+                    }else{
+                        $this->flashError('There was a problem updating the BM. ' . $response['message']);
+                    }
+                }elseif($task == 'add'){
+                    $response = $bmAdapter->addBusinessManagerCentres($data['add_ecs'], $data['add_id']);
                     if($response['status'] == ResponseHandler::STATUS_OK){
                         $this->flashSuccess('BM updated successfully');
                     }else{
@@ -553,14 +563,26 @@ class AdminController extends BaseController
 
         if($result['status'] == ResponseHandler::STATUS_OK){
             $business_managers = $result['data']['business_managers'];
+            $bmc = $result['data']['bmc'];
             $total_count = $result['data']['total_count'];
         }else{
             $business_managers = [];
             $total_count = 0;
-
         }
 
-        return $this->render('business_managers', array('regions' => $region_list, 'business_managers' => $business_managers, 'total_count' => $total_count));
+        $allECsObj=new BranchAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $allECs=$allECsObj->getAllEcs();
+
+        return $this->render('business_managers', array(
+            'bmcs'=>$bmc,
+            'allECs'=>$allECs, 'regions' => $region_list, 'business_managers' => $business_managers, 'total_count' => $total_count));
+    }
+
+    public function ActionBmToCenter()
+    {
+        $staffId=Calypso::getValue(Yii::$app->request->post(), 'staffId', '');;
+        $bmCentersObj=new BusinessManagerAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $bmCenters=$bmCentersObj->centersForBm($staffId);
     }
 
     public function actionResetpassword()

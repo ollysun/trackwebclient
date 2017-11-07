@@ -151,6 +151,8 @@ class ServiceConstant
     const URL_REGION_CITY_GET_ALL = 'region/getAllCity';
 
     const URL_BUSINESS_MANAGER_ADD = 'bm/add';
+    const URL_BUSINESS_MANAGER_CENTRES_ADD = 'bmcentres/add';
+    const URL_BUSINESS_MANAGER_CENTRES_LIST = 'bmcentres/centersForBm';
     const URL_BUSINESS_MANAGER_CHANGE_REGION = 'bm/changeregion';
     const URL_BUSINESS_MANAGER_GET_ALL = 'bm/getall';
 

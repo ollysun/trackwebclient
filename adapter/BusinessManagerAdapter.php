@@ -17,9 +17,18 @@ class BusinessManagerAdapter extends BaseAdapter
         return $this->request(ServiceConstant::URL_BUSINESS_MANAGER_ADD, ['region_id' => $region_id, 'staff_id' => $staff_id], self::HTTP_POST);
     }
 
+    public function addBusinessManagerCentres($branch_id, $staff_id){
+        return $this->request(ServiceConstant::URL_BUSINESS_MANAGER_CENTRES_ADD, ['branch_id' => $branch_id, 'staff_id' => $staff_id], self::HTTP_POST);
+    }
+
     public function changeRegion($staff_id, $region_id){
         return $this->request(ServiceConstant::URL_BUSINESS_MANAGER_CHANGE_REGION, ['region_id' => $region_id, 'staff_id' => $staff_id], self::HTTP_POST);
     }
+
+    public function centersForBm($staff_id){
+            return $this->request(ServiceConstant::URL_BUSINESS_MANAGER_CENTRES_LIST, ['staff_id' => $staff_id], self::HTTP_POST);
+    }
+
 
     public function getAll(array $filters = null)
     {
