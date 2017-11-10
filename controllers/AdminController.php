@@ -1257,7 +1257,6 @@ class AdminController extends BaseController
                     Yii::$app->session->setFlash('success', 'Transaction move successfully for  waybill '. $wayb );
                 } else {
                     Yii::$app->session->setFlash('danger', 'There was a problem move the transaction. ' . $editParcelResponse['data']);
-
                 }
             }
             $companyAdapter = new CompanyAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
