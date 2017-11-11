@@ -1588,32 +1588,7 @@ class ShipmentsController extends BaseController
         return $this->render('validateparcels', ['numbers' => '', 'by' => 'reference number']);
     }
 
-    public function actionCanceltransactions()
-    {
-        $parcel = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        if (Yii::$app->request->isPost) {
-            $data = Yii::$app->request->post();
-            $accountId = Calypso::getValue($data, 'accountName');
-            $waybill = Calypso::getValue($data, 'waybills');
-            $waybills = explode("; ", $waybill);
-            foreach ($waybills as $wb)
-            {
-                $response = $parcel->getParcelByWayBillNumber($wb);
-                $response = new ResponseHandler($response);
-                if ($response->getStatus() == ResponseHandler::STATUS_OK) {
-                    $data = $response->getData();
-                    $data->setCompanyId($accountId);
-                    $data->save();
-                }
-            }
-        }
-            $companyAdapter = new CompanyAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $companies = $companyAdapter->getAllCompanies(['status' => ServiceConstant::ACTIVE]);
-        $viewBag = [
-            'companies' => $companies
-        ];
-        return $this->render('cancelTransactions', $viewBag);
-    }
+
 
 
 }

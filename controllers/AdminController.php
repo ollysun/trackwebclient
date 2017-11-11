@@ -1274,6 +1274,26 @@ class AdminController extends BaseController
     }
 
     /**
+     * @author Babatunde Otaru <tunde@cottacush.com>
+     * @param $waybill_number
+     * @return Response
+     */
+    public function actionCancelshipment($waybill_number)
+    {
+        $parcelAdapter = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $response = $parcelAdapter->cancel(['waybill_numbers' => $waybill_number]);
+        $response = new ResponseHandler($response);
+        if ($response->getStatus() == ResponseHandler::STATUS_OK) {
+            $this->flashSuccess('Shipment successfully marked as CANCELLED');
+        } else {
+            $this->flashError('An error occurred while trying to cancel shipment. #' . $response->getError());
+        }
+
+        return $this->redirect(Yii::$app->request->referrer);
+
+    }
+
+    /**
      * @return string
      *
      * @author Moses Olalere moses_olalere@superfluxnigeria.com
@@ -1317,16 +1337,57 @@ class AdminController extends BaseController
         return $this->render('repriceParcels', $viewBag);
     }
 
-    public function  getTypeValue($data)
+    /**
+     * @return string
+     *
+     * @author Moses Olalere moses_olalere@superfluxnigeria.com
+     */
+    public function actionCanceltransactions()
     {
-        foreach ($data as $key => $value)
-        {
-            if ($key === 'no_of_package' || $key === 'weight' || $key === 'amount_due')
-            {
-                $data[$key]= (integer) $value;
-            }
-        }
+        try {
+            $parcel = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+            if (Yii::$app->request->isPost) {
+                $postData = Yii::$app->request->post();
+                $waybill = Calypso::getValue($postData, 'waybills');
+                $waybillNumberArr = $parcel->sanitizeWaybillNumbers($waybill);
+                $waybillVal = '';
+                foreach ($waybillNumberArr as $val)
+                {
+                    $waybillVal = $val;
+                }
+                $payload = [];
+                $payload['waybill_numbers'] = $waybillVal;
+                $response = $parcel->cancel($payload);
+                $response = new ResponseHandler($response);
+                //$data = $response->getData();
 
-        return $data;
+                if ($response->getStatus() == ResponseHandler::STATUS_OK) {
+                    $data = $response->getData();
+                    if (is_array($data))
+                    {
+                        $bad = $data['bad_parcels'];
+                        foreach ($bad as $key => $val)
+                        {
+                            $this->flashSuccess("waybill No:  " . $key . "&nbsp&nbsp" . "cannot be canceled" . "<br/>");
+                        }
+                    }else{
+                        $this->flashSuccess("successful Canceled");
+                    }
+                } else {
+                    $this->flashError('An error occurred while trying to cancel shipment. #' . $response->getError());
+                }
+            }
+//            $companyAdapter = new CompanyAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+//            $companies = $companyAdapter->getAllCompanies(['status' => ServiceConstant::ACTIVE]);
+//            $viewBag = [
+//                'companies' => $companies
+//            ];
+            return $this->render('cancelTransactions');
+        }catch (\Exception $ex)
+        {
+            $this->flashError($ex->getLastErrorMessage());
+        }
     }
+
+
 }
