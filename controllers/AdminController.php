@@ -1357,9 +1357,9 @@ class AdminController extends BaseController
                 }
                 $payload = [];
                 $payload['waybill_numbers'] = $waybillVal;
+                $payload['enforce_action'] = 1;
                 $response = $parcel->cancel($payload);
                 $response = new ResponseHandler($response);
-                //$data = $response->getData();
 
                 if ($response->getStatus() == ResponseHandler::STATUS_OK) {
                     $data = $response->getData();
@@ -1368,10 +1368,10 @@ class AdminController extends BaseController
                         $bad = $data['bad_parcels'];
                         foreach ($bad as $key => $val)
                         {
-                            $this->flashSuccess("waybill No:  " . $key . "&nbsp&nbsp" . "cannot be canceled" . "<br/>");
+                            $this->flashSuccess("waybill No:  " . $key . "&nbsp&nbsp" . $val  . "<br/>");
                         }
-                    }else{
-                        $this->flashSuccess("successful Canceled");
+                    }else {
+                        $this->flashSuccess("Shipment Successful Cancelled");
                     }
                 } else {
                     $this->flashError('An error occurred while trying to cancel shipment. #' . $response->getError());
