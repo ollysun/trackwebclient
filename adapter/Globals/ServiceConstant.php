@@ -101,7 +101,7 @@ class ServiceConstant
     const URL_GET_BULK_SHIPMENT_TASKS = '/parcel/getbulkshipmenttasks';
     const URL_GET_BULK_SHIPMENT_TASK = '/parcel/getbulkshipmenttask';
     const URL_CREATE_BULK_WAYBILL_PRINTING_TASK = '/parcel/createbulkwaybillprintingtask';
-    const URL_UPDATE_COMPANY_ID = '/parcel/updateByCompanyId';
+    const URL_MOVE_PARCEL = '/parcel/moveParcel';
     const URL_REPRICE_COMPANY = '/parcel/repriceByCompany';
 
     const URL_GET_ALL_BANKS = 'bank/getAll/';

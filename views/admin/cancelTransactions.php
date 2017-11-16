@@ -30,6 +30,7 @@ $this->params['breadcrumbs'] = array(
                     <label for="">Waybill Numbers</label>
                     <span class="help-block">You can enter multple waybill no separated by commas (,) or newline</span>
                     <textarea name="waybills" class="form-control validate length"
+                              style="height: 30em;"
                               data-validate-length-type='word'
                               data-validate-max-length="100">
                     </textarea>
