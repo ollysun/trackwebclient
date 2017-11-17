@@ -29,6 +29,7 @@ use Adapter\Util\Response;
 use Adapter\AdminAdapter;
 use Adapter\UserAdapter;
 use Adapter\RouteAdapter;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 use Adapter\ParcelAdapter;
 
@@ -644,9 +645,11 @@ class AdminController extends BaseController
         if (Yii::$app->request->isPost) {
             $data = Yii::$app->request->post();
 
+            //dd(json_encode($data));
+
             // Edit Company
             $status = $companyAdapter->editCompany($data);
-
+           // dd($status);
             if ($status) {
                 $this->flashSuccess("Company edited successfully");
             } else {
@@ -1232,32 +1235,36 @@ class AdminController extends BaseController
         try {
             $parcel = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
             if (Yii::$app->request->isPost) {
-                $wayb = '';
                 $postData = Yii::$app->request->post();
-                $waybill = Calypso::getInstance()->getValue($postData, 'waybills');
+                $waybills = Calypso::getInstance()->getValue($postData, 'waybills');
                 $toCompanyId = Calypso::getInstance()->getValue($postData, 'companyId');
-                $waybillNumberArr = $parcel->sanitizeWaybillNumbers(trim($waybill));
-               // $companyBillingPlan = $billingPlan->getCompanyBillingPlans(['company_id' => $toCompanyId]);
-                foreach ($waybillNumberArr as $wb) {
-                    $parcelResponse = $parcel->getParcelByWayBillNumber($wb);
-                    $response = new ResponseHandler($parcelResponse);
+                if (is_null($toCompanyId)  || empty($waybills))
+                {
+                    $this->flashError("Enter the correct Company ID");
+                }elseif (!$waybills)
+                {
+                    $this->flashError("Please enter the waybill no");
+                }
+                    $payload = [];
+                    $payload['waybills'] = trim($waybills);
+                    $payload['toCompanyId'] = (int) $toCompanyId;
+                    $response = $parcel->moveParcel(json_encode($payload));
+                    $response = new ResponseHandler($response);
+                    if ($response->getStatus() == ResponseHandler::STATUS_OK) {
                         $data = $response->getData();
-                        $postData = [
-                          'id' => $data['id'],
-                          'company_id' => $toCompanyId
-                        ];
-                        $editParcelResponse = $parcel->updateParcelByCompanyId(json_encode($postData));
-                        if ($editParcelResponse['status'] === Response::STATUS_OK) {
-                                $wayb .= $wb . '&nbsp';
-                        }else{
-                             $wayb = null;
-                         }
-                }
-                if (!is_null($wayb)) {
-                    Yii::$app->session->setFlash('success', 'Transaction move successfully for  waybill '. $wayb );
-                } else {
-                    Yii::$app->session->setFlash('danger', 'There was a problem move the transaction. ' . $editParcelResponse['data']);
-                }
+                        if (is_array($data))
+                        {
+                            $bad = $data['bad_parcels'];
+                            $keys = implode(PHP_EOL, array_keys($bad));
+                            $values = implode(PHP_EOL, array_values($bad));
+                            $this->flashError( $keys . "<br/>" . $values);
+                        }else {
+                            $this->flashSuccess("Shipment Successful Cancelled");
+                        }
+                    } else {
+                        $this->flashError('An error occurred while trying to move shipment. #' . $response->getError());
+                    }
+
             }
             $companyAdapter = new CompanyAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
             $companies = $companyAdapter->getAllCompanies(['status' => ServiceConstant::ACTIVE]);
@@ -1306,7 +1313,6 @@ class AdminController extends BaseController
         }catch (\Exception $e)
         {
             $this->flashError($e->getLastErrorMessage());
-            //dd($e->getTraceAsString());
         }
 
         $viewBag = [
@@ -1317,16 +1323,44 @@ class AdminController extends BaseController
         return $this->render('repriceParcels', $viewBag);
     }
 
-    public function  getTypeValue($data)
+    /**
+     * @return string
+     *
+     * @author Moses Olalere moses_olalere@superfluxnigeria.com
+     */
+    public function actionCanceltransactions()
     {
-        foreach ($data as $key => $value)
-        {
-            if ($key === 'no_of_package' || $key === 'weight' || $key === 'amount_due')
-            {
-                $data[$key]= (integer) $value;
+        try {
+            $parcel = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+            if (Yii::$app->request->isPost) {
+                $postData = Yii::$app->request->post();
+                $waybills = Calypso::getInstance()->getValue($postData, 'waybills');
+                $payload = [];
+                $payload['waybills'] = trim($waybills);
+                $payload['enforce_action'] = 1;
+                $response = $parcel->cancel(json_encode($payload));
+                $response = new ResponseHandler($response);
+                if ($response->getStatus() == ResponseHandler::STATUS_OK) {
+                    $data = $response->getData();
+                    if (is_array($data))
+                    {
+                        $bad = $data['bad_parcels'];
+                        $keys = implode(PHP_EOL, array_keys($bad));
+                        $values = implode(PHP_EOL, array_values($bad));
+                        $this->flashError( $keys . "<br/>" . $values);
+                    }else {
+                        $this->flashSuccess("Shipment Successful Cancelled");
+                    }
+                } else {
+                    $this->flashError('An error occurred while trying to cancel shipment. #' . $response->getError());
+                }
             }
+            return $this->render('cancelTransactions');
+        }catch (\Exception $ex)
+        {
+            $this->flashError($ex);
         }
-
-        return $data;
     }
+
+
 }

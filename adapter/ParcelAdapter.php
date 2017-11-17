@@ -325,9 +325,9 @@ class ParcelAdapter extends BaseAdapter
         return $this->request(ServiceConstant::URL_MARK_AS_RETURNED, $data, self::HTTP_POST);
     }
 
-    public function updateParcelByCompanyId($postData)
+    public function moveParcel($postData)
     {
-        return $this->request(ServiceConstant::URL_UPDATE_COMPANY_ID, $postData, self::HTTP_POST);
+        return $this->request(ServiceConstant::URL_MOVE_PARCEL, $postData, self::HTTP_POST);
     }
 
     public function repriceCompany($data)
