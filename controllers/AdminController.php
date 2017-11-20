@@ -1259,7 +1259,7 @@ class AdminController extends BaseController
                             $values = implode(PHP_EOL, array_values($bad));
                             $this->flashError( $keys . "<br/>" . $values);
                         }else {
-                            $this->flashSuccess("Shipment Successful Cancelled");
+                            $this->flashSuccess("Shipment Successful Move");
                         }
                     } else {
                         $this->flashError('An error occurred while trying to move shipment. #' . $response->getError());
