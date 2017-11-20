@@ -332,11 +332,10 @@ class ParcelAdapter extends BaseAdapter
 
     public function repriceCompany($data)
     {
-        $filter = '?start_created_date=' . $data['from'];
+        $filter = '?reg_no='.$data['regNo'];
+        $filter .= '&start_created_date=' . $data['from'];
         $filter .= '&end_created_date='. $data['to'];
-        $filter .= '&reg_no='.$data['regNo'];
-
-        return $this->request(ServiceConstant::URL_REPRICE_COMPANY . $filter, [],self::HTTP_GET);
+        return $this->request(ServiceConstant::URL_REPRICE_COMPANY . $filter, array(),self::HTTP_GET);
     }
 
     public function getParcelsByPayment($waybill_number = null, $payment_type = null, $start_created_date, $end_created_date, $offset = 0, $count = 50, $with_total = null, $branch_id = null, $only_parents = null)

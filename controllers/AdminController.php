@@ -1301,7 +1301,6 @@ class AdminController extends BaseController
                     'from' => $fromDate,
                     'to' => $toDate
                 ];
-                //dd($getData);
                 $repriceResponse = $parcel->repriceCompany($getData);
                 if ($repriceResponse['status'] === Response::STATUS_OK) {
                     Yii::$app->session->setFlash('success', 'Reprice done  successfully.');
@@ -1312,7 +1311,7 @@ class AdminController extends BaseController
 
         }catch (\Exception $e)
         {
-            $this->flashError($e->getLastErrorMessage());
+            $this->flashError($e);
         }
 
         $viewBag = [
