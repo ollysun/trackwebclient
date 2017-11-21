@@ -27,17 +27,21 @@ $this->params['breadcrumbs'] = array(
 <div class="row">
     <form id="moveTransaction" method="post">
         <div id="cancelForm" class="form-group">
+            <span class="help-block">You can reprice using either registration Number or Invoice Number</span>
             <div class="pull-left">
                 <?= $this->render('../elements/reprice_filter',['from_date'=>$from_date,'to_date'=>$to_date]) ?>
             </div>
             <div class="row">
                 <div class="col-xs-12 col-sm-6">
                     <div class="form-group">
-                        <label for="">Registration Numbers</label>
-                        <textarea name="regNo" class="form-control validate length"
-                                  data-validate-length-type='word'
-                                  data-validate-max-length="50">
-                    </textarea>
+                        <div class="input-group input-group-sm input-group-search">
+                            <label for="regNo">Registration Number</label>
+                            <input id="regNo" type="text" name="regNo"
+                                   class="search-box form-control"><br>
+                            <label for="invoiceNo">Invoice Number</label>
+                            <input id="invoiceNo" type="text" name="invoiceNo"
+                                   class="search-box form-control">
+                        </div>
                     </div>
                     <div class="form-group">
                         <button type="submit" class="btn btn-primary">Submit</button>
