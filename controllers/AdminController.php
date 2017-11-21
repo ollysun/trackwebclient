@@ -1238,32 +1238,32 @@ class AdminController extends BaseController
                 $postData = Yii::$app->request->post();
                 $waybills = Calypso::getInstance()->getValue($postData, 'waybills');
                 $toCompanyId = Calypso::getInstance()->getValue($postData, 'companyId');
-                if (is_null($toCompanyId)  || empty($waybills))
+                if (!$toCompanyId)
                 {
                     $this->flashError("Enter the correct Company ID");
                 }elseif (!$waybills)
                 {
                     $this->flashError("Please enter the waybill no");
-                }
+                }else {
                     $payload = [];
                     $payload['waybills'] = trim($waybills);
-                    $payload['toCompanyId'] = (int) $toCompanyId;
+                    $payload['toCompanyId'] = (int)$toCompanyId;
                     $response = $parcel->moveParcel(json_encode($payload));
                     $response = new ResponseHandler($response);
                     if ($response->getStatus() == ResponseHandler::STATUS_OK) {
                         $data = $response->getData();
-                        if (is_array($data))
-                        {
+                        if (is_array($data)) {
                             $bad = $data['bad_parcels'];
                             $keys = implode(PHP_EOL, array_keys($bad));
                             $values = implode(PHP_EOL, array_values($bad));
-                            $this->flashError( $keys . "<br/>" . $values);
-                        }else {
-                            $this->flashSuccess("Shipment Successful Cancelled");
+                            $this->flashError($keys . "<br/>" . $values);
+                        } else {
+                            $this->flashSuccess("Shipment move successfully");
                         }
                     } else {
                         $this->flashError('An error occurred while trying to move shipment. #' . $response->getError());
                     }
+                }
 
             }
             $companyAdapter = new CompanyAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
@@ -1275,8 +1275,7 @@ class AdminController extends BaseController
 
         }catch (\Exception $e)
         {
-            $this->flashError($e->getLastErrorMessage());
-            //dd($e->getTraceAsString());
+            $this->flashError($e->getMessage());
         }
     }
 
@@ -1294,24 +1293,32 @@ class AdminController extends BaseController
             if (Yii::$app->request->isPost) {
                 $postData = Yii::$app->request->post();
                 $regNo = Calypso::getInstance()->getValue($postData, 'regNo');
+                $invoiceNo = Calypso::getInstance()->getValue($postData, 'invoiceNo');
                 $fromDate = Calypso::getInstance()->getValue($postData, 'from_date');
                 $toDate = Calypso::getInstance()->getValue($postData, 'to_date');
-                $getData = [
-                    'regNo' => trim($regNo),
-                    'from' => $fromDate,
-                    'to' => $toDate
-                ];
-                $repriceResponse = $parcel->repriceCompany($getData);
-                if ($repriceResponse['status'] === Response::STATUS_OK) {
-                    Yii::$app->session->setFlash('success', 'Reprice done  successfully.');
-                } else {
-                    Yii::$app->session->setFlash('danger', 'There was a problem doing repricing. ' . $repriceResponse);
+                if (!$regNo)
+                {
+                    $this->flashError("Please enter registration Number or Invoice Number");
+                }else{
+                    $postData = [
+                        'regNo' => trim($regNo),
+                        'from' => $fromDate,
+                        'to' => $toDate,
+                        'invoiceNo' => trim($invoiceNo)
+                    ];
+                    $repriceResponse = $parcel->repriceCompany(json_encode($postData));
+                    if ($repriceResponse['status'] === Response::STATUS_OK) {
+                        Yii::$app->session->setFlash('success', 'Reprice done  successfully.');
+                    } else {
+                        Yii::$app->session->setFlash('danger', 'Error doing repricing ' . $repriceResponse['message'] );
+                    }
                 }
+
             }
 
         }catch (\Exception $e)
         {
-            $this->flashError($e);
+            $this->flashError($e->getMessage());
         }
 
         $viewBag = [
@@ -1334,30 +1341,34 @@ class AdminController extends BaseController
             if (Yii::$app->request->isPost) {
                 $postData = Yii::$app->request->post();
                 $waybills = Calypso::getInstance()->getValue($postData, 'waybills');
-                $payload = [];
-                $payload['waybills'] = trim($waybills);
-                $payload['enforce_action'] = 1;
-                $response = $parcel->cancel(json_encode($payload));
-                $response = new ResponseHandler($response);
-                if ($response->getStatus() == ResponseHandler::STATUS_OK) {
-                    $data = $response->getData();
-                    if (is_array($data))
-                    {
-                        $bad = $data['bad_parcels'];
-                        $keys = implode(PHP_EOL, array_keys($bad));
-                        $values = implode(PHP_EOL, array_values($bad));
-                        $this->flashError( $keys . "<br/>" . $values);
-                    }else {
-                        $this->flashSuccess("Shipment Successful Cancelled");
+                if (!$waybills)
+                {
+                    $this->flashError('Please enter the waybill Number(s) for cancellation');
+                }else {
+                    $payload = [];
+                    $payload['waybills'] = trim($waybills);
+                    $payload['enforce_action'] = 1;
+                    $response = $parcel->cancel(json_encode($payload));
+                    $response = new ResponseHandler($response);
+                    if ($response->getStatus() == ResponseHandler::STATUS_OK) {
+                        $data = $response->getData();
+                        if (is_array($data)) {
+                            $bad = $data['bad_parcels'];
+                            $keys = implode(PHP_EOL, array_keys($bad));
+                            $values = implode(PHP_EOL, array_values($bad));
+                            $this->flashError($keys . "<br/>" . $values);
+                        } else {
+                            $this->flashSuccess("Shipment cancelled successfully");
+                        }
+                    } else {
+                        $this->flashError('An error occurred while trying to cancel shipment. #' . $response->getError());
                     }
-                } else {
-                    $this->flashError('An error occurred while trying to cancel shipment. #' . $response->getError());
                 }
             }
             return $this->render('cancelTransactions');
         }catch (\Exception $ex)
         {
-            $this->flashError($ex);
+            $this->flashError($ex->getMessage());
         }
     }
 
