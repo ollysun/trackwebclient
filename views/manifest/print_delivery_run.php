@@ -18,7 +18,7 @@ use Adapter\Globals\ServiceConstant;
     <?php for ($j = 0; $j < $numberOfSheets; $j++): ?>
     <div class="manifest">
         <div class="manifest-header">
-            <?= Html::img('@web/img/tnt-cp-logo.png', ['class' => 'logo pull-left']) ?>
+            <?= Html::img('@web/img/courier-logo.png', ['class' => 'logo pull-left']) ?>
             <h3 class="pull-right manifest-title">SHIPMENT DELIVERY RECORD</h3>
         </div>
         <div class="manifest-header-box text-uppercase clearfix">
