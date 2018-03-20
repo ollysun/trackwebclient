@@ -18,6 +18,8 @@ abstract class BaseAdapter
     protected $_curlagent = null;
     protected $_client_id;
     protected $_access_token;
+    protected $_reg_no;
+    protected $_private_key;
     protected $_response_as_json;
     protected $_use_root_path;
     protected $lastErrorMessage;
@@ -29,6 +31,22 @@ abstract class BaseAdapter
         $this->_access_token = $access_token;
         $this->_response_as_json = $response_as_json;
         $this->_use_root_path = $use_root_path;
+    }
+
+    /**
+     * @param mixed $private_key
+     */
+    public function setPrivateKey($private_key)
+    {
+        $this->_private_key = $private_key;
+    }
+
+    /**
+     * @param mixed $reg_no
+     */
+    public function setRegNo($reg_no)
+    {
+        $this->_reg_no = $reg_no;
     }
 
     /**
@@ -155,10 +173,14 @@ abstract class BaseAdapter
         if (is_null($this->_curlagent)) {
             $this->_curlagent = new CurlAgent('', true);
         }
-        if ($this->_access_token != null && !$this->_curlagent->getHeaders()) {
-            $this->_curlagent->setHeader('i', $this->_client_id);
-            $this->_curlagent->setHeader('a', $this->_access_token);
-        }
+            if ($this->_access_token != null && !$this->_curlagent->getHeaders()) {
+                $this->_curlagent->setHeader('i', $this->_client_id);
+                $this->_curlagent->setHeader('a', $this->_access_token);
+            }
+            if ($this->_reg_no != null && !$this->_curlagent->getHeaders()) {
+                $this->_curlagent->setHeader('r', $this->_reg_no);
+                $this->_curlagent->setHeader('p', $this->_private_key);
+            }
 
         $url = trim($url);
         if ($this->_use_root_path) {

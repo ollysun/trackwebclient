@@ -15,16 +15,22 @@ class StocksController extends ApiBaseController
 {
     public function actionGetall(){
         $adapter = new WmsAdapter();
+        $adapter->setRegNo(Yii::$app->request->get('registration_number'));
+        $adapter->setPrivateKey(Yii::$app->request->get('private_key'));
         return $this->sendSuccessResponse($adapter->getStocks($this->getPrivateKey()));
     }
 
     public function actionGetstockbysku(){
         $adapter = new WmsAdapter();
+        $adapter->setRegNo(Yii::$app->request->get('registration_number'));
+        $adapter->setPrivateKey(Yii::$app->request->get('private_key'));
         return $this->sendSuccessResponse($adapter->getStockBySku($this->getPrivateKey(), $this->get('sku')));
     }
 
     public function actionGetbylocation(){
         $adapter = new WmsAdapter();
+        $adapter->setRegNo(Yii::$app->request->get('registration_number'));
+        $adapter->setPrivateKey(Yii::$app->request->get('private_key'));
         $location = $this->get('location');
         if($location == null) return $this->sendErrorResponse('Location is required', self::BadRequest);
         return $this->sendSuccessResponse($adapter->getStocksByLocation($this->getPrivateKey(), $location));
@@ -37,13 +43,19 @@ class StocksController extends ApiBaseController
             return $this->sendErrorResponse('Location and sku are required', self::BadRequest);
         }
         $adapter = new WmsAdapter();
+        $adapter->setRegNo(Yii::$app->request->get('registration_number'));
+        $adapter->setPrivateKey(Yii::$app->request->get('private_key'));
         return $this->sendSuccessResponse($adapter->getStocksBySkuAndLocation($this->getPrivateKey(), $sku, $location));
     }
 
     public function actionGetreceivedstocksbyref(){
         $ref = $this->get('reference_number');
         if(empty($ref)) return $this->sendErrorResponse('Ref is required', self::BadRequest);
-        return $this->sendSuccessResponse((new WmsAdapter())->callApi('receivebyref',
+
+        $adapter = new WmsAdapter();
+        $adapter->setRegNo(Yii::$app->request->get('registration_number'));
+        $adapter->setPrivateKey(Yii::$app->request->get('private_key'));
+        return $this->sendSuccessResponse($adapter->callApi('receivebyref',
             ['key' => $this->getPrivateKey(), 'ref' => $ref]));
     }
 

@@ -37,6 +37,8 @@ class ParcelController extends ApiBaseController
     public function actionGet(){
         $waybill_number = \Yii::$app->request->get('waybill_number');
         $parcelAdapter = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $parcelAdapter->setRegNo(Yii::$app->request->get('registration_number'));
+        $parcelAdapter->setPrivateKey(Yii::$app->request->get('private_key'));
 
         $response = $parcelAdapter->getParcelByWayBillNumber($waybill_number);
         $response = new ResponseHandler($response);
@@ -111,6 +113,9 @@ class ParcelController extends ApiBaseController
         $filters['company_id'] = Calypso::getValue(Calypso::getInstance()->session('user_session'), 'company_id');
 
         $parcelAdapter = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $parcelAdapter->setRegNo(Yii::$app->request->get('registration_number'));
+        $parcelAdapter->setPrivateKey(Yii::$app->request->get('private_key'));
+
         $filtered_parcels = $parcelAdapter->getParcelsByFilters(array_filter($filters, 'strlen'));
 
         //dd($filtered_parcels);
@@ -156,6 +161,8 @@ class ParcelController extends ApiBaseController
         }
 
         $parcelAdapter = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $parcelAdapter->setRegNo(Yii::$app->request->get('registration_number'));
+        $parcelAdapter->setPrivateKey(Yii::$app->request->get('private_key'));
 
         $response = $parcelAdapter->createNewParcelFromApi($data);
         $response = new ResponseHandler($response);
@@ -175,6 +182,9 @@ class ParcelController extends ApiBaseController
             return $this->sendErrorResponse('Invalid waybill number', self::BadRequest);
         }
         $adapter = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $adapter->setRegNo(Yii::$app->request->get('registration_number'));
+        $adapter->setPrivateKey(Yii::$app->request->get('private_key'));
+
         $response = new ResponseHandler($adapter->getParcelStatusForApi($waybill_number));
 
         if(!$response->isSuccess()){
@@ -189,6 +199,9 @@ class ParcelController extends ApiBaseController
             return $this->sendErrorResponse('Invalid waybill number', self::BadRequest);
         }
         $adapter = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
+        $adapter->setRegNo(Yii::$app->request->get('registration_number'));
+        $adapter->setPrivateKey(Yii::$app->request->get('private_key'));
+
         $response = new ResponseHandler($adapter->getParcelHistoriesForApi($waybill_number));
 
         if(!$response->isSuccess()){
