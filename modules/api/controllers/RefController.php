@@ -20,8 +20,8 @@ class RefController extends ApiBaseController
     public function actionGetcountries(){
         $refAdapter = new RefAdapter();
 
-        $refAdapter->setRegNo(Yii::$app->request->get('registration_number'));
-        $refAdapter->setPrivateKey(Yii::$app->request->get('private_key'));
+        $refAdapter->setRegNo($this->get('registration_number'));
+        $refAdapter->setPrivateKey($this->get('private_key'));
 
         $response = new ResponseHandler($refAdapter->getCountries());
         return $response->isSuccess()?$this->sendSuccessResponse($response->getData()):$this->sendErrorResponse('Error in loading countries', self::InternalError);
@@ -29,8 +29,8 @@ class RefController extends ApiBaseController
 
     public function actionGetstates($country_id = 1){
         $refAdapter = new RefAdapter();
-        $refAdapter->setRegNo(Yii::$app->request->get('registration_number'));
-        $refAdapter->setPrivateKey(Yii::$app->request->get('private_key'));
+        $refAdapter->setRegNo($this->get('registration_number'));
+        $refAdapter->setPrivateKey($this->get('private_key'));
 
         $response = new ResponseHandler($refAdapter->getStates($country_id));
         return $response->isSuccess()?$this->sendSuccessResponse($response->getData()):$this->sendErrorResponse('Error in loading states', self::InternalError);
@@ -38,8 +38,8 @@ class RefController extends ApiBaseController
 
     public function actionGetcities($state_id = null){
         $regionAdapter = new RegionAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $regionAdapter->setRegNo(Yii::$app->request->get('registration_number'));
-        $regionAdapter->setPrivateKey(Yii::$app->request->get('private_key'));
+        $regionAdapter->setRegNo($this->get('registration_number'));
+        $regionAdapter->setPrivateKey($this->get('private_key'));
         $response = new ResponseHandler($regionAdapter->getAllCity(1, 0, $state_id, 0));
         return $response->isSuccess()?$this->sendSuccessResponse($response->getData()):
             $this->sendErrorResponse('Error in loading cities '.$response->getError(), self::InternalError);
@@ -47,8 +47,8 @@ class RefController extends ApiBaseController
 
     public function actionGethubs(){
         $hubAdp = new BranchAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
-        $hubAdp->setRegNo(Yii::$app->request->get('registration_number'));
-        $hubAdp->setPrivateKey(Yii::$app->request->get('private_key'));
+        $hubAdp->setRegNo($this->get('registration_number'));
+        $hubAdp->setPrivateKey($this->get('private_key'));
         $hubs = $hubAdp->getHubs();
         $hubs = new ResponseHandler($hubs);
         dd($hubs);
