@@ -19,12 +19,15 @@ class BulkWaybillPrinting
     const QTY_METRICS_WEIGHT = 'weight';
     public function createPdf(array $waybill_numbers)
     {
-      //  $waybill_numbers=['1N22701012624','1N22701012625','2N14301012626'];
-       $waybills_html = '';
+        //  $waybill_numbers=['1N22701012624','1N22701012625','2N14301012626'];
+        $waybills_html = '';
         foreach ($waybill_numbers as $waybill_number) {
             //print 'Printing ' . $waybill_number . '...' . "\n";
             $waybills_html .= $this->getWaybillHtml($waybill_number);
         }
+
+        echo $waybills_html;
+        dd('');
 
         $pdf = new Pdf([
             'ignoreWarnings' => true,
@@ -36,14 +39,14 @@ class BulkWaybillPrinting
         $waybill_layout = file_get_contents(dirname(__DIR__) . '/html/bulk_waybill_layout.html');
         $html_content = Util::replaceTemplate($waybill_layout, ['content' => $waybills_html]);
         //echo $html_content;
-		//return;
+        //return;
         $pdf->addPage($html_content);
         //dd($pdf);
         $result = $pdf->send('printout.pdf', true);
-           /* if (!$pdf->saveAs('s3://' . self::S3_BUCKET_BULK_WAYBILLS . '/' . $namespace . '/waybills_task_' . $this->data->bulk_shipment_task_id . '.pdf')) {
-                print $pdf->getError() . "\n";
-                return false;
-            }*/
+        /* if (!$pdf->saveAs('s3://' . self::S3_BUCKET_BULK_WAYBILLS . '/' . $namespace . '/waybills_task_' . $this->data->bulk_shipment_task_id . '.pdf')) {
+             print $pdf->getError() . "\n";
+             return false;
+         }*/
         if(!$result){
             echo $pdf->getError();
         }
@@ -80,6 +83,7 @@ class BulkWaybillPrinting
     {
         $generator = new BarcodeGeneratorHTML();
         $barCodeData = $generator->getBarcode($parcel['waybill_number'], BarcodeGeneratorHTML::TYPE_CODE_128, 2, 78);
+
         return [
             'waybill_number' => Util::humanizeWaybillNumber($parcel['waybill_number']),
             'sender_name' => $parcel['sender']['firstname'] . ' ' . $parcel['sender']['lastname'],
@@ -106,7 +110,8 @@ class BulkWaybillPrinting
             'weight' => ($parcel['qty_metrics'] == self::QTY_METRICS_WEIGHT) ? Util::formatWeight($parcel['weight']) . 'Kg' : '',
             'pieces' => ($parcel['qty_metrics'] == self::QTY_METRICS_PIECES) ? $parcel['weight'] : '',
             'service_types' => $this->getServiceTypeHtml($parcel['shipping_type']),
-            'parcel_type' => $this->getShippingTypes()[$parcel['parcel_type']],
+            'parcel_type' => (is_array($this->getShippingTypes()) && array_key_exists($parcel['parcel_type'], $this->getShippingTypes()))?
+                $this->getShippingTypes()[$parcel['parcel_type']]:'Special Project',
             'cod_yes' => (($parcel['cash_on_delivery'] == '1') ? 'is-active' : ''),
             'cod_no' => (($parcel['cash_on_delivery'] == '1') ? '' : 'is-active'),
             'cod_amt' => Util::formatCurrency($parcel['delivery_amount']),
