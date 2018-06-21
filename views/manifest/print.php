@@ -6,11 +6,9 @@ use yii\web\View;
 
 $this->title = (empty($manifest))? '': 'Manifest'.$manifest['id'];
 ?>
-
 <?= Html::cssFile('@web/css/compiled/print-manifest.css') ?>
 
 <?php echo Calypso::showFlashMessages(); ?>
-
 <?php if(!empty($manifest)):?>
 <div class="manifest">
 	<div class="manifest-header">
