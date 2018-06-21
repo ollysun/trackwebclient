@@ -58,7 +58,8 @@ $this->title = (empty($manifest))? '': 'Manifest'.$manifest['id'];
 			<thead>
 				<tr>
 					<th width="16%">WAYBILL NO</th>
-					<th width="16%">DESTINATION</th>
+                    <th width="16%">REFERENCE NO</th>
+                    <th width="16%">DESTINATION</th>
 					<th width="8%">PCS</th>
 					<th width="8%">WT</th>
 					<th width="16%">SHIPPER</th>
@@ -75,7 +76,8 @@ $this->title = (empty($manifest))? '': 'Manifest'.$manifest['id'];
 				?>
 				<tr>
 					<td><?= Calypso::getValue($parcel, 'waybill_number')?></td>
-					<td><?= strtoupper(Calypso::getValue($parcel, 'destination_name'))?> (<?= strtoupper(Calypso::getValue($parcel, 'destination_code'))?>)</td>
+                    <td><?= Calypso::getValue($parcel, 'reference_number')?></td>
+                    <td><?= strtoupper(Calypso::getValue($parcel, 'destination_name'))?> (<?= strtoupper(Calypso::getValue($parcel, 'destination_code'))?>)</td>
 					<td><?= Calypso::getValue($parcel, 'no_of_package')?></td>
 					<td><?= Calypso::getValue($parcel, 'weight')?> KG</td>
 					<td><?= ucwords(Calypso::getValue($parcel, 'shipper_firstname') . ' ' .  Calypso::getValue($parcel, 'shipper_lastname'))?></td>
