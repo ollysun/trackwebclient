@@ -51,6 +51,7 @@ class ServiceConstant
     const MANIFEST_HAS_ISSUE = 22;
     const RETURNED = 23;
     const CREATED_BUT_WITH_CUSTOMER = 24;
+    const CLAIMS = 28;
 
     const URL_ADD_PARCEL = 'parcel/add/';
     const URL_ADD_PARCEL_From_API = 'parcel/addFromApi/';
@@ -212,6 +213,8 @@ class ServiceConstant
     const URL_INTL_EDIT_PRICE = 'intl/editprice';
     const URL_INTL_ADD_PRICE = 'intl/saveTariff';
     const URL_INTL_DELETE_TARIFF = 'intl/deletetariff';
+    const URL_INTL_DELETE_WEIGHT = 'intl/delete';
+
 
 
     //transit time
@@ -476,6 +479,9 @@ class ServiceConstant
             case ServiceConstant::TELLER_DECLINED:
                 return 'Teller Declined';
             break;
+            case ServiceConstant::CLAIMS:
+                return 'Shipment Claimed';
+                break;
         }
     }
 

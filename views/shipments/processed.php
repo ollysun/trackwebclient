@@ -146,6 +146,9 @@ $this->params['content_header_button'] = $this->render('../elements/content_head
                                         <button title="Clone this shipment"
                                                 data-href="<?= Url::toRoute(['/parcels/new?id=' . $parcel['id']]) ?>"
                                                 class="btn btn-xs btn-info btnClone"><i class="fa fa-copy"></i></button>
+                                    <?php elseif(!ParcelAdapter::isBag($parcel['waybill_number']) && in_array($this->context->userData['role_id'], [ServiceConstant::USER_TYPE_COMPANY_ADMIN])): ?>
+                                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal"
+                                                data-target="#cloneModal">Clone Shipment</button>
                                     <?php endif; ?>
                                     <?= $this->render('../elements/parcel/partial_return_button', ['parcel' => $parcel, 'reasons_list' => $reasons_list]) ?>
                                 </td>
@@ -274,6 +277,32 @@ $this->params['content_header_button'] = $this->render('../elements/content_head
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" id="modal_cancel_btn" data-dismiss="modal">Cancel</button>
                     <button type="button" class="btn btn-primary" id="modal_create_btn" >Create</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="modal fade" id="cloneModal" tabindex="-1" role="dialog" aria-labelledby="cloneModal">
+    <div class="modal-dialog" role="document">
+        <form>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Clone Shipments</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <h3>What action do you want to Perform?</h3>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" id="modal_cancel_btn">Clone and cancel</button>
+                    <button type="button" class="btn btn-primary" id="modal_create_btn" >Clone Only</button>
+                    <?php if (in_array($this->context->userData['role_id'], [ServiceConstant::USER_TYPE_COMPANY_ADMIN])): ?>
+                        <button type="button" class="btn btn-primary" id="modal_create_btn" >Edit</button>
+                    <?php endif; ?>
                 </div>
             </div>
         </form>

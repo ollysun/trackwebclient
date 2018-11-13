@@ -186,7 +186,8 @@ class ParcelAdapter extends BaseAdapter
         return $this->request(ServiceConstant::URL_GET_ALL_PARCEL . '?' . $params, array(), self::HTTP_GET);
     }
 
-    public function getSearchParcels($status, $waybill_number, $offset = 0, $count = 50, $with_total = null, $branch_id = null, $only_parents = null, $with_created_branch = true)
+    public function getSearchParcels($status, $waybill_number, $offset = 0, $count = 50, $with_total = null, $branch_id = null,
+                                     $only_parents = null, $with_created_branch = true)
     {
         $filters = array(
             'with_parcel_comment' => 1,
@@ -197,7 +198,8 @@ class ParcelAdapter extends BaseAdapter
             'branch_id' => $branch_id,
             'with_sender' => 1,
             'with_created_branch' => $with_created_branch,
-            'with_receiver' => 1, 'with_receiver_address' => 1,
+            'with_receiver' => 1,
+            'with_receiver_address' => 1,
             'with_to_branch' => 1,
             'with_route' => 1,
             'offset' => $offset,
@@ -439,7 +441,7 @@ class ParcelAdapter extends BaseAdapter
 
     public function cancel($postData)
     {
-        return $this->request(ServiceConstant::URL_CANCEL_PARCEL, $postData, self::HTTP_POST);
+        return $this->request(ServiceConstant::URL_CANCEL_PARCEL, json_encode($postData), self::HTTP_POST);
     }
 
     public function createBag($postData)
@@ -496,13 +498,16 @@ class ParcelAdapter extends BaseAdapter
      * @author Olawale Lawal <wale@cottacush.com>
      * @param $waybill_numbers
      * @param $comment
-     * @param $attempted_delivery
-     * @param $extra_note
+     * @param int $attempted_delivery
+     * @param string $extra_note
+     * @param int $claim
      * @return array|mixed|string
      */
-    public function sendReturnRequest($waybill_numbers, $comment, $attempted_delivery = 0, $extra_note = '')
+    public function sendReturnRequest($waybill_numbers, $comment, $attempted_delivery = 0, $extra_note = '', $claim = 0)
     {
-        return $this->request(ServiceConstant::URL_SET_RETURN_FLAG, ['waybill_numbers' => $waybill_numbers, 'comment' => $comment, 'attempted_delivery' => $attempted_delivery, 'extra_note' => $extra_note], self::HTTP_POST);
+        return $this->request(ServiceConstant::URL_SET_RETURN_FLAG, ['waybill_numbers' => $waybill_numbers,
+            'comment' => $comment, 'attempted_delivery' => $attempted_delivery,
+            'extra_note' => $extra_note, 'claim' => $claim], self::HTTP_POST);
     }
 
     public function removeNegativeStatus($waybill_number){

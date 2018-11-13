@@ -234,6 +234,9 @@ class ParcelService
 
         //pick up
         $parcel['pickup_date'] = Calypso::getValue($data, 'pickup_date', null);
+        if (!isset($parcel['pickup_date'])) {
+            $error[] = "PickUp Date cannot be empty";
+        }
 
         $parcel['parcel_type'] = Calypso::getValue($data, 'parcel_type');
         $parcel['no_of_package'] = Calypso::getValue($data, 'no_of_packages');

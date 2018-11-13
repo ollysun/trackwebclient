@@ -371,12 +371,15 @@ class Calypso
                 ['finance/*', 'billing/*', 'admin/*']
                 , self::getCorporateRoutes()),
             ServiceConstant::USER_TYPE_SWEEPER => array_merge(
-                ['site/index', 'site/newparcel', 'shipments/bulk', 'manifest/index', 'shipments/dispatched', 'shipments/returned', 'shipments/fordelivery', 'finance/*', 'billing/*', 'admin/*', 'corporate/request/pending',
-                    'hubs/hubarrival', 'hubs/destination', 'hubs/destination-groundsman', 'hubs/expected', 'hubs/draftsortings', 'hubs/hubdispatch'
+                ['site/index', 'site/newparcel', 'shipments/bulk', 'manifest/index', 'shipments/dispatched',
+                    'shipments/returned', 'shipments/fordelivery', 'finance/*', 'billing/*', 'admin/*', 'corporate/request/pending',
+                    'hubs/hubarrival', 'hubs/destination', 'hubs/destination-groundsman', 'hubs/expected',
+                    'hubs/draftsortings', 'hubs/hubdispatch'
                 ]
                 , self::getCorporateRoutes()),
             ServiceConstant::USER_TYPE_DISPATCHER => array_merge(
-                ['site/*', 'manifest/index', 'shipments/dispatched', 'shipments/returned', 'shipments/fordelivery', 'hubs/*', 'finance/*', 'billing/*', 'admin/*', 'corporate/request/pending']
+                ['site/*', 'manifest/index', 'shipments/dispatched', 'shipments/returned', 'shipments/fordelivery',
+                    'hubs/*', 'finance/*', 'billing/*', 'admin/*', 'corporate/request/pending']
                 , self::getCorporateRoutes()
             ),
             ServiceConstant::USER_TYPE_GROUNDSMAN => array_merge([
@@ -407,7 +410,9 @@ class Calypso
                 'site/newparcel'
             ],
             ServiceConstant::USER_TYPE_SALES_AGENT => array_merge([
-                'finance/*', 'billing/*', 'admin/*', 'manifest/*', 'shipments/dispatched', 'shipments/delivered', 'shipments/returned', 'shipments/fordelivery', 'hubs/*', 'corporate/users'
+                'finance/*', 'billing/*', 'admin/*', 'manifest/*', 'shipments/dispatched',
+                'shipments/delivered', 'shipments/returned',
+                'shipments/fordelivery', 'hubs/*', 'corporate/users'
             ], self::getCorporateRoutes()),
 
             ServiceConstant::USER_TYPE_REGIONAL_MANAGER => self::getCorporateRoutes(),

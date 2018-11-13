@@ -54,8 +54,10 @@ class WeightRangeAdapter extends BaseAdapter
     /**
      * Delete's a weight range
      * @author Adegoke Obasa <goke@cottacush.com>
-     * @param $weightRangeId
+     * @param $weightRangeIds
+     * @param string $force_delete
      * @return bool
+     * @internal param $weightRangeId
      */
     public function deleteRanges($weightRangeIds, $force_delete = '0')
     {

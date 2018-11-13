@@ -377,13 +377,15 @@ class ShipmentsController extends BaseController
         if (\Yii::$app->request->isPost) {
             $records = \Yii::$app->request->post();
             if ($records['task'] == 'cancel_shipment') {
-                $response = $parcel->cancel($records);
+                $data['waybills'] = $records['waybill_numbers'];
+                $data['enforce_action']= 1;
+                $response = $parcel->cancel($data);
                 $response = new ResponseHandler($response);
-
+                //dd($response);
                 if ($response->getStatus() == ResponseHandler::STATUS_OK) {
                     $this->flashSuccess('Shipment successfully marked as CANCELLED');
                 } else {
-                    $this->flashError('An error occurred while trying to cancel shipment. #' . $response->getError());
+                    $this->flashError($response->getError());
                 }
             } elseif ($records['task'] == 'submit_teller') {
                 if (!isset($records['bank_id'], $records['account_no'], $records['amount_paid'], $records['teller_no'], $records['waybill_numbers'])) {
@@ -417,14 +419,17 @@ class ShipmentsController extends BaseController
             $search_action = true;
 
         } elseif (!empty(Calypso::getInstance()->get()->search)) {  //check if not empty criteria
-            $search = Calypso::getInstance()->get()->search;
-            $response = $parcel->getSearchParcels(null, $search, $offset, $this->page_width, 1, $this->branch_to_view, 1, null);
+            $searchButton = Calypso::getInstance()->get()->search;
+            $response = $parcel->getSearchParcels(null, $searchButton, $offset, $this->page_width,
+                0, $this->branch_to_view, 1, null);
+            //dd($response);
             $search_action = true;
             $filter = null;
 
         } else {
             //$response = $parcel->getNewParcelsByDate(date('Y-m-d'),$offset,$this->page_width, 1, $this->branch_to_view, 1);
-            $response = $parcel->getNewParcelsByDate(date('Y-m-d 00:00:00', strtotime('now')), $offset, $this->page_width, 1, $this->branch_to_view, 1);
+            $response = $parcel->getNewParcelsByDate(date('Y-m-d 00:00:00', strtotime('now')),
+                $offset, $this->page_width, 1, $this->branch_to_view, 1);
             $search_action = false;
             $filter = null;
         }
@@ -441,7 +446,9 @@ class ShipmentsController extends BaseController
         $reasons_list = $parcel->getParcelReturnReasons(); // get all reason
 
 
-        return $this->render('processed', array('reasons_list' => $reasons_list, 'filter' => $filter, 'parcels' => $data, 'from_date' => $from_date, 'to_date' => $to_date, 'offset' => $offset, 'page_width' => $this->page_width, 'search' => $search_action, 'total_count' => $total_count, 'banks' => $banks));
+        return $this->render('processed', array('reasons_list' => $reasons_list, 'filter' => $filter,
+            'parcels' => $data, 'from_date' => $from_date, 'to_date' => $to_date, 'offset' => $offset,
+            'page_width' => $this->page_width, 'search' => $search_action, 'total_count' => $total_count, 'banks' => $banks));
     }
 
     public function actionRequestreturn()
@@ -453,12 +460,19 @@ class ShipmentsController extends BaseController
                 if (!isset($records['waybill_numbers']) && !isset($records['comment'])) {
                     $this->flashError("Invalid parameter(s) sent!");
                 } else {
-                    $result = $parcel->sendReturnRequest($records['waybill_numbers'], $records['comment'], $records['attempted_delivery'], $records['extra_note']);
+                    if (strcasecmp($records['comment'] , 'CLAIMS') == 0)
+                    {
+                        $records['claim'] = 1;
+                    }else{
+                        $records['claim'] = 0;
+                    }
+                    $result = $parcel->sendReturnRequest($records['waybill_numbers'],
+                        $records['comment'], $records['attempted_delivery'], $records['extra_note'], $records['claim']);
                     $response = new ResponseHandler($result);
-
+                    
                     if ($response->getStatus() == ResponseHandler::STATUS_OK) {
                         $data = $response->getData();
-                        if (empty($data['bad_parcels']))
+                        if (sizeof($data['bad_parcels']) == 0)
                             $this->flashSuccess('Negative status added');
                         else {
                             $bad_parcels = $data['bad_parcels'];
@@ -502,16 +516,13 @@ class ShipmentsController extends BaseController
 
     public function actionCancel()
     {
-
         $rawBody = \Yii::$app->request->getRawBody();
         $payload = json_decode($rawBody, true);
         $parcel = new ParcelAdapter(RequestHelper::getClientID(), RequestHelper::getAccessToken());
         $response = $parcel->cancel($payload);
         $response = new ResponseHandler($response);
-
         if ($response->getStatus() == ResponseHandler::STATUS_OK) {
             return $this->sendSuccessResponse('Shipment successfully marked as CANCELLED');
-
         } else {
             $errorMessage = 'An error occurred while trying to cancel shipment. #' . $response->getError();
             return $this->sendErrorResponse($errorMessage, HttpStatusCodes::HTTP_200);

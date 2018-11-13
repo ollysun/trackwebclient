@@ -141,7 +141,7 @@ $(document).ready(function () {
                     callback: function () {
                         cloneShipment($(self), false)
                     }
-                },
+                }
                 edit: {
                     label: "Edit",
                     className: "btn-default",

@@ -19,7 +19,8 @@ $this->title = 'Tracking Portal';
         //Please wrap for loop around .tracking-item
         $is_first_parcel = true;
         foreach ($tracking_info_list as $key => $value):
-            $tracking_info = $tracking_info_list[$key];
+           // $tracking_info = $tracking_info_list[$key];
+            $tracking_info = $value;
             $current_state_info = $current_state_info_list[$key];
         ?>
 
@@ -107,7 +108,9 @@ $this->title = 'Tracking Portal';
                         </div>
                     <?php endif; ?>
 
-                    <?php if (!in_array(Calypso::getValue($info, 'to_branch.id'), $points)): ?>
+                    <?php if (!in_array(Calypso::getValue($info, 'to_branch.id'), $points)):
+
+                        ?>
                         <?php if (in_array(Calypso::getValue($info, 'type'), ['transitional'])): ?>
                             <div class="tracking-location in-transit">
                                 <?php if (Calypso::getValue($info, 'to_branch.branch_type') == BranchAdapter::BRANCH_TYPE_EC): ?>
@@ -156,7 +159,8 @@ $this->title = 'Tracking Portal';
                     <?php
                     $points[] = $info['from_branch']['id'];
                     $points[] = $info['to_branch']['id'];
-                endforeach ?>
+                endforeach;
+                ?>
                 <div
                     <?php
                     if (Calypso::getValue($current_state_info, 'status') == ServiceConstant::BEING_DELIVERED) {

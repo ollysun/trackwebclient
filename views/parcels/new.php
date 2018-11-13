@@ -221,13 +221,14 @@ $is_admin = isset($branch['branch_type']) && $branch['branch_type'] == ServiceCo
                                 </select>
                             </div>
 
-                            <div class="form-group form-group-sm">
+                            <div class="form-group">
                                 <label for="pickup_date">Pickup Date</label><br>
                                 <div class="input-group input-group-date-range">
                                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                    <input name="pickup_date" id="pickup_date" class="form-control date-range"
+                                    <input name="pickup_date" id="pickup_date" class="form-control date-range required validate"
                                            value="<?= Calypso::getValue($parcel, "info.pickup_date", '')?>"
-                                           data-provide="datepicker" data-date-format="yyyy/mm/dd" data-date-end-date="0d">
+                                           data-provide="datepicker" data-date-format="yyyy/mm/dd" data-date-end-date="0d"
+                                           >
                                 </div>
                             </div>
 

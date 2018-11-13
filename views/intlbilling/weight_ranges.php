@@ -22,7 +22,7 @@ $this->params['breadcrumbs'] = array(
             </button>
         </div>
         <div class="col-md-8">
-            <form method="post" action="/billing/deleteweightranges">
+            <form method="post" action="/intlbilling/deleteweightranges">
                 <input type="hidden" name="range_ids" id="rangeIds">
                 <div class="col-md-4">
                     <input value="1" name="force_delete" type="checkbox"><label

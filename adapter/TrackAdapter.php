@@ -32,7 +32,8 @@ class TrackAdapter extends BaseAdapter
      */
     public function getTrackingInfo($tracking_number)
     {
-        $response = $this->request(ServiceConstant::URL_PARCEL_HISTORY, ['waybill_number' => $tracking_number, 'reference_number' => $tracking_number,
+        $response = $this->request(ServiceConstant::URL_PARCEL_HISTORY, ['waybill_number' => $tracking_number,
+            'reference_number' => $tracking_number,
             'order_number' => $tracking_number, 'with_parcel' => 1], self::HTTP_GET);
 
         return $this->decodeResponse($response);
@@ -64,26 +65,40 @@ class TrackAdapter extends BaseAdapter
     public static function processHistory($history)
     {
         $connectedTerminalStatuses = [ServiceConstant::FOR_ARRIVAL, ServiceConstant::FOR_DELIVERY, ServiceConstant::BEING_DELIVERED];
-        $unConnectedTerminalStatuses = [ServiceConstant::FOR_SWEEPER];
-        $transitionalStatuses = [ServiceConstant::IN_TRANSIT];
+        $unConnectedTerminalStatuses = [
+                                        ServiceConstant::FOR_SWEEPER
+                                      ];
+        $transitionalStatuses = [
+                                        ServiceConstant::IN_TRANSIT
+                                ];
 
         $processedHistory = [];
 
+        $workAroundDuplicateFromAndToAddresses = 1;
         foreach ($history as $his) {
+
             if (in_array($his['status'], $connectedTerminalStatuses)) {
                 $his['type'] = 'connected_terminal';
             }
 
-            if (in_array($his['status'], $unConnectedTerminalStatuses)) {
+            if (in_array($his['status'],$unConnectedTerminalStatuses)) {
                 $his['type'] = 'unconnected_terminal';
             }
 
             if (in_array($his['status'], $transitionalStatuses)) {
                 $his['type'] = 'transitional';
             }
-            $processedHistory[$his['from_branch']['id'] . '-' . $his['to_branch']['id']] = $his;
-        }
 
+            if(array_key_exists($his['from_branch']['id'] . '-' . $his['to_branch']['id'], $processedHistory)){
+                $processedHistory[$his['from_branch']['id'] . '-' . $his['to_branch']['id'] . ' - ' . $workAroundDuplicateFromAndToAddresses] = $his;
+
+                $workAroundDuplicateFromAndToAddresses++;
+            }else {
+               $processedHistory[$his['from_branch']['id'] . '-' . $his['to_branch']['id']] = $his;
+            }
+
+
+        }
         return array_values($processedHistory);
     }
 

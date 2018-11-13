@@ -44,6 +44,7 @@ class IntlAdapter extends BaseAdapter
 
     public function editRange(array $data){
         return $this->request(ServiceConstant::URL_INTL_EDIT_WEIGHT_RANGE, $data, self::HTTP_POST);
+
     }
 
     public function saveTariff(array $data){
@@ -67,5 +68,46 @@ class IntlAdapter extends BaseAdapter
     public function deleteTariff(array $data){
         return $this->request(ServiceConstant::URL_INTL_DELETE_TARIFF, $data, self::HTTP_POST);
     }
+
+    /**
+     * Delete's a weight range
+     * @author Moses OLalere <moses_olalere@superfluxnigeria.com>
+     * @param $weightRangeId
+     * @return bool
+     */
+    public function deleteRange($weightRangeId)
+    {
+        $rawResponse = $this->request(ServiceConstant::URL_INTL_DELETE_WEIGHT,
+            ['weight_range_id' => $weightRangeId], self::HTTP_POST);
+        $response = new ResponseHandler($rawResponse);
+
+        if (!$response->isSuccess()) {
+            $this->lastErrorMessage = $response->getError();
+        }
+
+        return $response->isSuccess();
+    }
+
+    /**
+     * Delete's a weight range
+     * @author Moses Olalere <moses_olalere@superfluxnigeria.com>
+     * @param $weightRangeIds
+     * @param string $force_delete
+     * @return bool
+     * @internal param $weightRangeId
+     */
+    public function deleteRanges($weightRangeIds, $force_delete = '0')
+    {
+        $rawResponse = $this->request(ServiceConstant::URL_INTL_DELETE_WEIGHT,
+            ['weight_range_ids' => $weightRangeIds, 'force_delete' => $force_delete], self::HTTP_POST);
+        $response = new ResponseHandler($rawResponse);
+
+        if (!$response->isSuccess()) {
+            $this->lastErrorMessage = $response->getError();
+        }
+
+        return $response->isSuccess();
+    }
+
 
 }
